@@ -2,6 +2,9 @@
 
 > *"Ampere (A100) forced CPU-like threads to do manual labor copying memory. Hopper (H100) introduced hardware conveyor belts (TMA) and 128-thread super-units (WGMMA), letting memory move asynchronously without wasting a single compute cycle."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Tensor Memory Accelerator (TMA): The Conveyor Belt

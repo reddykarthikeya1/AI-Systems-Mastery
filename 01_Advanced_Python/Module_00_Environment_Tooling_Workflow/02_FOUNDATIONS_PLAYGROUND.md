@@ -2,6 +2,9 @@
 
 > *"The terminal is just a text chat where you type commands to your computer instead of clicking icons with a mouse."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to your very first hands-on playground! In this guide, you will master the absolute basics of talking to your computer using terminal commands.
 
 ---

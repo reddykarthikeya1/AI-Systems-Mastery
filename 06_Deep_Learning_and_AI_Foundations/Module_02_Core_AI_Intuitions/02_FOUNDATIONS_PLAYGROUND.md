@@ -2,6 +2,9 @@
 
 > *"A single neuron is just a knife that cuts space with a straight line. Deep learning is stacking millions of little knives so you can carve out any shape imaginable."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Perceptron & The XOR Wall (1969)

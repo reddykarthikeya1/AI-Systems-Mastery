@@ -2,6 +2,9 @@
 
 > *"Supervised learning is a teacher telling you the right answer. Reinforcement learning is a dog learning tricks: you give a biscuit when it sits, and it figures out how to get more biscuits."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Markov Decision Process (MDP)

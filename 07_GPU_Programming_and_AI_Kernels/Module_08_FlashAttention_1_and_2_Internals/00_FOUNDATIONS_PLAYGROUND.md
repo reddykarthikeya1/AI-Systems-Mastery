@@ -2,6 +2,9 @@
 
 > *"Standard attention is an IO disaster: it writes an enormous $N \times N$ matrix to GPU memory only to read it right back. FlashAttention tiles $Q, K, V$ into fast SRAM and uses running online softmax to compute the exact same result with $O(N)$ memory and up to $4\times$ speedup."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The $O(N^2)$ VRAM Crisis

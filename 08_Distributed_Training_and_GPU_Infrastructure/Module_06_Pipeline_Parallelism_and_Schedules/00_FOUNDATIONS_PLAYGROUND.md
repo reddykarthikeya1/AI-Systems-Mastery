@@ -1,5 +1,8 @@
 # Module 06: Beginner Playground - Pipeline Parallelism & Schedules
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Pipeline Parallelism (PP)**!
 If your model has **96 layers** (like GPT-3 175B), even with Tensor Parallelism across 8 GPUs on one machine, the model is still too massive.
 How do you split a model **across different machines**?

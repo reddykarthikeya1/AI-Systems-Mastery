@@ -1,5 +1,8 @@
 # Module 09: Beginner Playground - Production Benchmarking & Autoscaling
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Production Benchmarking & Autoscaling**!
 Your AI model is deployed, but how does it behave when 10,000 users arrive at the same time?
 If your system crashes on launch day, you lose millions!

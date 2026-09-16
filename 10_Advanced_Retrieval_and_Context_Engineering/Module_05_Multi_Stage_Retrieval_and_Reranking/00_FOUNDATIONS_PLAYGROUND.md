@@ -1,5 +1,8 @@
 # Module 05: Beginner Playground - Multi-Stage Retrieval & Reranking
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Multi-Stage Retrieval & Cross-Encoder Reranking**!
 In search engineering, there is a fundamental law:
 - **Fast search algorithms are imprecise.**

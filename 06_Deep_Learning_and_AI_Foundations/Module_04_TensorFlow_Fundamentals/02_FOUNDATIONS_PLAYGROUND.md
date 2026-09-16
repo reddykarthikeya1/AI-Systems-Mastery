@@ -2,6 +2,9 @@
 
 > *"Eager execution is cooking a meal by hand, tasting as you go. Graph execution is programming an automated robotic assembly line to cook 100,000 meals an hour."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Eager vs Graph Execution: The Mental Model

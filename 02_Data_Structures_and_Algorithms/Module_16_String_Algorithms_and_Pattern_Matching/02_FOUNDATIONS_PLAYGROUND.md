@@ -3,6 +3,9 @@
 > *"Finding a word in a book. You do not start from page 1 again every time a
 > sentence turns out to be the wrong one - you remember what you have read."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The slow way, and why it is slow

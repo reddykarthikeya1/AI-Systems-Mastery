@@ -2,6 +2,9 @@
 
 > *"Attention is a smart filing cabinet: You present a Query (what you are searching for), compare it to Keys (folder labels), and pull out the weighted sum of Values (the contents)."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Attention Formula: Step-by-Step

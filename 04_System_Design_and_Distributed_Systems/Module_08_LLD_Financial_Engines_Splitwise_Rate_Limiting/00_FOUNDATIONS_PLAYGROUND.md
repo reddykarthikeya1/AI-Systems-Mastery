@@ -2,6 +2,9 @@
 
 > *"A rate limiter is a subway turnstile. It does not care who you are or why you are in a hurry - it lets one person through at a time, and the queue outside is not its problem."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 **Brand new to this topic? Start here, not with the README.**
 
 Everything on this page is plain Python from the standard library. No Docker, no

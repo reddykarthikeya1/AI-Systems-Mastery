@@ -2,6 +2,9 @@
 
 > *"A PyTorch Tensor is a chunk of contiguous raw memory viewed through a mathematical lens. Transposing a matrix doesn't move a single byte; it just changes the stride!"*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Storage, Strides & Contiguity

@@ -38,10 +38,15 @@ export interface ProgressPayload {
   theme: 'dark' | 'light';
 }
 
+export type RunnerMode = 'python' | 'powershell' | 'shell';
+
 export interface TestResult {
   exit_code: number;
   stdout: string;
   stderr: string;
   duration_sec: number;
   status: 'passed' | 'failed' | 'timeout' | 'error';
+  cwd?: string;
+  mode?: RunnerMode;
 }
+

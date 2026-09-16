@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Code2, Terminal as TermIcon, Award, Copy, Check, Play, Terminal } from 'lucide-react';
 import { marked } from 'marked';
 import katex from 'katex';
 import confetti from 'canvas-confetti';
-import { ModuleItem, LessonItem, TestResult } from '../types';
+import { ModuleItem, LessonItem, TestResult, RunnerMode } from '../types';
 import { fetchFileContent, runTestCommand } from '../services/api';
 import { TerminalRunner } from './TerminalRunner';
-import { SideCodeRunner } from './SideCodeRunner';
+import { SideCodeRunner, PageSnippet } from './SideCodeRunner';
 
 interface ClassroomViewProps {
   courseTitle: string;
@@ -40,12 +40,56 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   // Side-by-side interactive code runner state
   const [isScratchpadOpen, setIsScratchpadOpen] = useState<boolean>(false);
   const [scratchpadCode, setScratchpadCode] = useState<string>('');
+  const [scratchpadMode, setScratchpadMode] = useState<RunnerMode>('python');
 
-  // Event listener for "Try in Scratchpad" button clicks from rendered code blocks
+  // Extract page code snippets from content markdown
+  const pageSnippets = useMemo<PageSnippet[]>(() => {
+    if (!content || content.startsWith('Loading')) return [];
+    const snippets: PageSnippet[] = [];
+    const regex = /```(\w+)?\n([\s\S]*?)```/g;
+    let match: RegExpExecArray | null;
+    let count = 1;
+
+    while ((match = regex.exec(content)) !== null) {
+      const rawLang = (match[1] || 'code').toUpperCase();
+      const rawCode = match[2].trim();
+      if (!rawCode) continue;
+
+      let langLabel = 'PYTHON';
+      if (rawLang === 'BASH' || rawLang === 'SH' || rawCode.startsWith('$') || rawCode.includes('pytest')) {
+        langLabel = 'BASH';
+      } else if (rawLang === 'POWERSHELL' || rawLang === 'PS1' || rawCode.startsWith('PS >')) {
+        langLabel = 'POWERSHELL';
+      } else if (rawLang === 'PYTHON' || rawLang === 'PY' || rawCode.includes('def ') || rawCode.includes('import ') || rawCode.includes('class ')) {
+        langLabel = 'PYTHON';
+      }
+
+      // Generate snippet title from first comment line or snippet preview
+      let title = `Snippet #${count}`;
+      const firstLine = rawCode.split('\n')[0].trim();
+      if (firstLine.startsWith('#')) {
+        title = firstLine.replace(/^[#\s]+/, '');
+      } else if (firstLine.length > 0) {
+        title = firstLine.slice(0, 32);
+      }
+
+      snippets.push({
+        id: `snippet-${count++}`,
+        title,
+        code: rawCode,
+        lang: langLabel,
+      });
+    }
+
+    return snippets;
+  }, [content]);
+
+  // Event listener for "Run" button clicks from rendered code blocks
   useEffect(() => {
     const handleSnippetRun = (e: any) => {
       if (e.detail?.code) {
         setScratchpadCode(e.detail.code);
+        if (e.detail?.mode) setScratchpadMode(e.detail.mode);
         setIsScratchpadOpen(true);
       }
     };
@@ -72,7 +116,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     });
   }, [module.folder_path]);
 
-  // Enhance rendered code blocks with language badge, 1-click copy, and "Try It" run button
+  // Enhance rendered code blocks with language badge, 1-click copy, and multi-runtime "Run" button
   useEffect(() => {
     if (activeTab !== 'theory') return;
     const timer = setTimeout(() => {
@@ -87,19 +131,33 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         const codeEl = pre.querySelector('code');
         const codeText = codeEl ? codeEl.innerText : pre.innerText;
 
-        // Detect language
+        // Detect language & runner mode
         let lang = 'Code';
-        let isPython = false;
+        let detectedMode: RunnerMode = 'python';
+
         if (codeEl) {
           const match = codeEl.className.match(/language-(\w+)/);
           if (match) lang = match[1].toUpperCase();
-          else if (codeText.startsWith('$') || codeText.includes('pytest') || codeText.includes('python -m')) lang = 'BASH';
-          else if (codeText.includes('def ') || codeText.includes('import ') || codeText.includes('class ') || codeText.includes('print(')) {
-            lang = 'PYTHON';
-            isPython = true;
-          }
         }
-        if (lang === 'PYTHON' || lang === 'PY') isPython = true;
+
+        if (lang === 'BASH' || lang === 'SH' || codeText.startsWith('$') || codeText.includes('pytest') || codeText.includes('pip install')) {
+          lang = 'BASH / CMD';
+          detectedMode = 'shell';
+        } else if (lang === 'POWERSHELL' || lang === 'PS1' || codeText.startsWith('PS >')) {
+          lang = 'POWERSHELL';
+          detectedMode = 'powershell';
+        } else if (lang === 'PYTHON' || lang === 'PY' || codeText.includes('def ') || codeText.includes('import ') || codeText.includes('class ') || codeText.includes('print(')) {
+          lang = 'PYTHON';
+          detectedMode = 'python';
+        }
+
+        // Clean prompt markers for execution ($ or PS >)
+        let executableCode = codeText;
+        if (detectedMode === 'shell') {
+          executableCode = executableCode.replace(/^\$\s+/gm, '');
+        } else if (detectedMode === 'powershell') {
+          executableCode = executableCode.replace(/^PS\s+>\s+/gm, '');
+        }
 
         // Create top bar
         const header = document.createElement('div');
@@ -112,17 +170,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         const btnGroup = document.createElement('div');
         btnGroup.className = 'flex items-center gap-2';
 
-        // Add "Try It / Run" button for Python snippets
-        if (isPython || (!codeText.startsWith('$') && !codeText.includes('bash'))) {
-          const runSnippetBtn = document.createElement('button');
-          runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30';
-          runSnippetBtn.innerHTML = '<span>▶ Run</span>';
-          runSnippetBtn.title = 'Open in Live Scratchpad and Execute';
-          runSnippetBtn.onclick = () => {
-            window.dispatchEvent(new CustomEvent('open-scratchpad-with-code', { detail: { code: codeText } }));
-          };
-          btnGroup.appendChild(runSnippetBtn);
-        }
+        // Add "▶ Run" button tailored to runtime
+        const runSnippetBtn = document.createElement('button');
+        runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30';
+        const runLabel = detectedMode === 'python' ? '▶ Run' : detectedMode === 'powershell' ? '▶ Run PS' : '▶ Run Shell';
+        runSnippetBtn.innerHTML = `<span>${runLabel}</span>`;
+        runSnippetBtn.title = `Execute snippet in Page-Aware ${detectedMode.toUpperCase()} Runner`;
+        runSnippetBtn.onclick = () => {
+          window.dispatchEvent(new CustomEvent('open-scratchpad-with-code', { 
+            detail: { code: executableCode, mode: detectedMode } 
+          }));
+        };
+        btnGroup.appendChild(runSnippetBtn);
 
         const copyBtn = document.createElement('button');
         copyBtn.className = 'hover:text-white px-2 py-0.5 rounded hover:bg-zinc-800/80 transition-colors flex items-center gap-1';
@@ -253,7 +312,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
                 : 'bg-zinc-100 dark:bg-zinc-800/90 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
             }`}
-            title="Toggle side-by-side interactive code runner"
+            title="Toggle Page-Aware Interactive Runner (Python, PowerShell, Shell)"
           >
             <Terminal className="w-3.5 h-3.5 text-emerald-500" />
             <span>Live Runner</span>
@@ -421,11 +480,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </div>
         </div>
 
-        {/* Right Side: Interactive Python Scratchpad */}
+        {/* Right Side: Page-Aware Interactive Multi-Runtime Runner */}
         {isScratchpadOpen && (
           <div className="sticky top-20 shrink-0 h-[calc(100vh-6rem)] rounded-xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
             <SideCodeRunner
               initialCode={scratchpadCode}
+              initialMode={scratchpadMode}
+              courseTitle={courseTitle}
+              moduleTitle={module.title}
+              moduleFolderPath={module.folder_path}
+              lessonTitle={currentLesson.title}
+              lessonFilePath={currentLesson.file_path}
+              pageSnippets={pageSnippets}
               onClose={() => setIsScratchpadOpen(false)}
             />
           </div>

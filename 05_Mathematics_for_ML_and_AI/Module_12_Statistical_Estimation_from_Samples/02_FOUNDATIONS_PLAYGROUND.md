@@ -2,6 +2,9 @@
 
 > *"Maximum Likelihood Estimation is tuning your radio knob until the music comes in clearest. Entropy is how surprised you are. Cross-Entropy is the loss function that trains every neural network on Earth."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. What is Maximum Likelihood Estimation (MLE)?

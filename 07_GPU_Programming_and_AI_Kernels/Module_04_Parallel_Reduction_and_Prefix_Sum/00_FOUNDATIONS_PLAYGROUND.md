@@ -2,6 +2,9 @@
 
 > *"Adding 1,000 numbers on a CPU takes 1,000 sequential clock ticks. On a GPU, it takes 10 ticks—because 512 pairs of numbers are added at the exact same moment in Round 1, 256 pairs in Round 2, until one champion emerges."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Tournament Bracket (Parallel Tree Reduction)

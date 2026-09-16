@@ -2,6 +2,9 @@
 
 > *"A row store keeps one folder per customer. A column store keeps one folder per field - so 'total all salaries' opens exactly one folder instead of every folder you own."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 **Brand new to this topic? Start here, not with the README.**
 
 Everything on this page is plain Python from the standard library. No Docker, no

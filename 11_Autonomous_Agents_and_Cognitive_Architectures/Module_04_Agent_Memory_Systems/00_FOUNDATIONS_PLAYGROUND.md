@@ -1,5 +1,8 @@
 # Beginner Playground: Multi-Tiered Agent Memory Systems
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to Agent Memory Systems! An agent without memory treats every turn like the beginning of time. Real-world agents require cognitive memory inspired by human neuroscience.
 
 ---

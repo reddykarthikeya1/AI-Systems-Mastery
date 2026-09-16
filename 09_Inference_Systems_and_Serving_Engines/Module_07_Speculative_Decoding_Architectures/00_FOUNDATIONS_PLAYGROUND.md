@@ -1,5 +1,8 @@
 # Module 07: Beginner Playground - Speculative Decoding & Medusa
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Speculative Decoding**!
 If you could hire an ultra-fast intern to draft answers for an executive, and the executive only spent 1 second approving or fixing the draft, how much faster would work get done?
 

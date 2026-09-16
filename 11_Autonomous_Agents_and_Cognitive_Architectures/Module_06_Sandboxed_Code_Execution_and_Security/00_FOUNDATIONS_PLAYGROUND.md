@@ -1,5 +1,8 @@
 # Beginner Playground: Sandboxed Code Execution & Security
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to Code Sandboxing! Giving an AI agent the ability to execute generated Python code is superpowers for problem solving, but without sandboxing, it is an open door to Remote Code Execution (RCE).
 
 ---

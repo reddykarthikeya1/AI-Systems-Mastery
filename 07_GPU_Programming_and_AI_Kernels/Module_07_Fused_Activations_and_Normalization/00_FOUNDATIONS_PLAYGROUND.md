@@ -2,6 +2,9 @@
 
 > *"In deep learning inference, 80% of your GPU's time is spent reading and writing numbers that are immediately thrown away. Kernel fusion glues operations together so intermediate numbers live exclusively in ultra-fast registers, cutting memory traffic by 80%."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Memory Wall: Why Unfused PyTorch Is Slow

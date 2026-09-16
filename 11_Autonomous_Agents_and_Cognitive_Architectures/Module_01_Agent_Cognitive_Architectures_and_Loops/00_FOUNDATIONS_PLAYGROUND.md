@@ -1,5 +1,8 @@
 # Beginner Playground: Agent Cognitive Architectures & Loops
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to the foundational playground for Autonomous Agents! Here you will master the core cognitive control loop that transforms a static LLM into an autonomous problem-solving agent.
 
 ---

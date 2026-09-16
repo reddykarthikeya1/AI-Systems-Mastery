@@ -2,6 +2,9 @@
 
 > *"In GPU programming, arithmetic is free; memory traffic is bankruptingly expensive. A matrix multiplication kernel that spends 99% of its time waiting for memory is not a compute kernel—it is an overpriced memory copier."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Grocery Store Checkout (Memory Hierarchy)

@@ -2,6 +2,9 @@
 
 > *"An aggregation pipeline is a factory conveyor belt. Put the inspection station at the start and you inspect a few items; put it at the end and you inspect everything you built."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 **Brand new to this topic? Start here, not with the README.**
 
 Everything on this page is plain Python from the standard library. No Docker, no

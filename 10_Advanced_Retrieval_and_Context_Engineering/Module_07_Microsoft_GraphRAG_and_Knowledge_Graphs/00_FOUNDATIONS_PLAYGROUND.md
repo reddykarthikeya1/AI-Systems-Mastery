@@ -1,5 +1,8 @@
 # Module 07: Beginner Playground - Microsoft GraphRAG & Knowledge Graphs
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **GraphRAG**!
 Traditional RAG (Vector Search) is great at answering localized questions like:
 *"What was the price of Widget A in 2022?"*

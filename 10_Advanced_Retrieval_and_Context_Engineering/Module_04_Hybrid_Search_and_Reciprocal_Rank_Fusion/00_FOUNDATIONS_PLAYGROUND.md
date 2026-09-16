@@ -1,5 +1,8 @@
 # Module 04: Beginner Playground - Hybrid Search & Reciprocal Rank Fusion (RRF)
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Hybrid Search & RRF**!
 If you build a search system with ONLY vector embeddings or ONLY keyword search, your users will quickly encounter catastrophic failures:
 - **Vector Search Only**: A user searches for: *"Invoice #INV-2024-9981"*. Vector search has no idea what that string of numbers means, and returns an invoice for office supplies from 2021!

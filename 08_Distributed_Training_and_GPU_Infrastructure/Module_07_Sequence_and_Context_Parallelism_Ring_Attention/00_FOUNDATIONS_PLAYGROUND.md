@@ -1,5 +1,8 @@
 # Module 07: Beginner Playground - Sequence & Context Parallelism (Ring Attention)
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Sequence & Context Parallelism**!
 Modern LLMs are expected to read entire books, codebases, or hours of video in a single prompt (128,000 to 1,000,000+ tokens).
 Why is this mathematically brutal on GPUs, and how does **Ring Attention** conquer it?

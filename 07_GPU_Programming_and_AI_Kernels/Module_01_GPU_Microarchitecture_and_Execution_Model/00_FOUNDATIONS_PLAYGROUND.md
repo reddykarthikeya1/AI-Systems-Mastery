@@ -2,6 +2,9 @@
 
 > *"A CPU is an Olympic sprinter who can solve differential equations while running; a GPU is an army of 10,000 kindergarteners who can each color one pixel per second. If you organize them to color simultaneously, they will paint the Sistine Chapel before the sprinter laces their shoes."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Factory Analogy: SMs, Warps, and SIMT

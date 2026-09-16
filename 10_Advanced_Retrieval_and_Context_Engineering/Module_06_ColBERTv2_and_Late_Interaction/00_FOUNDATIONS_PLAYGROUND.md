@@ -1,5 +1,8 @@
 # Module 06: Beginner Playground - ColBERTv2 & Late Interaction
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **ColBERTv2** (Contextualized Late Interaction over BERT)!
 In the previous module, we learned that:
 - Bi-Encoders compress an entire 500-word passage into a **single vector** (lossy!).

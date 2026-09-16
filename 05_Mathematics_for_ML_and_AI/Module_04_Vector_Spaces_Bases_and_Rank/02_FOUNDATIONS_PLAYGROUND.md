@@ -2,6 +2,9 @@
 
 > *"Think of a Basis like the primary colors (Red, Green, Blue): every other color can be mixed from them, and none of the three can be made from the other two."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Linear Independence: No Redundant Team Members

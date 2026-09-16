@@ -271,20 +271,79 @@ def run_fallback_server(port: int = 8000) -> None:
                 return
             elif parsed.path == "/api/run-code":
                 code = payload.get("code", "")
+                mode = payload.get("mode", "python")
+                wdir = payload.get("working_dir")
+                timeout_sec = payload.get("timeout_sec", 25)
+
+                target_cwd = ROOT_DIR
+                if wdir:
+                    cand = (ROOT_DIR / wdir).resolve()
+                    if cand.is_dir() and str(cand).startswith(str(ROOT_DIR)):
+                        target_cwd = cand
+
+                import tempfile
+                temp_file = None
+                start_time = time.perf_counter()
                 try:
+                    if mode == "powershell":
+                        with tempfile.NamedTemporaryFile(mode="w", suffix=".ps1", delete=False, encoding="utf-8") as tf:
+                            tf.write(code)
+                            temp_file = tf.name
+                        ps_exe = "powershell.exe" if sys.platform == "win32" else "pwsh"
+                        cmd = [ps_exe, "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", temp_file]
+                    elif mode == "shell":
+                        if sys.platform == "win32":
+                            with tempfile.NamedTemporaryFile(mode="w", suffix=".bat", delete=False, encoding="utf-8") as tf:
+                                tf.write("@echo off\n" + code)
+                                temp_file = tf.name
+                            cmd = ["cmd.exe", "/c", temp_file]
+                        else:
+                            with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False, encoding="utf-8") as tf:
+                                tf.write("#!/usr/bin/env bash\n" + code)
+                                temp_file = tf.name
+                            cmd = ["/bin/bash", temp_file]
+                    else:
+                        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as tf:
+                            tf.write(code)
+                            temp_file = tf.name
+                        cmd = [sys.executable, temp_file]
+
                     proc = subprocess.run(
-                        [sys.executable, "-c", code],
+                        cmd,
+                        cwd=str(target_cwd),
                         capture_output=True,
                         text=True,
-                        timeout=10,
+                        timeout=timeout_sec,
+                        input="",
                     )
+                    duration = time.perf_counter() - start_time
+                    rel_cwd = target_cwd.relative_to(ROOT_DIR).as_posix() if target_cwd != ROOT_DIR else "."
                     self.send_json({
-                        "success": proc.returncode == 0,
-                        "output": proc.stdout + (("\n[Stderr]:\n" + proc.stderr) if proc.stderr else ""),
-                        "returncode": proc.returncode,
+                        "exit_code": proc.returncode,
+                        "stdout": proc.stdout,
+                        "stderr": proc.stderr,
+                        "duration_sec": round(duration, 3),
+                        "status": "passed" if proc.returncode == 0 else "failed",
+                        "cwd": rel_cwd,
+                        "mode": mode,
                     })
                 except Exception as exc:
-                    self.send_json({"success": False, "output": str(exc), "returncode": -1})
+                    rel_cwd = target_cwd.relative_to(ROOT_DIR).as_posix() if target_cwd != ROOT_DIR else "."
+                    self.send_json({
+                        "exit_code": -1,
+                        "stdout": "",
+                        "stderr": str(exc),
+                        "duration_sec": 0.0,
+                        "status": "error",
+                        "cwd": rel_cwd,
+                        "mode": mode,
+                    })
+                finally:
+                    if temp_file and os.path.exists(temp_file):
+                        try:
+                            os.remove(temp_file)
+                        except Exception:
+                            pass
                 return
 
             self.send_error(404, "Not found")

@@ -41,13 +41,20 @@ This repository includes a standalone, self-hosted **Coursera-style learning pla
 
 ---
 
-## 🖥️ Live Python Runner & Side-by-Side Scratchpad
+## 🖥️ Page-Aware Multi-Runtime Live Runner & Side-by-Side Scratchpad
 
 Learn interactively without ever leaving the lesson:
-* **Side-by-Side Split View**: Keep reading on the left while editing, testing, and running Python code on the right.
-* **1-Click "▶ Run" on Any Lesson Code Block**: Every code snippet in the curriculum features a **`▶ Run`** button. Clicking it automatically opens the side runner, loads the code snippet, and executes it in an isolated subprocess.
-* **Real-time Terminal Output**: Inspect stdout, stderr, execution duration, and exit status immediately.
-* **Built-in Architecture Presets**: Quickly load and run FLOPs/Roofline estimators, KV-Cache memory calculators, and Scaled Dot-Product attention simulations.
+* **Side-by-Side Split View**: Keep reading on the left while editing, testing, and running code on the right with seamless dual-pane layout.
+* **1-Click "▶ Run" on Any Lesson Code Block**: Every code or command block across all 12 courses features a **`▶ Run`** button. Clicking it automatically opens the side runner, loads the exact snippet, and executes it immediately.
+* **Multi-Runtime Execution Engine**:
+  * **🐍 Python 3**: Isolated subprocess execution with package import resolution, standard library support, and execution performance timers.
+  * **⚡ Windows PowerShell**: Native PowerShell execution (`powershell.exe` / `pwsh`) for running scripting pipelines and system inspections.
+  * **💻 Shell / CMD**: Command Prompt / Bash runner for testing CLI utilities, `git`, `pip`, and terminal workflows.
+* **Page-Aware Working Directory Context**: The runner automatically detects which course and module you are currently studying, setting the execution working directory directly to that module folder. You have immediate access to module datasets, solutions, and `pytest`.
+* **Page Snippets Dropdown**: 1-click access to load any code block from your active lesson directly into the runner.
+* **One-Click Module Testing**: Built-in `⚡ Test Module` button runs `python -m pytest` on the active module with instant pass/fail console reports.
+* **Real-time Terminal Output**: Inspect stdout, stderr, execution duration, and exit status badges.
+* **Architecture Presets**: Quick-load templates for Roofline/FLOPs analysis, KV-Cache memory estimation, and Scaled Dot-Product attention simulations.
 * **Keyboard Shortcuts**: Hit `Ctrl + Enter` (or `Cmd + Enter`) anywhere in the code editor to execute instantly.
 
 ---

@@ -2,6 +2,9 @@
 
 > *"Full fine-tuning is throwing an entire encyclopedia into a blender to update one chapter. LoRA is writing a 1-page sticky note delta and slapping it on the back cover."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Why Full Fine-Tuning Is Dead for Most Teams

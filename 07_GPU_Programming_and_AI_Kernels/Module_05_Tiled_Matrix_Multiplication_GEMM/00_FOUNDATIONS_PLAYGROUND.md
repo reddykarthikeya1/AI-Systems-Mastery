@@ -2,6 +2,9 @@
 
 > *"In naive matrix multiplication, computing a $4096 \times 4096$ matrix reads 68 billion numbers from slow DRAM. Tiling loads small square blocks into fast shared memory, letting threads reuse each number 32 times—turning a slow crawl into blistering speed."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Naive GEMM Memory Bottleneck

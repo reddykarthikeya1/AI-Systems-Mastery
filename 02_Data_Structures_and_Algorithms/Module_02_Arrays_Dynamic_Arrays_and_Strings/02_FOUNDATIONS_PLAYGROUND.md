@@ -2,6 +2,9 @@
 
 > *"Think of an array like a row of numbered school lockers sitting side-by-side in a hallway."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome! If you have never solved a LeetCode problem before or you find algorithms intimidating, **start here**. We will explain everything like you are 10 years old, with pictures, stories, and zero confusing jargon.
 
 ---

@@ -2,6 +2,9 @@
 
 > *"Dense models are a company where every employee must vote on every email. Mixture of Experts (MoE) is routing each email to the two engineers who actually know how to answer it."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Sparse Mixture of Experts (MoE)

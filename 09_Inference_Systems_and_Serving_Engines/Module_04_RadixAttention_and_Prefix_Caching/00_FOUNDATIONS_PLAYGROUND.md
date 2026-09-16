@@ -1,5 +1,8 @@
 # Module 04: Beginner Playground - RadixAttention & Prefix Caching
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **RadixAttention** and **Hierarchical Prefix Caching**!
 If you've ever built an AI application with few-shot prompts, system prompts, or multi-turn chat, you know the frustration:
 The user asks: *"Hello"*, and the AI engine recomputes the entire 2,000-word system prompt.

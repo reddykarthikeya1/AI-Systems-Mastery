@@ -1,5 +1,8 @@
 # Module 09: Beginner Playground - Context Optimization & NIAH Testing
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Context Optimization & Needle-in-a-Haystack (NIAH) Testing**!
 Modern LLMs boast massive context windows (128,000 to 1,000,000+ tokens).
 You might think: *"Great! I can just dump 50 retrieved documents into the prompt and let the LLM figure it out!"*

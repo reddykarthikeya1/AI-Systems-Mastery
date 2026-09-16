@@ -1,5 +1,8 @@
 # Module 04: Beginner Playground - DeepSpeed ZeRO & PyTorch FSDP
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **ZeRO** (Zero Redundancy Optimizer) and **FSDP** (Fully Sharded Data Parallel)! If you've ever tried training a modern Large Language Model (LLM) and hit the dreaded `torch.cuda.OutOfMemoryError: CUDA out of memory`, this module is your cure.
 
 ---

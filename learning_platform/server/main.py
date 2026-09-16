@@ -8,9 +8,11 @@ Copyright (c) Karthikeya Reddy. All rights reserved.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import List, Optional
@@ -81,7 +83,9 @@ class RunTestRequest(BaseModel):
 
 class RunCodeRequest(BaseModel):
     code: str
-    timeout_sec: int = 15
+    mode: str = "python"  # 'python', 'powershell', 'shell'
+    working_dir: Optional[str] = None
+    timeout_sec: int = 25
 
 
 class ProgressPayload(BaseModel):
@@ -341,40 +345,104 @@ def run_test_command(req: RunTestRequest):
 
 @app.post("/api/run-code")
 def run_interactive_code(req: RunCodeRequest):
-    """Executes arbitrary Python code snippet in an isolated subprocess and returns outputs."""
+    """Executes arbitrary Python, PowerShell, or Shell commands in a page-aware isolated subprocess."""
+    target_cwd = BASE_DIR
+    if req.working_dir:
+        candidate = (BASE_DIR / req.working_dir).resolve()
+        if candidate.is_dir() and str(candidate).startswith(str(BASE_DIR)):
+            target_cwd = candidate
+
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    env["PYTHONPATH"] = f"{target_cwd}{os.pathsep}{BASE_DIR}{os.pathsep}{env.get('PYTHONPATH', '')}"
+
     start_time = time.perf_counter()
+    temp_file = None
     try:
+        if req.mode == "powershell":
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".ps1", delete=False, encoding="utf-8") as tf:
+                tf.write(req.code)
+                temp_file = tf.name
+            ps_exe = "powershell.exe" if sys.platform == "win32" else "pwsh"
+            cmd = [ps_exe, "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", temp_file]
+        elif req.mode == "shell":
+            if sys.platform == "win32":
+                with tempfile.NamedTemporaryFile(mode="w", suffix=".bat", delete=False, encoding="utf-8") as tf:
+                    tf.write("@echo off\n" + req.code)
+                    temp_file = tf.name
+                cmd = ["cmd.exe", "/c", temp_file]
+            else:
+                with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False, encoding="utf-8") as tf:
+                    tf.write("#!/usr/bin/env bash\n" + req.code)
+                    temp_file = tf.name
+                cmd = ["/bin/bash", temp_file]
+        else:
+            # Python mode
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as tf:
+                tf.write(req.code)
+                temp_file = tf.name
+            cmd = [sys.executable, temp_file]
+
         proc = subprocess.run(
-            [sys.executable, "-c", req.code],
-            cwd=str(BASE_DIR),
+            cmd,
+            cwd=str(target_cwd),
+            env=env,
             capture_output=True,
             text=True,
             timeout=req.timeout_sec,
+            input="",
         )
         duration = time.perf_counter() - start_time
+
+        MAX_OUT = 80000
+        stdout = proc.stdout
+        if len(stdout) > MAX_OUT:
+            stdout = stdout[:MAX_OUT] + f"\n... [Output truncated to {MAX_OUT // 1000}KB] ..."
+        stderr = proc.stderr
+        if len(stderr) > MAX_OUT:
+            stderr = stderr[:MAX_OUT] + f"\n... [Error output truncated to {MAX_OUT // 1000}KB] ..."
+
+        rel_cwd = target_cwd.relative_to(BASE_DIR).as_posix() if target_cwd != BASE_DIR else "."
+
         return {
             "exit_code": proc.returncode,
-            "stdout": proc.stdout,
-            "stderr": proc.stderr,
+            "stdout": stdout,
+            "stderr": stderr,
             "duration_sec": round(duration, 3),
             "status": "passed" if proc.returncode == 0 else "failed",
+            "cwd": rel_cwd,
+            "mode": req.mode,
         }
     except subprocess.TimeoutExpired:
+        rel_cwd = target_cwd.relative_to(BASE_DIR).as_posix() if target_cwd != BASE_DIR else "."
         return {
             "exit_code": -1,
             "stdout": "",
             "stderr": f"Execution timed out after {req.timeout_sec} seconds.",
             "duration_sec": float(req.timeout_sec),
             "status": "timeout",
+            "cwd": rel_cwd,
+            "mode": req.mode,
         }
     except Exception as exc:
+        rel_cwd = target_cwd.relative_to(BASE_DIR).as_posix() if target_cwd != BASE_DIR else "."
         return {
             "exit_code": -1,
             "stdout": "",
             "stderr": str(exc),
             "duration_sec": 0.0,
             "status": "error",
+            "cwd": rel_cwd,
+            "mode": req.mode,
         }
+    finally:
+        if temp_file and os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+            except Exception:
+                pass
+
 
 
 @app.get("/api/progress", response_model=ProgressPayload)

@@ -1,4 +1,4 @@
-import { CourseSummary, ModuleItem, ProgressPayload, TestResult } from '../types';
+import { CourseSummary, ModuleItem, ProgressPayload, TestResult, RunnerMode } from '../types';
 
 const API_BASE = '/api';
 
@@ -30,11 +30,21 @@ export async function runTestCommand(targetPath: string, commandType: 'pytest' |
   return res.json();
 }
 
-export async function runInteractiveCode(code: string, timeoutSec: number = 15): Promise<TestResult> {
+export async function runInteractiveCode(
+  code: string,
+  mode: RunnerMode = 'python',
+  workingDir?: string,
+  timeoutSec: number = 25
+): Promise<TestResult> {
   const res = await fetch(`${API_BASE}/run-code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code, timeout_sec: timeoutSec }),
+    body: JSON.stringify({
+      code,
+      mode,
+      working_dir: workingDir,
+      timeout_sec: timeoutSec,
+    }),
   });
   if (!res.ok) throw new Error('Code execution failed to dispatch');
   return res.json();

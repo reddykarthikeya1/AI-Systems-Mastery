@@ -2,6 +2,9 @@
 
 > *"Choosing the right collection is like choosing the right container: use a list for a shopping list, a dictionary for a phone book, and a set for unique tags."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to Module 03! In this playground, you will master the 4 built-in Python collections.
 
 ---

@@ -2,6 +2,9 @@
 
 > *"Python gives you developer velocity; C and Rust give you raw hardware speed."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to the **Module 22 CPython Internals Rust PyO3 Extensions** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
 
 ---

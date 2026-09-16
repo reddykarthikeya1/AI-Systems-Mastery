@@ -1,5 +1,8 @@
 # Module 01: Beginner Playground - Parsing & Hierarchical Chunking
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Advanced Retrieval & Context Engineering**!
 Retrieval-Augmented Generation (RAG) is only as good as the chunks you retrieve.
 If you feed an LLM garbage, out-of-context snippets, it will hallucinate and make up facts!

@@ -2,6 +2,9 @@
 
 > *"A 70B parameter model in FP16 weighs 140 Gigabytes and demands $30,000 server GPUs. Quantizing weights to 4-bit shrinks the entire model to 35 Gigabytes, letting it run on a single workstation without losing its intelligence."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. Bitwise Packing: Squeezing 2 Numbers into 1 Byte

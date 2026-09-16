@@ -1,5 +1,8 @@
 # Module 02: Beginner Playground - KV-Cache Memory Management
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to the **KV-Cache Memory Management** module!
 If you've ever wondered why an AI server with **80 Gigabytes of VRAM** can suddenly crash when just 20 people ask questions simultaneously, the KV Cache is the culprit!
 

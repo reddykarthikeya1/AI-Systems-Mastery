@@ -1,5 +1,8 @@
 # Module 06: Beginner Playground - Chunked Prefill & PD Disaggregation
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Chunked Prefill & Prefill-Decode (PD) Disaggregation**!
 This is the cutting-edge serving architecture used by DeepSeek, Meta, and OpenAI to crush latency jitter and maximize GPU utilization.
 

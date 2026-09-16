@@ -16,3 +16,14 @@ Every module folder contains:
 5. `starter/`: Scaffold code for hands-on practice.
 6. `project_solution/`: Tested reference implementation.
 7. `debug_lab/`: Buggy scenarios to hone debugging skills.
+
+---
+
+## ⚡ Interactive Learning with the Page-Aware Live Runner
+
+While reading through any module or playground in this course, use the built-in **Live Runner**:
+* **1-Click "▶ Run"**: Click the **`▶ Run`** button in the header of any code or command block to execute it immediately in a side-by-side split view.
+* **Page-Aware Context**: The runner automatically runs inside the directory of your current module, giving you instant access to module datasets, solutions, and `pytest`.
+* **Multi-Runtime Execution**: Seamlessly toggle between **Python 3**, **Windows PowerShell**, and **Shell / CMD** right from the runner toolbar.
+* **Architecture Presets & Page Code**: Load calculations and lesson code snippets with a single click.
+

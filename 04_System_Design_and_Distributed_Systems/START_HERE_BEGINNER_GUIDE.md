@@ -93,3 +93,14 @@ Every module in this course follows a rigorous engineering loop:
 4. **Diagnostic Self-Assessment (`SELF_ASSESSMENT_AND_CHALLENGES.md`):** Test your ability to answer real architectural interview questions and tackle hands-on machine coding challenges.
 
 Proceed to **[Module 00: Fundamentals & Interview Playbook](Module_00_System_Design_Fundamentals_Interview_Playbook/01_README.md)** or inspect the full **[MASTER_SYLLABUS.md](MASTER_SYLLABUS.md)** to get started!
+
+---
+
+## ⚡ Interactive Learning with the Page-Aware Live Runner
+
+While reading through any module or playground in this course, use the built-in **Live Runner**:
+* **1-Click "▶ Run"**: Click the **`▶ Run`** button in the header of any code or command block to execute it immediately in a side-by-side split view.
+* **Page-Aware Context**: The runner automatically runs inside the directory of your current module, giving you instant access to module datasets, solutions, and `pytest`.
+* **Multi-Runtime Execution**: Seamlessly toggle between **Python 3**, **Windows PowerShell**, and **Shell / CMD** right from the runner toolbar.
+* **Architecture Presets & Page Code**: Load calculations and lesson code snippets with a single click.
+

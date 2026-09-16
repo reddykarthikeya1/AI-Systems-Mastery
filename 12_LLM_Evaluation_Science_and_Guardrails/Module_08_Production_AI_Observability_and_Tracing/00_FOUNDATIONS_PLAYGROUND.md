@@ -1,5 +1,8 @@
 # Beginner Playground: OpenTelemetry Tracing & Cost Observability
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to AI Observability! In production, an AI request is not a black box: you must track TTFT (Time-To-First-Token), prompt/completion token usage, monetary cost, and nested tool spans.
 
 ---

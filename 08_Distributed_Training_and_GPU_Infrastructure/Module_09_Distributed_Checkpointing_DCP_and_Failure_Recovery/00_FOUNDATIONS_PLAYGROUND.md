@@ -1,5 +1,8 @@
 # Module 09: Beginner Playground - Distributed Checkpointing (DCP)
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Distributed Checkpointing (DCP)**!
 When you train an AI model across 4,096 GPUs for several weeks, things **will** break:
 - GPUs suffer hardware ECC memory faults.

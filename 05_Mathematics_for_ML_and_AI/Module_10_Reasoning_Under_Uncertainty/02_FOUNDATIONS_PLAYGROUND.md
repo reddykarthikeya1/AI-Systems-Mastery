@@ -2,6 +2,9 @@
 
 > *"Probability is not about rolling dice in a casino; it is the logic of science when information is incomplete. Bayes' Theorem tells you exactly how much to update your belief when new evidence arrives."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Rare Disease Paradox (Base Rate Fallacy)

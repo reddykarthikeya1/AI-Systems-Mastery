@@ -2,6 +2,9 @@
 
 > *"Writing CPU code is like directing a single Michelin-star chef through a recipe; writing CUDA code is like orchestrating 100,000 sous-chefs across 500 kitchens where every chef has an assigned station coordinate $(x, y, z)$."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Stadium Seating Coordinates (Grid, Block, Thread)

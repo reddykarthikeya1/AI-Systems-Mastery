@@ -1,5 +1,8 @@
 # Module 10: Beginner Playground - Scaling Laws, Profiling & FinOps
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Scaling Laws, Profiling & FinOps**!
 Training state-of-the-art Large Language Models is among the most expensive engineering endeavors in human history.
 Training a frontier AI model can cost **$50,000,000 to $200,000,000+** in electricity and GPU compute!

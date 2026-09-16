@@ -2,6 +2,9 @@
 
 > *"Writing CUDA is like laying bricks by hand—you control every single trowel stroke and mortar drop. Triton is like 3D printing a house—you specify block operations, and the compiler figures out how to lay the bricks without making mistakes."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Block Paradigm Shift

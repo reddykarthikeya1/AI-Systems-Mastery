@@ -1,5 +1,8 @@
 # Beginner Playground: Human-in-the-Loop & Time Travel
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to Human-in-the-Loop (HITL) and Time Travel! In autonomous systems, high-risk actions (e.g. paying invoices, dropping tables, sending public emails) must pause execution for human verification.
 
 ---

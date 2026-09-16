@@ -2,6 +2,9 @@
 
 > *"A class is a cookie cutter; an object is the delicious cookie stamped out of it."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to Module 04! If OOP has felt intimidating before, let's break it down in plain English.
 
 ---

@@ -1,5 +1,8 @@
 # Module 03: Beginner Playground - PagedAttention Architecture (vLLM)
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **PagedAttention**!
 In 2023, researchers at UC Berkeley asked a simple question:
 *"Operating systems solved memory fragmentation 50 years ago using virtual memory paging. Why are AI serving systems still allocating giant contiguous blocks like MS-DOS in 1982?"*

@@ -2,6 +2,9 @@
 
 > *"A variable is just a name tag stuck on an object in your computer's memory."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to the Module 01 Playground! Here we explore variables, data types, math, decisions (`if`/`else`), and loops through bite-sized examples.
 
 ---

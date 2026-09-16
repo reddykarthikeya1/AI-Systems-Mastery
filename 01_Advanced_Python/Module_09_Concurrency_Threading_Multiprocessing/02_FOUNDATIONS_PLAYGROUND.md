@@ -2,6 +2,9 @@
 
 > *"Threads share the same kitchen; Processes have separate restaurants."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to the **Module 09 Concurrency Threading Multiprocessing** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
 
 ---

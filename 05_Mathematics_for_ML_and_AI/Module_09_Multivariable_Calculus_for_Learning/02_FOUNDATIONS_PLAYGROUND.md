@@ -2,6 +2,9 @@
 
 > *"Calculus in Machine Learning is simple: Gradients point uphill, Jacobians measure vector stretches, and Hessians tell you if you are resting safely at the bottom of a bowl or balanced on a knife-edge saddle."*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Gradient: Nature's Uphill Compass

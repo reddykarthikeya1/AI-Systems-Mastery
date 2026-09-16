@@ -1,5 +1,8 @@
 # Module 02: Beginner Playground - Contextual Retrieval Architecture
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Contextual Retrieval** (the breakthrough popularized by Anthropic in 2024)!
 When documents are chopped into chunks, critical situational context is lost.
 

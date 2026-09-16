@@ -163,3 +163,14 @@ As you advance through the curriculum, test your mastery by completing the timed
 
 1. Select your timeline in the [Study Plans & Pacing Guide](STUDY_PLANS_AND_PACING_GUIDE.md).
 2. Jump straight into [Module 01: Storage Theory, ACID & The Relational Model](Module_01_Storage_Theory_ACID_Relational_Model/01_README.md)!
+
+---
+
+## ⚡ Interactive Learning with the Page-Aware Live Runner
+
+While reading through any module or playground in this course, use the built-in **Live Runner**:
+* **1-Click "▶ Run"**: Click the **`▶ Run`** button in the header of any code or command block to execute it immediately in a side-by-side split view.
+* **Page-Aware Context**: The runner automatically runs inside the directory of your current module, giving you instant access to module datasets, solutions, and `pytest`.
+* **Multi-Runtime Execution**: Seamlessly toggle between **Python 3**, **Windows PowerShell**, and **Shell / CMD** right from the runner toolbar.
+* **Architecture Presets & Page Code**: Load calculations and lesson code snippets with a single click.
+

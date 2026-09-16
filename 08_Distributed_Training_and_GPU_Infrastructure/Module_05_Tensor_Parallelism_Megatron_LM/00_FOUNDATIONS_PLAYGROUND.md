@@ -1,5 +1,8 @@
 # Module 05: Beginner Playground - Tensor Parallelism (Megatron-LM)
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 Welcome to **Tensor Parallelism (TP)**!
 In the previous module, we learned that ZeRO-3 and FSDP partition static weights across GPUs.
 But what if a **single individual layer or matrix multiplication** is so giant that it doesn't fit in GPU memory during execution, or what if we want to run inference/training with ultra-low latency?

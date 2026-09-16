@@ -2,6 +2,9 @@
 
 > *"When a matrix transforms space, almost every vector gets knocked off its original line. Eigenvectors are the rare, special vectors that stay on their original line!"*
 
+
+> 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
+
 ---
 
 ## 1. The Wind and the Arrow Metaphor
