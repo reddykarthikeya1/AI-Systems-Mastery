@@ -11,7 +11,7 @@ Follow this exact order to achieve 100% mastery of Module 04:
 | Step | File to Open | What You Will Do |
 | :---: | :--- | :--- |
 | **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_W3_BEGINNER_PLAYGROUND.md](02_W3_BEGINNER_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
 | **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
 | **4** | **[04_BEGINNER_TO_OOP_BRIDGE.md](04_BEGINNER_TO_OOP_BRIDGE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
 | **5** | **[05_interactive_deep_oop.ipynb](05_interactive_deep_oop.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |

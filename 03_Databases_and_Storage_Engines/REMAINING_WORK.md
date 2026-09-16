@@ -33,7 +33,7 @@ Structural completeness:
 | README ≥ 150 lines | 25/25 |
 | `starter/` scaffold | 25/25 |
 | `debug_lab/` | 25/25 |
-| `00_W3_BEGINNER_PLAYGROUND.md` + `00_try_it_yourself.py` | 25/25 |
+| `00_FOUNDATIONS_PLAYGROUND.md` + `00_try_it_yourself.py` | 25/25 |
 | Phase checkpoints | 8/8 |
 
 ---

@@ -35,7 +35,7 @@ Structural completeness — every row is **27/27**:
 | `starter/conftest.py` (grading loop) | 27/27 |
 | `debug_lab/` + SYMPTOMS + ANSWERS | 27/27 |
 | Solution discloses it is an in-process model | 27/27 |
-| `00_W3_BEGINNER_PLAYGROUND.md` + `00_try_it_yourself.py` | 27/27 |
+| `00_FOUNDATIONS_PLAYGROUND.md` + `00_try_it_yourself.py` | 27/27 |
 
 Plus 6 phase checkpoints (206–235 lines each) covering Modules 00–26 with no gaps.
 

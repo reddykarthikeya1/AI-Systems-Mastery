@@ -1,6 +1,6 @@
 # Module 18: System Design Case Study: Video Ingestion & Streaming (YouTube/Netflix)
 
-> **Brand new to this topic?** Start with [`00_W3_BEGINNER_PLAYGROUND.md`](00_W3_BEGINNER_PLAYGROUND.md) - the same ideas in
+> **Brand new to this topic?** Start with [`00_FOUNDATIONS_PLAYGROUND.md`](00_FOUNDATIONS_PLAYGROUND.md) - the same ideas in
 > plain language, with runnable standard-library code you can execute right now.
 > No Docker, no server, no `pip install`.
 

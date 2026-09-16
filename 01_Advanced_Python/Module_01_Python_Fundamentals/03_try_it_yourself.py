@@ -1,4 +1,4 @@
-"""Module 01: W3-Style Interactive Fundamentals Playground.
+"""Module 01: Interactive Foundations Interactive Fundamentals Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

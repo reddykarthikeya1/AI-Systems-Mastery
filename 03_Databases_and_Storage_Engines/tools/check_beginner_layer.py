@@ -21,7 +21,7 @@ import subprocess
 import sys
 
 COURSE = pathlib.Path(__file__).resolve().parent.parent
-MD_NAME = "00_W3_BEGINNER_PLAYGROUND.md"
+MD_NAME = "00_FOUNDATIONS_PLAYGROUND.md"
 PY_NAME = "00_try_it_yourself.py"
 
 STDLIB = set(sys.stdlib_module_names)

@@ -10,7 +10,7 @@ This guide is designed for absolute zero-knowledge beginners to spin up the enti
 
 ## Before anything else: the playground in every module
 
-Every module opens with a file called **`00_W3_BEGINNER_PLAYGROUND.md`**. It is
+Every module opens with a file called **`00_FOUNDATIONS_PLAYGROUND.md`**. It is
 the gentlest thing in the course and it is deliberately first.
 
 Each one gives you an everyday analogy for the module's core idea, then a page of

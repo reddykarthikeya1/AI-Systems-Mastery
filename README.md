@@ -1,10 +1,15 @@
+<p align="center">
+  <img src="logo.svg" width="100" height="100" alt="AI & Systems Academy Logo" />
+</p>
+
 # AI Systems Mastery: The Principal Architect & Engineering Academy
 
 [![Curriculum Tracks](https://img.shields.io/badge/Curriculum-12%20Specializations-0056D2.svg)](#detailed-curriculum-matrix)
 [![Interactive Lessons](https://img.shields.io/badge/Interactive%20Lessons-1%2C296%20Total-blue.svg)](#detailed-curriculum-matrix)
+[![Live Code Runner](https://img.shields.io/badge/Live%20Python%20Runner-Side--by--Side-10B981.svg)](#-live-python-runner--side-by-side-scratchpad)
 [![Tests Passing](https://img.shields.io/badge/Pytest%20Suite-1%2C609%20Passed%20(100%25)-emerald.svg)](#quality--integrity-guarantee)
 [![Linter Clean](https://img.shields.io/badge/Ruff%20Linter-0%20Warnings-success.svg)](#quality--integrity-guarantee)
-[![Launch Platform](https://img.shields.io/badge/Interactive%20Platform-1--Click%20Launcher-indigo.svg)](#-1-click-interactive-web-platform)
+[![Launch Platform](https://img.shields.io/badge/Interactive%20Platform-Zero--Setup%20Launcher-indigo.svg)](#-zero-setup-1-click-launch)
 [![License](https://img.shields.io/badge/Copyright-%C2%A9%20Karthikeya%20Reddy-black.svg)](#-copyright--author)
 
 > **A comprehensive, production-grade 12-course curriculum engineered to take software engineers and ML practitioners from first principles to the Principal AI Systems Architect / Staff ML Infrastructure tier.**
@@ -13,28 +18,37 @@
 
 ---
 
-## ⚡ 1-Click Interactive Web Platform
+## ⚡ Zero-Setup 1-Click Launch
 
-This repository includes a self-hosted, full-stack **Coursera-style learning platform** designed with an ultra-clean, distraction-free architectural aesthetic (inspired by Vercel, Linear, and Coursera).
+This repository includes a standalone, self-hosted **Coursera-style learning platform** designed with an ultra-clean, enterprise architectural aesthetic (inspired by Linear, Vercel, and Stripe). **Zero setup or configuration is required.**
 
-### How to Launch
+### Launching the Platform
 
-#### Windows (Instant 1-Click Launchers)
-* **Native Executable**: Double-click `Launch_Academy.exe` in the root folder.
-* **Batch Launcher**: Double-click `Launch_Academy.bat` in the root folder.
+* **Windows (Native Executable)**: Simply double-click **`Launch_Academy.exe`** in the repository root.
+* **Windows (Batch Launcher)**: Double-click **`Launch_Academy.bat`**.
+* **Linux / macOS**: Run **`./Launch_Academy.sh`** or **`python start_platform.py`**.
 
-#### Linux / macOS / Any Platform (Cross-Platform Python)
-```bash
-python start_platform.py
+```
++-----------------------------------------------------------------------------------------+
+|                                🚀 ZERO MANUAL SETUP                                     |
+|  * Automatically locates Python across PATH, AppData, and System directories            |
+|  * Auto-installs missing dependencies (FastAPI, Uvicorn) on first run                   |
+|  * Embedded Native Fallback Server guarantees instant offline operation                 |
+|  * Pre-compiled React frontend: No Node.js or npm required                              |
+|  * Automatically opens http://localhost:8000 in your default browser                    |
++-----------------------------------------------------------------------------------------+
 ```
 
-The launcher will automatically verify Python dependencies, start the FastAPI backend server on `http://127.0.0.1:8000`, and immediately open your default browser.
+---
 
-### Key Platform Capabilities
-* **Dynamic Auto-Discovery**: Any course directory matching the curriculum pattern (e.g. `13_New_Specialization`) or new markdown lessons are automatically detected and rendered with zero code modifications.
-* **Dual-Layer Local Progress Tracking**: Your study progress and completed lessons are synchronized seamlessly between browser `localStorage` and a local disk file (`.study_progress.json`). Anyone cloning or pulling this repo retains their own private, offline learning record.
-* **Interactive Live Pytest Runner**: Execute module test suites and quickstart benchmarks directly from the browser classroom tab with live stdout/stderr execution streaming and performance timers.
-* **Refined Reading Experience**: Full GitHub-flavored markdown support, LaTeX math rendering powered by KaTeX, clean syntax highlighting, and fluid dark/light modes.
+## 🖥️ Live Python Runner & Side-by-Side Scratchpad
+
+Learn interactively without ever leaving the lesson:
+* **Side-by-Side Split View**: Keep reading on the left while editing, testing, and running Python code on the right.
+* **1-Click "▶ Run" on Any Lesson Code Block**: Every code snippet in the curriculum features a **`▶ Run`** button. Clicking it automatically opens the side runner, loads the code snippet, and executes it in an isolated subprocess.
+* **Real-time Terminal Output**: Inspect stdout, stderr, execution duration, and exit status immediately.
+* **Built-in Architecture Presets**: Quickly load and run FLOPs/Roofline estimators, KV-Cache memory calculators, and Scaled Dot-Product attention simulations.
+* **Keyboard Shortcuts**: Hit `Ctrl + Enter` (or `Cmd + Enter`) anywhere in the code editor to execute instantly.
 
 ---
 
@@ -107,7 +121,7 @@ Every single module across all 12 courses adheres to a uniform pedagogical bluep
 
 | Artifact | Purpose & Depth |
 | :--- | :--- |
-| `00_W3_BEGINNER_PLAYGROUND.md` | Intuitive, beginner-accessible entry point with zero prerequisites |
+| `00_FOUNDATIONS_PLAYGROUND.md` | Intuitive, beginner-accessible entry point with zero prerequisites |
 | `01_README.md` | Systems theory, CPython/OS memory layout, complexity proofs, architecture diagrams |
 | `*_PROJECT_GUIDE.md` | Hands-on 3-tier build from zero to production implementation |
 | `*_SELF_ASSESSMENT_AND_CHALLENGES.md` | Staff-level interview scenario challenges, debugging drills, and diagnostics |
@@ -129,7 +143,7 @@ Every single module across all 12 courses adheres to a uniform pedagogical bluep
 
 ## 💻 Manual Development & Quick Start
 
-If you wish to run the backend or frontend in developer mode:
+If you wish to run the platform in developer mode:
 
 ```bash
 # 1. Clone the repository

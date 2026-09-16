@@ -6,7 +6,7 @@
 
 ## Pedagogical Architecture: From Intuition to Principal Retrieval Architect
 
-- **00_W3_BEGINNER_PLAYGROUND.md**: Zero-jargon visual analogies, shredded contract metaphors, and runnable Python snippets.
+- **00_FOUNDATIONS_PLAYGROUND.md**: Zero-jargon visual analogies, shredded contract metaphors, and runnable Python snippets.
 - **01_README.md**: Rigorous mathematical expositions, HNSW skip-graph routing proofs, and MaxSim token alignment formulations.
 - **02_PROJECT_GUIDE.md**: Production design blueprints and architectural invariants.
 - **03_SELF_ASSESSMENT_AND_CHALLENGES.md**: 5 Staff/Principal Retrieval interview scenarios with detailed solutions.

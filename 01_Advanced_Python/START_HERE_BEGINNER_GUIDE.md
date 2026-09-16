@@ -7,7 +7,7 @@ Welcome to the definitive, production-grade Python engineering curriculum. Wheth
 > [!TIP]
 > 🔰 **Complete Beginner with zero programming experience?**  
 > Don't worry about terminal commands, virtual environments, or Docker yet! Start with our spoonfed:  
-> **👉 [The W3Schools-Style Absolute Beginner Python Crash Course](W3_STYLE_BEGINNER_CRASH_COURSE.md)**  
+> **👉 [The Interactive Foundations Absolute Beginner Python Crash Course](FAST_TRACK_FOUNDATIONS_CRASH_COURSE.md)**  
 > It breaks down variables, math, if/else, loops, and lists with 25 interactive micro-drills and zero technical jargon!
 
 ---

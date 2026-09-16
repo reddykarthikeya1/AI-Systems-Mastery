@@ -30,6 +30,16 @@ export async function runTestCommand(targetPath: string, commandType: 'pytest' |
   return res.json();
 }
 
+export async function runInteractiveCode(code: string, timeoutSec: number = 15): Promise<TestResult> {
+  const res = await fetch(`${API_BASE}/run-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, timeout_sec: timeoutSec }),
+  });
+  if (!res.ok) throw new Error('Code execution failed to dispatch');
+  return res.json();
+}
+
 export async function fetchProgress(): Promise<ProgressPayload> {
   try {
     const res = await fetch(`${API_BASE}/progress`);

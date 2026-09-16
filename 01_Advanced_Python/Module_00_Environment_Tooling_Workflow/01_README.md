@@ -15,7 +15,7 @@ Follow this exact sequence to achieve complete mastery of Module 00:
 | Step | File to Open | What You Will Do |
 | :---: | :--- | :--- |
 | **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_W3_BEGINNER_PLAYGROUND.md](02_W3_BEGINNER_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
 | **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
 | **4** | **[04_BEGINNER_ZERO_TO_ONE.md](04_BEGINNER_ZERO_TO_ONE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
 | **5** | **[05_setup_and_verify.ps1](05_setup_and_verify.ps1)** | Run verification and environment bootstrap script. |

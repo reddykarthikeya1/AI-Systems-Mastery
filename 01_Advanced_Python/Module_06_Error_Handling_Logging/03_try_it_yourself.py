@@ -1,4 +1,4 @@
-"""Module 06: W3-Style Interactive Error Handling Playground.
+"""Module 06: Interactive Foundations Interactive Error Handling Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

@@ -28,9 +28,11 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onNavigateHome}
           className="flex items-center gap-3 cursor-pointer select-none group"
         >
-          <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 transition-colors">
-            <BookOpen className="w-4 h-4" />
-          </div>
+          <img 
+            src="/logo.svg" 
+            alt="AI Systems Mastery" 
+            className="w-8 h-8 rounded-lg shadow-sm group-hover:scale-105 transition-transform" 
+          />
           <div>
             <div className="flex items-center gap-2">
               <span className="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-50">

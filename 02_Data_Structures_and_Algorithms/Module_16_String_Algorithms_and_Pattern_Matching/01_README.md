@@ -1,7 +1,7 @@
 # Module 16: String Algorithms and Pattern Matching
 
 > **Brand new to this topic?** Start with
-> [`02_W3_BEGINNER_PLAYGROUND.md`](02_W3_BEGINNER_PLAYGROUND.md) - the same ideas
+> [`02_FOUNDATIONS_PLAYGROUND.md`](02_FOUNDATIONS_PLAYGROUND.md) - the same ideas
 > in plain language with runnable code.
 
 Every algorithm in this module beats the same baseline: the naive scan, which
@@ -20,7 +20,7 @@ noticing something the naive scan throws away.
 
 | Step | File | What you do |
 | :---: | :--- | :--- |
-| 1 | [`02_W3_BEGINNER_PLAYGROUND.md`](02_W3_BEGINNER_PLAYGROUND.md) | Plain-language version, runnable |
+| 1 | [`02_FOUNDATIONS_PLAYGROUND.md`](02_FOUNDATIONS_PLAYGROUND.md) | Plain-language version, runnable |
 | 2 | This README | The mechanisms and when each applies |
 | 3 | [`03_try_it_yourself.py`](03_try_it_yourself.py) | Watch the prefix table being built |
 | 4 | [`starter/`](starter) | Implement the engine yourself |

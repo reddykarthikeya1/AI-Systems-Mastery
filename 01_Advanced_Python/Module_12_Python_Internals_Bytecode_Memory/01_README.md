@@ -12,7 +12,7 @@ True senior Python mastery requires understanding the engine underneath: **sourc
 | Step | File to Open | What You Will Do |
 | :---: | :--- | :--- |
 | **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_W3_BEGINNER_PLAYGROUND.md](02_W3_BEGINNER_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
 | **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
 | **4** | **[04_BEGINNER_TO_INTERNALS_GUIDE.md](04_BEGINNER_TO_INTERNALS_GUIDE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
 | **5** | **[05_interactive_internals.ipynb](05_interactive_internals.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |

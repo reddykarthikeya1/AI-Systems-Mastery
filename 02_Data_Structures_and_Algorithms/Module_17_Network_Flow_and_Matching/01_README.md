@@ -1,7 +1,7 @@
 # Module 17: Network Flow and Matching
 
 > **Brand new to this topic?** Start with
-> [`02_W3_BEGINNER_PLAYGROUND.md`](02_W3_BEGINNER_PLAYGROUND.md) - the same ideas
+> [`02_FOUNDATIONS_PLAYGROUND.md`](02_FOUNDATIONS_PLAYGROUND.md) - the same ideas
 > in plain language with runnable code.
 
 Max-flow is the algorithm most people skip and then meet in a Staff-level
@@ -20,7 +20,7 @@ disguise.
 
 | Step | File | What you do |
 | :---: | :--- | :--- |
-| 1 | [`02_W3_BEGINNER_PLAYGROUND.md`](02_W3_BEGINNER_PLAYGROUND.md) | Plain-language version, runnable |
+| 1 | [`02_FOUNDATIONS_PLAYGROUND.md`](02_FOUNDATIONS_PLAYGROUND.md) | Plain-language version, runnable |
 | 2 | This README | Residual graphs, the two algorithms, the theorem |
 | 3 | [`03_try_it_yourself.py`](03_try_it_yourself.py) | Watch augmenting paths being found |
 | 4 | [`starter/`](starter) | Implement the engine yourself |

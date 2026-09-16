@@ -90,22 +90,39 @@
   border-left-color: #2563EB;
 }
 .markdown-body code:not(pre code) {
-  background-color: rgba(161, 161, 170, 0.12);
+  background-color: rgba(228, 228, 231, 0.7);
+  color: #09090b;
+  border: 1px solid rgba(212, 212, 216, 0.9);
   padding: 0.15rem 0.35rem;
   border-radius: 0.25rem;
   font-size: 0.85em;
-  font-weight: 500;
+  font-weight: 600;
 }
 .dark .markdown-body code:not(pre code) {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(39, 39, 42, 0.8);
+  color: #f4f4f5;
+  border: 1px solid rgba(63, 63, 70, 0.6);
 }
 .markdown-body pre {
   margin: 1.25rem 0;
   border-radius: 0.5rem;
   background-color: #0d1117;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1rem;
+  color: #e6edf3 !important;
+  border: 1px solid #30363d;
+  padding: 1rem 1.25rem;
   overflow-x: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.markdown-body pre * {
+  color: #e6edf3;
+}
+.markdown-body pre code {
+  color: #e6edf3 !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 .markdown-body table {
   width: 100%;

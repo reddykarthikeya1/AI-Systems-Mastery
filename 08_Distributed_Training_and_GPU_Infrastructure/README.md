@@ -7,7 +7,7 @@
 ## Pedagogical Architecture: From Intuition to Principal AI Infra Architect
 
 This course is engineered to provide complete end-to-end mastery without gaps:
-- **00_W3_BEGINNER_PLAYGROUND.md**: Ultra-intuitive, zero-jargon visual explanations, mental models, analogies, and hands-on Python/NumPy runnable snippets.
+- **00_FOUNDATIONS_PLAYGROUND.md**: Ultra-intuitive, zero-jargon visual explanations, mental models, analogies, and hands-on Python/NumPy runnable snippets.
 - **01_README.md**: Rigorous mathematical derivations, network communication volume modeling, hardware topology schematics, and production-grade system designs.
 - **02_PROJECT_GUIDE.md**: Architecture blueprints, invariants, and implementation constraints for the module's production codebase.
 - **03_SELF_ASSESSMENT_AND_CHALLENGES.md**: 5 high-stakes Staff/Principal AI Infrastructure interview scenarios with complete diagnostic steps and mathematical derivations.

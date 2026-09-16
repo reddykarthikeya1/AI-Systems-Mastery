@@ -1,4 +1,4 @@
-"""Module 00: W3-Style Interactive Terminal Playground.
+"""Module 00: Interactive Foundations Interactive Terminal Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py
@@ -31,7 +31,7 @@ def main():
     print(f"Hello, {name}! Welcome to the Advanced Python Masterclass.")
     print("You just executed your first interactive Python program!")
     print()
-    print("Next step: Open Module_01_Python_Fundamentals/W3_BEGINNER_PLAYGROUND.md")
+    print("Next step: Open Module_01_Python_Fundamentals/FOUNDATIONS_PLAYGROUND.md")
     print("=" * 60)
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Module 02: W3Schools-Style Interactive CLI Sandbox.
+"""Module 02: Interactive Foundations Interactive CLI Sandbox.
 
 Run this script directly in your terminal to see algorithms visualised live:
     python 03_try_it_yourself.py
@@ -98,7 +98,7 @@ def demo_prefix_sum():
 
 
 def main():
-    print("\n=== Welcome to the W3Schools-Style DSA Interactive Sandbox! ===")
+    print("\n=== Welcome to the Interactive Foundations DSA Interactive Sandbox! ===")
     demo_two_pointers()
     demo_sliding_window()
     demo_prefix_sum()

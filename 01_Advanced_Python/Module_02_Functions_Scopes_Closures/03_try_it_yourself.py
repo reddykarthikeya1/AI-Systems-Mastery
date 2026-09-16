@@ -1,4 +1,4 @@
-"""Module 02: W3-Style Interactive Functions Playground.
+"""Module 02: Interactive Foundations Interactive Functions Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

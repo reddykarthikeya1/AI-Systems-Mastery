@@ -103,7 +103,7 @@ If your kernel has $I < I_{\text{ridge}}$, it is **Memory-Bound**. Optimizing AL
 ---
 
 ## 5. Module Study Progression
-1. **Beginner Playground**: Read [00_W3_BEGINNER_PLAYGROUND.md](00_W3_BEGINNER_PLAYGROUND.md) for intuitive analogies.
+1. **Beginner Playground**: Read [00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md) for intuitive analogies.
 2. **Architecture Theory**: Study this [01_README.md](01_README.md).
 3. **Hands-on Project**: Follow [02_PROJECT_GUIDE.md](02_PROJECT_GUIDE.md).
 4. **Staff Interview Challenges**: Test yourself in [03_SELF_ASSESSMENT_AND_CHALLENGES.md](03_SELF_ASSESSMENT_AND_CHALLENGES.md).

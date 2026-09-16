@@ -2,7 +2,7 @@
 
     python 00_try_it_yourself.py
 
-Standard library only. Every block here also appears in 00_W3_BEGINNER_PLAYGROUND.md;
+Standard library only. Every block here also appears in 00_FOUNDATIONS_PLAYGROUND.md;
 both files are generated from one source, so they cannot drift apart.
 
 Read the printed output alongside the markdown page. The `assert` lines are the

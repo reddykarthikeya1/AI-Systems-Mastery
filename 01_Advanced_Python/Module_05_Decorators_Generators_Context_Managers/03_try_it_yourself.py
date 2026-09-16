@@ -1,4 +1,4 @@
-"""Module 05: W3-Style Interactive Decorators & Generators Playground.
+"""Module 05: Interactive Foundations Interactive Decorators & Generators Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

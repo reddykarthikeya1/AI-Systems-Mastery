@@ -12,7 +12,7 @@ When data scales past millions of rows, naive Pandas workflows crash with Out-Of
 | Step | File to Open | What You Will Do |
 | :---: | :--- | :--- |
 | **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_W3_BEGINNER_PLAYGROUND.md](02_W3_BEGINNER_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
 | **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
 | **4** | **[04_interactive_polars_and_duckdb.ipynb](04_interactive_polars_and_duckdb.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
 | **5** | **[05_polars_lazy_frames_demo.py](05_polars_lazy_frames_demo.py)** | Run in terminal (`python 05_polars_lazy_frames_demo.py`) to explore Polars Lazy Frames code patterns. |

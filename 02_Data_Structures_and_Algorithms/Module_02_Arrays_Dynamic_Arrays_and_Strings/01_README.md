@@ -637,7 +637,7 @@ def rotate_matrix(matrix: list[list[int]]) -> None:
 
 ## 6. Learning Path & Deliverables
 
-1. **Beginner Friendly Playground**: Read [02_W3_BEGINNER_PLAYGROUND.md](02_W3_BEGINNER_PLAYGROUND.md) for ultra-gentle intuitions.\n2. **Interactive CLI Playground**: Run [03_try_it_yourself.py](03_try_it_yourself.py) in your terminal.\n3. **Interactive Notebook**: Open [00_interactive_arrays_dynamic_arrays_and_strings.ipynb](00_interactive_arrays_dynamic_arrays_and_strings.ipynb) for visual memory and algorithmic execution.
+1. **Beginner Friendly Playground**: Read [02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md) for ultra-gentle intuitions.\n2. **Interactive CLI Playground**: Run [03_try_it_yourself.py](03_try_it_yourself.py) in your terminal.\n3. **Interactive Notebook**: Open [00_interactive_arrays_dynamic_arrays_and_strings.ipynb](00_interactive_arrays_dynamic_arrays_and_strings.ipynb) for visual memory and algorithmic execution.
 3. **Executable Demos**: Run [05_two_pointers_and_sliding_window_demos.py](05_two_pointers_and_sliding_window_demos.py) and [06_prefix_sum_and_kadane_demos.py](06_prefix_sum_and_kadane_demos.py).
 4. **Build Reference Project**: Read the [07_PROJECT_GUIDE.md](07_PROJECT_GUIDE.md) and implement `dynamic_array_engine.py`.
 5. **Self-Assessment**: Test your mastery with [08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md).

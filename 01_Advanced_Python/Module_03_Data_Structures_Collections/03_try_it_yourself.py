@@ -1,4 +1,4 @@
-"""Module 03: W3-Style Interactive Collections Playground.
+"""Module 03: Interactive Foundations Interactive Collections Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

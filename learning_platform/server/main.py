@@ -79,6 +79,11 @@ class RunTestRequest(BaseModel):
     command_type: str = "pytest"  # 'pytest' or 'python'
 
 
+class RunCodeRequest(BaseModel):
+    code: str
+    timeout_sec: int = 15
+
+
 class ProgressPayload(BaseModel):
     completed_lessons: List[str] = []
     completed_modules: List[str] = []
@@ -193,7 +198,7 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
                 label = "Theoretical Foundations & Architecture"
                 ltype = "theory"
             elif "PLAYGROUND" in fname_upper or "BEGINNER" in fname_upper or "ZERO_TO_ONE" in fname_upper:
-                label = "W3 Beginner Playground"
+                label = "Interactive Foundations Playground"
                 ltype = "playground"
             elif "PROJECT" in fname_upper or "GUIDE" in fname_upper:
                 label = "Guided Hands-on Project"
@@ -322,6 +327,44 @@ def run_test_command(req: RunTestRequest):
             "stdout": "",
             "stderr": "Execution timed out after 60 seconds.",
             "duration_sec": 60.0,
+            "status": "timeout",
+        }
+    except Exception as exc:
+        return {
+            "exit_code": -1,
+            "stdout": "",
+            "stderr": str(exc),
+            "duration_sec": 0.0,
+            "status": "error",
+        }
+
+
+@app.post("/api/run-code")
+def run_interactive_code(req: RunCodeRequest):
+    """Executes arbitrary Python code snippet in an isolated subprocess and returns outputs."""
+    start_time = time.perf_counter()
+    try:
+        proc = subprocess.run(
+            [sys.executable, "-c", req.code],
+            cwd=str(BASE_DIR),
+            capture_output=True,
+            text=True,
+            timeout=req.timeout_sec,
+        )
+        duration = time.perf_counter() - start_time
+        return {
+            "exit_code": proc.returncode,
+            "stdout": proc.stdout,
+            "stderr": proc.stderr,
+            "duration_sec": round(duration, 3),
+            "status": "passed" if proc.returncode == 0 else "failed",
+        }
+    except subprocess.TimeoutExpired:
+        return {
+            "exit_code": -1,
+            "stdout": "",
+            "stderr": f"Execution timed out after {req.timeout_sec} seconds.",
+            "duration_sec": float(req.timeout_sec),
             "status": "timeout",
         }
     except Exception as exc:

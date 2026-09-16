@@ -1,4 +1,4 @@
-"""Module 07: W3-Style Interactive File Storage Playground.
+"""Module 07: Interactive Foundations Interactive File Storage Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

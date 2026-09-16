@@ -106,6 +106,7 @@ export const App: React.FC = () => {
             currentLesson={currentLesson}
             allLessons={currentModule.lessons}
             isCompleted={isLessonCompleted(currentLesson.id)}
+            completedLessons={progress.completed_lessons}
             onToggleComplete={() => toggleLesson(currentLesson.id)}
             onBackToSyllabus={() => {
               setCurrentModule(null);

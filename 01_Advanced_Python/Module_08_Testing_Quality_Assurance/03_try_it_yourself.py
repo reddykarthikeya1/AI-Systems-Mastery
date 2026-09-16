@@ -1,4 +1,4 @@
-"""Module 08: W3-Style Interactive Testing Playground.
+"""Module 08: Interactive Foundations Interactive Testing Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py

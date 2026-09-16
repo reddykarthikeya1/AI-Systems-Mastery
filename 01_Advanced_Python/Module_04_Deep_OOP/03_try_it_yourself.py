@@ -1,4 +1,4 @@
-"""Module 04: W3-Style Interactive OOP Playground.
+"""Module 04: Interactive Foundations Interactive OOP Playground.
 
 Run this script directly in your terminal:
     python try_it_yourself.py
