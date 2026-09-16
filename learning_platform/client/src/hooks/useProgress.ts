@@ -17,6 +17,10 @@ export function useProgress() {
       completed_modules: [],
       last_updated: Date.now(),
       theme: 'dark',
+      quiz_scores: {},
+      bookmarks: [],
+      notes: {},
+      study_streak_days: 1,
     };
   });
 
@@ -57,11 +61,45 @@ export function useProgress() {
     });
   };
 
+  const saveQuizScore = (lessonId: string, score: number, total: number, passed: boolean) => {
+    updateProgress((prev) => {
+      const quiz_scores = { ...(prev.quiz_scores || {}) };
+      quiz_scores[lessonId] = { score, total, passed } as any;
+      const completed_lessons = passed && !prev.completed_lessons.includes(lessonId)
+        ? [...prev.completed_lessons, lessonId]
+        : prev.completed_lessons;
+      return { ...prev, quiz_scores, completed_lessons };
+    });
+  };
+
+  const toggleBookmark = (lessonId: string) => {
+    updateProgress((prev) => {
+      const currentBookmarks = prev.bookmarks || [];
+      const exists = currentBookmarks.includes(lessonId);
+      const bookmarks = exists
+        ? currentBookmarks.filter((id) => id !== lessonId)
+        : [...currentBookmarks, lessonId];
+      return { ...prev, bookmarks };
+    });
+  };
+
+  const saveNote = (lessonId: string, text: string) => {
+    updateProgress((prev) => {
+      const notes = { ...(prev.notes || {}) };
+      notes[lessonId] = text;
+      return { ...prev, notes };
+    });
+  };
+
   return {
     progress,
     toggleLesson,
     toggleTheme,
     updateProgress,
+    saveQuizScore,
+    toggleBookmark,
+    saveNote,
     isLessonCompleted: (id: string) => progress.completed_lessons.includes(id),
+    isBookmarked: (id: string) => Boolean(progress.bookmarks?.includes(id)),
   };
 }

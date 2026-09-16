@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Moon, Sun, Search, Award, CheckCircle } from 'lucide-react';
+import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 
 interface HeaderProps {
@@ -8,6 +8,8 @@ interface HeaderProps {
   onToggleTheme: () => void;
   onOpenSearch: () => void;
   onNavigateHome: () => void;
+  onOpenStats?: () => void;
+  onOpenBookmarks?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,9 +18,13 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleTheme,
   onOpenSearch,
   onNavigateHome,
+  onOpenStats,
+  onOpenBookmarks,
 }) => {
   const isDark = progress.theme === 'dark';
   const totalCompleted = progress.completed_lessons.length;
+  const streakDays = progress.study_streak_days || 1;
+  const bookmarkCount = progress.bookmarks?.length || 0;
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md transition-colors">
@@ -26,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo & Brand */}
         <div 
           onClick={onNavigateHome}
-          className="flex items-center gap-3 cursor-pointer select-none group"
+          className="flex items-center gap-3 cursor-pointer select-none group shrink-0"
         >
           <img 
             src="/logo.svg" 
@@ -49,20 +55,46 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Global Search & Action Buttons */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Spotlight Search Trigger */}
           <button
             onClick={onOpenSearch}
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-zinc-500 bg-zinc-100/80 dark:bg-zinc-900/80 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 transition-colors"
+            title="Search curriculum (Ctrl + K)"
           >
             <Search className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline font-normal">Search curriculum...</span>
-            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded">
-              ⌘K
+            <span className="hidden md:inline font-normal text-zinc-400">Search curriculum...</span>
+            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-xs">
+              Ctrl K
             </kbd>
           </button>
 
-          {/* Progress Pill */}
-          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-mono">
+          {/* Study Streak Pill */}
+          {onOpenStats && (
+            <button
+              onClick={onOpenStats}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-xs font-mono transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/40"
+              title="Daily Study Streak & Analytics"
+            >
+              <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse" />
+              <span className="font-semibold">{streakDays}d Streak</span>
+            </button>
+          )}
+
+          {/* Bookmarks Pill */}
+          {onOpenBookmarks && bookmarkCount > 0 && (
+            <button
+              onClick={onOpenBookmarks}
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 text-xs font-mono transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/40"
+              title="View Bookmarked Lessons"
+            >
+              <Bookmark className="w-3.5 h-3.5 fill-blue-500 text-blue-500" />
+              <span>{bookmarkCount} Saved</span>
+            </button>
+          )}
+
+          {/* Completed Lessons Pill */}
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-mono">
             <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
             <span>{totalCompleted} Done</span>
           </div>

@@ -179,8 +179,9 @@ def run_fallback_server(port: int = 8000) -> None:
                         "file_path": f.relative_to(ROOT_DIR).as_posix(),
                         "type": "code",
                     })
-            has_sol = any("solution" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
-            has_star = any("starter" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
+            has_sol = (mod_dir / "project_solution").is_dir() or any("solution" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
+            has_star = (mod_dir / "starter").is_dir() or any("starter" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
+            has_debug = (mod_dir / "debug_lab").is_dir()
             result.append({
                 "id": mod_dir.name,
                 "module_num": mod_num,
@@ -189,6 +190,7 @@ def run_fallback_server(port: int = 8000) -> None:
                 "lessons": lessons,
                 "has_solution": has_sol,
                 "has_starter": has_star,
+                "has_debug_lab": has_debug,
             })
         return result
 
@@ -249,6 +251,138 @@ def run_fallback_server(port: int = 8000) -> None:
             elif parsed.path == "/api/progress":
                 self.send_json(get_progress())
                 return
+            elif parsed.path == "/api/project-files":
+                mod_path = query.get("module_path", [None])[0]
+                if not mod_path:
+                    self.send_error(400, "Missing module_path")
+                    return
+                safe_mod = (ROOT_DIR / mod_path).resolve()
+                if not str(safe_mod).startswith(str(ROOT_DIR)) or not safe_mod.is_dir():
+                    self.send_error(404, "Module not found")
+                    return
+
+                starter_dir = safe_mod / "starter"
+                solution_dir = safe_mod / "project_solution"
+                user_ws = ROOT_DIR / ".user_workspaces" / mod_path
+
+                file_dict = {}
+                if starter_dir.is_dir():
+                    for f in starter_dir.rglob("*.py"):
+                        if f.is_file() and not f.name.startswith("."):
+                            rel = f.relative_to(starter_dir).as_posix()
+                            file_dict[rel] = {"filename": rel, "starter": f.read_text(encoding="utf-8", errors="replace"), "solution": None, "user": None}
+
+                if solution_dir.is_dir():
+                    for f in solution_dir.rglob("*.py"):
+                        if f.is_file() and not f.name.startswith("."):
+                            rel = f.relative_to(solution_dir).as_posix()
+                            if rel in file_dict:
+                                file_dict[rel]["solution"] = f.read_text(encoding="utf-8", errors="replace")
+                            else:
+                                file_dict[rel] = {"filename": rel, "starter": "", "solution": f.read_text(encoding="utf-8", errors="replace"), "user": None}
+
+                if user_ws.is_dir():
+                    for f in user_ws.rglob("*.py"):
+                        if f.is_file() and not f.name.startswith("."):
+                            rel = f.relative_to(user_ws).as_posix()
+                            if rel in file_dict:
+                                file_dict[rel]["user"] = f.read_text(encoding="utf-8", errors="replace")
+
+                files = []
+                for fname, d in file_dict.items():
+                    content = d["user"] if d["user"] is not None else d["starter"]
+                    files.append({
+                        "filename": fname,
+                        "content": content,
+                        "starter_content": d["starter"],
+                        "solution_content": d["solution"],
+                        "is_modified": d["user"] is not None,
+                    })
+
+                self.send_json({
+                    "has_project": bool(file_dict),
+                    "module_path": mod_path,
+                    "files": files,
+                })
+                return
+            elif parsed.path == "/api/debug-files":
+                mod_path = query.get("module_path", [None])[0]
+                if not mod_path:
+                    self.send_error(400, "Missing module_path")
+                    return
+                safe_mod = (ROOT_DIR / mod_path).resolve()
+                if not str(safe_mod).startswith(str(ROOT_DIR)) or not safe_mod.is_dir():
+                    self.send_error(404, "Module not found")
+                    return
+
+                debug_dir = safe_mod / "debug_lab"
+                if not debug_dir.is_dir():
+                    self.send_json({"has_debug_lab": False, "files": []})
+                    return
+
+                files = []
+                symptoms = ""
+                for f in sorted(debug_dir.iterdir()):
+                    if not f.is_file() or f.name.startswith(".") or f.name == "__pycache__":
+                        continue
+                    txt = f.read_text(encoding="utf-8", errors="replace")
+                    if f.name.upper() == "SYMPTOMS.MD":
+                        symptoms = txt
+                    files.append({"filename": f.name, "content": txt})
+
+                self.send_json({
+                    "has_debug_lab": True,
+                    "module_path": mod_path,
+                    "symptoms": symptoms,
+                    "files": files,
+                })
+                return
+            elif parsed.path == "/api/search":
+                q = query.get("q", [""])[0].lower().strip()
+                if len(q) < 2:
+                    self.send_json([])
+                    return
+                results = []
+                courses = get_courses()
+                for c in courses:
+                    if q in c["title"].lower() or q in c["category"].lower():
+                        results.append({
+                            "type": "course",
+                            "id": c["id"],
+                            "course_id": c["id"],
+                            "title": c["title"],
+                            "subtitle": f"{c['category']} • {c['module_count']} Modules",
+                            "path": c["folder_name"],
+                        })
+                    mods = get_modules(c["folder_name"])
+                    if mods:
+                        for m in mods:
+                            if q in m["title"].lower():
+                                results.append({
+                                    "type": "module",
+                                    "id": m["id"],
+                                    "course_id": c["id"],
+                                    "course_title": c["title"],
+                                    "title": f"Module {m['module_num']:02d}: {m['title']}",
+                                    "subtitle": f"Course: {c['title']}",
+                                    "path": m["folder_path"],
+                                })
+                            for l in m["lessons"]:
+                                if q in l["title"].lower() or q in l["file_path"].lower():
+                                    results.append({
+                                        "type": "lesson",
+                                        "id": l["id"],
+                                        "course_id": c["id"],
+                                        "course_title": c["title"],
+                                        "module_id": m["id"],
+                                        "module_title": m["title"],
+                                        "title": l["title"],
+                                        "subtitle": f"{c['title']} • Module {m['module_num']:02d}",
+                                        "path": l["file_path"],
+                                        "lesson_type": l.get("type", "theory"),
+                                    })
+                self.send_json(results[:35])
+                return
 
             req_path = parsed.path.lstrip("/")
             local_target = DIST_DIR / req_path
@@ -268,6 +402,20 @@ def run_fallback_server(port: int = 8000) -> None:
             if parsed.path == "/api/progress":
                 res = save_progress(payload)
                 self.send_json(res)
+                return
+            elif parsed.path == "/api/save-project-file":
+                mod_path = payload.get("module_path", "")
+                fname = payload.get("filename", "")
+                content_str = payload.get("content", "")
+                safe_mod = (ROOT_DIR / mod_path).resolve()
+                if not str(safe_mod).startswith(str(ROOT_DIR)):
+                    self.send_error(403, "Access denied")
+                    return
+                target_dir = ROOT_DIR / ".user_workspaces" / mod_path
+                target_dir.mkdir(parents=True, exist_ok=True)
+                target_file = target_dir / Path(fname).name
+                target_file.write_text(content_str, encoding="utf-8")
+                self.send_json({"status": "saved", "path": str(target_file.relative_to(ROOT_DIR))})
                 return
             elif parsed.path == "/api/run-code":
                 code = payload.get("code", "")

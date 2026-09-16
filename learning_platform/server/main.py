@@ -60,6 +60,7 @@ class ModuleItem(BaseModel):
     lessons: List[LessonItem]
     has_solution: bool
     has_starter: bool
+    has_debug_lab: bool = False
     quickstart_script: Optional[str] = None
 
 
@@ -88,6 +89,12 @@ class RunCodeRequest(BaseModel):
     timeout_sec: int = 25
 
 
+class SaveFilePayload(BaseModel):
+    module_path: str
+    filename: str
+    content: str
+
+
 class ProgressPayload(BaseModel):
     completed_lessons: List[str] = []
     completed_modules: List[str] = []
@@ -95,6 +102,11 @@ class ProgressPayload(BaseModel):
     current_lesson: Optional[str] = None
     last_updated: float = 0.0
     theme: str = "dark"
+    quiz_scores: dict = {}
+    bookmarks: List[str] = []
+    notes: dict = {}
+    last_study_date: Optional[str] = None
+    study_streak_days: int = 1
 
 
 # -----------------------------------------------------------------------------
@@ -252,6 +264,7 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
             lessons=lessons,
             has_solution=(mod_dir / "project_solution").is_dir(),
             has_starter=(mod_dir / "starter").is_dir(),
+            has_debug_lab=(mod_dir / "debug_lab").is_dir(),
             quickstart_script=quickstart_rel,
         ))
 
@@ -445,6 +458,153 @@ def run_interactive_code(req: RunCodeRequest):
 
 
 
+# -----------------------------------------------------------------------------
+# In-Browser Project Studio & Debug Lab Endpoints
+# -----------------------------------------------------------------------------
+@app.get("/api/project-files")
+def get_project_files(module_path: str = Query(..., description="Module folder path")):
+    """Safely retrieves starter and reference solution files for the in-browser IDE."""
+    safe_mod = (BASE_DIR / module_path).resolve()
+    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    starter_dir = safe_mod / "starter"
+    solution_dir = safe_mod / "project_solution"
+    workspace_dir = BASE_DIR / ".user_workspaces" / module_path
+
+    files = []
+    if starter_dir.is_dir():
+        for f in sorted(starter_dir.iterdir()):
+            if not f.is_file() or f.name.startswith(".") or f.name == "__pycache__":
+                continue
+            user_version = workspace_dir / f.name
+            current_content = (
+                user_version.read_text(encoding="utf-8", errors="replace")
+                if user_version.is_file()
+                else f.read_text(encoding="utf-8", errors="replace")
+            )
+            starter_content = f.read_text(encoding="utf-8", errors="replace")
+            sol_file = solution_dir / f.name if solution_dir.is_dir() else None
+            sol_content = (
+                sol_file.read_text(encoding="utf-8", errors="replace")
+                if sol_file and sol_file.is_file()
+                else None
+            )
+            files.append({
+                "filename": f.name,
+                "content": current_content,
+                "starter_content": starter_content,
+                "solution_content": sol_content,
+                "is_modified": current_content != starter_content,
+                "read_only": False,
+            })
+
+    if solution_dir.is_dir():
+        for f in sorted(solution_dir.iterdir()):
+            if not f.is_file() or f.name.startswith(".") or f.name == "__pycache__":
+                continue
+            if any(existing["filename"] == f.name for existing in files):
+                continue
+            sol_content = f.read_text(encoding="utf-8", errors="replace")
+            files.append({
+                "filename": f.name,
+                "content": sol_content,
+                "starter_content": sol_content,
+                "solution_content": sol_content,
+                "is_modified": False,
+                "read_only": True,
+            })
+
+    return {"module_path": module_path, "files": files}
+
+
+@app.post("/api/save-project-file")
+def save_project_file(payload: SaveFilePayload):
+    """Saves student edits to the local project workspace."""
+    safe_mod = (BASE_DIR / payload.module_path).resolve()
+    if not str(safe_mod).startswith(str(BASE_DIR)):
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    target_dir = BASE_DIR / ".user_workspaces" / payload.module_path
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target_file = target_dir / Path(payload.filename).name
+    target_file.write_text(payload.content, encoding="utf-8")
+    return {"status": "saved", "path": str(target_file.relative_to(BASE_DIR))}
+
+
+@app.get("/api/debug-files")
+def get_debug_files(module_path: str = Query(..., description="Module folder path")):
+    """Safely retrieves debug lab broken code and symptoms."""
+    safe_mod = (BASE_DIR / module_path).resolve()
+    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    debug_dir = safe_mod / "debug_lab"
+    if not debug_dir.is_dir():
+        return {"has_debug_lab": False, "files": []}
+
+    files = []
+    symptoms = ""
+    for f in sorted(debug_dir.iterdir()):
+        if not f.is_file() or f.name.startswith(".") or f.name == "__pycache__":
+            continue
+        content_txt = f.read_text(encoding="utf-8", errors="replace")
+        if f.name.upper() == "SYMPTOMS.MD":
+            symptoms = content_txt
+        files.append({"filename": f.name, "content": content_txt})
+
+    return {"has_debug_lab": True, "module_path": module_path, "symptoms": symptoms, "files": files}
+
+
+@app.get("/api/search")
+def search_curriculum(q: str = Query(..., min_length=2)):
+    """Fast search index across all 12 courses, modules, and lessons for Ctrl+K palette."""
+    query = q.lower().strip()
+    results = []
+    courses = discover_courses()
+    for c in courses:
+        if query in c.title.lower() or query in c.category.lower():
+            results.append({
+                "type": "course",
+                "id": c.id,
+                "course_id": c.id,
+                "title": c.title,
+                "subtitle": f"{c.category} • {c.module_count} Modules",
+                "path": c.folder_name,
+            })
+        try:
+            mods = discover_course_modules(c.folder_name)
+            for m in mods:
+                if query in m.title.lower():
+                    results.append({
+                        "type": "module",
+                        "id": m.id,
+                        "course_id": c.id,
+                        "course_title": c.title,
+                        "title": f"Module {m.module_num:02d}: {m.title}",
+                        "subtitle": f"Course: {c.title}",
+                        "path": m.folder_path,
+                    })
+                for l in m.lessons:
+                    if query in l.title.lower() or query in l.file_path.lower():
+                        results.append({
+                            "type": "lesson",
+                            "id": l.id,
+                            "course_id": c.id,
+                            "course_title": c.title,
+                            "module_id": m.id,
+                            "module_title": m.title,
+                            "title": l.title,
+                            "subtitle": f"{c.title} • Module {m.module_num:02d}",
+                            "path": l.file_path,
+                            "lesson_type": l.type,
+                        })
+        except Exception:
+            continue
+
+    return results[:35]
+
+
 @app.get("/api/progress", response_model=ProgressPayload)
 def get_study_progress():
     """Loads persisted study progress from .study_progress.json."""
@@ -459,11 +619,29 @@ def get_study_progress():
 
 @app.post("/api/progress")
 def save_study_progress(payload: ProgressPayload):
-    """Saves study progress to .study_progress.json for permanent local persistence."""
+    """Saves study progress to .study_progress.json with study streak tracking."""
     try:
+        from datetime import date, timedelta
+        today_str = time.strftime("%Y-%m-%d")
+        if payload.last_study_date:
+            if payload.last_study_date != today_str:
+                try:
+                    last_d = date.fromisoformat(payload.last_study_date)
+                    today_d = date.fromisoformat(today_str)
+                    diff = (today_d - last_d).days
+                    if diff == 1:
+                        payload.study_streak_days += 1
+                    elif diff > 1:
+                        payload.study_streak_days = 1
+                except Exception:
+                    payload.study_streak_days = 1
+        else:
+            payload.study_streak_days = payload.study_streak_days or 1
+
+        payload.last_study_date = today_str
         payload.last_updated = time.time()
         PROGRESS_FILE.write_text(json.dumps(payload.model_dump(), indent=2), encoding="utf-8")
-        return {"status": "ok", "saved": True}
+        return {"status": "ok", "saved": True, "streak": payload.study_streak_days}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

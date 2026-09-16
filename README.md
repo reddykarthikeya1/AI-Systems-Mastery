@@ -6,7 +6,9 @@
 
 [![Curriculum Tracks](https://img.shields.io/badge/Curriculum-12%20Specializations-0056D2.svg)](#detailed-curriculum-matrix)
 [![Interactive Lessons](https://img.shields.io/badge/Interactive%20Lessons-1%2C296%20Total-blue.svg)](#detailed-curriculum-matrix)
-[![Live Code Runner](https://img.shields.io/badge/Live%20Python%20Runner-Side--by--Side-10B981.svg)](#-live-python-runner--side-by-side-scratchpad)
+[![Project Studio](https://img.shields.io/badge/In--Browser%20IDE-Project%20Studio-9333EA.svg)](#-in-browser-guided-project-studio)
+[![Interactive Quizzes](https://img.shields.io/badge/Graded%20Assessments-MCQ%20Engine-D97706.svg)](#-interactive-mcq-assessments)
+[![Live Code Runner](https://img.shields.io/badge/Live%20Runner-Python%20%7C%20PowerShell%20%7C%20Shell-10B981.svg)](#-page-aware-multi-runtime-live-runner--side-by-side-scratchpad)
 [![Tests Passing](https://img.shields.io/badge/Pytest%20Suite-1%2C609%20Passed%20(100%25)-emerald.svg)](#quality--integrity-guarantee)
 [![Linter Clean](https://img.shields.io/badge/Ruff%20Linter-0%20Warnings-success.svg)](#quality--integrity-guarantee)
 [![Launch Platform](https://img.shields.io/badge/Interactive%20Platform-Zero--Setup%20Launcher-indigo.svg)](#-zero-setup-1-click-launch)
@@ -41,6 +43,45 @@ This repository includes a standalone, self-hosted **Coursera-style learning pla
 
 ---
 
+## 🛠️ In-Browser Guided Project Studio
+
+Build complete systems without leaving your browser:
+* **Dual-Pane Engineering Workspace**: View the architectural specification and 3-tier milestone checklist on the left, with an interactive multi-file code editor on the right.
+* **Live File Tabs & State Persistence**: Navigate between starter source files (`app.py`, `models.py`, `test_*.py`). Student edits are automatically persisted to `.user_workspaces/`.
+* **Instant Pytest Test Harness**: Hit **`⚡ Run Automated Pytest Suite`** to execute tests against your workspace in real time, with pass/fail indicators, execution duration, and detailed stack traces.
+* **Reference Implementation Diff Peeker**: Inspect side-by-side diffs against the production reference solution whenever you need guidance.
+* **Milestone Checklists**: Check off Tier 1 (Foundations), Tier 2 (Robustness), and Tier 3 (Production Optimization) milestones as you make progress.
+
+---
+
+## 📝 Interactive MCQ Assessments (Coursera-Grade)
+
+Validate your deep systems intuition with interactive evaluations:
+* **Multiple-Choice Card Selector**: Intuitive, high-contrast cards with keyboard support.
+* **Instant Explanations & Systems Insights**: Detailed explanations covering memory layout, complexity, and hardware behavior for every question.
+* **Threshold Scoring & Gamification**: Complete assessments with a $\ge 75\%$ passing threshold, live percentage meters, and celebration confetti.
+* **Retake Capability**: Reset answers and retake assessments at any time.
+
+---
+
+## 🐛 Bug Hunter Forensic Triage Labs
+
+Step into the shoes of an on-call Principal Engineer:
+* **Planted Defect Scenarios**: Real-world bugs that exit 0 or produce plausible wrong answers (race conditions, memory leaks, off-by-one pointer arithmetic).
+* **Defect Symptoms & Diagnostics**: Read incident symptoms, triage reports, and error signatures.
+* **Interactive Patch Editor**: Fix the code directly in the browser and re-run until all assertions pass.
+
+---
+
+## ⌨️ Spotlight Command Palette & Power Tools
+
+* **Global Spotlight Search (`Ctrl + K` / `Cmd + K`)**: Instant search across all 12 courses, 175 modules, and 1,296 lessons with keyboard navigation.
+* **Sticky Table of Contents**: On-page heading outline (`H2` / `H3`) with 1-click smooth scrolling and estimated reading time (`⏱️ X min read`).
+* **Daily Study Streak & Analytics (`🔥 X Days`)**: Track your consecutive study days, completed lessons, hours invested, and tier breakdown.
+* **Personal Bookmarks & Notes**: Save lessons for rapid revision (`🔖`) and write persistent markdown study notes.
+
+---
+
 ## 🖥️ Page-Aware Multi-Runtime Live Runner & Side-by-Side Scratchpad
 
 Learn interactively without ever leaving the lesson:
@@ -59,9 +100,17 @@ Learn interactively without ever leaving the lesson:
 
 ---
 
-## 🧭 The Recommended 12-Course Learning Path
+## 🧭 Flexible, Self-Paced Learning Pathways
 
-Follow the courses in strict numerical order (`01_` through `12_`). The progression moves from software craftsmanship to low-level distributed storage, up through mathematical foundations, down to bare-metal GPU kernels, and out into cluster-scale distributed training, high-throughput inference engines, and autonomous cognitive systems.
+While the 12 courses and modules are organized systematically from foundations to advanced specializations, you do **not** need to follow them in strict numerical order (`00`, `01`, `02`...). 
+
+Every engineer arrives with different backgrounds and immediate goals:
+* **The Full-Stack & Systems Architecture Pathway**: Jump directly into **Course 01 (Advanced Python)**, **Course 03 (Databases & Storage Engines)**, and **Course 04 (System Design & Distributed Systems)**.
+* **The High-Performance AI Infrastructure Pathway**: Focus directly on **Course 07 (GPU Programming & AI Kernels)**, **Course 08 (Distributed Training & GPU Infra)**, and **Course 09 (Inference Systems & Serving Engines)**.
+* **The Cognitive Agents & LLM Systems Pathway**: Dive into **Course 10 (Advanced Retrieval & Context Engineering)**, **Course 11 (Autonomous Agents & Cognitive Architectures)**, and **Course 12 (LLM Evaluation Science & Guardrails)**.
+* **The Mathematical & Deep Learning Foundations Pathway**: Master **Course 05 (Mathematics for ML & AI)** and **Course 06 (Deep Learning & AI Research Foundations)**.
+
+Within each module, you are free to explore in any sequence: dive straight into hands-on implementation via the **In-Browser Project Studio**, validate your knowledge in **Interactive MCQ Assessments**, triage production anomalies in **Bug Hunter Labs**, or study core systems architecture.
 
 ```
 +---------------------------------------------------------------------------------------------------+

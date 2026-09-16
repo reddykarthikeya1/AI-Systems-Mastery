@@ -13,6 +13,7 @@ export interface ModuleItem {
   lessons: LessonItem[];
   has_solution: boolean;
   has_starter: boolean;
+  has_debug_lab?: boolean;
   quickstart_script?: string | null;
 }
 
@@ -36,6 +37,11 @@ export interface ProgressPayload {
   current_lesson?: string | null;
   last_updated: number;
   theme: 'dark' | 'light';
+  quiz_scores?: Record<string, number>;
+  bookmarks?: string[];
+  notes?: Record<string, string>;
+  last_study_date?: string;
+  study_streak_days?: number;
 }
 
 export type RunnerMode = 'python' | 'powershell' | 'shell';
