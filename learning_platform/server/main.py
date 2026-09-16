@@ -1,7 +1,7 @@
-"""Coursera-Style Learning Platform Backend API.
+"""AI & Systems Academy Interactive Learning Platform Backend API.
 
 Provides dynamic course auto-discovery, content streaming, live pytest/demo execution,
-and dual local progress persistence.
+LeetCode Arena testing sandbox, and dual local progress persistence.
 Copyright (c) Karthikeya Reddy. All rights reserved.
 """
 

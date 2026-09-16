@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AI & Systems Academy
+Comment=Interactive 12-Course AI and Systems Engineering Learning Platform
+Exec=bash -c 'cd "$(dirname "%k")" && ./Launch_Academy_Linux.sh'
+Icon=utilities-terminal
+Terminal=false
+Categories=Education;Development;ComputerScience;
+StartupNotify=true

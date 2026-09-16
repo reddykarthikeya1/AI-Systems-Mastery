@@ -37,7 +37,7 @@ Most DSA courses teach code in a vacuum without explaining memory layout, pointe
 
 ## Fast-Track Navigation
 - **[Pattern Recognition Guide](PATTERN_RECOGNITION_GUIDE.md)** — how to attack a problem you have never seen. Read this first.
-- [DSA Master Roadmap (NeetCode 150 & Striver A2Z)](ROADMAP_DSA_MASTER.md)
+- [DSA Master Interactive Roadmap](ROADMAP_DSA_MASTER.md)
 - [Master Syllabus](MASTER_SYLLABUS.md)
 - [Beginner Onboarding Guide](START_HERE_BEGINNER_GUIDE.md)
 - [Study Plans & Pacing](STUDY_PLANS_AND_PACING_GUIDE.md)

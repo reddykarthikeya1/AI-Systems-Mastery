@@ -1,6 +1,6 @@
 # Data Structures & Algorithms — Master Roadmap (0 to 100)
 
-Welcome to the definitive **Data Structures & Algorithms (DSA) Master Roadmap**. This curriculum combines the rigor of **NeetCode 150**, **Striver's A2Z DSA Sheet**, and **Blind 75** with systems-level engineering principles (CPU cache locality, memory allocators, and lock-free concurrency).
+Welcome to the definitive **Data Structures & Algorithms (DSA) Master Roadmap**. This curriculum combines comprehensive algorithmic rigor and pattern mastery with systems-level engineering principles (CPU cache locality, memory allocators, and lock-free concurrency).
 
 ---
 

@@ -1,6 +1,6 @@
 # Master Syllabus: Data Structures & Algorithms (0 to 100)
 
-> 17 Modules · 17 Production Projects · [Master LeetCode Roadmap (NeetCode 150 & Striver A2Z)](ROADMAP_DSA_MASTER.md)
+> 17 Modules · 17 Production Projects · [DSA Master Interactive Roadmap](ROADMAP_DSA_MASTER.md)
 
 ## Course Overview Matrix
 

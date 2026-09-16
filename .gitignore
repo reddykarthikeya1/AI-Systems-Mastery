@@ -82,3 +82,5 @@ desktop.ini
 # Working directories that are not part of the curriculum
 # ---------------------------------------------------------------------------
 scratch/
+.academy_app_profile/
+.user_workspaces/

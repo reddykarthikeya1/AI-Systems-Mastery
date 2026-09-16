@@ -1,22 +1,26 @@
 """Root Standalone Platform Launcher.
 
-Launches the Coursera-grade AI and Systems Academy web application locally with ZERO manual setup.
-Serves the production React client and FastAPI dynamic auto-discovery backend.
+Launches the AI and Systems Academy interactive learning platform locally with ZERO manual setup.
+Can run as a dedicated desktop application window or standard web browser interface.
+Serves the pre-compiled React client and FastAPI / fallback dynamic auto-discovery backend.
 Copyright (c) Karthikeya Reddy. All rights reserved.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
+import shutil
+import socket
 import subprocess
 import sys
 import threading
 import time
 import webbrowser
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 ROOT_DIR = Path(__file__).resolve().parent
 SERVER_DIR = ROOT_DIR / "learning_platform" / "server"
@@ -31,10 +35,11 @@ BANNER = r"""
    AI AND SYSTEMS ENGINEERING ACADEMY - BY KARTHIKEYA REDDY
    Ultra Gold Standard 12-Course Interactive Learning Platform
 ================================================================================
+  * Desktop Application Mode: Ready (Standalone native window)
   * Dynamic Auto-Discovery Engine: Ready
-  * Interactive Pytest and Demo Runner: Ready
+  * Interactive Pytest & LeetCode Arena: Ready
   * Dual Local Progress Persistence: Ready (.study_progress.json)
-  * Platform URL: http://localhost:8000
+  * Platform URL: http://127.0.0.1:{port}
 ================================================================================
 """
 
@@ -76,7 +81,7 @@ def ensure_dependencies() -> bool:
             return False
 
 
-def run_fallback_server(port: int = 8000) -> None:
+def run_fallback_server(port: int = 8000, server_holder: Optional[Dict[str, Any]] = None) -> None:
     """Zero-dependency fallback HTTP server using Python standard library.
     Ensures the platform operates even on completely offline machines or environments without pip.
     """
@@ -617,46 +622,207 @@ def run_fallback_server(port: int = 8000) -> None:
             pass
 
     httpd = HTTPServer(("127.0.0.1", port), FallbackHandler)
+    if server_holder is not None:
+        server_holder["httpd"] = httpd
     print(f"[*] Native Fallback Server active at http://127.0.0.1:{port} ...")
     try:
         httpd.serve_forever()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
+        pass
+    finally:
         print("\n[*] Academy Platform safely stopped. Happy studying!")
 
 
+def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.2)
+            return s.connect_ex((host, port)) == 0
+    except Exception:
+        return False
+
+
+def wait_for_server(port: int, host: str = "127.0.0.1", timeout: float = 6.0) -> bool:
+    start = time.time()
+    while time.time() - start < timeout:
+        if is_port_in_use(port, host):
+            return True
+        time.sleep(0.05)
+    return False
+
+
+def find_app_browser() -> Optional[str]:
+    """Scans the host OS for a Chromium-based browser capable of running in standalone --app mode."""
+    candidates: List[str] = []
+    if sys.platform == "win32":
+        for base in [
+            os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"),
+            os.environ.get("ProgramFiles", r"C:\Program Files"),
+            os.environ.get("LocalAppData", ""),
+        ]:
+            if not base:
+                continue
+            candidates.append(os.path.join(base, r"Microsoft\Edge\Application\msedge.exe"))
+            candidates.append(os.path.join(base, r"Google\Chrome\Application\chrome.exe"))
+            candidates.append(os.path.join(base, r"BraveSoftware\Brave-Browser\Application\brave.exe"))
+        for name in ["msedge", "chrome", "brave"]:
+            w = shutil.which(name)
+            if w:
+                candidates.append(w)
+    elif sys.platform == "darwin":
+        candidates.extend([
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+            "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+            "/Applications/Chromium.app/Contents/MacOS/Chromium",
+            os.path.expanduser("~/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),
+            os.path.expanduser("~/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"),
+            os.path.expanduser("~/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"),
+        ])
+        for name in ["google-chrome", "microsoft-edge", "brave-browser"]:
+            w = shutil.which(name)
+            if w:
+                candidates.append(w)
+    else:  # Linux
+        for name in [
+            "google-chrome",
+            "google-chrome-stable",
+            "chromium",
+            "chromium-browser",
+            "microsoft-edge",
+            "microsoft-edge-stable",
+            "brave-browser",
+            "brave",
+        ]:
+            w = shutil.which(name)
+            if w:
+                candidates.append(w)
+        candidates.extend([
+            "/usr/bin/google-chrome",
+            "/usr/bin/google-chrome-stable",
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser",
+            "/snap/bin/chromium",
+            "/usr/bin/microsoft-edge",
+            "/usr/bin/brave-browser",
+        ])
+
+    for c in candidates:
+        if c and os.path.exists(c):
+            return c
+    return None
+
+
+def launch_interface(
+    url: str,
+    port: int,
+    force_browser: bool = False,
+    headless: bool = False,
+) -> Optional[subprocess.Popen]:
+    """Launches the dedicated standalone desktop app window or falls back to the default web browser."""
+    if headless:
+        print("[*] Headless mode enabled: skipping GUI window launch.")
+        return None
+
+    if not wait_for_server(port):
+        print(f"[!] Notice: Server startup pending on port {port}. Attempting UI launch...")
+
+    if force_browser:
+        print(f"\n[+] Opening Academy Learning Portal in your default web browser ({url})...")
+        webbrowser.open(url)
+        return None
+
+    app_browser = find_app_browser()
+    if app_browser:
+        profile_dir = ROOT_DIR / ".academy_app_profile"
+        profile_dir.mkdir(exist_ok=True)
+        cmd = [
+            app_browser,
+            f"--app={url}",
+            f"--user-data-dir={str(profile_dir)}",
+            "--window-size=1440,920",
+            "--window-position=center",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--disable-features=TranslateUI",
+        ]
+        try:
+            proc = subprocess.Popen(cmd)
+            browser_name = Path(app_browser).stem.replace(".exe", "")
+            print(f"\n[+] Dedicated Desktop Application Window launched via {browser_name} (PID: {proc.pid}).")
+            print("[*] Running as standalone desktop application. Close window to exit.")
+            return proc
+        except Exception as exc:
+            print(f"[!] Failed to launch dedicated app window ({exc}). Falling back to browser...")
+
+    print(f"\n[+] Opening Academy Learning Portal in your default browser ({url})...")
+    webbrowser.open(url)
+    return None
+
+
 def main() -> None:
-    print(BANNER)
+    parser = argparse.ArgumentParser(description="AI & Systems Engineering Academy Platform Launcher")
+    parser.add_argument("--browser", action="store_true", help="Launch in default browser tab instead of standalone app window")
+    parser.add_argument("--headless", action="store_true", help="Run server without launching any GUI window or browser")
+    parser.add_argument("--port", type=int, default=8000, help="Port to bind server (default: 8000)")
+    args = parser.parse_args()
+
+    port = args.port
+    print(BANNER.format(port=port))
     ensure_client_built()
 
     has_uvicorn = ensure_dependencies()
+    url = f"http://127.0.0.1:{port}"
+    server_holder: Dict[str, Any] = {}
+    window_proc: Optional[subprocess.Popen] = None
 
-    def open_browser() -> None:
-        time.sleep(1.2)
-        print("\n[+] Opening Academy Learning Portal in your default browser...")
-        webbrowser.open("http://localhost:8000")
+    def start_ui_supervisor() -> None:
+        nonlocal window_proc
+        window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
+        if window_proc is not None:
+            window_proc.wait()
+            print("\n[*] Application window closed by user. Terminating server...")
+            if "uvicorn" in server_holder:
+                server_holder["uvicorn"].should_exit = True
+            if "httpd" in server_holder:
+                try:
+                    server_holder["httpd"].shutdown()
+                except Exception:
+                    pass
 
-    browser_thread = threading.Thread(target=open_browser, daemon=True)
-    browser_thread.start()
+    ui_thread = threading.Thread(target=start_ui_supervisor, daemon=True)
+    ui_thread.start()
 
-    if has_uvicorn:
-        sys.path.insert(0, str(SERVER_DIR))
-        import uvicorn
+    try:
+        if has_uvicorn:
+            sys.path.insert(0, str(SERVER_DIR))
+            import uvicorn
 
-        print("[*] Starting High-Performance FastAPI Server at http://127.0.0.1:8000 ...")
-        print("[*] Press Ctrl+C at any time to stop.\n")
+            print(f"[*] Starting High-Performance FastAPI Server at {url} ...")
+            print("[*] Press Ctrl+C or close the application window at any time to stop.\n")
 
-        try:
-            uvicorn.run(
-                "main:app",
+            from main import app as fastapi_app
+
+            config = uvicorn.Config(
+                fastapi_app,
                 host="127.0.0.1",
-                port=8000,
+                port=port,
                 log_level="info",
-                app_dir=str(SERVER_DIR),
             )
-        except KeyboardInterrupt:
-            print("\n[*] Academy Platform safely stopped. Happy studying!")
-    else:
-        run_fallback_server(port=8000)
+            server = uvicorn.Server(config)
+            server_holder["uvicorn"] = server
+            server.run()
+        else:
+            run_fallback_server(port=port, server_holder=server_holder)
+    except KeyboardInterrupt:
+        print("\n[*] Shutdown requested via Ctrl+C.")
+    finally:
+        if window_proc is not None and window_proc.poll() is None:
+            try:
+                window_proc.terminate()
+            except Exception:
+                pass
+        print("[*] Academy Platform safely stopped. Happy studying!")
 
 
 if __name__ == "__main__":

@@ -20,24 +20,37 @@
 
 ---
 
-## ⚡ Zero-Setup 1-Click Launch
+## ⚡ Zero-Setup 1-Click Launch (Standalone Desktop Application)
 
-This repository includes a standalone, self-hosted **Coursera-style learning platform** designed with an ultra-clean, enterprise architectural aesthetic (inspired by Linear, Vercel, and Stripe). **Zero setup or configuration is required.**
+This repository includes a standalone, self-hosted **Interactive Learning Platform** designed with an ultra-clean, enterprise architectural aesthetic (inspired by Linear, Vercel, and Stripe). **Zero setup or configuration is required.**
 
-### Launching the Platform
+When launched, the platform opens directly as a **dedicated desktop application window** (resembling a native desktop application or game window, without browser URL bars, navigation buttons, or browser tabs). When you close the window, the platform cleanly stops.
 
-* **Windows (Native Executable)**: Simply double-click **`Launch_Academy.exe`** in the repository root.
-* **Windows (Batch Launcher)**: Double-click **`Launch_Academy.bat`**.
-* **Linux / macOS**: Run **`./Launch_Academy.sh`** or **`python start_platform.py`**.
+### Launching the Platform by Operating System
+
+* **Windows**:
+  * **Native Standalone Executable**: Double-click **`Launch_Academy_Windows.exe`** (or `Launch_Academy.exe`).
+  * **Batch Launcher**: Double-click **`Launch_Academy_Windows.bat`** (or `Launch_Academy.bat`).
+* **macOS**:
+  * **Finder 1-Click Launch**: Double-click **`Launch_Academy_macOS.command`** directly in Finder.
+  * **Terminal Launch**: Run **`./Launch_Academy_macOS.sh`**.
+* **Linux**:
+  * **Shell Launcher**: Run **`./Launch_Academy_Linux.sh`** (or `./Launch_Academy.sh`).
+  * **Desktop Entry**: Launch via **`Launch_Academy_Linux.desktop`** from your application menu or file manager.
+* **Cross-Platform CLI**:
+  * Run **`python start_platform.py`** (defaults to standalone application window).
+  * Run **`python start_platform.py --browser`** to force a standard web browser tab.
+  * Run **`python start_platform.py --headless`** to run the backend server only.
 
 ```
 +-----------------------------------------------------------------------------------------+
 |                                🚀 ZERO MANUAL SETUP                                     |
 |  * Automatically locates Python across PATH, AppData, and System directories            |
+|  * Standalone Application Window: Chromeless, distraction-free desktop window           |
 |  * Auto-installs missing dependencies (FastAPI, Uvicorn) on first run                   |
 |  * Embedded Native Fallback Server guarantees instant offline operation                 |
 |  * Pre-compiled React frontend: No Node.js or npm required                              |
-|  * Automatically opens http://localhost:8000 in your default browser                    |
+|  * Automatically connects on http://127.0.0.1:8000                                      |
 +-----------------------------------------------------------------------------------------+
 ```
 
@@ -54,7 +67,7 @@ Build complete systems without leaving your browser:
 
 ---
 
-## 📝 Interactive MCQ Assessments (Coursera-Grade)
+## 📝 Interactive MCQ Assessments (Production-Grade)
 
 Validate your deep systems intuition with interactive evaluations:
 * **Multiple-Choice Card Selector**: Intuitive, high-contrast cards with keyboard support.
