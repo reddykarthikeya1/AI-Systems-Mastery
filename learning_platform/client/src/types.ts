@@ -48,6 +48,24 @@ export interface SrsCardReview {
   next_review_epoch: number;
 }
 
+export interface MasteryGateStatus {
+  quizPassed: boolean;
+  labPassed: boolean;
+  dsaPassed?: boolean;
+  cleared: boolean;
+  cleared_at?: number;
+}
+
+export interface CustomSrsCard {
+  id: string;
+  category: string;
+  question: string;
+  answer: string;
+  keyTakeaway: string;
+  sourceLessonId?: string;
+  createdAt: number;
+}
+
 export interface ProgressPayload {
   completed_lessons: string[];
   completed_modules: string[];
@@ -56,9 +74,11 @@ export interface ProgressPayload {
   last_position?: LastPosition | null;
   sound_enabled?: boolean;
   srs_card_reviews?: Record<string, SrsCardReview>;
+  srs_custom_cards?: CustomSrsCard[];
+  mastery_gates?: Record<string, MasteryGateStatus>;
   last_updated: number;
   theme: 'dark' | 'light';
-  quiz_scores?: Record<string, number>;
+  quiz_scores?: Record<string, any>;
   bookmarks?: string[];
   notes?: Record<string, string>;
   last_study_date?: string;

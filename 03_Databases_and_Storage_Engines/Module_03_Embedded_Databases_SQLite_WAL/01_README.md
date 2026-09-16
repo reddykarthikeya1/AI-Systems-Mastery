@@ -43,15 +43,22 @@ In **WAL mode**, SQLite reverses the process:
 3. **The Superpower:** **Readers do not block writers, and writers do not block readers!** Readers read committed pages from the main `.db` and the `-wal`, while a writer appends to the `-wal` concurrently.
 4. **Checkpointing:** Periodically, SQLite copies WAL changes back into the main `.db` and truncates the WAL file.
 
-```
-       Write-Ahead Logging (WAL) Mode
-┌────────────────┐          ┌────────────────┐
-│ Active Reader  │ ───────> │  app.db file   │ (Original committed data)
-└────────────────┘          └───────▲────────┘
-                                    │ Checkpoint sync
-┌────────────────┐          ┌───────┴────────┐
-│ Active Writer  │ ───────> │  app.db-wal    │ (Append-only write stream)
-└────────────────┘          └────────────────┘
+```mermaid
+flowchart LR
+    subgraph Clients["Concurrent Client Operations"]
+        Reader["Active Reader"]
+        Writer["Active Writer"]
+    end
+
+    subgraph Storage["SQLite Storage Architecture (WAL Mode)"]
+        DB["app.db File<br/>(Original committed pages)"]
+        WAL["app.db-wal File<br/>(Append-only write stream)"]
+    end
+
+    Reader -->|Reads snapshot without locks| DB
+    Reader -.->|Reads recent page updates| WAL
+    Writer -->|Appends mutations concurrently| WAL
+    WAL <-->|Checkpoint Sync (PRAGMA wal_checkpoint)| DB
 ```
 
 ---

@@ -187,12 +187,35 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [flipped, setFlipped] = useState<boolean>(false);
 
-  const categories = ['All', 'Storage & DB', 'Distributed Systems', 'DSA', 'Concurrency', 'Networking'];
+  const allCards = useMemo(() => {
+    const custom = (progress.srs_custom_cards || []).map((c) => ({
+      ...c,
+      category: (c.category || 'Quiz Mistakes') as any,
+    }));
+    return [...custom, ...FLASHCARD_DECK];
+  }, [progress.srs_custom_cards]);
+
+  const categories = useMemo(() => {
+    const base = ['All', 'Due Today', 'Storage & DB', 'Distributed Systems', 'DSA', 'Concurrency', 'Networking'];
+    if ((progress.srs_custom_cards || []).length > 0) {
+      base.splice(2, 0, 'Quiz Mistakes');
+    }
+    return base;
+  }, [progress.srs_custom_cards]);
 
   const filteredCards = useMemo(() => {
-    if (selectedCategory === 'All') return FLASHCARD_DECK;
-    return FLASHCARD_DECK.filter((c) => c.category === selectedCategory);
-  }, [selectedCategory]);
+    if (selectedCategory === 'All') return allCards;
+    if (selectedCategory === 'Due Today') {
+      return allCards.filter((c) => {
+        const rev = progress.srs_card_reviews?.[c.id];
+        return !rev || rev.next_review_epoch <= Date.now();
+      });
+    }
+    if (selectedCategory === 'Quiz Mistakes') {
+      return allCards.filter((c) => c.id.startsWith('mistake-') || (progress.srs_custom_cards || []).some((sc) => sc.id === c.id));
+    }
+    return allCards.filter((c) => c.category === selectedCategory);
+  }, [selectedCategory, allCards, progress.srs_card_reviews]);
 
   const currentCard = filteredCards[currentIndex] || filteredCards[0];
   const cardReview = currentCard ? progress.srs_card_reviews?.[currentCard.id] : undefined;
@@ -294,7 +317,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
                     {currentCard.category}
                   </span>
                   {cardReview && (
-                    <span className="text-[11px] font-mono text-zinc-400">
+                    <span className="text-xs font-mono text-zinc-400">
                       Reviewed: {cardReview.repetition}x • Interval: {cardReview.interval_days}d
                     </span>
                   )}
@@ -325,7 +348,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
                 )}
               </div>
 
-              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 text-[11px] text-zinc-400 flex items-center justify-between">
+              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 text-xs text-zinc-400 flex items-center justify-between">
                 <span>Card ID: {currentCard.id}</span>
                 <span>{flipped ? 'Click to flip back' : 'Flip to inspect'}</span>
               </div>

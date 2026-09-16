@@ -67,13 +67,13 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                 className="p-3 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 rounded-lg cursor-pointer flex items-center justify-between group transition-colors"
               >
                 <div className="space-y-0.5">
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-medium">
+                  <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-medium">
                     Track {c.course_num.toString().padStart(2, '0')}
                   </span>
                   <h4 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 transition-colors">
                     {c.title}
                   </h4>
-                  <p className="text-[11px] text-zinc-500 line-clamp-1">{c.description}</p>
+                  <p className="text-xs text-zinc-500 line-clamp-1">{c.description}</p>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
               </div>

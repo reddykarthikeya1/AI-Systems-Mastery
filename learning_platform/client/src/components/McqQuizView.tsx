@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { CheckCircle2, XCircle, HelpCircle, Award, RotateCcw, ArrowRight, FileText, Check, AlertCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, HelpCircle, Award, RotateCcw, ArrowRight, FileText, Check, AlertCircle, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export interface McqQuestion {
@@ -19,6 +19,7 @@ interface McqQuizViewProps {
   lessonId: string;
   onPassQuiz: (score: number, total: number) => void;
   savedScore?: { score: number; total: number; passed: boolean };
+  onQuizMistake?: (question: McqQuestion, chosenOption: string) => void;
 }
 
 export const McqQuizView: React.FC<McqQuizViewProps> = ({
@@ -29,10 +30,12 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
   lessonId,
   onPassQuiz,
   savedScore,
+  onQuizMistake,
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [checkedQuestions, setCheckedQuestions] = useState<Record<number, boolean>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(Boolean(savedScore?.passed));
+  const [autoCapturedCount, setAutoCapturedCount] = useState<number>(0);
   const [score, setScore] = useState<number>(savedScore?.score || 0);
 
   // Parse questions from the markdown content
@@ -152,13 +155,21 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
   const handleSubmitQuiz = () => {
     let correctCount = 0;
+    let mistakes = 0;
     questions.forEach((q) => {
       if (selectedAnswers[q.id] === q.correctIndex) {
         correctCount++;
+      } else {
+        mistakes++;
+        if (onQuizMistake) {
+          const chosenOpt = q.options[selectedAnswers[q.id]] || 'No answer selected';
+          onQuizMistake(q, chosenOpt);
+        }
       }
     });
 
-    const passed = (correctCount / Math.max(1, questions.length)) >= 0.75;
+    setAutoCapturedCount(mistakes);
+    const passed = (correctCount / Math.max(1, questions.length)) >= 0.70;
     setScore(correctCount);
     setIsSubmitted(true);
 
@@ -205,10 +216,10 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       <div className="rounded-xl p-6 bg-gradient-to-br from-zinc-50 to-zinc-100/60 dark:from-[#111622] dark:to-[#0D1117] border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-500 border border-amber-500/20">
               Interactive Assessment
             </span>
-            <span className="text-[11px] font-mono text-zinc-500">
+            <span className="text-xs font-mono text-zinc-500">
               Pass Threshold: 75% • {totalQuestions} Questions
             </span>
           </div>
@@ -260,8 +271,23 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
               Congratulations! You passed the Module Assessment with {percentage}%. Mastery recorded in your study progress.
             </span>
           </div>
-          <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20">
             ✓ Mastery Verified
+          </span>
+        </div>
+      )}
+
+      {/* Spaced Repetition Auto-Capture Banner */}
+      {isSubmitted && autoCapturedCount > 0 && (
+        <div className="rounded-xl p-4 bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-between gap-3 text-indigo-400 animate-fadeIn">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-5 h-5 shrink-0 text-indigo-400" />
+            <span className="text-xs font-medium">
+              Active Recall Loop: {autoCapturedCount} missed question{autoCapturedCount > 1 ? 's' : ''} {autoCapturedCount > 1 ? 'have' : 'has'} been automatically converted into Spaced Repetition flashcards for tomorrow's review deck!
+            </span>
+          </div>
+          <span className="text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+            SRS Synced 🧠
           </span>
         </div>
       )}
@@ -280,11 +306,11 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
             >
               {/* Question Header */}
               <div className="flex items-center justify-between gap-2 border-b border-zinc-100 dark:border-zinc-800/60 pb-3">
-                <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">
+                <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider font-semibold">
                   Question {qIndex + 1} of {totalQuestions}
                 </span>
                 {q.category && (
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
                     {q.category}
                   </span>
                 )}
@@ -324,7 +350,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                       onClick={() => handleSelectOption(q.id, optIdx)}
                       className={`w-full text-left p-3.5 rounded-xl border text-xs leading-relaxed transition-all flex items-start gap-3 ${cardStyle}`}
                     >
-                      <span className="w-5 h-5 rounded-full flex items-center justify-center font-mono text-[11px] font-bold shrink-0 bg-white/70 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700">
+                      <span className="w-5 h-5 rounded-full flex items-center justify-center font-mono text-xs font-bold shrink-0 bg-white/70 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700">
                         {letter}
                       </span>
                       <span className="flex-1">{opt}</span>
@@ -359,7 +385,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                     <HelpCircle className="w-3.5 h-3.5 text-blue-400" />
                     <span>Systems Architecture Explanation:</span>
                   </div>
-                  <p className="leading-relaxed pl-5 font-mono text-[11px]">
+                  <p className="leading-relaxed pl-5 font-mono text-xs">
                     {q.explanation}
                   </p>
                 </div>

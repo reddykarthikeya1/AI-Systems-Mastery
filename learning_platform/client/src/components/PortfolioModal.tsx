@@ -125,19 +125,19 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
                 <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400 font-mono">
                   {totalLessons}
                 </div>
-                <div className="text-[11px] text-zinc-500 uppercase tracking-wider mt-0.5">Lessons</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">Lessons</div>
               </div>
               <div className="p-3 bg-white dark:bg-zinc-800/80 rounded-xl border border-zinc-200 dark:border-zinc-700 text-center shadow-sm">
                 <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
                   {totalModules}
                 </div>
-                <div className="text-[11px] text-zinc-500 uppercase tracking-wider mt-0.5">Modules</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">Modules</div>
               </div>
               <div className="p-3 bg-white dark:bg-zinc-800/80 rounded-xl border border-zinc-200 dark:border-zinc-700 text-center shadow-sm">
                 <div className="text-xl font-extrabold text-amber-600 dark:text-amber-400 font-mono">
                   {streak}🔥
                 </div>
-                <div className="text-[11px] text-zinc-500 uppercase tracking-wider mt-0.5">Streak</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">Streak</div>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
                         {c.title}
                       </td>
                       <td className="px-4 py-3 font-sans text-zinc-600 dark:text-zinc-400">
-                        <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-[11px]">
+                        <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-xs">
                           {c.category}
                         </span>
                       </td>

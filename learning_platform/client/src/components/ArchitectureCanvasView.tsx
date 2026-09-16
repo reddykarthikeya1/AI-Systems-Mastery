@@ -225,7 +225,7 @@ export const ArchitectureCanvasView: React.FC<ArchitectureCanvasViewProps> = ({ 
         <div className="flex flex-col border-r border-zinc-200 dark:border-zinc-800 min-h-0">
           <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-900 text-xs font-semibold text-zinc-500 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <span>Mermaid DSL Source Code</span>
-            <span className="text-[11px] font-normal text-zinc-400">Updates live as you type</span>
+            <span className="text-xs font-normal text-zinc-400">Updates live as you type</span>
           </div>
           <textarea
             value={code}
@@ -241,9 +241,9 @@ export const ArchitectureCanvasView: React.FC<ArchitectureCanvasViewProps> = ({ 
           <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-900 text-xs font-semibold text-zinc-500 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <span>Rendered Architecture View</span>
             {renderError ? (
-              <span className="text-rose-500 font-mono text-[11px]">Compile Error</span>
+              <span className="text-rose-500 font-mono text-xs">Compile Error</span>
             ) : (
-              <span className="text-emerald-500 font-mono text-[11px]">✓ Valid Diagram</span>
+              <span className="text-emerald-500 font-mono text-xs">✓ Valid Diagram</span>
             )}
           </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   ArrowLeft, BookOpen, CheckCircle, Clock, ChevronRight, Play, Terminal, 
-  Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain 
+  Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain, ShieldCheck 
 } from 'lucide-react';
 import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types';
 
@@ -11,6 +11,7 @@ interface SyllabusViewProps {
   progress: ProgressPayload;
   onBack: () => void;
   onSelectLesson: (filePath: string, lessonId: string) => void;
+  onOpenMasteryGate?: (module: ModuleItem) => void;
   onRunCourseDemo?: () => void;
 }
 
@@ -20,6 +21,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   progress,
   onBack,
   onSelectLesson,
+  onOpenMasteryGate,
   onRunCourseDemo,
 }) => {
   // Calculate aggregate course progress
@@ -37,31 +39,31 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
     switch (type) {
       case 'project':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1">
             <Hammer className="w-2.5 h-2.5" /> Project Studio
           </span>
         );
       case 'quiz':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 flex items-center gap-1">
             <CheckSquare className="w-2.5 h-2.5" /> Graded MCQ
           </span>
         );
       case 'playground':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-cyan-100 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-cyan-100 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 flex items-center gap-1">
             <Sparkles className="w-2.5 h-2.5" /> Playground
           </span>
         );
       case 'troubleshooting':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-center gap-1">
             <Bug className="w-2.5 h-2.5" /> Forensics
           </span>
         );
       default:
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/40 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/40 flex items-center gap-1">
             <BookOpen className="w-2.5 h-2.5" /> Theory & Specs
           </span>
         );
@@ -96,16 +98,16 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
       {/* Course Banner */}
       <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 p-8 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center gap-2.5">
-          <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-zinc-700">
+          <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-zinc-700">
             Track {course.course_num.toString().padStart(2, '0')}
           </span>
-          <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
             {course.category}
           </span>
-          <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
             {course.difficulty} Standard
           </span>
-          <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-1">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-1">
             <Clock className="w-3 h-3" /> ~{course.estimated_hours} Hours Total
           </span>
         </div>
@@ -122,7 +124,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
         {/* Course Progress & Interactive Features Overview Bar */}
         <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800/80 grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="p-3.5 rounded-lg bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
-            <div className="text-[11px] font-mono text-zinc-400 uppercase">Track Completion</div>
+            <div className="text-xs font-mono text-zinc-400 uppercase">Track Completion</div>
             <div className="flex items-center justify-between mt-1">
               <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">{overallPercentage}%</span>
               <span className="text-xs font-mono text-zinc-500">{completedCourseLessons}/{totalLessons} Lessons</span>
@@ -141,7 +143,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             </div>
             <div>
               <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalProjects} Studios</div>
-              <div className="text-[11px] text-zinc-500">In-Browser IDE Builds</div>
+              <div className="text-xs text-zinc-500">In-Browser IDE Builds</div>
             </div>
           </div>
 
@@ -151,7 +153,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             </div>
             <div>
               <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalQuizzes} Assessments</div>
-              <div className="text-[11px] text-zinc-500">Staff Interview MCQs</div>
+              <div className="text-xs text-zinc-500">Staff Interview MCQs</div>
             </div>
           </div>
 
@@ -161,7 +163,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             </div>
             <div>
               <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalDebugLabs} Bug Labs</div>
-              <div className="text-[11px] text-zinc-500">Planted Defect Triages</div>
+              <div className="text-xs text-zinc-500">Planted Defect Triages</div>
             </div>
           </div>
         </div>
@@ -192,7 +194,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
           <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
             Curriculum Modules <span className="font-normal text-zinc-400">({modules.length} Total)</span>
           </h2>
-          <span className="text-[11px] text-zinc-400 font-mono">
+          <span className="text-xs text-zinc-400 font-mono">
             {completedCourseLessons}/{totalLessons} Lessons Finished
           </span>
         </div>
@@ -229,37 +231,46 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                 <div className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/70 bg-gradient-to-r from-transparent via-transparent to-zinc-50/50 dark:to-zinc-950/30">
                   <div className="space-y-2 max-w-2xl">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[11px] font-mono font-semibold text-zinc-500 uppercase tracking-wider">
+                      <span className="text-xs font-mono font-semibold text-zinc-500 uppercase tracking-wider">
                         Module {mod.module_num.toString().padStart(2, '0')}
                       </span>
-                      <span className="text-[11px] font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-zinc-400">
                         ~{estHours} hrs
                       </span>
 
                       {/* Interactive Feature Badges */}
                       {modHasLeetcode && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 font-semibold">
+                        <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 font-semibold">
                           🧠 LeetCode Arena
                         </span>
                       )}
                       {modHasProject && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60">
                           🛠️ Project Studio
                         </span>
                       )}
                       {modHasQuiz && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
                           📝 Graded Quiz
                         </span>
                       )}
                       {modHasDebug && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
                           🐛 Bug Lab
                         </span>
                       )}
                       {mod.quickstart_script && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
                           ⚡ Live Demo
+                        </span>
+                      )}
+                      {Boolean(progress.mastery_gates?.[mod.id]?.cleared || progress.completed_modules?.includes(mod.id)) ? (
+                        <span className="px-2 py-0.5 rounded text-xs font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold flex items-center gap-1">
+                          <ShieldCheck className="w-3 h-3" /> Mastered
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700 flex items-center gap-1">
+                          Gate Pending
                         </span>
                       )}
                     </div>
@@ -275,7 +286,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                           style={{ width: `${modPercentage}%` }} 
                         />
                       </div>
-                      <span className="text-[11px] font-mono text-zinc-500">
+                      <span className="text-xs font-mono text-zinc-500">
                         {completedCount}/{mod.lessons.length} completed ({modPercentage}%)
                       </span>
                     </div>
@@ -316,6 +327,21 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       </button>
                     )}
 
+                    {onOpenMasteryGate && (
+                      <button
+                        onClick={() => onOpenMasteryGate(mod)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
+                          Boolean(progress.mastery_gates?.[mod.id]?.cleared || progress.completed_modules?.includes(mod.id))
+                            ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+                            : 'border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                        }`}
+                        title="View Module Mastery Gate Requirements"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Gate</span>
+                      </button>
+                    )}
+
                     {firstLesson && (
                       <button
                         onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id)}
@@ -347,7 +373,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
                         <div className="flex items-center gap-3 shrink-0">
                           {getLessonTypeBadge(lesson.type)}
-                          <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
+                          <span className="text-xs font-mono text-zinc-400 hidden sm:inline">
                             {getEstimatedLessonTime(lesson.type)}
                           </span>
                           {done ? (

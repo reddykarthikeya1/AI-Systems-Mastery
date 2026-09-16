@@ -159,7 +159,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
         {/* Editor Area */}
         <div className="flex flex-col border-b border-zinc-200 dark:border-zinc-800">
           <div className="flex items-center justify-between px-4 py-1.5 bg-zinc-50/50 dark:bg-zinc-900/30 text-xs text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-            <span>SQL Query Editor (Press <kbd className="px-1 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-mono text-[10px]">Ctrl+Enter</kbd> to run)</span>
+            <span>SQL Query Editor (Press <kbd className="px-1 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-mono text-xs">Ctrl+Enter</kbd> to run)</span>
             <button
               onClick={handleExecute}
               disabled={executing}
@@ -196,7 +196,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="font-semibold text-zinc-700 dark:text-zinc-300">Execution Output</span>
               {result && (
-                <span className={`px-2 py-0.5 rounded text-[11px] font-mono ${
+                <span className={`px-2 py-0.5 rounded text-xs font-mono ${
                   result.status === 'success'
                     ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                     : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
@@ -206,7 +206,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
               )}
             </div>
             {result?.query_plan && result.query_plan.length > 0 && (
-              <span className="text-zinc-400 text-[11px] font-mono">
+              <span className="text-zinc-400 text-xs font-mono">
                 {result.query_plan.length} Plan Step(s)
               </span>
             )}
@@ -252,7 +252,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
             {/* Query plan section if present */}
             {result?.query_plan && result.query_plan.length > 0 && (
               <div className="mt-4 p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                <div className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
                   SQLite Query Execution Plan
                 </div>
                 <div className="space-y-1 font-mono text-xs text-zinc-600 dark:text-zinc-400">

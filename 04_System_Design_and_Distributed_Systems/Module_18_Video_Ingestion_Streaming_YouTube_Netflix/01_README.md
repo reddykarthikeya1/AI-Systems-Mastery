@@ -10,25 +10,12 @@ Video streaming pipelines ingest large files via multipart uploads, transcode re
 ---
 
 ## 🏛️ System Architecture Blueprint
-```
-
-    +-----------------------------------------------------------------------+
-    |           ARCHITECTURAL TOPOLOGY & SUBSYSTEM DATA FLOW                 |
-    +-----------------------------------------------------------------------+
-                                        |
-                 +----------------------+----------------------+
-                 v                                             v
-       [ Ingress & Control Plane ]                 [ State Machine Core ]
-       - Request Validation & Auth                 - Deterministic State Transitions
-       - Partition / Routing Dispatch              - Invariant Boundary Enforcement
-       - In-Memory Caching & Buffering             - Append-Only Persistence Logging
-                                        |
-                 +----------------------+----------------------+
-                 v                                             v
-       [ Distributed Replicas ]                    [ Storage & Recovery ]
-       - Quorum Synchronization                    - WAL / Disk Snapshotting
-       - Gossip / Heartbeat Probing                - Crash Replay & Reconciliation
-
+```mermaid
+flowchart TD
+    Top["Incoming Requests & Events"] --> Ingress["Ingress & Control Plane<br/>• Request Validation & Auth<br/>• Partition / Routing Dispatch<br/>• In-Memory Caching & Buffering"]
+    Top --> Core["State Machine Core<br/>• Deterministic State Transitions<br/>• Invariant Boundary Enforcement<br/>• Append-Only Persistence Logging"]
+    Ingress --> Replicas["Distributed Replicas<br/>• Quorum Synchronization<br/>• Gossip / Heartbeat Probing"]
+    Core --> Storage["Storage & Recovery<br/>• WAL / Disk Snapshotting<br/>• Crash Replay & Reconciliation"]
 ```
 
 ### Subsystem Anatomy & Invariants

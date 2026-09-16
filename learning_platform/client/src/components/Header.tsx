@@ -50,11 +50,11 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-50">
                 AI Systems Mastery
               </span>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/60">
+              <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/60">
                 12 Tracks
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 font-normal">
+            <p className="text-xs text-zinc-500 font-normal">
               By <span className="text-zinc-700 dark:text-zinc-300 font-medium">Karthikeya Reddy</span>
             </p>
           </div>
@@ -70,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Search className="w-3.5 h-3.5" />
             <span className="hidden md:inline font-normal text-zinc-400">Search curriculum...</span>
-            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-xs">
+            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-xs font-mono text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-xs">
               Ctrl K
             </kbd>
           </button>

@@ -23,6 +23,8 @@ export function useProgress() {
       bookmarks: [],
       notes: {},
       srs_card_reviews: {},
+      srs_custom_cards: [],
+      mastery_gates: {},
       last_position: null,
       study_streak_days: 1,
     };
@@ -194,6 +196,50 @@ export function useProgress() {
     });
   };
 
+  const updateMasteryGate = (moduleId: string, updates: Partial<import('../types').MasteryGateStatus>) => {
+    updateProgress((prev) => {
+      const gates = { ...(prev.mastery_gates || {}) };
+      const current = gates[moduleId] || {
+        quizPassed: false,
+        labPassed: false,
+        cleared: false,
+      };
+      const updated = { ...current, ...updates };
+      const isCleared = Boolean(updated.cleared || (updated.quizPassed && updated.labPassed));
+      updated.cleared = isCleared;
+      if (isCleared && !current.cleared) {
+        updated.cleared_at = Date.now();
+        soundService.playFanfare();
+      }
+      gates[moduleId] = updated;
+      const completed_modules = isCleared && !prev.completed_modules.includes(moduleId)
+        ? [...prev.completed_modules, moduleId]
+        : prev.completed_modules;
+      return { ...prev, mastery_gates: gates, completed_modules };
+    });
+  };
+
+  const addCustomSrsCard = (card: import('../types').CustomSrsCard) => {
+    updateProgress((prev) => {
+      const existing = prev.srs_custom_cards || [];
+      if (existing.some((c) => c.id === card.id || c.question === card.question)) {
+        return prev;
+      }
+      const reviews = { ...(prev.srs_card_reviews || {}) };
+      reviews[card.id] = {
+        interval_days: 0,
+        repetition: 0,
+        ease_factor: 2.5,
+        next_review_epoch: Date.now(),
+      };
+      return {
+        ...prev,
+        srs_custom_cards: [...existing, card],
+        srs_card_reviews: reviews,
+      };
+    });
+  };
+
   return {
     progress,
     toggleLesson,
@@ -206,6 +252,8 @@ export function useProgress() {
     saveQuizScore,
     toggleBookmark,
     saveNote,
+    updateMasteryGate,
+    addCustomSrsCard,
     isLessonCompleted: (id: string) => progress.completed_lessons.includes(id),
     isBookmarked: (id: string) => Boolean(progress.bookmarks?.includes(id)),
   };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import mermaid from 'mermaid';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
   Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
@@ -37,6 +38,8 @@ interface ClassroomViewProps {
   onSelectLesson: (filePath: string, lessonId: string) => void;
   completedLessons?: string[];
   onUpdateLastPosition?: (pos: LastPosition) => void;
+  onOpenMasteryGate?: () => void;
+  onQuizMistake?: (question: import('./McqQuizView').McqQuestion, chosenOption: string) => void;
 }
 
 export const ClassroomView: React.FC<ClassroomViewProps> = ({
@@ -57,6 +60,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   onSelectLesson,
   completedLessons = [],
   onUpdateLastPosition,
+  onOpenMasteryGate,
+  onQuizMistake,
 }) => {
   // Determine initial tab based on lesson type
   const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(() => {
@@ -113,6 +118,71 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     }
   }, [currentLesson.id, module.id]);
 
+  // Parse Jupyter Notebook cells if current file is an .ipynb
+  const notebookCells = useMemo<{ type: 'markdown' | 'code'; source: string }[]>(() => {
+    if (currentLesson.type !== 'notebook' || !content || content.startsWith('Loading')) return [];
+    try {
+      const parsed = JSON.parse(content);
+      if (parsed && Array.isArray(parsed.cells)) {
+        return parsed.cells.map((c: any) => ({
+          type: c.cell_type === 'code' ? 'code' : 'markdown',
+          source: Array.isArray(c.source) ? c.source.join('') : (c.source || ''),
+        }));
+      }
+    } catch {
+      return [];
+    }
+    return [];
+  }, [content, currentLesson.type]);
+
+  // Ref for theory content container to hydrate Mermaid diagrams
+  const theoryContentRef = useRef<HTMLDivElement>(null);
+
+  // Automatic Mermaid Diagram Hydration for lesson prose and notebooks
+  useEffect(() => {
+    if (activeTab !== 'theory') return;
+
+    try {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+        securityLevel: 'loose',
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      });
+    } catch {
+      // ignore init race
+    }
+
+    const renderMermaidBlocks = async () => {
+      if (!theoryContentRef.current) return;
+      const codeBlocks = theoryContentRef.current.querySelectorAll('pre code.language-mermaid');
+      for (let i = 0; i < codeBlocks.length; i++) {
+        const codeEl = codeBlocks[i];
+        const preEl = codeEl.parentElement;
+        if (!preEl || (preEl as any).dataset?.mermaidRendered) continue;
+        const rawCode = codeEl.textContent || '';
+        if (!rawCode.trim()) continue;
+        const renderId = `mermaid-lesson-${Date.now()}-${i}`;
+        try {
+          const { svg } = await mermaid.render(renderId, rawCode.trim());
+          const wrapper = document.createElement('div');
+          wrapper.className = 'my-6 p-4 rounded-2xl bg-zinc-50 dark:bg-[#0D1117] border border-zinc-200/80 dark:border-zinc-800/80 flex justify-center items-center overflow-x-auto shadow-sm transition-all';
+          wrapper.innerHTML = svg;
+          (preEl as any).dataset.mermaidRendered = 'true';
+          preEl.replaceWith(wrapper);
+        } catch (err) {
+          console.warn('Failed to render Mermaid diagram in lesson:', err);
+        }
+      }
+    };
+
+    const timer = setTimeout(() => {
+      renderMermaidBlocks();
+    }, 60);
+
+    return () => clearTimeout(timer);
+  }, [content, activeTab, notebookCells]);
+
   // Reading time and complexity badge estimation
   const { readingMinutes, complexityBadge } = useMemo(() => {
     const text = typeof content === 'string' ? content : '';
@@ -136,23 +206,6 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const [scratchpadMode, setScratchpadMode] = useState<RunnerMode>(
     currentLesson.type === 'powershell' ? 'powershell' : 'python'
   );
-
-  // Parse Jupyter Notebook cells if current file is an .ipynb
-  const notebookCells = useMemo<{ type: 'markdown' | 'code'; source: string }[]>(() => {
-    if (currentLesson.type !== 'notebook' || !content || content.startsWith('Loading')) return [];
-    try {
-      const parsed = JSON.parse(content);
-      if (parsed && Array.isArray(parsed.cells)) {
-        return parsed.cells.map((c: any) => ({
-          type: c.cell_type === 'code' ? 'code' : 'markdown',
-          source: Array.isArray(c.source) ? c.source.join('') : (c.source || ''),
-        }));
-      }
-    } catch {
-      return [];
-    }
-    return [];
-  }, [content, currentLesson.type]);
 
   // Extract page code snippets from content markdown
   const pageSnippets = useMemo<PageSnippet[]>(() => {
@@ -297,7 +350,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         }
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 text-[11px] font-mono text-zinc-400 select-none';
+        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 text-xs font-mono text-zinc-400 select-none';
 
         const label = document.createElement('span');
         label.className = 'font-semibold text-zinc-300';
@@ -307,7 +360,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         btnGroup.className = 'flex items-center gap-2';
 
         const runSnippetBtn = document.createElement('button');
-        runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30';
+        runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-400 font-semibold text-xs border border-emerald-500/30';
         const runLabel = detectedMode === 'python' ? '▶ Run' : detectedMode === 'powershell' ? '▶ Run PS' : '▶ Run Shell';
         runSnippetBtn.innerHTML = `<span>${runLabel}</span>`;
         runSnippetBtn.title = `Execute snippet in Page-Aware ${detectedMode.toUpperCase()} Runner`;
@@ -415,6 +468,55 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
+  // Scroll Progress tracking for reading
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        const currentProgress = (window.scrollY / totalScroll) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentLesson.id]);
+
+  // Keyboard navigation shortcuts (j for next, k for previous)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable ||
+          target.closest('.monaco-editor') ||
+          target.closest('textarea'))
+      ) {
+        return;
+      }
+      if (e.key === 'j') {
+        if (nextLesson) {
+          soundService.playClick();
+          onSelectLesson(nextLesson.file_path, nextLesson.id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (onOpenMasteryGate) {
+          onOpenMasteryGate();
+        }
+      } else if (e.key === 'k') {
+        if (prevLesson) {
+          soundService.playClick();
+          onSelectLesson(prevLesson.file_path, prevLesson.id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextLesson, prevLesson, onOpenMasteryGate, onSelectLesson]);
+
   const handlePrevLesson = () => {
     if (prevLesson) {
       soundService.playClick();
@@ -431,6 +533,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       soundService.playSuccess();
       onSelectLesson(nextLesson.file_path, nextLesson.id);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (onOpenMasteryGate) {
+      soundService.playFanfare();
+      onOpenMasteryGate();
     } else {
       soundService.playFanfare();
       confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
@@ -451,30 +556,36 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const getLessonBadge = (type: string) => {
     switch (type) {
       case 'challenge':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">LeetCode</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">LeetCode</span>;
       case 'project':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300">Project</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300">Project</span>;
       case 'quiz':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">Quiz</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">Quiz</span>;
       case 'playground':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-cyan-100 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-300">Intro</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-300">Intro</span>;
       case 'code':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300">Code</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300">Code</span>;
       case 'powershell':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300">PS1</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300">PS1</span>;
       case 'notebook':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300">Notebook</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300">Notebook</span>;
       case 'troubleshooting':
-        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300">Debug</span>;
+        return <span className="text-xs font-mono uppercase px-1 py-0.5 rounded bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300">Debug</span>;
       default:
         return null;
     }
   };
 
   return (
-    <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 transition-all duration-300 ${
-      activeTab === 'project' || activeTab === 'arena' || isScratchpadOpen ? 'max-w-[1850px]' : 'max-w-7xl'
-    }`}>
+    <>
+      {/* Reading Scroll Progress Bar */}
+      <div 
+        className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 transition-all duration-100 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+      />
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 transition-all duration-300 ${
+        activeTab === 'project' || activeTab === 'arena' || isScratchpadOpen ? 'max-w-[1850px]' : 'max-w-7xl'
+      }`}>
       {/* Top Bar Navigation & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-4">
         <div className="flex items-center gap-3">
@@ -486,7 +597,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <div className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="text-xs font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
               <span>{courseTitle}</span>
               <ChevronRight className="w-3 h-3 text-zinc-400" />
               <span>Module {module.module_num.toString().padStart(2, '0')}</span>
@@ -495,10 +606,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               {currentLesson.title}
             </h1>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
                 ⏱️ ~{readingMinutes} min read
               </span>
-              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+              <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
                 complexityBadge === 'Advanced Systems'
                   ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
                   : complexityBadge === 'Foundational'
@@ -607,7 +718,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             }`}
           >
             <Hammer className="w-3.5 h-3.5" /> In-Browser Project Studio
-            <span className="text-[10px] px-1 py-0.2 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
+            <span className="text-xs px-1 py-0.5 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
               IDE
             </span>
           </button>
@@ -623,7 +734,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             }`}
           >
             <Brain className="w-3.5 h-3.5 text-amber-300" /> LeetCode Arena
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
+            <span className="text-xs px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
               Sandbox
             </span>
           </button>
@@ -640,7 +751,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           >
             <CheckSquare className="w-3.5 h-3.5" /> Interactive Assessment (MCQ)
             {savedQuizScore?.passed && (
-              <span className="text-[10px] px-1 py-0.2 rounded bg-emerald-500 text-white font-mono">
+              <span className="text-xs px-1 py-0.5 rounded bg-emerald-500 text-white font-mono">
                 {savedQuizScore.score}%
               </span>
             )}
@@ -657,7 +768,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             }`}
           >
             <Bug className="w-3.5 h-3.5" /> Bug Hunter Lab
-            <span className="text-[10px] px-1 py-0.2 rounded bg-rose-200 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 font-mono">
+            <span className="text-xs px-1 py-0.5 rounded bg-rose-200 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 font-mono">
               Drill
             </span>
           </button>
@@ -699,7 +810,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             }`}
           >
             <Database className="w-3.5 h-3.5" /> Storage & SQL Sandbox
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
+            <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
               B-Tree
             </span>
           </button>
@@ -716,7 +827,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             }`}
           >
             <Layers className="w-3.5 h-3.5" /> Architecture Canvas
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">
+            <span className="text-xs px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">
               Mermaid
             </span>
           </button>
@@ -759,10 +870,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               {/* Left Sidebar: Lesson Outline */}
               <div className="lg:col-span-1 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
                 <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
-                  <span className="text-[11px] font-mono font-semibold text-zinc-400 uppercase tracking-wider">
+                  <span className="text-xs font-mono font-semibold text-zinc-400 uppercase tracking-wider">
                     Module {module.module_num.toString().padStart(2, '0')} Syllabus
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-400">
+                  <span className="text-xs font-mono text-zinc-400">
                     {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
                   </span>
                 </div>
@@ -783,7 +894,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         }`}
                       >
                         <span className="line-clamp-1 flex items-center gap-2">
-                          <span className="font-mono text-[10px] text-zinc-400">
+                          <span className="font-mono text-xs text-zinc-400">
                             {(idx + 1).toString().padStart(2, '0')}
                           </span>
                           <span>{l.title}</span>
@@ -806,7 +917,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <div className="lg:col-span-3 space-y-4">
                 {/* TAB: THEORY & SCRIPT READER */}
                 {activeTab === 'theory' && (
-                  <div>
+                  <div ref={theoryContentRef}>
                     {/* CASE A: PYTHON / POWERSHELL / SHELL SCRIPT VIEW */}
                     {(currentLesson.type === 'code' || currentLesson.type === 'powershell' || currentLesson.type === 'shell') ? (
                       <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden shadow-sm space-y-0">
@@ -818,14 +929,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             </div>
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
+                                <span className={`px-2 py-0.5 rounded text-xs font-mono font-bold uppercase ${
                                   currentLesson.type === 'powershell'
                                     ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30'
                                     : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                                 }`}>
                                   {currentLesson.type === 'powershell' ? 'PowerShell Automation' : 'Python Script'}
                                 </span>
-                                <span className="text-[11px] font-mono text-zinc-400">{currentLesson.file_path}</span>
+                                <span className="text-xs font-mono text-zinc-400">{currentLesson.file_path}</span>
                               </div>
                               <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">
                                 {currentLesson.title}
@@ -876,7 +987,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                               <Layers className="w-5 h-5" />
                             </div>
                             <div>
-                              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                              <span className="text-xs font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
                                 Jupyter Visual Notebook
                               </span>
                               <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">{currentLesson.title}</h2>
@@ -908,7 +1019,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                 />
                               ) : (
                                 <div className="rounded-xl border border-zinc-800 bg-[#0D1117] overflow-hidden">
-                                  <div className="flex items-center justify-between px-3 py-1.5 bg-[#161B22] border-b border-zinc-800 text-[11px] font-mono text-zinc-400">
+                                  <div className="flex items-center justify-between px-3 py-1.5 bg-[#161B22] border-b border-zinc-800 text-xs font-mono text-zinc-400">
                                     <span>Python Cell [{cIdx + 1}]</span>
                                     <button
                                       onClick={() => {
@@ -937,7 +1048,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         {/* Markdown Body */}
                         <div className="xl:col-span-3 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-sm">
                           <div
-                            className="markdown-body text-zinc-800 dark:text-zinc-200 text-sm leading-relaxed"
+                            className="markdown-body text-zinc-800 dark:text-zinc-200 text-[17px] leading-[1.75] max-w-[68ch] mx-auto"
                             dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
                           />
 
@@ -968,7 +1079,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                 onClick={handleCompleteAndNext}
                                 className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
                               >
-                                <span>{nextLesson ? 'Mark Complete & Next' : isCompleted ? 'Course Module Finished! 🎓' : 'Finish Lesson & Celebrate 🎉'}</span>
+                                <span>{nextLesson ? 'Mark Complete & Next' : 'Unlock Module Mastery Gate 🛡️'}</span>
                                 <ChevronRight className="w-4 h-4" />
                               </button>
                             </div>
@@ -1000,6 +1111,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       courseTitle={courseTitle}
                       lessonId={currentLesson.id}
                       savedScore={savedQuizScore}
+                      onQuizMistake={onQuizMistake}
                       onPassQuiz={(score, total) => {
                         if (onSaveQuizScore) {
                           onSaveQuizScore(score, total, true);
@@ -1094,5 +1206,6 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
       )}
     </div>
+    </>
   );
 };

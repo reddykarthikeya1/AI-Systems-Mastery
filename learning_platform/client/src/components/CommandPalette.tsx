@@ -122,7 +122,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-400 border border-zinc-200 dark:border-zinc-700">
             ESC to close
           </span>
         </div>
@@ -130,7 +130,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         {/* Quick System Actions (When query is empty) */}
         {!query && (
           <div className="p-4 border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/30">
-            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400 block mb-2">
+            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400 block mb-2">
               Quick Actions
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -202,12 +202,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                       <div className="text-xs font-semibold truncate flex items-center gap-1.5">
                         <span>{item.title}</span>
                         {item.lesson_type && (
-                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-zinc-200/60 dark:bg-zinc-800 text-zinc-500">
+                          <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-200/60 dark:bg-zinc-800 text-zinc-500">
                             {item.lesson_type}
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
                         {item.subtitle}
                       </div>
                     </div>
@@ -220,7 +220,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-2 bg-zinc-50 dark:bg-[#0D1117] border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
+        <div className="px-4 py-2 bg-zinc-50 dark:bg-[#0D1117] border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
           <span>Navigate with ↑ ↓ and Enter</span>
           <span>AI Systems Mastery Command Palette</span>
         </div>

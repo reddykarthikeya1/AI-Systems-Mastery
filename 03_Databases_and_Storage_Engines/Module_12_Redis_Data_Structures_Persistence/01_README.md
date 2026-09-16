@@ -34,10 +34,16 @@ Standard C strings are null-terminated (`\0`), which imposes severe limitations:
 - Frequent string concatenations cause repeated `realloc()` overhead and memory buffer reallocations.
 
 Redis SDS solves this with a dedicated header layout (`sdshdr8`, `sdshdr16`, `sdshdr32`):
-```
-+-------+---------+--------+----------------------+------+
-|  len  |  alloc  | flags  | buf[] (byte payload) | '\0' |
-+-------+---------+--------+----------------------+------+
+```mermaid
+flowchart LR
+    subgraph SDS["Redis Simple Dynamic String (sds) Memory Layout"]
+        len["len: 4B<br/>(Length in bytes)"]
+        alloc["alloc: 4B<br/>(Total allocated capacity)"]
+        flags["flags: 1B<br/>(Header type: 5/8/16/32/64)"]
+        buf["buf[]: Byte Array Payload<br/>(Binary-safe raw payload)"]
+        nullterm["\\0: 1B<br/>(Null terminator)"]
+        len --- alloc --- flags --- buf --- nullterm
+    end
 ```
 - `len`: Length of the string in bytes ($O(1)$ length queries).
 - `alloc`: Total memory allocated, excluding the header and null terminator.
@@ -66,12 +72,17 @@ It accomplishes this dual capability by keeping two data structures synchronized
 1. **Hash Table (`dict`)**: Maps `member -> score` for instantaneous $O(1)$ score lookups.
 2. **SkipList (`zskiplist`)**: A probabilistic multi-level forward linked list that maintains elements sorted by score.
 
-```
-[Level 3] ──(Forward: span 4)────────────────────────────────────────► [Node: 95, "david"] ──► NULL
-               │                                                            │
-[Level 2] ──(Forward: span 2)──────────────► [Node: 50, "carol"] ──────────► [Node: 95, "david"] ──► NULL
-               │                                  │                         │
-[Level 1] ──► [Node: 10, "alice"] ──► [Node: 25, "bob"] ──► [Node: 50] ──► [Node: 70] ──► [Node: 95] ──► NULL
+```mermaid
+flowchart LR
+    subgraph L3["Level 3 (Express Lane)"]
+        H3["Head"] -->|span: 4| N95_3["Node: 95 ('david')"] --> NULL3["NULL"]
+    end
+    subgraph L2["Level 2 (Fast Lane)"]
+        H2["Head"] -->|span: 2| N50_2["Node: 50 ('carol')"] -->|span: 2| N95_2["Node: 95 ('david')"] --> NULL2["NULL"]
+    end
+    subgraph L1["Level 1 (All Nodes Linked)"]
+        H1["Head"] --> N10["Node: 10 ('alice')"] --> N25["Node: 25 ('bob')"] --> N50_1["Node: 50"] --> N70["Node: 70"] --> N95_1["Node: 95"] --> NULL1["NULL"]
+    end
 ```
 - **Why not a Red-Black Tree or B-Tree?** B-Trees and balanced trees require complex tree rotations upon insertion/deletion that lock multiple branches and are complicated to implement concurrently. SkipLists generate node heights probabilistically using a random coin toss ($p = 0.25$), making insertions simple and range scans trivial (simply walk forward along Level 1).
 - **Span Metadata**: Each forward pointer stores the number of skipped nodes (`span`), allowing Redis to calculate the exact rank of any member in $O(\log N)$ time by summing spans along the search path.

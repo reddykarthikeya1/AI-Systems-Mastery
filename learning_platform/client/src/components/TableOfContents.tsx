@@ -40,6 +40,39 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
     return Math.max(1, Math.ceil(words / 180));
   }, [content]);
 
+  // IntersectionObserver scroll-spy to highlight current reading section
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const container = document.querySelector('.markdown-body');
+      if (!container) return;
+
+      const headingEls = container.querySelectorAll('h2, h3');
+      if (headingEls.length === 0) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const raw = entry.target.textContent || '';
+              const match = headings.find((h) =>
+                raw.toLowerCase().includes(h.text.toLowerCase().slice(0, 15))
+              );
+              if (match) {
+                setActiveHeadingId(match.text);
+              }
+            }
+          }
+        },
+        { rootMargin: '-60px 0px -60% 0px', threshold: 0.1 }
+      );
+
+      headingEls.forEach((el) => observer.observe(el));
+      return () => observer.disconnect();
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [headings]);
+
   const scrollToHeading = (text: string) => {
     // Find heading element by text content in .markdown-body
     const container = document.querySelector('.markdown-body');
@@ -61,7 +94,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
     <div className="rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
       {/* Top Meta Bar */}
       <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
-        <div className="flex items-center gap-1.5 text-zinc-500 text-[11px] font-mono">
+        <div className="flex items-center gap-1.5 text-zinc-500 text-xs font-mono">
           <Clock className="w-3.5 h-3.5" />
           <span>{readingTime} min read</span>
         </div>
@@ -77,29 +110,36 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
             title={isBookmarked ? 'Remove Bookmark' : 'Bookmark this lesson'}
           >
             <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
-            <span className="text-[10px] font-mono">{isBookmarked ? 'Saved' : 'Save'}</span>
+            <span className="text-xs font-mono">{isBookmarked ? 'Saved' : 'Save'}</span>
           </button>
         )}
       </div>
 
       <div className="space-y-1">
-        <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400 block px-1">
+        <span className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400 block px-1">
           On This Page
         </span>
 
         <div className="space-y-0.5 max-h-72 overflow-y-auto pr-1">
-          {headings.map((h, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToHeading(h.text)}
-              className={`w-full text-left py-1 px-1.5 rounded text-xs leading-snug transition truncate block ${
-                h.level === 3 ? 'pl-3 text-zinc-500 text-[11px]' : 'font-medium text-zinc-700 dark:text-zinc-300'
-              } hover:text-blue-500 dark:hover:text-blue-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50`}
-              title={h.text}
-            >
-              {h.text}
-            </button>
-          ))}
+          {headings.map((h, i) => {
+            const isActive = activeHeadingId === h.text;
+            return (
+              <button
+                key={i}
+                onClick={() => scrollToHeading(h.text)}
+                className={`w-full text-left py-1 px-2 rounded text-xs leading-snug transition truncate block ${
+                  isActive
+                    ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 font-semibold border-l-2 border-blue-500 shadow-sm'
+                    : h.level === 3 
+                    ? 'pl-4 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200' 
+                    : 'font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-400'
+                } hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50`}
+                title={h.text}
+              >
+                {h.text}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

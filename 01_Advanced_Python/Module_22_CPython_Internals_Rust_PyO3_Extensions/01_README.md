@@ -31,20 +31,20 @@ You will not take that on faith. Every claim here is measured by a script you ru
 
 A C `int64_t` is 8 bytes of memory and nothing else. A Python `int` is an *object*, and every object carries a header.
 
-```
-        C:  int64_t x = 7;
-            ┌────────────────┐
-            │ 07 00 00 00 …  │   8 bytes. That's the whole story.
-            └────────────────┘
+```mermaid
+flowchart TD
+    subgraph C["C Memory Layout: int64_t x = 7 (8 Bytes Total)"]
+        c_val["07 00 00 00 00 00 00 00<br/>(8 bytes. That's the whole story)"]
+    end
 
-   Python:  x = 7
-            ┌──────────────────────────────────────────────┐
-            │ ob_refcnt   (8 bytes)  how many names point here
-            │ ob_type     (8 bytes)  pointer to the `int` type object
-            │ ob_size     (8 bytes)  how many 30-bit digits follow
-            │ ob_digit[0] (4 bytes)  the actual value
-            └──────────────────────────────────────────────┘
-                        28 bytes, and one pointer dereference to read it
+    subgraph Python["CPython Memory Layout: x = 7 (28 Bytes Total)"]
+        direction TB
+        p1["ob_refcnt (8 bytes): Reference Counter"]
+        p2["ob_type (8 bytes): Pointer to PyTypeObject ('int')"]
+        p3["ob_size (8 bytes): Sign & Number of 30-bit digits"]
+        p4["ob_digit[0] (4 bytes): Actual integer payload"]
+        p1 --> p2 --> p3 --> p4
+    end
 ```
 
 Verify it right now:

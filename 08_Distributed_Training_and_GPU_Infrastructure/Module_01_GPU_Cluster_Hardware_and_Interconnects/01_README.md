@@ -8,21 +8,38 @@
 
 Modern foundation model training infrastructure is organized hierarchically into compute, node, rack, and cluster fabric layers:
 
-```
-+-----------------------------------------------------------------------------------------------+
-|                               DATACENTER SPINE SWITCH LAYER                                   |
-+-----------------------------------------------------------------------------------------------+
-       |                                       |                                       |
-+-------------------+                   +-------------------+                   +-------------------+
-| LEAF SWITCH RACK 0|                   | LEAF SWITCH RACK 1|                   | LEAF SWITCH RACK N|
-+-------------------+                   +-------------------+                   +-------------------+
-       |                                       |                                       |
-+-----------------------------------------------------------------------------------------------+
-| SERVER NODE (e.g. DGX H100): 8 x H100 GPUs + 8 x 400Gbps InfiniBand HCAs (Rail-Optimized)     |
-| [GPU 0] <================= NVLink 4.0 Mesh (900 GB/s per GPU) ================> [GPU 7]      |
-|    |                                                                             |            |
-| [HCA 0] -> Rail 0 Switch                                                 [HCA 7] -> Rail 7 Sw |
-+-----------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Spine["Datacenter Spine Switch Fabric Layer"]
+        Spine1["Spine Switch Core Aggregation"]
+    end
+
+    subgraph Leaf["Leaf Switch Layer (Rail-Optimized)"]
+        Leaf0["Leaf Switch (Rack 0 / Rail 0)"]
+        Leaf1["Leaf Switch (Rack 1 / Rail 1)"]
+        LeafN["Leaf Switch (Rack N / Rail 7)"]
+    end
+
+    Spine1 --- Leaf0
+    Spine1 --- Leaf1
+    Spine1 --- LeafN
+
+    subgraph Node["Server Node (e.g. DGX H100 with 8x H100 SXM5)"]
+        direction TB
+        subgraph NVLinkMesh["NVLink 4.0 High-Speed Mesh (900 GB/s per GPU Bi-dir)"]
+            GPU0["GPU 0 (H100)"] <-->|900 GB/s| GPU1["GPU 1 (H100)"]
+            GPU1 <-->|900 GB/s| GPUN["... GPU 7 (H100)"]
+        end
+        subgraph HCAs["Rail-Optimized HCAs (400 Gbps InfiniBand NDR)"]
+            HCA0["HCA 0 (400 Gbps)"]
+            HCA7["HCA 7 (400 Gbps)"]
+        end
+        GPU0 --- HCA0
+        GPUN --- HCA7
+    end
+
+    HCA0 -->|InfiniBand NDR Optical Link| Leaf0
+    HCA7 -->|InfiniBand NDR Optical Link| LeafN
 ```
 
 ### Physical Specifications Matrix

@@ -32,21 +32,32 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   const currentCourse = courses.find((c) => c.id === progress.current_course) || courses[0];
   const lastPos = progress.last_position;
 
+  // Compute Spaced Repetition (SRS) cards due today
+  const dueCardsCount = React.useMemo(() => {
+    const customCards = progress.srs_custom_cards || [];
+    const totalCardIds = [
+      ...customCards.map((c) => c.id),
+      ...Array.from({ length: 22 }, (_, i) => `srs-${(i + 1).toString().padStart(2, '0')}`),
+    ];
+    return totalCardIds.filter((id) => {
+      const rev = progress.srs_card_reviews?.[id];
+      return !rev || rev.next_review_epoch <= Date.now();
+    }).length;
+  }, [progress.srs_custom_cards, progress.srs_card_reviews]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Editorial Overview Header */}
       <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/90 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/80 pb-6">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-[11px] font-mono font-medium tracking-wider text-zinc-500 uppercase">
-              Principal Systems Track · Production Curriculum
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+              12 High-Performance Systems Tracks
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono text-zinc-500">
-            <span>12 SPECIALIZATIONS</span>
-            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+          <div className="text-xs font-mono text-zinc-500 dark:text-zinc-400 space-x-2">
             <span>1,296 LESSONS</span>
             <span className="text-zinc-300 dark:text-zinc-700">/</span>
             <span>1,609 VERIFIED TESTS</span>
@@ -97,6 +108,11 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 <span>Flashcards (SRS)</span>
+                {dueCardsCount > 0 && (
+                  <span className="px-1.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 font-bold text-xs">
+                    {dueCardsCount}
+                  </span>
+                )}
               </button>
             )}
 
@@ -114,11 +130,51 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             )}
           </div>
 
-          <div className="text-[11px] text-zinc-400 font-mono">
+          <div className="text-xs text-zinc-400 font-mono">
             Local sync active · Auto-saving to .study_progress.json
           </div>
         </div>
       </div>
+
+      {/* Spaced Repetition Due Today Hero Card */}
+      {onOpenFlashcards && dueCardsCount > 0 && (
+        <div className="rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 border border-amber-500/30 p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="p-3 rounded-xl bg-amber-500/20 text-amber-500 border border-amber-500/30 shrink-0">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold">
+                  Daily Review · SuperMemo SM-2
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-xs font-mono bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold">
+                  {dueCardsCount} Due Today
+                </span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                You have {dueCardsCount} flashcard{dueCardsCount > 1 ? 's' : ''} scheduled for review today
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Reinforce consensus protocols, storage engine internals, and recently missed quiz questions with active recall.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => {
+                soundService.playClick();
+                onOpenFlashcards();
+              }}
+              className="px-5 py-2.5 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 transition-all shadow-md flex items-center gap-2 active:scale-95"
+            >
+              <Sparkles className="w-4 h-4 fill-current" />
+              <span>Start Daily Review ({dueCardsCount})</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Jump Back In Hero Card */}
       {lastPos && (
@@ -126,7 +182,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
+              <span className="text-xs font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
                 Jump Back In · Active Session
               </span>
             </div>
@@ -194,10 +250,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             >
               <div className="space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
+                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
                     Track {course.course_num.toString().padStart(2, '0')}
                   </span>
-                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
                     {course.difficulty}
                   </span>
                 </div>
@@ -213,11 +269,11 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
 
               <div className="pt-5 mt-6 border-t border-zinc-100 dark:border-zinc-800/70 flex items-center justify-between text-xs text-zinc-500">
                 <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <span className="flex items-center gap-1 font-mono text-xs">
                     <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
                     {course.module_count} Modules
                   </span>
-                  <span className="flex items-center gap-1 font-mono text-[11px]">
+                  <span className="flex items-center gap-1 font-mono text-xs">
                     <Clock className="w-3.5 h-3.5 text-zinc-400" />
                     {course.estimated_hours}h
                   </span>

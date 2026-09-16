@@ -33,9 +33,22 @@ app = FastAPI(
     version="2.0.0",
 )
 
+custom_origins = os.environ.get("ACADEMY_ALLOWED_ORIGINS", "")
+allowed_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8999",
+    "http://127.0.0.1:8999",
+]
+if custom_origins:
+    allowed_origins.extend([orig.strip() for orig in custom_origins.split(",") if orig.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

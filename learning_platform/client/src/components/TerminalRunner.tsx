@@ -80,7 +80,7 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
               </span>
             </div>
 
-            <pre className="whitespace-pre-wrap leading-relaxed text-zinc-300 text-[11px]">
+            <pre className="whitespace-pre-wrap leading-relaxed text-zinc-300 text-xs">
               {result.stdout || result.stderr || "Process finished with no output."}
             </pre>
           </div>

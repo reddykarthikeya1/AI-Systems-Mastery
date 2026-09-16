@@ -98,10 +98,10 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
       <div className="rounded-xl p-5 bg-gradient-to-r from-rose-500/10 via-zinc-50 to-zinc-50 dark:from-rose-950/30 dark:via-[#111622] dark:to-[#111622] border border-rose-500/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold uppercase tracking-wider bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center gap-1">
               <Bug className="w-3 h-3" /> Bug Hunter Laboratory
             </span>
-            <span className="text-[11px] font-mono text-zinc-500 truncate">
+            <span className="text-xs font-mono text-zinc-500 truncate">
               {moduleTitle}
             </span>
           </div>
@@ -144,7 +144,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
               Defect successfully neutralized! All assertion tests passed cleanly with 0 errors.
             </span>
           </div>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20">
             ✓ Patch Verified
           </span>
         </div>
@@ -187,7 +187,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
         {/* Editor Column (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           <div className="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-[#0D1117] shadow-xl">
-            <div className="px-4 py-2 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+            <div className="px-4 py-2 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
               <span className="text-rose-400 font-semibold flex items-center gap-1.5">
                 <Bug className="w-3.5 h-3.5" /> Defect Patch Editor
               </span>
@@ -205,7 +205,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
 
           {/* Test Diagnosis Output Terminal */}
           <div className="rounded-xl overflow-hidden border border-zinc-800 bg-[#0A0D12] text-xs font-mono">
-            <div className="px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-[11px] text-zinc-400">
+            <div className="px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
               <span className="font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-rose-400" />
                 <span>Diagnostics Terminal</span>

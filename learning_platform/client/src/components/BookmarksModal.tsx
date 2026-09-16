@@ -52,7 +52,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
             <div className="text-center py-8 text-zinc-400 space-y-2">
               <Bookmark className="w-8 h-8 mx-auto stroke-1 opacity-50" />
               <p className="text-xs">No bookmarked lessons yet.</p>
-              <p className="text-[11px] text-zinc-500">
+              <p className="text-xs text-zinc-500">
                 Click the bookmark button in any lesson reader to save topics for rapid review.
               </p>
             </div>
@@ -80,7 +80,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                       {title}
                     </div>
                     {filePath && (
-                      <div className="text-[10px] font-mono text-zinc-400 truncate mt-0.5">
+                      <div className="text-xs font-mono text-zinc-400 truncate mt-0.5">
                         {filePath}
                       </div>
                     )}

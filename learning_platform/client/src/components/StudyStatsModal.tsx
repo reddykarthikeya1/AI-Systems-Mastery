@@ -93,7 +93,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
               {streak} <span className="text-xs font-normal text-zinc-500">Days</span>
             </div>
-            <div className="text-[10px] text-zinc-500 font-mono">Active consistency</div>
+            <div className="text-xs text-zinc-500 font-mono">Active consistency</div>
           </div>
 
           <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-1">
@@ -103,7 +103,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
               {totalCompleted} <span className="text-xs font-normal text-zinc-500">/ {totalCurriculumLessons}</span>
             </div>
-            <div className="text-[10px] text-zinc-500 font-mono">{curriculumPercentage}% of curriculum</div>
+            <div className="text-xs text-zinc-500 font-mono">{curriculumPercentage}% of curriculum</div>
           </div>
 
           <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
@@ -113,7 +113,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
               ~{hoursSpent} <span className="text-xs font-normal text-zinc-500">Hours</span>
             </div>
-            <div className="text-[10px] text-zinc-500 font-mono">of 380 total hours</div>
+            <div className="text-xs text-zinc-500 font-mono">of 380 total hours</div>
           </div>
 
           <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-1">
@@ -123,7 +123,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
               {passedQuizzesCount} <span className="text-xs font-normal text-zinc-500">Passed</span>
             </div>
-            <div className="text-[10px] text-zinc-500 font-mono">Mastery verified</div>
+            <div className="text-xs text-zinc-500 font-mono">Mastery verified</div>
           </div>
         </div>
 
@@ -141,7 +141,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
               >
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">{t.name}</span>
-                  <span className="text-[11px] font-mono text-zinc-500">{t.courses}</span>
+                  <span className="text-xs font-mono text-zinc-500">{t.courses}</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
                   <div className={`h-full ${t.color} rounded-full`} style={{ width: `${Math.min(100, Math.max(5, (curriculumPercentage * (idx + 1) * 0.8)))}%` }} />
@@ -152,7 +152,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-[11px] text-zinc-500 font-mono flex items-center justify-between">
+        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs text-zinc-500 font-mono flex items-center justify-between">
           <span>Synced locally to .study_progress.json</span>
           <button
             onClick={onClose}
