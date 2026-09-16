@@ -120,14 +120,14 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
           On This Page
         </span>
 
-        <div className="space-y-0.5 max-h-72 overflow-y-auto pr-1">
+        <div className="space-y-1 max-h-[calc(100vh-14rem)] overflow-y-auto pr-1">
           {headings.map((h, i) => {
             const isActive = activeHeadingId === h.text;
             return (
               <button
                 key={i}
                 onClick={() => scrollToHeading(h.text)}
-                className={`w-full text-left py-1 px-2 rounded text-xs leading-snug transition truncate block ${
+                className={`w-full text-left py-1.5 px-2.5 rounded-lg text-xs leading-relaxed transition break-words block ${
                   isActive
                     ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 font-semibold border-l-2 border-blue-500 shadow-sm'
                     : h.level === 3 

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "In Edge Infrastructure Reverse Proxies, what is the fundamental trade-off associated with **In-Memory Volatility vs Durable Disk Logging**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 03 Edge Infrastructure Reverse Proxies failure 'Client IP Spoofing via X-Forwarded-For', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Flapping Upstream Health Checks",
+        "text": "s Trusting the leftmost X-Forwarded-For header allows malicious clients to bypass IP-based rate limiting by spoofing random IPs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "text": "Lock contention on shared resource boundaries in 03 Edge Infrastructure Reverse Proxies exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Gateway Timeout Cascade",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **In-Memory Volatility vs Durable Disk Logging** implies: In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 03 Edge Infrastructure Reverse Proxies: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "In Edge Infrastructure Reverse Proxies, what is the fundamental trade-off associated with **Strong Consistency (Linearizability) vs Eventual Consistency**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 03 Edge Infrastructure Reverse Proxies failure 'Flapping Upstream Health Checks', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Client IP Spoofing via X-Forwarded-For",
+        "text": "s Aggressive health checks with 1 failure threshold evict backend nodes under minor network blips, overloading surviving nodes in a cascading failure.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "text": "Lock contention on shared resource boundaries in 03 Edge Infrastructure Reverse Proxies exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Strong Consistency (Linearizability) vs Eventual Consistency** implies: Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 03 Edge Infrastructure Reverse Proxies: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 3,
-    "question": "In Edge Infrastructure Reverse Proxies, what is the fundamental trade-off associated with **Push-Based Fanout vs Pull-Based Aggregation**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 03 Edge Infrastructure Reverse Proxies failure 'Gateway Timeout Cascade', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "text": "s Slow upstream services block gateway worker threads, exhausting proxy connection pools.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "text": "Lock contention on shared resource boundaries in 03 Edge Infrastructure Reverse Proxies exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Push-Based Fanout vs Pull-Based Aggregation** implies: Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 03 Edge Infrastructure Reverse Proxies: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

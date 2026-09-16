@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Search Engines Elasticsearch Lucene subsystem?",
-    "category": "System Invariants",
+    "question": "What is an Inverted Index in information retrieval?",
+    "category": "What is an Inverted Index in information retrieval?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Mapping Explosion in Dynamic Indexing",
+        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
         "is_correct": false
       }
     ],
-    "explanation": "In Search Engines Elasticsearch Lucene, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Search Engines Elasticsearch Lucene mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Explain the components of Okapi BM25 ranking function.",
+    "category": "Explain the components of Okapi BM25 ranking function.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Search Engines Elasticsearch Lucene at scale?",
-    "category": "Scalability & Performance",
+    "question": "What are the stages of an Elasticsearch Text Analyzer?",
+    "category": "What are the stages of an Elasticsearch Text Analyzer?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Elasticsearch Cluster Red: Unassigned Shards",
+        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Deep Pagination OOM via from + size",
+        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

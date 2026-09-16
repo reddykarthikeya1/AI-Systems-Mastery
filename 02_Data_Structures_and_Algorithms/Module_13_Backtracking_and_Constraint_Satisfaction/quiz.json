@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Backtracking and Constraint Satisfaction subsystem?",
-    "category": "System Invariants",
+    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Every subset comes back empty', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the same object \u2014 and by the time the search finishes, every append has been undone by its matching pop, leaving that shared object empty. ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Backtracking and Constraint Satisfaction, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the same object \u2014 and by the time the search finishes, every append has been undone by its matching pop, leaving that shared object empty. ",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Backtracking and Constraint Satisfaction mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Permutations are produced but the used flag is never cleared', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch. The search then fi",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch. The search then fi",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Backtracking and Constraint Satisfaction at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Candidates cannot be reused', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Passing i + 1 advances past the current candidate, which is exactly right for a subset problem where each element may be used once \u2014 and exactly wrong here, where reuse is permitted. Every combination returned is valid and sums to the target; the set",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Passing i + 1 advances past the current candidate, which is exactly right for a subset problem where each element may be used once \u2014 and exactly wrong here, where reuse is permitted. Every combination returned is valid and sums to the target; the set",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

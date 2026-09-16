@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Parallel Reduction and Prefix Sum subsystem?",
-    "category": "System Invariants",
+    "question": "Block Reduction with Grid-Stride Loop \u2014 You have an array of 100 million elements. How do you design a scalable 2-pass parallel reduction kernel without running out of SM resources?",
+    "category": "Block Reduction with Grid-Stride Loop",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "1. Pass 1 (Grid-Stride Block Reduction): - Launch a fixed grid of blocks (e.g. 512 blocks of 256 threads). - Each thread performs a grid-str...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": ": Passing 0xFFFFFFFF mask when some threads in the warp are inactive due to boundary conditions. - Fix: Always pass activemask() when calling warp shuffles inside divergent branch sections: val += shfldownsync(activemask(), val, offset);",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 04 Parallel Reduction and Prefix Sum.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Missing Active Mask in __shfl_down_sync",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 04 Parallel Reduction and Prefix Sum.",
         "is_correct": false
       }
     ],
-    "explanation": "In Parallel Reduction and Prefix Sum, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "1. Pass 1 (Grid-Stride Block Reduction): - Launch a fixed grid of blocks (e.g. 512 blocks of 256 threads). - Each thread performs a grid-stride loop, accumulating multiple elements into its register (val += data[idx]). - Intra-block reduction: Threads use sequential addressing in shared memory down to 32 threads, then use shfldownsync within warp 0",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Parallel Reduction and Prefix Sum mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 04 Parallel Reduction and Prefix Sum failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Passing 0xFFFFFFFF mask when some threads in the warp are inactive due to boundary conditions. - Fix: Always pass activemask() when calling warp shuffles inside divergent branch sections: val += shfldownsync(activemask(), val, offset);",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Undefined behavior or deadlock on Volta, Hopper, or Blackwell GPUs. - Root Cause: Passing 0xFFFFFFFF mask when some threads in the warp are inactive due to boundary conditions. - Fix: Always pass activemask() when call",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "Lock contention on shared resource boundaries in 04 Parallel Reduction and Prefix Sum exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Parallel Reduction and Prefix Sum at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 04 Parallel Reduction and Prefix Sum: : Passing 0xFFFFFFFF mask when some threads in the warp are inactive due to boundary conditions. - Fix: Always pass activemask() when calling warp shuffles inside divergent branch sections: val += shfldownsync(activemask(), val, offset);. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
-    "category": "Production Failure Modes",
+    "question": "How do Docker containers differ from traditional Virtual Machines (VMs) in terms of kernel sharing and resource overhead?",
+    "category": "Virtualization vs Containers:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Python buffers standard output (stdout) when not connected to an interactive TTY terminal.",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
-    "category": "Production Failure Modes",
+    "question": "What is the primary security and performance benefit of using a Multi-Stage Dockerfile?",
+    "category": "Multi-Stage Builds:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Docker Build Cache Invalidation",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The Python Output Buffering Trap",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Bug 1: Binding to 127.0.0.1 inside a container",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Docker Build Cache Invalidation",
-    "lesson_ref": "01_README.md"
+    "explanation": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
-    "category": "Production Failure Modes",
+    "question": "Why should production containers create and run as a dedicated non-root user (USER appuser)?",
+    "category": "Container Security:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "RUN pip install -r requirements.txt busts the Docker build cache on every minor source code edit, forcing a 5-minute pip re-install on every build.",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: `RUN pip install -r requirements.txt` busts the Docker build cache on every minor source code edit, forcing a 5-minute pip re-install on every build.",
-    "lesson_ref": "01_README.md"
+    "explanation": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

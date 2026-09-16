@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "An engineer writes custom P2P communication logic for Pipeline Parallelism: ```python if rank < world_size - 1:     dist.send(activation, dst=rank + 1) if rank > 0:     dist.recv(activation, src=rank - 1) ``` When running on 4 nodes, all processes freeze instantly on step 0. Explain why this code deadlocks and write the exact deadlock-free communication pattern.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 06 Pipeline Parallelism and Schedules failure 'Top 5 Production Failure Modes in Pipeline Parallelism', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: In NCCL and standard MPI, dist.send is blocking when transfer buffers exceed the internal eager protocol threshold.",
+        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. - Fix: Register an optim",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": ": In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode. - Root Cause: Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because t",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Lock contention on shared resource boundaries in 06 Pipeline Parallelism and Schedules exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**: In NCCL and standard MPI, `dist.send` is blocking when transfer buffers exceed the internal eager protocol threshold. Rank 0 calls `dist.send` to Rank 1 and blocks waiting for Rank 1 to issue a matching receive. However, Rank 1 begins by executing `if rank < world_size - 1: dist.send(..., dst=2)`! Rank 1 blocks attempting to send to Rank 2 before ever reaching its `recv` call. Every rank in the pipeline is blocked waiting for its downstream peer to receive, creating a circular wait deadlock.\n2. **Deadlock-Free Implementation**:\n   - Use non-blocking P2P collectives: `dist.isend()` and `dist.irecv()`, followed by `torch.cuda.current_stream().wait_stream(...)`.\n   - Alternatively, alternate even/odd ranks or use combined `dist.send_recv()`:\n   ```python\n   # Deadlock-free P2P exchange\n   reqs = []\n   if rank % 2 == 0:\n       if rank < world_size - 1:\n           reqs.append(dist.isend(send_tensor, dst=rank + 1))\n       if rank > 0:\n           reqs.append(dist.irecv(recv_tensor, src=rank - 1))\n   else:\n       if rank > 0:\n           reqs.append(dist.irecv(recv_tensor, src=rank - 1))\n       if rank < world_size - 1:\n           reqs.append(dist.isend(send_tensor, dst=rank + 1))\n   for req in reqs:\n       req.wait()\n   ```",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 06 Pipeline Parallelism and Schedules: : Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. - Fix: Register an optim. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "In an 8-stage pipeline running a 70B model, telemetry shows GPU 0 running at 94% memory utilization and taking 120 ms per forward step, while GPUs 1\u20136 take 85 ms, and GPU 7 takes 135 ms. Why are the boundary stages stragglers, and how should layers be repartitioned?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Root Cause: - Stage 0 holds the input token embedding table ($V \\times H$).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "1. **Root Cause**:\n   - **Stage 0** holds the input token embedding table ($V \\times H$). For modern vocabularies ($V=128\\text{k}, H=8192$), the embedding weights consume substantial memory and compute.\n   - **Stage 7** hosts the final LayerNorm, the output classification head (`lm_head`, another $128\\text{k} \\times 8192$ matrix), and computes Cross-Entropy loss.\n   - Intermediate stages 1\u20136 only compute standard transformer layers. Allocating an equal number of transformer layers ($L/p$) to all stages causes severe load imbalance; the entire pipeline is throttled to the speed of Stage 7.\n2. **Remedy**:\n   - Apply **non-uniform layer partitioning**: Allocate fewer transformer layers to Stage 0 and Stage 7. For instance, if $L=32$, assign 3 layers to Stage 0, 4 layers to Stages 1\u20136, and 3 layers to Stage 7.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Pipeline Parallelism and Schedules subsystem?",
+    "question": "What architectural role does 1. Architectural Principles of Pipeline Parallelism play in 06 Pipeline Parallelism and Schedules?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Architectural Principles of Pipeline Parallelism is essential for maintaining predictable invariants and high performance in 06 Pipeline Parallelism and Schedules.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "1. Architectural Principles of Pipeline Parallelism is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Pipeline Parallelism and Schedules, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Architectural Principles of Pipeline Parallelism in 06 Pipeline Parallelism and Schedules specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does Pipeline Parallelism and Schedules mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. Schedule Mechanics & Bubble Analysis play in 06 Pipeline Parallelism and Schedules?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Schedule Mechanics & Bubble Analysis is essential for maintaining predictable invariants and high performance in 06 Pipeline Parallelism and Schedules.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "2. Schedule Mechanics & Bubble Analysis is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Pipeline Parallelism and Schedules at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Schedule Mechanics & Bubble Analysis in 06 Pipeline Parallelism and Schedules specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

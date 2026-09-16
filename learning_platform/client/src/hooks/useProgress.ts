@@ -82,12 +82,21 @@ export function useProgress() {
   };
 
   const setLastPosition = (pos: LastPosition) => {
-    updateProgress((prev) => ({
-      ...prev,
-      last_position: pos,
-      current_course: pos.course_id,
-      current_lesson: pos.lesson_id,
-    }));
+    updateProgress((prev) => {
+      if (
+        prev.last_position?.course_id === pos.course_id &&
+        prev.last_position?.module_id === pos.module_id &&
+        prev.last_position?.lesson_id === pos.lesson_id
+      ) {
+        return prev;
+      }
+      return {
+        ...prev,
+        last_position: pos,
+        current_course: pos.course_id,
+        current_lesson: pos.lesson_id,
+      };
+    });
   };
 
   const toggleSound = () => {

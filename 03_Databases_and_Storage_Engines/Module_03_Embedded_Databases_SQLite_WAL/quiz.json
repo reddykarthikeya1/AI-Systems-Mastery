@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Embedded Databases SQLite WAL?",
-    "category": "Production Failure Modes",
+    "question": "How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode?",
+    "category": "How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "No. Readers never block writers, and writers never block readers....",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Silent Corruption via PRAGMA synchronous = OFF",
+        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Embedded Databases SQLite WAL?",
-    "category": "Production Failure Modes",
+    "question": "Can readers block writers in SQLite WAL mode?",
+    "category": "Can readers block writers in SQLite WAL mode?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Database Locked: Concurrent writers without busy_timeout immediately throw SQLITE_BUSY.",
+        "text": "No. Readers never block writers, and writers never block readers....",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Runaway -wal File Growth",
+        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Database Locked: Concurrent writers without busy_timeout immediately throw SQLITE_BUSY.",
-    "lesson_ref": "01_README.md"
+    "explanation": "No. Readers never block writers, and writers never block readers.",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Embedded Databases SQLite WAL?",
-    "category": "Production Failure Modes",
+    "question": "What does PRAGMA synchronous = NORMAL guarantee in WAL mode?",
+    "category": "What does PRAGMA synchronous = NORMAL guarantee in WAL mode?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Runaway WAL Growth: Long-running active readers holding open old read snapshots prevent WAL checkpoint truncation.",
+        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: sqlite3.OperationalError: database is locked",
+        "text": "No. Readers never block writers, and writers never block readers....",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Runaway WAL Growth: Long-running active readers holding open old read snapshots prevent WAL checkpoint truncation.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

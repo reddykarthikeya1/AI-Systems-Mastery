@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Dynamic Programming 1D and Sequence Patterns subsystem?",
-    "category": "System Invariants",
+    "question": "In 10 Dynamic Programming 1D and Sequence Patterns triage of defect 'An impossible amount is reported as costing zero coins', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wrong count. T",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Dynamic Programming 1D and Sequence Patterns, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wrong count. T",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Dynamic Programming 1D and Sequence Patterns mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 10 Dynamic Programming 1D and Sequence Patterns triage of defect 'Non-adjacent selection forces alternation', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection. On [2, 1, 1, 2] that yields 2 + 1 = 3, because taking positi",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection. On [2, 1, 1, 2] that yields 2 + 1 = 3, because taking positi",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Dynamic Programming 1D and Sequence Patterns at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 10 Dynamic Programming 1D and Sequence Patterns triage of defect 'Equal values extend the increasing subsequence', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step. Every value returned is a real subsequence length, and on strictly-inc",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step. Every value returned is a real subsequence length, and on strictly-inc",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

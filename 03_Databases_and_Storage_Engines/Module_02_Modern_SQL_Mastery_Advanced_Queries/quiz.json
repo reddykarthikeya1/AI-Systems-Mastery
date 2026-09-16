@@ -1,118 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Modern SQL Mastery Advanced Queries?",
-    "category": "Production Failure Modes",
+    "question": "What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering?",
+    "category": "What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Why can't you use a SELECT column alias in WHERE?",
+        "text": "RANK() leaves gaps in the sequence following ties (e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The NULL Hazard in NOT IN Subqueries",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Cartesian Product in Multi-Join Aggregations",
+        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: **Why can't you use a `SELECT` column alias in `WHERE`?**",
-    "lesson_ref": "01_README.md"
+    "explanation": "RANK() leaves gaps in the sequence following ties (e.g. 1, 2, 2, 4), while DENSERANK() leaves no gaps (e.g. 1, 2, 2, 3).",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What core invariant must be preserved when implementing the Modern SQL Mastery Advanced Queries subsystem?",
-    "category": "System Invariants",
+    "question": "Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL?",
+    "category": "Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "RANK() leaves gaps in the sequence following ties (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
         "is_correct": false
       }
     ],
-    "explanation": "In Modern SQL Mastery Advanced Queries, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does Modern SQL Mastery Advanced Queries mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "How does a Common Table Expression (CTE) differ from a subquery in execution optimization?",
+    "category": "How does a Common Table Expression (CTE) differ from a subquery in execution optimization?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Window Function Frame Default Trap (RANGE vs ROWS)",
+        "text": "RANK() leaves gaps in the sequence following ties (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Modern SQL Mastery Advanced Queries at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
+    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

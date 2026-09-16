@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Files Data Formats Serialization?",
-    "category": "Production Failure Modes",
+    "question": "What is the technical difference between opening a file in text mode (\"r\") versus binary mode (\"rb\")?",
+    "category": "Stream Modes:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "Standard JSON specification does not define a native Date/Time data type.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n). - Binary mode (\"rb\") reads raw, uninterpreted bytes without decoding or altering byte sequences.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Files Data Formats Serialization?",
-    "category": "Production Failure Modes",
+    "question": "Why does failing to specify encoding=\"utf-8\" on Windows frequently result in UnicodeDecodeError when emojis or European currency symbols (\u20ac) are present?",
+    "category": "Encoding Traps:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The Windows Default Encoding Trap",
+        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "In Python prior to PEP 597 / Python 3.15 UTF-8 Mode, open() uses locale.getpreferredencoding(). On Windows, this is typically cp1252, which cannot encode arbitrary Unicode symbols.",
+        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: The pickle Remote Code Execution Hazard",
+        "text": "Standard JSON specification does not define a native Date/Time data type.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The Windows Default Encoding Trap",
-    "lesson_ref": "01_README.md"
+    "explanation": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8. UTF-8 multi-byte characters cannot be decoded by legacy single-byte tables, raising UnicodeDecodeError.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Files Data Formats Serialization?",
-    "category": "Production Failure Modes",
+    "question": "In pathlib.Path, how do you join directory paths using modern pythonic operator overloading?",
+    "category": "Path Composition:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Path Traversal Vulnerability",
+        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with UnicodeDecodeError / Character Mangling",
+        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: The CSV Extra Blank Lines Bug on Windows",
+        "text": "Standard JSON specification does not define a native Date/Time data type.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Path Traversal Vulnerability",
-    "lesson_ref": "01_README.md"
+    "explanation": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.txt\".",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Neo4j Graph Databases Cypher?",
-    "category": "Production Failure Modes",
+    "question": "What is Index-Free Adjacency in graph databases?",
+    "category": "What is Index-Free Adjacency in graph databases?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Missing Schema Index Causing Node Scan in Cypher",
+        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Neo4j Graph Databases Cypher?",
-    "category": "Production Failure Modes",
+    "question": "How does Cypher's declarative pattern matching syntax model relationships?",
+    "category": "How does Cypher's declarative pattern matching syntax model relationships?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Cypher Cartesian Product: Unconnected patterns in MATCH generating trillions of intermediate combinations in RAM.",
+        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Supernode Graph Traversal Stalls",
+        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Cypher Cartesian Product: Unconnected patterns in MATCH generating trillions of intermediate combinations in RAM.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Neo4j Graph Databases Cypher?",
-    "category": "Production Failure Modes",
+    "question": "Why are graph databases significantly faster than relational databases for deep multi-hop queries?",
+    "category": "Why are graph databases significantly faster than relational databases for deep multi-hop queries?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Supernode Traversal Hangs: Nodes with millions of edges causing traversal queries to stall reading relationship pointers.",
+        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Cypher Cartesian Product & Memory Exhaustion",
+        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Supernode Traversal Hangs: Nodes with millions of edges causing traversal queries to stall reading relationship pointers.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

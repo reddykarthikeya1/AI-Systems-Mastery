@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CourseSummary, ProgressPayload } from '../types';
 import { soundService } from '../services/sound';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface PortfolioModalProps {
   isOpen: boolean;
@@ -16,18 +17,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
   progress,
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        soundService.playClick();
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const trapRef = useFocusTrap(isOpen, onClose);
 
   if (!isOpen) return null;
 

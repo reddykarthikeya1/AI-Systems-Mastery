@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product?",
+    "category": "What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: pgvector IVFFlat Index Degradation After Data Growth",
+        "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: HNSW Graph Disconnection Causing Catastrophic Recall Drop",
+        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
-    "category": "Production Failure Modes",
+    "question": "How does the Hierarchical Navigable Small World (HNSW) graph index work?",
+    "category": "How does the Hierarchical Navigable Small World (HNSW) graph index work?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Unnormalized Vectors in Dot Product: Magnitude disparities distorting similarity rankings away from true angle.",
+        "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Un-Normalized Vectors Breaking Cosine Similarity",
+        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Unnormalized Vectors in Dot Product: Magnitude disparities distorting similarity rankings away from true angle.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
-    "category": "Production Failure Modes",
+    "question": "What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN?",
+    "category": "What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "HNSW Graph Disconnection: Undersized ef_construction causing isolated subgraphs and catastrophic recall drops.",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: HNSW Graph Disconnection: Undersized ef_construction causing isolated subgraphs and catastrophic recall drops.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

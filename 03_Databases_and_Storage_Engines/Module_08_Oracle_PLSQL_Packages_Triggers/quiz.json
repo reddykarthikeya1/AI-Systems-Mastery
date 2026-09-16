@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle PLSQL Packages Triggers?",
-    "category": "Production Failure Modes",
+    "question": "What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL?",
+    "category": "What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Row triggers cannot query the table being modified.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: ORA-06502: PL/SQL: numeric or value error",
+        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle PLSQL Packages Triggers?",
-    "category": "Production Failure Modes",
+    "question": "Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it?",
+    "category": "Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "ORA-04091 Mutating Table: Row-level triggers attempting to query the table currently being modified.",
+        "text": "Row triggers cannot query the table being modified.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Autonomous Transaction Deadlock",
+        "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: ORA-04091 Mutating Table: Row-level triggers attempting to query the table currently being modified.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle PLSQL Packages Triggers?",
-    "category": "Production Failure Modes",
+    "question": "How does FORALL bulk binding improve DML performance compared to standard FOR loops?",
+    "category": "How does FORALL bulk binding improve DML performance compared to standard FOR loops?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Context Switching Overhead: Iterating row-by-row in PL/SQL loops rather than using FORALL bulk array binding.",
+        "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Row triggers cannot query the table being modified.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: ORA-04091: table is mutating, trigger/function may not see it",
+        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Context Switching Overhead: Iterating row-by-row in PL/SQL loops rather than using FORALL bulk array binding.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

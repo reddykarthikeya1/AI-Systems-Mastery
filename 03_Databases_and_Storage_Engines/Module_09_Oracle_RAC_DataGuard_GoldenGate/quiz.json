@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle RAC DataGuard GoldenGate?",
-    "category": "Production Failure Modes",
+    "question": "What is Oracle RAC Cache Fusion?",
+    "category": "What is Oracle RAC Cache Fusion?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle RAC DataGuard GoldenGate?",
-    "category": "Production Failure Modes",
+    "question": "What role does the Global Cache Service (GCS) play in an Oracle RAC cluster?",
+    "category": "What role does the Global Cache Service (GCS) play in an Oracle RAC cluster?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Interconnect Cache Fusion Pinging: Concurrent cross-node writes to the same blocks saturate private interconnect RAM.",
+        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: RAC Interconnect Congestion & gc buffer busy acquire",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Interconnect Cache Fusion Pinging: Concurrent cross-node writes to the same blocks saturate private interconnect RAM.",
-    "lesson_ref": "01_README.md"
+    "explanation": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Oracle RAC DataGuard GoldenGate?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between Oracle Active Data Guard and standard physical standby?",
+    "category": "What is the difference between Oracle Active Data Guard and standard physical standby?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Standby Transport Lag: Network bandwidth bottlenecks cause Active Data Guard to lag behind primary transaction streams.",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Data Guard Transport Lag & Standby Desynchronization",
+        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Split-Brain Scenario During RAC Node Eviction",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Standby Transport Lag: Network bandwidth bottlenecks cause Active Data Guard to lag behind primary transaction streams.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

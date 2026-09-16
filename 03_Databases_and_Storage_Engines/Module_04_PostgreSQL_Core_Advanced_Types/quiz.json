@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL Core Advanced Types?",
-    "category": "Production Failure Modes",
+    "question": "How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL?",
+    "category": "How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: GIN Index Not Used for JSONB Queries",
+        "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL Core Advanced Types?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between JSON and JSONB in PostgreSQL?",
+    "category": "What is the difference between JSON and JSONB in PostgreSQL?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Connection Slot Exhaustion: Exceeding max_connections crashes incoming traffic due to per-process RAM consumption.",
+        "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: psycopg2.OperationalError: FATAL: remaining connection slots are reserved for non-replication superuser connections",
+        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Integer Overflow on Serial Primary Keys",
+        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Connection Slot Exhaustion: Exceeding max_connections crashes incoming traffic due to per-process RAM consumption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL Core Advanced Types?",
-    "category": "Production Failure Modes",
+    "question": "Which index type is required to accelerate JSONB containment queries (@>)?",
+    "category": "Which index type is required to accelerate JSONB containment queries (@>)?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "GIN Index Bypass: Using text extraction (->>) rather than containment (@>) forces full sequential heap scans.",
+        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: GIN Index Bypass: Using text extraction (->>) rather than containment (@>) forces full sequential heap scans.",
-    "lesson_ref": "01_README.md"
+    "explanation": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "In Network Protocols Transport API Paradigms, what is the fundamental trade-off associated with **In-Memory Volatility vs Durable Disk Logging**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'TIMEWAIT Socket Accumulation', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Nagle's Algorithm Latency Spikes",
+        "text": "s Creating new TCP connections for every HTTP request exhausts all 65,535 ephemeral ports, resulting in EADDRNOTAVAIL.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **In-Memory Volatility vs Durable Disk Logging** implies: In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "In Network Protocols Transport API Paradigms, what is the fundamental trade-off associated with **Strong Consistency (Linearizability) vs Eventual Consistency**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'Nagle's Algorithm Latency Spikes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "text": "s Small packets delayed up to 200ms when TCP delayed-ACK interacts with Nagle's algorithm (TCPNODELAY disabled).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Strong Consistency (Linearizability) vs Eventual Consistency** implies: Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 3,
-    "question": "In Network Protocols Transport API Paradigms, what is the fundamental trade-off associated with **Push-Based Fanout vs Pull-Based Aggregation**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'Framing Buffer Poisoning / Corrupted Payloads', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Framing Buffer Poisoning / Corrupted Payloads",
+        "text": "s Reading from network socket without loop reading until expectedlength bytes arrive leads to partial deserialization exceptions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: TIME_WAIT Socket Accumulation",
+        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Push-Based Fanout vs Pull-Based Aggregation** implies: Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

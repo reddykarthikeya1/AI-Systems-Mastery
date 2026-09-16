@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Logic for Precise Reasoning subsystem?",
-    "category": "System Invariants",
+    "question": "In 02 Logic for Precise Reasoning triage of defect 'De Morgan's law applied without flipping the connective', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "High multicollinearity causes the design matrix (X^T X) to be non-invertible for closed-form regression.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: A counterexample that refutes nothing",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The Jacobian matrix becomes rank-deficient, causing gradient descent to oscillate along saddle points.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Logic for Precise Reasoning, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Logic for Precise Reasoning mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 02 Logic for Precise Reasoning triage of defect 'implication implemented as conjunction', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Logical equivalence asserted from agreement on a sample",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Eigenvalues with magnitude greater than 1 cause exploding gradients across deep recurrent layers.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: A bounded search reported as a proof",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Logic for Precise Reasoning at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 02 Logic for Precise Reasoning triage of defect '\"for all\" implemented as \"there exists\"', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The covariance matrix is not positive semi-definite, preventing stable Cholesky decomposition.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: A for-all loop that implements there-exists",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: An induction with too few base cases",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

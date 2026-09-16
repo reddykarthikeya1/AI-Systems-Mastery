@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Orthogonality and Projections subsystem?",
-    "category": "System Invariants",
+    "question": "In 06 Orthogonality and Projections triage of defect 'there is none here', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The KL-divergence becomes asymmetric and undefined when target distribution support exceeds proposal support.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The loss surface becomes non-convex, trapping first-order optimization in high-dimensional local minima.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Eigenvalues with magnitude greater than 1 cause exploding gradients across deep recurrent layers.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Orthogonality and Projections, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Orthogonality and Projections mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 06 Orthogonality and Projections triage of defect 'classical Gram-Schmidt instead of modified', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "High multicollinearity causes the design matrix (X^T X) to be non-invertible for closed-form regression.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The covariance matrix is not positive semi-definite, preventing stable Cholesky decomposition.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The Jacobian matrix becomes rank-deficient, causing gradient descent to oscillate along saddle points.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Orthogonality and Projections at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 06 Orthogonality and Projections triage of defect 'a zero-length remainder tested with > 0', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Logic error causes incorrect scaling behavior: ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The KL-divergence becomes asymmetric and undefined when target distribution support exceeds proposal support.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "High multicollinearity causes the design matrix (X^T X) to be non-invertible for closed-form regression.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The loss surface becomes non-convex, trapping first-order optimization in high-dimensional local minima.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

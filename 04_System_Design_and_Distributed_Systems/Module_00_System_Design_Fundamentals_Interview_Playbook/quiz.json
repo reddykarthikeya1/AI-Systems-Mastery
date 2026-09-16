@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "In System Design Fundamentals Interview Playbook, what is the fundamental trade-off associated with **Average QPS vs Peak QPS Provisioning**?",
-    "category": "Architectural Trade-offs",
+    "question": "Pacing & Ambiguity: In a 45-minute technical system design interview, your interviewer asks: \"Design YouTube.\" What should be your immediate next action?",
+    "category": "Pacing & Ambiguity",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Sizing for average saves cloud spend; sizing for peak prevents brownouts.",
+        "id": "opt_a",
+        "text": "Start drawing a multi-region CDN architecture and video transcoding queue.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_b",
+        "text": "Clarify functional requirements (e.g., video upload and video viewing) and non-functional bounds (daily active users, resolution, global audience).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Violates invariant: Peak-to-Average QPS Ratio Blindspots",
+        "id": "opt_c",
+        "text": "Ask which database engine they prefer you use.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Violates invariant: Network Egress vs. Ingress Asymmetry",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "id": "opt_d",
+        "text": "Write the SQL schema for user accounts.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Average QPS vs Peak QPS Provisioning** implies: Sizing for average saves cloud spend; sizing for peak prevents brownouts.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Interviewers intentionally give vague prompts like \"Design YouTube\" to evaluate how you handle ambiguity. Jumping straight into architecture without scoping guarantees failure. You must spend the first 5 minutes establishing constraints: upload size, viewing volume, read-to-write ratio, and whether search or live-strea",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "In System Design Fundamentals Interview Playbook, what is the fundamental trade-off associated with **Single Multi-Purpose DB vs Polyglot Persistence**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 00 System Design Fundamentals Interview Playbook failure 'Omission of Storage Replication Factor', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Single DB simplifies ops; Polyglot fits storage engine to data access pattern.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "text": "s Capacity estimations calculate raw data volume and forget that Kafka, Cassandra, and HDFS require 3x replication plus 20% filesystem headroom.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "text": "Lock contention on shared resource boundaries in 00 System Design Fundamentals Interview Playbook exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Omission of Storage Replication Factor",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Single Multi-Purpose DB vs Polyglot Persistence** implies: Single DB simplifies ops; Polyglot fits storage engine to data access pattern.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 00 System Design Fundamentals Interview Playbook: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 3,
-    "question": "In System Design Fundamentals Interview Playbook, what is the fundamental trade-off associated with **Client-Side Polling vs Persistent WebSockets**?",
-    "category": "Architectural Trade-offs",
+    "question": "When diagnosing the 00 System Design Fundamentals Interview Playbook failure 'Peak-to-Average QPS Ratio Blindspots', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "HTTP polling is stateless; WebSockets provide sub-millisecond bidirectional push.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "text": "s Sizing servers for average daily QPS (e.g. 10M DAU / 86400 = 115 QPS) causes complete brownouts during lunch or marketing spikes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "text": "Lock contention on shared resource boundaries in 00 System Design Fundamentals Interview Playbook exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Client-Side Polling vs Persistent WebSockets** implies: HTTP polling is stateless; WebSockets provide sub-millisecond bidirectional push.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 00 System Design Fundamentals Interview Playbook: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

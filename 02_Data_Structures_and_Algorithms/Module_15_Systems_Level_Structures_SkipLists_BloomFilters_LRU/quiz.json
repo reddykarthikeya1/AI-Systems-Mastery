@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Systems Level Structures SkipLists BloomFilters LRU subsystem?",
-    "category": "System Invariants",
+    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'A cache hit does not protect an entry from eviction', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO. The cache still returns cor",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Systems Level Structures SkipLists BloomFilters LRU, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO. The cache still returns cor",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Systems Level Structures SkipLists BloomFilters LRU mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'The membership filter says yes to almost everything', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of them is c",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of them is c",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Systems Level Structures SkipLists BloomFilters LRU at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'A full ring buffer overwrites the wrong slot', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest. The contents and the count stay plausib",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest. The contents and the count stay plausib",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

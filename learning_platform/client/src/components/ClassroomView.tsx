@@ -49,13 +49,13 @@ interface ClassroomViewProps {
 
 interface ReaderSettings {
   fontSize: 'sm' | 'md' | 'lg' | 'xl';
-  measure: 'narrow' | 'normal' | 'wide';
+  measure: 'narrow' | 'normal' | 'wide' | 'full';
   fontFamily: 'sans' | 'serif' | 'mono';
 }
 
 const DEFAULT_READER_SETTINGS: ReaderSettings = {
   fontSize: 'md',
-  measure: 'normal',
+  measure: 'wide',
   fontFamily: 'sans',
 };
 
@@ -182,8 +182,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path, requestedTab]);
 
   // Track last visited position for 1-click resume
+  const lastRecordedRef = useRef<string | null>(null);
   useEffect(() => {
-    if (onUpdateLastPosition) {
+    if (onUpdateLastPosition && currentLesson?.id && lastRecordedRef.current !== currentLesson.id) {
+      lastRecordedRef.current = currentLesson.id;
       onUpdateLastPosition({
         course_id: courseId || module.folder_path.split('/')[0],
         course_title: courseTitle,
@@ -195,7 +197,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         updated_at: Date.now(),
       });
     }
-  }, [currentLesson.id, module.id]);
+  }, [currentLesson?.id, module?.id]);
 
   // Parse Jupyter Notebook cells if current file is an .ipynb
   const notebookCells = useMemo<{ type: 'markdown' | 'code'; source: string }[]>(() => {
@@ -427,9 +429,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   const measureClass = useMemo(() => {
     switch (readerSettings.measure) {
-      case 'narrow': return 'max-w-[60ch]';
-      case 'wide': return 'max-w-[80ch]';
-      default: return 'max-w-[68ch]';
+      case 'narrow': return 'max-w-[64ch]';
+      case 'wide': return 'max-w-[90ch]';
+      case 'full': return 'max-w-none';
+      default: return 'max-w-[76ch]';
     }
   }, [readerSettings.measure]);
 
@@ -716,9 +719,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500 transition-all duration-100 ease-out"
         style={{ width: `${scrollProgress}%` }}
       />
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 transition-all duration-300 ${
-        activeTab === 'project' || activeTab === 'arena' || isScratchpadOpen ? 'max-w-[1850px]' : 'max-w-7xl'
-      }`}>
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 space-y-6 transition-all duration-300">
       {/* Top Bar Navigation & Reader Controls */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-4">
         <div className="flex items-center gap-3">
@@ -830,7 +831,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
             {/* Measure Toggle */}
             <div className="flex items-center gap-0.5">
-              {(['narrow', 'normal', 'wide'] as const).map((measure) => (
+              {(['narrow', 'normal', 'wide', 'full'] as const).map((measure) => (
                 <button
                   key={measure}
                   onClick={() => updateReaderSettings({ measure })}
@@ -839,10 +840,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold shadow-xs'
                       : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
                   }`}
-                  title={`Reading measure: ${measure === 'narrow' ? '60ch' : measure === 'normal' ? '68ch' : '80ch'}`}
+                  title={`Reading measure: ${measure === 'narrow' ? '64ch' : measure === 'normal' ? '76ch' : measure === 'wide' ? '90ch' : 'Full Page Width'}`}
                   aria-label={`Reading width ${measure}`}
                 >
-                  {measure === 'narrow' ? '60ch' : measure === 'normal' ? '68ch' : '80ch'}
+                  {measure === 'narrow' ? '64ch' : measure === 'normal' ? '76ch' : measure === 'wide' ? '90ch' : 'Full'}
                 </button>
               ))}
             </div>
@@ -1093,61 +1094,59 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           />
         </div>
       ) : (
-        /* 2. REGULAR LESSON VIEWS: Standard Left Syllabus Outline + Center View + Right Runner */
-        <div className="flex gap-6 items-start">
-          <div className="flex-1 min-w-0">
-            <div className={`grid grid-cols-1 ${isSidebarOpen ? 'lg:grid-cols-4' : 'lg:grid-cols-1'} gap-8 items-start`}>
-              {/* Left Sidebar: Lesson Outline (Collapsible) */}
-              {isSidebarOpen && (
-                <aside aria-label="Module syllabus sidebar" className="lg:col-span-1 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
-                  <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
-                    <span className="text-xs font-mono font-semibold text-zinc-400 uppercase tracking-wider">
-                      Module {module.module_num.toString().padStart(2, '0')} Syllabus
-                    </span>
-                    <span className="text-xs font-mono text-zinc-400">
-                      {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
-                    </span>
-                  </div>
+        /* 2. REGULAR LESSON VIEWS: Responsive Full-Width 3-Pane Architecture */
+        <div className="flex gap-6 2xl:gap-8 items-start w-full">
+          {/* Left Sidebar: Lesson Outline (Collapsible) */}
+          {isSidebarOpen && (
+            <aside aria-label="Module syllabus sidebar" className="w-72 2xl:w-80 shrink-0 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
+              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
+                <span className="text-xs font-mono font-semibold text-zinc-400 uppercase tracking-wider">
+                  Module {module.module_num.toString().padStart(2, '0')} Syllabus
+                </span>
+                <span className="text-xs font-mono text-zinc-400">
+                  {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
+                </span>
+              </div>
 
-                  <nav aria-label="Module Lessons" className="space-y-1 max-h-[75vh] overflow-y-auto">
-                    {allLessons.map((l, idx) => {
-                      const active = l.id === currentLesson.id;
-                      const isDone = completedLessons.includes(l.id);
+              <nav aria-label="Module Lessons" className="space-y-1 max-h-[75vh] overflow-y-auto">
+                {allLessons.map((l, idx) => {
+                  const active = l.id === currentLesson.id;
+                  const isDone = completedLessons.includes(l.id);
 
-                      return (
-                        <button
-                          key={l.id}
-                          onClick={() => onSelectLesson(l.file_path, l.id)}
-                          aria-label={`Lesson ${idx + 1}: ${l.title} ${isDone ? '(completed)' : ''}`}
-                          className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
-                            active
-                              ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
-                              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
-                          }`}
-                        >
-                          <span className="line-clamp-1 flex items-center gap-2">
-                            <span className="font-mono text-xs text-zinc-400">
-                              {(idx + 1).toString().padStart(2, '0')}
-                            </span>
-                            <span>{l.title}</span>
-                          </span>
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {getLessonBadge(l.type)}
-                            {isDone ? (
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                            ) : (
-                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 shrink-0" />
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </nav>
-                </aside>
-              )}
+                  return (
+                    <button
+                      key={l.id}
+                      onClick={() => onSelectLesson(l.file_path, l.id)}
+                      aria-label={`Lesson ${idx + 1}: ${l.title} ${isDone ? '(completed)' : ''}`}
+                      className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
+                        active
+                          ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
+                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
+                      }`}
+                    >
+                      <span className="line-clamp-1 flex items-center gap-2">
+                        <span className="font-mono text-xs text-zinc-400">
+                          {(idx + 1).toString().padStart(2, '0')}
+                        </span>
+                        <span>{l.title}</span>
+                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {getLessonBadge(l.type)}
+                        {isDone ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                        ) : (
+                          <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 shrink-0" />
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </nav>
+            </aside>
+          )}
 
-              {/* Center Area: Active View */}
-              <div className={`${isSidebarOpen ? 'lg:col-span-3' : 'lg:col-span-1'} space-y-4`}>
+          {/* Center Area: Active View (Fluid, Takes ALL remaining width) */}
+          <div className="flex-1 min-w-0 space-y-4">
                 {/* TAB: THEORY & SCRIPT READER */}
                 {activeTab === 'theory' && (
                   <div ref={theoryContentRef}>
@@ -1276,159 +1275,145 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         </div>
                       </div>
                     ) : (
-                      /* CASE C: STANDARD MARKDOWN VIEW (With KaTeX Math & TOC) */
-                      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
-                        {/* Markdown Body */}
-                        <div className="xl:col-span-3 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-sm">
-                          {isLoading ? (
-                            <LessonSkeleton />
-                          ) : (
-                            <>
-                              <div
-                                className={`markdown-body text-zinc-800 dark:text-zinc-200 mx-auto transition-all ${measureClass} ${fontSizeClass} ${fontFamilyClass}`}
-                                dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
-                              />
+                      /* CASE C: STANDARD MARKDOWN VIEW (With KaTeX Math) */
+                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-sm">
+                        {isLoading ? (
+                          <LessonSkeleton />
+                        ) : (
+                          <>
+                            <div
+                              className={`markdown-body text-zinc-800 dark:text-zinc-200 mx-auto transition-all ${measureClass} ${fontSizeClass} ${fontFamilyClass}`}
+                              dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
+                            />
 
-                              {/* 1-Tap Spaced Repetition Confidence Rating */}
-                              <div className="mt-12 p-5 rounded-2xl bg-zinc-50/70 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                                <div>
-                                  <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                                    How confident do you feel with this lesson?
-                                  </h4>
-                                  <p className="text-xs text-zinc-500 mt-0.5">
-                                    Rates retention in your SuperMemo SM-2 spaced repetition deck.
-                                  </p>
-                                  {confidenceRated && (
-                                    <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                                      ✓ {confidenceRated}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => handleConfidenceClick(5, '🟢 Solid retention scheduled (5/5)')}
-                                    className="px-3 py-1.5 rounded-xl text-xs font-medium border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors flex items-center gap-1.5"
-                                    title="Got it: high retention, intervals expand"
-                                    aria-label="Got it (High confidence)"
-                                  >
-                                    <span>🟢 Got it</span>
-                                  </button>
-                                  <button
-                                    onClick={() => handleConfidenceClick(3, '🟡 Review scheduled for tomorrow (3/5)')}
-                                    className="px-3 py-1.5 rounded-xl text-xs font-medium border border-amber-300 dark:border-amber-800/80 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex items-center gap-1.5"
-                                    title="Shaky: review tomorrow to solidify"
-                                    aria-label="Shaky (Medium confidence)"
-                                  >
-                                    <span>🟡 Shaky</span>
-                                  </button>
-                                  <button
-                                    onClick={() => handleConfidenceClick(1, '🔴 Reset for immediate review today (1/5)')}
-                                    className="px-3 py-1.5 rounded-xl text-xs font-medium border border-rose-300 dark:border-rose-800/80 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors flex items-center gap-1.5"
-                                    title="Lost: reset interval to 1 day"
-                                    aria-label="Lost (Low confidence)"
-                                  >
-                                    <span>🔴 Lost</span>
-                                  </button>
-                                </div>
+                            {/* 1-Tap Spaced Repetition Confidence Rating */}
+                            <div className="mt-12 p-5 rounded-2xl bg-zinc-50/70 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                              <div>
+                                <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                                  How confident do you feel with this lesson?
+                                </h4>
+                                <p className="text-xs text-zinc-500 mt-0.5">
+                                  Rates retention in your SuperMemo SM-2 spaced repetition deck.
+                                </p>
+                                {confidenceRated && (
+                                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                                    ✓ {confidenceRated}
+                                  </span>
+                                )}
                               </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => handleConfidenceClick(5, '🟢 Solid retention scheduled (5/5)')}
+                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors flex items-center gap-1.5"
+                                  title="Got it: high retention, intervals expand"
+                                  aria-label="Got it (High confidence)"
+                                >
+                                  <span>🟢 Got it</span>
+                                </button>
+                                <button
+                                  onClick={() => handleConfidenceClick(3, '🟡 Review scheduled for tomorrow (3/5)')}
+                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-amber-300 dark:border-amber-800/80 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex items-center gap-1.5"
+                                  title="Shaky: review tomorrow to solidify"
+                                  aria-label="Shaky (Medium confidence)"
+                                >
+                                  <span>🟡 Shaky</span>
+                                </button>
+                                <button
+                                  onClick={() => handleConfidenceClick(1, '🔴 Reset for immediate review today (1/5)')}
+                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-rose-300 dark:border-rose-800/80 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors flex items-center gap-1.5"
+                                  title="Lost: reset interval to 1 day"
+                                  aria-label="Lost (Low confidence)"
+                                >
+                                  <span>🔴 Lost</span>
+                                </button>
+                              </div>
+                            </div>
 
-                              {/* Up Next Preview Card */}
-                              {nextLesson ? (
-                                <div className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-50/80 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs transition-all hover:border-blue-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                                        Up Next • Lesson {currentLessonIndex + 2} of {allLessons.length}
-                                      </span>
-                                      {getLessonBadge(nextLesson.type)}
-                                    </div>
-                                    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                                      {nextLesson.title}
-                                    </h3>
+                            {/* Up Next Preview Card */}
+                            {nextLesson ? (
+                              <div className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-50/80 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs transition-all hover:border-blue-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                                      Up Next • Lesson {currentLessonIndex + 2} of {allLessons.length}
+                                    </span>
+                                    {getLessonBadge(nextLesson.type)}
                                   </div>
-                                  <button
-                                    onClick={handleCompleteAndNext}
-                                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5 shadow-sm transition-all active:scale-95 shrink-0"
-                                    aria-label="Continue to Next Lesson"
-                                  >
-                                    <span>Next Lesson</span>
-                                    <ChevronRight className="w-4 h-4" />
-                                  </button>
+                                  <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                                    {nextLesson.title}
+                                  </h3>
                                 </div>
-                              ) : (
-                                <div className="my-8 p-6 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                                        Module Complete
-                                      </span>
-                                    </div>
-                                    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                                      All lessons cleared for Module {module.module_num.toString().padStart(2, '0')}
-                                    </h3>
-                                    <p className="text-xs text-zinc-500">
-                                      Ready to test your comprehension in the Module Mastery Gate?
-                                    </p>
+                                <button
+                                  onClick={handleCompleteAndNext}
+                                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5 shadow-sm transition-all active:scale-95 shrink-0"
+                                  aria-label="Continue to Next Lesson"
+                                >
+                                  <span>Next Lesson</span>
+                                  <ChevronRight className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="my-8 p-6 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                                      Module Complete
+                                    </span>
                                   </div>
-                                  <button
-                                    onClick={() => {
-                                      if (onOpenMasteryGate) onOpenMasteryGate();
-                                    }}
-                                    className="px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all active:scale-95 shrink-0"
-                                    aria-label="Unlock Module Mastery Gate"
-                                  >
-                                    <span>Mastery Gate 🛡️</span>
-                                    <ChevronRight className="w-4 h-4" />
-                                  </button>
+                                  <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                                    All lessons cleared for Module {module.module_num.toString().padStart(2, '0')}
+                                  </h3>
+                                  <p className="text-xs text-zinc-500">
+                                    Ready to test your comprehension in the Module Mastery Gate?
+                                  </p>
                                 </div>
-                              )}
-                            </>
-                          )}
+                                <button
+                                  onClick={() => {
+                                    if (onOpenMasteryGate) onOpenMasteryGate();
+                                  }}
+                                  className="px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all active:scale-95 shrink-0"
+                                  aria-label="Unlock Module Mastery Gate"
+                                >
+                                  <span>Mastery Gate 🛡️</span>
+                                  <ChevronRight className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
+                          </>
+                        )}
 
-                          {/* Bottom Lesson Navigation Dock */}
-                          <div className="mt-12 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 bg-white/95 dark:bg-[#111622]/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-xl z-20">
-                            <div className="flex items-center gap-3 w-full sm:w-auto">
-                              <button
-                                onClick={handlePrevLesson}
-                                disabled={!prevLesson}
-                                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-2 shadow-sm"
-                              >
-                                <ChevronLeft className="w-4 h-4" />
-                                <span>Previous Lesson</span>
-                              </button>
-                            </div>
+                        {/* Bottom Lesson Navigation Dock */}
+                        <div className="mt-12 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 bg-white/95 dark:bg-[#111622]/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-xl z-20">
+                          <div className="flex items-center gap-3 w-full sm:w-auto">
+                            <button
+                              onClick={handlePrevLesson}
+                              disabled={!prevLesson}
+                              className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-2 shadow-sm"
+                            >
+                              <ChevronLeft className="w-4 h-4" />
+                              <span>Previous Lesson</span>
+                            </button>
+                          </div>
 
-                            <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
-                              <span>Lesson {currentLessonIndex + 1} of {allLessons.length}</span>
-                              <span className="text-zinc-300 dark:text-zinc-700">•</span>
-                              <span className={`inline-flex items-center gap-1 font-semibold ${isCompleted ? 'text-emerald-500' : 'text-zinc-400'}`}>
-                                <CheckCircle2 className="w-3.5 h-3.5" />
-                                {isCompleted ? 'Completed' : 'In Progress'}
-                              </span>
-                            </div>
+                          <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+                            <span>Lesson {currentLessonIndex + 1} of {allLessons.length}</span>
+                            <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                            <span className={`inline-flex items-center gap-1 font-semibold ${isCompleted ? 'text-emerald-500' : 'text-zinc-400'}`}>
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              {isCompleted ? 'Completed' : 'In Progress'}
+                            </span>
+                          </div>
 
-                            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                              <button
-                                onClick={handleCompleteAndNext}
-                                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
-                              >
-                                <span>{nextLesson ? 'Mark Complete & Next' : 'Unlock Module Mastery Gate 🛡️'}</span>
-                                <ChevronRight className="w-4 h-4" />
-                              </button>
-                            </div>
+                          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                            <button
+                              onClick={handleCompleteAndNext}
+                              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                            >
+                              <span>{nextLesson ? 'Mark Complete & Next' : 'Unlock Module Mastery Gate 🛡️'}</span>
+                              <ChevronRight className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
-
-                        {/* Sticky Table of Contents Sidebar */}
-                        {!isScratchpadOpen && (
-                          <div className="hidden xl:block xl:col-span-1">
-                            <TableOfContents
-                              content={content}
-                              isBookmarked={isBookmarked}
-                              onToggleBookmark={onToggleBookmark}
-                            />
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>
@@ -1521,12 +1506,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </div>
                 )}
               </div>
-            </div>
-          </div>
 
-          {/* Right Side: Page-Aware Interactive Multi-Runtime Runner */}
-          {isScratchpadOpen && (
-            <div className="sticky top-20 shrink-0 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
+          {/* Right Rail: Page-Aware Interactive Runner OR Sticky Quick-Reach TOC */}
+          {isScratchpadOpen ? (
+            <aside aria-label="Interactive multi-runtime code runner" className="w-96 2xl:w-[480px] shrink-0 sticky top-20 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
               <SideCodeRunner
                 initialCode={scratchpadCode}
                 initialMode={scratchpadMode}
@@ -1538,7 +1521,17 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 pageSnippets={pageSnippets}
                 onClose={() => setIsScratchpadOpen(false)}
               />
-            </div>
+            </aside>
+          ) : (
+            activeTab === 'theory' && (
+              <aside aria-label="On this page quick reach" className="w-72 2xl:w-80 shrink-0 sticky top-20 hidden xl:block">
+                <TableOfContents
+                  content={content}
+                  isBookmarked={isBookmarked}
+                  onToggleBookmark={onToggleBookmark}
+                />
+              </aside>
+            )
           )}
         </div>
       )}

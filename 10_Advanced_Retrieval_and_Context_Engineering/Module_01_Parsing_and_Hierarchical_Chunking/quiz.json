@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "An insurance policy PDF contains a 4-page table with claim coverage rules. Naive OCR tools extract tables as unformatted raw lines, losing column alignment and header names on pages 2\u20134. How do you design an enterprise ingestion pipeline that preserves table relational integrity?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 01 Parsing and Hierarchical Chunking failure 'Top Production Failure Modes in Document Chunking', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Layout-Aware Vision / Bounding Box Parsing: Use layout models (e.g. LayoutLM / Marker / Docling) to detect table bounding boxes and cell coordinates across page breaks.",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. - Fix: Use transaction",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": ": Vector search returns top hits, but LLM receives empty context strings. - Root Cause: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "Lock contention on shared resource boundaries in 01 Parsing and Hierarchical Chunking exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Layout-Aware Vision / Bounding Box Parsing**: Use layout models (e.g. LayoutLM / Marker / Docling) to detect table bounding boxes and cell coordinates across page breaks.\n2. **Header Propagation**: If a table spans multiple pages, detect header repetition or propagate the primary header row across subsequent page fragments.\n3. **Markdown / HTML Linearization**: Convert the parsed grid into structured Markdown or HTML table syntax (`| Col A | Col B |`).\n4. **Row-Level Chunking with Header Injection**: Instead of arbitrary token splitting, chunk by table rows, prepending the full column header schema to every single row chunk.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 01 Parsing and Hierarchical Chunking: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. - Fix: Use transaction. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "How does semantic chunking identify natural topic transitions, and what statistical threshold prevents over-segmentation?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Split document into individual sentences: $(s_1, s_2, \\dots, s_n)$. 2.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "1. Split document into individual sentences: $(s_1, s_2, \\dots, s_n)$.\n2. Compute sliding sentence group embeddings and calculate cosine distance between adjacent sentence pairs:\n   $$d_i = 1 - \\cos(\\text{Embed}(s_i), \\text{Embed}(s_{i+1}))$$\n3. Compute moving average $\\mu$ and standard deviation $\\sigma$ of distances.\n4. Establish breakpoint threshold:\n   $$\\tau = \\mu + k \\cdot \\sigma, \\quad k \\in [1.0, 2.0]$$\n   Whenever $d_i > \\tau$, trigger a chunk boundary.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Parsing and Hierarchical Chunking subsystem?",
+    "question": "What architectural role does 1. Structural Document Parsing Foundations play in 01 Parsing and Hierarchical Chunking?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Structural Document Parsing Foundations is essential for maintaining predictable invariants and high performance in 01 Parsing and Hierarchical Chunking.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "text": "1. Structural Document Parsing Foundations is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Parsing and Hierarchical Chunking, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Structural Document Parsing Foundations in 01 Parsing and Hierarchical Chunking specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does Parsing and Hierarchical Chunking mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. Parent-Child Hierarchical Architecture play in 01 Parsing and Hierarchical Chunking?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Parent-Child Hierarchical Architecture is essential for maintaining predictable invariants and high performance in 01 Parsing and Hierarchical Chunking.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "2. Parent-Child Hierarchical Architecture is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Parsing and Hierarchical Chunking at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Parent-Child Hierarchical Architecture in 01 Parsing and Hierarchical Chunking specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

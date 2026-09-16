@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Decorators Generators Context Managers?",
-    "category": "Production Failure Modes",
+    "question": "What is the fundamental difference in execution state between a function using return and a function using yield?",
+    "category": "Generators vs Functions:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 3: Context manager __exit__ returning True",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the next next() call.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Decorators Generators Context Managers?",
-    "category": "Production Failure Modes",
+    "question": "Why should you always decorate your inner wrapper with @functools.wraps(func)?",
+    "category": "Decorator Metadata:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Missing @functools.wraps Erases Introspection",
+        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 1: Missing functools.wraps",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Generators are one-time data streams. Once they reach the end and raise StopIteration, they cannot be reset or rewound.",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Critical exceptions silently swallowed",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Missing `@functools.wraps` Erases Introspection",
-    "lesson_ref": "01_README.md"
+    "explanation": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What core invariant must be preserved when implementing the Decorators Generators Context Managers subsystem?",
-    "category": "System Invariants",
+    "question": "Why does (x2 for x in range(10000000)) consume ~100 bytes of RAM, while [x2 for x in range(10000000)] consumes ~400 MB?",
+    "category": "Memory Footprint:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Parameterized Decorator 3-Layer Nesting",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Bug 2: Generator exhaustion",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
         "is_correct": false
       }
     ],
-    "explanation": "In Decorators Generators Context Managers, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "How does Decorators Generators Context Managers mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Violates invariant: The Exhausted Generator Trap",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Violates invariant: Accidental Exception Suppression in __exit__",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Decorators Generators Context Managers at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Violates invariant: Missing @functools.wraps (Function Metadata Erasure)",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

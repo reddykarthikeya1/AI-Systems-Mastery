@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Document Modeling BSON?",
-    "category": "Production Failure Modes",
+    "question": "What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it?",
+    "category": "What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "MongoDB caps single BSON documents at 16MB.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Accidental Full Collection Scan (COLLSCAN)",
+        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "MongoDB caps single BSON documents at 16MB. The Time-Series Bucket Pattern or 1:N referencing solves unbounded array growth.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Document Modeling BSON?",
-    "category": "Production Failure Modes",
+    "question": "Explain the structural components of a 12-byte BSON ObjectId.",
+    "category": "Explain the structural components of a 12-byte BSON ObjectId.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "16MB BSON Document Limit: Unbounded array embedding eventually breaches MongoDB's hard document ceiling.",
+        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "MongoDB caps single BSON documents at 16MB.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: 16MB BSON Document Limit: Unbounded array embedding eventually breaches MongoDB's hard document ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Document Modeling BSON?",
-    "category": "Production Failure Modes",
+    "question": "When should you Embed vs Reference related data in MongoDB?",
+    "category": "When should you Embed vs Reference related data in MongoDB?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Accidental COLLSCAN: Omitting composite indexes forces MongoDB to scan millions of documents into memory.",
+        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Unbounded Array Growth (16MB Document Limit Exceeded)",
+        "text": "MongoDB caps single BSON documents at 16MB.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Schema Validation Silent Insert Rejections",
+        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Accidental COLLSCAN: Omitting composite indexes forces MongoDB to scan millions of documents into memory.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

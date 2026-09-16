@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Columnar OLAP DuckDB ClickHouse subsystem?",
-    "category": "System Invariants",
+    "question": "Why are columnar storage engines 10x-100x faster for analytical aggregations than row stores?",
+    "category": "Why are columnar storage engines 10x-100x faster for analytical aggregations than row stores?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Processing data in batches of columnar vectors (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
         "is_correct": false
       }
     ],
-    "explanation": "In Columnar OLAP DuckDB ClickHouse, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Columnar OLAP DuckDB ClickHouse mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "What is Vectorized Execution in DuckDB?",
+    "category": "What is Vectorized Execution in DuckDB?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Processing data in batches of columnar vectors (e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: DuckDB Out-of-Memory on Enormous Parquet Joins",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Sub-Optimal Parquet Row-Group Sizing",
+        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Columnar OLAP DuckDB ClickHouse at scale?",
-    "category": "Scalability & Performance",
+    "question": "How does the ClickHouse MergeTree storage engine organize data on disk?",
+    "category": "How does the ClickHouse MergeTree storage engine organize data on disk?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Too Many Parts Exception in ClickHouse MergeTree",
+        "text": "Processing data in batches of columnar vectors (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

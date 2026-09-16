@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "Derive the mathematical speedup condition for Speculative Decoding. Given target model latency $T_{\\text{target}} = 40 \\text{ ms}$, draft model latency $T_{\\text{draft}} = 4 \\text{ ms}$, lookahead depth $\\gamma = 5$, and average token acceptance rate $\\alpha = 0.75$, calculate the expected speedup.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 07 Speculative Decoding Architectures failure 'Top Production Failure Modes in Speculative Decoding', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Expected Accepted Tokens per Step: $$\\mathbb{E}[N] = \\sum_{i=1}^\\gamma \\alpha^i + 1 = \\frac{1 - \\alpha^{\\gamma+1}}{1 - \\alpha} = \\frac{1 - (0.75)^6}{1 - 0.75} = \\frac{1 - 0.178}{0.25} \\approx 3.29 ...",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache. - Fix: Ro",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Model produces repetitious nonsense after the first rejected speculative token. - Root Cause: When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected t",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Lock contention on shared resource boundaries in 07 Speculative Decoding Architectures exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Expected Accepted Tokens per Step**:\n   $$\\mathbb{E}[N] = \\sum_{i=1}^\\gamma \\alpha^i + 1 = \\frac{1 - \\alpha^{\\gamma+1}}{1 - \\alpha} = \\frac{1 - (0.75)^6}{1 - 0.75} = \\frac{1 - 0.178}{0.25} \\approx 3.29 \\text{ tokens}$$\n2. **Iteration Execution Time**:\n   $$T_{\\text{iter}} = \\gamma \\cdot T_{\\text{draft}} + T_{\\text{target}} = (5 \\times 4) + 40 = 60 \\text{ ms}$$\n3. **Effective Latency per Token**:\n   $$T_{\\text{token, spec}} = \\frac{60 \\text{ ms}}{3.29} \\approx 18.2 \\text{ ms}$$\n4. **Speedup**:\n   $$\\text{Speedup} = \\frac{T_{\\text{target}}}{T_{\\text{token, spec}}} = \\frac{40}{18.2} \\approx 2.20\\times$$\n   The system achieves a $2.2\\times$ throughput increase!",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 07 Speculative Decoding Architectures: : When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache. - Fix: Ro. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "An engineer reports that Speculative Decoding provides a $2.5\\times$ speedup at temperature $T=0.0$ (greedy), but at $T=1.0$, speedup drops to $1.02\\times$. Explain the mathematical cause of this collapse.",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "At $T=0.0$, the draft model only needs to match the argmax of the target model. High-capacity draft models frequently agree with the target model on the top-1 token ($> 80\\%$ agreement).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "At $T=0.0$, the draft model only needs to match the argmax of the target model. High-capacity draft models frequently agree with the target model on the top-1 token ($> 80\\%$ agreement).\nAt $T=1.0$, rejection sampling compares full distribution probabilities: $\\min(1, p(x)/q(x))$. When vocabulary size is $128\\text{k}$, divergence between the distributions increases, causing rejection probability to spike and collapsing effective accepted tokens per step to $\\approx 1.1$.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Speculative Decoding Architectures subsystem?",
+    "question": "What architectural role does 1. Mathematical Formulation of Speculative Decoding play in 07 Speculative Decoding Architectures?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Mathematical Formulation of Speculative Decoding is essential for maintaining predictable invariants and high performance in 07 Speculative Decoding Architectures.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "1. Mathematical Formulation of Speculative Decoding is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Speculative Decoding Architectures, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Mathematical Formulation of Speculative Decoding in 07 Speculative Decoding Architectures specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does Speculative Decoding Architectures mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. Medusa: Multi-Head Speculation Without Draft Models play in 07 Speculative Decoding Architectures?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Medusa: Multi-Head Speculation Without Draft Models is essential for maintaining predictable invariants and high performance in 07 Speculative Decoding Architectures.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "2. Medusa: Multi-Head Speculation Without Draft Models is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Speculative Decoding Architectures at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Medusa: Multi-Head Speculation Without Draft Models in 07 Speculative Decoding Architectures specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

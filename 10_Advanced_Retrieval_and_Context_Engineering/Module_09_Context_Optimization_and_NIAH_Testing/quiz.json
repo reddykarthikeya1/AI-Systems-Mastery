@@ -1,118 +1,89 @@
 [
   {
     "id": 1,
-    "question": "An enterprise customer support bot injects 30 retrieved knowledge base articles (totaling 24,000 tokens) into every prompt. Monthly API costs are $45,000. Telemetry indicates that 80% of injected tokens are boilerplate headers and irrelevant filler. How do you implement automated context compression?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 09 Context Optimization and NIAH Testing failure 'Top Production Failure Modes in Context Optimization', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Token Pruning with LLMLingua: Use a lightweight language model (e.g. GPT-2-small / Llama-3-1B) to evaluate token perplexities.",
+        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. - Fix: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": ": Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it). - Root Cause: Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high fr",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "Lock contention on shared resource boundaries in 09 Context Optimization and NIAH Testing exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Token Pruning with LLMLingua**: Use a lightweight language model (e.g. GPT-2-small / Llama-3-1B) to evaluate token perplexities. Tokens with low conditional surprise (predictable filler, boilerplate HTML/Markdown syntax) are pruned.\n2. **Chunk Summarization**: Pass passages through an extractive summarizer to retain only actionable sentences.\n3. **Result**: Context size shrinks from 24,000 tokens to 4,800 tokens ($80\\%$ reduction), saving $36,000 monthly with zero drop in QA accuracy.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 09 Context Optimization and NIAH Testing: : Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. - Fix: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "What core invariant must be preserved when implementing the Context Optimization and NIAH Testing subsystem?",
+    "question": "What architectural role does 1. Context Distribution & Attention Sinks play in 09 Context Optimization and NIAH Testing?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Context Distribution & Attention Sinks is essential for maintaining predictable invariants and high performance in 09 Context Optimization and NIAH Testing.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "1. Context Distribution & Attention Sinks is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Context Optimization and NIAH Testing, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Context Distribution & Attention Sinks in 09 Context Optimization and NIAH Testing specifications.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "How does Context Optimization and NIAH Testing mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "What architectural role does 2. Needle-in-a-Haystack (NIAH) Protocol play in 09 Context Optimization and NIAH Testing?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Needle-in-a-Haystack (NIAH) Protocol is essential for maintaining predictable invariants and high performance in 09 Context Optimization and NIAH Testing.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "2. Needle-in-a-Haystack (NIAH) Protocol is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Context Optimization and NIAH Testing at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Needle-in-a-Haystack (NIAH) Protocol in 09 Context Optimization and NIAH Testing specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

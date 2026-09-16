@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
-    "category": "Production Failure Modes",
+    "question": "Give two real-world examples of an I/O-bound task and two examples of a CPU-bound task in backend engineering.",
+    "category": "Workload Classification:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Passing Unpicklable Objects to multiprocessing",
+        "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Corrupted or truncated output files from daemon threads",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD. - CPU-Bound: Image compression / resizing; cryptographic hashing / mathematical matrix operations.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
-    "category": "Production Failure Modes",
+    "question": "What is the Global Interpreter Lock (GIL) in CPython, and why does it prevent multiple threads from executing pure CPU calculations simultaneously?",
+    "category": "The GIL:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The Multiprocessing Windows spawn Pickling Trap",
+        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 1: Race condition on shared counter",
+        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "shared_counter += 1 is not atomic in Python. It disassembles into LOAD_GLOBAL, LOAD_CONST, BINARY_OP, STORE_GLOBAL. If a thread switch occurs between load and store, the update is lost.",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The Multiprocessing Windows `spawn` Pickling Trap",
-    "lesson_ref": "01_README.md"
+    "explanation": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
-    "category": "Production Failure Modes",
+    "question": "If the GIL exists, why does ThreadPoolExecutor still speed up downloading 50 web pages by 10x?",
+    "category": "I/O Concurrency:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Passing Unpicklable Objects to Process Pools",
+        "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Fails with Permanent process hang (Deadlock)",
+        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: The Windows Multiprocessing RuntimeError (Missing __main__ Guard)",
+        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Passing Unpicklable Objects to Process Pools",
-    "lesson_ref": "01_README.md"
+    "explanation": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Bookmark, X, ArrowRight, BookOpen, Trash2 } from 'lucide-react';
 import { CourseSummary, ModuleItem } from '../types';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface BookmarksModalProps {
   isOpen: boolean;
@@ -19,14 +20,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
   onRemoveBookmark,
   modules,
 }) => {
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const trapRef = useFocusTrap(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -39,6 +33,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
       onClick={onClose}
     >
       <div 
+        ref={trapRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="bookmarks-modal-title"

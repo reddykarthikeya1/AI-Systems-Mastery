@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Fused Activations and Normalization subsystem?",
-    "category": "System Invariants",
+    "question": "Numerical Stability in FP16 RMSNorm \u2014 In FP16, numbers above 65,504 overflow to infinity. When computing $\\sum x_i^2$ for hidden dimension $d = 8{,}192$, values frequently overflow. How do you prevent this in a fused kernel?",
+    "category": "Numerical Stability in FP16 RMSNorm",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Compute the intermediate reduction in FP32 accumulation registers: - Read inputs as FP16 (half / bfloat16).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. - Fix: Standardize $\\epsilon = 10^{-5}$ or $10^{-6}$ and clamp variance $\\max(",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 07 Fused Activations and Normalization.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: NaN Propagation from Negative Epsilon or Underflow",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 07 Fused Activations and Normalization.",
         "is_correct": false
       }
     ],
-    "explanation": "In Fused Activations and Normalization, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Compute the intermediate reduction in FP32 accumulation registers: - Read inputs as FP16 (half / bfloat16). - Cast to float (FP32) before squaring: float val = (float)x[i]; sumsq += val val;. - Compute reciprocal square root in FP32: float rrms = rsqrtf(sumsq / d + eps);. - Multiply back and cast to FP16 upon storing to memory: y[i] = (half)(val rr",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Fused Activations and Normalization mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 07 Fused Activations and Normalization failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. - Fix: Standardize $\\epsilon = 10^{-5}$ or $10^{-6}$ and clamp variance $\\max(",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Loss becomes NaN within 50 iterations of LLM pre-training. - Root Cause: When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, ",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Lock contention on shared resource boundaries in 07 Fused Activations and Normalization exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Fused Activations and Normalization at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 07 Fused Activations and Normalization: : When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. - Fix: Standardize $\\epsilon = 10^{-5}$ or $10^{-6}$ and clamp variance $\\max(. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

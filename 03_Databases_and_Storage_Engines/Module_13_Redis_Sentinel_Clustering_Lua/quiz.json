@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Redis Sentinel Clustering Lua subsystem?",
-    "category": "System Invariants",
+    "question": "How does Redis Sentinel achieve automated master failover?",
+    "category": "How does Redis Sentinel achieve automated master failover?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Lua Script Timeout & Busy Engine Errors",
+        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Redis Cluster CROSSSLOT Keys in Request Don't Hash to the Same Slot",
+        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
         "is_correct": false
       }
     ],
-    "explanation": "In Redis Sentinel Clustering Lua, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Redis Sentinel Clustering Lua mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them?",
+    "category": "How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Redis Sentinel Clustering Lua at scale?",
-    "category": "Scalability & Performance",
+    "question": "What is a Redis Hash Tag, and why is it essential for multi-key cluster operations?",
+    "category": "What is a Redis Hash Tag, and why is it essential for multi-key cluster operations?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Sentinel Split-Brain During Network Partition",
+        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

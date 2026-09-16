@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
-    "category": "Production Failure Modes",
+    "question": "What does the 3-argument type(name, bases, namespacedict) call do at runtime?",
+    "category": "Class Factories:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Cross-instance state bleeding",
+        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "It dynamically constructs and returns a new Python class object at runtime.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
-    "category": "Production Failure Modes",
+    "question": "What is a Metaclass, and what is the relationship between type and object?",
+    "category": "Metaclasses:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Storing Descriptor State on self Instead of instance",
+        "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Descriptor storing state on self instead of instance",
+        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "There is only one single instance of BadDescriptor shared across all User instances. Modifying self.value overwrites the global descriptor attribute.",
+        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Storing Descriptor State on `self` Instead of `instance`",
-    "lesson_ref": "01_README.md"
+    "explanation": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
-    "category": "Production Failure Modes",
+    "question": "How does initsubclass allow customizing subclass creation without writing a full metaclass?",
+    "category": "Subclass Hooks:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Metaclass Conflicts in Multiple Inheritance",
+        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: The Descriptor Shared State Bug (Catastrophic Instance Leak)",
+        "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Metaclass Conflicts in Multiple Inheritance",
-    "lesson_ref": "01_README.md"
+    "explanation": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

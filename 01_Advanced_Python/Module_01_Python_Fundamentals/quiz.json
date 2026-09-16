@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Python Fundamentals subsystem?",
-    "category": "System Invariants",
+    "question": "In Python, what is the role of Bytecode (.pyc), and why doesn't Python compile directly to raw machine code like C++ or Go?",
+    "category": "Execution Model:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "input() always returns a string (str), even if the user typed digits.",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "In Python, ranges and slices always operate as half-open intervals: [start, stop). The stop value is exclusive (meaning \"stop before reaching this number\").",
+        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- 15 / 4 is True Division: it returns a float 3.",
         "is_correct": false
       }
     ],
-    "explanation": "In Python Fundamentals, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Bytecode is a platform-independent, simplified intermediate instruction set. Compiling to bytecode allows Python to be write-once, run-anywhere (cross-platform): the CPython Virtual Machine executes bytecode on Windows, macOS, and Linux without recompiling source code for each specific CPU architecture.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Python Fundamentals mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Why is Python considered both Dynamically Typed and Strongly Typed? Give a short example illustrating each.",
+    "category": "Type System:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Computers store floating-point numbers in binary (base-2). Decimal fractions like 0.1 cannot be stored with infinite precision in binary, resulting in 0.30000000000000004.",
+        "text": "- 15 / 4 is True Division: it returns a float 3.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversions between incompatible types (e.g., \"5\" + 5 raises a TypeError rather than producing \"55\" or 10).",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Python Fundamentals at scale?",
-    "category": "Scalability & Performance",
+    "question": "If lista = [10, 20] and listb = [10, 20], what are the outputs of lista == listb and lista is listb? Why do they differ?",
+    "category": "Memory & Identity:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "text": "- 15 / 4 is True Division: it returns a float 3.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- lista == listb is True because == checks value equality (both lists contain 10, 20). - lista is listb is False because is checks memory address identity. Each list bracket [...] creates a new, separate list object in RAM.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the GPU Microarchitecture and Execution Model subsystem?",
-    "category": "System Invariants",
+    "question": "Register Pressure and Occupancy Cliff \u2014 You write a CUDA kernel where each thread uses 64 registers. Your thread block size is 1,024 threads.\n1. What happens to SM occupancy on an NVIDIA Ampere GPU (max 65,536 registers per SM)?\n2. How does the compiler handle",
+    "category": "Register Pressure and Occupancy Cliff",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exact...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Warp Divergence Serialization",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 01 GPU Microarchitecture and Execution Model.",
         "is_correct": false
       }
     ],
-    "explanation": "In GPU Microarchitecture and Execution Model, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exactly 65,536 registers, only 1 block can reside on the SM at any time. Active warps per SM = $1{,}024 / 32 = 32 \\text{ warps}$. Since the SM supports a maximum of 64 warps, theoretical occupancy drops to $32 / 64 ",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does GPU Microarchitecture and Execution Model mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Memory Bound vs Compute Bound Diagnosis \u2014 A junior engineer converts an FP32 matrix elementwise activation kernel ($y_i = \\text{gelu}(x_i)$) to use FP16 Tensor Cores and notices 0% performance speedup. Why?",
+    "category": "Memory Bound vs Compute Bound Diagnosis",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exact...",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 01 GPU Microarchitecture and Execution Model.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs. Arithmetic intensity $I = 8 / 4 = 2.0 \\text{ FLOPs/Byte}$. On an A100, the Tensor Core ridge point is $156 \\text{ FLOPs/Byte}$. Because $2.0 \\ll 156$, the kernel is deeply Memory-Bound\u2014stuck waiting for HBM memo",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in GPU Microarchitecture and Execution Model at scale?",
-    "category": "Scalability & Performance",
+    "question": "When diagnosing the 01 GPU Microarchitecture and Execution Model failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": ": Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute. - Root Cause: Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check s",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Lock contention on shared resource boundaries in 01 GPU Microarchitecture and Execution Model exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 01 GPU Microarchitecture and Execution Model: : Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

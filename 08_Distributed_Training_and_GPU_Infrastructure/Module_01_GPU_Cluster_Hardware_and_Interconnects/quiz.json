@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the GPU Cluster Hardware and Interconnects subsystem?",
-    "category": "System Invariants",
+    "question": "Rail-Optimized Routing vs Random Oversubscription \u2014 You deploy an 8-way Tensor Parallelism model across 8 nodes (1 GPU per node) instead of placing all 8 Tensor Parallel ranks within a single node. What happens to training throughput?",
+    "category": "Rail-Optimized Routing vs Random Oversubscription",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Tensor Parallelism requires 2 AllReduce operations per Transformer layer (one in Attention, one in MLP).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU ",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 01 GPU Cluster Hardware and Interconnects.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 01 GPU Cluster Hardware and Interconnects.",
         "is_correct": false
       }
     ],
-    "explanation": "In GPU Cluster Hardware and Interconnects, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Tensor Parallelism requires 2 AllReduce operations per Transformer layer (one in Attention, one in MLP). In a 70B parameter model, AllReduce is called thousands of times per forward-backward pass. - Inside a node over NVLink: Bandwidth is $900 \\text{ GB/s}$, latency $\\approx 100 \\text{ ns}$. - Across nodes over InfiniBand: Bandwidth is $50 \\text{ G",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does GPU Cluster Hardware and Interconnects mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 01 GPU Cluster Hardware and Interconnects failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": ": A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs. - Root Cause: A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or expe",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Lock contention on shared resource boundaries in 01 GPU Cluster Hardware and Interconnects exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in GPU Cluster Hardware and Interconnects at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 01 GPU Cluster Hardware and Interconnects: : A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU . Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Quantization Kernels in Triton subsystem?",
-    "category": "System Invariants",
+    "question": "Compute Bound vs Memory Bound Quantization Regimes \u2014 When running batch size = 1 (single-user LLM generation), INT4 quantization provides a $3.5\\times$ speedup. When running batch size = 256 (high-concurrency serving), INT4 quantization is often slower than FP16. Why?",
+    "category": "Compute Bound vs Memory Bound Quantization Regimes",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- Batch Size = 1: The GEMM is deeply Memory-Bound (Matrix-Vector multiply, $I \\approx 1$).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 10 Quantization Kernels in Triton.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 10 Quantization Kernels in Triton.",
         "is_correct": false
       }
     ],
-    "explanation": "In Quantization Kernels in Triton, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Batch Size = 1: The GEMM is deeply Memory-Bound (Matrix-Vector multiply, $I \\approx 1$). Memory bandwidth is the sole bottleneck. INT4 reduces memory traffic by $4\\times$, directly speeding up execution by $\\approx 3.5\\times$. - Batch Size = 256: The GEMM becomes Compute-Bound (high arithmetic intensity, $I > 100$). Memory bandwidth is no longer ",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Quantization Kernels in Triton mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 10 Quantization Kernels in Triton failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Negative weights unpack as large positive integers (e.g. -1 becomes 15). - Root Cause: Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Sign Extension Bugs in INT4 Unpacking",
+        "text": "Lock contention on shared resource boundaries in 10 Quantization Kernels in Triton exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Quantization Kernels in Triton at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 10 Quantization Kernels in Triton: : Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

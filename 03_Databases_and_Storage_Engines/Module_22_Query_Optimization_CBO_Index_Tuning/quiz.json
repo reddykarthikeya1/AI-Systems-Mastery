@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Query Optimization CBO Index Tuning?",
-    "category": "Production Failure Modes",
+    "question": "What is the role of the Cost-Based Optimizer (CBO) in relational engines?",
+    "category": "What is the role of the Cost-Based Optimizer (CBO) in relational engines?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Missing Correlation Statistics on Interdependent Columns",
+        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Query Optimization CBO Index Tuning?",
-    "category": "Production Failure Modes",
+    "question": "How does System R dynamic programming optimize multi-table join orderings?",
+    "category": "How does System R dynamic programming optimize multi-table join orderings?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Join Permutation Explosion: Dynamic programming join enumeration exploding exponentially ($O(3^N)$) on $>12$ joins.",
+        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Exponential Join Permutation Explosion",
+        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Join Permutation Explosion: Dynamic programming join enumeration exploding exponentially ($O(3^N)$) on $>12$ joins.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Query Optimization CBO Index Tuning?",
-    "category": "Production Failure Modes",
+    "question": "Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.",
+    "category": "Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Correlated Column Blindness: Multi-column filters assuming attribute independence, miscalculating selectivity by 1000x.",
+        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Index Suppression via Function Wrapping in WHERE Clause",
+        "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Correlated Column Blindness: Multi-column filters assuming attribute independence, miscalculating selectivity by 1000x.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

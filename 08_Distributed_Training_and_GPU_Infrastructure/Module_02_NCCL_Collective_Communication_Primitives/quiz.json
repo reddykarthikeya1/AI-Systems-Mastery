@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the NCCL Collective Communication Primitives subsystem?",
-    "category": "System Invariants",
+    "question": "Deriving Ring AllReduce Optimality \u2014 Prove why Ring AllReduce transfers $2 \\frac{N-1}{N} S$ bytes and why no AllReduce algorithm can transfer fewer bytes on a ring network.",
+    "category": "Deriving Ring AllReduce Optimality",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- In AllReduce, each of the $N$ ranks contributes $S/N$ data that must be combined with data from all other $N-1$ ranks.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 NCCL Collective Communication Primitives.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 02 NCCL Collective Communication Primitives.",
         "is_correct": false
       }
     ],
-    "explanation": "In NCCL Collective Communication Primitives, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- In AllReduce, each of the $N$ ranks contributes $S/N$ data that must be combined with data from all other $N-1$ ranks. - During Scatter-Reduce: Each rank sends $S/N$ bytes in each of $N-1$ steps. Total data sent = $(N-1)(S/N) = \\frac{N-1}{N} S$. - During AllGather: Each rank sends its reduced $S/N$ slice in each of $N-1$ steps. Total data sent = ",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does NCCL Collective Communication Primitives mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 02 NCCL Collective Communication Primitives failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: NCCL Ring Deadlock from Unordered Barrier Calls",
+        "text": ": All GPUs hang at 100% compute with 0% memory throughput indefinitely. - Root Cause: Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread ",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "Lock contention on shared resource boundaries in 02 NCCL Collective Communication Primitives exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in NCCL Collective Communication Primitives at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 02 NCCL Collective Communication Primitives: : Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

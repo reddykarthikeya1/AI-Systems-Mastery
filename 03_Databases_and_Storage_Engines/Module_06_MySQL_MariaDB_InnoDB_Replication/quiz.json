@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MySQL MariaDB InnoDB Replication?",
-    "category": "Production Failure Modes",
+    "question": "How does InnoDB's Clustered Index architecture differ from secondary indexes?",
+    "category": "How does InnoDB's Clustered Index architecture differ from secondary indexes?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: InnoDB Buffer Pool Eviction Thrashing",
+        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MySQL MariaDB InnoDB Replication?",
-    "category": "Production Failure Modes",
+    "question": "What is the purpose of the InnoDB Doublewrite Buffer?",
+    "category": "What is the purpose of the InnoDB Doublewrite Buffer?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Transaction Deadlock (Error 1213): Unordered concurrent updates create wait-for graph cycles, triggering rollbacks.",
+        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: MySQL Error 1213: Deadlock found when trying to get lock; try restarting transaction",
+        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Replication Lag & Stale Secondary Reads",
+        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Transaction Deadlock (Error 1213): Unordered concurrent updates create wait-for graph cycles, triggering rollbacks.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MySQL MariaDB InnoDB Replication?",
-    "category": "Production Failure Modes",
+    "question": "Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).",
+    "category": "Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Replication Lag: Single-threaded replica appliers lag behind write-heavy primaries, serving stale read data.",
+        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Replication Lag: Single-threaded replica appliers lag behind write-heavy primaries, serving stale read data.",
-    "lesson_ref": "01_README.md"
+    "explanation": "SBR transmits SQL statements (prone to non-deterministic divergence, e.g. NOW()); RBR transmits exact before/after row byte changes.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

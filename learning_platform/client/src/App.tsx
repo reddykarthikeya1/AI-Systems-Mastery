@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useParams, useLocation, Navigate } from 'react-router-dom';
 import { CourseSummary, ModuleItem, LessonItem, CustomSrsCard } from './types';
 import { fetchCourses, fetchCourseModules } from './services/api';
@@ -17,7 +17,323 @@ import { PortfolioModal } from './components/PortfolioModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
-import { soundService } from './services/sound';
+// -----------------------------------------------------------------------------
+// Top-Level Route Components (Declared outside App for stable component identities)
+// -----------------------------------------------------------------------------
+
+interface CourseSyllabusRouteProps {
+  courses: CourseSummary[];
+  loading: boolean;
+  progress: any;
+  getCourseModules: (courseId: string) => Promise<ModuleItem[]>;
+  navigateToLesson: (filePath: string, lessonId: string, initialTab?: string) => void;
+  navigate: (path: string) => void;
+}
+
+const CourseSyllabusRoute: React.FC<CourseSyllabusRouteProps> = ({
+  courses,
+  loading,
+  progress,
+  getCourseModules,
+  navigateToLesson,
+  navigate,
+}) => {
+  const { courseId } = useParams<{ courseId: string }>();
+  const [mods, setMods] = useState<ModuleItem[]>([]);
+  const [isLoadingMods, setIsLoadingMods] = useState(true);
+
+  const course = courses.find((c) => c.id === courseId || c.folder_name === courseId);
+
+  useEffect(() => {
+    if (!courseId) return;
+    let isMounted = true;
+    getCourseModules(courseId).then((data) => {
+      if (isMounted) {
+        setMods(data);
+        setIsLoadingMods(false);
+      }
+    });
+    return () => { isMounted = false; };
+  }, [courseId, getCourseModules]);
+
+  if (!course && !loading) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoadingMods || !course) {
+    return (
+      <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
+        Loading track modules and assessments...
+      </div>
+    );
+  }
+
+  return (
+    <SyllabusView
+      course={course}
+      modules={mods}
+      progress={progress}
+      onBack={() => navigate('/')}
+      onSelectLesson={(filePath, lessonId, initialTab) => {
+        navigateToLesson(filePath, lessonId, initialTab);
+      }}
+      onOpenMasteryGate={(mod) => {
+        const modNumStr = mod.module_num.toString().padStart(2, '0');
+        navigate(`/course/${courseId}/module/${modNumStr}/gate`);
+      }}
+    />
+  );
+};
+
+interface ClassroomRouteProps {
+  courses: CourseSummary[];
+  loading: boolean;
+  progress: any;
+  getCourseModules: (courseId: string) => Promise<ModuleItem[]>;
+  navigateToLesson: (filePath: string, lessonId: string, initialTab?: string) => void;
+  navigate: (path: string) => void;
+  isLessonCompleted: (lessonId: string) => boolean;
+  isBookmarked: (lessonId: string) => boolean;
+  toggleLesson: (lessonId: string) => void;
+  toggleBookmark: (lessonId: string) => void;
+  saveQuizScore: (id: string, score: number, total: number, passed: boolean) => void;
+  updateMasteryGate: (moduleId: string, updates: any) => void;
+  saveNote: (lessonId: string, text: string) => void;
+  handleQuizMistake: (question: McqQuestion, chosenOption: string) => void;
+  setLastPosition: (pos: any) => void;
+  updateSrsReview: (cardId: string, rating: number) => void;
+}
+
+const ClassroomRoute: React.FC<ClassroomRouteProps> = ({
+  courses,
+  loading,
+  progress,
+  getCourseModules,
+  navigateToLesson,
+  navigate,
+  isLessonCompleted,
+  isBookmarked,
+  toggleLesson,
+  toggleBookmark,
+  saveQuizScore,
+  updateMasteryGate,
+  saveNote,
+  handleQuizMistake,
+  setLastPosition,
+  updateSrsReview,
+}) => {
+  const { courseId, moduleNum, lessonId } = useParams<{ courseId: string; moduleNum: string; lessonId?: string }>();
+  const [mods, setMods] = useState<ModuleItem[]>([]);
+  const [isLoadingMods, setIsLoadingMods] = useState(true);
+
+  const course = courses.find((c) => c.id === courseId || c.folder_name === courseId);
+
+  useEffect(() => {
+    if (!courseId) return;
+    let isMounted = true;
+    getCourseModules(courseId).then((data) => {
+      if (isMounted) {
+        setMods(data);
+        setIsLoadingMods(false);
+      }
+    });
+    return () => { isMounted = false; };
+  }, [courseId, getCourseModules]);
+
+  const activeModule = useMemo(() => {
+    if (!mods.length || !moduleNum) return null;
+    return mods.find(
+      (m) =>
+        m.module_num.toString().padStart(2, '0') === moduleNum ||
+        m.module_num.toString() === moduleNum ||
+        m.id === moduleNum
+    );
+  }, [mods, moduleNum]);
+
+  const activeLesson = useMemo(() => {
+    if (!activeModule) return null;
+    if (!lessonId) return activeModule.lessons[0] || null;
+    return (
+      activeModule.lessons.find((l) => l.id === lessonId || l.file_path.endsWith(lessonId)) ||
+      activeModule.lessons[0] || null
+    );
+  }, [activeModule, lessonId]);
+
+  // Record last visited position only once when activeLesson actually changes
+  const recordedLessonIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (course && activeModule && activeLesson) {
+      if (recordedLessonIdRef.current !== activeLesson.id) {
+        recordedLessonIdRef.current = activeLesson.id;
+        setLastPosition({
+          course_id: course.id,
+          course_title: course.title,
+          module_id: activeModule.id,
+          module_title: activeModule.title,
+          lesson_id: activeLesson.id,
+          lesson_title: activeLesson.title,
+          lesson_path: activeLesson.file_path,
+          updated_at: Date.now(),
+        });
+      }
+    }
+  }, [course?.id, activeModule?.id, activeLesson?.id, setLastPosition]);
+
+  if (!course && !loading) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoadingMods || !course || !activeModule || !activeLesson) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <LessonSkeleton />
+      </div>
+    );
+  }
+
+  return (
+    <ClassroomView
+      courseTitle={course.title}
+      courseId={course.id}
+      module={activeModule}
+      currentLesson={activeLesson}
+      allLessons={activeModule.lessons}
+      isCompleted={isLessonCompleted(activeLesson.id)}
+      isBookmarked={isBookmarked(activeLesson.id)}
+      savedQuizScore={progress.quiz_scores?.[activeLesson.id] || progress.quiz_scores?.[activeModule.id]}
+      savedNote={progress.notes?.[activeLesson.id] || ''}
+      completedLessons={progress.completed_lessons}
+      onToggleComplete={() => toggleLesson(activeLesson.id)}
+      onToggleBookmark={() => toggleBookmark(activeLesson.id)}
+      onSaveQuizScore={(score, total, passed) => {
+        saveQuizScore(activeLesson.id, score, total, passed);
+        saveQuizScore(activeModule.id, score, total, passed);
+        if (passed) {
+          updateMasteryGate(activeModule.id, { quizPassed: true });
+        }
+      }}
+      onPassLab={() => {
+        updateMasteryGate(activeModule.id, { labPassed: true });
+      }}
+      onSaveNote={(text) => saveNote(activeLesson.id, text)}
+      onBackToSyllabus={() => navigate(`/course/${courseId}`)}
+      onSelectLesson={(filePath: string, nextId: string, initialTab?: string) => {
+        navigateToLesson(filePath, nextId, initialTab);
+      }}
+      onOpenMasteryGate={() => {
+        navigate(`/course/${courseId}/module/${moduleNum}/gate`);
+      }}
+      onQuizMistake={handleQuizMistake}
+      onUpdateLastPosition={setLastPosition}
+      onSrsReview={(rating) => updateSrsReview(activeLesson.id, rating)}
+    />
+  );
+};
+
+interface MasteryGateRouteProps {
+  courses: CourseSummary[];
+  loading: boolean;
+  progress: any;
+  getCourseModules: (courseId: string) => Promise<ModuleItem[]>;
+  navigate: (path: string) => void;
+  updateMasteryGate: (moduleId: string, updates: any) => void;
+}
+
+const MasteryGateRoute: React.FC<MasteryGateRouteProps> = ({
+  courses,
+  loading,
+  progress,
+  getCourseModules,
+  navigate,
+  updateMasteryGate,
+}) => {
+  const { courseId, moduleNum } = useParams<{ courseId: string; moduleNum: string }>();
+  const [mods, setMods] = useState<ModuleItem[]>([]);
+  const [isLoadingMods, setIsLoadingMods] = useState(true);
+
+  const course = courses.find((c) => c.id === courseId || c.folder_name === courseId);
+
+  useEffect(() => {
+    if (!courseId) return;
+    let isMounted = true;
+    getCourseModules(courseId).then((data) => {
+      if (isMounted) {
+        setMods(data);
+        setIsLoadingMods(false);
+      }
+    });
+    return () => { isMounted = false; };
+  }, [courseId, getCourseModules]);
+
+  const activeModuleIndex = mods.findIndex(
+    (m) =>
+      m.module_num.toString().padStart(2, '0') === moduleNum ||
+      m.module_num.toString() === moduleNum ||
+      m.id === moduleNum
+  );
+  const activeModule = activeModuleIndex >= 0 ? mods[activeModuleIndex] : null;
+  const nextModule = activeModuleIndex >= 0 && activeModuleIndex < mods.length - 1 ? mods[activeModuleIndex + 1] : null;
+
+  if (!course && !loading) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoadingMods || !course || !activeModule) {
+    return (
+      <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
+        Evaluating module mastery requirements...
+      </div>
+    );
+  }
+
+  const quizLesson = activeModule.lessons.find((l) => l.type === 'quiz');
+  const completedCount = activeModule.lessons.filter((l) => progress.completed_lessons.includes(l.id)).length;
+  const gateStatus = progress.mastery_gates?.[activeModule.id];
+  const quizScore = quizLesson 
+    ? progress.quiz_scores?.[quizLesson.id] 
+    : (activeModule.lessons.map((l) => progress.quiz_scores?.[l.id]).find(Boolean) || progress.quiz_scores?.[activeModule.id]);
+
+  return (
+    <MasteryGateView
+      module={activeModule}
+      courseTitle={course.title}
+      gateStatus={gateStatus}
+      completedLessonsCount={completedCount}
+      totalLessonsCount={activeModule.lessons.length}
+      quizScore={quizScore}
+      onLaunchQuiz={() => {
+        const target = quizLesson || activeModule.lessons[0];
+        if (target) {
+          navigate(`/course/${courseId}/module/${moduleNum}/lesson/${target.id}?tab=quiz`);
+        }
+      }}
+      onLaunchLab={() => {
+        if (activeModule.lessons.length > 0) {
+          navigate(`/course/${courseId}/module/${moduleNum}/lesson/${activeModule.lessons[0].id}?tab=debug`);
+        }
+      }}
+      onLaunchLesson={(lId) => {
+        navigate(`/course/${courseId}/module/${moduleNum}/lesson/${lId}`);
+      }}
+      onClearGate={() => {
+        updateMasteryGate(activeModule.id, { cleared: true, quizPassed: true, labPassed: true });
+      }}
+      onNextModule={
+        nextModule
+          ? () => {
+              const nextNumStr = nextModule.module_num.toString().padStart(2, '0');
+              if (nextModule.lessons.length > 0) {
+                navigate(`/course/${courseId}/module/${nextNumStr}/lesson/${nextModule.lessons[0].id}`);
+              } else {
+                navigate(`/course/${courseId}`);
+              }
+            }
+          : undefined
+      }
+      onBackToSyllabus={() => navigate(`/course/${courseId}`)}
+    />
+  );
+};
 
 export const App: React.FC = () => {
   const { 
@@ -59,6 +375,21 @@ export const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [progress.theme]);
+
+  // Clean Task Manager exit: notify backend when window or browser tab is closed
+  useEffect(() => {
+    const handleUnload = () => {
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/api/client-disconnect');
+        }
+      } catch {
+        // Ignore during fast unmount
+      }
+    };
+    window.addEventListener('beforeunload', handleUnload);
+    return () => window.removeEventListener('beforeunload', handleUnload);
+  }, []);
 
   // Load all courses on mount
   useEffect(() => {
@@ -151,241 +482,7 @@ export const App: React.FC = () => {
     return Object.values(modulesMap).flat();
   }, [modulesMap]);
 
-  // ---------------------------------------------------------------------------
-  // Route Components
-  // ---------------------------------------------------------------------------
 
-  // 1. Course Syllabus Route Component
-  const CourseSyllabusRoute: React.FC = () => {
-    const { courseId } = useParams<{ courseId: string }>();
-    const [mods, setMods] = useState<ModuleItem[]>([]);
-    const [isLoadingMods, setIsLoadingMods] = useState(true);
-
-    const course = courses.find((c) => c.id === courseId);
-
-    useEffect(() => {
-      if (!courseId) return;
-      getCourseModules(courseId).then((data) => {
-        setMods(data);
-        setIsLoadingMods(false);
-      });
-    }, [courseId]);
-
-    if (!course && !loading) {
-      return <Navigate to="/" replace />;
-    }
-
-    if (isLoadingMods || !course) {
-      return (
-        <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
-          Loading track modules and assessments...
-        </div>
-      );
-    }
-
-    return (
-      <SyllabusView
-        course={course}
-        modules={mods}
-        progress={progress}
-        onBack={() => navigate('/')}
-        onSelectLesson={(filePath, lessonId, initialTab) => {
-          navigateToLesson(filePath, lessonId, initialTab);
-        }}
-        onOpenMasteryGate={(mod) => {
-          const modNumStr = mod.module_num.toString().padStart(2, '0');
-          navigate(`/course/${courseId}/module/${modNumStr}/gate`);
-        }}
-      />
-    );
-  };
-
-  // 2. Classroom Lesson Route Component
-  const ClassroomRoute: React.FC = () => {
-    const { courseId, moduleNum, lessonId } = useParams<{ courseId: string; moduleNum: string; lessonId: string }>();
-    const [mods, setMods] = useState<ModuleItem[]>([]);
-    const [isLoadingMods, setIsLoadingMods] = useState(true);
-
-    const course = courses.find((c) => c.id === courseId);
-
-    useEffect(() => {
-      if (!courseId) return;
-      getCourseModules(courseId).then((data) => {
-        setMods(data);
-        setIsLoadingMods(false);
-      });
-    }, [courseId]);
-
-    const activeModule = useMemo(() => {
-      if (!mods.length || !moduleNum) return null;
-      return mods.find(
-        (m) =>
-          m.module_num.toString().padStart(2, '0') === moduleNum ||
-          m.module_num.toString() === moduleNum ||
-          m.id === moduleNum
-      );
-    }, [mods, moduleNum]);
-
-    const activeLesson = useMemo(() => {
-      if (!activeModule || !lessonId) return null;
-      return (
-        activeModule.lessons.find((l) => l.id === lessonId || l.file_path.endsWith(lessonId)) ||
-        activeModule.lessons[0]
-      );
-    }, [activeModule, lessonId]);
-
-    // Record last visited position
-    useEffect(() => {
-      if (course && activeModule && activeLesson) {
-        setLastPosition({
-          course_id: course.id,
-          course_title: course.title,
-          module_id: activeModule.id,
-          module_title: activeModule.title,
-          lesson_id: activeLesson.id,
-          lesson_title: activeLesson.title,
-          lesson_path: activeLesson.file_path,
-          updated_at: Date.now(),
-        });
-      }
-    }, [course, activeModule, activeLesson]);
-
-    if (!course && !loading) {
-      return <Navigate to="/" replace />;
-    }
-
-    if (isLoadingMods || !course || !activeModule || !activeLesson) {
-      return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <LessonSkeleton />
-        </div>
-      );
-    }
-
-    return (
-      <ClassroomView
-        courseTitle={course.title}
-        courseId={course.id}
-        module={activeModule}
-        currentLesson={activeLesson}
-        allLessons={activeModule.lessons}
-        isCompleted={isLessonCompleted(activeLesson.id)}
-        isBookmarked={isBookmarked(activeLesson.id)}
-        savedQuizScore={progress.quiz_scores?.[activeLesson.id] || progress.quiz_scores?.[activeModule.id]}
-        savedNote={progress.notes?.[activeLesson.id] || ''}
-        completedLessons={progress.completed_lessons}
-        onToggleComplete={() => toggleLesson(activeLesson.id)}
-        onToggleBookmark={() => toggleBookmark(activeLesson.id)}
-        onSaveQuizScore={(score, total, passed) => {
-          saveQuizScore(activeLesson.id, score, total, passed);
-          saveQuizScore(activeModule.id, score, total, passed);
-          if (passed) {
-            updateMasteryGate(activeModule.id, { quizPassed: true });
-          }
-        }}
-        onPassLab={() => {
-          updateMasteryGate(activeModule.id, { labPassed: true });
-        }}
-        onSaveNote={(text) => saveNote(activeLesson.id, text)}
-        onBackToSyllabus={() => navigate(`/course/${courseId}`)}
-        onSelectLesson={(filePath: string, nextId: string, initialTab?: string) => {
-          navigateToLesson(filePath, nextId, initialTab);
-        }}
-        onOpenMasteryGate={() => {
-          navigate(`/course/${courseId}/module/${moduleNum}/gate`);
-        }}
-        onQuizMistake={handleQuizMistake}
-        onUpdateLastPosition={setLastPosition}
-        onSrsReview={(rating) => updateSrsReview(activeLesson.id, rating)}
-      />
-    );
-  };
-
-  // 3. Module Mastery Gate Route Component
-  const MasteryGateRoute: React.FC = () => {
-    const { courseId, moduleNum } = useParams<{ courseId: string; moduleNum: string }>();
-    const [mods, setMods] = useState<ModuleItem[]>([]);
-    const [isLoadingMods, setIsLoadingMods] = useState(true);
-
-    const course = courses.find((c) => c.id === courseId);
-
-    useEffect(() => {
-      if (!courseId) return;
-      getCourseModules(courseId).then((data) => {
-        setMods(data);
-        setIsLoadingMods(false);
-      });
-    }, [courseId]);
-
-    const activeModuleIndex = mods.findIndex(
-      (m) =>
-        m.module_num.toString().padStart(2, '0') === moduleNum ||
-        m.module_num.toString() === moduleNum ||
-        m.id === moduleNum
-    );
-    const activeModule = activeModuleIndex >= 0 ? mods[activeModuleIndex] : null;
-    const nextModule = activeModuleIndex >= 0 && activeModuleIndex < mods.length - 1 ? mods[activeModuleIndex + 1] : null;
-
-    if (!course && !loading) {
-      return <Navigate to="/" replace />;
-    }
-
-    if (isLoadingMods || !course || !activeModule) {
-      return (
-        <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
-          Evaluating module mastery requirements...
-        </div>
-      );
-    }
-
-    const quizLesson = activeModule.lessons.find((l) => l.type === 'quiz');
-    const completedCount = activeModule.lessons.filter((l) => progress.completed_lessons.includes(l.id)).length;
-    const gateStatus = progress.mastery_gates?.[activeModule.id];
-    const quizScore = quizLesson 
-      ? progress.quiz_scores?.[quizLesson.id] 
-      : (activeModule.lessons.map((l) => progress.quiz_scores?.[l.id]).find(Boolean) || progress.quiz_scores?.[activeModule.id]);
-
-    return (
-      <MasteryGateView
-        module={activeModule}
-        courseTitle={course.title}
-        gateStatus={gateStatus}
-        completedLessonsCount={completedCount}
-        totalLessonsCount={activeModule.lessons.length}
-        quizScore={quizScore}
-        onLaunchQuiz={() => {
-          const target = quizLesson || activeModule.lessons[0];
-          if (target) {
-            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${target.id}?tab=quiz`);
-          }
-        }}
-        onLaunchLab={() => {
-          if (activeModule.lessons.length > 0) {
-            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${activeModule.lessons[0].id}?tab=debug`);
-          }
-        }}
-        onLaunchLesson={(lId) => {
-          navigate(`/course/${courseId}/module/${moduleNum}/lesson/${lId}`);
-        }}
-        onClearGate={() => {
-          updateMasteryGate(activeModule.id, { cleared: true, quizPassed: true, labPassed: true });
-        }}
-        onNextModule={
-          nextModule
-            ? () => {
-                const nextNumStr = nextModule.module_num.toString().padStart(2, '0');
-                if (nextModule.lessons.length > 0) {
-                  navigate(`/course/${courseId}/module/${nextNumStr}/lesson/${nextModule.lessons[0].id}`);
-                } else {
-                  navigate(`/course/${courseId}`);
-                }
-              }
-            : undefined
-        }
-        onBackToSyllabus={() => navigate(`/course/${courseId}`)}
-      />
-    );
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] text-slate-900 dark:text-slate-100 transition-colors font-sans antialiased">
@@ -431,9 +528,78 @@ export const App: React.FC = () => {
                   />
                 }
               />
-              <Route path="/course/:courseId" element={<CourseSyllabusRoute />} />
-              <Route path="/course/:courseId/module/:moduleNum/lesson/:lessonId" element={<ClassroomRoute />} />
-              <Route path="/course/:courseId/module/:moduleNum/gate" element={<MasteryGateRoute />} />
+              <Route
+                path="/course/:courseId"
+                element={
+                  <CourseSyllabusRoute
+                    courses={courses}
+                    loading={loading}
+                    progress={progress}
+                    getCourseModules={getCourseModules}
+                    navigateToLesson={navigateToLesson}
+                    navigate={navigate}
+                  />
+                }
+              />
+              <Route
+                path="/course/:courseId/module/:moduleNum"
+                element={
+                  <ClassroomRoute
+                    courses={courses}
+                    loading={loading}
+                    progress={progress}
+                    getCourseModules={getCourseModules}
+                    navigateToLesson={navigateToLesson}
+                    navigate={navigate}
+                    isLessonCompleted={isLessonCompleted}
+                    isBookmarked={isBookmarked}
+                    toggleLesson={toggleLesson}
+                    toggleBookmark={toggleBookmark}
+                    saveQuizScore={saveQuizScore}
+                    updateMasteryGate={updateMasteryGate}
+                    saveNote={saveNote}
+                    handleQuizMistake={handleQuizMistake}
+                    setLastPosition={setLastPosition}
+                    updateSrsReview={updateSrsReview}
+                  />
+                }
+              />
+              <Route
+                path="/course/:courseId/module/:moduleNum/lesson/:lessonId"
+                element={
+                  <ClassroomRoute
+                    courses={courses}
+                    loading={loading}
+                    progress={progress}
+                    getCourseModules={getCourseModules}
+                    navigateToLesson={navigateToLesson}
+                    navigate={navigate}
+                    isLessonCompleted={isLessonCompleted}
+                    isBookmarked={isBookmarked}
+                    toggleLesson={toggleLesson}
+                    toggleBookmark={toggleBookmark}
+                    saveQuizScore={saveQuizScore}
+                    updateMasteryGate={updateMasteryGate}
+                    saveNote={saveNote}
+                    handleQuizMistake={handleQuizMistake}
+                    setLastPosition={setLastPosition}
+                    updateSrsReview={updateSrsReview}
+                  />
+                }
+              />
+              <Route
+                path="/course/:courseId/module/:moduleNum/gate"
+                element={
+                  <MasteryGateRoute
+                    courses={courses}
+                    loading={loading}
+                    progress={progress}
+                    getCourseModules={getCourseModules}
+                    navigate={navigate}
+                    updateMasteryGate={updateMasteryGate}
+                  />
+                }
+              />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           )}

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Project?",
-    "category": "Production Failure Modes",
+    "question": "What are the key architectural trade-offs between a Modular Monolith and a Distributed Microservice architecture?",
+    "category": "Monolith vs Microservices:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Fails with Cross-subsystem silent failure / KeyError",
+        "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Cross-subsystem payload contract drift",
+        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary. - Microservices: Independent team deployments, isolated failure domains, technology heterogeneity, but introduces network latency and distributed state complexity.",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Project?",
-    "category": "Production Failure Modes",
+    "question": "What critical responsibilities does an API Gateway fulfill in an enterprise system?",
+    "category": "API Gateway Role:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Distributed Cache Stampede on Cold Startup",
+        "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Distributed Cache Stampede on Cold Startup",
-    "lesson_ref": "01_README.md"
+    "explanation": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Project?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between Database Vertical Scaling, Read-Replicas, and Horizontal Sharding?",
+    "category": "Database Scalability:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Unacknowledged Redis Stream Memory Leaks",
+        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Connection Pool Exhaustion",
+        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Unacknowledged Redis Stream Memory Leaks",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances based on a shard key (e.g. tenantid or userid).",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

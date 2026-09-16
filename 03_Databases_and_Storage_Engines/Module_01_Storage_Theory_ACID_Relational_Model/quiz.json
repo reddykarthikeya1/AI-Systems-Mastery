@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
-    "category": "Production Failure Modes",
+    "question": "Why does searching for a row in a raw CSV file take $O(N)$ time while an indexed database lookup takes $O(\\log N)$ time?",
+    "category": "Storage Bottleneck:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Atomicity guarantees \"all-or-nothing\".",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Torn Pages & Partial Disk Writes",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) where each node traversal eliminates half the remaining search space, enabling $O(\\log N)$ lookups.",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
-    "category": "Production Failure Modes",
+    "question": "What does \"Atomicity\" guarantee when a multi-step transaction encounters a disk error halfway through?",
+    "category": "ACID - Atomicity:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Write Amplification: Modifying a 10-byte column in a 500MB CSV rewrites the entire 500MB file to disk.",
+        "text": "Atomicity guarantees \"all-or-nothing\".",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: The \"Lost Update\" Concurrency Trap",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Write Amplification: Modifying a 10-byte column in a 500MB CSV rewrites the entire 500MB file to disk.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
-    "category": "Production Failure Modes",
+    "question": "What physical mechanism allows databases to guarantee Durability even if the power is abruptly cut immediately after a COMMIT?",
+    "category": "ACID - Durability:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Torn Writes: Power cut midway through a multi-sector disk write leaves half-written, unparseable lines.",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "This is the classic Lost Update Anomaly:",
+        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: The 3NF Transitive Dependency Trap",
+        "text": "Atomicity guarantees \"all-or-nothing\".",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Torn Writes: Power cut midway through a multi-sector disk write leaves half-written, unparseable lines.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed transactions that had not yet reached the primary tables.",
+    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -83,4 +83,5 @@ desktop.ini
 # ---------------------------------------------------------------------------
 scratch/
 .academy_app_profile/
+.test_app_profile/
 .user_workspaces/

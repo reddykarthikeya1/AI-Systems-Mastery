@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
-    "category": "Production Failure Modes",
+    "question": "What do the four letters in ACID stand for in relational database transactions?",
+    "category": "ACID Properties:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: expire_on_commit=False in Async Session Factories",
+        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "In synchronous SQLAlchemy, accessing user.posts triggers a hidden background SQL query to fetch related posts. In async Python, background I/O cannot happen transparently without await.",
+        "text": "- selectinload: Emits a second SELECT .",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. - Durability: Committed data is permanently stored on non-volatile disk.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
-    "category": "Production Failure Modes",
+    "question": "What are the benefits of using Mapped[int] and mappedcolumn() over legacy Column(Integer) in SQLAlchemy 2.0?",
+    "category": "2.0 Declarative Syntax:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The DetachedInstanceError in Async Mode",
+        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: sqlalchemy.exc.MissingGreenlet: greenlet_spawn has not been called",
+        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with Silent data loss (Changes not persisted)",
+        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- selectinload: Emits a second SELECT .",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The DetachedInstanceError in Async Mode",
-    "lesson_ref": "01_README.md"
+    "explanation": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
-    "category": "Production Failure Modes",
+    "question": "Explain the $N+1$ query problem and why it causes extreme database slowdowns.",
+    "category": "The $N+1$ Problem:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Sharing AsyncSession Across Multiple Concurrent Tasks",
+        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "text": "- selectinload: Emits a second SELECT .",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Sharing `AsyncSession` Across Multiple Concurrent Tasks",
-    "lesson_ref": "01_README.md"
+    "explanation": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries. For 1,000 users, this executes 1,001 queries instead of 1 or 2 optimized queries.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

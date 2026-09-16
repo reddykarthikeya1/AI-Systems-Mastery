@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Production Guardrails Architecture subsystem?",
+    "question": "What architectural role does 1. Architectural Foundations: Multi-Layered Guardrails play in 04 Production Guardrails Architecture?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Architectural Foundations: Multi-Layered Guardrails is essential for maintaining predictable invariants and high performance in 04 Production Guardrails Architecture.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "1. Architectural Foundations: Multi-Layered Guardrails is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Credit Card Luhn Algorithm False Positives",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Production Guardrails Architecture, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Architectural Foundations: Multi-Layered Guardrails in 04 Production Guardrails Architecture specifications.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "How does Production Guardrails Architecture mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "What architectural role does 2. PII Detection & Pseudonymization play in 04 Production Guardrails Architecture?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. PII Detection & Pseudonymization is essential for maintaining predictable invariants and high performance in 04 Production Guardrails Architecture.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "text": "2. PII Detection & Pseudonymization is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Production Guardrails Architecture at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Violates invariant: Broken Anonymization Due to Pluralization / Inflection",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. PII Detection & Pseudonymization in 04 Production Guardrails Architecture specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

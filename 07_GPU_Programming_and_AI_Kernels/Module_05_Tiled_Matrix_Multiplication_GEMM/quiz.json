@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Tiled Matrix Multiplication GEMM subsystem?",
-    "category": "System Invariants",
+    "question": "Bank Conflicts in Shared Memory Matrix B \u2014 In a tiled GEMM kernel, threads load `sB[k][col]` where `col = threadIdx.x`. Does this cause a bank conflict?",
+    "category": "Bank Conflicts in Shared Memory Matrix B",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "No! When col = threadIdx.x and threadIdx.x ranges from 0 to 31 in warp 0: Thread $i$ accesses sB[k][i]. The 32-bit words are located at cons...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Missing Barrier Before Overwriting Shared Memory",
+        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the ",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 05 Tiled Matrix Multiplication GEMM.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 05 Tiled Matrix Multiplication GEMM.",
         "is_correct": false
       }
     ],
-    "explanation": "In Tiled Matrix Multiplication GEMM, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "No! When col = threadIdx.x and threadIdx.x ranges from 0 to 31 in warp 0: Thread $i$ accesses sB[k][i]. The 32-bit words are located at consecutive addresses: base + (k stride + i) 4. Because consecutive words map to consecutive banks ($0, 1, 2, \\dots, 31$), all 32 threads hit 32 distinct banks. This access is 100% conflict-free. However, transposi",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Tiled Matrix Multiplication GEMM mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 05 Tiled Matrix Multiplication GEMM failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Intermittent numerical inaccuracies or race conditions in matrix outputs. - Root Cause: Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Lock contention on shared resource boundaries in 05 Tiled Matrix Multiplication GEMM exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Tiled Matrix Multiplication GEMM at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 05 Tiled Matrix Multiplication GEMM: : Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the . Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -86,7 +86,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-8 space-y-8">
       {/* Navigation Header */}
       <button
         onClick={onBack}

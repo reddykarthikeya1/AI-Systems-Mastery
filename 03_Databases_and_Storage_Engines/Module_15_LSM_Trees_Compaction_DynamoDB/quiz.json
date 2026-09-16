@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the LSM Trees Compaction DynamoDB subsystem?",
-    "category": "System Invariants",
+    "question": "Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees?",
+    "category": "Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: DynamoDB ProvisionedThroughputExceededException (Hot Key Throttle)",
+        "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
         "is_correct": false
       }
     ],
-    "explanation": "In LSM Trees Compaction DynamoDB, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does LSM Trees Compaction DynamoDB mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "What is the role of a Bloom Filter in an SSTable read path?",
+    "category": "What is the role of a Bloom Filter in an SSTable read path?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Write Amplification in Leveled LSM Compaction",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Silent False Positive Saturation in Bloom Filters",
+        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in LSM Trees Compaction DynamoDB at scale?",
-    "category": "Scalability & Performance",
+    "question": "Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.",
+    "category": "Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)?",
+    "category": "What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Connection Pool Exhaustion During Upstream Microservice Latency",
+        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
-    "category": "Production Failure Modes",
+    "question": "Explain Point-In-Time Recovery (PITR) in relational databases.",
+    "category": "Explain Point-In-Time Recovery (PITR) in relational databases.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Table Lock Starvation: Schema migrations lacking strict lock_timeout queuing behind slow queries and bringing down web traffic.",
+        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Unverified Backups Causing Disaster Recovery Failure",
+        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Table Lock Starvation: Schema migrations lacking strict lock_timeout queuing behind slow queries and bringing down web traffic.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
-    "category": "Production Failure Modes",
+    "question": "What is the Expand/Contract (Parallel Run) pattern in database migrations?",
+    "category": "What is the Expand/Contract (Parallel Run) pattern in database migrations?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Untested Backups: Creating daily database dumps that fail to restore during real disasters due to corruption or permission drift.",
+        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Untested Backups: Creating daily database dumps that fail to restore during real disasters due to corruption or permission drift.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

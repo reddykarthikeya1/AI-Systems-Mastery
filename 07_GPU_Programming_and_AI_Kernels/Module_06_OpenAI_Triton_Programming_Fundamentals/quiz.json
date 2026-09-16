@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the OpenAI Triton Programming Fundamentals subsystem?",
-    "category": "System Invariants",
+    "question": "Triton vs CUDA Performance Parity \u2014 In which workloads does Triton match or exceed hand-tuned CUDA C++, and where does it fall short?",
+    "category": "Triton vs CUDA Performance Parity",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- Where Triton Excels: 1. Fused elementwise and normalization kernels (LayerNorm, RMSNorm, GeLU, Softmax). Triton matches or beats cuDNN bec...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 06 OpenAI Triton Programming Fundamentals.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 06 OpenAI Triton Programming Fundamentals.",
         "is_correct": false
       }
     ],
-    "explanation": "In OpenAI Triton Programming Fundamentals, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Where Triton Excels: 1. Fused elementwise and normalization kernels (LayerNorm, RMSNorm, GeLU, Softmax). Triton matches or beats cuDNN because fusion saves DRAM traffic and Triton's register allocator is state-of-the-art. 2. FlashAttention and specialized GEMM variants. Triton allows rapid exploration of tile sizes (BLOCKM, BLOCKN) without rewrit",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does OpenAI Triton Programming Fundamentals mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 06 OpenAI Triton Programming Fundamentals failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Non-Power-of-Two Block Sizes",
+        "text": ": Triton compilation error: BLOCKSIZE must be a power of 2. - Root Cause: Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - ",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "Lock contention on shared resource boundaries in 06 OpenAI Triton Programming Fundamentals exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in OpenAI Triton Programming Fundamentals at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 06 OpenAI Triton Programming Fundamentals: : Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

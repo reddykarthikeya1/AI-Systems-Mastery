@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Advanced Structures Trie UnionFind SegmentTree subsystem?",
-    "category": "System Invariants",
+    "question": "In 14 Advanced Structures Trie UnionFind SegmentTree triage of defect 'Searching for a prefix reports it as a stored word', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "isword is set on insert and then never read, so search and startswith are literally the same operation. Every prefix of every stored word is reported as a stored word. Both answers are booleans and both are right whenever the query happens to be a co",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Advanced Structures Trie UnionFind SegmentTree, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "isword is set on insert and then never read, so search and startswith are literally the same operation. Every prefix of every stored word is reported as a stored word. Both answers are booleans and both are right whenever the query happens to be a co",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Advanced Structures Trie UnionFind SegmentTree mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 14 Advanced Structures Trie UnionFind SegmentTree triage of defect 'Union-find degrades to a linked list', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes linear. Every",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes linear. Every",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Advanced Structures Trie UnionFind SegmentTree at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 14 Advanced Structures Trie UnionFind SegmentTree triage of defect 'Range sums go stale after an update', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value. Queries answered entirely from leaves stay correct",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value. Queries answered entirely from leaves stay correct",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

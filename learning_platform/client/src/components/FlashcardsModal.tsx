@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useProgress } from '../hooks/useProgress';
 import { soundService } from '../services/sound';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 export interface FlashcardItem {
   id: string;
@@ -220,17 +221,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
   const currentCard = filteredCards[currentIndex] || filteredCards[0];
   const cardReview = currentCard ? progress.srs_card_reviews?.[currentCard.id] : undefined;
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        soundService.playClick();
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const trapRef = useFocusTrap(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -263,6 +254,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
       onClick={onClose}
     >
       <div 
+        ref={trapRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="srs-modal-title"

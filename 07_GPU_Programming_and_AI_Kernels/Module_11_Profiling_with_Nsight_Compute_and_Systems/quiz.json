@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Profiling with Nsight Compute and Systems subsystem?",
-    "category": "System Invariants",
+    "question": "Low Occupancy with High Performance \u2014 In Nsight Compute, your kernel shows only 25% theoretical occupancy, but achieves 92% of peak FP16 Tensor Core throughput. Should you optimize for higher occupancy?",
+    "category": "Low Occupancy with High Performance",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "No! High occupancy is a means to an end (latency hiding), not the end goal itself.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 11 Profiling with Nsight Compute and Systems.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Profiler Overhead Distorting Latencies",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 11 Profiling with Nsight Compute and Systems.",
         "is_correct": false
       }
     ],
-    "explanation": "In Profiling with Nsight Compute and Systems, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "No! High occupancy is a means to an end (latency hiding), not the end goal itself. If a kernel already has sufficient Instruction-Level Parallelism (ILP)\u2014for example, each thread computes an $8 \\times 8$ micro-tile in registers\u2014the hardware scheduler has enough independent instructions to hide memory and execution latency with only a few active war",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Profiling with Nsight Compute and Systems mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 11 Profiling with Nsight Compute and Systems failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": ": Kernel runs $20\\times$ slower under Nsight Compute than in production. - Root Cause: NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode appl",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "Lock contention on shared resource boundaries in 11 Profiling with Nsight Compute and Systems exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Profiling with Nsight Compute and Systems at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 11 Profiling with Nsight Compute and Systems: : NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

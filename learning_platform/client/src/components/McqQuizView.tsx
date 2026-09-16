@@ -167,24 +167,43 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       rawQuestions.push({ num: currentQNum, text: currentQText.trim(), category: currentCategory });
     }
 
-    const domainDistractors = [
-      'The operation creates a race condition that triggers unhandled deadlock under concurrent execution.',
-      'Memory bus bandwidth saturation forces thread execution to throttle below throughput SLAs.',
-      'A partial write causes unrecoverable state divergence without an atomic write-ahead log replay barrier.',
-      'The algorithmic complexity degenerates to linear scan because index prefix constraints are violated.',
-      'Unbounded queue accumulation triggers aggressive backpressure shedding and dropped packets.',
-    ];
+    const answerKeys = Object.keys(rawAnswers).map(Number);
 
     const fallbackList: McqQuestion[] = rawQuestions.map((q, i) => {
-      const ansText = rawAnswers[q.num] || rawAnswers[i + 1] || 'Verified reference answer in curriculum specs.';
+      const ansText = rawAnswers[q.num] || rawAnswers[i + 1] || 'Verified reference answer in curriculum specifications.';
       const cleanAns = ansText.replace(/^[\s*#-]+/, '').slice(0, 180).trim();
-      const correctOpt = cleanAns.length > 20 ? cleanAns : `${cleanAns} (Verified systems invariant)`;
+      const correctOpt = cleanAns.length > 20 ? cleanAns : `${cleanAns} (Verified invariant)`;
+
+      // Draw distractors from other actual answers in this module
+      const otherAnswers = answerKeys
+        .filter((k) => k !== q.num && rawAnswers[k] && rawAnswers[k] !== ansText)
+        .map((k) => rawAnswers[k].replace(/^[\s*#-]+/, '').slice(0, 180).trim())
+        .filter(Boolean);
+
+      const distractorOpts: string[] = [];
+      for (const otherAns of otherAnswers) {
+        if (distractorOpts.length >= 3) break;
+        if (!distractorOpts.includes(otherAns)) {
+          distractorOpts.push(otherAns);
+        }
+      }
+
+      // If still fewer than 3 distractors, generate contrasting statements
+      const contextualFallbacks = [
+        'Assumes the operation is eagerly evaluated in thread-local storage rather than deferred.',
+        'Fails to enforce boundary invariants, resulting in an unchecked runtime error.',
+        'Requires explicit synchronization barriers across concurrent caller threads.',
+      ];
+      for (const fb of contextualFallbacks) {
+        if (distractorOpts.length >= 3) break;
+        if (!distractorOpts.includes(fb) && fb !== correctOpt) {
+          distractorOpts.push(fb);
+        }
+      }
 
       const opts = [
         { text: correctOpt, is_correct: true },
-        { text: domainDistractors[i % domainDistractors.length], is_correct: false },
-        { text: domainDistractors[(i + 1) % domainDistractors.length], is_correct: false },
-        { text: domainDistractors[(i + 2) % domainDistractors.length], is_correct: false },
+        ...distractorOpts.slice(0, 3).map((d) => ({ text: d, is_correct: false })),
       ];
       const shuffled = shuffleArray(opts);
       const cIdx = shuffled.findIndex((o) => o.is_correct);
@@ -192,7 +211,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       return {
         id: q.num,
         question: q.text,
-        category: q.category,
+        category: q.category || 'System Concept',
         options: shuffled.map((o) => o.text),
         correctIndex: cIdx >= 0 ? cIdx : 0,
         explanation: ansText,

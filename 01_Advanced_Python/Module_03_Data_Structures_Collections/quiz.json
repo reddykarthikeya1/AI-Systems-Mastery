@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Data Structures Collections subsystem?",
-    "category": "System Invariants",
+    "question": "Why is accessing a list element by index (lst[500]) an $O(1)$ constant time operation, while finding an element by value (500 in lst) is $O(N)$ linear time?",
+    "category": "Time Complexity:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- A list is stored in contiguous RAM.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 2: Shallow copy of nested data structures",
+        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: defaultdict Accidental Key Creation",
+        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "[sublist] 3 does not clone the sublist 3 times. It creates a single list and duplicates the pointer reference 3 times!",
+        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
         "is_correct": false
       }
     ],
-    "explanation": "In Data Structures Collections, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- A list is stored in contiguous RAM. Accessing by index uses pointer arithmetic: address = base + (index 8 bytes), which computes immediately in $O(1)$. - Finding by value requires scanning every element sequentially from index $0$ to $N-1$, taking $O(N)$ linear time.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Data Structures Collections mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Why does Python over-allocate memory when growing a list with append(), rather than allocating exact space for one item at a time?",
+    "category": "List Internals:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "- A list is stored in contiguous RAM.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.",
+        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Data Structures Collections at scale?",
-    "category": "Scalability & Performance",
+    "question": "Why does Python raise a TypeError if you try to use a list as a dictionary key, but allows tuples?",
+    "category": "Immutability & Hashing:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The Shallow Copy Mutation Trap with Nested Structures",
+        "text": "- A list is stored in contiguous RAM.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: heapq Max-Heap Inversion",
+        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over orders_dict.items() invalidates the internal hashtable iteration pointer.",
+        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Dictionary keys must be hashable (their hash value must never change over their lifetime). Lists are mutable (elements can be added/removed, changing their identity), whereas tuples are immutable.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

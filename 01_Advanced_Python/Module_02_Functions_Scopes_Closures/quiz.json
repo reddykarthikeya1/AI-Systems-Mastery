@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Functions Scopes Closures subsystem?",
-    "category": "System Invariants",
+    "question": "If a Python function executes without encountering an explicit return statement, what value is returned to the caller, and what is its data type?",
+    "category": "Return Semantics:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Circular Import Errors",
+        "text": "- a and b are positional-only (because they are before /).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Cross-contamination of player inventories",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
         "is_correct": false
       }
     ],
-    "explanation": "In Functions Scopes Closures, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Functions Scopes Closures mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In def configure(a, b, /, c, , d=10, e=20):, which parameters MUST be passed positionally, and which MUST be passed with keywords?",
+    "category": "Parameter Syntax:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "- a and b are positional-only (because they are before /).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: UnboundLocalError: local variable referenced before assignment",
+        "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "When module_a runs, it pauses to load module_b. But module_b immediately pauses to load module_a, creating a circular deadlock before either module can finish initializing its functions.",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Functions Scopes Closures at scale?",
-    "category": "Scalability & Performance",
+    "question": "What Python data structure does args arrive as inside a function? What data structure does kwargs arrive as?",
+    "category": "Variable-Length Arguments:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 3: Late-binding closures in a loop",
+        "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "- a and b are positional-only (because they are before /).",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: The Closure Loop Trap (Late Binding)",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, BookOpen, Layers, FileText, ArrowRight, X, Terminal, Moon, Sun, Flame } from 'lucide-react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -40,20 +41,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useFocusTrap(isOpen, onClose);
 
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
-      const handleGlobalKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') onClose();
-      };
-      window.addEventListener('keydown', handleGlobalKey);
-      return () => window.removeEventListener('keydown', handleGlobalKey);
     } else {
       setQuery('');
       setResults([]);
     }
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   // Search API fetch with debounce
   useEffect(() => {
@@ -111,6 +108,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       onClick={onClose}
     >
       <div
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-label="Curriculum Command Palette"

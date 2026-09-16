@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
-    "category": "Production Failure Modes",
+    "question": "What is the technical difference between Nominal Subtyping (standard inheritance) and Structural Subtyping (typing.Protocol)?",
+    "category": "Nominal vs Structural:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The Missing py.typed Marker Trap",
+        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Type checker false-safety via Any",
+        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):). - Structural (Duck Typing): An object matches the type if it possesses the required methods and attributes, without explicit inheritance.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
-    "category": "Production Failure Modes",
+    "question": "What is the purpose of TypeVar(\"T\") and Generic[T] when designing reusable data structures?",
+    "category": "Generics:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Invariance of Mutable Containers",
+        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Bug 1: Any disabling type checking",
+        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Invariance of Mutable Containers",
-    "lesson_ref": "01_README.md"
+    "explanation": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
-    "category": "Production Failure Modes",
+    "question": "How does typing.ParamSpec preserve the exact parameter signature of a decorated function?",
+    "category": "Decorator Typing:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The # type: ignore Proliferation Anti-Pattern",
+        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Circular Type Imports with TYPE_CHECKING",
+        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The `# type: ignore` Proliferation Anti-Pattern",
-    "lesson_ref": "01_README.md"
+    "explanation": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

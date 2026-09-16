@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Data Engineering Polars Playwright?",
-    "category": "Production Failure Modes",
+    "question": "Why is Polars fundamentally faster and more memory-efficient than Pandas?",
+    "category": "Rust & Arrow:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "- DataFrame: Executes operations immediately in memory (eager).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Data Engineering Polars Playwright?",
-    "category": "Production Failure Modes",
+    "question": "How does Apache Arrow's columnar memory layout optimize analytical aggregations like SUM() and AVG()?",
+    "category": "Columnar Memory:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Accidentally Calling .collect() Prematurely",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Converting Polars to Pandas Unnecessarily",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Unsanitized schema inference",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- DataFrame: Executes operations immediately in memory (eager).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Accidentally Calling `.collect()` Prematurely",
-    "lesson_ref": "01_README.md"
+    "explanation": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Data Engineering Polars Playwright?",
-    "category": "Production Failure Modes",
+    "question": "What is Predicate Pushdown, and how does Polars use it to minimize data loaded from disk?",
+    "category": "Query Optimization:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Schema Mismatch in Partitioned Parquet Scans",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with InvalidSchemaOperationError",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "- DataFrame: Executes operations immediately in memory (eager).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Schema Mismatch in Partitioned Parquet Scans",
-    "lesson_ref": "01_README.md"
+    "explanation": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

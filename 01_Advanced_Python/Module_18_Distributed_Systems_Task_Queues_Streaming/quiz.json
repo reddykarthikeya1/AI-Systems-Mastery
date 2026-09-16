@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Distributed Systems Task Queues Streaming subsystem?",
-    "category": "System Invariants",
+    "question": "Why should long-running operations (like generating 100-page PDF reports) never run directly inside an HTTP request handler?",
+    "category": "Decoupling:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "HTTP requests have strict timeout limits (e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 1: Non-idempotent task processing",
+        "text": "- Producer: Generates job instructions and enqueues them.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "A poison pill is a message with corrupt data that crashes the worker.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
         "is_correct": false
       }
     ],
-    "explanation": "In Distributed Systems Task Queues Streaming, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Distributed Systems Task Queues Streaming mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "What are the distinct responsibilities of a Producer, a Message Broker, and a Worker Consumer?",
+    "category": "Broker Architecture:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "- Producer: Generates job instructions and enqueues them.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The Poison Pill Queue Blocker",
+        "text": "HTTP requests have strict timeout limits (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Retry Avalanches & Jitter",
+        "text": "A poison pill is a message with corrupt data that crashes the worker.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Distributed Systems Task Queues Streaming at scale?",
-    "category": "Scalability & Performance",
+    "question": "What is a \"Poison Pill\" message, and what happens to a naive worker pool that does not implement DLQs?",
+    "category": "Poison Pills:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "A poison pill is a message with corrupt data that crashes the worker.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "HTTP requests have strict timeout limits (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- Producer: Generates job instructions and enqueues them.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "A poison pill is a message with corrupt data that crashes the worker. Without DLQs, the broker constantly re-delivers the message, causing an infinite crash loop.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

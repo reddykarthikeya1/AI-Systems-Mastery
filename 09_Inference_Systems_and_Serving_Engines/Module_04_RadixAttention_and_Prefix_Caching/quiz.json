@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "After deploying SGLang with RadixAttention for a multi-tenant enterprise app, telemetry reports that prefix cache hit rate is only 4%, despite all users sharing an identical 2,500-token prompt template. Investigation shows the developer added dynamic session timestamps (`f\"Current time: {datetime.now()}\"`) at the very top of the system prompt. Explain the catastrophic impact on RadixAttention and prescribe the architectural fix.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 04 RadixAttention and Prefix Caching failure 'Top Production Failure Modes in Prefix Caching', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: Radix trees match strictly from the root ($t_0, t_1, \\dots$). Placing dynamic, non-deterministic tokens (like current timestamp or unique request UUID) at token positions $0 \\dots 10$ c...",
+        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! - Fix: Implement ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": ": Server hangs when GPU memory reaches 99%; no new requests are admitted. - Root Cause: All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator wait",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "Lock contention on shared resource boundaries in 04 RadixAttention and Prefix Caching exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**: Radix trees match strictly from the root ($t_0, t_1, \\dots$). Placing dynamic, non-deterministic tokens (like current timestamp or unique request UUID) at token positions $0 \\dots 10$ causes the prefix lookup to diverge from the root on token 5. The subsequent 2,490 identical tokens are never matched, forcing a full 2,500-token prefill on every single request.\n2. **Remedy**:\n   - **Template Canonicalization**: Move all static, invariant prompt text (system instructions, tool schemas, few-shot examples) to the beginning of the prompt.\n   - Place all dynamic, request-specific context (timestamps, user query, session IDs) strictly at the suffix.\n   - Cache hit rate immediately restores to $> 95\\%$.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 04 RadixAttention and Prefix Caching: : All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! - Fix: Implement . Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "Under 5,000 QPS, CPU profiling reveals that worker threads spend 35% of their execution time waiting on the Radix Tree global lock during prefix lookup and insertion. How do you scale prefix tree access to high concurrency?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Use Read-Copy-Update (RCU) or fine-grained read-write locks (pthread_rwlock / tbb::concurrent_hash_map for child edges).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "1. Use **Read-Copy-Update (RCU)** or fine-grained read-write locks (`pthread_rwlock` / `tbb::concurrent_hash_map` for child edges).\n2. Multiple threads can perform simultaneous read-only traversals without locking.\n3. Node splitting and leaf eviction acquire write locks localized strictly to the immediate parent and affected child node rather than locking the entire tree.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the RadixAttention and Prefix Caching subsystem?",
+    "question": "What architectural role does 1. Systems Architecture of RadixAttention play in 04 RadixAttention and Prefix Caching?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Systems Architecture of RadixAttention is essential for maintaining predictable invariants and high performance in 04 RadixAttention and Prefix Caching.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "1. Systems Architecture of RadixAttention is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In RadixAttention and Prefix Caching, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Systems Architecture of RadixAttention in 04 RadixAttention and Prefix Caching specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does RadixAttention and Prefix Caching mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. LRU Eviction Policy & Memory Safety play in 04 RadixAttention and Prefix Caching?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. LRU Eviction Policy & Memory Safety is essential for maintaining predictable invariants and high performance in 04 RadixAttention and Prefix Caching.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "2. LRU Eviction Policy & Memory Safety is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in RadixAttention and Prefix Caching at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. LRU Eviction Policy & Memory Safety in 04 RadixAttention and Prefix Caching specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

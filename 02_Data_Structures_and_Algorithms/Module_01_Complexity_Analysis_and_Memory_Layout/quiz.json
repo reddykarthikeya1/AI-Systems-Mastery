@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Complexity Analysis and Memory Layout subsystem?",
-    "category": "System Invariants",
+    "question": "In 01 Complexity Analysis and Memory Layout triage of defect 'A noisy measurement flips the growth classification', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written for a sing",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Complexity Analysis and Memory Layout, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written for a sing",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Complexity Analysis and Memory Layout mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 01 Complexity Analysis and Memory Layout triage of defect 'The amortised-copy calculation cannot finish at scale', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 109 it does not return at all. This is the most easily missed class of defect, because the ou",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 109 it does not return at all. This is the most easily missed class of defect, because the ou",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Complexity Analysis and Memory Layout at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 01 Complexity Analysis and Memory Layout triage of defect 'Binary search comparisons are wrong at large n', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 253 the input cannot be represented exactly, so the logarithm is computed from a rounded value and int() truncates the result \u2014 sometimes one lower than the truth. At 1018 the ",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "math.log2 works in double precision, which has 53 bits of mantissa. Above 253 the input cannot be represented exactly, so the logarithm is computed from a rounded value and int() truncates the result \u2014 sometimes one lower than the truth. At 1018 the ",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

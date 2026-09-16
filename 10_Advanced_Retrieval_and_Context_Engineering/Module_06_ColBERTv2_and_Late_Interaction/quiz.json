@@ -1,147 +1,60 @@
 [
   {
     "id": 1,
-    "question": "Derive the computational complexity of scoring 100 candidate documents (each length $D=200$ tokens) for a query of length $Q=10$ tokens with embedding dimension $d=128$ under ColBERT Late Interaction vs a standard Cross-Encoder Transformer.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 06 ColBERTv2 and Late Interaction failure 'Top Production Failure Modes in ColBERT Serving', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "ColBERT MaxSim Compute: For each document, we compute matrix product $M = E_q \\cdot E_d^T$: $$\\text{FLOPs}_{\\text{matmul}} = 2 \\times |Q| \\times |D| \\times d = 2 \\times 10 \\times 200 \\times 128 = 5...",
+        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. - Fix: Always apply the trained li",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": ": RuntimeError: The size of tensor a (128) must match the size of tensor b (768). - Root Cause: Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Fo",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "Lock contention on shared resource boundaries in 06 ColBERTv2 and Late Interaction exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **ColBERT MaxSim Compute**:\n   For each document, we compute matrix product $M = E_q \\cdot E_d^T$:\n   $$\\text{FLOPs}_{\\text{matmul}} = 2 \\times |Q| \\times |D| \\times d = 2 \\times 10 \\times 200 \\times 128 = 512,000 \\text{ FLOPs} = 0.512 \\text{ MFLOPs}$$\n   For 100 documents: $51.2 \\text{ MFLOPs}$.\n   On GPU Tensor Cores, $51.2 \\text{ MFLOPs}$ executes in **$< 0.1 \\text{ ms}$**!\n2. **Cross-Encoder Compute**:\n   Evaluating a 12-layer BERT-base model over 100 sequences of length $L = |Q| + |D| = 210$:\n   $$\\text{FLOPs}_{\\text{transformer}} \\approx 100 \\times (24 \\times 210 \\times 768^2) \\approx 300 \\times 10^9 \\text{ FLOPs} = 300 \\text{ GFLOPs}$$\n   Takes $\\approx 30-50 \\text{ ms}$.\n3. **Conclusion**: ColBERT achieves a **$5,000\\times$ reduction in scoring FLOPs** while retaining fine-grained token-level cross-interaction!",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 06 ColBERTv2 and Late Interaction: : Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. - Fix: Always apply the trained li. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "Why does ColBERT apply punctuation damping / masking to query tokens during MaxSim summation?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Common punctuation (commas, periods, question marks) frequently match random punctuation tokens in documents with high similarity.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Common punctuation (commas, periods, question marks) frequently match random punctuation tokens in documents with high similarity.\nIncluding unmasked punctuation tokens in the sum introduces noise that inflates scores for syntactically similar but semantically irrelevant documents.\nColBERT masks query punctuation or sets static punctuation weights to $0.0$.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the ColBERTv2 and Late Interaction subsystem?",
+    "question": "What architectural role does 1. Mathematical Formulation of Late Interaction play in 06 ColBERTv2 and Late Interaction?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Mathematical Formulation of Late Interaction is essential for maintaining predictable invariants and high performance in 06 ColBERTv2 and Late Interaction.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "1. Mathematical Formulation of Late Interaction is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In ColBERTv2 and Late Interaction, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "How does ColBERTv2 and Late Interaction mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in ColBERTv2 and Late Interaction at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 1. Mathematical Formulation of Late Interaction in 06 ColBERTv2 and Late Interaction specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Aggregations Replicas Sharding?",
-    "category": "Production Failure Modes",
+    "question": "What is the execution model of a MongoDB Aggregation Pipeline?",
+    "category": "What is the execution model of a MongoDB Aggregation Pipeline?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Replication Read Concern 'local' Stale Reads",
+        "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "It deconstructs an array field, outputting one document for every element in the array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Aggregations Replicas Sharding?",
-    "category": "Production Failure Modes",
+    "question": "How does the $lookup stage perform left outer joins between collections?",
+    "category": "How does the $lookup stage perform left outer joins between collections?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "100MB Pipeline RAM Limit: In-memory $group and $sort operations crash unless allowDiskUse is enabled.",
+        "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "It deconstructs an array field, outputting one document for every element in the array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: 100MB Pipeline RAM Limit: In-memory $group and $sort operations crash unless allowDiskUse is enabled.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in MongoDB Aggregations Replicas Sharding?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster?",
+    "category": "What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Scatter-Gather Sharding Penalty: Queries lacking shard keys broadcast to all cluster shards, destroying throughput.",
+        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Aggregation Pipeline 100MB Memory Limit Exceeded",
+        "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Scatter-Gather Sharding Degradation",
+        "text": "It deconstructs an array field, outputting one document for every element in the array.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Scatter-Gather Sharding Penalty: Queries lacking shard keys broadcast to all cluster shards, destroying throughput.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

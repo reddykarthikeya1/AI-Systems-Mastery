@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
-    "category": "Production Failure Modes",
+    "question": "What proportion of tests in a healthy codebase should be Unit Tests versus End-to-End (E2E) tests, and why?",
+    "category": "The Test Pyramid:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Test order dependence via shared mutable global state",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
-    "category": "Production Failure Modes",
+    "question": "Why does pytest allow using plain Python assert a == b instead of requiring special assertion methods like self.assertEqual(a, b)?",
+    "category": "Assertion Rewriting:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Patching the Definition Site Instead of Lookup Site",
+        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 2: Asserting a tuple: assert (cond, msg)",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with Order dependence and flaky test runs",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Mock Attribute Drift (autospec=True)",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Patching the Definition Site Instead of Lookup Site",
-    "lesson_ref": "01_README.md"
+    "explanation": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
-    "category": "Production Failure Modes",
+    "question": "What is the primary advantage of @pytest.mark.parametrize over running a for loop of assertions inside a single test function?",
+    "category": "Parametrization:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Leaking Mutable State Across Function Fixtures",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: The \"Where to Patch\" Bug",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with Fragile floating-point test failure",
+        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Leaky Fixtures Contaminating Tests",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Leaking Mutable State Across Function Fixtures",
-    "lesson_ref": "01_README.md"
+    "explanation": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single vector.",
+    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

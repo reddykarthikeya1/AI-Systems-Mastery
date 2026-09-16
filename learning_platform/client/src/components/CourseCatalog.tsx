@@ -55,7 +55,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   }, [progress.srs_custom_cards, progress.srs_card_reviews]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-10 space-y-10">
       {/* Editorial Overview Header */}
       <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/90 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/80 pb-6">

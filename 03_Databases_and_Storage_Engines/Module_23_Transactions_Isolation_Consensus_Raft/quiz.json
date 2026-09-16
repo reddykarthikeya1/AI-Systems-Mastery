@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Transactions Isolation Consensus Raft?",
-    "category": "Production Failure Modes",
+    "question": "Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.",
+    "category": "Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Phantom Reads Under Repeatable Read in Standard SQL",
+        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Transactions Isolation Consensus Raft?",
-    "category": "Production Failure Modes",
+    "question": "What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)?",
+    "category": "What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Write Skew under Snapshot Isolation: Concurrent transactions modifying disjoint rows based on shared premise.",
+        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Two-Phase Commit (2PC) Indefinite Blocking on Coordinator Crash",
+        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Split-Brain Leader Election in Raft",
+        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Write Skew under Snapshot Isolation: Concurrent transactions modifying disjoint rows based on shared premise.",
-    "lesson_ref": "01_README.md"
+    "explanation": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Transactions Isolation Consensus Raft?",
-    "category": "Production Failure Modes",
+    "question": "Explain the two phases of the Two-Phase Commit (2PC) protocol.",
+    "category": "Explain the two phases of the Two-Phase Commit (2PC) protocol.?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Split-Brain Dual Leader: Candidate becoming leader without strict majority quorum ($N/2 + 1$), accepting divergent writes.",
+        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Split-Brain Dual Leader: Candidate becoming leader without strict majority quorum ($N/2 + 1$), accepting divergent writes.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

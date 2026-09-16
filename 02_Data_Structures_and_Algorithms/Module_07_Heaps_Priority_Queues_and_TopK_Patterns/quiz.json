@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Heaps Priority Queues and TopK Patterns subsystem?",
-    "category": "System Invariants",
+    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'K-th largest returns the k-th smallest', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k smallest. The function computes the k-th smallest and calls it the k-th largest. For k=1 and for all-equal inputs the two answers co",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Heaps Priority Queues and TopK Patterns, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k smallest. The function computes the k-th smallest and calls it the k-th largest. For k=1 and for all-equal inputs the two answers co",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Heaps Priority Queues and TopK Patterns mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'The merge stops as soon as any one list is exhausted', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists. The output is correc",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists. The output is correc",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Heaps Priority Queues and TopK Patterns at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'The median is wrong for every even-length prefix', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean. Every od",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean. Every od",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

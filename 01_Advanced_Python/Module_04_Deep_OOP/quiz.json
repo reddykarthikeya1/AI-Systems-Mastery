@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Deep OOP subsystem?",
-    "category": "System Invariants",
+    "question": "What is the technical difference in responsibility between new and init when creating a new class instance?",
+    "category": "Object Lifecycle:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Fails with Broken cooperative inheritance (MRO bypass)",
+        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Class-level attributes are created once when the class definition is first parsed. All instance lookups (self.items) fall back to that single shared list in RAM.",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "In Python 3, defining __eq__ automatically sets __hash__ = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, __hash__ must be explicitly implemented.",
+        "text": "Properties maintain a clean, pythonic public API (account.",
         "is_correct": false
       }
     ],
-    "explanation": "In Deep OOP, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance. - init(self) is the initializer: it accepts the newly allocated instance and configures its attributes.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Deep OOP mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When should you use a @classmethod instead of a standard instance method or @staticmethod?",
+    "category": "Method Types:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Defining transaction_log: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Shared transaction history across all customer accounts",
+        "text": "Properties maintain a clean, pythonic public API (account.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.g., Date.fromtimestamp(ts) or User.fromjson(raw)).",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Deep OOP at scale?",
-    "category": "Scalability & Performance",
+    "question": "In Python, what does the double leading underscore (e.g. self.secretkey) actually do to the variable name?",
+    "category": "Encapsulation:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 2: Implementing __eq__ without __hash__",
+        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with TypeError when using custom object as dictionary key",
+        "text": "Properties maintain a clean, pythonic public API (account.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

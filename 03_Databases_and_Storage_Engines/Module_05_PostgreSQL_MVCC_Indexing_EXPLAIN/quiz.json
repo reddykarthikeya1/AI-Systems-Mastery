@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
-    "category": "Production Failure Modes",
+    "question": "How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates?",
+    "category": "How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Deadlock on Concurrent Index Creation",
+        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
-    "category": "Production Failure Modes",
+    "question": "What is the purpose of the PostgreSQL Visibility Map?",
+    "category": "What is the purpose of the PostgreSQL Visibility Map?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Autovacuum Starvation: Idle-in-transaction connections hold back xmin, causing table bloat to swell 100x.",
+        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Misleading EXPLAIN Cost Estimates Due to Stale Statistics",
+        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Autovacuum Starvation: Idle-in-transaction connections hold back xmin, causing table bloat to swell 100x.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
-    "category": "Production Failure Modes",
+    "question": "What happens during a standard VACUUM vs VACUUM FULL?",
+    "category": "What happens during a standard VACUUM vs VACUUM FULL?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Stale Catalog Statistics: Bulk data changes without ANALYZE trick the planner into choosing slow sequential scans.",
+        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Stale Catalog Statistics: Bulk data changes without ANALYZE trick the planner into choosing slow sequential scans.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

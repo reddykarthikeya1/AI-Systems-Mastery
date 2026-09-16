@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Advanced FastAPI WebSockets DI?",
-    "category": "Production Failure Modes",
+    "question": "How does FastAPI construct and resolve sub-dependencies in a request dependency graph?",
+    "category": "Dependency Graphs:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "FastAPI builds a Directed Acyclic Graph (DAG) of dependencies, evaluating shared sub-dependencies once per request (unless usecache=False is set) and injecting resolved values into dependent functions.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: WebSocket Client Disconnect Leak",
+        "text": "Incoming bytes pass through each middleware layer in outer-to-inner order, execute the endpoint, and the resulting Response flows back through the layers in reverse (inner-to-outer) order.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Iterating through active WebSockets and awaiting send_text() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "text": "It provides a single unique trace ID that follows a request across multiple microservices, message queues, and logs, making distributed debugging possible.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "FastAPI builds a Directed Acyclic Graph (DAG) of dependencies, evaluating shared sub-dependencies once per request (unless usecache=False is set) and injecting resolved values into dependent functions.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Advanced FastAPI WebSockets DI?",
-    "category": "Production Failure Modes",
+    "question": "What exact moments in request execution correspond to code before vs after the yield statement in a dependency?",
+    "category": "Yield Lifecycle:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Forgetting to Catch WebSocketDisconnect",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 1: Sequential unhandled broadcast to disconnected sockets",
+        "text": "FastAPI builds a Directed Acyclic Graph (DAG) of dependencies, evaluating shared sub-dependencies once per request (unless usecache=False is set) and injecting resolved values into dependent functions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with Cascading broadcast failure",
+        "text": "Incoming bytes pass through each middleware layer in outer-to-inner order, execute the endpoint, and the resulting Response flows back through the layers in reverse (inner-to-outer) order.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "It provides a single unique trace ID that follows a request across multiple microservices, message queues, and logs, making distributed debugging possible.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Forgetting to Catch `WebSocketDisconnect`",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Code before yield: Executes during request setup before the route handler is invoked. - Code after yield: Executes during response teardown after the route handler finishes, even if an unhandled error occurred.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Advanced FastAPI WebSockets DI?",
-    "category": "Production Failure Modes",
+    "question": "Describe the journey of an HTTP request through custom ASGI middleware to the route endpoint and back.",
+    "category": "ASGI Middleware Pipeline:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Consuming the Request Body in Middleware",
+        "text": "Incoming bytes pass through each middleware layer in outer-to-inner order, execute the endpoint, and the resulting Response flows back through the layers in reverse (inner-to-outer) order.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "FastAPI builds a Directed Acyclic Graph (DAG) of dependencies, evaluating shared sub-dependencies once per request (unless usecache=False is set) and injecting resolved values into dependent functions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "It provides a single unique trace ID that follows a request across multiple microservices, message queues, and logs, making distributed debugging possible.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Consuming the Request Body in Middleware",
-    "lesson_ref": "01_README.md"
+    "explanation": "Incoming bytes pass through each middleware layer in outer-to-inner order, execute the endpoint, and the resulting Response flows back through the layers in reverse (inner-to-outer) order.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

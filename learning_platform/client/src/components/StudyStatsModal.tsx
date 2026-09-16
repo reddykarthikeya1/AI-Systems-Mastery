@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Flame, Clock, CheckCircle2, Award, X, Zap, Target, BookOpen, Layers } from 'lucide-react';
 import { ProgressPayload, CourseSummary } from '../types';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface StudyStatsModalProps {
   isOpen: boolean;
@@ -15,14 +16,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
   progress,
   courses,
 }) => {
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const modalRef = useFocusTrap(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -72,6 +66,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
       onClick={onClose}
     >
       <div 
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="stats-modal-title"

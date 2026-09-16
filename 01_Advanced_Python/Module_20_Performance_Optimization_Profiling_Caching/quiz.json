@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Performance Optimization Profiling Caching subsystem?",
-    "category": "System Invariants",
+    "question": "In cProfile statistics, what is the difference between tottime (total time) and cumtime (cumulative time)?",
+    "category": "cProfile Metrics:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "time.time() measures calendar wall-clock time and can jump backward or forward during NTP synchronization.",
+        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Cache Avalanche (Simultaneous Expirations)",
+        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
         "is_correct": false
       }
     ],
-    "explanation": "In Performance Optimization Profiling Caching, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Performance Optimization Profiling Caching mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Why is Rust-backed orjson significantly faster at serializing JSON than standard library json?",
+    "category": "Fast Serialization:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Fails with Cache Stampede on negative caching (Cached None treated as miss)",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Cache Stampede (Thundering Herd)",
+        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Premature expiration or eternal caching under NTP skew",
+        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Performance Optimization Profiling Caching at scale?",
-    "category": "Scalability & Performance",
+    "question": "Explain the sequential read steps when an application implements the Cache-Aside pattern.",
+    "category": "Cache-Aside Pattern:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Using wall clock (time.time()) instead of monotonic clock",
+        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Bug 2: None as cache miss sentinel",
+        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL, and return result.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

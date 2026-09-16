@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
-    "category": "Production Failure Modes",
+    "question": "What is the Transactional Outbox Pattern, and what distributed data problem does it solve?",
+    "category": "What is the Transactional Outbox Pattern, and what distributed data problem does it solve?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
-    "category": "Production Failure Modes",
+    "question": "How does Change Data Capture (CDC) differ from application-level event publishing?",
+    "category": "How does Change Data Capture (CDC) differ from application-level event publishing?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Dual-Write Inconsistency: Direct application dual-writes dropping downstream updates on network glitch.",
+        "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Dual-Write Distributed Inconsistency",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Cache Stampede (Thundering Herd) on Hot Key Expiration",
+        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Stale Event Replay Overwriting Newer Data in Downstream Stores",
+        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Dual-Write Inconsistency: Direct application dual-writes dropping downstream updates on network glitch.",
-    "lesson_ref": "01_README.md"
+    "explanation": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
-    "category": "Production Failure Modes",
+    "question": "In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse?",
+    "category": "In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Cache Stampede: Hot key expiration causing thousands of concurrent workers to swamp primary relational database.",
+        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Cache Stampede: Hot key expiration causing thousands of concurrent workers to swamp primary relational database.",
-    "lesson_ref": "01_README.md"
+    "explanation": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

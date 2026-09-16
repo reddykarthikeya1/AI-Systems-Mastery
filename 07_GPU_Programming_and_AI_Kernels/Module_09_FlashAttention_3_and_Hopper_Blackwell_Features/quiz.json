@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the FlashAttention 3 and Hopper Blackwell Features subsystem?",
-    "category": "System Invariants",
+    "question": "FP8 Dynamic Range vs Precision (E4M3 vs E5M2) \u2014 In FlashAttention-3 with FP8 Tensor Cores, which FP8 format is selected for $Q, K, V$ matrix multiplication and why?",
+    "category": "FP8 Dynamic Range vs Precision (E4M3 vs E5M2)",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "NVIDIA Hopper supports two 8-bit floating point formats: 1.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 09 FlashAttention 3 and Hopper Blackwell Features.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 09 FlashAttention 3 and Hopper Blackwell Features.",
         "is_correct": false
       }
     ],
-    "explanation": "In FlashAttention 3 and Hopper Blackwell Features, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "NVIDIA Hopper supports two 8-bit floating point formats: 1. E4M3 (1 sign, 4 exponent, 3 mantissa bits, bias=7): - Maximum representable value $\\approx 448$. Higher precision (3 mantissa bits). - Ideal for activations and weights where dynamic range is bounded. 2. E5M2 (1 sign, 5 exponent, 2 mantissa bits, bias=15): - Maximum value $\\approx 57{,}344",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does FlashAttention 3 and Hopper Blackwell Features mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 09 FlashAttention 3 and Hopper Blackwell Features failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": ": Kernel hangs indefinitely (deadlock) on H100 with 0% SM activity. - Root Cause: The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruct",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Lock contention on shared resource boundaries in 09 FlashAttention 3 and Hopper Blackwell Features exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in FlashAttention 3 and Hopper Blackwell Features at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 09 FlashAttention 3 and Hopper Blackwell Features: : The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

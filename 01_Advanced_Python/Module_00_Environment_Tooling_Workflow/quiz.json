@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Environment Tooling Workflow subsystem?",
-    "category": "System Invariants",
+    "question": "What is the programmatic difference between sys.prefix and sys.baseprefix when running inside a virtual environment versus system Python?",
+    "category": "Runtime Introspection:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "In system/global Python, sys.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: ModuleNotFoundError with src-layout",
+        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: The Mutable Default Argument Bug",
+        "text": "uv and ruff are written in Rust and compiled to native machine code.",
         "is_correct": false
       }
     ],
-    "explanation": "In Environment Tooling Workflow, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the original parent Python installation.",
+    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Environment Tooling Workflow mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Why is the src-layout (src/myapp/) safer than the flat-layout (myapp/ in root) when running test suites with pytest?",
+    "category": "Project Architecture:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "text": "In system/global Python, sys.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 1: Fragile relative sys.path hacking",
+        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "uv and ruff are written in Rust and compiled to native machine code.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In a flat layout, running pytest automatically adds the current working directory (.) to sys.path[0]. This allows tests to import the uninstalled local folder directly, masking errors where the package was not properly packaged, built, or installed. The src-layout ensures tests only succeed if the package is installed into the environment.",
+    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Environment Tooling Workflow at scale?",
-    "category": "Scalability & Performance",
+    "question": "What is the role of pyproject.toml under PEP 621, and what older configuration files does it replace?",
+    "category": "Packaging Standards:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: PowerShell: \"Running scripts is disabled on this system\"",
+        "text": "In system/global Python, sys.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Git Line Endings: CRLF vs. LF Conflicts",
+        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Unvalidated CLI Input",
+        "text": "uv and ruff are written in Rust and compiled to native machine code.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. It replaces setup.py, setup.cfg, requirements.txt, MANIFEST.in, .flake8, pytest.ini, and black.toml.",
+    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

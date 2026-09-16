@@ -493,7 +493,15 @@ def run_fallback_server(port: int = 8000, server_holder: Optional[Dict[str, Any]
             except Exception:
                 payload = {}
 
-            if parsed.path == "/api/progress":
+            if parsed.path == "/api/client-disconnect":
+                self.send_json({"status": "shutdown_scheduled"})
+                def _fallback_exit():
+                    time.sleep(3.5)
+                    print("\n[*] Application window/tab closed. Cleaning up and stopping backend...")
+                    os._exit(0)
+                threading.Thread(target=_fallback_exit, daemon=True).start()
+                return
+            elif parsed.path == "/api/progress":
                 res = save_progress(payload)
                 self.send_json(res)
                 return
@@ -885,7 +893,9 @@ def launch_interface(
             "--window-position=center",
             "--no-first-run",
             "--no-default-browser-check",
-            "--disable-features=TranslateUI",
+            "--disable-background-mode",
+            "--disable-features=TranslateUI,msEdgeStartupBoost",
+            "--no-service-autorun",
         ]
         try:
             proc = subprocess.Popen(cmd)
@@ -922,15 +932,8 @@ def main() -> None:
         window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
         if window_proc is not None:
             try:
-                t_launch = time.time()
                 window_proc.wait()
-                duration = time.time() - t_launch
-                # If process returned in under 2 seconds, it delegated to a background browser broker
-                if duration < 2.0:
-                    print(f"[*] Application window active in background broker (PID: {window_proc.pid}).")
-                    return
-                # If window was actually closed by user after running
-                time.sleep(0.5)
+                time.sleep(0.3)
                 print("\n[*] Application window closed by user. Terminating server...")
                 if "uvicorn" in server_holder:
                     server_holder["uvicorn"].should_exit = True
@@ -939,8 +942,11 @@ def main() -> None:
                         server_holder["httpd"].shutdown()
                     except Exception:
                         pass
+                # Enforce clean, unconditional removal from Windows Task Manager
+                time.sleep(1.2)
+                os._exit(0)
             except Exception:
-                pass
+                os._exit(0)
 
     ui_thread = threading.Thread(target=start_ui_supervisor, daemon=True)
     ui_thread.start()

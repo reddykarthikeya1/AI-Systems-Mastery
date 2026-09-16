@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
-    "category": "Production Failure Modes",
+    "question": "What is the technical difference between Cooperative Multitasking (used by Asyncio) and Preemptive Multitasking (used by OS Threads)?",
+    "category": "Multitasking Models:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.create_task().",
+        "text": "The coroutine pauses its execution state, yields control back to the Event Loop, and allows the Event Loop to execute other pending coroutines until the awaited I/O operation completes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Exceptions inside background tasks created via create_task() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "text": "time.sleep() is a synchronous OS-level thread block that completely freezes the single thread running the Event Loop, preventing all other c...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Freezing the Event Loop with time.sleep()",
+        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining ...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks. - Cooperative: Coroutines voluntarily surrender execution control back to the Event Loop exclusively at explicit await pause points.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
-    "category": "Production Failure Modes",
+    "question": "When Python encounters an await expression, what exactly happens to the current coroutine and the Event Loop?",
+    "category": "The await Keyword:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Blocking the Event Loop with Synchronous Code",
+        "text": "The coroutine pauses its execution state, yields control back to the Event Loop, and allows the Event Loop to execute other pending coroutines until the awaited I/O operation completes.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "In Python 3.8+, asyncio.CancelledError inherits from BaseException rather than Exception, so except Exception: does not catch cancellation. However, if you catch BaseException or CancelledError without re-raising, the task refuses to cancel, causing memory leaks!",
+        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "time.sleep() is a synchronous OS-level thread block that completely freezes the single thread running the Event Loop, preventing all other c...",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining ...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Blocking the Event Loop with Synchronous Code",
-    "lesson_ref": "01_README.md"
+    "explanation": "The coroutine pauses its execution state, yields control back to the Event Loop, and allows the Event Loop to execute other pending coroutines until the awaited I/O operation completes.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
-    "category": "Production Failure Modes",
+    "question": "Why is executing time.sleep(5) inside an async coroutine considered a critical bug, and what should you write instead?",
+    "category": "Loop Freezes:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The Fire-and-Forget Garbage Collection Trap",
+        "text": "time.sleep() is a synchronous OS-level thread block that completely freezes the single thread running the Event Loop, preventing all other c...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Fails with Unretrieved task exception warning",
+        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Fails with RuntimeWarning / un-executed coroutine",
+        "text": "The coroutine pauses its execution state, yields control back to the Event Loop, and allows the Event Loop to execute other pending coroutines until the awaited I/O operation completes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Swallowing asyncio.CancelledError",
+        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining ...",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The Fire-and-Forget Garbage Collection Trap",
-    "lesson_ref": "01_README.md"
+    "explanation": "time.sleep() is a synchronous OS-level thread block that completely freezes the single thread running the Event Loop, preventing all other concurrent coroutines from making progress. Use await asyncio.sleep(5).",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

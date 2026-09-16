@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "During checkpoint saving of an 8,192-GPU job, each GPU attempts to write its local tensors into individual per-rank files simultaneously. The storage cluster freezes, and the entire data center experiences an I/O hang. What happened at the filesystem level, and how is DCP configured to prevent this?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 09 Distributed Checkpointing DCP and Failure Recovery failure 'Top Production Failure Modes in Distributed Checkpointing', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: Metadata Server Inode Contention: Parallel distributed filesystems (like Lustre or GPFS) separate Metadata Servers (MDS) from Object Storage Targets (OSTs).",
+        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. - Fix: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Redu",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard. - Root Cause: If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Lock contention on shared resource boundaries in 09 Distributed Checkpointing DCP and Failure Recovery exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause: Metadata Server Inode Contention**:\n   Parallel distributed filesystems (like Lustre or GPFS) separate Metadata Servers (MDS) from Object Storage Targets (OSTs). When 8,192 processes simultaneously open, create, and close individual files in the same directory, the MDS is bombarded with tens of thousands of POSIX metadata lock requests per second, causing metadata lock thrashing and cluster-wide filesystem collapse.\n2. **Remedy: Coalesced Multi-Rank Writing**:\n   - Configure DCP with **I/O consolidation**: Group ranks into I/O pools (e.g. 1 writer rank per 8-GPU node).\n   - Node-local ranks copy shards to Node Rank 0 shared memory; Node Rank 0 writes a single coalesced file per node.\n   - Reduces file descriptor count and file creation operations by an exact factor of 8 ($8,192 \\to 1,024$).",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 09 Distributed Checkpointing DCP and Failure Recovery: : If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. - Fix: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Redu. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "When resharding an AdamW optimizer state from $TP=8$ to $TP=4$, why is simply slicing the momentum and variance tensors insufficient without tracking the internal step counter and loss scaler state?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "State Anatomy: AdamW maintains: - Tensor states: exp_avg (momentum), exp_avg_sq (variance), and fp32_master_params.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "1. **State Anatomy**:\n   AdamW maintains:\n   - Tensor states: `exp_avg` (momentum), `exp_avg_sq` (variance), and `fp32_master_params`. These are spatially partitioned identically to model parameters.\n   - Scalar states: `step` (integer step count) and `loss_scale` (dynamic loss scaling factor).\n2. **Failure Mechanism**:\n   If scalar states are not properly replicated or preserved during resharding, the restored optimizer resets `step = 0`. This resets the Adam bias correction factors:\n   $$\\beta_1^t, \\quad \\beta_2^t$$\n   causing effective learning rate spikes by several orders of magnitude, which permanently corrupts model weights.\n3. **DCP Design**: DCP treats non-tensor scalar states as replicated metadata in the global manifest, guaranteeing identical restoration across all ranks.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Distributed Checkpointing DCP and Failure Recovery subsystem?",
+    "question": "What architectural role does 1. Systems Architecture of PyTorch DCP play in 09 Distributed Checkpointing DCP and Failure Recovery?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Systems Architecture of PyTorch DCP is essential for maintaining predictable invariants and high performance in 09 Distributed Checkpointing DCP and Failure Recovery.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "1. Systems Architecture of PyTorch DCP is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Distributed Checkpointing DCP and Failure Recovery, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. Systems Architecture of PyTorch DCP in 09 Distributed Checkpointing DCP and Failure Recovery specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does Distributed Checkpointing DCP and Failure Recovery mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. Dynamic Resharding on Checkpoint Load play in 09 Distributed Checkpointing DCP and Failure Recovery?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Dynamic Resharding on Checkpoint Load is essential for maintaining predictable invariants and high performance in 09 Distributed Checkpointing DCP and Failure Recovery.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "2. Dynamic Resharding on Checkpoint Load is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Distributed Checkpointing DCP and Failure Recovery at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Dynamic Resharding on Checkpoint Load in 09 Distributed Checkpointing DCP and Failure Recovery specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

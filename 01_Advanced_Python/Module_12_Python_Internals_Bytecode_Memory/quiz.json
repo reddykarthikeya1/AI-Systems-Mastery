@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
-    "category": "Production Failure Modes",
+    "question": "List the 5 stages of CPython execution from raw Python text to physical machine execution.",
+    "category": "Compilation Stages:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler)...",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- obrefcnt: The integer reference count.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "Whenever a variable goes out of scope or is reassigned, obrefcnt is decremented.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "Because each object still holds a reference to the other, both objects maintain an obrefcnt >= 1 even when all external variables pointing to them have been deleted.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler) 5. CPython Virtual Machine (PVM / ceval.c) (Evaluation Loop)",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
-    "category": "Production Failure Modes",
+    "question": "In CPython's C source code, what two essential fields are present in every PyObject header?",
+    "category": "Object Anatomy:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The __del__ Method Circular Reference Blocker (Pre-Python 3.4 / Legacy C-extensions)",
+        "text": "- obrefcnt: The integer reference count.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Passing x as an argument into sys.getrefcount(x) creates a temporary reference inside the function stack frame.",
+        "text": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler)...",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Bug 2: sys.getsizeof is shallow",
+        "text": "Whenever a variable goes out of scope or is reassigned, obrefcnt is decremented.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "Because each object still holds a reference to the other, both objects maintain an obrefcnt >= 1 even when all external variables pointing to them have been deleted.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The `__del__` Method Circular Reference Blocker (Pre-Python 3.4 / Legacy C-extensions)",
-    "lesson_ref": "01_README.md"
+    "explanation": "- obrefcnt: The integer reference count. - obtype: A pointer to the object's type descriptor struct (e.g. &PyLongType).",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
-    "category": "Production Failure Modes",
+    "question": "How does CPython's Reference Counter determine the exact instant an object's memory can be safely deallocated?",
+    "category": "Primary Memory Management:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Modifying AST Nodes Without Setting Locations",
+        "text": "Whenever a variable goes out of scope or is reassigned, obrefcnt is decremented.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler)...",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "- obrefcnt: The integer reference count.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collect()) can detect and free isolated reference clusters.",
+        "text": "Because each object still holds a reference to the other, both objects maintain an obrefcnt >= 1 even when all external variables pointing to them have been deleted.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Modifying AST Nodes Without Setting Locations",
-    "lesson_ref": "01_README.md"
+    "explanation": "Whenever a variable goes out of scope or is reassigned, obrefcnt is decremented. The instant obrefcnt == 0, CPython immediately frees the memory back to the memory allocator.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

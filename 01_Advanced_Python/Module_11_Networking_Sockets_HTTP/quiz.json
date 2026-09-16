@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
-    "category": "Production Failure Modes",
+    "question": "What is the technical difference between TCP (Transmission Control Protocol) and UDP (User Datagram Protocol)?",
+    "category": "Protocol Fundamentals:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Bug 2 & 3: Missing framing delimiter (TCP streaming nature)",
+        "text": "- IP Address: Identifies the host machine on the network.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Bug 1: Missing SO_REUSEADDR socket option",
+        "text": "OSError: Address already in use.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhead (ideal for live video streaming, DNS, multiplayer gaming).",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
-    "category": "Production Failure Modes",
+    "question": "In the socket address tuple (\"127.0.0.1\", 8080), what role is played by the IP address vs the Port number?",
+    "category": "Addressing:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "The EADDRINUSE Port Collision",
+        "text": "- IP Address: Identifies the host machine on the network.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with OSError on server restart (TIME_WAIT state)",
+        "text": "OSError: Address already in use.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: The `EADDRINUSE` Port Collision",
-    "lesson_ref": "01_README.md"
+    "explanation": "- IP Address: Identifies the host machine on the network. - Port: Identifies the specific application/process listening on that host.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
-    "category": "Production Failure Modes",
+    "question": "Describe the 3 packets exchanged during the initial TCP connection handshake.",
+    "category": "TCP Handshake:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Assuming socket.send() Sends All Bytes",
+        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: TCP Stream Fragmentation (The \"Single Recv\" Trap)",
+        "text": "- IP Address: Identifies the host machine on the network.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "TCP does not preserve message boundaries. A 10 KB payload may arrive in 7 smaller chunks depending on router MTU sizes and network congestion.",
+        "text": "OSError: Address already in use.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Assuming `socket.send()` Sends All Bytes",
-    "lesson_ref": "01_README.md"
+    "explanation": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

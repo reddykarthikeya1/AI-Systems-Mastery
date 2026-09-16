@@ -15,7 +15,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -53,6 +53,35 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+_last_activity_time: float = time.time()
+_shutdown_thread: Optional[Any] = None
+
+@app.middleware("http")
+async def track_activity_middleware(request, call_next):
+    global _last_activity_time
+    _last_activity_time = time.time()
+    response = await call_next(request)
+    return response
+
+@app.post("/api/client-disconnect")
+def client_disconnect():
+    """Safely shuts down the server when the user closes the app window or browser tab."""
+    global _shutdown_thread
+    if _shutdown_thread and _shutdown_thread.is_alive():
+        return {"status": "shutdown_scheduled"}
+
+    def _graceful_shutdown():
+        # Wait 3.5 seconds to allow any fast page refresh (F5) to cancel shutdown
+        time.sleep(3.5)
+        if time.time() - _last_activity_time >= 3.0:
+            print("\n[*] Application window/tab closed. Cleaning up and stopping backend...")
+            os._exit(0)
+
+    import threading
+    _shutdown_thread = threading.Thread(target=_graceful_shutdown, daemon=True)
+    _shutdown_thread.start()
+    return {"status": "shutdown_scheduled"}
 
 
 # -----------------------------------------------------------------------------

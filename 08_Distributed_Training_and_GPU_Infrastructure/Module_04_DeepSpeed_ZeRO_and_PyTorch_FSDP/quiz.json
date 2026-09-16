@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "You deploy a 7B parameter model on 64 GPUs. With standard DDP, you achieve 52% MFU (Model FLOPs Utilization). With ZeRO-3 / FSDP `FULL_SHARD`, your MFU plummets to 28%. Profile logs indicate that the GPUs spend over 40% of their execution time waiting on NCCL kernels. Why did this happen, and what exact architectural configuration will restore performance?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 04 DeepSpeed ZeRO and PyTorch FSDP failure 'Top 5 Production Failure Modes in FSDP / ZeRO', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: A 7B parameter model requires only $\\approx 14 \\text{ GB}$ for weights and $\\approx 112 \\text{ GB}$ total static memory across all GPUs.",
+        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 s",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": ": Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%. - Root Cause: In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the e",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Lock contention on shared resource boundaries in 04 DeepSpeed ZeRO and PyTorch FSDP exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**: A 7B parameter model requires only $\\approx 14 \\text{ GB}$ for weights and $\\approx 112 \\text{ GB}$ total static memory across all GPUs. On 64 GPUs, each GPU holds only $\\approx 110 \\text{M}$ parameters ($220 \\text{ MB}$).\n   In ZeRO-3, every single layer requires an `All-Gather` collective prior to forward GEMM and another prior to backward GEMM. For small layer weights, the collective transmission time is dominated by **NCCL latency ($\\alpha$ in the $\\alpha-\\beta$ model)** rather than bandwidth. The GPU kernel execution finishes in microseconds, leaving the compute engine stalled waiting for the next layer's parameters.\n2. **Remedy**:\n   - Switch from `FULL_SHARD` to **`SHARD_GRAD_OP` (ZeRO-2)**: Optimizer states and gradients remain sharded, but model weights are persistent on each GPU. This eliminates $100\\%$ of forward and backward parameter `All-Gather` collectives!\n   - Alternatively, employ **Hybrid Sharding (HSDP)** with `sharding_group_size=8`: Shard parameters across the 8 GPUs inside each node (NVLink latency $< 2 \\,\\mu\\text{s}$) and replicate across nodes.\n   - Adjust `auto_wrap_policy` to wrap larger module blocks (e.g. 2\u20134 Transformer blocks per FSDP unit) to increase collective message sizes and amortize launch latency.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 04 DeepSpeed ZeRO and PyTorch FSDP: : In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 s. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "An engineer sets `sharding_strategy=FULL_SHARD` and enables CPU offloading for optimizer states to fit a 30B model onto 8x 80GB GPUs. During the forward pass, GPU memory is stable at 38 GB. Suddenly, at step 4 of the backward pass, all ranks terminate with `CUDA out of memory`. Explain the memory dynamics causing this backward spike and how to mitigate it.",
-    "category": "Architectural Scenario",
+    "question": "What architectural role does 1. Architectural Motivation & Theoretical Foundations play in 04 DeepSpeed ZeRO and PyTorch FSDP?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: - Activation Memory Dominance: ZeRO-3 only shards static parameters, gradients, and optimizer states.",
+        "text": "Mastering 1. Architectural Motivation & Theoretical Foundations is essential for maintaining predictable invariants and high performance in 04 DeepSpeed ZeRO and PyTorch FSDP.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "1. Architectural Motivation & Theoretical Foundations is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**:\n   - **Activation Memory Dominance**: ZeRO-3 only shards static parameters, gradients, and optimizer states. It does **not** shard activations! At batch size $B$ and sequence length $S$, activation memory scales as $O(L \\cdot B \\cdot S \\cdot H)$.\n   - **Backward Prefetch Buffer Allocation**: When `backward_prefetch=BackwardPrefetch.BACKWARD_PRE` is enabled without limit, FSDP issues `All-Gather` for layer $l-1$ while layer $l$ is still computing backward gradients. Consequently, the un-sharded weights of layer $l$, the gradients of layer $l$, the un-sharded weights of layer $l-1$, and the stored forward activations of layer $l$ are all co-resident in VRAM simultaneously.\n2. **Remedy**:\n   - Enable **Activation Checkpointing (Gradient Checkpointing)**: Discard intermediate activations during forward and recompute them during backward. This reduces activation memory from $O(L)$ to $O(\\sqrt{L})$ or $O(1)$ per layer.\n   - Set `limit_allgathers=True` in FSDP to restrict the number of concurrent in-flight all-gathers to 1.",
+    "explanation": "Detailed coverage of 1. Architectural Motivation & Theoretical Foundations in 04 DeepSpeed ZeRO and PyTorch FSDP specifications.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "During checkpoint saving of an FSDP-sharded 70B model, the cluster crashes with a host RAM OOM error on Rank 0, while ranks 1\u20137 remain idle. How do you redesign the checkpointing architecture for linear scalability?",
-    "category": "Architectural Scenario",
+    "question": "What architectural role does 2. DeepSpeed ZeRO Stages: Mathematical Analysis play in 04 DeepSpeed ZeRO and PyTorch FSDP?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: Calling sharded_model.state_dict() with StateDictType.FULL_STATE_DICT instructs PyTorch to execute an all-gather of all sharded parameters and copy them to Rank 0 host CPU memory.",
+        "text": "Mastering 2. DeepSpeed ZeRO Stages: Mathematical Analysis is essential for maintaining predictable invariants and high performance in 04 DeepSpeed ZeRO and PyTorch FSDP.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "2. DeepSpeed ZeRO Stages: Mathematical Analysis is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**: Calling `sharded_model.state_dict()` with `StateDictType.FULL_STATE_DICT` instructs PyTorch to execute an all-gather of all sharded parameters and copy them to Rank 0 host CPU memory. Reconstructing 70B FP32 master weights on a single host node demands $> 280 \\text{ GB}$ of contiguous system RAM.\n2. **Remedy**:\n   - Migrate to **Distributed Checkpointing (`torch.distributed.checkpoint` / DCP)** using `StateDictType.SHARDED_STATE_DICT`.\n   - Each rank writes its local sharded tensor slice directly to parallel storage (e.g., Lustre/GPFS/S3) concurrently.\n   - Host RAM consumption per node is bounded by $\\frac{\\text{Total Model Size}}{N}$, achieving $O(1)$ rank-0 memory overhead.",
+    "explanation": "Detailed coverage of 2. DeepSpeed ZeRO Stages: Mathematical Analysis in 04 DeepSpeed ZeRO and PyTorch FSDP specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

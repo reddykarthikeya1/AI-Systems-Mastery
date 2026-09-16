@@ -1,147 +1,89 @@
 [
   {
     "id": 1,
-    "question": "In a disaggregated serving architecture, a prefill worker generates $1.25 \\text{ GB}$ of KV cache for a 4,000-token prompt. The transfer to the decode worker occurs over a 400 Gbps ($50 \\text{ GB/s}$) RDMA fabric. 1. Calculate the raw network transfer time. 2. If decode TTFT SLA is $400 \\text{ ms}$, evaluate whether disaggregation is viable.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 06 Chunked Prefill and PD Disaggregation failure 'Top Production Failure Modes in Chunked Prefill', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Network Transfer Time: $$T_{\\text{transfer}} = \\frac{1.25 \\text{ GB}}{50 \\text{ GB/s}} = 0.025 \\text{ seconds} = 25 \\text{ ms}$$ 2.",
+        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). - Fix: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens. - Root Cause: When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "Lock contention on shared resource boundaries in 06 Chunked Prefill and PD Disaggregation exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Network Transfer Time**:\n   $$T_{\\text{transfer}} = \\frac{1.25 \\text{ GB}}{50 \\text{ GB/s}} = 0.025 \\text{ seconds} = 25 \\text{ ms}$$\n2. **Evaluation**:\n   - Prefill compute time on 8x H100 $\\approx 80 \\text{ ms}$.\n   - RDMA transmission $\\approx 25 \\text{ ms}$.\n   - Total TTFT $\\approx 80 + 25 + 10 = 115 \\text{ ms} \\ll 400 \\text{ ms}$.\n   - Disaggregation easily satisfies the TTFT SLA while completely isolating decode nodes from prefill interference!",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 06 Chunked Prefill and PD Disaggregation: : When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). - Fix: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "How does varying chunk size $C$ from 256 to 2048 tokens impact GPU arithmetic intensity and decode latency?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Small $C=256$: Minimal interference with decode ($< 15\\text{ ms}$ step time), but lower prefill operational intensity ($I \\approx 256$), causing prefill compute efficiency to drop.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "- Small $C=256$: Minimal interference with decode ($< 15\\text{ ms}$ step time), but lower prefill operational intensity ($I \\approx 256$), causing prefill compute efficiency to drop.\n- Large $C=2048$: High prefill compute efficiency ($I \\approx 2048$), but step time increases to $> 120\\text{ ms}$, causing visible decode stutter.\n- Production sweet spot: $C \\in [512, 1024]$ tokens.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Chunked Prefill and PD Disaggregation subsystem?",
+    "question": "What architectural role does 1. The Problem: Inter-Token Latency (ITL) Degeneracy play in 06 Chunked Prefill and PD Disaggregation?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. The Problem: Inter-Token Latency (ITL) Degeneracy is essential for maintaining predictable invariants and high performance in 06 Chunked Prefill and PD Disaggregation.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "1. The Problem: Inter-Token Latency (ITL) Degeneracy is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Chunked Prefill and PD Disaggregation, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "explanation": "Detailed coverage of 1. The Problem: Inter-Token Latency (ITL) Degeneracy in 06 Chunked Prefill and PD Disaggregation specifications.",
     "lesson_ref": "01_README.md"
   },
   {
-    "id": 4,
-    "question": "How does Chunked Prefill and PD Disaggregation mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "id": 3,
+    "question": "What architectural role does 2. Sarathi-Serve Chunked Prefill Mechanics play in 06 Chunked Prefill and PD Disaggregation?",
+    "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Mastering 2. Sarathi-Serve Chunked Prefill Mechanics is essential for maintaining predictable invariants and high performance in 06 Chunked Prefill and PD Disaggregation.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "2. Sarathi-Serve Chunked Prefill Mechanics is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Chunked Prefill and PD Disaggregation at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 2. Sarathi-Serve Chunked Prefill Mechanics in 06 Chunked Prefill and PD Disaggregation specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

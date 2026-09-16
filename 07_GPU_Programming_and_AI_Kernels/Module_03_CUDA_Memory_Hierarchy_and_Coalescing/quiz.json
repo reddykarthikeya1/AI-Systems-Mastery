@@ -1,89 +1,60 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the CUDA Memory Hierarchy and Coalescing subsystem?",
-    "category": "System Invariants",
+    "question": "Uncoalesced Read vs Write Penalty \u2014 In a matrix transpose kernel, you can choose between coalescing the global memory read and leaving the global memory write uncoalesced, or vice versa. Which one causes greater performance degradation?",
+    "category": "Uncoalesced Read vs Write Penalty",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Uncoalesced writes cause greater performance degradation than uncoalesced reads.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! - Fix: Conver",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Structure of Arrays (SoA) vs Array of Structures (AoS)",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 03 CUDA Memory Hierarchy and Coalescing.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 03 CUDA Memory Hierarchy and Coalescing.",
         "is_correct": false
       }
     ],
-    "explanation": "In CUDA Memory Hierarchy and Coalescing, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Uncoalesced writes cause greater performance degradation than uncoalesced reads. - Reads: If threads issue strided loads, the L1/L2 cache lines can still provide spatial locality across subsequent warps. - Writes: Global memory writes that are uncoalesced cause multiple partial-cache-line write requests. On architectures with write-back caches, thi",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does CUDA Memory Hierarchy and Coalescing mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "When diagnosing the 03 CUDA Memory Hierarchy and Coalescing failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! - Fix: Conver",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": ": Custom object kernel runs at 20% of memory bandwidth. - Root Cause: Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "Lock contention on shared resource boundaries in 03 CUDA Memory Hierarchy and Coalescing exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in CUDA Memory Hierarchy and Coalescing at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 03 CUDA Memory Hierarchy and Coalescing: : Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! - Fix: Conver. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

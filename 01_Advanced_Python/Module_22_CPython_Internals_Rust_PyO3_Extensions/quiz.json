@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the CPython Internals Rust PyO3 Extensions subsystem?",
-    "category": "System Invariants",
+    "question": "What two header fields exist in every single object allocated on the CPython heap?",
+    "category": "The PyObject Struct:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "- obrefcnt: 64-bit integer tracking reference count.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: error: linker 'cc' not found / link.exe not found",
+        "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
         "is_correct": false
       }
     ],
-    "explanation": "In CPython Internals Rust PyO3 Extensions, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does CPython Internals Rust PyO3 Extensions mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "How does ctypes.cdll.LoadLibrary() interact with OS shared libraries (.dll / .so)?",
+    "category": "Dynamic Linking:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Edge case: f64 accumulation order changes results",
+        "text": "- obrefcnt: 64-bit integer tracking reference count.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: PanicException reaching Python",
+        "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Edge case: &[u8] vs Vec<u8> \u2014 a silent 2x memory cost",
+        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in CPython Internals Rust PyO3 Extensions at scale?",
-    "category": "Scalability & Performance",
+    "question": "What major memory safety and concurrency advantages does Rust have over C when writing Python extensions?",
+    "category": "Rust vs C for Extensions:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: \"PyO3 didn't help \u2014 it's barely faster than Python\"",
+        "text": "- obrefcnt: 64-bit integer tracking reference count.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Stale extension: your edits appear to do nothing",
+        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "PyO3 functions execute while holding the GIL unless explicitly released using py.allow_threads(|| { ... }).",
+        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
+    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

@@ -1,118 +1,60 @@
 [
   {
     "id": 1,
-    "question": "When applying HyDE to a medical diagnosis query, the generator model hallucinated an unapproved pharmaceutical drug in the hypothetical passage. The retriever subsequently matched non-clinical marketing pages promoting that unapproved drug. How do you prevent HyDE hallucination poisoning in high-stakes domains?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 08 Query Transformation and Agentic RAG failure 'Top Production Failure Modes in Agentic RAG', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensemble Multi-Hypothesis Embedding: Generate $N=4$ diverse hypothetical passages using temperature $T=0.7$, average their embedding vectors $\\bar{v} = \\frac{1}{N} \\sum v_{\\hat{d}_i}$.",
+        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. - Fix: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with t",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": ": Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches. - Root Cause: The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting querie",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "Lock contention on shared resource boundaries in 08 Query Transformation and Agentic RAG exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Ensemble Multi-Hypothesis Embedding**: Generate $N=4$ diverse hypothetical passages using temperature $T=0.7$, average their embedding vectors $\\bar{v} = \\frac{1}{N} \\sum v_{\\hat{d}_i}$. Hallucinated specifics cancel out, while invariant core terminology reinforces.\n2. **Dense-Sparse Guardrail**: Pair HyDE dense retrieval with BM25 keyword retrieval. If key factual entities in the retrieved documents do not appear in the original user query, down-weight the score.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 08 Query Transformation and Agentic RAG: : The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. - Fix: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with t. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "What core invariant must be preserved when implementing the Query Transformation and Agentic RAG subsystem?",
+    "question": "What architectural role does 1. Architectural Foundations of Query Translation play in 08 Query Transformation and Agentic RAG?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Architectural Foundations of Query Translation is essential for maintaining predictable invariants and high performance in 08 Query Transformation and Agentic RAG.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "text": "1. Architectural Foundations of Query Translation is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Query Transformation and Agentic RAG, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "How does Query Transformation and Agentic RAG mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Query Transformation and Agentic RAG at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 1. Architectural Foundations of Query Translation in 08 Query Transformation and Agentic RAG specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the CUDA Cpp Programming Fundamentals subsystem?",
-    "category": "System Invariants",
+    "question": "Host-to-Device Bottlenecks & Unified Memory \u2014 An engineer replaces explicit `cudaMemcpy` with `cudaMallocManaged` (Unified Memory). Under inference, latency increases by $3\\times$. Why?",
+    "category": "Host-to-Device Bottlenecks & Unified Memory",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Unified Memory creates a virtual address space accessible by both CPU and GPU.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "text": "- 32 threads (1 warp): Low latency, but poor SM occupancy.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Asynchronous Error Masking",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 CUDA Cpp Programming Fundamentals.",
         "is_correct": false
       }
     ],
-    "explanation": "In CUDA Cpp Programming Fundamentals, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Unified Memory creates a virtual address space accessible by both CPU and GPU. However, physical pages start on the host. When the GPU first accesses a managed pointer, a hardware Page Fault occurs. The GPU hardware must stall execution, communicate with the OS virtual memory subsystem via PCIe, migrate the 4KB memory page to GPU VRAM, and invalida",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does CUDA Cpp Programming Fundamentals mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "Thread Block Sizing Trade-offs \u2014 You can configure your kernel with `blockDim.x = 32` or `blockDim.x = 256` or `blockDim.x = 1024`. How do you choose?",
+    "category": "Thread Block Sizing Trade-offs",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "- 32 threads (1 warp): Low latency, but poor SM occupancy.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": "Unified Memory creates a virtual address space accessible by both CPU and GPU.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 CUDA Cpp Programming Fundamentals.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "- 32 threads (1 warp): Low latency, but poor SM occupancy. Each SM has limits on the maximum number of active blocks (typically 32 blocks on modern GPUs). 32 blocks $\\times$ 32 threads = 1,024 threads, reaching only 50% of the SM's 2,048 thread capacity. - 1024 threads (32 warps): High risk of occupancy collapse due to register pressure or shared m",
+    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in CUDA Cpp Programming Fundamentals at scale?",
-    "category": "Scalability & Performance",
+    "question": "When diagnosing the 02 CUDA Cpp Programming Fundamentals failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "text": ": Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress. - Root Cause: Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an il",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "text": "Lock contention on shared resource boundaries in 02 CUDA Cpp Programming Fundamentals exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Array Out-of-Bounds Memory Corruption",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 02 CUDA Cpp Programming Fundamentals: : Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

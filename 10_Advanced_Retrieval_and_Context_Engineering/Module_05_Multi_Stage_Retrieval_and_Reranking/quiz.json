@@ -1,147 +1,60 @@
 [
   {
     "id": 1,
-    "question": "An engineer observes that increasing $K_{\\text{candidates}}$ from 50 to 250 increases retrieval recall by 1.2% but increases P99 reranking latency from $22 \\text{ ms}$ to $110 \\text{ ms}$, violating the serving SLA. Formulate an optimization strategy.",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 05 Multi Stage Retrieval and Reranking failure 'Top Production Failure Modes in Reranking', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Root Cause: Cross-encoder latency scales linearly with candidate count $K$: $T \\approx K \\times \\frac{\\text{FLOPs}_{\\text{pair}}}{\\text{Throughput}}$.",
+        "text": ": Raw cross-encoder heads output uncalibrated classification logits. - Fix: Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": ": Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents. - Root Cause: Raw cross-encoder heads output uncalibrated classification logits. - Fix: Apply sigmoid transfor",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": "Lock contention on shared resource boundaries in 05 Multi Stage Retrieval and Reranking exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Root Cause**: Cross-encoder latency scales linearly with candidate count $K$: $T \\approx K \\times \\frac{\\text{FLOPs}_{\\text{pair}}}{\\text{Throughput}}$.\n2. **Remedy**:\n   - Cap $K_{\\text{candidates}} = 50$.\n   - Improve Stage 1 recall without increasing $K$ by adopting **Hybrid Search (BM25 + Dense RRF)** in Stage 1. Hybrid search increases recall from 78% to 92% within the top 50 candidates, eliminating the need to expand $K$ to 250.\n   - Use dynamic early exit or distilled lightweight rerankers (e.g. BGE-Reranker-Small or FlashRank ONNX runtime).",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 05 Multi Stage Retrieval and Reranking: : Raw cross-encoder heads output uncalibrated classification logits. - Fix: Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "When candidate passages exceed the cross-encoder context window (512 tokens), how should long passages be scored without silent tail truncation?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Slice candidate passages into sliding sub-passages of 256 tokens with 64-token overlap.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Slice candidate passages into sliding sub-passages of 256 tokens with 64-token overlap.\nScore each sub-passage against query $q$: $s_i = \\text{CrossEncoder}(q, p_i)$.\nAggregate passage score via **Max-Pooling**:\n$$S(q, D) = \\max_{i} s_i$$\nThis ensures facts situated at the end of long documents are scored with full cross-attention fidelity.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Multi Stage Retrieval and Reranking subsystem?",
+    "question": "What architectural role does 1. Architecture of Two-Stage Search Pipelines play in 05 Multi Stage Retrieval and Reranking?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Architecture of Two-Stage Search Pipelines is essential for maintaining predictable invariants and high performance in 05 Multi Stage Retrieval and Reranking.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "1. Architecture of Two-Stage Search Pipelines is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Multi Stage Retrieval and Reranking, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "How does Multi Stage Retrieval and Reranking mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Multi Stage Retrieval and Reranking at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 1. Architecture of Two-Stage Search Pipelines in 05 Multi Stage Retrieval and Reranking specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

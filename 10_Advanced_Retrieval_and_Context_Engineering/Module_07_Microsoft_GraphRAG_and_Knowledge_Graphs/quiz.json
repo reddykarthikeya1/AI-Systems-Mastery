@@ -1,147 +1,60 @@
 [
   {
     "id": 1,
-    "question": "Extracting knowledge graphs across a 20-million-word legal repository requires over 40,000 LLM extraction calls. Sizing this with GPT-4o costs $12,000. How do you re-architect the GraphRAG extraction pipeline to reduce indexing costs by $> 90\\%$ while preserving relational accuracy?",
-    "category": "Architectural Scenario",
+    "question": "When diagnosing the 07 Microsoft GraphRAG and Knowledge Graphs failure 'Top Production Failure Modes in GraphRAG', what is the primary root cause and verified invariant?",
+    "category": "Production Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Model Distillation / Fine-Tuned SLM: Fine-tune an open-weights small model (e.g.",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. - Fix: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "text": ": Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters. - Root Cause: Missing entity resolution / coreference deduplication during graph ingesti",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "Lock contention on shared resource boundaries in 07 Microsoft GraphRAG and Knowledge Graphs exhausts thread pool capacity.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
         "is_correct": false
       }
     ],
-    "explanation": "1. **Model Distillation / Fine-Tuned SLM**: Fine-tune an open-weights small model (e.g. Llama-3-8B or Qwen-2.5-7B) using synthetic extraction datasets. SLMs execute structured extraction tasks with $> 95\\%$ of frontier model accuracy at $10\\times$ lower inference cost.\n2. **Prompt Optimization**: Use JSON Schema constrained decoding (e.g. Guidance / Outlines) to eliminate retry loops caused by malformed JSON.\n3. **Chunk Filtering**: Run a fast NER model (spaCy / GLiNER) first. If a chunk contains zero named entities, bypass the LLM extraction step entirely.",
-    "lesson_ref": "01_README.md"
+    "explanation": "In 07 Microsoft GraphRAG and Knowledge Graphs: : Missing entity resolution / coreference deduplication during graph ingestion. - Fix: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.. Mitigation requires verifying system invariants before committing mutations.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
     "id": 2,
-    "question": "In an enterprise knowledge graph, generic entities (e.g. \"Software\", \"Company\", \"Meeting\") form super-nodes connected to $> 15,000$ neighbors. When querying, expanding their neighborhood causes immediate context overflow. How do you prevent hub degeneracy?",
-    "category": "Architectural Scenario",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Apply Degree-based Pruning and TF-IDF Relationship Damping: Filter out entities whose graph degree exceeds the 99th percentile ($k > k_{\\text{threshold}}$).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Apply **Degree-based Pruning and TF-IDF Relationship Damping**:\nFilter out entities whose graph degree exceeds the 99th percentile ($k > k_{\\text{threshold}}$).\nWeigh edge relevance by inverse relationship frequency so that specific edges (e.g. `is_parent_company_of`) are prioritized over generic associations (`mentioned_in`).",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "question": "What core invariant must be preserved when implementing the Microsoft GraphRAG and Knowledge Graphs subsystem?",
+    "question": "What architectural role does 1. Algorithmic Architecture of GraphRAG play in 07 Microsoft GraphRAG and Knowledge Graphs?",
     "category": "System Invariants",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Mastering 1. Algorithmic Architecture of GraphRAG is essential for maintaining predictable invariants and high performance in 07 Microsoft GraphRAG and Knowledge Graphs.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "text": "1. Algorithmic Architecture of GraphRAG is deprecated and ignored during runtime execution.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
         "is_correct": false
       }
     ],
-    "explanation": "In Microsoft GraphRAG and Knowledge Graphs, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "question": "How does Microsoft GraphRAG and Knowledge Graphs mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Microsoft GraphRAG and Knowledge Graphs at scale?",
-    "category": "Scalability & Performance",
-    "options": [
-      {
-        "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_dist_1",
-        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "explanation": "Detailed coverage of 1. Algorithmic Architecture of GraphRAG in 07 Microsoft GraphRAG and Knowledge Graphs specifications.",
     "lesson_ref": "01_README.md"
   }
 ]

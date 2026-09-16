@@ -1,5 +1,6 @@
 @echo off
-title "AI & Systems Academy - Karthikeya Reddy"
+setlocal EnableDelayedExpansion
+title AI & Systems Academy - Karthikeya Reddy
 color 0B
 
 echo ================================================================================
@@ -7,8 +8,9 @@ echo    AI ^& SYSTEMS ENGINEERING ACADEMY - BY KARTHIKEYA REDDY
 echo    Ultra Gold Standard 12-Course Interactive Learning Platform
 echo ================================================================================
 echo.
-echo [*] Locating Python runtime environment...
 
+:Detect
+echo [*] Locating Python runtime environment...
 set "PY_CMD="
 
 :: 1. Check if 'python' is in PATH
@@ -53,6 +55,27 @@ for /d %%D in ("%ProgramFiles%\Python3*") do (
 if exist "%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe" (
     set "PY_CMD=%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe"
     goto :Found
+)
+
+:: If not found, check if winget is available for 1-click automatic installation
+winget --version >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo.
+    echo [!] Python 3.10+ was not automatically detected on this computer.
+    echo [*] Windows Package Manager (winget) is available!
+    echo [*] We can automatically install Python 3.11 for you now.
+    echo.
+    set /p "AUTO_INSTALL=Would you like to install Python 3.11 automatically via winget? (Y/N): "
+    if /i "!AUTO_INSTALL!"=="Y" (
+        echo.
+        echo [*] Installing Python 3.11 via winget...
+        echo [*] (If Windows User Account Control prompts you, click 'Yes' to allow)
+        winget install -e --id Python.Python.3.11 --accept-source-agreements --accept-package-agreements
+        echo.
+        echo [*] Installation finished. Detecting newly installed Python environment...
+        timeout /t 2 /nobreak >nul
+        goto :Detect
+    )
 )
 
 :: If not found, alert user

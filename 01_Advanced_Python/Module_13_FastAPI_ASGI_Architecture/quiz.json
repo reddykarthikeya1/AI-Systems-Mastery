@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in FastAPI ASGI Architecture?",
-    "category": "Production Failure Modes",
+    "question": "What is the technical difference between WSGI (Web Server Gateway Interface) and ASGI (Asynchronous Server Gateway Interface)?",
+    "category": "Gateway Interfaces:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Failure Modes and Gotchas",
+        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Route Precedence Trap (Fixed Path vs Path Parameter)",
+        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "FastAPI evaluates routes in top-to-bottom order. Since /users/{user_id} comes first, it intercepts /users/me and tries to parse \"me\" as an integer.",
+        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with Route shadowing",
+        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
-    "lesson_ref": "01_README.md"
+    "explanation": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in FastAPI ASGI Architecture?",
-    "category": "Production Failure Modes",
+    "question": "What role does Uvicorn play in a FastAPI production deployment?",
+    "category": "ASGI Servers:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Defining Synchronous Endpoints with Blocking I/O",
+        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "FastAPI (Starlette) evaluates routes in the order they are defined. /items/{item_id} matches any string including \"special\".",
+        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Defining Synchronous Endpoints with Blocking I/O",
-    "lesson_ref": "01_README.md"
+    "explanation": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in FastAPI ASGI Architecture?",
-    "category": "Production Failure Modes",
+    "question": "How does FastAPI utilize standard Python type hints (int, str, Pydantic models) to perform automatic request parsing?",
+    "category": "Type Hint Integration:",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Missing Lifespan Handlers for Shared Resources",
+        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Fails with ASGI event loop thread blocking",
+        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Missing Lifespan Handlers for Shared Resources",
-    "lesson_ref": "01_README.md"
+    "explanation": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

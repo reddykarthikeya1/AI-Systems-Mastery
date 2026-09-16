@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "In SOLID Principles Clean Architecture, what is the fundamental trade-off associated with **In-Memory Volatility vs Durable Disk Logging**?",
-    "category": "Architectural Trade-offs",
+    "question": "p99 Request Latency (Alert if p99 > 200ms for 3 consecutive minutes)",
+    "category": "Systems Foundations",
     "options": [
       {
         "id": "opt_correct",
-        "text": "In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
+        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Anemic Domain Model Anti-Pattern",
+        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **In-Memory Volatility vs Durable Disk Logging** implies: In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops. Moving data across networks incurs a 10,000x to 1,000,000x latency penalty compared to in-memory lookups. The design maximizes local memory batching while deferring or pipelining I/O.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "In SOLID Principles Clean Architecture, what is the fundamental trade-off associated with **Strong Consistency (Linearizability) vs Eventual Consistency**?",
-    "category": "Architectural Trade-offs",
+    "question": "Error Rate (Alert if HTTP 5xx or unhandled exceptions exceed 0.5% of total requests)",
+    "category": "Systems Foundations",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
+        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Floating-Point Money Value Object Corruption",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Strong Consistency (Linearizability) vs Eventual Consistency** implies: Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes. Fencing tokens or epoch numbers reject stale writes from deposed leaders to eliminate split-brain hazards.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "In SOLID Principles Clean Architecture, what is the fundamental trade-off associated with **Push-Based Fanout vs Pull-Based Aggregation**?",
-    "category": "Architectural Trade-offs",
+    "question": "Queue Lag / In-Flight Tasks (Alert if queue residency exceeds safety thresholds) Answer 7: Rookie Anti-Patterns A fatal anti-pattern is unbounded in-memory queuing or missing timeout budgets on remote RPC calls. When a downstream service slows down, upstream memory explodes, triggering kernel OOM-killer termination. Answer 8: Tenant Security Isolation is enforced via cryptographically signed JWT/HMAC tokens, per-tenant rate-limiting buckets, and partition-keyed database sharding to prevent cross-tenant data leakage. Answer 9: Trade-Off Analysis Simpler monolithic or single-node designs are easier to reason about, test, and deploy. However, when scale exceeds vertical hardware limits (CPU/RAM/IOPS), distributed partitioning becomes mandatory despite operational complexity. Answer 10: Zero-Downtime Rollouts Upgrades utilize Blue/Green or Canary deployments behind a Layer 7 load balancer. Database schema changes use the Expand/Contract (Parallel Run) pattern to ensure backward and forward compatibility.",
+    "category": "Systems Foundations",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
+        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Direct Database Coupling Inside Domain Entities",
+        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
         "is_correct": false
       }
     ],
-    "explanation": "As detailed in the module architecture, **Push-Based Fanout vs Pull-Based Aggregation** implies: Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

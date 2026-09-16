@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Engine Internals BPlus Trees?",
-    "category": "Production Failure Modes",
+    "question": "How does a Slotted-Page architecture organize variable-length records on a 4KB disk page?",
+    "category": "How does a Slotted-Page architecture organize variable-length records on a 4KB disk page?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Production Failure Modes & Operational Pitfalls",
+        "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Deadlocks During Concurrent Node Splitting",
+        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Buffer Pool Dirty Page Eviction Without WAL Flush",
+        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "text": "Fan-out is the number of child pointers per node.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
-    "lesson_ref": "01_README.md"
+    "explanation": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Engine Internals BPlus Trees?",
-    "category": "Production Failure Modes",
+    "question": "Why are B+ Trees preferred over B-Trees for relational database indexing?",
+    "category": "Why are B+ Trees preferred over B-Trees for relational database indexing?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Deadlocks in Node Splits: Releasing parent latches before acquiring child latches causing concurrent split corruption.",
+        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Off-By-One Key Search in Slotted Pages",
+        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "text": "Fan-out is the number of child pointers per node.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Deadlocks in Node Splits: Releasing parent latches before acquiring child latches causing concurrent split corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Engine Internals BPlus Trees?",
-    "category": "Production Failure Modes",
+    "question": "What happens during a B+ Tree node split when maximum capacity is exceeded?",
+    "category": "What happens during a B+ Tree node split when maximum capacity is exceeded?",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Slotted Page Fragmentation: Deletions creating dead space gaps that exhaust page capacity without defragmentation.",
+        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "text": "Fan-out is the number of child pointers per node.",
         "is_correct": false
       }
     ],
-    "explanation": "Under production load, Production Edge Case occurs because: Slotted Page Fragmentation: Deletions creating dead space gaps that exhaust page capacity without defragmentation.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
   }
 ]

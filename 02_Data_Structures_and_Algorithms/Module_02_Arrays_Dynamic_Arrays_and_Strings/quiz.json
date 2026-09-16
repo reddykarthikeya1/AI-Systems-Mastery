@@ -1,89 +1,89 @@
 [
   {
     "id": 1,
-    "question": "What core invariant must be preserved when implementing the Arrays Dynamic Arrays and Strings subsystem?",
-    "category": "System Invariants",
+    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'An element pairs with itself', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2 x == target, x matches itself and the function returns the same index twice. The output is structurally valid \u2014 two indices, and",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "Violates invariant: Quadratic String Accumulation in Loops",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "In Arrays Dynamic Arrays and Strings, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2 x == target, x matches itself and the function returns the same index twice. The output is structurally valid \u2014 two indices, and",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 2,
-    "question": "How does Arrays Dynamic Arrays and Strings mitigate production crash recovery and unhandled failure states?",
-    "category": "Fault Tolerance",
+    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'An all-negative window sums to zero', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has. This bug is invisible on any input containin",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Modifying Array Length During Iteration",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has. This bug is invisible on any input containin",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
     "id": 3,
-    "question": "What is the most critical bottleneck or resource constraint encountered in Arrays Dynamic Arrays and Strings at scale?",
-    "category": "Scalability & Performance",
+    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'Subarrays starting at index 0 are not counted', what is the underlying failure mechanism under load?",
+    "category": "Defect Triage",
     "options": [
       {
         "id": "opt_correct",
-        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the empty prefix, whose sum is 0 \u2014 so unless the map is seeded with {0: 1}, every such subarray is missed. The undercount is small and data-dependent: it",
         "is_correct": true
       },
       {
         "id": "opt_dist_1",
-        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
         "is_correct": false
       },
       {
         "id": "opt_dist_2",
-        "text": "Violates invariant: Prefix Sum with Negative Integers",
+        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_dist_3",
-        "text": "Violates invariant: Two Pointers Duplicate Handling",
+        "text": "The operating system terminates the process due to kernel memory bounds.",
         "is_correct": false
       }
     ],
-    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
-    "lesson_ref": "01_README.md"
+    "explanation": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the empty prefix, whose sum is 0 \u2014 so unless the map is seeded with {0: 1}, every such subarray is missed. The undercount is small and data-dependent: it",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]
