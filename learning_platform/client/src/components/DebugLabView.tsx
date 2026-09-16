@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle } from 'lucide-react';
+import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle, GitCompare, Code } from 'lucide-react';
 import { runInteractiveCode } from '../services/api';
 import { TestResult } from '../types';
 import confetti from 'canvas-confetti';
@@ -24,6 +24,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [result, setResult] = useState<TestResult | null>(null);
   const [isResolved, setIsResolved] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<'editor' | 'diff'>('editor');
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -188,19 +189,89 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
         <div className="lg:col-span-7 space-y-4">
           <div className="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-[#0D1117] shadow-xl">
             <div className="px-4 py-2 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
-              <span className="text-rose-400 font-semibold flex items-center gap-1.5">
-                <Bug className="w-3.5 h-3.5" /> Defect Patch Editor
-              </span>
-              <span>Ctrl + Enter to test patch</span>
+              <div className="flex items-center gap-3">
+                <span className="text-rose-400 font-semibold flex items-center gap-1.5">
+                  <Bug className="w-3.5 h-3.5" /> Defect Patch Editor
+                </span>
+                <div className="flex items-center p-0.5 rounded-lg bg-zinc-800/90 border border-zinc-700/80">
+                  <button
+                    onClick={() => setViewMode('editor')}
+                    className={`px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
+                      viewMode === 'editor'
+                        ? 'bg-zinc-700 text-white font-semibold shadow-xs'
+                        : 'text-zinc-400 hover:text-zinc-200'
+                    }`}
+                  >
+                    <Code className="w-3 h-3" />
+                    <span>Editor</span>
+                  </button>
+                  <button
+                    onClick={() => setViewMode('diff')}
+                    className={`px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
+                      viewMode === 'diff'
+                        ? 'bg-zinc-700 text-white font-semibold shadow-xs'
+                        : 'text-zinc-400 hover:text-zinc-200'
+                    }`}
+                  >
+                    <GitCompare className="w-3 h-3" />
+                    <span>Diff View</span>
+                  </button>
+                </div>
+              </div>
+              <span className="hidden sm:inline text-zinc-500">Ctrl + Enter to test patch</span>
             </div>
 
-            <textarea
-              ref={textareaRef}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              spellCheck={false}
-              className="w-full h-80 p-4 font-mono text-xs text-[#E6EDF3] bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-rose-500/30"
-            />
+            {viewMode === 'editor' ? (
+              <textarea
+                ref={textareaRef}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                spellCheck={false}
+                className="w-full h-80 p-4 font-mono text-xs text-[#E6EDF3] bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-rose-500/30"
+              />
+            ) : (
+              <div className="p-4 bg-[#0D1117] h-80 overflow-y-auto font-mono text-xs space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Left: Original Broken Starter */}
+                  <div className="rounded-lg border border-zinc-800 bg-[#161B22]/60 p-3 space-y-2">
+                    <div className="text-xs font-semibold text-rose-400 pb-1.5 border-b border-zinc-800 flex items-center justify-between">
+                      <span>Planted Broken Code</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">Base</span>
+                    </div>
+                    <div className="space-y-0.5 overflow-x-auto max-h-60 overflow-y-auto">
+                      {starterCode.split('\n').map((line, i) => {
+                        const isModified = !code.includes(line);
+                        return (
+                          <div key={i} className={`flex items-start gap-2 px-1 py-0.5 rounded ${isModified ? 'bg-rose-950/40 text-rose-300' : 'text-zinc-400'}`}>
+                            <span className="text-zinc-600 select-none w-5 text-right shrink-0">{i + 1}</span>
+                            <span className="whitespace-pre font-mono">{line || ' '}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Right: Student's Working Patch */}
+                  <div className="rounded-lg border border-zinc-800 bg-[#161B22]/60 p-3 space-y-2">
+                    <div className="text-xs font-semibold text-emerald-400 pb-1.5 border-b border-zinc-800 flex items-center justify-between">
+                      <span>Your Working Patch</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Patch</span>
+                    </div>
+                    <div className="space-y-0.5 overflow-x-auto max-h-60 overflow-y-auto">
+                      {code.split('\n').map((line, i) => {
+                        const isNew = !starterCode.includes(line);
+                        return (
+                          <div key={i} className={`flex items-start gap-2 px-1 py-0.5 rounded ${isNew ? 'bg-emerald-950/40 text-emerald-300 font-semibold' : 'text-zinc-300'}`}>
+                            <span className="text-zinc-600 select-none w-5 text-right shrink-0">{i + 1}</span>
+                            <span className="whitespace-pre font-mono">{line || ' '}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Test Diagnosis Output Terminal */}

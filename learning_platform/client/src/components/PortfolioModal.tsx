@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CourseSummary, ProgressPayload } from '../types';
 import { soundService } from '../services/sound';
 
@@ -16,6 +16,18 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
   progress,
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        soundService.playClick();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -71,8 +83,17 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="flex flex-col w-full max-w-4xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:p-0 print:border-none print:shadow-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="portfolio-modal-title"
+        className="flex flex-col w-full max-w-4xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:p-0 print:border-none print:shadow-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/70 print:hidden">
           <div className="flex items-center gap-3">
@@ -80,7 +101,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
               🎓
             </div>
             <div>
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h2 id="portfolio-modal-title" className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 Engineering Portfolio & Academic Transcript
                 <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono">
                   Verified Local Progress
@@ -96,6 +117,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
               soundService.playClick();
               onClose();
             }}
+            aria-label="Close transcript modal"
             className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

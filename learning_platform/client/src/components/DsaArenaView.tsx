@@ -366,18 +366,33 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
   if (problems.length === 0) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-400 max-w-xl mx-auto my-12">
-        <Code2 className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-slate-200 mb-2">No LeetCode Problems Configured</h3>
-        <p className="text-sm text-slate-400 mb-6">
-          There are no interactive challenges registered for this module yet.
-        </p>
+      <div className="bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-12 shadow-sm space-y-4">
+        <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto border border-amber-500/20">
+          <Code2 className="w-7 h-7 stroke-[1.5]" />
+        </div>
+        <div className="space-y-1.5">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+            Systems Focus: No Competitive DSA Problems in This Module
+          </h3>
+          <p className="text-xs text-zinc-500 leading-relaxed max-w-md mx-auto">
+            This module focuses on systems architecture, production internals, and code inspection rather than competitive programming drills.
+          </p>
+        </div>
+        <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-400 text-left space-y-2">
+          <div className="font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+            <span>Recommended Next Steps:</span>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-zinc-500 dark:text-zinc-400">
+            <li>Explore <span className="font-mono text-blue-600 dark:text-blue-400">Track 02 (Data Structures & Algorithms)</span> for 105 curated competitive problems.</li>
+            <li>Test implementation defects in this module's <span className="font-semibold text-rose-500">Bug Hunter Lab</span>.</li>
+          </ul>
+        </div>
         {onBackToLesson && (
           <button
             onClick={onBackToLesson}
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold transition"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition-all shadow-sm active:scale-95 inline-flex items-center gap-2"
           >
-            Return to Lesson
+            <span>Return to Lesson Architecture</span>
           </button>
         )}
       </div>

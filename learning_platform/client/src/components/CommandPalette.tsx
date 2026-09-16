@@ -44,11 +44,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
+      const handleGlobalKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleGlobalKey);
+      return () => window.removeEventListener('keydown', handleGlobalKey);
     } else {
       setQuery('');
       setResults([]);
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   // Search API fetch with debounce
   useEffect(() => {
@@ -101,9 +106,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div 
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150"
+      onClick={onClose}
+    >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Curriculum Command Palette"
         className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col max-h-[550px]"
+        onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
       >
         {/* Search Input Bar */}
@@ -172,8 +184,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           )}
 
           {!loading && query && results.length === 0 && (
-            <div className="p-8 text-center text-zinc-500 text-xs">
-              No matching courses, modules, or lessons found for "{query}".
+            <div className="p-8 text-center text-zinc-400 space-y-2">
+              <Search className="w-8 h-8 mx-auto stroke-1 opacity-50" />
+              <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">No curriculum matches found for "{query}"</p>
+              <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                Try searching for engineering topics like "Raft", "B-Tree", "Triton", "Attention", or track names like "Distributed" or "DSA".
+              </p>
             </div>
           )}
 

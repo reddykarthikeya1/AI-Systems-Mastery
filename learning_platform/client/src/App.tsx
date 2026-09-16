@@ -14,6 +14,8 @@ import { StudyStatsModal } from './components/StudyStatsModal';
 import { BookmarksModal } from './components/BookmarksModal';
 import { FlashcardsModal } from './components/FlashcardsModal';
 import { PortfolioModal } from './components/PortfolioModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
 import { soundService } from './services/sound';
 
@@ -32,6 +34,7 @@ export const App: React.FC = () => {
     saveNote,
     updateMasteryGate,
     addCustomSrsCard,
+    updateSrsReview,
   } = useProgress();
 
   const navigate = useNavigate();
@@ -253,8 +256,8 @@ export const App: React.FC = () => {
 
     if (isLoadingMods || !course || !activeModule || !activeLesson) {
       return (
-        <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
-          Loading lesson runtime environment...
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <LessonSkeleton />
         </div>
       );
     }
@@ -293,6 +296,7 @@ export const App: React.FC = () => {
         }}
         onQuizMistake={handleQuizMistake}
         onUpdateLastPosition={setLastPosition}
+        onSrsReview={(rating) => updateSrsReview(activeLesson.id, rating)}
       />
     );
   };
@@ -385,6 +389,14 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] text-slate-900 dark:text-slate-100 transition-colors font-sans antialiased">
+      {/* Accessibility: Skip-to-content link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-blue-600 focus:text-white focus:rounded-xl focus:shadow-2xl focus:font-semibold text-xs focus:ring-2 focus:ring-white"
+      >
+        Skip to main content
+      </a>
+
       <Header
         progress={progress}
         courses={courses}
@@ -398,32 +410,34 @@ export const App: React.FC = () => {
         onNavigateHome={() => navigate('/')}
       />
 
-      <main className="flex-1">
-        {loading ? (
-          <div className="flex items-center justify-center h-96 text-slate-500 text-xs font-mono">
-            Loading Systems Engineering Academy Tracks...
-          </div>
-        ) : (
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <CourseCatalog
-                  courses={courses}
-                  progress={progress}
-                  onSelectCourse={(courseId) => navigate(`/course/${courseId}`)}
-                  onResumeLastPosition={handleResumeLastPosition}
-                  onOpenFlashcards={() => setIsFlashcardsOpen(true)}
-                  onOpenPortfolio={() => setIsPortfolioOpen(true)}
-                />
-              }
-            />
-            <Route path="/course/:courseId" element={<CourseSyllabusRoute />} />
-            <Route path="/course/:courseId/module/:moduleNum/lesson/:lessonId" element={<ClassroomRoute />} />
-            <Route path="/course/:courseId/module/:moduleNum/gate" element={<MasteryGateRoute />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        )}
+      <main id="main-content" role="main" tabIndex={-1} className="flex-1 focus:outline-none">
+        <ErrorBoundary fallbackTitle="View Failed to Load">
+          {loading ? (
+            <div className="flex items-center justify-center h-96 text-slate-500 text-xs font-mono">
+              Loading Systems Engineering Academy Tracks...
+            </div>
+          ) : (
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <CourseCatalog
+                    courses={courses}
+                    progress={progress}
+                    onSelectCourse={(courseId) => navigate(`/course/${courseId}`)}
+                    onResumeLastPosition={handleResumeLastPosition}
+                    onOpenFlashcards={() => setIsFlashcardsOpen(true)}
+                    onOpenPortfolio={() => setIsPortfolioOpen(true)}
+                  />
+                }
+              />
+              <Route path="/course/:courseId" element={<CourseSyllabusRoute />} />
+              <Route path="/course/:courseId/module/:moduleNum/lesson/:lessonId" element={<ClassroomRoute />} />
+              <Route path="/course/:courseId/module/:moduleNum/gate" element={<MasteryGateRoute />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          )}
+        </ErrorBoundary>
       </main>
 
       <Footer />

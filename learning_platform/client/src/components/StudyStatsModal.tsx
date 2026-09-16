@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Flame, Clock, CheckCircle2, Award, X, Zap, Target, BookOpen, Layers } from 'lucide-react';
 import { ProgressPayload, CourseSummary } from '../types';
 
@@ -15,6 +15,15 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
   progress,
   courses,
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const streak = progress.study_streak_days || 1;
@@ -58,8 +67,17 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150"
+      onClick={onClose}
+    >
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="stats-modal-title"
+        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4">
           <div className="flex items-center gap-2.5">
@@ -67,7 +85,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
               <Flame className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+              <h2 id="stats-modal-title" className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                 Study Velocity & Learning Analytics
               </h2>
               <p className="text-xs text-zinc-500">
@@ -78,6 +96,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
 
           <button
             onClick={onClose}
+            aria-label="Close analytics modal"
             className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
           >
             <X className="w-4 h-4" />

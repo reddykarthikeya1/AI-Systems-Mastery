@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Bookmark, X, ArrowRight, BookOpen, Trash2 } from 'lucide-react';
 import { CourseSummary, ModuleItem } from '../types';
 
@@ -19,14 +19,29 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
   onRemoveBookmark,
   modules,
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   // Resolve bookmark details from loaded modules
   const allLessons = modules.flatMap((m) => m.lessons);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+    >
       <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bookmarks-modal-title"
         className="w-full max-w-lg rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
@@ -34,12 +49,13 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <Bookmark className="w-5 h-5 text-blue-500 fill-blue-500" />
-            <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            <h2 id="bookmarks-modal-title" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Saved Bookmarks ({bookmarks.length})
             </h2>
           </div>
           <button
             onClick={onClose}
+            aria-label="Close bookmarks modal"
             className="p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
           >
             <X className="w-5 h-5" />

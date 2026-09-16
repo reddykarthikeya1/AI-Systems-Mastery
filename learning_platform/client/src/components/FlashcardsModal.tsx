@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useProgress } from '../hooks/useProgress';
 import { soundService } from '../services/sound';
 
@@ -220,6 +220,18 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
   const currentCard = filteredCards[currentIndex] || filteredCards[0];
   const cardReview = currentCard ? progress.srs_card_reviews?.[currentCard.id] : undefined;
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        soundService.playClick();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleNext = () => {
@@ -246,8 +258,17 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="flex flex-col w-full max-w-3xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="srs-modal-title"
+        className="flex flex-col w-full max-w-3xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60">
           <div className="flex items-center gap-3">
@@ -255,7 +276,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
               🗂️
             </div>
             <div>
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h2 id="srs-modal-title" className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 Systems Engineering Spaced Repetition (SRS)
                 <span className="px-2 py-0.5 text-xs rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono">
                   SM-2 Algorithm
@@ -271,6 +292,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
               soundService.playClick();
               onClose();
             }}
+            aria-label="Close spaced repetition modal"
             className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
