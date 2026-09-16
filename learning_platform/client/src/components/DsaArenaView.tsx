@@ -23,8 +23,9 @@ import {
   Check
 } from 'lucide-react';
 import { DsaProblem, DsaRunResult } from '../types';
-import { fetchDsaProblems, runDsaTest } from '../services/api';
+import { fetchDsaProblems, runDsaTest, formatCode } from '../services/api';
 import { renderMarkdownWithMath } from '../services/markdown';
+import { soundService } from '../services/sound';
 
 interface DsaArenaViewProps {
   moduleTitle: string;
@@ -141,9 +142,32 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     }
   };
 
+  const [isFormatting, setIsFormatting] = useState(false);
+  const [formatSuccess, setFormatSuccess] = useState(false);
+
+  const handleFormatCode = async () => {
+    if (isFormatting || !userCode.trim()) return;
+    setIsFormatting(true);
+    soundService.playClick();
+    try {
+      const res = await formatCode(userCode, 'python');
+      if (res.formatted && res.formatted !== userCode) {
+        handleCodeChange(res.formatted);
+        soundService.playSuccess();
+        setFormatSuccess(true);
+        setTimeout(() => setFormatSuccess(false), 2000);
+      }
+    } catch {
+      soundService.playError();
+    } finally {
+      setIsFormatting(false);
+    }
+  };
+
   // Run code against visible testcases
   const handleRunCode = async () => {
     if (!currentProblem || isRunning || isSubmitting) return;
+    soundService.playClick();
     setIsRunning(true);
     setRunResult(null);
 
@@ -151,7 +175,13 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
       const res = await runDsaTest(currentProblem.id, userCode, false);
       setRunResult(res);
       setActiveCaseTab(0);
+      if (res.all_passed) {
+        soundService.playSuccess();
+      } else {
+        soundService.playError();
+      }
     } catch (err: any) {
+      soundService.playError();
       setRunResult({
         status: 'error',
         all_passed: false,
@@ -169,6 +199,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   // Submit code against visible + hidden testcases
   const handleSubmitCode = async () => {
     if (!currentProblem || isRunning || isSubmitting) return;
+    soundService.playClick();
     setIsSubmitting(true);
     setRunResult(null);
 
@@ -178,6 +209,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
       setActiveCaseTab(0);
 
       if (res.all_passed) {
+        soundService.playFanfare();
         const nextSolved = new Set(solvedSet);
         nextSolved.add(currentProblem.id);
         setSolvedSet(nextSolved);
@@ -190,8 +222,11 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
         if (onCompleteProblem) {
           onCompleteProblem(currentProblem.id);
         }
+      } else {
+        soundService.playError();
       }
     } catch (err: any) {
+      soundService.playError();
       setRunResult({
         status: 'error',
         all_passed: false,
@@ -213,20 +248,90 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     }
   };
 
-  // Handle Tab key indentation
+  // Handle smart python indentation, auto-closing brackets, Tab, and Ctrl+Enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const ta = editorRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) {
+        handleSubmitCode();
+      } else {
+        handleRunCode();
+      }
+      return;
+    }
+
     if (e.key === 'Tab') {
       e.preventDefault();
-      const ta = editorRef.current;
-      if (!ta) return;
-      const start = ta.selectionStart;
-      const end = ta.selectionEnd;
-      const val = ta.value;
-      const newVal = val.substring(0, start) + '    ' + val.substring(end);
+      const newVal = userCode.substring(0, start) + '    ' + userCode.substring(end);
       handleCodeChange(newVal);
       setTimeout(() => {
         ta.selectionStart = ta.selectionEnd = start + 4;
       }, 0);
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const linesBefore = userCode.substring(0, start).split('\n');
+      const currentLine = linesBefore[linesBefore.length - 1] || '';
+      const match = currentLine.match(/^(\s*)/);
+      let indent = match ? match[1] : '';
+
+      if (currentLine.trim().endsWith(':')) {
+        indent += '    ';
+      }
+
+      const newVal = userCode.substring(0, start) + '\n' + indent + userCode.substring(end);
+      handleCodeChange(newVal);
+      setTimeout(() => {
+        ta.selectionStart = ta.selectionEnd = start + 1 + indent.length;
+      }, 0);
+      return;
+    }
+
+    const pairs: Record<string, string> = {
+      '(': ')',
+      '[': ']',
+      '{': '}',
+      '"': '"',
+      "'": "'",
+    };
+
+    if (pairs[e.key]) {
+      e.preventDefault();
+      const closeChar = pairs[e.key];
+      const selectedText = userCode.substring(start, end);
+      const newVal = userCode.substring(0, start) + e.key + selectedText + closeChar + userCode.substring(end);
+      handleCodeChange(newVal);
+      setTimeout(() => {
+        if (selectedText.length > 0) {
+          ta.selectionStart = start + 1;
+          ta.selectionEnd = end + 1;
+        } else {
+          ta.selectionStart = ta.selectionEnd = start + 1;
+        }
+      }, 0);
+      return;
+    }
+
+    if (e.key === 'Backspace' && start === end && start > 0) {
+      const prevChar = userCode[start - 1];
+      const nextChar = userCode[start];
+      const matchClose = pairs[prevChar];
+      if (matchClose && matchClose === nextChar) {
+        e.preventDefault();
+        const newVal = userCode.substring(0, start - 1) + userCode.substring(start + 1);
+        handleCodeChange(newVal);
+        setTimeout(() => {
+          ta.selectionStart = ta.selectionEnd = start - 1;
+        }, 0);
+        return;
+      }
     }
   };
 
@@ -400,6 +505,17 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
               Spec
             </button>
           </div>
+
+          {/* Format Code button */}
+          <button
+            onClick={handleFormatCode}
+            disabled={isFormatting}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-slate-100 text-xs font-medium transition"
+            title="Format Python code with Ruff / PEP8"
+          >
+            <Sparkles className={`w-3.5 h-3.5 text-amber-400 ${isFormatting ? 'animate-spin' : ''}`} />
+            <span>{formatSuccess ? 'Formatted!' : 'Format'}</span>
+          </button>
 
           {/* Reset Code button */}
           <button

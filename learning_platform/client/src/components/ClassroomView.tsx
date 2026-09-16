@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
   Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
-  Play, Code2, Copy, Check, FileCode, ExternalLink, Layers, Eye, Brain
+  Play, Code2, Copy, Check, FileCode, ExternalLink, Layers, Eye, Brain, Database
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { ModuleItem, LessonItem, TestResult, RunnerMode } from '../types';
+import { ModuleItem, LessonItem, TestResult, RunnerMode, LastPosition } from '../types';
 import { fetchFileContent, runTestCommand } from '../services/api';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { TerminalRunner } from './TerminalRunner';
@@ -15,9 +15,13 @@ import { ProjectStudio } from './ProjectStudio';
 import { DebugLabView } from './DebugLabView';
 import { DsaArenaView } from './DsaArenaView';
 import { TableOfContents } from './TableOfContents';
+import { SqlPlaygroundView } from './SqlPlaygroundView';
+import { ArchitectureCanvasView } from './ArchitectureCanvasView';
+import { soundService } from '../services/sound';
 
 interface ClassroomViewProps {
   courseTitle: string;
+  courseId?: string;
   module: ModuleItem;
   currentLesson: LessonItem;
   allLessons: LessonItem[];
@@ -32,10 +36,12 @@ interface ClassroomViewProps {
   onBackToSyllabus: () => void;
   onSelectLesson: (filePath: string, lessonId: string) => void;
   completedLessons?: string[];
+  onUpdateLastPosition?: (pos: LastPosition) => void;
 }
 
 export const ClassroomView: React.FC<ClassroomViewProps> = ({
   courseTitle,
+  courseId,
   module,
   currentLesson,
   allLessons,
@@ -50,16 +56,17 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   onBackToSyllabus,
   onSelectLesson,
   completedLessons = [],
+  onUpdateLastPosition,
 }) => {
   // Determine initial tab based on lesson type
-  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena'>(() => {
+  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(() => {
     if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) return 'arena';
     if (currentLesson.type === 'project') return 'project';
     if (currentLesson.type === 'quiz') return 'quiz';
     return 'theory';
   }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
 
-  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena'>(defaultTab);
+  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(defaultTab);
   const [content, setContent] = useState<string>('Loading lesson content...');
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
@@ -89,6 +96,39 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       setActiveTab('theory');
     }
   }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
+
+  // Track last visited position for 1-click resume
+  useEffect(() => {
+    if (onUpdateLastPosition) {
+      onUpdateLastPosition({
+        course_id: courseId || module.folder_path.split('/')[0],
+        course_title: courseTitle,
+        module_id: module.id,
+        module_title: module.title,
+        lesson_id: currentLesson.id,
+        lesson_title: currentLesson.title,
+        lesson_path: currentLesson.file_path,
+        updated_at: Date.now(),
+      });
+    }
+  }, [currentLesson.id, module.id]);
+
+  // Reading time and complexity badge estimation
+  const { readingMinutes, complexityBadge } = useMemo(() => {
+    const text = typeof content === 'string' ? content : '';
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const readingMinutes = Math.max(1, Math.ceil(words / 180));
+    let complexityBadge = 'Intermediate';
+    if (words > 1600 || text.includes('B-Tree') || text.includes('Raft') || text.includes('Triton')) {
+      complexityBadge = 'Advanced Systems';
+    } else if (words < 400 && !text.includes('class ')) {
+      complexityBadge = 'Foundational';
+    }
+    return { readingMinutes, complexityBadge };
+  }, [content]);
+
+  const isStorageCourse = courseTitle.toLowerCase().includes('database') || courseTitle.toLowerCase().includes('storage') || module.folder_path.toLowerCase().includes('03_');
+  const isDistributedCourse = courseTitle.toLowerCase().includes('distributed') || module.folder_path.toLowerCase().includes('04_');
 
   // Side-by-side interactive code runner state
   const [isScratchpadOpen, setIsScratchpadOpen] = useState<boolean>(false);
@@ -371,8 +411,31 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   };
 
   const currentIndex = allLessons.findIndex((l) => l.id === currentLesson.id);
+  const currentLessonIndex = currentIndex;
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+  const handlePrevLesson = () => {
+    if (prevLesson) {
+      soundService.playClick();
+      onSelectLesson(prevLesson.file_path, prevLesson.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleCompleteAndNext = () => {
+    if (!isCompleted) {
+      onToggleComplete();
+    }
+    if (nextLesson) {
+      soundService.playSuccess();
+      onSelectLesson(nextLesson.file_path, nextLesson.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      soundService.playFanfare();
+      confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
+    }
+  };
 
   // Detect availability of specialized features
   const hasProject = Boolean(module.has_starter || module.has_solution || allLessons.some((l) => l.type === 'project'));
@@ -431,6 +494,20 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <h1 className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-1">
               {currentLesson.title}
             </h1>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+                ⏱️ ~{readingMinutes} min read
+              </span>
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                complexityBadge === 'Advanced Systems'
+                  ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
+                  : complexityBadge === 'Foundational'
+                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                  : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+              }`}>
+                ⚡ {complexityBadge}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -610,11 +687,52 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
           )}
         </button>
+
+        {/* Storage & SQL Sandbox Tab */}
+        {(isStorageCourse || activeTab === 'sql') && (
+          <button
+            onClick={() => setActiveTab('sql')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+              activeTab === 'sql'
+                ? 'bg-emerald-600 text-white shadow-sm font-bold'
+                : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30'
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" /> Storage & SQL Sandbox
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
+              B-Tree
+            </span>
+          </button>
+        )}
+
+        {/* Distributed Architecture Canvas Tab */}
+        {(isDistributedCourse || activeTab === 'arch') && (
+          <button
+            onClick={() => setActiveTab('arch')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+              activeTab === 'arch'
+                ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                : 'text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" /> Architecture Canvas
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">
+              Mermaid
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Main Content Stage */}
-      {/* 1. PROJECT STUDIO TAB: Rendered in Spacious Full Width Container! */}
-      {activeTab === 'project' ? (
+      {activeTab === 'sql' ? (
+        <div className="w-full h-[750px]">
+          <SqlPlaygroundView onClose={() => setActiveTab('theory')} />
+        </div>
+      ) : activeTab === 'arch' ? (
+        <div className="w-full h-[750px]">
+          <ArchitectureCanvasView onClose={() => setActiveTab('theory')} />
+        </div>
+      ) : activeTab === 'project' ? (
         <div className="w-full">
           <ProjectStudio
             moduleFolderPath={module.folder_path}
@@ -660,7 +778,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         onClick={() => onSelectLesson(l.file_path, l.id)}
                         className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
                           active
-                            ? 'bg-blue-50 dark:bg-blue-950/60 text-coursera-blue dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
+                            ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
                             : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
                         }`}
                       >
@@ -823,33 +941,37 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
                           />
 
-                          {/* Bottom Lesson Navigation Cards */}
-                          <div className="mt-12 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            {prevLesson ? (
+                          {/* Bottom Lesson Navigation Dock */}
+                          <div className="mt-12 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 bg-white/95 dark:bg-[#111622]/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-xl z-20">
+                            <div className="flex items-center gap-3 w-full sm:w-auto">
                               <button
-                                onClick={() => onSelectLesson(prevLesson.file_path, prevLesson.id)}
-                                className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-left flex items-center gap-3 group"
+                                onClick={handlePrevLesson}
+                                disabled={!prevLesson}
+                                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-2 shadow-sm"
                               >
-                                <ChevronLeft className="w-5 h-5 text-zinc-400 group-hover:-translate-x-1 transition-transform" />
-                                <div>
-                                  <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Previous</div>
-                                  <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{prevLesson.title}</div>
-                                </div>
+                                <ChevronLeft className="w-4 h-4" />
+                                <span>Previous Lesson</span>
                               </button>
-                            ) : <div />}
+                            </div>
 
-                            {nextLesson ? (
+                            <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+                              <span>Lesson {currentLessonIndex + 1} of {allLessons.length}</span>
+                              <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                              <span className={`inline-flex items-center gap-1 font-semibold ${isCompleted ? 'text-emerald-500' : 'text-zinc-400'}`}>
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                {isCompleted ? 'Completed' : 'In Progress'}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
                               <button
-                                onClick={() => onSelectLesson(nextLesson.file_path, nextLesson.id)}
-                                className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-right flex items-center justify-end gap-3 group"
+                                onClick={handleCompleteAndNext}
+                                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
                               >
-                                <div>
-                                  <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Next</div>
-                                  <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{nextLesson.title}</div>
-                                </div>
-                                <ChevronRight className="w-5 h-5 text-zinc-400 group-hover:translate-x-1 transition-transform" />
+                                <span>{nextLesson ? 'Mark Complete & Next' : isCompleted ? 'Course Module Finished! 🎓' : 'Finish Lesson & Celebrate 🎉'}</span>
+                                <ChevronRight className="w-4 h-4" />
                               </button>
-                            ) : <div />}
+                            </div>
                           </div>
                         </div>
 

@@ -76,7 +76,7 @@ export const BookmarksModal: React.FC<BookmarksModalProps> = ({
                     }}
                     className="flex-1 min-w-0 cursor-pointer"
                   >
-                    <div className="text-xs font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1 group-hover:text-coursera-blue transition-colors">
+                    <div className="text-xs font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1 group-hover:text-blue-600 transition-colors">
                       {title}
                     </div>
                     {filePath && (

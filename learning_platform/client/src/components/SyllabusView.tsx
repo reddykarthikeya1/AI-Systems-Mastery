@@ -129,7 +129,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             </div>
             <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full mt-2 overflow-hidden">
               <div 
-                className="h-full bg-coursera-blue rounded-full transition-all duration-500" 
+                className="h-full bg-blue-600 rounded-full transition-all duration-500" 
                 style={{ width: `${overallPercentage}%` }} 
               />
             </div>
@@ -319,7 +319,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                     {firstLesson && (
                       <button
                         onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id)}
-                        className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-coursera-blue hover:bg-blue-700 text-white transition-colors flex items-center gap-1.5 shadow-sm"
+                        className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-1.5 shadow-sm"
                       >
                         <Play className="w-3 h-3 fill-current" />
                         <span>{completedCount > 0 ? 'Continue' : 'Open Module'}</span>
@@ -340,7 +340,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       >
                         <div className="flex items-center gap-3 min-w-0 pr-4">
                           <div className={`w-2 h-2 rounded-full shrink-0 ${done ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
-                          <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-coursera-blue transition-colors">
+                          <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-blue-600 transition-colors">
                             {lesson.title}
                           </span>
                         </div>

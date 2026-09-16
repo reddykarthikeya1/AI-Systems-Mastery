@@ -606,6 +606,144 @@ def run_fallback_server(port: int = 8000, server_holder: Optional[Dict[str, Any]
                         "results": []
                     })
                 return
+            elif parsed.path == "/api/format-code":
+                code = payload.get("code", "")
+                lang = payload.get("language", "python").lower()
+                if not code.strip():
+                    self.send_json({"formatted": code, "status": "unchanged"})
+                    return
+                if lang == "python":
+                    try:
+                        res = subprocess.run(
+                            [sys.executable, "-m", "ruff", "format", "-"],
+                            input=code,
+                            capture_output=True,
+                            text=True,
+                            timeout=5,
+                        )
+                        if res.returncode == 0 and res.stdout:
+                            self.send_json({"formatted": res.stdout, "status": "formatted"})
+                            return
+                    except Exception:
+                        pass
+                    try:
+                        res = subprocess.run(
+                            [sys.executable, "-m", "black", "-", "--quiet"],
+                            input=code,
+                            capture_output=True,
+                            text=True,
+                            timeout=5,
+                        )
+                        if res.returncode == 0 and res.stdout:
+                            self.send_json({"formatted": res.stdout, "status": "formatted"})
+                            return
+                    except Exception:
+                        pass
+                    lines = code.splitlines()
+                    normalized = "\n".join(line.rstrip() for line in lines) + "\n"
+                    self.send_json({"formatted": normalized, "status": "normalized"})
+                    return
+                self.send_json({"formatted": code, "status": "unchanged"})
+                return
+            elif parsed.path == "/api/execute-sql":
+                query_str = payload.get("query", "").strip()
+                if not query_str:
+                    self.send_error(400, "SQL query is empty")
+                    return
+                preset = payload.get("schema_preset") or "storage_engine"
+                t0 = time.perf_counter()
+                try:
+                    import sqlite3
+                    conn = sqlite3.connect(":memory:")
+                    cur = conn.cursor()
+                    if preset == "storage_engine":
+                        cur.executescript("""
+                        CREATE TABLE btree_pages (
+                            page_id INTEGER PRIMARY KEY,
+                            page_type TEXT CHECK(page_type IN ('leaf', 'interior', 'overflow')),
+                            item_count INTEGER,
+                            free_bytes INTEGER,
+                            lsn INTEGER
+                        );
+                        INSERT INTO btree_pages VALUES
+                            (1, 'interior', 3, 1024, 1001),
+                            (2, 'leaf', 45, 128, 1002),
+                            (3, 'leaf', 52, 64, 1003),
+                            (4, 'overflow', 1, 0, 1004);
+
+                        CREATE TABLE wal_frames (
+                            frame_no INTEGER PRIMARY KEY,
+                            page_id INTEGER,
+                            commit_flag INTEGER,
+                            salt1 INTEGER,
+                            salt2 INTEGER
+                        );
+                        INSERT INTO wal_frames VALUES
+                            (1, 2, 0, 4211, 8812),
+                            (2, 3, 1, 4211, 8812),
+                            (3, 1, 1, 4211, 8813);
+
+                        CREATE TABLE key_value_store (
+                            key TEXT PRIMARY KEY,
+                            value TEXT,
+                            version INTEGER,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        );
+                        INSERT INTO key_value_store VALUES
+                            ('cluster:node1:heartbeat', '171800291', 1, '2026-09-16 10:00:00'),
+                            ('cluster:node2:heartbeat', '171800292', 1, '2026-09-16 10:00:01'),
+                            ('txn:global:lock', 'granted:tx_99', 4, '2026-09-16 10:00:02');
+                        """)
+                    elif preset == "ecommerce":
+                        cur.executescript("""
+                        CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, tier TEXT, spend REAL);
+                        INSERT INTO customers VALUES 
+                            (1, 'Alice Chen', 'Platinum', 12450.00), 
+                            (2, 'Bob Smith', 'Gold', 4500.50), 
+                            (3, 'Carol Danvers', 'Platinum', 28900.00);
+                        CREATE TABLE orders (order_id INTEGER PRIMARY KEY, customer_id INTEGER, amount REAL, status TEXT);
+                        INSERT INTO orders VALUES 
+                            (101, 1, 350.0, 'SHIPPED'), 
+                            (102, 1, 1200.0, 'DELIVERED'), 
+                            (103, 2, 85.0, 'PENDING'), 
+                            (104, 3, 4500.0, 'DELIVERED');
+                        """)
+                    conn.commit()
+
+                    plan = []
+                    if query_str.upper().startswith("SELECT") or query_str.upper().startswith("WITH"):
+                        try:
+                            p_cur = conn.cursor()
+                            p_cur.execute(f"EXPLAIN QUERY PLAN {query_str}")
+                            plan = [f"[{r[0]}|{r[1]}|{r[2]}] {r[3]}" for r in p_cur.fetchall()]
+                        except Exception:
+                            pass
+
+                    cur.execute(query_str)
+                    columns = [d[0] for d in cur.description] if cur.description else []
+                    rows = cur.fetchmany(100) if columns else []
+                    conn.commit()
+                    duration_ms = round((time.perf_counter() - t0) * 1000, 2)
+                    self.send_json({
+                        "status": "success",
+                        "columns": columns,
+                        "rows": rows,
+                        "row_count": len(rows),
+                        "duration_ms": duration_ms,
+                        "query_plan": plan,
+                    })
+                except Exception as exc:
+                    duration_ms = round((time.perf_counter() - t0) * 1000, 2)
+                    self.send_json({
+                        "status": "error",
+                        "error": str(exc),
+                        "columns": [],
+                        "rows": [],
+                        "row_count": 0,
+                        "duration_ms": duration_ms,
+                        "query_plan": [],
+                    })
+                return
 
             self.send_error(404, "Not found")
 

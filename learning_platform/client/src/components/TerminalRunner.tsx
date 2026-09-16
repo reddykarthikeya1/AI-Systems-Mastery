@@ -46,7 +46,7 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
           <button
             onClick={onRunTest}
             disabled={isRunning}
-            className="text-xs font-mono px-3 py-1 rounded-md bg-coursera-blue hover:bg-blue-700 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5"
+            className="text-xs font-mono px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5"
           >
             {isRunning ? <RotateCw className="w-3 h-3 animate-spin" /> : '▶'} Run Pytest
           </button>
@@ -57,7 +57,7 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
       <div className="p-4 font-mono text-xs overflow-x-auto max-h-96 min-h-[160px] bg-[#0D1117] text-zinc-300">
         {isRunning ? (
           <div className="flex items-center gap-2 text-zinc-400 py-8 justify-center">
-            <RotateCw className="w-4 h-4 animate-spin text-coursera-blue" />
+            <RotateCw className="w-4 h-4 animate-spin text-blue-500" />
             <span>Executing automated test suite and measuring timings...</span>
           </div>
         ) : result ? (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark } from 'lucide-react';
+import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 
 interface HeaderProps {
@@ -10,6 +10,9 @@ interface HeaderProps {
   onNavigateHome: () => void;
   onOpenStats?: () => void;
   onOpenBookmarks?: () => void;
+  onOpenFlashcards?: () => void;
+  onOpenPortfolio?: () => void;
+  onToggleSound?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,6 +23,9 @@ export const Header: React.FC<HeaderProps> = ({
   onNavigateHome,
   onOpenStats,
   onOpenBookmarks,
+  onOpenFlashcards,
+  onOpenPortfolio,
+  onToggleSound,
 }) => {
   const isDark = progress.theme === 'dark';
   const totalCompleted = progress.completed_lessons.length;
@@ -98,6 +104,45 @@ export const Header: React.FC<HeaderProps> = ({
             <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
             <span>{totalCompleted} Done</span>
           </div>
+
+          {/* Sound FX Toggle */}
+          {onToggleSound && (
+            <button
+              onClick={onToggleSound}
+              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 transition-colors"
+              title={progress.sound_enabled !== false ? "Audio Haptics: ON (Click to Mute)" : "Audio Haptics: MUTED (Click to Unmute)"}
+            >
+              {progress.sound_enabled !== false ? (
+                <Volume2 className="w-4 h-4 text-emerald-500" />
+              ) : (
+                <VolumeX className="w-4 h-4 text-zinc-400" />
+              )}
+            </button>
+          )}
+
+          {/* Flashcards SRS Button */}
+          {onOpenFlashcards && (
+            <button
+              onClick={onOpenFlashcards}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-xs font-mono transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/40"
+              title="Spaced Repetition Flashcards Deck"
+            >
+              <Layers className="w-3.5 h-3.5 text-amber-500" />
+              <span>Flashcards</span>
+            </button>
+          )}
+
+          {/* Portfolio & Transcript Button */}
+          {onOpenPortfolio && (
+            <button
+              onClick={onOpenPortfolio}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-mono transition-colors hover:bg-indigo-100 dark:hover:bg-indigo-900/40"
+              title="Engineering Portfolio & Transcript"
+            >
+              <GraduationCap className="w-3.5 h-3.5 text-indigo-500" />
+              <span>Transcript</span>
+            </button>
+          )}
 
           {/* Theme Toggle */}
           <button

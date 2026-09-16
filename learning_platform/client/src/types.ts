@@ -30,11 +30,32 @@ export interface CourseSummary {
   quickstart_script?: string | null;
 }
 
+export interface LastPosition {
+  course_id: string;
+  course_title?: string;
+  module_id: string;
+  module_title?: string;
+  lesson_id?: string;
+  lesson_title?: string;
+  lesson_path?: string;
+  updated_at: number;
+}
+
+export interface SrsCardReview {
+  interval_days: number;
+  repetition: number;
+  ease_factor: number;
+  next_review_epoch: number;
+}
+
 export interface ProgressPayload {
   completed_lessons: string[];
   completed_modules: string[];
   current_course?: string | null;
   current_lesson?: string | null;
+  last_position?: LastPosition | null;
+  sound_enabled?: boolean;
+  srs_card_reviews?: Record<string, SrsCardReview>;
   last_updated: number;
   theme: 'dark' | 'light';
   quiz_scores?: Record<string, number>;
@@ -99,3 +120,17 @@ export interface DsaRunResult {
   error?: string;
 }
 
+export interface SqlResult {
+  status: 'success' | 'error';
+  columns: string[];
+  rows: any[][];
+  row_count: number;
+  duration_ms: number;
+  query_plan: string[];
+  error?: string;
+}
+
+export interface FormatCodeResult {
+  formatted: string;
+  status: 'formatted' | 'normalized' | 'unchanged' | 'error';
+}

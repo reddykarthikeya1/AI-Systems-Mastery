@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        coursera: {
+        academy: {
           blue: '#0056D2',
           dark: '#00419E',
           light: '#F0F5FF',

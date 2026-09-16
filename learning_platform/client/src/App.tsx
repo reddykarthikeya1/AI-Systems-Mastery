@@ -10,12 +10,16 @@ import { ClassroomView } from './components/ClassroomView';
 import { CommandPalette } from './components/CommandPalette';
 import { StudyStatsModal } from './components/StudyStatsModal';
 import { BookmarksModal } from './components/BookmarksModal';
+import { FlashcardsModal } from './components/FlashcardsModal';
+import { PortfolioModal } from './components/PortfolioModal';
 
 export const App: React.FC = () => {
   const { 
     progress, 
     toggleLesson, 
     toggleTheme, 
+    toggleSound,
+    setLastPosition,
     updateProgress, 
     isLessonCompleted,
     isBookmarked,
@@ -34,6 +38,8 @@ export const App: React.FC = () => {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
+  const [isFlashcardsOpen, setIsFlashcardsOpen] = useState(false);
+  const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Sync theme class to HTML element
@@ -122,6 +128,39 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleResumeLastPosition = async () => {
+    const pos = progress.last_position;
+    if (!pos) return;
+    try {
+      if (pos.course_id !== currentCourseId) {
+        const mods = await fetchCourseModules(pos.course_id);
+        setModules(mods);
+        setCurrentCourseId(pos.course_id);
+        const mod = mods.find((m) => m.id === pos.module_id) || mods[0];
+        if (mod) {
+          setCurrentModule(mod);
+          const les = mod.lessons.find((l) => l.id === pos.lesson_id || l.file_path === pos.lesson_path) || mod.lessons[0];
+          if (les) {
+            setCurrentLesson(les);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+      } else {
+        const mod = modules.find((m) => m.id === pos.module_id) || modules[0];
+        if (mod) {
+          setCurrentModule(mod);
+          const les = mod.lessons.find((l) => l.id === pos.lesson_id || l.file_path === pos.lesson_path) || mod.lessons[0];
+          if (les) {
+            setCurrentLesson(les);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Failed to resume position', e);
+    }
+  };
+
   const activeCourse = courses.find((c) => c.id === currentCourseId);
 
   return (
@@ -130,9 +169,12 @@ export const App: React.FC = () => {
         progress={progress}
         courses={courses}
         onToggleTheme={toggleTheme}
+        onToggleSound={toggleSound}
         onOpenSearch={() => setIsCommandPaletteOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
         onOpenBookmarks={() => setIsBookmarksOpen(true)}
+        onOpenFlashcards={() => setIsFlashcardsOpen(true)}
+        onOpenPortfolio={() => setIsPortfolioOpen(true)}
         onNavigateHome={() => {
           setCurrentCourseId(null);
           setCurrentModule(null);
@@ -148,6 +190,7 @@ export const App: React.FC = () => {
         ) : currentLesson && currentModule && activeCourse ? (
           <ClassroomView
             courseTitle={activeCourse.title}
+            courseId={activeCourse.id}
             module={currentModule}
             currentLesson={currentLesson}
             allLessons={currentModule.lessons}
@@ -165,6 +208,7 @@ export const App: React.FC = () => {
               setCurrentLesson(null);
             }}
             onSelectLesson={handleSelectLesson}
+            onUpdateLastPosition={setLastPosition}
           />
         ) : activeCourse ? (
           <SyllabusView
@@ -179,6 +223,9 @@ export const App: React.FC = () => {
             courses={courses}
             progress={progress}
             onSelectCourse={handleSelectCourse}
+            onResumeLastPosition={handleResumeLastPosition}
+            onOpenFlashcards={() => setIsFlashcardsOpen(true)}
+            onOpenPortfolio={() => setIsPortfolioOpen(true)}
           />
         )}
       </main>
@@ -221,6 +268,20 @@ export const App: React.FC = () => {
         modules={modules}
         onSelectLesson={handleSelectLesson}
         onRemoveBookmark={toggleBookmark}
+      />
+
+      {/* Spaced Repetition Flashcards Modal */}
+      <FlashcardsModal
+        isOpen={isFlashcardsOpen}
+        onClose={() => setIsFlashcardsOpen(false)}
+      />
+
+      {/* Engineering Portfolio & Transcript Exporter Modal */}
+      <PortfolioModal
+        isOpen={isPortfolioOpen}
+        onClose={() => setIsPortfolioOpen(false)}
+        courses={courses}
+        progress={progress}
       />
     </div>
   );

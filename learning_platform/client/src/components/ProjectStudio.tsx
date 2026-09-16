@@ -4,9 +4,10 @@ import {
   Eye, Terminal, Clock, Folder, ChevronRight, Lock, Check, Columns, Maximize2, 
   FileText, Sparkles, Sliders, Split, Code2, AlertTriangle, BookOpen
 } from 'lucide-react';
-import { fetchFileContent, runTestCommand } from '../services/api';
+import { fetchFileContent, runTestCommand, formatCode } from '../services/api';
 import { TestResult } from '../types';
 import { renderMarkdownWithMath } from '../services/markdown';
+import { soundService } from '../services/sound';
 
 interface ProjectStudioProps {
   moduleFolderPath: string;
@@ -100,6 +101,28 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
     );
   };
 
+  const [isFormatting, setIsFormatting] = useState<boolean>(false);
+  const [formatSuccess, setFormatSuccess] = useState<boolean>(false);
+
+  const handleFormatCode = async () => {
+    if (!activeFile || isFormatting || activeFile.read_only) return;
+    setIsFormatting(true);
+    soundService.playClick();
+    try {
+      const res = await formatCode(activeFile.content, 'python');
+      if (res.formatted && res.formatted !== activeFile.content) {
+        handleCodeChange(res.formatted);
+        soundService.playSuccess();
+        setFormatSuccess(true);
+        setTimeout(() => setFormatSuccess(false), 2000);
+      }
+    } catch (e) {
+      soundService.playError();
+    } finally {
+      setIsFormatting(false);
+    }
+  };
+
   const handleSaveWorkspace = async () => {
     if (!activeFile) return;
     setSaving(true);
@@ -113,6 +136,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
           content: activeFile.content,
         }),
       });
+      soundService.playClick();
       setSavedSuccess(true);
       setTimeout(() => setSavedSuccess(false), 2000);
     } catch (e) {
@@ -124,6 +148,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
 
   const handleResetStarter = () => {
     if (!activeFile) return;
+    soundService.playClick();
     setFiles((prev) =>
       prev.map((f, i) =>
         i === activeFileIndex
@@ -137,15 +162,20 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
     setIsRunningTests(true);
     setTestResult(null);
     setActiveTerminalTab('tests');
+    soundService.playClick();
     try {
       await handleSaveWorkspace();
       const res = await runTestCommand(moduleFolderPath, 'pytest');
       setTestResult(res);
       if (res.exit_code === 0) {
+        soundService.playFanfare();
         setMilestones({ m1: true, m2: true, m3: true });
         onCompleteProject();
+      } else {
+        soundService.playError();
       }
     } catch (err: any) {
+      soundService.playError();
       setTestResult({
         exit_code: -1,
         stdout: '',
@@ -159,20 +189,86 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const textarea = textareaRef.current;
+    if (!textarea || activeFile?.read_only) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const content = activeFile.content;
+
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       handleRunTests();
-    } else if (e.key === 'Tab') {
+      return;
+    }
+
+    if (e.key === 'Tab') {
       e.preventDefault();
-      const textarea = textareaRef.current;
-      if (!textarea || activeFile?.read_only) return;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const newCode = activeFile.content.substring(0, start) + '    ' + activeFile.content.substring(end);
+      const newCode = content.substring(0, start) + '    ' + content.substring(end);
       handleCodeChange(newCode);
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = start + 4;
       }, 0);
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const linesBefore = content.substring(0, start).split('\n');
+      const currentLine = linesBefore[linesBefore.length - 1] || '';
+      const match = currentLine.match(/^(\s*)/);
+      let indent = match ? match[1] : '';
+
+      if (currentLine.trim().endsWith(':')) {
+        indent += '    ';
+      }
+
+      const newCode = content.substring(0, start) + '\n' + indent + content.substring(end);
+      handleCodeChange(newCode);
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + 1 + indent.length;
+      }, 0);
+      return;
+    }
+
+    const pairs: Record<string, string> = {
+      '(': ')',
+      '[': ']',
+      '{': '}',
+      '"': '"',
+      "'": "'",
+    };
+
+    if (pairs[e.key]) {
+      e.preventDefault();
+      const closeChar = pairs[e.key];
+      const selectedText = content.substring(start, end);
+      const newCode = content.substring(0, start) + e.key + selectedText + closeChar + content.substring(end);
+      handleCodeChange(newCode);
+      setTimeout(() => {
+        if (selectedText.length > 0) {
+          textarea.selectionStart = start + 1;
+          textarea.selectionEnd = end + 1;
+        } else {
+          textarea.selectionStart = textarea.selectionEnd = start + 1;
+        }
+      }, 0);
+      return;
+    }
+
+    if (e.key === 'Backspace' && start === end && start > 0) {
+      const prevChar = content[start - 1];
+      const nextChar = content[start];
+      const matchClose = pairs[prevChar];
+      if (matchClose && matchClose === nextChar) {
+        e.preventDefault();
+        const newCode = content.substring(0, start - 1) + content.substring(start + 1);
+        handleCodeChange(newCode);
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start - 1;
+        }, 0);
+        return;
+      }
     }
   };
 
@@ -267,6 +363,17 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
           >
             {savedSuccess ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Save className="w-3.5 h-3.5" />}
             <span>{savedSuccess ? 'Saved' : 'Save'}</span>
+          </button>
+
+          {/* Format Code */}
+          <button
+            onClick={handleFormatCode}
+            disabled={isFormatting || activeFile?.read_only}
+            className="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300"
+            title="Format Python code with Ruff / PEP8"
+          >
+            <Sparkles className={`w-3.5 h-3.5 text-amber-500 ${isFormatting ? 'animate-spin' : ''}`} />
+            <span>{formatSuccess ? 'Formatted!' : 'Format'}</span>
           </button>
 
           {/* Reset Starter */}

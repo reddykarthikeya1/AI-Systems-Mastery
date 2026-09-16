@@ -1,4 +1,14 @@
-import { CourseSummary, ModuleItem, ProgressPayload, TestResult, RunnerMode, DsaProblem, DsaRunResult } from '../types';
+import {
+  CourseSummary,
+  ModuleItem,
+  ProgressPayload,
+  TestResult,
+  RunnerMode,
+  DsaProblem,
+  DsaRunResult,
+  SqlResult,
+  FormatCodeResult,
+} from '../types';
 
 const API_BASE = '/api';
 
@@ -95,5 +105,25 @@ export async function runDsaTest(problemId: string, code: string, submit: boolea
     }),
   });
   if (!res.ok) throw new Error('DSA test execution failed to dispatch');
+  return res.json();
+}
+
+export async function formatCode(code: string, language: string = 'python'): Promise<FormatCodeResult> {
+  const res = await fetch(`${API_BASE}/format-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, language }),
+  });
+  if (!res.ok) throw new Error('Code formatting failed');
+  return res.json();
+}
+
+export async function executeSql(query: string, schemaPreset: string = 'storage_engine'): Promise<SqlResult> {
+  const res = await fetch(`${API_BASE}/execute-sql`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, schema_preset: schemaPreset }),
+  });
+  if (!res.ok) throw new Error('SQL execution failed');
   return res.json();
 }

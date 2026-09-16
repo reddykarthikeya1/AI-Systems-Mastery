@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { BookOpen, Clock, ArrowRight, Play, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Clock, ArrowRight, Play, CheckCircle2, Flame, Bookmark, Sparkles, Compass } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
+import { soundService } from '../services/sound';
 
 interface CourseCatalogProps {
   courses: CourseSummary[];
   progress: ProgressPayload;
   onSelectCourse: (courseId: string) => void;
+  onResumeLastPosition?: () => void;
+  onOpenFlashcards?: () => void;
+  onOpenPortfolio?: () => void;
 }
 
 export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   courses,
   progress,
   onSelectCourse,
+  onResumeLastPosition,
+  onOpenFlashcards,
+  onOpenPortfolio,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
@@ -23,6 +30,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
 
   const totalLessonsDone = progress.completed_lessons.length;
   const currentCourse = courses.find((c) => c.id === progress.current_course) || courses[0];
+  const lastPos = progress.last_position;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
@@ -63,8 +71,11 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           <div className="flex flex-wrap items-center gap-3">
             {currentCourse && (
               <button
-                onClick={() => onSelectCourse(currentCourse.id)}
-                className="px-5 py-2.5 rounded-lg font-medium text-xs bg-coursera-blue hover:bg-blue-700 text-white transition-colors flex items-center gap-2 shadow-sm"
+                onClick={() => {
+                  soundService.playClick();
+                  onSelectCourse(currentCourse.id);
+                }}
+                className="px-5 py-2.5 rounded-lg font-medium text-xs bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-2 shadow-sm"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 Resume Curriculum ({currentCourse.title.split(' ')[0]})
@@ -75,6 +86,32 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               <span>{totalLessonsDone} Completed</span>
             </div>
+
+            {onOpenFlashcards && (
+              <button
+                onClick={() => {
+                  soundService.playClick();
+                  onOpenFlashcards();
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/60 text-xs text-amber-700 dark:text-amber-300 font-medium hover:bg-amber-100 transition-colors"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span>Flashcards (SRS)</span>
+              </button>
+            )}
+
+            {onOpenPortfolio && (
+              <button
+                onClick={() => {
+                  soundService.playClick();
+                  onOpenPortfolio();
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/70 dark:border-indigo-800/60 text-xs text-indigo-700 dark:text-indigo-300 font-medium hover:bg-indigo-100 transition-colors"
+              >
+                <Compass className="w-3.5 h-3.5 text-indigo-500" />
+                <span>Transcript</span>
+              </button>
+            )}
           </div>
 
           <div className="text-[11px] text-zinc-400 font-mono">
@@ -82,6 +119,44 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Jump Back In Hero Card */}
+      {lastPos && (
+        <div className="rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 border border-emerald-500/30 p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
+                Jump Back In · Active Session
+              </span>
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+              {lastPos.lesson_title || 'Resume Active Lesson'}
+            </h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Course: <span className="font-medium text-zinc-700 dark:text-zinc-300">{lastPos.course_title || lastPos.course_id}</span>
+              {lastPos.module_title && ` • Module: ${lastPos.module_title}`}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                soundService.playSuccess();
+                if (onResumeLastPosition) {
+                  onResumeLastPosition();
+                } else {
+                  onSelectCourse(lastPos.course_id);
+                }
+              }}
+              className="px-5 py-2.5 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md flex items-center gap-2 active:scale-95"
+            >
+              <Play className="w-4 h-4 fill-current" />
+              Resume Where You Left Off
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filter Tabs */}
       <div className="space-y-4">
@@ -127,7 +202,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                   </span>
                 </div>
 
-                <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-coursera-blue transition-colors leading-snug">
+                <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 transition-colors leading-snug">
                   {course.title}
                 </h3>
 
@@ -148,7 +223,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                   </span>
                 </div>
 
-                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-coursera-blue font-medium flex items-center gap-1 transition-colors text-xs">
+                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs">
                   View Syllabus <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
