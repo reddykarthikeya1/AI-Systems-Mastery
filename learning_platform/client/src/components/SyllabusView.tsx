@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   ArrowLeft, BookOpen, CheckCircle, Clock, ChevronRight, Play, Terminal, 
-  Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap 
+  Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain 
 } from 'lucide-react';
 import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types';
 
@@ -208,6 +208,12 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             const modHasProject = Boolean(mod.has_starter || mod.has_solution || mod.lessons.some((l) => l.type === 'project'));
             const modHasQuiz = Boolean(mod.lessons.some((l) => l.type === 'quiz'));
             const modHasDebug = Boolean(mod.has_debug_lab);
+            const leetcodeLesson = mod.lessons.find((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode'));
+            const modHasLeetcode = Boolean(
+              leetcodeLesson ||
+              course.folder_name.includes('02_Data_Structures') ||
+              mod.folder_path.includes('02_Data_Structures')
+            );
 
             // Find specific entry points
             const firstLesson = mod.lessons[0];
@@ -231,6 +237,11 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       </span>
 
                       {/* Interactive Feature Badges */}
+                      {modHasLeetcode && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 font-semibold">
+                          🧠 LeetCode Arena
+                        </span>
+                      )}
                       {modHasProject && (
                         <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60">
                           🛠️ Project Studio
@@ -291,6 +302,17 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       >
                         <CheckSquare className="w-3 h-3" />
                         <span>Quiz</span>
+                      </button>
+                    )}
+
+                    {modHasLeetcode && leetcodeLesson && (
+                      <button
+                        onClick={() => onSelectLesson(leetcodeLesson.file_path, leetcodeLesson.id)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm"
+                        title="Solve LeetCode problems with hidden testcases"
+                      >
+                        <Brain className="w-3.5 h-3.5" />
+                        <span>Arena</span>
                       </button>
                     )}
 

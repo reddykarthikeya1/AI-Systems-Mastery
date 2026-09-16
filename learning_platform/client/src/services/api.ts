@@ -1,4 +1,4 @@
-import { CourseSummary, ModuleItem, ProgressPayload, TestResult, RunnerMode } from '../types';
+import { CourseSummary, ModuleItem, ProgressPayload, TestResult, RunnerMode, DsaProblem, DsaRunResult } from '../types';
 
 const API_BASE = '/api';
 
@@ -75,4 +75,25 @@ export async function saveProgress(payload: ProgressPayload): Promise<void> {
   } catch (e) {
     console.warn('Failed to persist progress to disk', e);
   }
+}
+
+export async function fetchDsaProblems(module?: string): Promise<DsaProblem[]> {
+  const url = module ? `${API_BASE}/dsa-problems?module=${encodeURIComponent(module)}` : `${API_BASE}/dsa-problems`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to load DSA problems');
+  return res.json();
+}
+
+export async function runDsaTest(problemId: string, code: string, submit: boolean = false): Promise<DsaRunResult> {
+  const res = await fetch(`${API_BASE}/run-dsa-test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      problem_id: problemId,
+      code,
+      submit,
+    }),
+  });
+  if (!res.ok) throw new Error('DSA test execution failed to dispatch');
+  return res.json();
 }

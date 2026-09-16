@@ -2,7 +2,7 @@ export interface LessonItem {
   id: string;
   title: string;
   file_path: string;
-  type: 'theory' | 'playground' | 'project' | 'quiz' | 'troubleshooting' | 'code';
+  type: 'theory' | 'playground' | 'project' | 'quiz' | 'troubleshooting' | 'code' | 'powershell' | 'notebook' | 'shell' | 'challenge';
 }
 
 export interface ModuleItem {
@@ -54,5 +54,48 @@ export interface TestResult {
   status: 'passed' | 'failed' | 'timeout' | 'error';
   cwd?: string;
   mode?: RunnerMode;
+}
+
+export interface DsaTestCase {
+  input: any;
+  expected: any;
+  hidden?: boolean;
+}
+
+export interface DsaProblem {
+  id: string;
+  module_num: number;
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  pattern: string;
+  time_complexity: string;
+  space_complexity: string;
+  description: string;
+  starter_code: string;
+  visible_testcases: DsaTestCase[];
+  hidden_testcase_count: number;
+  is_design?: boolean;
+  target_class?: string;
+}
+
+export interface DsaTestCaseResult {
+  case_index: number;
+  is_hidden: boolean;
+  input: any;
+  expected: any;
+  actual: any;
+  passed: boolean;
+}
+
+export interface DsaRunResult {
+  status: 'accepted' | 'wrong_answer' | 'runtime_error' | 'time_limit_exceeded' | 'error';
+  all_passed: boolean;
+  total_cases: number;
+  passed_cases: number;
+  duration_ms: number;
+  results: DsaTestCaseResult[];
+  explanation?: string;
+  reference_solution?: string;
+  error?: string;
 }
 

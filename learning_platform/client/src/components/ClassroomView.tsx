@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
-  Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save
+  Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
+  Play, Code2, Copy, Check, FileCode, ExternalLink, Layers, Eye, Brain
 } from 'lucide-react';
-import { marked } from 'marked';
 import confetti from 'canvas-confetti';
 import { ModuleItem, LessonItem, TestResult, RunnerMode } from '../types';
 import { fetchFileContent, runTestCommand } from '../services/api';
+import { renderMarkdownWithMath } from '../services/markdown';
 import { TerminalRunner } from './TerminalRunner';
 import { SideCodeRunner, PageSnippet } from './SideCodeRunner';
 import { McqQuizView } from './McqQuizView';
 import { ProjectStudio } from './ProjectStudio';
 import { DebugLabView } from './DebugLabView';
+import { DsaArenaView } from './DsaArenaView';
 import { TableOfContents } from './TableOfContents';
 
 interface ClassroomViewProps {
@@ -50,16 +52,21 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   completedLessons = [],
 }) => {
   // Determine initial tab based on lesson type
-  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes'>(() => {
+  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena'>(() => {
+    if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) return 'arena';
     if (currentLesson.type === 'project') return 'project';
     if (currentLesson.type === 'quiz') return 'quiz';
     return 'theory';
-  }, [currentLesson.id, currentLesson.type]);
+  }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
 
-  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes'>(defaultTab);
+  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena'>(defaultTab);
   const [content, setContent] = useState<string>('Loading lesson content...');
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
+  const [codeCopied, setCodeCopied] = useState<boolean>(false);
+
+  // Toggle for syllabus sidebar in Project Studio mode
+  const [isSyllabusSidebarOpen, setIsSyllabusSidebarOpen] = useState<boolean>(true);
 
   // Student personal notes state
   const [noteText, setNoteText] = useState<string>(savedNote);
@@ -72,24 +79,74 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   // Update tab if lesson type switches directly
   useEffect(() => {
-    if (currentLesson.type === 'project') {
+    if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) {
+      setActiveTab('arena');
+    } else if (currentLesson.type === 'project') {
       setActiveTab('project');
     } else if (currentLesson.type === 'quiz') {
       setActiveTab('quiz');
     } else {
       setActiveTab('theory');
     }
-  }, [currentLesson.id, currentLesson.type]);
+  }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
 
   // Side-by-side interactive code runner state
   const [isScratchpadOpen, setIsScratchpadOpen] = useState<boolean>(false);
   const [scratchpadCode, setScratchpadCode] = useState<string>('');
-  const [scratchpadMode, setScratchpadMode] = useState<RunnerMode>('python');
+  const [scratchpadMode, setScratchpadMode] = useState<RunnerMode>(
+    currentLesson.type === 'powershell' ? 'powershell' : 'python'
+  );
+
+  // Parse Jupyter Notebook cells if current file is an .ipynb
+  const notebookCells = useMemo<{ type: 'markdown' | 'code'; source: string }[]>(() => {
+    if (currentLesson.type !== 'notebook' || !content || content.startsWith('Loading')) return [];
+    try {
+      const parsed = JSON.parse(content);
+      if (parsed && Array.isArray(parsed.cells)) {
+        return parsed.cells.map((c: any) => ({
+          type: c.cell_type === 'code' ? 'code' : 'markdown',
+          source: Array.isArray(c.source) ? c.source.join('') : (c.source || ''),
+        }));
+      }
+    } catch {
+      return [];
+    }
+    return [];
+  }, [content, currentLesson.type]);
 
   // Extract page code snippets from content markdown
   const pageSnippets = useMemo<PageSnippet[]>(() => {
     if (!content || content.startsWith('Loading')) return [];
     const snippets: PageSnippet[] = [];
+
+    // If current lesson is a raw code script, add the whole file as the primary snippet
+    if (currentLesson.type === 'code' || currentLesson.type === 'powershell') {
+      snippets.push({
+        id: 'full-file',
+        title: currentLesson.title,
+        code: content,
+        lang: currentLesson.type === 'powershell' ? 'POWERSHELL' : 'PYTHON',
+      });
+      return snippets;
+    }
+
+    // If current lesson is a notebook, extract code cells
+    if (currentLesson.type === 'notebook' && notebookCells.length > 0) {
+      let cIdx = 1;
+      for (const cell of notebookCells) {
+        if (cell.type === 'code' && cell.source.trim()) {
+          snippets.push({
+            id: `nb-cell-${cIdx++}`,
+            title: `Cell #${cIdx - 1}: ${cell.source.split('\n')[0].slice(0, 28)}`,
+            code: cell.source,
+            lang: 'PYTHON',
+          });
+        }
+      }
+      return snippets;
+    }
+
+    // Extract markdown code blocks
     const regex = /```(\w+)?\n([\s\S]*?)```/g;
     let match: RegExpExecArray | null;
     let count = 1;
@@ -125,7 +182,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     }
 
     return snippets;
-  }, [content]);
+  }, [content, currentLesson.type, currentLesson.title, notebookCells]);
 
   // Event listener for "Run" button clicks from rendered code blocks
   useEffect(() => {
@@ -145,10 +202,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     setContent('Loading lesson content...');
     fetchFileContent(currentLesson.file_path).then((data) => {
       setContent(data.content);
+      // If the lesson is a script, pre-fill the runner
+      if (currentLesson.type === 'code') {
+        setScratchpadCode(data.content);
+        setScratchpadMode('python');
+      } else if (currentLesson.type === 'powershell') {
+        setScratchpadCode(data.content);
+        setScratchpadMode('powershell');
+      }
     }).catch((err) => {
       setContent(`Failed to load content: ${err.message}`);
     });
-  }, [currentLesson.file_path]);
+  }, [currentLesson.file_path, currentLesson.type]);
 
   // Enhance rendered code blocks with language badge, 1-click copy, and multi-runtime "Run" button
   useEffect(() => {
@@ -309,21 +374,44 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
-  const renderMarkdown = (raw: string): string => {
-    try {
-      return marked.parse(raw, { async: false }) as string;
-    } catch {
-      return raw;
-    }
-  };
-
   // Detect availability of specialized features
   const hasProject = Boolean(module.has_starter || module.has_solution || allLessons.some((l) => l.type === 'project'));
   const hasQuiz = Boolean(allLessons.some((l) => l.type === 'quiz'));
   const hasDebugLab = Boolean(module.has_debug_lab);
+  const hasDsaArena = Boolean(
+    courseTitle.toLowerCase().includes('data structure') ||
+    courseTitle.toLowerCase().includes('dsa') ||
+    module.folder_path.toLowerCase().includes('02_data_structures') ||
+    allLessons.some((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode'))
+  );
+
+  const getLessonBadge = (type: string) => {
+    switch (type) {
+      case 'challenge':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">LeetCode</span>;
+      case 'project':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300">Project</span>;
+      case 'quiz':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300">Quiz</span>;
+      case 'playground':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-cyan-100 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-300">Intro</span>;
+      case 'code':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300">Code</span>;
+      case 'powershell':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300">PS1</span>;
+      case 'notebook':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300">Notebook</span>;
+      case 'troubleshooting':
+        return <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300">Debug</span>;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 transition-all duration-300 ${isScratchpadOpen ? 'max-w-[1780px]' : 'max-w-7xl'}`}>
+    <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 transition-all duration-300 ${
+      activeTab === 'project' || activeTab === 'arena' || isScratchpadOpen ? 'max-w-[1850px]' : 'max-w-7xl'
+    }`}>
       {/* Top Bar Navigation & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-4">
         <div className="flex items-center gap-3">
@@ -412,7 +500,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
       </div>
 
-      {/* Navigation Sub-Tabs: Architecture, Project Studio, MCQ Quiz, Bug Hunter, Console, Notes */}
+      {/* Navigation Sub-Tabs */}
       <div className="flex items-center gap-1.5 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2 overflow-x-auto">
         <button
           onClick={() => setActiveTab('theory')}
@@ -422,7 +510,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
-          <BookOpen className="w-3.5 h-3.5" /> Lesson Architecture
+          {currentLesson.type === 'code' || currentLesson.type === 'powershell' ? (
+            <Code2 className="w-3.5 h-3.5" />
+          ) : currentLesson.type === 'notebook' ? (
+            <Layers className="w-3.5 h-3.5" />
+          ) : (
+            <BookOpen className="w-3.5 h-3.5" />
+          )}
+          <span>{currentLesson.type === 'code' ? 'Interactive Code Lab' : currentLesson.type === 'powershell' ? 'PowerShell Script' : currentLesson.type === 'notebook' ? 'Jupyter Notebook' : 'Lesson Architecture'}</span>
         </button>
 
         {hasProject && (
@@ -430,13 +525,29 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             onClick={() => setActiveTab('project')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'project'
-                ? 'bg-purple-600 text-white shadow-sm'
+                ? 'bg-purple-600 text-white shadow-sm font-bold'
                 : 'text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30'
             }`}
           >
             <Hammer className="w-3.5 h-3.5" /> In-Browser Project Studio
             <span className="text-[10px] px-1 py-0.2 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
               IDE
+            </span>
+          </button>
+        )}
+
+        {hasDsaArena && (
+          <button
+            onClick={() => setActiveTab('arena')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+              activeTab === 'arena'
+                ? 'bg-amber-600 text-white shadow-sm font-bold'
+                : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'
+            }`}
+          >
+            <Brain className="w-3.5 h-3.5 text-amber-300" /> LeetCode Arena
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
+              Sandbox
             </span>
           </button>
         )}
@@ -494,247 +605,372 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
-          <FileText className="w-3.5 h-3.5" /> Personal Study Notes
+          <FileText className="w-3.5 h-3.5" /> Personal Notes
           {noteText.trim().length > 0 && (
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
           )}
         </button>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex gap-6 items-start">
-        {/* Left Outline + Center Reader/Studio */}
-        <div className="flex-1 min-w-0">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-            {/* Left Sidebar: Lesson Outline */}
-            <div className="lg:col-span-1 rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-3 sticky top-20">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
-                <span className="text-[11px] font-mono font-medium text-zinc-400 uppercase tracking-wider">
-                  Module {module.module_num.toString().padStart(2, '0')} Syllabus
-                </span>
-                <span className="text-[10px] font-mono text-zinc-400">
-                  {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
-                </span>
+      {/* Main Content Stage */}
+      {/* 1. PROJECT STUDIO TAB: Rendered in Spacious Full Width Container! */}
+      {activeTab === 'project' ? (
+        <div className="w-full">
+          <ProjectStudio
+            moduleFolderPath={module.folder_path}
+            moduleTitle={module.title}
+            courseTitle={courseTitle}
+            guideMarkdown={content}
+            onCompleteProject={handleCompleteClick}
+            isProjectCompleted={isCompleted}
+          />
+        </div>
+      ) : activeTab === 'arena' ? (
+        <div className="w-full">
+          <DsaArenaView
+            moduleTitle={module.title}
+            moduleFolderPath={module.folder_path}
+            onBackToLesson={() => setActiveTab('theory')}
+          />
+        </div>
+      ) : (
+        /* 2. REGULAR LESSON VIEWS: Standard Left Syllabus Outline + Center View + Right Runner */
+        <div className="flex gap-6 items-start">
+          <div className="flex-1 min-w-0">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+              {/* Left Sidebar: Lesson Outline */}
+              <div className="lg:col-span-1 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
+                <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
+                  <span className="text-[11px] font-mono font-semibold text-zinc-400 uppercase tracking-wider">
+                    Module {module.module_num.toString().padStart(2, '0')} Syllabus
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400">
+                    {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
+                  </span>
+                </div>
+
+                <div className="space-y-1 max-h-[75vh] overflow-y-auto">
+                  {allLessons.map((l, idx) => {
+                    const active = l.id === currentLesson.id;
+                    const isDone = completedLessons.includes(l.id);
+
+                    return (
+                      <button
+                        key={l.id}
+                        onClick={() => onSelectLesson(l.file_path, l.id)}
+                        className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
+                          active
+                            ? 'bg-blue-50 dark:bg-blue-950/60 text-coursera-blue dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
+                            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
+                        }`}
+                      >
+                        <span className="line-clamp-1 flex items-center gap-2">
+                          <span className="font-mono text-[10px] text-zinc-400">
+                            {(idx + 1).toString().padStart(2, '0')}
+                          </span>
+                          <span>{l.title}</span>
+                        </span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {getLessonBadge(l.type)}
+                          {isDone ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          ) : (
+                            <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 shrink-0" />
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="space-y-1">
-                {allLessons.map((l, idx) => {
-                  const active = l.id === currentLesson.id;
-                  const isDone = completedLessons.includes(l.id);
+              {/* Center Area: Active View */}
+              <div className="lg:col-span-3 space-y-4">
+                {/* TAB: THEORY & SCRIPT READER */}
+                {activeTab === 'theory' && (
+                  <div>
+                    {/* CASE A: PYTHON / POWERSHELL / SHELL SCRIPT VIEW */}
+                    {(currentLesson.type === 'code' || currentLesson.type === 'powershell' || currentLesson.type === 'shell') ? (
+                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden shadow-sm space-y-0">
+                        {/* Script Header Bar */}
+                        <div className="p-5 border-b border-zinc-200/80 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/70 dark:bg-[#161B22]">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                              <Code2 className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
+                                  currentLesson.type === 'powershell'
+                                    ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30'
+                                    : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                                }`}>
+                                  {currentLesson.type === 'powershell' ? 'PowerShell Automation' : 'Python Script'}
+                                </span>
+                                <span className="text-[11px] font-mono text-zinc-400">{currentLesson.file_path}</span>
+                              </div>
+                              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+                                {currentLesson.title}
+                              </h2>
+                            </div>
+                          </div>
 
-                  // Lesson type badge tag
-                  let typeTag = '';
-                  if (l.type === 'project') typeTag = 'Project';
-                  else if (l.type === 'quiz') typeTag = 'Quiz';
-                  else if (l.type === 'playground') typeTag = 'Intro';
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(content);
+                                setCodeCopied(true);
+                                setTimeout(() => setCodeCopied(false), 2000);
+                              }}
+                              className="px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-xs font-mono flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+                            >
+                              {codeCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                              <span>{codeCopied ? 'Copied' : 'Copy'}</span>
+                            </button>
 
-                  return (
-                    <button
-                      key={l.id}
-                      onClick={() => onSelectLesson(l.file_path, l.id)}
-                      className={`w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all flex items-center justify-between gap-2 ${
-                        active
-                          ? 'bg-blue-50 dark:bg-blue-950/60 text-coursera-blue dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
-                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
-                      }`}
-                    >
-                      <span className="line-clamp-1 flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-zinc-400">0{idx + 1}</span>
-                        <span>{l.title}</span>
-                      </span>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {typeTag && (
-                          <span className="text-[9px] font-mono uppercase px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
-                            {typeTag}
-                          </span>
-                        )}
-                        {isDone ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                        ) : (
-                          <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 shrink-0" />
+                            <button
+                              onClick={() => {
+                                setScratchpadCode(content);
+                                setScratchpadMode(currentLesson.type === 'powershell' ? 'powershell' : 'python');
+                                setIsScratchpadOpen(true);
+                              }}
+                              className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all"
+                            >
+                              <Play className="w-3.5 h-3.5 fill-current" />
+                              <span>Run in Live Runner</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Code Body */}
+                        <div className="p-6 bg-[#0D1117] overflow-x-auto">
+                          <pre className="font-mono text-xs sm:text-sm text-zinc-200 leading-relaxed whitespace-pre-wrap">
+                            {content}
+                          </pre>
+                        </div>
+                      </div>
+                    ) : currentLesson.type === 'notebook' && notebookCells.length > 0 ? (
+                      /* CASE B: JUPYTER NOTEBOOK VIEW */
+                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 shadow-sm space-y-6">
+                        <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                              <Layers className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                                Jupyter Visual Notebook
+                              </span>
+                              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">{currentLesson.title}</h2>
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() => {
+                              const allCode = notebookCells.filter((c) => c.type === 'code').map((c) => c.source).join('\n\n');
+                              setScratchpadCode(allCode);
+                              setScratchpadMode('python');
+                              setIsScratchpadOpen(true);
+                            }}
+                            className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-500 text-white flex items-center gap-2 shadow-sm"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            <span>Run All Cells</span>
+                          </button>
+                        </div>
+
+                        {/* Cells List */}
+                        <div className="space-y-6">
+                          {notebookCells.map((cell, cIdx) => (
+                            <div key={cIdx} className="space-y-2">
+                              {cell.type === 'markdown' ? (
+                                <div
+                                  className="markdown-body text-zinc-800 dark:text-zinc-200 text-sm leading-relaxed"
+                                  dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(cell.source) }}
+                                />
+                              ) : (
+                                <div className="rounded-xl border border-zinc-800 bg-[#0D1117] overflow-hidden">
+                                  <div className="flex items-center justify-between px-3 py-1.5 bg-[#161B22] border-b border-zinc-800 text-[11px] font-mono text-zinc-400">
+                                    <span>Python Cell [{cIdx + 1}]</span>
+                                    <button
+                                      onClick={() => {
+                                        setScratchpadCode(cell.source);
+                                        setScratchpadMode('python');
+                                        setIsScratchpadOpen(true);
+                                      }}
+                                      className="px-2 py-0.5 rounded hover:bg-emerald-950/60 text-emerald-400 flex items-center gap-1 border border-emerald-500/30"
+                                    >
+                                      <Play className="w-3 h-3 fill-current" />
+                                      <span>Run Cell</span>
+                                    </button>
+                                  </div>
+                                  <pre className="p-4 font-mono text-xs text-zinc-200 overflow-x-auto">
+                                    {cell.source}
+                                  </pre>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      /* CASE C: STANDARD MARKDOWN VIEW (With KaTeX Math & TOC) */
+                      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
+                        {/* Markdown Body */}
+                        <div className="xl:col-span-3 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-sm">
+                          <div
+                            className="markdown-body text-zinc-800 dark:text-zinc-200 text-sm leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
+                          />
+
+                          {/* Bottom Lesson Navigation Cards */}
+                          <div className="mt-12 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            {prevLesson ? (
+                              <button
+                                onClick={() => onSelectLesson(prevLesson.file_path, prevLesson.id)}
+                                className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-left flex items-center gap-3 group"
+                              >
+                                <ChevronLeft className="w-5 h-5 text-zinc-400 group-hover:-translate-x-1 transition-transform" />
+                                <div>
+                                  <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Previous</div>
+                                  <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{prevLesson.title}</div>
+                                </div>
+                              </button>
+                            ) : <div />}
+
+                            {nextLesson ? (
+                              <button
+                                onClick={() => onSelectLesson(nextLesson.file_path, nextLesson.id)}
+                                className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-right flex items-center justify-end gap-3 group"
+                              >
+                                <div>
+                                  <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Next</div>
+                                  <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{nextLesson.title}</div>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-zinc-400 group-hover:translate-x-1 transition-transform" />
+                              </button>
+                            ) : <div />}
+                          </div>
+                        </div>
+
+                        {/* Sticky Table of Contents Sidebar */}
+                        {!isScratchpadOpen && (
+                          <div className="hidden xl:block xl:col-span-1">
+                            <TableOfContents
+                              content={content}
+                              isBookmarked={isBookmarked}
+                              onToggleBookmark={onToggleBookmark}
+                            />
+                          </div>
                         )}
                       </div>
-                    </button>
-                  );
-                })}
+                    )}
+                  </div>
+                )}
+
+                {/* TAB: INTERACTIVE MCQ ASSESSMENT */}
+                {activeTab === 'quiz' && (
+                  <div className="w-full">
+                    <McqQuizView
+                      rawContent={content}
+                      lessonTitle={currentLesson.title}
+                      moduleTitle={module.title}
+                      courseTitle={courseTitle}
+                      lessonId={currentLesson.id}
+                      savedScore={savedQuizScore}
+                      onPassQuiz={(score, total) => {
+                        if (onSaveQuizScore) {
+                          onSaveQuizScore(score, total, true);
+                        }
+                        if (!isCompleted) {
+                          onToggleComplete();
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* TAB: BUG HUNTER LAB */}
+                {activeTab === 'debug' && (
+                  <div className="w-full">
+                    <DebugLabView
+                      moduleFolderPath={module.folder_path}
+                      moduleTitle={module.title}
+                      onPassLab={() => {
+                        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* TAB: PYTEST & EXECUTION CONSOLE */}
+                {activeTab === 'test' && (
+                  <div className="space-y-4">
+                    <TerminalRunner
+                      result={testResult}
+                      isRunning={isRunning}
+                      onRunTest={handleRunTests}
+                      onRunDemo={handleRunDemo}
+                      hasDemo={Boolean(module.quickstart_script)}
+                    />
+                  </div>
+                )}
+
+                {/* TAB: PERSONAL STUDY NOTES */}
+                {activeTab === 'notes' && (
+                  <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-3">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-blue-500" />
+                        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                          Personal Study Notes: {currentLesson.title}
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {noteSavedAlert && (
+                          <span className="text-xs font-mono text-emerald-500 flex items-center gap-1">
+                            ✓ Saved to study profile
+                          </span>
+                        )}
+                        <button
+                          onClick={handleSaveNoteClick}
+                          className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition-colors"
+                        >
+                          <Save className="w-3.5 h-3.5" /> Save Notes
+                        </button>
+                      </div>
+                    </div>
+
+                    <textarea
+                      value={noteText}
+                      onChange={(e) => setNoteText(e.target.value)}
+                      placeholder="Write key takeaways, performance equations, and interview questions here..."
+                      className="w-full h-80 p-4 font-mono text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-y leading-relaxed"
+                    />
+                  </div>
+                )}
               </div>
             </div>
+          </div>
 
-            {/* Center Area: Active Tab View */}
-            <div className="lg:col-span-3 space-y-4">
-              {/* TAB 1: THEORY / ARCHITECTURE */}
-              {activeTab === 'theory' && (
-                <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
-                  {/* Markdown Body */}
-                  <div className="xl:col-span-3 rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-                    <div
-                      className="markdown-body text-zinc-800 dark:text-zinc-200 text-sm leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-                    />
-
-                    {/* Bottom Lesson Navigation Cards */}
-                    <div className="mt-12 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                      {prevLesson ? (
-                        <button
-                          onClick={() => onSelectLesson(prevLesson.file_path, prevLesson.id)}
-                          className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-left flex items-center gap-3 group"
-                        >
-                          <ChevronLeft className="w-5 h-5 text-zinc-400 group-hover:-translate-x-1 transition-transform" />
-                          <div>
-                            <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Previous Lesson</div>
-                            <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{prevLesson.title}</div>
-                          </div>
-                        </button>
-                      ) : <div />}
-
-                      {nextLesson ? (
-                        <button
-                          onClick={() => onSelectLesson(nextLesson.file_path, nextLesson.id)}
-                          className="w-full sm:w-auto p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-right flex items-center justify-end gap-3 group"
-                        >
-                          <div>
-                            <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Next Lesson</div>
-                            <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1">{nextLesson.title}</div>
-                          </div>
-                          <ChevronRight className="w-5 h-5 text-zinc-400 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                      ) : <div />}
-                    </div>
-                  </div>
-
-                  {/* Sticky Table of Contents Sidebar */}
-                  {!isScratchpadOpen && (
-                    <div className="hidden xl:block xl:col-span-1">
-                      <TableOfContents
-                        content={content}
-                        isBookmarked={isBookmarked}
-                        onToggleBookmark={onToggleBookmark}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* TAB 2: IN-BROWSER PROJECT STUDIO */}
-              {activeTab === 'project' && (
-                <div className="w-full">
-                  <ProjectStudio
-                    moduleFolderPath={module.folder_path}
-                    moduleTitle={module.title}
-                    courseTitle={courseTitle}
-                    guideMarkdown={content}
-                    onCompleteProject={handleCompleteClick}
-                    isProjectCompleted={isCompleted}
-                  />
-                </div>
-              )}
-
-              {/* TAB 3: INTERACTIVE MCQ ASSESSMENT */}
-              {activeTab === 'quiz' && (
-                <div className="w-full">
-                  <McqQuizView
-                    rawContent={content}
-                    lessonTitle={currentLesson.title}
-                    moduleTitle={module.title}
-                    courseTitle={courseTitle}
-                    lessonId={currentLesson.id}
-                    savedScore={savedQuizScore}
-                    onPassQuiz={(score, total) => {
-                      if (onSaveQuizScore) {
-                        onSaveQuizScore(score, total, true);
-                      }
-                      if (!isCompleted) {
-                        onToggleComplete();
-                      }
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* TAB 4: BUG HUNTER LAB */}
-              {activeTab === 'debug' && (
-                <div className="w-full">
-                  <DebugLabView
-                    moduleFolderPath={module.folder_path}
-                    moduleTitle={module.title}
-                    onPassLab={() => {
-                      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* TAB 5: PYTEST & EXECUTION CONSOLE */}
-              {activeTab === 'test' && (
-                <div className="space-y-4">
-                  <TerminalRunner
-                    result={testResult}
-                    isRunning={isRunning}
-                    onRunTest={handleRunTests}
-                    onRunDemo={handleRunDemo}
-                    hasDemo={Boolean(module.quickstart_script)}
-                  />
-                </div>
-              )}
-
-              {/* TAB 6: PERSONAL STUDY NOTES */}
-              {activeTab === 'notes' && (
-                <div className="rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-6 space-y-4">
-                  <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-3">
-                    <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-blue-500" />
-                      <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                        Personal Study Notes for: {currentLesson.title}
-                      </h3>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {noteSavedAlert && (
-                        <span className="text-xs font-mono text-emerald-500 flex items-center gap-1">
-                          ✓ Saved to study profile
-                        </span>
-                      )}
-                      <button
-                        onClick={handleSaveNoteClick}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition-colors"
-                      >
-                        <Save className="w-3.5 h-3.5" /> Save Notes
-                      </button>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Your notes are automatically saved locally and synchronized to your offline progress file. Use this space for architectural takeaways, interview flashcards, and edge cases.
-                  </p>
-
-                  <textarea
-                    value={noteText}
-                    onChange={(e) => setNoteText(e.target.value)}
-                    placeholder="Write key takeaways, performance equations, and interview questions here..."
-                    className="w-full h-80 p-4 font-mono text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-y leading-relaxed"
-                  />
-                </div>
-              )}
+          {/* Right Side: Page-Aware Interactive Multi-Runtime Runner */}
+          {isScratchpadOpen && (
+            <div className="sticky top-20 shrink-0 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
+              <SideCodeRunner
+                initialCode={scratchpadCode}
+                initialMode={scratchpadMode}
+                courseTitle={courseTitle}
+                moduleTitle={module.title}
+                moduleFolderPath={module.folder_path}
+                lessonTitle={currentLesson.title}
+                lessonFilePath={currentLesson.file_path}
+                pageSnippets={pageSnippets}
+                onClose={() => setIsScratchpadOpen(false)}
+              />
             </div>
-          </div>
+          )}
         </div>
-
-        {/* Right Side: Page-Aware Interactive Multi-Runtime Runner */}
-        {isScratchpadOpen && (
-          <div className="sticky top-20 shrink-0 h-[calc(100vh-6rem)] rounded-xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
-            <SideCodeRunner
-              initialCode={scratchpadCode}
-              initialMode={scratchpadMode}
-              courseTitle={courseTitle}
-              moduleTitle={module.title}
-              moduleFolderPath={module.folder_path}
-              lessonTitle={currentLesson.title}
-              lessonFilePath={currentLesson.file_path}
-              pageSnippets={pageSnippets}
-              onClose={() => setIsScratchpadOpen(false)}
-            />
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };

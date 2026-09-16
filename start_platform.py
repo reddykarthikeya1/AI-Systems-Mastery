@@ -20,6 +20,8 @@ from typing import Any, Dict, List
 
 ROOT_DIR = Path(__file__).resolve().parent
 SERVER_DIR = ROOT_DIR / "learning_platform" / "server"
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
 CLIENT_DIR = ROOT_DIR / "learning_platform" / "client"
 DIST_DIR = CLIENT_DIR / "dist"
 PROGRESS_FILE = ROOT_DIR / ".study_progress.json"
@@ -150,34 +152,113 @@ def run_fallback_server(port: int = 8000) -> None:
         for mod_dir in module_dirs:
             mod_num = get_mod_num(mod_dir)
             clean_mod_name = re.sub(r"^Module_\d+_", "", mod_dir.name).replace("_", " ")
-            lessons = []
-            for f in sorted(mod_dir.iterdir()):
+            def get_f_num(f: Path) -> int:
+                m = re.match(r"^(\d+)", f.name)
+                return int(m.group(1)) if m else 999
+
+            cand_files = []
+            for f in mod_dir.iterdir():
                 if not f.is_file() or f.name.startswith("."):
                     continue
-                if f.name.endswith(".md"):
-                    title = f.stem.replace("_", " ")
-                    ltype = "theory"
-                    if "FOUNDATIONS_PLAYGROUND" in f.name:
+                if f.name.startswith("__") or f.name in [
+                    "conftest.py", "pyproject.toml", "uv.lock", "requirements.txt",
+                    "student.json", "groceries.txt", "notes.txt"
+                ]:
+                    continue
+                if f.suffix.lower() in [".md", ".py", ".ps1", ".sh", ".ipynb"]:
+                    cand_files.append(f)
+
+            cand_files.sort(key=lambda f: (get_f_num(f), f.name))
+
+            lessons = []
+            for target in cand_files:
+                fname_upper = target.name.upper()
+                ext = target.suffix.lower()
+
+                if ext == ".md":
+                    if "README" in fname_upper:
+                        label = "Theoretical Foundations & Architecture"
+                        ltype = "theory"
+                    elif "PLAYGROUND" in fname_upper:
+                        label = "Interactive Foundations Playground"
                         ltype = "playground"
-                        title = "Interactive Foundations Playground"
-                    elif "PROJECT" in f.name:
+                    elif "ZERO_TO_ONE" in fname_upper or "BEGINNER" in fname_upper:
+                        label = "Beginner Zero-to-One On-Ramp"
+                        ltype = "playground"
+                    elif "PROJECT" in fname_upper or "GUIDE" in fname_upper:
+                        label = "Guided Hands-on Project"
                         ltype = "project"
-                    elif "QUIZ" in f.name:
+                    elif "LEETCODE" in fname_upper:
+                        label = "🧠 LeetCode Problem Studio"
+                        ltype = "challenge"
+                    elif "SELF_ASSESSMENT" in fname_upper or "CHALLENGE" in fname_upper or "QUIZ" in fname_upper:
+                        label = "Staff Interview Challenges & Quizzes"
                         ltype = "quiz"
-                    elif "TROUBLESHOOTING" in f.name:
+                    elif "TROUBLESHOOTING" in fname_upper or "EDGE_CASES" in fname_upper:
+                        label = "Troubleshooting & Forensic Edge Cases"
                         ltype = "troubleshooting"
+                    else:
+                        clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                        label = f"Guide: {clean_name}"
+                        ltype = "theory"
+                elif ext == ".py":
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    if "try_it_yourself" in target.name.lower():
+                        label = "Interactive Sandbox: Try It Yourself"
+                    elif "demo" in target.name.lower():
+                        label = f"Code Demo: {clean_name}"
+                    else:
+                        label = f"Code Lab: {clean_name}"
+                    ltype = "code"
+                elif ext == ".ps1":
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    label = f"PowerShell Automation: {clean_name}"
+                    ltype = "powershell"
+                elif ext == ".ipynb":
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    label = f"Jupyter Visual Lab: {clean_name}"
+                    ltype = "notebook"
+                elif ext == ".sh":
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    label = f"Shell Script: {clean_name}"
+                    ltype = "shell"
+                else:
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    label = f"File: {clean_name}"
+                    ltype = "theory"
+
+                lessons.append({
+                    "id": f"{mod_dir.name}_{target.name}",
+                    "title": label,
+                    "file_path": target.relative_to(ROOT_DIR).as_posix(),
+                    "type": ltype,
+                })
+
+            lessons_dir = mod_dir / "lessons"
+            if lessons_dir.is_dir():
+                sub_files = [
+                    lf for lf in lessons_dir.iterdir()
+                    if lf.is_file() and not lf.name.startswith(".") and lf.suffix.lower() in [".md", ".py", ".ps1", ".sh", ".ipynb"]
+                ]
+                sub_files.sort(key=lambda f: (get_f_num(f), f.name))
+                for lf in sub_files:
+                    clean_l_title = re.sub(r"^\d+_", "", lf.stem).replace("_", " ").title()
+                    ext = lf.suffix.lower()
+                    if ext == ".py":
+                        ltype = "code"
+                        clean_l_title = f"Code: {clean_l_title}"
+                    elif ext == ".ipynb":
+                        ltype = "notebook"
+                        clean_l_title = f"Notebook: {clean_l_title}"
+                    else:
+                        ltype = "theory"
+                        clean_l_title = f"Lesson: {clean_l_title}"
+
                     lessons.append({
-                        "id": f.name,
-                        "title": title,
-                        "file_path": f.relative_to(ROOT_DIR).as_posix(),
+                        "id": f"{mod_dir.name}_{lf.name}",
+                        "title": clean_l_title,
+                        "file_path": lf.relative_to(ROOT_DIR).as_posix(),
                         "type": ltype,
-                    })
-                elif f.name.endswith(".py") and not f.name.startswith("__"):
-                    lessons.append({
-                        "id": f.name,
-                        "title": f"Interactive Code: {f.name}",
-                        "file_path": f.relative_to(ROOT_DIR).as_posix(),
-                        "type": "code",
                     })
             has_sol = (mod_dir / "project_solution").is_dir() or any("solution" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
             has_star = (mod_dir / "starter").is_dir() or any("starter" in f.name.lower() for f in mod_dir.iterdir() if f.is_file())
@@ -250,6 +331,14 @@ def run_fallback_server(port: int = 8000) -> None:
                 return
             elif parsed.path == "/api/progress":
                 self.send_json(get_progress())
+                return
+            elif parsed.path == "/api/dsa-problems" or parsed.path.startswith("/api/dsa-problems"):
+                mod_param = query.get("module", [None])[0]
+                try:
+                    from dsa_problems import get_dsa_problems
+                    self.send_json(get_dsa_problems(mod_param))
+                except Exception as exc:
+                    self.send_json({"error": str(exc), "problems": []})
                 return
             elif parsed.path == "/api/project-files":
                 mod_path = query.get("module_path", [None])[0]
@@ -492,6 +581,25 @@ def run_fallback_server(port: int = 8000) -> None:
                             os.remove(temp_file)
                         except Exception:
                             pass
+                return
+            elif parsed.path == "/api/run-dsa-test":
+                prob_id = payload.get("problem_id", "")
+                user_code = payload.get("code", "")
+                submit = payload.get("submit", False)
+                try:
+                    from dsa_problems import run_dsa_solution
+                    res = run_dsa_solution(prob_id, user_code, submit=submit)
+                    self.send_json(res)
+                except Exception as exc:
+                    self.send_json({
+                        "status": "error",
+                        "error": str(exc),
+                        "all_passed": False,
+                        "passed_cases": 0,
+                        "total_cases": 0,
+                        "duration_ms": 0.0,
+                        "results": []
+                    })
                 return
 
             self.send_error(404, "Not found")

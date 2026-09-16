@@ -89,6 +89,12 @@ class RunCodeRequest(BaseModel):
     timeout_sec: int = 25
 
 
+class DsaRunRequest(BaseModel):
+    problem_id: str
+    code: str
+    submit: bool = False
+
+
 class SaveFilePayload(BaseModel):
     module_path: str
     filename: str
@@ -201,33 +207,84 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
         lessons: List[LessonItem] = []
         seen_rel_paths = set()
 
-        # 1. Collect all root markdown files in the module
-        root_md_files = sorted(mod_dir.glob("*.md"))
-        for target in root_md_files:
+        def get_file_num(f: Path) -> int:
+            m = re.match(r"^(\d+)", f.name)
+            return int(m.group(1)) if m else 999
+
+        # 1. Collect all root lesson files in the module (md, py, ps1, sh, ipynb)
+        cand_files = []
+        for f in mod_dir.iterdir():
+            if not f.is_file() or f.name.startswith("."):
+                continue
+            if f.name.startswith("__") or f.name in [
+                "conftest.py", "pyproject.toml", "uv.lock", "requirements.txt", 
+                "student.json", "groceries.txt", "notes.txt"
+            ]:
+                continue
+            if f.suffix.lower() in [".md", ".py", ".ps1", ".sh", ".ipynb"]:
+                cand_files.append(f)
+
+        cand_files.sort(key=lambda f: (get_file_num(f), f.name))
+
+        for target in cand_files:
             rel = target.relative_to(BASE_DIR).as_posix()
             if rel in seen_rel_paths:
                 continue
             seen_rel_paths.add(rel)
 
             fname_upper = target.name.upper()
-            if "README" in fname_upper:
-                label = "Theoretical Foundations & Architecture"
-                ltype = "theory"
-            elif "PLAYGROUND" in fname_upper or "BEGINNER" in fname_upper or "ZERO_TO_ONE" in fname_upper:
-                label = "Interactive Foundations Playground"
-                ltype = "playground"
-            elif "PROJECT" in fname_upper or "GUIDE" in fname_upper:
-                label = "Guided Hands-on Project"
-                ltype = "project"
-            elif "SELF_ASSESSMENT" in fname_upper or "CHALLENGE" in fname_upper or "QUIZ" in fname_upper:
-                label = "Staff Interview Challenges & Quizzes"
-                ltype = "quiz"
-            elif "TROUBLESHOOTING" in fname_upper or "EDGE_CASES" in fname_upper:
-                label = "Troubleshooting & Forensic Edge Cases"
-                ltype = "troubleshooting"
+            ext = target.suffix.lower()
+
+            if ext == ".md":
+                if "README" in fname_upper:
+                    label = "Theoretical Foundations & Architecture"
+                    ltype = "theory"
+                elif "PLAYGROUND" in fname_upper:
+                    label = "Interactive Foundations Playground"
+                    ltype = "playground"
+                elif "ZERO_TO_ONE" in fname_upper or "BEGINNER" in fname_upper:
+                    label = "Beginner Zero-to-One On-Ramp"
+                    ltype = "playground"
+                elif "PROJECT" in fname_upper or "GUIDE" in fname_upper:
+                    label = "Guided Hands-on Project"
+                    ltype = "project"
+                elif "LEETCODE" in fname_upper:
+                    label = "🧠 LeetCode Problem Studio"
+                    ltype = "challenge"
+                elif "SELF_ASSESSMENT" in fname_upper or "CHALLENGE" in fname_upper or "QUIZ" in fname_upper:
+                    label = "Staff Interview Challenges & Quizzes"
+                    ltype = "quiz"
+                elif "TROUBLESHOOTING" in fname_upper or "EDGE_CASES" in fname_upper:
+                    label = "Troubleshooting & Forensic Edge Cases"
+                    ltype = "troubleshooting"
+                else:
+                    clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                    label = f"Guide: {clean_name}"
+                    ltype = "theory"
+            elif ext == ".py":
+                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                if "try_it_yourself" in target.name.lower():
+                    label = "Interactive Sandbox: Try It Yourself"
+                elif "demo" in target.name.lower():
+                    label = f"Code Demo: {clean_name}"
+                else:
+                    label = f"Code Lab: {clean_name}"
+                ltype = "code"
+            elif ext == ".ps1":
+                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                label = f"PowerShell Automation: {clean_name}"
+                ltype = "powershell"
+            elif ext == ".ipynb":
+                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                label = f"Jupyter Visual Lab: {clean_name}"
+                ltype = "notebook"
+            elif ext == ".sh":
+                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                label = f"Shell Script: {clean_name}"
+                ltype = "shell"
             else:
-                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ")
-                label = f"Guide: {clean_name}"
+                clean_name = re.sub(r"^\d+_", "", target.stem).replace("_", " ").title()
+                label = f"File: {clean_name}"
                 ltype = "theory"
 
             lessons.append(LessonItem(
@@ -240,16 +297,32 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
         # 2. Collect any lessons under lessons/ subdirectory
         lessons_dir = mod_dir / "lessons"
         if lessons_dir.is_dir():
-            for lf in sorted(lessons_dir.glob("*.md")):
+            sub_files = [
+                lf for lf in lessons_dir.iterdir()
+                if lf.is_file() and not lf.name.startswith(".") and lf.suffix.lower() in [".md", ".py", ".ps1", ".sh", ".ipynb"]
+            ]
+            sub_files.sort(key=lambda f: (get_file_num(f), f.name))
+            for lf in sub_files:
                 rel = lf.relative_to(BASE_DIR).as_posix()
                 if rel not in seen_rel_paths:
                     seen_rel_paths.add(rel)
-                    clean_l_title = re.sub(r"^\d+_", "", lf.stem).replace("_", " ")
+                    clean_l_title = re.sub(r"^\d+_", "", lf.stem).replace("_", " ").title()
+                    ext = lf.suffix.lower()
+                    if ext == ".py":
+                        ltype = "code"
+                        clean_l_title = f"Code: {clean_l_title}"
+                    elif ext == ".ipynb":
+                        ltype = "notebook"
+                        clean_l_title = f"Notebook: {clean_l_title}"
+                    else:
+                        ltype = "theory"
+                        clean_l_title = f"Lesson: {clean_l_title}"
+
                     lessons.append(LessonItem(
                         id=f"{mod_dir.name}_{lf.name}",
-                        title=f"Lesson: {clean_l_title}",
+                        title=clean_l_title,
                         file_path=rel,
-                        type="theory",
+                        type=ltype,
                     ))
 
         # Quickstart or demo script
@@ -456,6 +529,37 @@ def run_interactive_code(req: RunCodeRequest):
             except Exception:
                 pass
 
+
+
+# -----------------------------------------------------------------------------
+# DSA LeetCode Problem Solving Studio Endpoints
+# -----------------------------------------------------------------------------
+@app.get("/api/dsa-problems")
+def get_dsa_problems_endpoint(module: Optional[str] = None):
+    """Returns curated LeetCode problems for DSA course modules."""
+    try:
+        from dsa_problems import get_dsa_problems
+        return get_dsa_problems(module)
+    except Exception as exc:
+        return {"error": str(exc), "problems": []}
+
+
+@app.post("/api/run-dsa-test")
+def run_dsa_test_endpoint(req: DsaRunRequest):
+    """Executes code against LeetCode testcases (visible or hidden)."""
+    try:
+        from dsa_problems import run_dsa_solution
+        return run_dsa_solution(req.problem_id, req.code, submit=req.submit)
+    except Exception as exc:
+        return {
+            "status": "error",
+            "error": str(exc),
+            "all_passed": False,
+            "passed_cases": 0,
+            "total_cases": 0,
+            "duration_ms": 0.0,
+            "results": []
+        }
 
 
 # -----------------------------------------------------------------------------
