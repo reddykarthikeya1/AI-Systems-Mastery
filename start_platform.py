@@ -633,21 +633,19 @@ def run_fallback_server(port: int = 8000, server_holder: Optional[Dict[str, Any]
         print("\n[*] Academy Platform safely stopped. Happy studying!")
 
 
-def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
-    try:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(0.2)
-            return s.connect_ex((host, port)) == 0
-    except Exception:
-        return False
-
-
-def wait_for_server(port: int, host: str = "127.0.0.1", timeout: float = 6.0) -> bool:
+def wait_for_http_ready(port: int, host: str = "127.0.0.1", timeout: float = 15.0) -> bool:
+    """Verifies that the server is not just accepting TCP connections, but returning HTTP 200 responses."""
+    import urllib.request
     start = time.time()
+    url = f"http://{host}:{port}/api/courses"
     while time.time() - start < timeout:
-        if is_port_in_use(port, host):
-            return True
-        time.sleep(0.05)
+        try:
+            with urllib.request.urlopen(url, timeout=0.5) as resp:
+                if resp.status == 200:
+                    return True
+        except Exception:
+            pass
+        time.sleep(0.1)
     return False
 
 
@@ -724,8 +722,13 @@ def launch_interface(
         print("[*] Headless mode enabled: skipping GUI window launch.")
         return None
 
-    if not wait_for_server(port):
-        print(f"[!] Notice: Server startup pending on port {port}. Attempting UI launch...")
+    ready = wait_for_http_ready(port)
+    if not ready:
+        print(f"[!] Notice: Waiting for server to initialize on port {port}...")
+        time.sleep(1.5)
+    else:
+        # Brief 0.3s delay to ensure static files and routes are warm
+        time.sleep(0.3)
 
     if force_browser:
         print(f"\n[+] Opening Academy Learning Portal in your default web browser ({url})...")
@@ -750,7 +753,7 @@ def launch_interface(
             proc = subprocess.Popen(cmd)
             browser_name = Path(app_browser).stem.replace(".exe", "")
             print(f"\n[+] Dedicated Desktop Application Window launched via {browser_name} (PID: {proc.pid}).")
-            print("[*] Running as standalone desktop application. Close window to exit.")
+            print("[*] Running as standalone desktop application. Close window or press Ctrl+C to exit.")
             return proc
         except Exception as exc:
             print(f"[!] Failed to launch dedicated app window ({exc}). Falling back to browser...")
@@ -780,15 +783,26 @@ def main() -> None:
         nonlocal window_proc
         window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
         if window_proc is not None:
-            window_proc.wait()
-            print("\n[*] Application window closed by user. Terminating server...")
-            if "uvicorn" in server_holder:
-                server_holder["uvicorn"].should_exit = True
-            if "httpd" in server_holder:
-                try:
-                    server_holder["httpd"].shutdown()
-                except Exception:
-                    pass
+            try:
+                t_launch = time.time()
+                window_proc.wait()
+                duration = time.time() - t_launch
+                # If process returned in under 2 seconds, it delegated to a background browser broker
+                if duration < 2.0:
+                    print(f"[*] Application window active in background broker (PID: {window_proc.pid}).")
+                    return
+                # If window was actually closed by user after running
+                time.sleep(0.5)
+                print("\n[*] Application window closed by user. Terminating server...")
+                if "uvicorn" in server_holder:
+                    server_holder["uvicorn"].should_exit = True
+                if "httpd" in server_holder:
+                    try:
+                        server_holder["httpd"].shutdown()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
 
     ui_thread = threading.Thread(target=start_ui_supervisor, daemon=True)
     ui_thread.start()
