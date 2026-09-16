@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import mermaid from 'mermaid';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
@@ -35,11 +36,12 @@ interface ClassroomViewProps {
   onSaveQuizScore?: (score: number, total: number, passed: boolean) => void;
   onSaveNote?: (text: string) => void;
   onBackToSyllabus: () => void;
-  onSelectLesson: (filePath: string, lessonId: string) => void;
+  onSelectLesson: (filePath: string, lessonId: string, initialTab?: string) => void;
   completedLessons?: string[];
   onUpdateLastPosition?: (pos: LastPosition) => void;
   onOpenMasteryGate?: () => void;
   onQuizMistake?: (question: import('./McqQuizView').McqQuestion, chosenOption: string) => void;
+  onPassLab?: () => void;
 }
 
 export const ClassroomView: React.FC<ClassroomViewProps> = ({
@@ -62,14 +64,21 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   onUpdateLastPosition,
   onOpenMasteryGate,
   onQuizMistake,
+  onPassLab,
 }) => {
-  // Determine initial tab based on lesson type
+  const [searchParams] = useSearchParams();
+  const requestedTab = searchParams.get('tab') as 'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch' | null;
+
+  // Determine initial tab based on lesson type or URL parameter
   const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(() => {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+      return requestedTab;
+    }
     if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) return 'arena';
     if (currentLesson.type === 'project') return 'project';
     if (currentLesson.type === 'quiz') return 'quiz';
     return 'theory';
-  }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
+  }, [requestedTab, currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
 
   const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(defaultTab);
   const [content, setContent] = useState<string>('Loading lesson content...');
@@ -89,8 +98,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     setNoteText(savedNote);
   }, [currentLesson.id, savedNote]);
 
+  // Sync tab if URL search parameter changes
+  useEffect(() => {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+      setActiveTab(requestedTab);
+    }
+  }, [requestedTab]);
+
   // Update tab if lesson type switches directly
   useEffect(() => {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+      return;
+    }
     if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) {
       setActiveTab('arena');
     } else if (currentLesson.type === 'project') {
@@ -100,7 +119,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     } else {
       setActiveTab('theory');
     }
-  }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
+  }, [currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path, requestedTab]);
 
   // Track last visited position for 1-click resume
   useEffect(() => {
@@ -544,7 +563,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   // Detect availability of specialized features
   const hasProject = Boolean(module.has_starter || module.has_solution || allLessons.some((l) => l.type === 'project'));
-  const hasQuiz = Boolean(allLessons.some((l) => l.type === 'quiz'));
+  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || allLessons.some((l) => l.type === 'quiz') || true);
   const hasDebugLab = Boolean(module.has_debug_lab);
   const hasDsaArena = Boolean(
     courseTitle.toLowerCase().includes('data structure') ||
@@ -1110,6 +1129,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       moduleTitle={module.title}
                       courseTitle={courseTitle}
                       lessonId={currentLesson.id}
+                      moduleFolderPath={module.folder_path}
                       savedScore={savedQuizScore}
                       onQuizMistake={onQuizMistake}
                       onPassQuiz={(score, total) => {
@@ -1132,6 +1152,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       moduleTitle={module.title}
                       onPassLab={() => {
                         confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                        if (onPassLab) {
+                          onPassLab();
+                        }
                       }}
                     />
                   </div>

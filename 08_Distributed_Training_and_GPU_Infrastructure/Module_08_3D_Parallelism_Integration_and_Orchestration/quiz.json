@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "You are tasked with training a 530B parameter Transformer model across 2,048 H100 GPUs (256 nodes, 8 GPUs per node, 3.2 Tbps InfiniBand per node). Determine the optimal configuration of $(TP, PP, DP)$ to achieve maximum MFU while avoiding VRAM OOM. Justify your choice against alternatives.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Hardware Constraints: - Intra-node NVLink bandwidth is $900 \\text{ GB/s}$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Hardware Constraints**:\n   - Intra-node NVLink bandwidth is $900 \\text{ GB/s}$.\n   - Inter-node InfiniBand bandwidth is $400 \\text{ Gbps} = 50 \\text{ GB/s}$ per GPU.\n   - Rule: $TP$ must not exceed node boundary $\\implies TP = 8$.\n2. **Pipeline Parallel Dimension**:\n   - Model layers $L = 105$.\n   - If $PP = 16$, layers per stage $L / PP = 105 / 16 \\approx 6.5$ layers per GPU.\n   - Bubble fraction with $m = 64$ micro-batches: $F_{\\text{bubble}} = \\frac{16 - 1}{64} \\approx 23\\%$.\n   - If $PP = 8$, layers per stage $\\approx 13$. Bubble fraction $F_{\\text{bubble}} = \\frac{7}{64} \\approx 10.9\\%$.\n   - Memory per GPU with $TP=8, PP=8$: $\\frac{16 \\times 530}{64} = 132.5 \\text{ GB}$. This exceeds 80 GB!\n   - Therefore, we must choose $PP = 16$ or use $PP = 8$ with **ZeRO-1 / ZeRO-2 enabled on the DP group**!\n3. **Optimal Selection**:\n   - Set **$TP = 8$** (within node), **$PP = 8$**, **$DP = 32$** ($8 \\times 8 \\times 32 = 2,048$).\n   - Enable **ZeRO-1** on the $DP=32$ group. Static memory per GPU drops to:\n     $$M_{\\text{GPU}} = \\frac{4\\Phi}{TP \\cdot PP} + \\frac{12\\Phi}{TP \\cdot PP \\cdot DP} = \\frac{2120}{64} + \\frac{6360}{2048} = 33.1 + 3.1 = 36.2 \\text{ GB}!$$\n   - Fits easily inside 80 GB with 43.8 GB reserved for activations! Bubble fraction is bounded at $10.9\\%$.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "Telemetry detects that GPU Rank 47 exhibits a 6% thermal throttling slowdown. How does this single-GPU performance degradation propagate across the remaining 2,047 GPUs in a 3D parallel cluster?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "TP Propagation: Rank 47 performs $2 \\times \\text{All-Reduce}$ collectives on every layer with its 7 TP peers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **TP Propagation**: Rank 47 performs $2 \\times \\text{All-Reduce}$ collectives on every layer with its 7 TP peers. The TP peers stall waiting for Rank 47 on every single layer, throttled immediately to $-6\\%$.\n2. **PP Propagation**: The pipeline stage hosting Rank 47 finishes late, delaying activation handoff to the next downstream stage. All 16 pipeline stages serialize on the slowest stage.\n3. **DP Propagation**: At the gradient reduction phase, all 32 DP replicas must synchronize gradients.\n4. **Global Impact**: A $6\\%$ slowdown on one GPU throttles the entire 2,048 GPU cluster by $\\approx 6\\%$, burning hundreds of thousands of dollars in wasted compute. Automated telemetry must immediately cordon the node and trigger restart from DCP.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the 3D Parallelism Integration and Orchestration subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In 3D Parallelism Integration and Orchestration, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does 3D Parallelism Integration and Orchestration mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in 3D Parallelism Integration and Orchestration at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

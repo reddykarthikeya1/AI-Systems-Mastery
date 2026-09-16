@@ -24,6 +24,16 @@ export async function fetchCourseModules(courseId: string): Promise<ModuleItem[]
   return res.json();
 }
 
+export async function fetchModuleQuiz(modulePath: string): Promise<any[]> {
+  try {
+    const res = await fetch(`${API_BASE}/quiz?module_path=${encodeURIComponent(modulePath)}`);
+    if (res.ok) return res.json();
+  } catch (e) {
+    console.warn('Could not fetch structured quiz from server', e);
+  }
+  return [];
+}
+
 export async function fetchFileContent(path: string): Promise<{ content: string; filename: string; extension: string }> {
   const res = await fetch(`${API_BASE}/content?path=${encodeURIComponent(path)}`);
   if (!res.ok) throw new Error('Failed to load file');

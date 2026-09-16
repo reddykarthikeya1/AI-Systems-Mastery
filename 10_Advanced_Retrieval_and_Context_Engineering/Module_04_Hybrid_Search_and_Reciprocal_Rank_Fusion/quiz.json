@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "An engineer proposes replacing RRF with a linear weighted score sum: $$S(d) = \\alpha \\cdot S_{\\text{dense}}(d) + (1 - \\alpha) \\cdot S_{\\text{sparse}}(d)$$ Explain why this linear combination degrades in production unless an online Platt scaling or min-max normalization pipeline is maintained, and why RRF is robust against this defect.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Score Non-Stationarity: - Cosine similarity scores for dense models are bounded in $[-1, 1]$, with practical semantic matches clustering in $[0.65, 0.95]$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The vector index produces false positives because high-dimensional distance suffers from the curse of dimensionality.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The agent enters an infinite tool-calling recursion loop because the stop condition lacks state verification.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Score Non-Stationarity**:\n   - Cosine similarity scores for dense models are bounded in $[-1, 1]$, with practical semantic matches clustering in $[0.65, 0.95]$.\n   - BM25 scores are unbounded $[0, \\infty)$; a short query with rare terms might yield max BM25 of 28.5, while a long query with common words yields max BM25 of 4.2.\n   - Fixed parameter $\\alpha = 0.5$ will cause BM25 to dominate by $10\\times$ on rare-term queries, and dense search to dominate on generic queries.\n2. **RRF Robustness**: RRF relies exclusively on relative order $\\text{rank}(d) \\in \\{1, 2, \\dots\\}$. Whether the raw score was 4.2 or 285.0, the top hit has rank 1. It operates with zero score calibration maintenance.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "BM25 inverted index lookup takes $1.5 \\text{ ms}$, while dense embedding generation plus ANN search takes $35 \\text{ ms}$. How should the serving tier orchestrate hybrid execution to minimize P99 latency?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Launch BM25 search and dense embedding inference concurrently using asynchronous coroutines (asyncio.gather / concurrent thread pool).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. Launch BM25 search and dense embedding inference concurrently using asynchronous coroutines (`asyncio.gather` / concurrent thread pool).\n2. Begin lexical scoring immediately on CPU while the GPU evaluates embedding Tensor Cores.\n3. Apply RRF as soon as both coroutines resolve, bounding overall latency to $\\max(T_{\\text{sparse}}, T_{\\text{dense}}) + T_{\\text{rrf}} \\approx 35 + 0.2 \\approx 35.2 \\text{ ms}$.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the Hybrid Search and Reciprocal Rank Fusion subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Hybrid Search and Reciprocal Rank Fusion, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does Hybrid Search and Reciprocal Rank Fusion mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Reciprocal Rank Fusion (RRF) assigns disproportionate weight to keyword matches over semantic reranker scores.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Hybrid Search and Reciprocal Rank Fusion at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Chunking breaks semantic context boundaries, causing vector cosine similarity retrieval to drop relevant passages.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Context window stuffing degrades LLM needle-in-a-haystack recall due to lost-in-the-middle attention bias.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Hallucinated tool arguments fail schema validation, crashing the deterministic state machine graph.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.create_task().",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Exceptions inside background tasks created via create_task() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Freezing the Event Loop with time.sleep()",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Blocking the Event Loop with Synchronous Code",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "In Python 3.8+, asyncio.CancelledError inherits from BaseException rather than Exception, so except Exception: does not catch cancellation. However, if you catch BaseException or CancelledError without re-raising, the task refuses to cancel, causing memory leaks!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Blocking the Event Loop with Synchronous Code",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Asyncio?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The Fire-and-Forget Garbage Collection Trap",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Fails with Unretrieved task exception warning",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Fails with RuntimeWarning / un-executed coroutine",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Swallowing asyncio.CancelledError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The Fire-and-Forget Garbage Collection Trap",
+    "lesson_ref": "01_README.md"
+  }
+]

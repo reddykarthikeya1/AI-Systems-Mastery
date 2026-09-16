@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the Redis Data Structures Persistence subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Hot Key CPU Core Saturation",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Redis Data Structures Persistence, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does Redis Data Structures Persistence mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: OOM Command Not Allowed (MaxMemory Reached)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Redis Data Structures Persistence at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: RDB Fork Hang & System Memory Exhaustion",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,176 @@
+[
+  {
+    "id": 1,
+    "question": "In Authentication Authorization Security, what is the fundamental trade-off associated with **Password Hashing**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "bcrypt / argon2id",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Timing Attacks on Secret Verification",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Bug 2: Non-constant time string comparison",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Password Hashing** implies: `bcrypt` / `argon2id`",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "In Authentication Authorization Security, what is the fundamental trade-off associated with **Stateless Auth**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "JSON Web Tokens (jwt)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Fails with Expired tokens accepted indefinitely",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Standard string comparison == terminates the moment it encounters a mismatched character. Attackers measure microsecond execution latency differences to guess the secret key character-by-character.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Stateless Auth** implies: JSON Web Tokens (`jwt`)",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "In Authentication Authorization Security, what is the fundamental trade-off associated with **Bearer Scheme**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "OAuth2 Bearer Header",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Passing options={\"verify_exp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A JWT is signed, not encrypted. Anyone who intercepts a JWT can paste it into jwt.io and read the JSON payload in clear text!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Bearer Scheme** implies: OAuth2 Bearer Header",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Authentication Authorization Security?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Storing Sensitive Secrets Inside JWT Payloads",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Authentication Authorization Security?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The Algorithm Confusion Attack (alg: \"none\")",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Python's == operator compares strings byte-by-byte and terminates immediately upon finding the first non-matching byte.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Bug 1: Disabling verify_exp in JWT decoding",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The Algorithm Confusion Attack (`alg: \"none\"`)",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 6,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Authentication Authorization Security?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Timing Attacks in String Comparison",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Timing attack vulnerability",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Timing Attacks in String Comparison",
+    "lesson_ref": "01_README.md"
+  }
+]

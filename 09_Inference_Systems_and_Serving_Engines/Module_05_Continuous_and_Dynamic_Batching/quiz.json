@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "An inference cluster running continuous batching achieves only 60% GPU utilization despite a deep waiting queue. Profiling shows that GPU kernel execution time is $8 \\text{ ms}$ per step, while the Python scheduler loop takes $7.5 \\text{ ms}$ per step to inspect request states and update batch tensors. How do you re-architect the scheduling pipeline to decouple GPU execution from CPU overhead?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Root Cause: Python Interpreter Latency: Performing per-sequence Python object updates (list.pop(), dict lookups, string checks) inside the critical path of each decode step introduces CPU overhead ...",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Root Cause: Python Interpreter Latency**: Performing per-sequence Python object updates (`list.pop()`, dict lookups, string checks) inside the critical path of each decode step introduces CPU overhead that approaches the duration of the GPU kernel execution, causing GPU execution bubbles.\n2. **Remedies**:\n   - **Asynchronous Scheduling (Two-Thread Architecture)**: Run the scheduler in a dedicated CPU thread ahead of the GPU execution stream, submitting batches via a double-buffered queue.\n   - **C++ Native Scheduler (e.g. vLLM C++ core / TensorRT-LLM)**: Port request state management to C++ using flat integer arrays and atomic bitsets.\n   - **CUDA Graphs**: Capture static decode kernel execution graphs to eliminate CPU kernel launch overhead.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "A continuous batch scheduler prioritizes admitting new prefills to maximize throughput. When a user submits a 32,000-token prompt, the prefill consumes all available KV cache blocks, forcing the engine to preempt and abort 12 in-flight decode requests. Formulate a memory-safe admission policy.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Strict Memory Budgeting: Maintain a reserved \"decode runway\" buffer (e.g. 15% of physical blocks reserved exclusively for ongoing generation).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Strict Memory Budgeting**: Maintain a reserved \"decode runway\" buffer (e.g. 15% of physical blocks reserved exclusively for ongoing generation).\n2. **Chunked Prefill**: Refuse to execute large prompts atomically. Slice the 32,000-token prefill into 512-token chunks and schedule them across 64 consecutive iterations, preserving memory for active decode requests.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the Continuous and Dynamic Batching subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Continuous and Dynamic Batching, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does Continuous and Dynamic Batching mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Continuous and Dynamic Batching at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

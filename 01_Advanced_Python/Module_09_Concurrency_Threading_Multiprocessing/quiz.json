@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Passing Unpicklable Objects to multiprocessing",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Corrupted or truncated output files from daemon threads",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The Multiprocessing Windows spawn Pickling Trap",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Bug 1: Race condition on shared counter",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "shared_counter += 1 is not atomic in Python. It disassembles into LOAD_GLOBAL, LOAD_CONST, BINARY_OP, STORE_GLOBAL. If a thread switch occurs between load and store, the update is lost.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The Multiprocessing Windows `spawn` Pickling Trap",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Concurrency Threading Multiprocessing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Passing Unpicklable Objects to Process Pools",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Fails with Permanent process hang (Deadlock)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: The Windows Multiprocessing RuntimeError (Missing __main__ Guard)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Passing Unpicklable Objects to Process Pools",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: The Missing py.typed Marker Trap",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Type checker false-safety via Any",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Invariance of Mutable Containers",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Bug 1: Any disabling type checking",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Invariance of Mutable Containers",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Strict Typing Packaging Publishing?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The # type: ignore Proliferation Anti-Pattern",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Circular Type Imports with TYPE_CHECKING",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The `# type: ignore` Proliferation Anti-Pattern",
+    "lesson_ref": "01_README.md"
+  }
+]

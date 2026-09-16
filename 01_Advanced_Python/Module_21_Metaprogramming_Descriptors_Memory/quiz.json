@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Cross-instance state bleeding",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Storing Descriptor State on self Instead of instance",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Bug 1: Descriptor storing state on self instead of instance",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "There is only one single instance of BadDescriptor shared across all User instances. Modifying self.value overwrites the global descriptor attribute.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Storing Descriptor State on `self` Instead of `instance`",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Metaprogramming Descriptors Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Metaclass Conflicts in Multiple Inheritance",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: The Descriptor Shared State Bug (Catastrophic Instance Leak)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Metaclass Conflicts in Multiple Inheritance",
+    "lesson_ref": "01_README.md"
+  }
+]

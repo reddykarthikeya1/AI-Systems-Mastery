@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "You deploy Llama-3-70B in FP16 on a single node of 8x NVIDIA A100 (80GB) GPUs with Tensor Parallelism $TP=8$. - Total physical VRAM across the node: $8 \\times 80 = 640 \\text{ GB}$. - Model parameters occupy: $140 \\text{ GB}$. - CUDA context and activation working memory: $30 \\text{ GB}$. - Average sequence length per request: 4,096 tokens. Calculate the maximum theoretical number of concurrent user requests the node can serve before exhausting VRAM.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Available KV Cache Memory: $$M_{\\text{available}} = 640 - 140 - 30 = 470 \\text{ GB}$$ 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Available KV Cache Memory**:\n   $$M_{\\text{available}} = 640 - 140 - 30 = 470 \\text{ GB}$$\n2. **KV Cache Footprint per Request**:\n   For Llama-3-70B ($L=80, H_{\\text{kv}}=8, d=128$):\n   $$\\text{Bytes per token} = 2 \\times 2 \\times 80 \\times 8 \\times 128 = 327,680 \\text{ bytes} = 320 \\text{ KB}$$\n   For $S = 4,096$ tokens:\n   $$M_{\\text{req}} = 4096 \\times 327,680 \\text{ bytes} \\approx 1.342 \\times 10^9 \\text{ bytes} \\approx 1.25 \\text{ GiB}$$\n3. **Maximum Concurrent Capacity**:\n   $$N_{\\text{max}} = \\left\\lfloor \\frac{470 \\text{ GB}}{1.342 \\text{ GB}} \\right\\rfloor \\approx 350 \\text{ concurrent requests}$$\n   If static pre-allocation for $S_{\\text{max}}=8192$ were used, capacity would collapse to $\\approx 175$ requests regardless of actual prompt lengths!",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "An engineer proposes casting the KV cache from BF16 to FP8 (E4M3) to double concurrent serving capacity. What are the numerical risks, and how should per-tensor vs per-head dynamic scaling factors be configured?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Numerical Risk: FP8 E4M3 has only 3 mantissa bits (range $[-448, 448]$), making it vulnerable to underflow and overflow if attention logits have high variance.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Numerical Risk**: FP8 E4M3 has only 3 mantissa bits (range $[-448, 448]$), making it vulnerable to underflow and overflow if attention logits have high variance.\n2. **Configuration**:\n   - Never use static per-tensor quantization; attention Key vectors frequently contain channel-specific outlier values.\n   - Use **per-head dynamic scaling**: Compute $\\text{scale} = \\frac{448.0}{\\max(|X_{\\text{head}}|)}$ for each attention head independently during write, storing a single FP32 scale scalar alongside each cached block.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the KV Cache Memory Management subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In KV Cache Memory Management, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does KV Cache Memory Management mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in KV Cache Memory Management at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

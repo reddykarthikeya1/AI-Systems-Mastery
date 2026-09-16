@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Production Failure Modes & Operational Pitfalls",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Torn Pages & Partial Disk Writes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Write Amplification: Modifying a 10-byte column in a 500MB CSV rewrites the entire 500MB file to disk.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: The \"Lost Update\" Concurrency Trap",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Write Amplification: Modifying a 10-byte column in a 500MB CSV rewrites the entire 500MB file to disk.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Storage Theory ACID Relational Model?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Torn Writes: Power cut midway through a multi-sector disk write leaves half-written, unparseable lines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "This is the classic Lost Update Anomaly:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: The 3NF Transitive Dependency Trap",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Torn Writes: Power cut midway through a multi-sector disk write leaves half-written, unparseable lines.",
+    "lesson_ref": "01_README.md"
+  }
+]

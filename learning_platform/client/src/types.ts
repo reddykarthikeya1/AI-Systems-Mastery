@@ -15,6 +15,9 @@ export interface ModuleItem {
   has_starter: boolean;
   has_debug_lab?: boolean;
   quickstart_script?: string | null;
+  word_count?: number;
+  reading_minutes?: number;
+  quiz_question_count?: number;
 }
 
 export interface CourseSummary {
@@ -25,8 +28,13 @@ export interface CourseSummary {
   category: string;
   difficulty: string;
   estimated_hours: number;
+  reading_hours?: number;
+  lab_hours?: number;
+  total_words?: number;
+  debug_lab_count?: number;
   module_count: number;
   description: string;
+  depth_badge?: string;
   quickstart_script?: string | null;
 }
 

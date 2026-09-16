@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Engineering LLM Integration?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Fails with Context truncation without chunk overlap",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Preventing LLM Hallucinations in RAG",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Engineering LLM Integration?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The Context Window Token Overflow",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Fractured tokens / word mangling",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The Context Window Token Overflow",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Engineering LLM Integration?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Prompt Injection (Indirect Injection via Retrieved Context)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Chunk Boundary Truncation & Loss of Context",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Prompt Injection (Indirect Injection via Retrieved Context)",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Production Failure Modes & Operational Pitfalls",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Deadlock on Concurrent Index Creation",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Autovacuum Starvation: Idle-in-transaction connections hold back xmin, causing table bloat to swell 100x.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Misleading EXPLAIN Cost Estimates Due to Stale Statistics",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Autovacuum Starvation: Idle-in-transaction connections hold back xmin, causing table bloat to swell 100x.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in PostgreSQL MVCC Indexing EXPLAIN?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Stale Catalog Statistics: Bulk data changes without ANALYZE trick the planner into choosing slow sequential scans.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Stale Catalog Statistics: Bulk data changes without ANALYZE trick the planner into choosing slow sequential scans.",
+    "lesson_ref": "01_README.md"
+  }
+]

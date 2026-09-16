@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "An infrastructure team quantizes a 70B model with INT4 weight-only quantization (W4A16). Benchmarks show a $2.8\\times$ speedup during the decode phase, but $0\\%$ speedup during the prefill phase. Explain this discrepancy using operational intensity and roofline principles.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Decode Phase: Decode is memory-bandwidth bound ($I \\approx 1 \\text{ FLOP/byte}$).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Decode Phase**: Decode is memory-bandwidth bound ($I \\approx 1 \\text{ FLOP/byte}$). W4A16 reduces model weight footprint from $140 \\text{ GB} \\to 35 \\text{ GB}$. Streaming $35 \\text{ GB}$ over the memory bus takes $25\\%$ of the time, resulting in a nearly linear speedup ($\u0007pprox 2.8\\times$).\n2. **Prefill Phase**: Prefill is compute-bound ($I \\gg 295 \\text{ FLOP/byte}$). In W4A16, INT4 weights must be dequantized to FP16 in registers before multiplying with FP16 activations on Tensor Cores. The total FLOP count remains identical, and compute throughput does not increase.\n3. **Remedy for Prefill**: Use W8A8 (FP8 or INT8) matrix multiplication kernels where Tensor Cores natively execute 8-bit integer/float arithmetic at $2\\times$ the TFLOPs throughput of FP16.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "Compare group size $g=128$ vs per-channel quantization in INT4. What is the metadata memory overhead?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "In INT4, weights take $0.5 \\text{ bytes}$ per parameter. With group size $g=128$, one FP16 scale ($2 \\text{ bytes}$) is stored for every 128 weights: $$\\text{Metadata Overhead} = \\frac{2 \\text{ byt...",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In INT4, weights take $0.5 \\text{ bytes}$ per parameter.\nWith group size $g=128$, one FP16 scale ($2 \\text{ bytes}$) is stored for every 128 weights:\n$$\\text{Metadata Overhead} = \\frac{2 \\text{ bytes}}{128 \\times 0.5 \\text{ bytes}} = \\frac{2}{64} = 3.125\\%$$\nA $3.1\\%$ memory overhead provides significant accuracy protection over coarse per-tensor scales.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the Quantization for Serving subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Quantization for Serving, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does Quantization for Serving mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Quantization for Serving at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

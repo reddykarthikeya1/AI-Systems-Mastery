@@ -97,6 +97,42 @@ class TestPlatformSmoke(unittest.TestCase):
         self.assertIn("completed_lessons", data)
         self.assertIn("completed_modules", data)
 
+    def test_07_structured_quiz_endpoint(self):
+        """Verify /api/quiz returns authentic structured MCQs across courses."""
+        # Test Course 09 Module 01 (previously zero questions)
+        resp = self.client.get("/api/quiz?module_path=09_Inference_Systems_and_Serving_Engines/Module_01_Inference_Latency_Throughput_Tradeoffs")
+        self.assertEqual(resp.status_code, 200)
+        qs = resp.json()
+        self.assertIsInstance(qs, list)
+        self.assertGreaterEqual(len(qs), 3, "Should have at least 3 structured questions")
+        first_q = qs[0]
+        self.assertIn("question", first_q)
+        self.assertIn("options", first_q)
+        self.assertEqual(len(first_q["options"]), 4, "Every question must have 4 options")
+        self.assertIn("explanation", first_q)
+        # Verify no hardcoded dummy placeholder strings exist
+        for opt in first_q["options"]:
+            self.assertNotIn("It is evaluated strictly at process initialization", opt["text"])
+
+    def test_08_measured_course_metrics(self):
+        """Verify /api/courses returns real measured reading hours, word count, and depth badge."""
+        resp = self.client.get("/api/courses")
+        self.assertEqual(resp.status_code, 200)
+        courses = resp.json()
+        for c in courses:
+            self.assertGreater(c["estimated_hours"], 0)
+            self.assertGreater(c["total_words"], 0, f"Course {c['title']} must have measured word count")
+            self.assertIn("depth_badge", c)
+            self.assertTrue(len(c["depth_badge"]) > 0)
+
+    def test_09_debug_lab_discovery(self):
+        """Verify /api/debug-files discovers planted defect code and symptoms."""
+        resp = self.client.get("/api/debug-files?module_path=01_Advanced_Python/Module_00_Environment_Tooling_Workflow")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertTrue(data.get("has_debug_lab"))
+        self.assertGreater(len(data.get("files", [])), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

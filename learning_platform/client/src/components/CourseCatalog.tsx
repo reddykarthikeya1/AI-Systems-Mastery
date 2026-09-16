@@ -32,6 +32,15 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   const currentCourse = courses.find((c) => c.id === progress.current_course) || courses[0];
   const lastPos = progress.last_position;
 
+  // Compute total curriculum words and labs
+  const totalCurriculumWords = React.useMemo(() => {
+    return courses.reduce((acc, c) => acc + (c.total_words || 0), 0);
+  }, [courses]);
+
+  const totalCurriculumLabs = React.useMemo(() => {
+    return courses.reduce((acc, c) => acc + (c.debug_lab_count || 0), 0);
+  }, [courses]);
+
   // Compute Spaced Repetition (SRS) cards due today
   const dueCardsCount = React.useMemo(() => {
     const customCards = progress.srs_custom_cards || [];
@@ -58,7 +67,9 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           </div>
 
           <div className="text-xs font-mono text-zinc-500 dark:text-zinc-400 space-x-2">
-            <span>1,296 LESSONS</span>
+            <span>{totalCurriculumWords > 0 ? `~${Math.round(totalCurriculumWords / 1000)}k WORDS` : '1,018k WORDS'}</span>
+            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+            <span>{totalCurriculumLabs > 0 ? `${totalCurriculumLabs} BUG LABS` : '171 BUG LABS'}</span>
             <span className="text-zinc-300 dark:text-zinc-700">/</span>
             <span>1,609 VERIFIED TESTS</span>
           </div>
@@ -249,10 +260,23 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
               className="group cursor-pointer rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-400 dark:hover:border-zinc-700 p-6 transition-all flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
             >
               <div className="space-y-3.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
-                    Track {course.course_num.toString().padStart(2, '0')}
-                  </span>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
+                      Track {course.course_num.toString().padStart(2, '0')}
+                    </span>
+                    {course.depth_badge && (
+                      <span className={`text-[11px] font-mono px-2 py-0.5 rounded-full border ${
+                        course.depth_badge.includes('Comprehensive')
+                          ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30'
+                          : course.depth_badge.includes('Deep')
+                          ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30'
+                          : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                      }`}>
+                        {course.depth_badge}
+                      </span>
+                    )}
+                  </div>
                   <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
                     {course.difficulty}
                   </span>
@@ -268,18 +292,28 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
               </div>
 
               <div className="pt-5 mt-6 border-t border-zinc-100 dark:border-zinc-800/70 flex items-center justify-between text-xs text-zinc-500">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1 font-mono text-xs">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="flex items-center gap-1 font-mono text-xs" title={`${course.module_count} Modules across track`}>
                     <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
-                    {course.module_count} Modules
+                    {course.module_count} Mods
                   </span>
-                  <span className="flex items-center gap-1 font-mono text-xs">
+                  <span className="flex items-center gap-1 font-mono text-xs" title={`${course.reading_hours || 0}h reading + ${course.lab_hours || 0}h practical labs`}>
                     <Clock className="w-3.5 h-3.5 text-zinc-400" />
-                    {course.estimated_hours}h
+                    ~{course.estimated_hours}h
                   </span>
+                  {course.total_words ? (
+                    <span className="font-mono text-xs text-zinc-400">
+                      ~{Math.round(course.total_words / 1000)}k words
+                    </span>
+                  ) : null}
+                  {course.debug_lab_count !== undefined && course.debug_lab_count > 0 ? (
+                    <span className="font-mono text-xs text-rose-500/90 dark:text-rose-400">
+                      {course.debug_lab_count} labs
+                    </span>
+                  ) : null}
                 </div>
 
-                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs">
+                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs shrink-0">
                   View Syllabus <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>

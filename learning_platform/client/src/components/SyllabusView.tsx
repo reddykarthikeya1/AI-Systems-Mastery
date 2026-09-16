@@ -10,7 +10,7 @@ interface SyllabusViewProps {
   modules: ModuleItem[];
   progress: ProgressPayload;
   onBack: () => void;
-  onSelectLesson: (filePath: string, lessonId: string) => void;
+  onSelectLesson: (filePath: string, lessonId: string, initialTab?: string) => void;
   onOpenMasteryGate?: (module: ModuleItem) => void;
   onRunCourseDemo?: () => void;
 }
@@ -32,7 +32,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
   // Count interactive labs in this course
   const totalProjects = modules.filter((m) => m.has_starter || m.has_solution || m.lessons.some((l) => l.type === 'project')).length;
-  const totalQuizzes = modules.filter((m) => m.lessons.some((l) => l.type === 'quiz')).length;
+  const totalQuizzes = modules.filter((m) => (m.quiz_question_count ?? 0) > 0 || m.lessons.some((l) => l.type === 'quiz') || true).length;
   const totalDebugLabs = modules.filter((m) => m.has_debug_lab).length;
 
   const getLessonTypeBadge = (type: string) => {
@@ -208,7 +208,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
             // Module interactive feature flags
             const modHasProject = Boolean(mod.has_starter || mod.has_solution || mod.lessons.some((l) => l.type === 'project'));
-            const modHasQuiz = Boolean(mod.lessons.some((l) => l.type === 'quiz'));
+            const modHasQuiz = Boolean((mod.quiz_question_count ?? 0) > 0 || mod.lessons.some((l) => l.type === 'quiz') || true);
             const modHasDebug = Boolean(mod.has_debug_lab);
             const leetcodeLesson = mod.lessons.find((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode'));
             const modHasLeetcode = Boolean(
@@ -235,7 +235,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                         Module {mod.module_num.toString().padStart(2, '0')}
                       </span>
                       <span className="text-xs font-mono text-zinc-400">
-                        ~{estHours} hrs
+                        {mod.reading_minutes ? `⏱️ ~${mod.reading_minutes}m read` : `~${estHours} hrs`}
                       </span>
 
                       {/* Interactive Feature Badges */}
@@ -251,7 +251,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       )}
                       {modHasQuiz && (
                         <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
-                          📝 Graded Quiz
+                          📝 Graded Quiz {mod.quiz_question_count ? `(${mod.quiz_question_count} Qs)` : ''}
                         </span>
                       )}
                       {modHasDebug && (
@@ -294,9 +294,9 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
                   {/* Module Direct Action Launchers */}
                   <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
-                    {modHasProject && projectLesson && (
+                    {modHasProject && (projectLesson || firstLesson) && (
                       <button
-                        onClick={() => onSelectLesson(projectLesson.file_path, projectLesson.id)}
+                        onClick={() => onSelectLesson((projectLesson || firstLesson).file_path, (projectLesson || firstLesson).id, 'project')}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-colors flex items-center gap-1.5"
                         title="Jump straight into Guided Project Studio"
                       >
@@ -305,9 +305,9 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       </button>
                     )}
 
-                    {modHasQuiz && quizLesson && (
+                    {modHasQuiz && firstLesson && (
                       <button
-                        onClick={() => onSelectLesson(quizLesson.file_path, quizLesson.id)}
+                        onClick={() => onSelectLesson((quizLesson || firstLesson).file_path, (quizLesson || firstLesson).id, 'quiz')}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors flex items-center gap-1.5"
                         title="Take Graded MCQ Assessment"
                       >
@@ -316,9 +316,20 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       </button>
                     )}
 
-                    {modHasLeetcode && leetcodeLesson && (
+                    {modHasDebug && firstLesson && (
                       <button
-                        onClick={() => onSelectLesson(leetcodeLesson.file_path, leetcodeLesson.id)}
+                        onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id, 'debug')}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5"
+                        title="Diagnose planted production defect in Bug Hunter Lab"
+                      >
+                        <Bug className="w-3.5 h-3.5 text-rose-500" />
+                        <span>Bug Lab</span>
+                      </button>
+                    )}
+
+                    {modHasLeetcode && (leetcodeLesson || firstLesson) && (
+                      <button
+                        onClick={() => onSelectLesson((leetcodeLesson || firstLesson).file_path, (leetcodeLesson || firstLesson).id, 'arena')}
                         className="px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm"
                         title="Solve LeetCode problems with hidden testcases"
                       >

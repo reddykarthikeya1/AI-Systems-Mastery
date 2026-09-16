@@ -36,7 +36,7 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
   onNextModule,
   onBackToSyllabus,
 }) => {
-  const hasQuiz = Boolean(module.lessons.some((l) => l.type === 'quiz'));
+  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || module.lessons.some((l) => l.type === 'quiz') || true);
   const hasLab = Boolean(module.has_debug_lab || module.lessons.some((l) => l.type === 'troubleshooting'));
 
   const lessonsDone = completedLessonsCount >= Math.max(1, totalLessonsCount);

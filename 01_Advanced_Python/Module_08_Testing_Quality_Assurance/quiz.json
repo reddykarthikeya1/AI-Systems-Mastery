@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Bug 1: Test order dependence via shared mutable global state",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Patching the Definition Site Instead of Lookup Site",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Bug 2: Asserting a tuple: assert (cond, msg)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Fails with Order dependence and flaky test runs",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Mock Attribute Drift (autospec=True)",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Patching the Definition Site Instead of Lookup Site",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Testing Quality Assurance?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Leaking Mutable State Across Function Fixtures",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: The \"Where to Patch\" Bug",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Fails with Fragile floating-point test failure",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Leaky Fixtures Contaminating Tests",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Leaking Mutable State Across Function Fixtures",
+    "lesson_ref": "01_README.md"
+  }
+]

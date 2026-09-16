@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the CPython Internals Rust PyO3 Extensions subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: error: linker 'cc' not found / link.exe not found",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In CPython Internals Rust PyO3 Extensions, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does CPython Internals Rust PyO3 Extensions mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Edge case: f64 accumulation order changes results",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: PanicException reaching Python",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Edge case: &[u8] vs Vec<u8> \u2014 a silent 2x memory cost",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in CPython Internals Rust PyO3 Extensions at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: \"PyO3 didn't help \u2014 it's barely faster than Python\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Stale extension: your edits appear to do nothing",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "PyO3 functions execute while holding the GIL unless explicitly released using py.allow_threads(|| { ... }).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

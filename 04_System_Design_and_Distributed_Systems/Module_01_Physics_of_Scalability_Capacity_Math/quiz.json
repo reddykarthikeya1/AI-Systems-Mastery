@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "In Physics of Scalability Capacity Math, what is the fundamental trade-off associated with **Random 4KB NVMe Reads vs Sequential Streaming**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Random IOPS capped at ~100k; Sequential streaming reaches 3.5 GB/s.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Little's Law Worker Pool Starvation",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Random 4KB NVMe Reads vs Sequential Streaming** implies: Random IOPS capped at ~100k; Sequential streaming reaches 3.5 GB/s.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "In Physics of Scalability Capacity Math, what is the fundamental trade-off associated with **In-Memory Caching vs Local SSD Storage**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "RAM is 160x faster than NVMe SSD, but 10x more expensive per gigabyte.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: NVMe Random 4KB IOPS vs Sequential Throughput Bottleneck",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **In-Memory Caching vs Local SSD Storage** implies: RAM is 160x faster than NVMe SSD, but 10x more expensive per gigabyte.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "In Physics of Scalability Capacity Math, what is the fundamental trade-off associated with **Single-Threaded Event Loop vs Multi-Threaded Pool**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Event loop eliminates lock contention; multi-threading leverages multi-core CPUs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Amdahl's Law Core Saturation",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Single-Threaded Event Loop vs Multi-Threaded Pool** implies: Event loop eliminates lock contention; multi-threading leverages multi-core CPUs.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the FlashAttention 1 and 2 Internals subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Causal Masking Inefficiency",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In FlashAttention 1 and 2 Internals, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does FlashAttention 1 and 2 Internals mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in FlashAttention 1 and 2 Internals at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

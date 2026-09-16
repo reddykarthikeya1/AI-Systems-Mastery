@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Production Failure Modes & Operational Pitfalls",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Connection Pool Exhaustion During Upstream Microservice Latency",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Table Lock Starvation: Schema migrations lacking strict lock_timeout queuing behind slow queries and bringing down web traffic.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Unverified Backups Causing Disaster Recovery Failure",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Table Lock Starvation: Schema migrations lacking strict lock_timeout queuing behind slow queries and bringing down web traffic.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Production DBRE Backups Migrations HA?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Untested Backups: Creating daily database dumps that fail to restore during real disasters due to corruption or permission drift.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Untested Backups: Creating daily database dumps that fail to restore during real disasters due to corruption or permission drift.",
+    "lesson_ref": "01_README.md"
+  }
+]

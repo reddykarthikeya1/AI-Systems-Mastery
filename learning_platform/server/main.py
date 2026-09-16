@@ -75,6 +75,9 @@ class ModuleItem(BaseModel):
     has_starter: bool
     has_debug_lab: bool = False
     quickstart_script: Optional[str] = None
+    word_count: int = 0
+    reading_minutes: int = 0
+    quiz_question_count: int = 0
 
 
 class CourseSummary(BaseModel):
@@ -85,8 +88,13 @@ class CourseSummary(BaseModel):
     category: str
     difficulty: str
     estimated_hours: int
+    reading_hours: float = 0.0
+    lab_hours: float = 0.0
+    total_words: int = 0
+    debug_lab_count: int = 0
     module_count: int
     description: str
+    depth_badge: str = ""
     quickstart_script: Optional[str] = None
 
 
@@ -147,6 +155,54 @@ COURSE_CATEGORIES = {
 }
 
 
+_COURSE_METRICS_CACHE: dict = {}
+
+def compute_course_metrics(course_dir: Path) -> dict:
+    if course_dir.name in _COURSE_METRICS_CACHE:
+        return _COURSE_METRICS_CACHE[course_dir.name]
+
+    total_words = 0
+    py_files = 0
+    debug_labs = 0
+
+    for r, dirs, files in os.walk(course_dir):
+        if any(ign in r for ign in ["node_modules", ".git", "__pycache__"]):
+            continue
+        if Path(r).name == "debug_lab":
+            debug_labs += 1
+        for f in files:
+            if f.endswith(".md"):
+                p = Path(r) / f
+                try:
+                    total_words += len(p.read_text(encoding="utf-8", errors="ignore").split())
+                except Exception:
+                    pass
+            elif f.endswith(".py"):
+                py_files += 1
+
+    reading_hours = round(total_words / (180 * 60), 1)
+    lab_hours = round(debug_labs * 0.75 + (py_files * 0.2), 1)
+    total_est_hours = max(10, round(reading_hours + lab_hours))
+
+    if total_words > 100000:
+        depth_badge = f"Comprehensive Treatise (~{total_words // 1000}k words)"
+    elif total_words > 40000:
+        depth_badge = f"Deep Architectural Track (~{total_words // 1000}k words)"
+    else:
+        depth_badge = f"Intensive Systems Sprint (~{total_words // 1000}k words)"
+
+    metrics = {
+        "total_words": total_words,
+        "reading_hours": reading_hours,
+        "lab_hours": lab_hours,
+        "estimated_hours": total_est_hours,
+        "debug_lab_count": debug_labs,
+        "depth_badge": depth_badge,
+    }
+    _COURSE_METRICS_CACHE[course_dir.name] = metrics
+    return metrics
+
+
 def discover_courses() -> List[CourseSummary]:
     courses = []
     for item in sorted(BASE_DIR.iterdir()):
@@ -161,7 +217,10 @@ def discover_courses() -> List[CourseSummary]:
         clean_title = match.group(2).replace("_", " ")
 
         cat_info = COURSE_CATEGORIES.get(num_str, ("Advanced AI Systems", "Advanced", 30))
-        category, difficulty, est_hours = cat_info
+        category, difficulty, _ = cat_info
+
+        # Compute real measured metrics
+        metrics = compute_course_metrics(item)
 
         # Extract description from README.md if available
         desc = f"Mastery of {clean_title} through production-grade systems implementations and rigorous testing."
@@ -190,9 +249,14 @@ def discover_courses() -> List[CourseSummary]:
             folder_name=item.name,
             category=category,
             difficulty=difficulty,
-            estimated_hours=est_hours,
+            estimated_hours=metrics["estimated_hours"],
+            reading_hours=metrics["reading_hours"],
+            lab_hours=metrics["lab_hours"],
+            total_words=metrics["total_words"],
+            debug_lab_count=metrics["debug_lab_count"],
             module_count=module_count,
             description=desc,
+            depth_badge=metrics["depth_badge"],
             quickstart_script=quickstart_rel,
         ))
 
@@ -342,6 +406,24 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
         demo_files = list(mod_dir.glob("00_quickstart*.py")) or list(mod_dir.glob("*demo*.py"))
         quickstart_rel = demo_files[0].relative_to(BASE_DIR).as_posix() if demo_files else None
 
+        # Compute real module metrics
+        mod_words = 0
+        for md_f in mod_dir.glob("*.md"):
+            try:
+                mod_words += len(md_f.read_text(encoding="utf-8", errors="ignore").split())
+            except Exception:
+                pass
+        reading_mins = max(1, round(mod_words / 180))
+
+        # Check quiz question count
+        quiz_q_count = 0
+        quiz_file = mod_dir / "quiz.json"
+        if quiz_file.is_file():
+            try:
+                quiz_q_count = len(json.loads(quiz_file.read_text(encoding="utf-8")))
+            except Exception:
+                pass
+
         result.append(ModuleItem(
             id=mod_dir.name,
             module_num=mod_num,
@@ -352,6 +434,9 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
             has_starter=(mod_dir / "starter").is_dir(),
             has_debug_lab=(mod_dir / "debug_lab").is_dir(),
             quickstart_script=quickstart_rel,
+            word_count=mod_words,
+            reading_minutes=reading_mins,
+            quiz_question_count=quiz_q_count,
         ))
 
     return result
@@ -671,6 +756,34 @@ def get_debug_files(module_path: str = Query(..., description="Module folder pat
         files.append({"filename": f.name, "content": content_txt})
 
     return {"has_debug_lab": True, "module_path": module_path, "symptoms": symptoms, "files": files}
+
+
+@app.get("/api/quiz")
+def get_module_quiz(module_path: str = Query(..., description="Module relative folder path")):
+    """Returns structured quiz questions with authentic options and explanations."""
+    safe_mod = (BASE_DIR / module_path).resolve()
+    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    quiz_file = safe_mod / "quiz.json"
+    if quiz_file.is_file():
+        try:
+            return json.loads(quiz_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    master_db = Path(__file__).resolve().parent / "data" / "quizzes.json"
+    if master_db.is_file():
+        try:
+            data = json.loads(master_db.read_text(encoding="utf-8"))
+            clean_path = module_path.replace("\\", "/").strip("/")
+            for k, v in data.items():
+                if k.replace("\\", "/").strip("/").endswith(clean_path) or clean_path.endswith(k.replace("\\", "/").strip("/")):
+                    return v
+        except Exception:
+            pass
+
+    return []
 
 
 @app.get("/api/search")

@@ -94,7 +94,7 @@ export const App: React.FC = () => {
   }, [modulesMap]);
 
   // Helper to resolve navigation to a file path and lesson ID
-  const navigateToLesson = useCallback(async (filePath: string, lessonId: string) => {
+  const navigateToLesson = useCallback(async (filePath: string, lessonId: string, initialTab?: string) => {
     const parts = filePath.replace(/\\/g, '/').split('/');
     const courseFolder = parts[0];
     if (!courseFolder) return;
@@ -104,7 +104,8 @@ export const App: React.FC = () => {
       const found = mod.lessons.find((l) => l.id === lessonId || l.file_path === filePath);
       if (found) {
         const modNumStr = mod.module_num.toString().padStart(2, '0');
-        navigate(`/course/${courseFolder}/module/${modNumStr}/lesson/${found.id}`);
+        const tabQuery = initialTab ? `?tab=${initialTab}` : '';
+        navigate(`/course/${courseFolder}/module/${modNumStr}/lesson/${found.id}${tabQuery}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
@@ -185,8 +186,8 @@ export const App: React.FC = () => {
         modules={mods}
         progress={progress}
         onBack={() => navigate('/')}
-        onSelectLesson={(filePath, lessonId) => {
-          navigateToLesson(filePath, lessonId);
+        onSelectLesson={(filePath, lessonId, initialTab) => {
+          navigateToLesson(filePath, lessonId, initialTab);
         }}
         onOpenMasteryGate={(mod) => {
           const modNumStr = mod.module_num.toString().padStart(2, '0');
@@ -267,16 +268,25 @@ export const App: React.FC = () => {
         allLessons={activeModule.lessons}
         isCompleted={isLessonCompleted(activeLesson.id)}
         isBookmarked={isBookmarked(activeLesson.id)}
-        savedQuizScore={progress.quiz_scores?.[activeLesson.id]}
+        savedQuizScore={progress.quiz_scores?.[activeLesson.id] || progress.quiz_scores?.[activeModule.id]}
         savedNote={progress.notes?.[activeLesson.id] || ''}
         completedLessons={progress.completed_lessons}
         onToggleComplete={() => toggleLesson(activeLesson.id)}
         onToggleBookmark={() => toggleBookmark(activeLesson.id)}
-        onSaveQuizScore={(score, total, passed) => saveQuizScore(activeLesson.id, score, total, passed)}
+        onSaveQuizScore={(score, total, passed) => {
+          saveQuizScore(activeLesson.id, score, total, passed);
+          saveQuizScore(activeModule.id, score, total, passed);
+          if (passed) {
+            updateMasteryGate(activeModule.id, { quizPassed: true });
+          }
+        }}
+        onPassLab={() => {
+          updateMasteryGate(activeModule.id, { labPassed: true });
+        }}
         onSaveNote={(text) => saveNote(activeLesson.id, text)}
         onBackToSyllabus={() => navigate(`/course/${courseId}`)}
-        onSelectLesson={(filePath, nextId) => {
-          navigateToLesson(filePath, nextId);
+        onSelectLesson={(filePath: string, nextId: string, initialTab?: string) => {
+          navigateToLesson(filePath, nextId, initialTab);
         }}
         onOpenMasteryGate={() => {
           navigate(`/course/${courseId}/module/${moduleNum}/gate`);
@@ -327,7 +337,9 @@ export const App: React.FC = () => {
     const quizLesson = activeModule.lessons.find((l) => l.type === 'quiz');
     const completedCount = activeModule.lessons.filter((l) => progress.completed_lessons.includes(l.id)).length;
     const gateStatus = progress.mastery_gates?.[activeModule.id];
-    const quizScore = quizLesson ? progress.quiz_scores?.[quizLesson.id] : undefined;
+    const quizScore = quizLesson 
+      ? progress.quiz_scores?.[quizLesson.id] 
+      : (activeModule.lessons.map((l) => progress.quiz_scores?.[l.id]).find(Boolean) || progress.quiz_scores?.[activeModule.id]);
 
     return (
       <MasteryGateView
@@ -338,13 +350,14 @@ export const App: React.FC = () => {
         totalLessonsCount={activeModule.lessons.length}
         quizScore={quizScore}
         onLaunchQuiz={() => {
-          if (quizLesson) {
-            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${quizLesson.id}`);
+          const target = quizLesson || activeModule.lessons[0];
+          if (target) {
+            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${target.id}?tab=quiz`);
           }
         }}
         onLaunchLab={() => {
           if (activeModule.lessons.length > 0) {
-            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${activeModule.lessons[0].id}`);
+            navigate(`/course/${courseId}/module/${moduleNum}/lesson/${activeModule.lessons[0].id}?tab=debug`);
           }
         }}
         onLaunchLesson={(lId) => {

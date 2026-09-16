@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: expire_on_commit=False in Async Session Factories",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "In synchronous SQLAlchemy, accessing user.posts triggers a hidden background SQL query to fetch related posts. In async Python, background I/O cannot happen transparently without await.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The DetachedInstanceError in Async Mode",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: sqlalchemy.exc.MissingGreenlet: greenlet_spawn has not been called",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Fails with Silent data loss (Changes not persisted)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The DetachedInstanceError in Async Mode",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in SQLAlchemy Alembic Database?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Sharing AsyncSession Across Multiple Concurrent Tasks",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Sharing `AsyncSession` Across Multiple Concurrent Tasks",
+    "lesson_ref": "01_README.md"
+  }
+]

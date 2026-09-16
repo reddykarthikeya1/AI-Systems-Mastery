@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "You are training a 70B parameter model on 1,024 H100 SXM5 GPUs (peak BF16 tensor core throughput $989 \\text{ TFLOPs}$ per GPU). Telemetry reports steady-state throughput of $420,000 \\text{ tokens/second}$. 1. Calculate the exact MFU. 2. If the cluster cost is $3.50 per GPU-hour, calculate the hourly cost of the run and determine how much money is lost every hour compared to a world-class 50% MFU benchmark.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "MFU Calculation: $$\\begin{aligned} \\text{Theoretical FLOPs/sec achieved} &= 6 \\times 70 \\times 10^9 \\times 420,000 = 1.764 \\times 10^{17} \\text{ FLOPs/sec} = 176.4 \\text{ PFLOPs} \\\\ \\text{Total Pea...",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **MFU Calculation**:\n   $$\\begin{aligned}\n   \\text{Theoretical FLOPs/sec achieved} &= 6 \\times 70 \\times 10^9 \\times 420,000 = 1.764 \\times 10^{17} \\text{ FLOPs/sec} = 176.4 \\text{ PFLOPs} \\\\\n   \\text{Total Peak Hardware FLOPs} &= 1,024 \\times 989 \\times 10^{12} = 1.0127 \\times 10^{18} \\text{ FLOPs/sec} = 1,012.7 \\text{ PFLOPs} \\\\\n   \\text{MFU} &= \\frac{176.4}{1012.7} \\approx 0.1742 = 17.4\\%\n   \\end{aligned}$$\n   An MFU of $17.4\\%$ indicates severe architectural pathology (excessive pipeline bubble, un-overlapped NCCL transfers, or CPU dataloader starvation).\n2. **FinOps Impact**:\n   $$\\text{Hourly Run Cost} = 1,024 \\times \\$3.50 = \\$3,584 / \\text{hour}$$\n   At $50\\%$ MFU, the cluster would generate:\n   $$\\text{Target Tokens/sec} = 420,000 \\times \\frac{0.50}{0.1742} \\approx 1,205,000 \\text{ tokens/sec}$$\n   To complete a 10 Trillion token run:\n   - At $17.4\\%$ MFU: $\\frac{10^{13}}{420,000 \\times 3600} \\approx 6,613 \\text{ hours} \\implies \\$23,700,000$\n   - At $50.0\\%$ MFU: $\\frac{10^{13}}{1,205,000 \\times 3600} \\approx 2,305 \\text{ hours} \\implies \\$8,260,000$\n   **Total wasted expenditure: $15.44 Million!**",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "Explain why frontier labs routinely violate Chinchilla compute-optimal ratios during pre-training.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Chinchilla minimizes loss for a fixed pre-training budget $C$. It assumes training is a one-time sunk cost.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Chinchilla minimizes loss for a fixed pre-training budget $C$. It assumes training is a one-time sunk cost.\nHowever, in production deployments:\n$$\\text{Total Cost} = \\text{Cost}_{\\text{pretrain}} + N_{\\text{queries}} \\times \\text{Cost}_{\\text{inference}}(\\Phi)$$\nSince inference FLOPs scale directly with $\\Phi$, training a smaller model (e.g. 8B) on $100\\times$ more tokens incurs slightly higher pre-training cost but lowers lifetime serving cost by $80-90\\%$.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the Scaling Laws Profiling and FinOps subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Scaling Laws Profiling and FinOps, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does Scaling Laws Profiling and FinOps mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Scaling Laws Profiling and FinOps at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

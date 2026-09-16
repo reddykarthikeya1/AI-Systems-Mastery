@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Production Failure Modes & Operational Pitfalls",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: pgvector IVFFlat Index Degradation After Data Growth",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: HNSW Graph Disconnection Causing Catastrophic Recall Drop",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Unnormalized Vectors in Dot Product: Magnitude disparities distorting similarity rankings away from true angle.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Un-Normalized Vectors Breaking Cosine Similarity",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Unnormalized Vectors in Dot Product: Magnitude disparities distorting similarity rankings away from true angle.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in AI Vector Databases pgvector Qdrant?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "HNSW Graph Disconnection: Undersized ef_construction causing isolated subgraphs and catastrophic recall drops.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: HNSW Graph Disconnection: Undersized ef_construction causing isolated subgraphs and catastrophic recall drops.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "You are designing a real-time conversational AI system serving Llama-3-70B. The client SLA mandates: - $P_{99} \\text{ TTFT} \\le 400 \\text{ ms}$ for prompts up to 1,000 tokens. - $P_{99} \\text{ TPOT} \\le 25 \\text{ ms}$ ($40 \\text{ tokens/sec}$). Determine the minimum hardware topology (GPU count and model parallelism) required on NVIDIA H100 SXM5 GPUs ($3.35 \\text{ TB/s}$ HBM3 bandwidth, $989 \\text{ TFLOPs}$ BF16).",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Decode Bandwidth Limit: In FP16/BF16, 70B parameters require $140 \\text{ GB}$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Decode Bandwidth Limit**:\n   In FP16/BF16, 70B parameters require $140 \\text{ GB}$.\n   To achieve $\\text{TPOT} = 25 \\text{ ms}$, the memory bandwidth must be at least:\n   $$\\text{Required Bandwidth} = \\frac{140 \\text{ GB}}{0.025 \\text{ s}} = 5,600 \\text{ GB/s} = 5.6 \\text{ TB/s}$$\n   A single H100 provides $3.35 \\text{ TB/s}$. Therefore, a single GPU **cannot physically satisfy the TPOT SLA**, even at batch size 1!\n   With Tensor Parallelism $TP=2$:\n   $$\\text{Combined Bandwidth} = 2 \\times 3.35 = 6.70 \\text{ TB/s} > 5.6 \\text{ TB/s}$$\n   $$\\text{Min TPOT} = \\frac{140 \\text{ GB}}{6.70 \\text{ TB/s}} \\approx 20.9 \\text{ ms}$$\n2. **Prefill Latency Check**:\n   Computing 1,000 tokens through 70B model requires:\n   $$\\text{FLOPs} = 2 \\times 70 \\times 10^9 \\times 1,000 = 1.4 \\times 10^{14} \\text{ FLOPs} = 140 \\text{ TFLOPs}$$\n   On $TP=2$ H100s ($2 \\times 989 = 1,978 \\text{ TFLOPs}$):\n   $$\\text{Compute Time} = \\frac{140}{1978} \\approx 70.8 \\text{ ms}$$\n   Adding NCCL TP communication overhead ($\\approx 30 \\text{ ms}$ across 80 layers), $\\text{TTFT} \\approx 100-150 \\text{ ms} \\ll 400 \\text{ ms}$.\n3. **Conclusion**: Minimum viable topology is **$TP=2$ H100 SXM5**.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "An inference server in steady-state decoding at $TPOT = 22 \\text{ ms}$ suddenly experiences a massive latency spike: a single token generation takes $450 \\text{ ms}$. Telemetry shows a new request with a 4,000-token prompt arrived at that exact instant. Explain the systems mechanics causing this spike, and describe the industry-standard architectural solution.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Root Cause: Compute Starvation via Non-Chunked Prefill: Standard continuous batching executes prefill and decode tasks sequentially or co-schedules them in a single iteration.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Root Cause: Compute Starvation via Non-Chunked Prefill**:\n   Standard continuous batching executes prefill and decode tasks sequentially or co-schedules them in a single iteration. When the 4,000-token prompt arrives, the engine launches a massive GEMM kernel that saturates all GPU SMs for $\\approx 350-400 \\text{ ms}$. Because GPU execution is non-preemptive at the hardware thread block level, the existing decode requests are blocked waiting for the prefill kernel to complete, resulting in an ITL spike from $22 \\text{ ms} \\to 450 \\text{ ms}$.\n2. **Architectural Remedy**:\n   - **Chunked Prefill (Sarathi-Serve / vLLM)**: Split the 4,000-token prompt into chunks of size 512. In each iteration, schedule one 512-token prefill chunk alongside the decode batch. Bounds the iteration execution time to $< 35 \\text{ ms}$.\n   - **Prefill-Decode Disaggregation (PD)**: Route prefill to dedicated prefill GPU instances, and stream the generated KV-cache over RDMA to separate decode GPU instances.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the Inference Latency Throughput Tradeoffs subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Inference Latency Throughput Tradeoffs, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does Inference Latency Throughput Tradeoffs mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Inference Latency Throughput Tradeoffs at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

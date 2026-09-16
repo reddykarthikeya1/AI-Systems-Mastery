@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the Python Fundamentals subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "input() always returns a string (str), even if the user typed digits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "In Python, ranges and slices always operate as half-open intervals: [start, stop). The stop value is exclusive (meaning \"stop before reaching this number\").",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Python Fundamentals, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does Python Fundamentals mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Computers store floating-point numbers in binary (base-2). Decimal fractions like 0.1 cannot be stored with infinite precision in binary, resulting in 0.30000000000000004.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Python Fundamentals at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the Data Structures Collections subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Bug 2: Shallow copy of nested data structures",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: defaultdict Accidental Key Creation",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "[sublist] 3 does not clone the sublist 3 times. It creates a single list and duplicates the pointer reference 3 times!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Data Structures Collections, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does Data Structures Collections mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Data Structures Collections at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: The Shallow Copy Mutation Trap with Nested Structures",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: heapq Max-Heap Inversion",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over orders_dict.items() invalidates the internal hashtable iteration pointer.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,118 @@
+[
+  {
+    "id": 1,
+    "question": "An AI platform anticipates 120 QPS peak traffic. Average prompt length is 500 tokens, average response length is 200 tokens. Serving telemetry indicates average request residence time $W = 4.0 \\text{ seconds}$. A single 8-GPU node can sustain 64 concurrent requests without violating the $P_{99}$ SLA. Calculate the minimum number of 8-GPU serving nodes required.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Calculate Required System Concurrency ($L$) via Little's Law: $$L = \\lambda \\times W = 120 \\text{ req/s} \\times 4.0 \\text{ s} = 480 \\text{ concurrent active requests}$$ 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Calculate Required System Concurrency ($L$) via Little's Law**:\n   $$L = \\lambda \\times W = 120 \\text{ req/s} \\times 4.0 \\text{ s} = 480 \\text{ concurrent active requests}$$\n2. **Calculate Node Count**:\n   $$\\text{Nodes} = \\left\\lceil \\frac{480}{64} \\right\\rceil = \\lceil 7.5 \\rceil = 8 \\text{ nodes}$$\n3. **Headroom Buffer**: Add $25\\%$ headroom for traffic bursts $\\implies 10$ nodes total.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What core invariant must be preserved when implementing the Production Benchmarking and Autoscaling subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Production Benchmarking and Autoscaling, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "How does Production Benchmarking and Autoscaling mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Production Benchmarking and Autoscaling at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

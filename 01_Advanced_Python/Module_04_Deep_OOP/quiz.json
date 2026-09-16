@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What core invariant must be preserved when implementing the Deep OOP subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Fails with Broken cooperative inheritance (MRO bypass)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Class-level attributes are created once when the class definition is first parsed. All instance lookups (self.items) fall back to that single shared list in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "In Python 3, defining __eq__ automatically sets __hash__ = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, __hash__ must be explicitly implemented.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In Deep OOP, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "How does Deep OOP mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Defining transaction_log: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with Shared transaction history across all customer accounts",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the most critical bottleneck or resource constraint encountered in Deep OOP at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Bug 2: Implementing __eq__ without __hash__",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with TypeError when using custom object as dictionary key",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

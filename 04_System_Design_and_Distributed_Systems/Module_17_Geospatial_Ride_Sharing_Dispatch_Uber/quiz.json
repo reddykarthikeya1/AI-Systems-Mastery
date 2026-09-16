@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "In Geospatial Ride Sharing Dispatch Uber, what is the fundamental trade-off associated with **In-Memory Volatility vs Durable Disk Logging**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Split-brain state divergence occurs when network partition isolates nodes without strict majority quorum.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Vector clocks diverge because concurrent writes lack a deterministic timestamp tie-breaker.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The leader election deadlocks because term timeouts are synchronized without randomized jitter.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **In-Memory Volatility vs Durable Disk Logging** implies: In-memory operations achieve sub-millisecond latencies; Disk logging guarantees zero data loss on power failure.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "In Geospatial Ride Sharing Dispatch Uber, what is the fundamental trade-off associated with **Strong Consistency (Linearizability) vs Eventual Consistency**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Dispatch Race Condition Double-Booking",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Driver GPS Location Thrashing",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Unbounded FIFO queues accumulate requests faster than worker thread pools can drain, triggering OOM.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Strong Consistency (Linearizability) vs Eventual Consistency** implies: Strong consistency prevents stale reads but halts writes during network partitions; Eventual consistency maximizes availability.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "In Geospatial Ride Sharing Dispatch Uber, what is the fundamental trade-off associated with **Push-Based Fanout vs Pull-Based Aggregation**?",
+    "category": "Architectural Trade-offs",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Distortion at High Latitudes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The gossip failure detector misidentifies a slow node as dead due to transient network packet drops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A cascading brownout occurs because downstream timeouts lack circuit breaking and request bulkheads.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "As detailed in the module architecture, **Push-Based Fanout vs Pull-Based Aggregation** implies: Push delivers instant updates to subscribers; Pull avoids massive write amplification on high-degree nodes.",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Production Failure Modes & Operational Pitfalls",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The write-ahead log buffer overflows, blocking concurrent active readers on shared table locks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "A partial multi-sector write causes torn pages without a doublewrite buffer or WAL replay.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It causes read-modify-write lost updates due to lack of row-level pessimistic locking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Production Failure Modes & Operational Pitfalls",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Dual-Write Inconsistency: Direct application dual-writes dropping downstream updates on network glitch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: Dual-Write Distributed Inconsistency",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: Cache Stampede (Thundering Herd) on Hot Key Expiration",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Violates invariant: Stale Event Replay Overwriting Newer Data in Downstream Stores",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Dual-Write Inconsistency: Direct application dual-writes dropping downstream updates on network glitch.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Final Capstone Polyglot Enterprise?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Cache Stampede: Hot key expiration causing thousands of concurrent workers to swamp primary relational database.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The index scan degenerates to a sequential table scan because leading composite key columns are omitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The operating system page cache drops dirty pages before the fsync barrier executes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "A transitive dependency violates 3NF, creating update and deletion anomalies across duplicate tuples.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Cache Stampede: Hot key expiration causing thousands of concurrent workers to swamp primary relational database.",
+    "lesson_ref": "01_README.md"
+  }
+]

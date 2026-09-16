@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "question": "Analyze the engineering trade-offs of setting physical block size $B=16$ tokens versus $B=64$ tokens in a production vLLM deployment.",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Internal Fragmentation: On average, a sequence leaves half of its final block unused: $$\\text{Average Wasted Tokens} = \\frac{B}{2}$$ For $B=16$, average waste is 8 tokens ($\u0007pprox 2.5 \\text{ MB}$ p...",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Mixed-precision gradient underflow occurs due to improper dynamic loss scaling during backprop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Internal Fragmentation**:\n   On average, a sequence leaves half of its final block unused:\n   $$\\text{Average Wasted Tokens} = \\frac{B}{2}$$\n   For $B=16$, average waste is 8 tokens ($\u0007pprox 2.5 \\text{ MB}$ per request in 70B).\n   For $B=64$, average waste is 32 tokens ($\u0007pprox 10 \\text{ MB}$ per request). Small blocks minimize fragmentation.\n2. **Kernel Efficiency & Block Table Overhead**:\n   Smaller blocks ($B=16$) increase the length of the block table $4\\times$, increasing register pressure and memory indirection overhead during the PagedAttention CUDA kernel.\n   Larger blocks ($B=64$) improve memory coalescing and vector loads (`float4` / 128-bit memory instructions).\n3. **Industry Consensus**: $B=16$ is optimal for variable-length conversational workloads; $B=32$ or $B=64$ is preferred for long-context batch workloads.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "When GPU physical blocks are completely exhausted, what are the two recovery strategies available to the scheduler, and under what sequence length conditions is each optimal?",
+    "category": "Architectural Scenario",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Swapping (Offloading to CPU): Copy physical blocks over PCIe to host RAM ($32-64 \\text{ GB/s}$).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "1. **Swapping (Offloading to CPU)**:\n   Copy physical blocks over PCIe to host RAM ($32-64 \\text{ GB/s}$). When memory frees up, swap blocks back.\n   - *Advantage*: Zero duplicate computation.\n   - *Cost*: PCIe latency overhead. Optimal when sequence length $S > 1,000$ tokens where prefill recomputation cost exceeds PCIe transfer time.\n2. **Recomputation**:\n   Discard KV blocks and preempt the request. Re-evaluate the prompt when GPU memory becomes available.\n   - *Advantage*: Zero host RAM required; no PCIe bus saturation.\n   - *Cost*: Wasted GPU FLOPs. Optimal for short requests ($S < 500$ tokens) where prefill finishes in $< 15 \\text{ ms}$.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What core invariant must be preserved when implementing the PagedAttention Architecture vLLM subsystem?",
+    "category": "System Invariants",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Ensures atomic state transitions and deterministic data persistence under concurrent execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "In PagedAttention Architecture vLLM, preserving atomicity and determinism is essential to avoid race conditions and state corruption.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "question": "How does PagedAttention Architecture vLLM mitigate production crash recovery and unhandled failure states?",
+    "category": "Fault Tolerance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "By maintaining sequential write-ahead logs and idempotent reconciliation protocols upon restart.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Tensor parallelism communication overhead exceeds single-GPU compute latency for small batch sizes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "KV cache memory fragmentation leads to premature request eviction without PagedAttention paging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Sequential logging enables complete state reconstruction following unexpected node termination.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "question": "What is the most critical bottleneck or resource constraint encountered in PagedAttention Architecture vLLM at scale?",
+    "category": "Scalability & Performance",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Memory bandwidth saturation and I/O serialization bottlenecks across shared worker pipelines.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Prefill token computation monopolizes SM thread blocks, causing head-of-line blocking and decode ITL spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "NCCL all-reduce communication latency dominates kernel runtime due to intra-node NVLink link degradation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "HBM memory bandwidth saturation caps per-token throughput below the mandatory TPOT SLA.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under extreme throughput, lock contention and bus bandwidth limits dictate the system latency ceiling.",
+    "lesson_ref": "01_README.md"
+  }
+]

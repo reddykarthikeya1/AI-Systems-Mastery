@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Bug 2 & 3: Missing framing delimiter (TCP streaming nature)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Bug 1: Missing SO_REUSEADDR socket option",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The EADDRINUSE Port Collision",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Fails with OSError on server restart (TIME_WAIT state)",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The `EADDRINUSE` Port Collision",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Networking Sockets HTTP?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Assuming socket.send() Sends All Bytes",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Violates invariant: TCP Stream Fragmentation (The \"Single Recv\" Trap)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "TCP does not preserve message boundaries. A 10 KB payload may arrive in 7 smaller chunks depending on router MTU sizes and network congestion.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Assuming `socket.send()` Sends All Bytes",
+    "lesson_ref": "01_README.md"
+  }
+]

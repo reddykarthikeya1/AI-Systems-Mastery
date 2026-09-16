@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "The __del__ Method Circular Reference Blocker (Pre-Python 3.4 / Legacy C-extensions)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Passing x as an argument into sys.getrefcount(x) creates a temporary reference inside the function stack frame.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Bug 2: sys.getsizeof is shallow",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: The `__del__` Method Circular Reference Blocker (Pre-Python 3.4 / Legacy C-extensions)",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Python Internals Bytecode Memory?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Modifying AST Nodes Without Setting Locations",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The operation creates a cyclic reference cycle that escapes GC generational collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collect()) can detect and free isolated reference clusters.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Modifying AST Nodes Without Setting Locations",
+    "lesson_ref": "01_README.md"
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Failure Modes and Gotchas",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "Python buffers standard output (stdout) when not connected to an interactive TTY terminal.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "The bytecode compiler elides the frame execution due to constant folding optimization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Failure Modes and Gotchas",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 2,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "Docker Build Cache Invalidation",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "Violates invariant: The Python Output Buffering Trap",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The GIL is preemptively yielded, causing an interleaving race condition on the underlying PyObject refcount.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "Bug 1: Binding to 127.0.0.1 inside a container",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: Docker Build Cache Invalidation",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "question": "What is the primary root cause of the Production Edge Case failure mode in Containerization CICD Deployment?",
+    "category": "Production Failure Modes",
+    "options": [
+      {
+        "id": "opt_correct",
+        "text": "RUN pip install -r requirements.txt busts the Docker build cache on every minor source code edit, forcing a 5-minute pip re-install on every build.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_dist_1",
+        "text": "The closure captures the loop variable by reference rather than by value binding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_2",
+        "text": "The object is allocated in arena storage and cannot be shared across subinterpreters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_dist_3",
+        "text": "It triggers an unhandled TypeError because the dunder protocol is not implemented on the instance.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Under production load, Production Edge Case occurs because: `RUN pip install -r requirements.txt` busts the Docker build cache on every minor source code edit, forcing a 5-minute pip re-install on every build.",
+    "lesson_ref": "01_README.md"
+  }
+]
