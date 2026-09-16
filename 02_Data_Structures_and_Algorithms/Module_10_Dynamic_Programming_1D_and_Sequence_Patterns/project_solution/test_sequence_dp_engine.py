@@ -1,0 +1,42 @@
+"""Unit tests for SequenceDPEngine."""
+from sequence_dp_engine import SequenceDPEngine
+
+
+def test_longest_increasing_subsequence():
+    nums = [10, 9, 2, 5, 3, 7, 101, 18]
+    length, subseq = SequenceDPEngine.longest_increasing_subsequence(nums)
+    assert length == 4
+    assert len(subseq) == 4
+    # Check that reconstructed subsequence is strictly increasing
+    for i in range(len(subseq) - 1):
+        assert subseq[i] < subseq[i + 1]
+
+def test_coin_change_with_reconstruction():
+    coins = [1, 2, 5]
+    amount = 11
+    count, chosen = SequenceDPEngine.coin_change_min_coins(coins, amount)
+    assert count == 3
+    assert sum(chosen) == 11
+    assert set(chosen).issubset(set(coins))
+
+    impossible_count, _ = SequenceDPEngine.coin_change_min_coins([2], 3)
+    assert impossible_count == -1
+
+def test_word_break():
+    assert SequenceDPEngine.word_break("leetcode", ["leet", "code"])
+    assert SequenceDPEngine.word_break("applepenapple", ["apple", "pen"])
+    assert not SequenceDPEngine.word_break("catsandog", ["cats", "dog", "sand", "and", "cat"])
+
+def test_lis_empty_and_single():
+    assert SequenceDPEngine.longest_increasing_subsequence([]) == (0, [])
+    assert SequenceDPEngine.longest_increasing_subsequence([42]) == (1, [42])
+
+def test_coin_change_zero_amount():
+    count, chosen = SequenceDPEngine.coin_change_min_coins([1, 2, 5], 0)
+    assert count == 0
+    assert chosen == []
+
+def test_coin_change_negative_amount():
+    count, chosen = SequenceDPEngine.coin_change_min_coins([1, 2, 5], -5)
+    assert count == -1
+    assert chosen == []

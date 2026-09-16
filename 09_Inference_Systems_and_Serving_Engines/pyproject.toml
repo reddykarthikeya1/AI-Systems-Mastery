@@ -1,0 +1,12 @@
+[project]
+name = "09-inference-systems-and-serving-engines"
+version = "1.0.0"
+description = "09. AI Inference Systems & Engine Architecture"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.0.0",
+    "hypothesis>=6.100.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]

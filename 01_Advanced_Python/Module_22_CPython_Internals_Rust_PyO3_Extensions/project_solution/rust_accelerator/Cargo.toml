@@ -1,0 +1,22 @@
+[package]
+name = "rust_accelerator"
+version = "1.0.0"
+edition = "2021"
+description = "Module 22 — a real PyO3 native extension for the Advanced Python course"
+license = "MIT"
+
+# cdylib is what makes this loadable by CPython as a native extension module.
+[lib]
+name = "rust_accelerator"
+crate-type = ["cdylib"]
+
+[dependencies]
+# abi3-py311: build ONE wheel that works on CPython 3.11+ (stable ABI).
+# extension-module: don't link libpython — the interpreter provides it.
+pyo3 = { version = "0.23", features = ["extension-module", "abi3-py311"] }
+
+[profile.release]
+opt-level = 3
+lto = true          # link-time optimisation — this is where the 100x comes from
+codegen-units = 1
+panic = "abort"

@@ -1,0 +1,136 @@
+﻿services:
+  postgres:      # Modules 04, 05, 21, 22, 23
+    image: pgvector/pgvector:pg16     # includes the pgvector extension for Module 20
+    environment:
+      POSTGRES_PASSWORD: coursepw
+      POSTGRES_DB: coursedb
+    ports:
+      - "15432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+
+  mysql:         # Module 06
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: coursepw
+      MYSQL_DATABASE: coursedb
+    ports:
+      - "13306:3306"
+    command: --log-bin=binlog --binlog-format=ROW --server-id=1   # Module 06 needs CDC
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pcoursepw"]
+      interval: 10s
+      retries: 10
+
+  mongo:         # Modules 10, 11
+    image: mongo:7
+    ports:
+      - "17017:27017"
+    command: ["--replSet", "rs0", "--bind_ip_all"]      # Module 11 needs a replica set + change streams
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      retries: 10
+
+  redis:         # Modules 12, 13
+    image: redis:7-alpine
+    ports:
+      - "16379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  cassandra:     # Module 14
+    image: cassandra:5
+    ports:
+      - "9042:9042"
+    environment:
+      # Cassandra's default heap sizing reads total host RAM and asks for a
+      # quarter of it. Inside Docker Desktop that routinely exceeds the VM's
+      # allocation and the container is OOM-killed with exit 137 before it ever
+      # listens. Pin the heap so it starts on an ordinary dev machine.
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 128M
+      CASSANDRA_CLUSTER_NAME: course-cluster
+      # Single node: no gossip to wait on, much faster start-up.
+      CASSANDRA_DC: datacenter1
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 90s
+  dynamodb:      # Module 15
+    image: amazon/dynamodb-local
+    ports:
+      - "18000:8000"
+
+  neo4j:         # Module 16
+    image: neo4j:5
+    environment:
+      NEO4J_AUTH: "neo4j/coursepw123"
+    ports:
+      - "17687:7687"
+      - "7474:7474"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:7474"]
+      interval: 10s
+      retries: 10
+
+  clickhouse:    # Module 17
+    image: clickhouse/clickhouse-server:24-alpine
+    ports:
+      - "18123:8123"
+      - "9000:9000"
+    healthcheck:
+      # 127.0.0.1, not localhost: localhost resolves to ::1 first inside the
+      # container and ClickHouse's default listen_host is IPv4-only, so the
+      # probe was refused against a perfectly healthy server.
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8123/ping"]
+      interval: 5s
+      retries: 10
+
+  elasticsearch: # Module 19
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+    ports:
+      - "19200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 || exit 1"]
+      interval: 10s
+      retries: 10
+
+  qdrant:        # Module 20
+    image: qdrant/qdrant
+    ports:
+      - "16333:6333"
+    healthcheck:
+      # The Qdrant image ships no curl, wget, nc or python - only bash. A
+      # curl-based probe can never pass, leaving a healthy container marked
+      # unhealthy forever. bash's /dev/tcp needs no external binary.
+      test: ["CMD", "bash", "-c", 'exec 3<>/dev/tcp/127.0.0.1/6333 && printf "GET /readyz HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n" >&3 && head -n1 <&3 | grep -q "200 OK"']
+      interval: 5s
+      retries: 10
+
+  oracle:        # Modules 07, 08, 09 (heavy — keep in a separate profile)
+    image: gvenzl/oracle-free:slim
+    environment:
+      ORACLE_PASSWORD: coursepw
+    ports:
+      - "11521:1521"
+    profiles:
+      - "oracle"
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 15s
+      retries: 20

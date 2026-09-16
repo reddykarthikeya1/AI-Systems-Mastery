@@ -1,0 +1,9 @@
+# Study Plans & Pacing: 09. AI Inference Systems & Engine Architecture
+
+## Fast-Track Schedule (Intensive 3-4 Weeks)
+- Dedicated focus on the first half of modules during Weeks 1-2.
+- Capstone and distributed scaling modules during Weeks 3-4.
+
+## Comprehensive Mastery Track (8-10 Weeks)
+- 1 Module per week with full project implementation and test execution.
+- Reviewing troubleshooting edge cases and self-assessment challenges.

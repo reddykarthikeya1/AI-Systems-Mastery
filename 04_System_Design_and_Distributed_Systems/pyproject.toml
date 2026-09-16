@@ -1,0 +1,96 @@
+# =============================================================================
+#  System Design Mastery — Course Root Configuration
+# =============================================================================
+#  One command makes the whole 27-module course runnable:
+#
+#      pip install -e ".[dev]"
+#
+#  Note what is NOT here: no database drivers, no cloud SDKs, no message broker
+#  clients. That is deliberate and it is a feature. Every mechanism in this
+#  course — consistent hashing, Snowflake IDs, Bloom filters, HNSW, Raft, saga
+#  orchestration, PagedAttention — is built from the standard library so it can
+#  be read, stepped through and modified. You cannot spin up a CDN in a lesson,
+#  but you can build the hash ring that one uses.
+#
+#  Each solution's docstring states plainly that it is an in-process model and
+#  which behaviour is simulated. See `tools/check_integrity.py`, whose third
+#  invariant ("solutions disclose they are models") checks exactly that.
+# =============================================================================
+
+[project]
+name = "system-design-mastery-course"
+version = "2.0.0"
+description = "System Design Mastery — HLD and LLD across 27 modules, from capacity math to LLM serving"
+readme = "START_HERE_BEGINNER_GUIDE.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+# The course itself imports nothing outside the standard library.
+dependencies = []
+
+[project.optional-dependencies]
+# Everything needed to run the test suite and the notebooks.
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",   # Modules 02, 03 exercise async gateways and RPC
+    "pytest-timeout>=2.3",    # concurrency tests must not hang the suite
+    "ruff>=0.7",
+]
+notebook = [
+    "jupyter>=1.1",
+    "ipykernel>=6.29",
+    "nbclient>=0.10",         # used by CI to prove every notebook executes
+    "nbformat>=5.10",
+]
+all = ["system-design-mastery-course[dev,notebook]"]
+
+# =============================================================================
+#  Ruff
+# =============================================================================
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+    "**/debug_lab/**",   # planted-bug files must stay broken
+    "**/starter/**",     # learner scaffolds are intentionally incomplete
+]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # import ordering
+    "B",        # likely bugs
+    "C4",       # comprehensions
+    "UP",       # modern syntax
+    "SIM",      # simplify
+    "RUF",      # ruff-specific
+]
+ignore = [
+    "E501",     # line length is the formatter's job
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/test_*.py" = ["S101"]                 # asserts are the point of tests
+"tools/build_notebooks.py" = ["RUF001"]   # prose cells use typographic characters
+
+# =============================================================================
+#  Pytest
+# =============================================================================
+[tool.pytest.ini_options]
+testpaths = ["."]
+asyncio_mode = "strict"
+timeout = 120
+addopts = ["--strict-markers", "--strict-config", "-ra"]
+markers = [
+    "slow: benchmarks and long-running simulations",
+    "perf: performance assertions — these FAIL if a claimed win is not real",
+    "concurrency: exercises real threads; may be timing-sensitive on loaded CI",
+]
+norecursedirs = [
+    # pytest's own defaults, restated because this key REPLACES them:
+    "*.egg", ".*", "_darcs", "build", "CVS", "dist", "node_modules", "venv", "{arch}",
+    # course-specific:
+    "starter",     # learner stubs raise NotImplementedError by design
+    "debug_lab",   # planted-bug files are meant to fail
+]

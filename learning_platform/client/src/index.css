@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -0.011em;
+  }
+  
+  pre, code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+/* Minimalist scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Markdown typography */
+.markdown-body {
+  line-height: 1.75;
+  color: inherit;
+}
+.markdown-body h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+}
+.markdown-body h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(161, 161, 170, 0.15);
+}
+.markdown-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.markdown-body p {
+  margin-bottom: 1rem;
+}
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+}
+.markdown-body li {
+  margin-bottom: 0.25rem;
+}
+.markdown-body blockquote {
+  border-left: 3px solid #0056D2;
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  color: #52525b;
+}
+.dark .markdown-body blockquote {
+  color: #a1a1aa;
+  border-left-color: #2563EB;
+}
+.markdown-body code:not(pre code) {
+  background-color: rgba(161, 161, 170, 0.12);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+.dark .markdown-body code:not(pre code) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.markdown-body pre {
+  margin: 1.25rem 0;
+  border-radius: 0.5rem;
+  background-color: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  overflow-x: auto;
+}
+.markdown-body table {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid rgba(161, 161, 170, 0.2);
+  padding: 0.6rem 0.85rem;
+}
+.markdown-body th {
+  background-color: rgba(161, 161, 170, 0.08);
+  font-weight: 600;
+  text-align: left;
+}
+.dark .markdown-body th {
+  background-color: rgba(255, 255, 255, 0.04);
+}

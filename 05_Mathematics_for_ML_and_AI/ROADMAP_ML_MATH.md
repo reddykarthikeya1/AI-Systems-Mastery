@@ -1,0 +1,590 @@
+# ML Math — Roadmap
+
+> The mathematics of machine learning, built from the ground up and verified in code
+>
+> **12 modules · 301 lessons · 6 phases**
+> **Status: 🔴 Scaffold.** Structure and lesson breakdown are final enough to
+> build against. No lesson content is written.
+
+---
+
+## How to read this roadmap
+
+Every lesson in the course is named below. That is deliberate: a roadmap that
+stops at module titles cannot be estimated, sequenced, or handed to anyone, and
+it hides the places where a module is really three modules.
+
+Status markers are honest by construction:
+
+| Marker | Meaning |
+| :--- | :--- |
+| 🔴 | Not written — a stub with `TODO` placeholders |
+| 🟡 | Drafted — content exists, not yet reviewed or verified |
+| 🟢 | Complete — content written, code runs and asserts, self-check has answers |
+
+A lesson is only 🟢 when its code block **runs as written and asserts**. A code
+block that prints a plausible number teaches nothing and does not count.
+
+---
+
+## Phases
+
+| Phase | Theme | Modules | Lessons | Checkpoint |
+| :--- | :--- | :--- | :---: | :--- |
+| **1** | Language and Reasoning | Modules 01–02 | 44 | [Phase 1](Phase_Checkpoints/PHASE_01_CHECKPOINT.md) |
+| **2** | Linear Systems and Vector Spaces | Modules 03–04 | 56 | [Phase 2](Phase_Checkpoints/PHASE_02_CHECKPOINT.md) |
+| **3** | Spectral and Low-Rank Structure | Modules 05–07 | 43 | [Phase 3](Phase_Checkpoints/PHASE_03_CHECKPOINT.md) |
+| **4** | Calculus and Optimization | Modules 08–09 | 66 | [Phase 4](Phase_Checkpoints/PHASE_04_CHECKPOINT.md) |
+| **5** | Probability and Dependence | Modules 10–11 | 70 | [Phase 5](Phase_Checkpoints/PHASE_05_CHECKPOINT.md) |
+| **6** | Inference from Data | Modules 12–12 | 22 | [Phase 6](Phase_Checkpoints/PHASE_06_CHECKPOINT.md) |
+
+A phase checkpoint is not a quiz. It is a task that cannot be completed without
+having actually built the phase's material.
+
+---
+
+## Lesson distribution
+
+- **Module 01** Set Language for Machine Learning — ████████ 25
+- **Module 02** Logic for Precise Reasoning — ██████ 19
+- **Module 03** Linear Systems and Geometric Maps — ████████████ 35
+- **Module 04** Vector Spaces, Bases and Rank — ███████ 21
+- **Module 05** Spectral Thinking and Diagonalization — ████ 13
+- **Module 06** Orthogonality and Projections — ██████ 18
+- **Module 07** Low-Rank Structure and Quadratic Forms — ████ 12
+- **Module 08** Linear Algebra in Models — ███ 9
+- **Module 09** Multivariable Calculus for Learning — ███████████████████ 57
+- **Module 10** Reasoning Under Uncertainty — ██████████████ 41
+- **Module 11** Joint Distributions and Covariance — ██████████ 29
+- **Module 12** Statistical Estimation from Samples — ███████ 22
+
+The distribution is uneven on purpose, and the outliers are worth stating
+plainly rather than smoothing over:
+
+- **Module 01 (Set Language for Machine Learning)** carries 25 lessons — TODO: justify this weight, or split the module.
+- **Module 03 (Linear Systems and Geometric Maps)** carries 35 lessons — TODO: justify this weight, or split the module.
+- **Module 09 (Multivariable Calculus for Learning)** carries 57 lessons — TODO: justify this weight, or split the module.
+- **Module 10 (Reasoning Under Uncertainty)** carries 41 lessons — TODO: justify this weight, or split the module.
+- **Module 11 (Joint Distributions and Covariance)** carries 29 lessons — TODO: justify this weight, or split the module.
+
+---
+
+## Modules
+
+### Module 01 — Set Language for Machine Learning
+
+**Phase 1 · 25 lessons · [Module README](Module_01_Set_Language_for_Machine_Learning/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Why Sets Are the Vocabulary of ML](Module_01_Set_Language_for_Machine_Learning/lessons/01_Why_Sets_Are_the_Vocabulary_of_ML.md) | 🔴 |
+| 02 | [Set Notation, Membership and Equality](Module_01_Set_Language_for_Machine_Learning/lessons/02_Set_Notation_Membership_and_Equality.md) | 🔴 |
+| 03 | [Subsets, Supersets and the Empty Set](Module_01_Set_Language_for_Machine_Learning/lessons/03_Subsets_Supersets_and_the_Empty_Set.md) | 🔴 |
+| 04 | [Union, Intersection and Difference](Module_01_Set_Language_for_Machine_Learning/lessons/04_Union_Intersection_and_Difference.md) | 🔴 |
+| 05 | [Complements and the Universal Set](Module_01_Set_Language_for_Machine_Learning/lessons/05_Complements_and_the_Universal_Set.md) | 🔴 |
+| 06 | [De Morgan's Laws](Module_01_Set_Language_for_Machine_Learning/lessons/06_De_Morgans_Laws.md) | 🔴 |
+| 07 | [Power Sets and Counting Subsets](Module_01_Set_Language_for_Machine_Learning/lessons/07_Power_Sets_and_Counting_Subsets.md) | 🔴 |
+| 08 | [Cartesian Products and Tuples](Module_01_Set_Language_for_Machine_Learning/lessons/08_Cartesian_Products_and_Tuples.md) | 🔴 |
+| 09 | [Relations as Subsets of a Product](Module_01_Set_Language_for_Machine_Learning/lessons/09_Relations_as_Subsets_of_a_Product.md) | 🔴 |
+| 10 | [Equivalence Relations and Partitions](Module_01_Set_Language_for_Machine_Learning/lessons/10_Equivalence_Relations_and_Partitions.md) | 🔴 |
+| 11 | [Functions as Special Relations](Module_01_Set_Language_for_Machine_Learning/lessons/11_Functions_as_Special_Relations.md) | 🔴 |
+| 12 | [Injective, Surjective and Bijective Maps](Module_01_Set_Language_for_Machine_Learning/lessons/12_Injective_Surjective_and_Bijective_Maps.md) | 🔴 |
+| 13 | [Composition and Inverse Functions](Module_01_Set_Language_for_Machine_Learning/lessons/13_Composition_and_Inverse_Functions.md) | 🔴 |
+| 14 | [Images and Preimages](Module_01_Set_Language_for_Machine_Learning/lessons/14_Images_and_Preimages.md) | 🔴 |
+| 15 | [Indexed Families and Big Unions](Module_01_Set_Language_for_Machine_Learning/lessons/15_Indexed_Families_and_Big_Unions.md) | 🔴 |
+| 16 | [Countable versus Uncountable Sets](Module_01_Set_Language_for_Machine_Learning/lessons/16_Countable_versus_Uncountable_Sets.md) | 🔴 |
+| 17 | [Cardinality and Diagonal Arguments](Module_01_Set_Language_for_Machine_Learning/lessons/17_Cardinality_and_Diagonal_Arguments.md) | 🔴 |
+| 18 | [Intervals and Regions in R^n](Module_01_Set_Language_for_Machine_Learning/lessons/18_Intervals_and_Regions_in_Rn.md) | 🔴 |
+| 19 | [Open, Closed and Bounded Sets](Module_01_Set_Language_for_Machine_Learning/lessons/19_Open_Closed_and_Bounded_Sets.md) | 🔴 |
+| 20 | [Convex Sets and Why ML Cares](Module_01_Set_Language_for_Machine_Learning/lessons/20_Convex_Sets_and_Why_ML_Cares.md) | 🔴 |
+| 21 | [Feature Spaces as Sets](Module_01_Set_Language_for_Machine_Learning/lessons/21_Feature_Spaces_as_Sets.md) | 🔴 |
+| 22 | [Label Sets and One-Hot Encoding](Module_01_Set_Language_for_Machine_Learning/lessons/22_Label_Sets_and_OneHot_Encoding.md) | 🔴 |
+| 23 | [Train, Validation and Test as a Partition](Module_01_Set_Language_for_Machine_Learning/lessons/23_Train_Validation_and_Test_as_a_Partition.md) | 🔴 |
+| 24 | [Set Operations in NumPy and Pandas](Module_01_Set_Language_for_Machine_Learning/lessons/24_Set_Operations_in_NumPy_and_Pandas.md) | 🔴 |
+| 25 | [Module Project: A Dataset Splitter That Cannot Leak](Module_01_Set_Language_for_Machine_Learning/lessons/25_Module_Project_A_Dataset_Splitter_That_Cannot_Leak.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_01_Set_Language_for_Machine_Learning/PROJECT_GUIDE.md)
+
+### Module 02 — Logic for Precise Reasoning
+
+**Phase 1 · 19 lessons · [Module README](Module_02_Logic_for_Precise_Reasoning/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Propositions, Truth Values and Notation](Module_02_Logic_for_Precise_Reasoning/lessons/01_Propositions_Truth_Values_and_Notation.md) | 🔴 |
+| 02 | [Conjunction, Disjunction and Negation](Module_02_Logic_for_Precise_Reasoning/lessons/02_Conjunction_Disjunction_and_Negation.md) | 🔴 |
+| 03 | [Implication and Its Traps](Module_02_Logic_for_Precise_Reasoning/lessons/03_Implication_and_Its_Traps.md) | 🔴 |
+| 04 | [Converse, Inverse and Contrapositive](Module_02_Logic_for_Precise_Reasoning/lessons/04_Converse_Inverse_and_Contrapositive.md) | 🔴 |
+| 05 | [Biconditionals and Logical Equivalence](Module_02_Logic_for_Precise_Reasoning/lessons/05_Biconditionals_and_Logical_Equivalence.md) | 🔴 |
+| 06 | [Truth Tables and Tautologies](Module_02_Logic_for_Precise_Reasoning/lessons/06_Truth_Tables_and_Tautologies.md) | 🔴 |
+| 07 | [Universal and Existential Quantifiers](Module_02_Logic_for_Precise_Reasoning/lessons/07_Universal_and_Existential_Quantifiers.md) | 🔴 |
+| 08 | [Nested Quantifiers and Why Order Matters](Module_02_Logic_for_Precise_Reasoning/lessons/08_Nested_Quantifiers_and_Why_Order_Matters.md) | 🔴 |
+| 09 | [Negating Quantified Statements](Module_02_Logic_for_Precise_Reasoning/lessons/09_Negating_Quantified_Statements.md) | 🔴 |
+| 10 | [Direct Proof](Module_02_Logic_for_Precise_Reasoning/lessons/10_Direct_Proof.md) | 🔴 |
+| 11 | [Proof by Contrapositive](Module_02_Logic_for_Precise_Reasoning/lessons/11_Proof_by_Contrapositive.md) | 🔴 |
+| 12 | [Proof by Contradiction](Module_02_Logic_for_Precise_Reasoning/lessons/12_Proof_by_Contradiction.md) | 🔴 |
+| 13 | [Proof by Cases](Module_02_Logic_for_Precise_Reasoning/lessons/13_Proof_by_Cases.md) | 🔴 |
+| 14 | [Mathematical Induction](Module_02_Logic_for_Precise_Reasoning/lessons/14_Mathematical_Induction.md) | 🔴 |
+| 15 | [Strong Induction](Module_02_Logic_for_Precise_Reasoning/lessons/15_Strong_Induction.md) | 🔴 |
+| 16 | [Counterexamples and Disproof](Module_02_Logic_for_Precise_Reasoning/lessons/16_Counterexamples_and_Disproof.md) | 🔴 |
+| 17 | [Reading a Theorem Statement in a Paper](Module_02_Logic_for_Precise_Reasoning/lessons/17_Reading_a_Theorem_Statement_in_a_Paper.md) | 🔴 |
+| 18 | [Necessary versus Sufficient Conditions in ML Claims](Module_02_Logic_for_Precise_Reasoning/lessons/18_Necessary_versus_Sufficient_Conditions_in_ML_Claims.md) | 🔴 |
+| 19 | [Module Project: Verify or Refute Five Published Claims](Module_02_Logic_for_Precise_Reasoning/lessons/19_Module_Project_Verify_or_Refute_Five_Published_Claims.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_02_Logic_for_Precise_Reasoning/PROJECT_GUIDE.md)
+
+### Module 03 — Linear Systems and Geometric Maps
+
+**Phase 2 · 35 lessons · [Module README](Module_03_Linear_Systems_and_Geometric_Maps/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [What a Linear Equation Really Says](Module_03_Linear_Systems_and_Geometric_Maps/lessons/01_What_a_Linear_Equation_Really_Says.md) | 🔴 |
+| 02 | [Systems of Linear Equations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/02_Systems_of_Linear_Equations.md) | 🔴 |
+| 03 | [Solution Sets: One, None, Infinitely Many](Module_03_Linear_Systems_and_Geometric_Maps/lessons/03_Solution_Sets_One_None_Infinitely_Many.md) | 🔴 |
+| 04 | [Matrices as Compact Notation](Module_03_Linear_Systems_and_Geometric_Maps/lessons/04_Matrices_as_Compact_Notation.md) | 🔴 |
+| 05 | [Augmented Matrices](Module_03_Linear_Systems_and_Geometric_Maps/lessons/05_Augmented_Matrices.md) | 🔴 |
+| 06 | [Elementary Row Operations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/06_Elementary_Row_Operations.md) | 🔴 |
+| 07 | [Row Echelon Form](Module_03_Linear_Systems_and_Geometric_Maps/lessons/07_Row_Echelon_Form.md) | 🔴 |
+| 08 | [Reduced Row Echelon Form](Module_03_Linear_Systems_and_Geometric_Maps/lessons/08_Reduced_Row_Echelon_Form.md) | 🔴 |
+| 09 | [Gaussian Elimination Step by Step](Module_03_Linear_Systems_and_Geometric_Maps/lessons/09_Gaussian_Elimination_Step_by_Step.md) | 🔴 |
+| 10 | [Gauss-Jordan Elimination](Module_03_Linear_Systems_and_Geometric_Maps/lessons/10_GaussJordan_Elimination.md) | 🔴 |
+| 11 | [Pivots, Free Variables and Parametric Solutions](Module_03_Linear_Systems_and_Geometric_Maps/lessons/11_Pivots_Free_Variables_and_Parametric_Solutions.md) | 🔴 |
+| 12 | [Consistency and the Rank Condition](Module_03_Linear_Systems_and_Geometric_Maps/lessons/12_Consistency_and_the_Rank_Condition.md) | 🔴 |
+| 13 | [Homogeneous Systems and the Null Space](Module_03_Linear_Systems_and_Geometric_Maps/lessons/13_Homogeneous_Systems_and_the_Null_Space.md) | 🔴 |
+| 14 | [Matrix Addition and Scalar Multiplication](Module_03_Linear_Systems_and_Geometric_Maps/lessons/14_Matrix_Addition_and_Scalar_Multiplication.md) | 🔴 |
+| 15 | [Matrix Multiplication as Composition](Module_03_Linear_Systems_and_Geometric_Maps/lessons/15_Matrix_Multiplication_as_Composition.md) | 🔴 |
+| 16 | [Why Matrix Multiplication Is Not Commutative](Module_03_Linear_Systems_and_Geometric_Maps/lessons/16_Why_Matrix_Multiplication_Is_Not_Commutative.md) | 🔴 |
+| 17 | [The Identity Matrix](Module_03_Linear_Systems_and_Geometric_Maps/lessons/17_The_Identity_Matrix.md) | 🔴 |
+| 18 | [Transpose and Its Algebraic Rules](Module_03_Linear_Systems_and_Geometric_Maps/lessons/18_Transpose_and_Its_Algebraic_Rules.md) | 🔴 |
+| 19 | [Matrix Inverse: Definition and Existence](Module_03_Linear_Systems_and_Geometric_Maps/lessons/19_Matrix_Inverse_Definition_and_Existence.md) | 🔴 |
+| 20 | [Computing the Inverse by Elimination](Module_03_Linear_Systems_and_Geometric_Maps/lessons/20_Computing_the_Inverse_by_Elimination.md) | 🔴 |
+| 21 | [Determinants of 2x2 and 3x3 Matrices](Module_03_Linear_Systems_and_Geometric_Maps/lessons/21_Determinants_of_2x2_and_3x3_Matrices.md) | 🔴 |
+| 22 | [Determinant Properties and Row Operations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/22_Determinant_Properties_and_Row_Operations.md) | 🔴 |
+| 23 | [Determinants, Volume and Orientation](Module_03_Linear_Systems_and_Geometric_Maps/lessons/23_Determinants_Volume_and_Orientation.md) | 🔴 |
+| 24 | [Cramer's Rule and Why It Is Impractical](Module_03_Linear_Systems_and_Geometric_Maps/lessons/24_Cramers_Rule_and_Why_It_Is_Impractical.md) | 🔴 |
+| 25 | [LU Decomposition](Module_03_Linear_Systems_and_Geometric_Maps/lessons/25_LU_Decomposition.md) | 🔴 |
+| 26 | [Partial Pivoting and Numerical Stability](Module_03_Linear_Systems_and_Geometric_Maps/lessons/26_Partial_Pivoting_and_Numerical_Stability.md) | 🔴 |
+| 27 | [Condition Number and Ill-Conditioned Systems](Module_03_Linear_Systems_and_Geometric_Maps/lessons/27_Condition_Number_and_IllConditioned_Systems.md) | 🔴 |
+| 28 | [Linear Maps as Geometric Transformations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/28_Linear_Maps_as_Geometric_Transformations.md) | 🔴 |
+| 29 | [Rotations, Reflections, Scalings and Shears](Module_03_Linear_Systems_and_Geometric_Maps/lessons/29_Rotations_Reflections_Scalings_and_Shears.md) | 🔴 |
+| 30 | [Composing Transformations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/30_Composing_Transformations.md) | 🔴 |
+| 31 | [Affine versus Linear Maps](Module_03_Linear_Systems_and_Geometric_Maps/lessons/31_Affine_versus_Linear_Maps.md) | 🔴 |
+| 32 | [Homogeneous Coordinates](Module_03_Linear_Systems_and_Geometric_Maps/lessons/32_Homogeneous_Coordinates.md) | 🔴 |
+| 33 | [Least Squares via the Normal Equations](Module_03_Linear_Systems_and_Geometric_Maps/lessons/33_Least_Squares_via_the_Normal_Equations.md) | 🔴 |
+| 34 | [Linear Systems in NumPy and SciPy](Module_03_Linear_Systems_and_Geometric_Maps/lessons/34_Linear_Systems_in_NumPy_and_SciPy.md) | 🔴 |
+| 35 | [Module Project: A Solver That Reports Its Own Conditioning](Module_03_Linear_Systems_and_Geometric_Maps/lessons/35_Module_Project_A_Solver_That_Reports_Its_Own_Conditioning.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_03_Linear_Systems_and_Geometric_Maps/PROJECT_GUIDE.md)
+
+### Module 04 — Vector Spaces, Bases and Rank
+
+**Phase 2 · 21 lessons · [Module README](Module_04_Vector_Spaces_Bases_and_Rank/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Vectors as Arrows and as Lists](Module_04_Vector_Spaces_Bases_and_Rank/lessons/01_Vectors_as_Arrows_and_as_Lists.md) | 🔴 |
+| 02 | [Vector Addition and Scalar Multiplication](Module_04_Vector_Spaces_Bases_and_Rank/lessons/02_Vector_Addition_and_Scalar_Multiplication.md) | 🔴 |
+| 03 | [The Vector Space Axioms](Module_04_Vector_Spaces_Bases_and_Rank/lessons/03_The_Vector_Space_Axioms.md) | 🔴 |
+| 04 | [Examples: R^n, Polynomials and Function Spaces](Module_04_Vector_Spaces_Bases_and_Rank/lessons/04_Examples_Rn_Polynomials_and_Function_Spaces.md) | 🔴 |
+| 05 | [Subspaces and How to Test for One](Module_04_Vector_Spaces_Bases_and_Rank/lessons/05_Subspaces_and_How_to_Test_for_One.md) | 🔴 |
+| 06 | [Span of a Set of Vectors](Module_04_Vector_Spaces_Bases_and_Rank/lessons/06_Span_of_a_Set_of_Vectors.md) | 🔴 |
+| 07 | [Linear Independence](Module_04_Vector_Spaces_Bases_and_Rank/lessons/07_Linear_Independence.md) | 🔴 |
+| 08 | [Testing Independence by Elimination](Module_04_Vector_Spaces_Bases_and_Rank/lessons/08_Testing_Independence_by_Elimination.md) | 🔴 |
+| 09 | [Basis of a Vector Space](Module_04_Vector_Spaces_Bases_and_Rank/lessons/09_Basis_of_a_Vector_Space.md) | 🔴 |
+| 10 | [Dimension and Why It Is Well Defined](Module_04_Vector_Spaces_Bases_and_Rank/lessons/10_Dimension_and_Why_It_Is_Well_Defined.md) | 🔴 |
+| 11 | [Coordinates Relative to a Basis](Module_04_Vector_Spaces_Bases_and_Rank/lessons/11_Coordinates_Relative_to_a_Basis.md) | 🔴 |
+| 12 | [Change of Basis](Module_04_Vector_Spaces_Bases_and_Rank/lessons/12_Change_of_Basis.md) | 🔴 |
+| 13 | [Column Space](Module_04_Vector_Spaces_Bases_and_Rank/lessons/13_Column_Space.md) | 🔴 |
+| 14 | [Null Space and Nullity](Module_04_Vector_Spaces_Bases_and_Rank/lessons/14_Null_Space_and_Nullity.md) | 🔴 |
+| 15 | [Row Space and the Left Null Space](Module_04_Vector_Spaces_Bases_and_Rank/lessons/15_Row_Space_and_the_Left_Null_Space.md) | 🔴 |
+| 16 | [Rank of a Matrix](Module_04_Vector_Spaces_Bases_and_Rank/lessons/16_Rank_of_a_Matrix.md) | 🔴 |
+| 17 | [The Rank-Nullity Theorem](Module_04_Vector_Spaces_Bases_and_Rank/lessons/17_The_RankNullity_Theorem.md) | 🔴 |
+| 18 | [The Four Fundamental Subspaces](Module_04_Vector_Spaces_Bases_and_Rank/lessons/18_The_Four_Fundamental_Subspaces.md) | 🔴 |
+| 19 | [What Rank Tells You About a Dataset](Module_04_Vector_Spaces_Bases_and_Rank/lessons/19_What_Rank_Tells_You_About_a_Dataset.md) | 🔴 |
+| 20 | [Multicollinearity as Near Rank Deficiency](Module_04_Vector_Spaces_Bases_and_Rank/lessons/20_Multicollinearity_as_Near_Rank_Deficiency.md) | 🔴 |
+| 21 | [Module Project: Detect Redundant Features by Rank](Module_04_Vector_Spaces_Bases_and_Rank/lessons/21_Module_Project_Detect_Redundant_Features_by_Rank.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_04_Vector_Spaces_Bases_and_Rank/PROJECT_GUIDE.md)
+
+### Module 05 — Spectral Thinking and Diagonalization
+
+**Phase 3 · 13 lessons · [Module README](Module_05_Spectral_Thinking_and_Diagonalization/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Eigenvectors: Directions a Map Does Not Turn](Module_05_Spectral_Thinking_and_Diagonalization/lessons/01_Eigenvectors_Directions_a_Map_Does_Not_Turn.md) | 🔴 |
+| 02 | [Eigenvalues and the Characteristic Polynomial](Module_05_Spectral_Thinking_and_Diagonalization/lessons/02_Eigenvalues_and_the_Characteristic_Polynomial.md) | 🔴 |
+| 03 | [Computing Eigenvalues by Hand](Module_05_Spectral_Thinking_and_Diagonalization/lessons/03_Computing_Eigenvalues_by_Hand.md) | 🔴 |
+| 04 | [Eigenspaces and Geometric Multiplicity](Module_05_Spectral_Thinking_and_Diagonalization/lessons/04_Eigenspaces_and_Geometric_Multiplicity.md) | 🔴 |
+| 05 | [Algebraic versus Geometric Multiplicity](Module_05_Spectral_Thinking_and_Diagonalization/lessons/05_Algebraic_versus_Geometric_Multiplicity.md) | 🔴 |
+| 06 | [Diagonalization: When and Why](Module_05_Spectral_Thinking_and_Diagonalization/lessons/06_Diagonalization_When_and_Why.md) | 🔴 |
+| 07 | [Similar Matrices and Their Invariants](Module_05_Spectral_Thinking_and_Diagonalization/lessons/07_Similar_Matrices_and_Their_Invariants.md) | 🔴 |
+| 08 | [Matrix Powers via Diagonalization](Module_05_Spectral_Thinking_and_Diagonalization/lessons/08_Matrix_Powers_via_Diagonalization.md) | 🔴 |
+| 09 | [Defective Matrices and Jordan Form](Module_05_Spectral_Thinking_and_Diagonalization/lessons/09_Defective_Matrices_and_Jordan_Form.md) | 🔴 |
+| 10 | [Complex Eigenvalues and Rotation](Module_05_Spectral_Thinking_and_Diagonalization/lessons/10_Complex_Eigenvalues_and_Rotation.md) | 🔴 |
+| 11 | [The Spectral Theorem for Symmetric Matrices](Module_05_Spectral_Thinking_and_Diagonalization/lessons/11_The_Spectral_Theorem_for_Symmetric_Matrices.md) | 🔴 |
+| 12 | [Power Iteration and How PageRank Works](Module_05_Spectral_Thinking_and_Diagonalization/lessons/12_Power_Iteration_and_How_PageRank_Works.md) | 🔴 |
+| 13 | [Module Project: Spectral Clustering From Scratch](Module_05_Spectral_Thinking_and_Diagonalization/lessons/13_Module_Project_Spectral_Clustering_From_Scratch.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_05_Spectral_Thinking_and_Diagonalization/PROJECT_GUIDE.md)
+
+### Module 06 — Orthogonality and Projections
+
+**Phase 3 · 18 lessons · [Module README](Module_06_Orthogonality_and_Projections/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [The Dot Product and What It Measures](Module_06_Orthogonality_and_Projections/lessons/01_The_Dot_Product_and_What_It_Measures.md) | 🔴 |
+| 02 | [Norms: L1, L2 and Beyond](Module_06_Orthogonality_and_Projections/lessons/02_Norms_L1_L2_and_Beyond.md) | 🔴 |
+| 03 | [Angles, Cosine Similarity and Correlation](Module_06_Orthogonality_and_Projections/lessons/03_Angles_Cosine_Similarity_and_Correlation.md) | 🔴 |
+| 04 | [Orthogonal and Orthonormal Vectors](Module_06_Orthogonality_and_Projections/lessons/04_Orthogonal_and_Orthonormal_Vectors.md) | 🔴 |
+| 05 | [Orthogonal Complements](Module_06_Orthogonality_and_Projections/lessons/05_Orthogonal_Complements.md) | 🔴 |
+| 06 | [Projection Onto a Line](Module_06_Orthogonality_and_Projections/lessons/06_Projection_Onto_a_Line.md) | 🔴 |
+| 07 | [Projection Onto a Subspace](Module_06_Orthogonality_and_Projections/lessons/07_Projection_Onto_a_Subspace.md) | 🔴 |
+| 08 | [The Projection Matrix and Its Properties](Module_06_Orthogonality_and_Projections/lessons/08_The_Projection_Matrix_and_Its_Properties.md) | 🔴 |
+| 09 | [Least Squares as Orthogonal Projection](Module_06_Orthogonality_and_Projections/lessons/09_Least_Squares_as_Orthogonal_Projection.md) | 🔴 |
+| 10 | [Why Residuals Are Orthogonal to the Fit](Module_06_Orthogonality_and_Projections/lessons/10_Why_Residuals_Are_Orthogonal_to_the_Fit.md) | 🔴 |
+| 11 | [Gram-Schmidt Orthogonalization](Module_06_Orthogonality_and_Projections/lessons/11_GramSchmidt_Orthogonalization.md) | 🔴 |
+| 12 | [Numerical Failure of Classical Gram-Schmidt](Module_06_Orthogonality_and_Projections/lessons/12_Numerical_Failure_of_Classical_GramSchmidt.md) | 🔴 |
+| 13 | [QR Decomposition](Module_06_Orthogonality_and_Projections/lessons/13_QR_Decomposition.md) | 🔴 |
+| 14 | [Solving Least Squares by QR](Module_06_Orthogonality_and_Projections/lessons/14_Solving_Least_Squares_by_QR.md) | 🔴 |
+| 15 | [Orthogonal Matrices and Isometries](Module_06_Orthogonality_and_Projections/lessons/15_Orthogonal_Matrices_and_Isometries.md) | 🔴 |
+| 16 | [Orthogonal Bases for Function Spaces](Module_06_Orthogonality_and_Projections/lessons/16_Orthogonal_Bases_for_Function_Spaces.md) | 🔴 |
+| 17 | [Whitening and Decorrelation](Module_06_Orthogonality_and_Projections/lessons/17_Whitening_and_Decorrelation.md) | 🔴 |
+| 18 | [Module Project: Least Squares Three Ways, Compared](Module_06_Orthogonality_and_Projections/lessons/18_Module_Project_Least_Squares_Three_Ways_Compared.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_06_Orthogonality_and_Projections/PROJECT_GUIDE.md)
+
+### Module 07 — Low-Rank Structure and Quadratic Forms
+
+**Phase 3 · 12 lessons · [Module README](Module_07_LowRank_Structure_and_Quadratic_Forms/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [The Singular Value Decomposition: Statement](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/01_The_Singular_Value_Decomposition_Statement.md) | 🔴 |
+| 02 | [Geometry of the SVD](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/02_Geometry_of_the_SVD.md) | 🔴 |
+| 03 | [Singular Values versus Eigenvalues](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/03_Singular_Values_versus_Eigenvalues.md) | 🔴 |
+| 04 | [Truncated SVD and the Eckart-Young Theorem](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/04_Truncated_SVD_and_the_EckartYoung_Theorem.md) | 🔴 |
+| 05 | [Low-Rank Approximation in Practice](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/05_LowRank_Approximation_in_Practice.md) | 🔴 |
+| 06 | [The Moore-Penrose Pseudoinverse](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/06_The_MoorePenrose_Pseudoinverse.md) | 🔴 |
+| 07 | [Principal Component Analysis via SVD](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/07_Principal_Component_Analysis_via_SVD.md) | 🔴 |
+| 08 | [PCA versus Autoencoders: What Actually Differs](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/08_PCA_versus_Autoencoders_What_Actually_Differs.md) | 🔴 |
+| 09 | [Quadratic Forms and Their Matrices](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/09_Quadratic_Forms_and_Their_Matrices.md) | 🔴 |
+| 10 | [Positive Definiteness and Its Tests](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/10_Positive_Definiteness_and_Its_Tests.md) | 🔴 |
+| 11 | [Cholesky Decomposition](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/11_Cholesky_Decomposition.md) | 🔴 |
+| 12 | [Module Project: Image Compression and a Recommender, Both by SVD](Module_07_LowRank_Structure_and_Quadratic_Forms/lessons/12_Module_Project_Image_Compression_and_a_Recommender_Both_by_SVD.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_07_LowRank_Structure_and_Quadratic_Forms/PROJECT_GUIDE.md)
+
+### Module 08 — Linear Algebra in Models
+
+**Phase 4 · 9 lessons · [Module README](Module_08_Linear_Algebra_in_Models/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [A Linear Layer Is a Matrix Multiply](Module_08_Linear_Algebra_in_Models/lessons/01_A_Linear_Layer_Is_a_Matrix_Multiply.md) | 🔴 |
+| 02 | [Batching as Extra Tensor Dimensions](Module_08_Linear_Algebra_in_Models/lessons/02_Batching_as_Extra_Tensor_Dimensions.md) | 🔴 |
+| 03 | [Broadcasting Rules and the Silent Bugs They Cause](Module_08_Linear_Algebra_in_Models/lessons/03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md) | 🔴 |
+| 04 | [Weight Initialization and Spectral Norm](Module_08_Linear_Algebra_in_Models/lessons/04_Weight_Initialization_and_Spectral_Norm.md) | 🔴 |
+| 05 | [Attention as Three Matrix Products](Module_08_Linear_Algebra_in_Models/lessons/05_Attention_as_Three_Matrix_Products.md) | 🔴 |
+| 06 | [Convolution as a Structured Matrix](Module_08_Linear_Algebra_in_Models/lessons/06_Convolution_as_a_Structured_Matrix.md) | 🔴 |
+| 07 | [Embeddings as Lookup Into a Matrix](Module_08_Linear_Algebra_in_Models/lessons/07_Embeddings_as_Lookup_Into_a_Matrix.md) | 🔴 |
+| 08 | [Where Numerical Precision Bites](Module_08_Linear_Algebra_in_Models/lessons/08_Where_Numerical_Precision_Bites.md) | 🔴 |
+| 09 | [Module Project: A Forward Pass With Only NumPy](Module_08_Linear_Algebra_in_Models/lessons/09_Module_Project_A_Forward_Pass_With_Only_NumPy.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_08_Linear_Algebra_in_Models/PROJECT_GUIDE.md)
+
+### Module 09 — Multivariable Calculus for Learning
+
+**Phase 4 · 57 lessons · [Module README](Module_09_Multivariable_Calculus_for_Learning/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Functions of Several Variables](Module_09_Multivariable_Calculus_for_Learning/lessons/01_Functions_of_Several_Variables.md) | 🔴 |
+| 02 | [Level Sets and Contour Plots](Module_09_Multivariable_Calculus_for_Learning/lessons/02_Level_Sets_and_Contour_Plots.md) | 🔴 |
+| 03 | [Limits in Several Variables](Module_09_Multivariable_Calculus_for_Learning/lessons/03_Limits_in_Several_Variables.md) | 🔴 |
+| 04 | [Continuity in R^n](Module_09_Multivariable_Calculus_for_Learning/lessons/04_Continuity_in_Rn.md) | 🔴 |
+| 05 | [Partial Derivatives](Module_09_Multivariable_Calculus_for_Learning/lessons/05_Partial_Derivatives.md) | 🔴 |
+| 06 | [Higher-Order Partial Derivatives](Module_09_Multivariable_Calculus_for_Learning/lessons/06_HigherOrder_Partial_Derivatives.md) | 🔴 |
+| 07 | [Clairaut's Theorem on Mixed Partials](Module_09_Multivariable_Calculus_for_Learning/lessons/07_Clairauts_Theorem_on_Mixed_Partials.md) | 🔴 |
+| 08 | [The Gradient Vector](Module_09_Multivariable_Calculus_for_Learning/lessons/08_The_Gradient_Vector.md) | 🔴 |
+| 09 | [Why the Gradient Points Uphill](Module_09_Multivariable_Calculus_for_Learning/lessons/09_Why_the_Gradient_Points_Uphill.md) | 🔴 |
+| 10 | [Directional Derivatives](Module_09_Multivariable_Calculus_for_Learning/lessons/10_Directional_Derivatives.md) | 🔴 |
+| 11 | [Differentiability versus Existence of Partials](Module_09_Multivariable_Calculus_for_Learning/lessons/11_Differentiability_versus_Existence_of_Partials.md) | 🔴 |
+| 12 | [The Total Derivative and Linearization](Module_09_Multivariable_Calculus_for_Learning/lessons/12_The_Total_Derivative_and_Linearization.md) | 🔴 |
+| 13 | [The Jacobian Matrix](Module_09_Multivariable_Calculus_for_Learning/lessons/13_The_Jacobian_Matrix.md) | 🔴 |
+| 14 | [The Single-Variable Chain Rule, Revisited](Module_09_Multivariable_Calculus_for_Learning/lessons/14_The_SingleVariable_Chain_Rule_Revisited.md) | 🔴 |
+| 15 | [The Multivariable Chain Rule](Module_09_Multivariable_Calculus_for_Learning/lessons/15_The_Multivariable_Chain_Rule.md) | 🔴 |
+| 16 | [Computational Graphs](Module_09_Multivariable_Calculus_for_Learning/lessons/16_Computational_Graphs.md) | 🔴 |
+| 17 | [Forward-Mode Differentiation](Module_09_Multivariable_Calculus_for_Learning/lessons/17_ForwardMode_Differentiation.md) | 🔴 |
+| 18 | [Reverse-Mode Differentiation](Module_09_Multivariable_Calculus_for_Learning/lessons/18_ReverseMode_Differentiation.md) | 🔴 |
+| 19 | [Backpropagation Is Reverse-Mode Chain Rule](Module_09_Multivariable_Calculus_for_Learning/lessons/19_Backpropagation_Is_ReverseMode_Chain_Rule.md) | 🔴 |
+| 20 | [The Hessian Matrix](Module_09_Multivariable_Calculus_for_Learning/lessons/20_The_Hessian_Matrix.md) | 🔴 |
+| 21 | [Second-Order Taylor Expansion](Module_09_Multivariable_Calculus_for_Learning/lessons/21_SecondOrder_Taylor_Expansion.md) | 🔴 |
+| 22 | [Critical Points and Their Classification](Module_09_Multivariable_Calculus_for_Learning/lessons/22_Critical_Points_and_Their_Classification.md) | 🔴 |
+| 23 | [The Second Derivative Test in R^n](Module_09_Multivariable_Calculus_for_Learning/lessons/23_The_Second_Derivative_Test_in_Rn.md) | 🔴 |
+| 24 | [Saddle Points and Why Deep Networks Have Many](Module_09_Multivariable_Calculus_for_Learning/lessons/24_Saddle_Points_and_Why_Deep_Networks_Have_Many.md) | 🔴 |
+| 25 | [Convex Functions: Definition](Module_09_Multivariable_Calculus_for_Learning/lessons/25_Convex_Functions_Definition.md) | 🔴 |
+| 26 | [First- and Second-Order Convexity Tests](Module_09_Multivariable_Calculus_for_Learning/lessons/26_First_and_SecondOrder_Convexity_Tests.md) | 🔴 |
+| 27 | [Strong Convexity and Smoothness](Module_09_Multivariable_Calculus_for_Learning/lessons/27_Strong_Convexity_and_Smoothness.md) | 🔴 |
+| 28 | [Jensen's Inequality](Module_09_Multivariable_Calculus_for_Learning/lessons/28_Jensens_Inequality.md) | 🔴 |
+| 29 | [Gradient Descent: The Update Rule](Module_09_Multivariable_Calculus_for_Learning/lessons/29_Gradient_Descent_The_Update_Rule.md) | 🔴 |
+| 30 | [Learning Rate and Convergence](Module_09_Multivariable_Calculus_for_Learning/lessons/30_Learning_Rate_and_Convergence.md) | 🔴 |
+| 31 | [Lipschitz Gradients and the Safe Step Size](Module_09_Multivariable_Calculus_for_Learning/lessons/31_Lipschitz_Gradients_and_the_Safe_Step_Size.md) | 🔴 |
+| 32 | [Convergence Rate on Convex Objectives](Module_09_Multivariable_Calculus_for_Learning/lessons/32_Convergence_Rate_on_Convex_Objectives.md) | 🔴 |
+| 33 | [Momentum](Module_09_Multivariable_Calculus_for_Learning/lessons/33_Momentum.md) | 🔴 |
+| 34 | [Nesterov Acceleration](Module_09_Multivariable_Calculus_for_Learning/lessons/34_Nesterov_Acceleration.md) | 🔴 |
+| 35 | [AdaGrad](Module_09_Multivariable_Calculus_for_Learning/lessons/35_AdaGrad.md) | 🔴 |
+| 36 | [RMSProp](Module_09_Multivariable_Calculus_for_Learning/lessons/36_RMSProp.md) | 🔴 |
+| 37 | [Adam and Its Bias Correction](Module_09_Multivariable_Calculus_for_Learning/lessons/37_Adam_and_Its_Bias_Correction.md) | 🔴 |
+| 38 | [Why Adam Sometimes Fails to Converge](Module_09_Multivariable_Calculus_for_Learning/lessons/38_Why_Adam_Sometimes_Fails_to_Converge.md) | 🔴 |
+| 39 | [Stochastic Gradient Descent](Module_09_Multivariable_Calculus_for_Learning/lessons/39_Stochastic_Gradient_Descent.md) | 🔴 |
+| 40 | [Variance of the Stochastic Gradient](Module_09_Multivariable_Calculus_for_Learning/lessons/40_Variance_of_the_Stochastic_Gradient.md) | 🔴 |
+| 41 | [Mini-Batch Size and the Gradient Noise Scale](Module_09_Multivariable_Calculus_for_Learning/lessons/41_MiniBatch_Size_and_the_Gradient_Noise_Scale.md) | 🔴 |
+| 42 | [Learning Rate Schedules](Module_09_Multivariable_Calculus_for_Learning/lessons/42_Learning_Rate_Schedules.md) | 🔴 |
+| 43 | [Newton's Method](Module_09_Multivariable_Calculus_for_Learning/lessons/43_Newtons_Method.md) | 🔴 |
+| 44 | [Quasi-Newton Methods and L-BFGS](Module_09_Multivariable_Calculus_for_Learning/lessons/44_QuasiNewton_Methods_and_LBFGS.md) | 🔴 |
+| 45 | [Constrained Optimization: The Setup](Module_09_Multivariable_Calculus_for_Learning/lessons/45_Constrained_Optimization_The_Setup.md) | 🔴 |
+| 46 | [Lagrange Multipliers](Module_09_Multivariable_Calculus_for_Learning/lessons/46_Lagrange_Multipliers.md) | 🔴 |
+| 47 | [The KKT Conditions](Module_09_Multivariable_Calculus_for_Learning/lessons/47_The_KKT_Conditions.md) | 🔴 |
+| 48 | [Duality and the Dual Problem](Module_09_Multivariable_Calculus_for_Learning/lessons/48_Duality_and_the_Dual_Problem.md) | 🔴 |
+| 49 | [Projected Gradient Descent](Module_09_Multivariable_Calculus_for_Learning/lessons/49_Projected_Gradient_Descent.md) | 🔴 |
+| 50 | [L1 versus L2 Regularization, Geometrically](Module_09_Multivariable_Calculus_for_Learning/lessons/50_L1_versus_L2_Regularization_Geometrically.md) | 🔴 |
+| 51 | [Why L1 Produces Sparsity](Module_09_Multivariable_Calculus_for_Learning/lessons/51_Why_L1_Produces_Sparsity.md) | 🔴 |
+| 52 | [Vanishing and Exploding Gradients](Module_09_Multivariable_Calculus_for_Learning/lessons/52_Vanishing_and_Exploding_Gradients.md) | 🔴 |
+| 53 | [Gradient Clipping](Module_09_Multivariable_Calculus_for_Learning/lessons/53_Gradient_Clipping.md) | 🔴 |
+| 54 | [Numerical Gradient Checking](Module_09_Multivariable_Calculus_for_Learning/lessons/54_Numerical_Gradient_Checking.md) | 🔴 |
+| 55 | [Automatic Differentiation Pitfalls](Module_09_Multivariable_Calculus_for_Learning/lessons/55_Automatic_Differentiation_Pitfalls.md) | 🔴 |
+| 56 | [Line Search and Trust Regions](Module_09_Multivariable_Calculus_for_Learning/lessons/56_Line_Search_and_Trust_Regions.md) | 🔴 |
+| 57 | [Module Project: Optimizers From Scratch, Benchmarked](Module_09_Multivariable_Calculus_for_Learning/lessons/57_Module_Project_Optimizers_From_Scratch_Benchmarked.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_09_Multivariable_Calculus_for_Learning/PROJECT_GUIDE.md)
+
+### Module 10 — Reasoning Under Uncertainty
+
+**Phase 5 · 41 lessons · [Module README](Module_10_Reasoning_Under_Uncertainty/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Why Probability, Not Just Statistics](Module_10_Reasoning_Under_Uncertainty/lessons/01_Why_Probability_Not_Just_Statistics.md) | 🔴 |
+| 02 | [Sample Spaces and Events](Module_10_Reasoning_Under_Uncertainty/lessons/02_Sample_Spaces_and_Events.md) | 🔴 |
+| 03 | [The Axioms of Probability](Module_10_Reasoning_Under_Uncertainty/lessons/03_The_Axioms_of_Probability.md) | 🔴 |
+| 04 | [Counting: Permutations and Combinations](Module_10_Reasoning_Under_Uncertainty/lessons/04_Counting_Permutations_and_Combinations.md) | 🔴 |
+| 05 | [Conditional Probability](Module_10_Reasoning_Under_Uncertainty/lessons/05_Conditional_Probability.md) | 🔴 |
+| 06 | [Independence versus Conditional Independence](Module_10_Reasoning_Under_Uncertainty/lessons/06_Independence_versus_Conditional_Independence.md) | 🔴 |
+| 07 | [The Law of Total Probability](Module_10_Reasoning_Under_Uncertainty/lessons/07_The_Law_of_Total_Probability.md) | 🔴 |
+| 08 | [Bayes' Theorem](Module_10_Reasoning_Under_Uncertainty/lessons/08_Bayes_Theorem.md) | 🔴 |
+| 09 | [Base Rates and the Prosecutor's Fallacy](Module_10_Reasoning_Under_Uncertainty/lessons/09_Base_Rates_and_the_Prosecutors_Fallacy.md) | 🔴 |
+| 10 | [Bayesian versus Frequentist Interpretations](Module_10_Reasoning_Under_Uncertainty/lessons/10_Bayesian_versus_Frequentist_Interpretations.md) | 🔴 |
+| 11 | [Random Variables](Module_10_Reasoning_Under_Uncertainty/lessons/11_Random_Variables.md) | 🔴 |
+| 12 | [Discrete Distributions and the PMF](Module_10_Reasoning_Under_Uncertainty/lessons/12_Discrete_Distributions_and_the_PMF.md) | 🔴 |
+| 13 | [Continuous Distributions and the PDF](Module_10_Reasoning_Under_Uncertainty/lessons/13_Continuous_Distributions_and_the_PDF.md) | 🔴 |
+| 14 | [The Cumulative Distribution Function](Module_10_Reasoning_Under_Uncertainty/lessons/14_The_Cumulative_Distribution_Function.md) | 🔴 |
+| 15 | [Expected Value](Module_10_Reasoning_Under_Uncertainty/lessons/15_Expected_Value.md) | 🔴 |
+| 16 | [Linearity of Expectation](Module_10_Reasoning_Under_Uncertainty/lessons/16_Linearity_of_Expectation.md) | 🔴 |
+| 17 | [Variance and Standard Deviation](Module_10_Reasoning_Under_Uncertainty/lessons/17_Variance_and_Standard_Deviation.md) | 🔴 |
+| 18 | [Moments and Moment Generating Functions](Module_10_Reasoning_Under_Uncertainty/lessons/18_Moments_and_Moment_Generating_Functions.md) | 🔴 |
+| 19 | [The Bernoulli and Binomial Distributions](Module_10_Reasoning_Under_Uncertainty/lessons/19_The_Bernoulli_and_Binomial_Distributions.md) | 🔴 |
+| 20 | [The Geometric and Negative Binomial Distributions](Module_10_Reasoning_Under_Uncertainty/lessons/20_The_Geometric_and_Negative_Binomial_Distributions.md) | 🔴 |
+| 21 | [The Poisson Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/21_The_Poisson_Distribution.md) | 🔴 |
+| 22 | [The Uniform Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/22_The_Uniform_Distribution.md) | 🔴 |
+| 23 | [The Exponential Distribution and Memorylessness](Module_10_Reasoning_Under_Uncertainty/lessons/23_The_Exponential_Distribution_and_Memorylessness.md) | 🔴 |
+| 24 | [The Normal Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/24_The_Normal_Distribution.md) | 🔴 |
+| 25 | [Why the Normal Appears Everywhere](Module_10_Reasoning_Under_Uncertainty/lessons/25_Why_the_Normal_Appears_Everywhere.md) | 🔴 |
+| 26 | [The Standard Normal and Z-Scores](Module_10_Reasoning_Under_Uncertainty/lessons/26_The_Standard_Normal_and_ZScores.md) | 🔴 |
+| 27 | [The Log-Normal Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/27_The_LogNormal_Distribution.md) | 🔴 |
+| 28 | [The Beta Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/28_The_Beta_Distribution.md) | 🔴 |
+| 29 | [The Gamma Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/29_The_Gamma_Distribution.md) | 🔴 |
+| 30 | [The Categorical and Multinomial Distributions](Module_10_Reasoning_Under_Uncertainty/lessons/30_The_Categorical_and_Multinomial_Distributions.md) | 🔴 |
+| 31 | [The Dirichlet Distribution](Module_10_Reasoning_Under_Uncertainty/lessons/31_The_Dirichlet_Distribution.md) | 🔴 |
+| 32 | [Transformations of Random Variables](Module_10_Reasoning_Under_Uncertainty/lessons/32_Transformations_of_Random_Variables.md) | 🔴 |
+| 33 | [The Change-of-Variables Formula](Module_10_Reasoning_Under_Uncertainty/lessons/33_The_ChangeofVariables_Formula.md) | 🔴 |
+| 34 | [Markov's and Chebyshev's Inequalities](Module_10_Reasoning_Under_Uncertainty/lessons/34_Markovs_and_Chebyshevs_Inequalities.md) | 🔴 |
+| 35 | [Concentration and Hoeffding's Inequality](Module_10_Reasoning_Under_Uncertainty/lessons/35_Concentration_and_Hoeffdings_Inequality.md) | 🔴 |
+| 36 | [The Law of Large Numbers](Module_10_Reasoning_Under_Uncertainty/lessons/36_The_Law_of_Large_Numbers.md) | 🔴 |
+| 37 | [The Central Limit Theorem](Module_10_Reasoning_Under_Uncertainty/lessons/37_The_Central_Limit_Theorem.md) | 🔴 |
+| 38 | [Entropy](Module_10_Reasoning_Under_Uncertainty/lessons/38_Entropy.md) | 🔴 |
+| 39 | [Cross-Entropy and KL Divergence](Module_10_Reasoning_Under_Uncertainty/lessons/39_CrossEntropy_and_KL_Divergence.md) | 🔴 |
+| 40 | [Why Cross-Entropy Is the Classification Loss](Module_10_Reasoning_Under_Uncertainty/lessons/40_Why_CrossEntropy_Is_the_Classification_Loss.md) | 🔴 |
+| 41 | [Module Project: Naive Bayes With Calibrated Probabilities](Module_10_Reasoning_Under_Uncertainty/lessons/41_Module_Project_Naive_Bayes_With_Calibrated_Probabilities.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_10_Reasoning_Under_Uncertainty/PROJECT_GUIDE.md)
+
+### Module 11 — Joint Distributions and Covariance
+
+**Phase 5 · 29 lessons · [Module README](Module_11_Joint_Distributions_and_Covariance/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Joint Distributions of Two Variables](Module_11_Joint_Distributions_and_Covariance/lessons/01_Joint_Distributions_of_Two_Variables.md) | 🔴 |
+| 02 | [Marginal Distributions](Module_11_Joint_Distributions_and_Covariance/lessons/02_Marginal_Distributions.md) | 🔴 |
+| 03 | [Conditional Distributions](Module_11_Joint_Distributions_and_Covariance/lessons/03_Conditional_Distributions.md) | 🔴 |
+| 04 | [Independence in Terms of Joints](Module_11_Joint_Distributions_and_Covariance/lessons/04_Independence_in_Terms_of_Joints.md) | 🔴 |
+| 05 | [Joint, Marginal and Conditional Densities](Module_11_Joint_Distributions_and_Covariance/lessons/05_Joint_Marginal_and_Conditional_Densities.md) | 🔴 |
+| 06 | [Covariance](Module_11_Joint_Distributions_and_Covariance/lessons/06_Covariance.md) | 🔴 |
+| 07 | [Correlation and Its Limits](Module_11_Joint_Distributions_and_Covariance/lessons/07_Correlation_and_Its_Limits.md) | 🔴 |
+| 08 | [Correlation Is Not Causation, Concretely](Module_11_Joint_Distributions_and_Covariance/lessons/08_Correlation_Is_Not_Causation_Concretely.md) | 🔴 |
+| 09 | [The Covariance Matrix](Module_11_Joint_Distributions_and_Covariance/lessons/09_The_Covariance_Matrix.md) | 🔴 |
+| 10 | [Properties of the Covariance Matrix](Module_11_Joint_Distributions_and_Covariance/lessons/10_Properties_of_the_Covariance_Matrix.md) | 🔴 |
+| 11 | [Why Covariance Matrices Are Positive Semidefinite](Module_11_Joint_Distributions_and_Covariance/lessons/11_Why_Covariance_Matrices_Are_Positive_Semidefinite.md) | 🔴 |
+| 12 | [Linear Combinations and Their Variance](Module_11_Joint_Distributions_and_Covariance/lessons/12_Linear_Combinations_and_Their_Variance.md) | 🔴 |
+| 13 | [Conditional Expectation](Module_11_Joint_Distributions_and_Covariance/lessons/13_Conditional_Expectation.md) | 🔴 |
+| 14 | [The Tower Property](Module_11_Joint_Distributions_and_Covariance/lessons/14_The_Tower_Property.md) | 🔴 |
+| 15 | [Conditional Variance and Its Decomposition](Module_11_Joint_Distributions_and_Covariance/lessons/15_Conditional_Variance_and_Its_Decomposition.md) | 🔴 |
+| 16 | [The Bias-Variance Decomposition](Module_11_Joint_Distributions_and_Covariance/lessons/16_The_BiasVariance_Decomposition.md) | 🔴 |
+| 17 | [The Multivariate Normal Distribution](Module_11_Joint_Distributions_and_Covariance/lessons/17_The_Multivariate_Normal_Distribution.md) | 🔴 |
+| 18 | [Geometry of the Multivariate Normal](Module_11_Joint_Distributions_and_Covariance/lessons/18_Geometry_of_the_Multivariate_Normal.md) | 🔴 |
+| 19 | [Conditionals of a Multivariate Normal](Module_11_Joint_Distributions_and_Covariance/lessons/19_Conditionals_of_a_Multivariate_Normal.md) | 🔴 |
+| 20 | [Marginals of a Multivariate Normal](Module_11_Joint_Distributions_and_Covariance/lessons/20_Marginals_of_a_Multivariate_Normal.md) | 🔴 |
+| 21 | [The Precision Matrix and Partial Correlation](Module_11_Joint_Distributions_and_Covariance/lessons/21_The_Precision_Matrix_and_Partial_Correlation.md) | 🔴 |
+| 22 | [Whitening and Mahalanobis Distance](Module_11_Joint_Distributions_and_Covariance/lessons/22_Whitening_and_Mahalanobis_Distance.md) | 🔴 |
+| 23 | [Copulas: Separating Marginals From Dependence](Module_11_Joint_Distributions_and_Covariance/lessons/23_Copulas_Separating_Marginals_From_Dependence.md) | 🔴 |
+| 24 | [Mutual Information](Module_11_Joint_Distributions_and_Covariance/lessons/24_Mutual_Information.md) | 🔴 |
+| 25 | [Simpson's Paradox](Module_11_Joint_Distributions_and_Covariance/lessons/25_Simpsons_Paradox.md) | 🔴 |
+| 26 | [Confounders, Colliders and Selection Bias](Module_11_Joint_Distributions_and_Covariance/lessons/26_Confounders_Colliders_and_Selection_Bias.md) | 🔴 |
+| 27 | [Markov Chains and the Transition Matrix](Module_11_Joint_Distributions_and_Covariance/lessons/27_Markov_Chains_and_the_Transition_Matrix.md) | 🔴 |
+| 28 | [Stationary Distributions](Module_11_Joint_Distributions_and_Covariance/lessons/28_Stationary_Distributions.md) | 🔴 |
+| 29 | [Module Project: A Gaussian Mixture Model by EM](Module_11_Joint_Distributions_and_Covariance/lessons/29_Module_Project_A_Gaussian_Mixture_Model_by_EM.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_11_Joint_Distributions_and_Covariance/PROJECT_GUIDE.md)
+
+### Module 12 — Statistical Estimation from Samples
+
+**Phase 6 · 22 lessons · [Module README](Module_12_Statistical_Estimation_from_Samples/README.md)**
+
+<!-- Written before any lesson is drafted: a module that cannot state its
+     purpose in three sentences has the wrong scope. -->
+
+**Purpose:** TODO
+
+**By the end you can:** TODO
+
+| # | Lesson | Status |
+| :--- | :--- | :---: |
+| 01 | [Populations, Samples and Estimators](Module_12_Statistical_Estimation_from_Samples/lessons/01_Populations_Samples_and_Estimators.md) | 🔴 |
+| 02 | [Bias, Variance and Mean Squared Error](Module_12_Statistical_Estimation_from_Samples/lessons/02_Bias_Variance_and_Mean_Squared_Error.md) | 🔴 |
+| 03 | [Consistency and Efficiency](Module_12_Statistical_Estimation_from_Samples/lessons/03_Consistency_and_Efficiency.md) | 🔴 |
+| 04 | [The Sampling Distribution](Module_12_Statistical_Estimation_from_Samples/lessons/04_The_Sampling_Distribution.md) | 🔴 |
+| 05 | [The Standard Error](Module_12_Statistical_Estimation_from_Samples/lessons/05_The_Standard_Error.md) | 🔴 |
+| 06 | [The Method of Moments](Module_12_Statistical_Estimation_from_Samples/lessons/06_The_Method_of_Moments.md) | 🔴 |
+| 07 | [Maximum Likelihood Estimation](Module_12_Statistical_Estimation_from_Samples/lessons/07_Maximum_Likelihood_Estimation.md) | 🔴 |
+| 08 | [The Log-Likelihood and Why We Take Logs](Module_12_Statistical_Estimation_from_Samples/lessons/08_The_LogLikelihood_and_Why_We_Take_Logs.md) | 🔴 |
+| 09 | [MLE for the Normal and Bernoulli](Module_12_Statistical_Estimation_from_Samples/lessons/09_MLE_for_the_Normal_and_Bernoulli.md) | 🔴 |
+| 10 | [Fisher Information and the Cramer-Rao Bound](Module_12_Statistical_Estimation_from_Samples/lessons/10_Fisher_Information_and_the_CramerRao_Bound.md) | 🔴 |
+| 11 | [Maximum A Posteriori Estimation](Module_12_Statistical_Estimation_from_Samples/lessons/11_Maximum_A_Posteriori_Estimation.md) | 🔴 |
+| 12 | [MAP as Regularized MLE](Module_12_Statistical_Estimation_from_Samples/lessons/12_MAP_as_Regularized_MLE.md) | 🔴 |
+| 13 | [Conjugate Priors](Module_12_Statistical_Estimation_from_Samples/lessons/13_Conjugate_Priors.md) | 🔴 |
+| 14 | [Confidence Intervals](Module_12_Statistical_Estimation_from_Samples/lessons/14_Confidence_Intervals.md) | 🔴 |
+| 15 | [What a Confidence Interval Does Not Mean](Module_12_Statistical_Estimation_from_Samples/lessons/15_What_a_Confidence_Interval_Does_Not_Mean.md) | 🔴 |
+| 16 | [Credible Intervals and the Bayesian Alternative](Module_12_Statistical_Estimation_from_Samples/lessons/16_Credible_Intervals_and_the_Bayesian_Alternative.md) | 🔴 |
+| 17 | [Hypothesis Testing and the p-Value](Module_12_Statistical_Estimation_from_Samples/lessons/17_Hypothesis_Testing_and_the_pValue.md) | 🔴 |
+| 18 | [What a p-Value Does Not Mean](Module_12_Statistical_Estimation_from_Samples/lessons/18_What_a_pValue_Does_Not_Mean.md) | 🔴 |
+| 19 | [Type I and Type II Errors, and Power](Module_12_Statistical_Estimation_from_Samples/lessons/19_Type_I_and_Type_II_Errors_and_Power.md) | 🔴 |
+| 20 | [Multiple Comparisons and the Bonferroni Correction](Module_12_Statistical_Estimation_from_Samples/lessons/20_Multiple_Comparisons_and_the_Bonferroni_Correction.md) | 🔴 |
+| 21 | [The Bootstrap](Module_12_Statistical_Estimation_from_Samples/lessons/21_The_Bootstrap.md) | 🔴 |
+| 22 | [Module Project: Estimate, Interval and Test, All From Scratch](Module_12_Statistical_Estimation_from_Samples/lessons/22_Module_Project_Estimate_Interval_and_Test_All_From_Scratch.md) | 🔴 |
+
+**Module project:** TODO — see [PROJECT_GUIDE.md](Module_12_Statistical_Estimation_from_Samples/PROJECT_GUIDE.md)
+
+
+---
+
+## Build order
+
+Lessons are not written in course order. Write in this order instead:
+
+1. **Every module's `project_solution/` and its tests first.** The tests are the
+   specification, and a lesson written before the code exists describes code
+   that does not.
+2. **Then the `starter/` stubs**, verifying that the shipped tests fail on them.
+3. **Then the lessons**, working backwards from the project each module builds
+   toward — so every lesson has a demonstrable reason to exist.
+4. **Then the debug labs**, planting defects the lessons have equipped the
+   learner to diagnose.
+5. **Then the notebooks**, generated from each module's own test bodies so they
+   cannot drift from the implementation.
+
+Writing lessons first produces a course whose prose is disconnected from its
+code, which is the failure mode this build order exists to prevent.
+
+---
+
+[Course README](README.md) · [Master Syllabus](MASTER_SYLLABUS.md)

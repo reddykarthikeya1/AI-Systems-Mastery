@@ -1,0 +1,12 @@
+[project]
+name = "07-gpu-programming-and-ai-kernels"
+version = "1.0.0"
+description = "07. GPU Programming & AI Kernel Engineering (CUDA & Triton)"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.0.0",
+    "hypothesis>=6.100.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]

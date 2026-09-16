@@ -1,0 +1,451 @@
+# The Definitive Python & Modern Systems Mastery Roadmap: From Zero to Polyglot Architect
+
+This course is an exhaustive, project-driven journey designed to take you from foundational programming to full-spectrum mastery of Python. It covers language mechanics, object-oriented and functional paradigms, advanced concurrency and runtimes (including Python 3.13+ free-threading and JIT), high-performance backend engineering with FastAPI, distributed systems, CPython internals, native extensions (C/Rust), strict static typing, modern packaging, and cross-domain foundations.
+
+> **Course Philosophy:** Learn by building and dissecting. Every module pairs deep conceptual clarity with a hands-on mini project. By the end, you will understand not just how to write idiomatic Python, but how the language executes under the hood, how to build distributed production systems, and how to push Python beyond its traditional performance limits.
+
+---
+
+## Phase 1: Environment, Modern Tooling & Core Foundations
+
+### Module 0: Next-Gen Environment, Tooling & Workflow
+**Topics:**
+- Managing Python versions cleanly with `pyenv` and `uv`
+- Next-generation Python package and project management with `uv`
+- Ultra-fast linting and formatting with `ruff`
+- Standard virtual environments (`venv`) vs lockfile-based workflows (`uv.lock`, `pyproject.toml`)
+- Modern project layout (src-layout vs flat-layout)
+- Git & GitHub: version control, branching strategies, and `.gitignore` conventions for Python
+- Setting up VS Code / PyCharm with language servers (Pylance, Pyright, Ruff LSP)
+
+**Why it matters:** Professional Python development has evolved. Adopting modern Rust-backed tools (`uv`, `ruff`) and strict environment isolation prevents dependency hell and sets a standard for high-performance engineering.
+
+**Mini Project:** Initialize a modern Python project using `uv` and `pyproject.toml`. Configure `ruff` for linting/formatting and pre-commit hooks. Create a GitHub repository with an automated CI workflow that runs linters on pull requests.
+
+---
+
+### Module 1: Python Fundamentals – Syntax, Types, and Control Flow
+**Topics:**
+- Python execution model: source code $\rightarrow$ bytecode $\rightarrow$ CPython virtual machine
+- Dynamic typing vs strong typing
+- Core primitive types: `int` (arbitrary precision), `float` (IEEE 754), `bool`, `str`, `NoneType`
+- Operators: arithmetic, comparison, identity (`is` vs `==`), logical (`and`, `or`, short-circuiting), bitwise
+- String manipulation: indexing, slicing, encodings (ASCII vs UTF-8), formatting (f-strings, format specifiers)
+- Control flow: `if`, `elif`, `else`, match-case pattern matching (Python 3.10+)
+- Loops: `for`, `while`, `break`, `continue`, loop `else` clauses
+- Input/Output & basic console formatting
+
+**Why it matters:** A nuanced understanding of core types, identity vs equality, and modern pattern matching forms the bedrock of writing bug-free Python.
+
+**Mini Project:** Build a **CLI Financial Compound Interest & Amortization Calculator** with input validation, pattern matching for command choices, and formatted tabular outputs.
+
+---
+
+### Module 2: Functions, Scopes, Closures, and Standard Library Essentials
+**Topics:**
+- Defining functions with `def`, return statements, and tuple packing/unpacking
+- Parameter types: positional-only (`/`), keyword-only (`*`), default arguments (and the mutable default argument pitfall), `*args`, `**kwargs`
+- Variable scope: LEGB rule (Local, Enclosing, Global, Built-in), `global` and `nonlocal` keywords
+- Closures and lexical scoping mechanics
+- Anonymous functions (`lambda`) and first-class functions
+- Modular design: modules, packages, `__init__.py`, `__main__.py`, relative vs absolute imports
+- Essential Standard Library: `math`, `random`, `datetime`, `timezone` handling with `zoneinfo`, `pathlib`, `sys`
+
+**Why it matters:** Functions are first-class citizens in Python. Understanding closures, variable scope lifetimes, and clean module boundaries is essential for functional and reusable code.
+
+**Mini Project:** Create a **Modular Text-Based RPG Game Engine** where room logic and combat actions are isolated across separate modules, leveraging closures to maintain player state without relying on global variables.
+
+---
+
+### Module 3: Advanced Built-in Data Structures & `collections`
+**Topics:**
+- Lists: dynamic array mechanics, over-allocation, list comprehensions, time complexity of operations
+- Tuples: immutability, tuple unpacking, memory efficiency vs lists
+- Dictionaries: hash tables, hash collision resolution, dictionary comprehensions, insertion-order preservation
+- Sets: hash sets, set operations (union, intersection, difference, symmetric difference)
+- Time and space complexity ($O(1)$ vs $O(n)$) across data structures
+- Advanced data structures in `collections`: `deque` (ring buffer/O(1) pops), `defaultdict`, `Counter`, `OrderedDict`, `ChainMap`
+- Heap queue (`heapq`) and priority queues
+- Structuring read-only data: `types.MappingProxyType`
+
+**Why it matters:** Efficient programs depend on choosing the right data structures. Knowing how dictionaries and lists operate under the hood enables you to write performant, low-latency algorithms.
+
+**Mini Project:** Build an in-memory **High-Frequency Order Matching Engine Simulator** utilizing `deque` for FIFO order queues, `heapq` for limit price priority, and `Counter` for volume tracking.
+
+---
+
+## Phase 2: Object-Oriented Design, Functional Concepts & Reliability
+
+### Module 4: Deep Object-Oriented Programming (OOP)
+**Topics:**
+- Classes, instances, and the `__new__` vs `__init__` lifecycle
+- Instance variables vs class variables (and shared state traps)
+- Methods: instance methods, `@classmethod`, `@staticmethod`
+- Encapsulation: naming conventions (`_protected`, `__private` name mangling)
+- Properties: `@property`, setters, and deleters for managed attributes
+- Inheritance, method overriding, and `super()`
+- Multiple inheritance, the Diamond Problem, and Method Resolution Order (C3 Linearization algorithm)
+- Dunder/Magic methods: `__str__`, `__repr__`, `__eq__`, `__hash__`, `__lt__`, `__len__`, `__getitem__`, `__setitem__`
+- Abstract Base Classes (`abc.ABC`, `@abstractmethod`) and interface design
+
+**Why it matters:** OOP in Python goes deeper than classes and instances; mastering magic methods and the C3 MRO allows you to create elegant, intuitive domain models and frameworks.
+
+**Mini Project:** Build a **Multi-Tier Banking & Investment System** with abstract account contracts, customizable fee strategies, custom arithmetic dunder operations for currency objects, and strict property validation.
+
+---
+
+### Module 5: Advanced Python – Decorators, Generators & Context Managers
+**Topics:**
+- Iterators and Iterables: `__iter__`, `__next__`, and `StopIteration`
+- Generators and the `yield` / `yield from` statements (stateful stream processing)
+- Generator pipelines and memory-efficient stream computation
+- Function decorators, parameterized decorators, class decorators, and preserving metadata with `functools.wraps`
+- Context Managers: the `with` statement protocol (`__enter__`, `__exit__`), handling exceptions within context managers
+- Context management utilities with `contextlib` (`@contextmanager`, `suppress`, `ExitStack`)
+- Useful functional utilities: `functools.partial`, `functools.lru_cache`, `itertools` (`islice`, `chain`, `groupby`, `permutations`)
+
+**Why it matters:** Generators allow handling gigabytes of data with megabytes of RAM. Decorators and context managers eliminate boilerplate across enterprise codebases.
+
+**Mini Project:** Build a **Streaming Log Analyzer & Execution Profiler** that lazily streams multi-gigabyte server logs using generator pipelines, filtered by custom parameterizable decorators, and wrapped with auto-closing resource context managers.
+
+---
+
+### Module 6: Enterprise Error Handling & Logging
+**Topics:**
+- Exception hierarchy (`BaseException` vs `Exception`)
+- Custom domain exceptions, chaining exceptions (`raise ... from ...`), exception groups (`ExceptionGroup` in Python 3.11+)
+- Handling multiple exceptions with `except*`
+- The `logging` module architecture: loggers, handlers, formatters, filters, levels
+- Structured JSON logging for cloud observability (e.g., Datadog, ELK stack)
+- Rotating file handlers (`RotatingFileHandler`, `TimedRotatingFileHandler`)
+- Sentry and crash reporting integration
+
+**Why it matters:** Unhandled errors and unstructured logs cripple production systems. Structured error hierarchies and JSON logging make debugging in microservices straightforward.
+
+**Mini Project:** Refactor an e-commerce checkout workflow with custom exception hierarchies, structured JSON logging outputting trace IDs, and rotating file logging.
+
+---
+
+### Module 7: Files, Data Formats & Serialization
+**Topics:**
+- Text vs binary streams, buffer management, and encoding nuances
+- Modern file path operations with `pathlib.Path`
+- JSON serialization/deserialization with `json` (custom encoders/decoders)
+- Tabular formats: `csv` module
+- Hierarchical configs: YAML (`PyYAML` / `ruamel.yaml`), TOML (`tomllib` in Python 3.11+)
+- Binary serialization: `pickle` (and its security hazards), `struct` for raw binary packing
+
+**Why it matters:** Every modern system ingests, transforms, and persists data. Understanding serialization security and binary encoding is vital for systems engineering.
+
+**Mini Project:** Create a **Configuration & Data Migration CLI Tool** that validates, transforms, and migrates configs between YAML, JSON, and TOML formats with atomic file writes using `pathlib`.
+
+---
+
+### Module 8: Modern Testing & Quality Assurance
+**Topics:**
+- Testing philosophy: Unit vs Integration vs End-to-End (E2E) tests
+- `pytest` framework: test discovery, assertions, parameterization (`@pytest.mark.parametrize`)
+- Pytest Fixtures: scope (`function`, `module`, `session`), autouse, teardown (`yield` fixtures), `conftest.py`
+- Mocking and patching with `unittest.mock` (`MagicMock`, `patch`, `patch.object`, side effects)
+- Testing asynchronous code with `pytest-asyncio`
+- Test coverage analysis with `pytest-cov` and enforcing minimum coverage thresholds
+- Mutation testing concepts & property-based testing with `hypothesis`
+
+**Why it matters:** High-reliability systems cannot exist without automated testing. Pytest fixtures and property-based tests catch edge cases that manual testing misses.
+
+**Mini Project:** Write a **Production-Grade Test Suite** for an asynchronous financial ledger, achieving >90% coverage using parametrized tests, async fixtures, mock external payment gateways, and `hypothesis` property tests.
+
+---
+
+## Phase 3: Concurrency, Async & Modern Python Runtimes
+
+### Module 9: Concurrency, Asynchronous Programming & Python Runtimes
+**Topics:**
+- Concurrency vs Parallelism: I/O-bound vs CPU-bound workloads
+- Multithreading with `threading`, race conditions, thread synchronization primitives (`Lock`, `RLock`, `Semaphore`, `Event`)
+- The Global Interpreter Lock (GIL): what it is, why it exists, and when it blocks threads
+- Multiprocessing with `multiprocessing` and `concurrent.futures.ProcessPoolExecutor`, Inter-Process Communication (IPC, `Queue`, `Pipe`, shared memory)
+- Asynchronous programming with `asyncio`: event loops, coroutines, tasks (`create_task`), `asyncio.gather`, `TaskGroup` (Python 3.11+)
+- Cancellation, timeouts (`asyncio.timeout`), and exception handling in async workflows
+- Asynchronous context managers, async generators, and `aiohttp` / `httpx`
+- **Modern Python Runtimes & Breakthroughs:**
+  - Specializing Adaptive Interpreter (Python 3.11+)
+  - Subinterpreters and per-interpreter GIL (PEP 684)
+  - Free-threaded CPython (No-GIL Python 3.13+, PEP 703)
+  - Tier-1 Copy-and-Patch JIT Compiler (Python 3.13+)
+
+**Why it matters:** Understanding runtime internals, the GIL, and asynchronous event loops allows you to choose the exact concurrency model required for high-throughput applications.
+
+**Mini Project:** Build a **Hybrid Concurrent Web Crawler & Image Processing Pipeline**:
+- Use `asyncio` + `httpx` for high-concurrency non-blocking network requests.
+- Offload CPU-heavy image compression to a `ProcessPoolExecutor`.
+- Compare performance across single-threaded, multi-threaded, multi-process, and async implementations.
+
+---
+
+### Module 10: Networking, Sockets & HTTP Protocol Internals
+**Topics:**
+- OSI model fundamentals and TCP/UDP socket programming (`socket` module)
+- Building a basic TCP echo server and non-blocking sockets with `selectors`
+- HTTP 1.1 vs HTTP/2 vs HTTP/3 (quic) protocol mechanics
+- Anatomy of an HTTP transaction: headers, chunks, keep-alive, status codes, CORS
+- HTTP clients: synchronous (`requests`) vs asynchronous modern clients (`httpx`)
+- REST architectural constraints and stateless API design principles
+
+**Why it matters:** Web frameworks sit on top of sockets and HTTP. Knowing how raw bytes flow over TCP sockets demystifies web servers and proxies.
+
+**Mini Project:** Implement a **Custom Multi-Client Async TCP Chat Server** from scratch using the `socket` and `asyncio` modules without third-party web frameworks.
+
+---
+
+## Phase 4: Modern Backend & Production API Engineering
+
+### Module 11: Introduction to FastAPI & ASGI Architecture
+**Topics:**
+- ASGI (Asynchronous Server Gateway Interface) vs WSGI specification
+- ASGI web servers: `uvicorn`, `hypercorn`, and worker process architectures
+- FastAPI core principles: type hints, Pydantic integration, automatic OpenAPI/Swagger generation
+- Routing basics: path parameters, query parameters, request bodies
+- Type conversion, type validation, and automatic error formatting
+- Interactive documentation customization (`/docs`, `/redoc`, OpenAPI schemas)
+
+**Why it matters:** FastAPI is the leading modern Python web framework, combining asynchronous high performance with developer velocity and static type enforcement.
+
+**Mini Project:** Create a **Product Catalog Microservice API** with full CRUD operations, category filtering, price range queries, and custom OpenAPI documentation metadata.
+
+---
+
+### Module 12: Pydantic V2 Deep Dive, Advanced Validation & API Routing
+**Topics:**
+- Pydantic V2 core architecture: Rust-based validation core (`pydantic-core`)
+- Model declaration, field constraints (`Field`), default factories
+- Custom field validators (`@field_validator`) and model validators (`@model_validator`)
+- Nested schemas, recursive models, and polymorphism with Discriminated Unions
+- Serialization control: `model_dump()`, `model_dump_json()`, computed fields (`@computed_field`)
+- Clean route modularization using `APIRouter`
+- Global and route-level custom exception handlers (`RequestValidationError`, `HTTPException`)
+
+**Why it matters:** Pydantic is the validation engine for modern Python. Pydantic v2 offers 5-20x faster data validation and handles complex nested and polymorphic schemas cleanly.
+
+**Mini Project:** Build a **Complex Healthcare Patient Intake & Diagnostic API** with deeply nested polymorphic patient records, strict validation for medical IDs and date ranges, custom serializers, and cleanly structured `APIRouter` modules.
+
+---
+
+### Module 13: Async Database Integration with SQLAlchemy 2.0 & Alembic
+**Topics:**
+- Relational database concepts, normalization, and ACID properties
+- SQLAlchemy 2.0 modern declarative mapping (`Mapped`, `mapped_column`)
+- Async database sessions with `async_sessionmaker` and `asyncpg` / `aiosqlite`
+- Modeling complex relationships: 1-to-1, 1-to-many, many-to-many (`relationship()`, `back_populates`, association tables)
+- Resolving the $N+1$ query problem: eager loading (`selectinload`, `joinedload`) vs lazy loading
+- Transaction management, commit, rollback, and savepoints
+- Schema migrations with **Alembic**: autogenerating migrations, branching migrations, downgrade scripts
+
+**Why it matters:** Real applications live and die by database performance. Mastering SQLAlchemy 2.0 async paradigms and Alembic migrations prevents schema corruption and slow queries in production.
+
+**Mini Project:** Build a **Relational E-Commerce Inventory & Order System** using PostgreSQL, async SQLAlchemy 2.0, and Alembic migrations. Implement complex joins, aggregate queries, and prevent $N+1$ queries using `selectinload`.
+
+---
+
+### Module 14: Authentication, Authorization & API Security
+**Topics:**
+- Authentication mechanisms: Session-based vs Token-based (JWT)
+- Password security: Argon2 vs Bcrypt hashing (`passlib`, `pwdlib`)
+- JWT mechanics: header, payload, signature, expiration, and asymmetric signing (RS256)
+- FastAPI security utilities: `OAuth2PasswordBearer`, `SecurityScopes`
+- Role-Based Access Control (RBAC) and Permission-Based Access Control (PBAC)
+- Protection against common attacks: CORS configuration, CSRF, SQL Injection, XSS, and Rate Limiting (slowapi / Redis-based token bucket)
+
+**Why it matters:** Security flaws can destroy applications and businesses. Implementing cryptographic tokens, secure hashing, and granular authorization guarantees data privacy.
+
+**Mini Project:** Build a **Multi-Tenant RBAC Authentication Microservice** featuring user registration, JWT access/refresh token rotation, role/permission verification dependencies, and IP-based rate limiting with Redis.
+
+---
+
+### Module 15: Advanced FastAPI – Dependency Injection, Middleware, WebSockets & Background Tasks
+**Topics:**
+- FastAPI Dependency Injection system deep dive:
+  - Sub-dependencies and dependency trees
+  - Yield dependencies (database session management, cleanup)
+  - Parameterized / class-based dependencies
+- Custom ASGI middleware: request tracking, correlation IDs, timing headers, exception catching
+- Background execution: `BackgroundTasks` vs full task queues
+- Real-time bidirectional communication with WebSockets: connection managers, pub/sub broadcasting, heartbeat/ping-pong
+- Handling file uploads: `UploadFile`, streaming large files, and storing in cloud storage (S3/MinIO)
+
+**Why it matters:** Dependency injection is FastAPI's architectural superpower. WebSockets and custom middleware allow building enterprise real-time microservices with unified request telemetry.
+
+**Mini Project:** Build a **Real-Time Collaborative Document/Chat API** featuring WebSocket rooms, correlation ID tracking middleware, file attachment uploads, and yield-based database transactions.
+
+---
+
+### Module 16: Distributed Systems, Task Queues & Event Streaming
+**Topics:**
+- Asynchronous task offloading: why background workers are required in distributed systems
+- Task queues: **Celery** or **ARQ** (async Redis queue)
+- Message brokers: Redis, **RabbitMQ** (AMQP exchanges/queues), and **Apache Kafka** (topics, partitions, consumer groups)
+- Event-driven architecture: producing and consuming events asynchronously (`aiokafka` / `aio-pika`)
+- Handling distributed failures: dead-letter queues (DLQ), retries with exponential backoff, and idempotent consumers
+
+**Why it matters:** APIs should respond in milliseconds. Long-running jobs (emails, video transcoding, PDF generation, AI inference) must be processed asynchronously by distributed workers.
+
+**Mini Project:** Build a **Distributed Video/Report Generation Service**:
+- FastAPI produces jobs to RabbitMQ/Redis.
+- Celery / ARQ workers asynchronously process reports and publish completion events to Kafka.
+- Connected WebSocket clients receive real-time notifications when their report is ready.
+
+---
+
+## Phase 5: Production Deployment, Observability & Performance Tuning
+
+### Module 17: Containerization, CI/CD & Production Deployment
+**Topics:**
+- Docker fundamentals: multi-stage builds for Python, minimizing image sizes, non-root security practices
+- Multi-container orchestration with `docker-compose` (API, PostgreSQL, Redis, Worker)
+- Production ASGI serving: Uvicorn workers managed by Gunicorn
+- Reverse proxy configuration with **Nginx** or **Traefik**: SSL/TLS termination, request buffering, compression
+- Automated CI/CD pipelines with **GitHub Actions**: automated linting, testing, image building, and automated deployment
+- Production Observability: Structured logging, metrics collection with **Prometheus**, dashboards with **Grafana**, and error tracking with **Sentry**
+
+**Why it matters:** Writing code is only half the battle. Packaging applications in secure, reproducible Docker containers and deploying them via CI/CD ensures zero-downtime production operations.
+
+**Mini Project:** Containerize the full distributed microservice stack using multi-stage Dockerfiles and `docker-compose`. Set up a GitHub Actions CI pipeline that lints with Ruff, tests with Pytest, builds container images, and exports Prometheus metrics.
+
+---
+
+### Module 18: Performance Optimization, Profiling & Caching
+**Topics:**
+- Profiling CPU bottlenecks: `cProfile`, `line_profiler`, visualizing flame graphs (`snakeviz`)
+- Profiling memory consumption and leaks: `tracemalloc`, `memory_profiler`, finding dangling references
+- High-performance serialization: swapping `json` with `orjson` in FastAPI
+- Caching architectures:
+  - Cache-Aside pattern, Write-Through, Write-Back
+  - In-memory caching (`lru_cache`, `cachetools`)
+  - Distributed caching with **Redis** (TTL, eviction policies, cache stampede prevention)
+- Database query optimization: indexing strategies, analyzing execution plans (`EXPLAIN ANALYZE`), preventing table scans
+
+**Why it matters:** Knowing how to find memory leaks and profile CPU bottlenecks separates junior developers from senior engineers who can scale services to handle millions of requests.
+
+**Mini Project:** Conduct a **High-Concurrency Load Test & Profiling Challenge**:
+- Run a benchmark load test using `Locust`.
+- Profile the application using `cProfile` and `memory_profiler` to identify bottlenecks.
+- Implement Redis caching, `orjson` serialization, and database indexes to achieve a 5x throughput improvement and document the before/after metrics.
+
+---
+
+## Phase 6: Language Mastery, CPython Internals & Native Extensions
+
+### Module 19: Advanced Metaprogramming, Descriptors & Memory Management
+**Topics:**
+- The Python object model: types, classes, and instances
+- Metaclasses: `type` as a metaclass, customizing class creation (`__new__`, `__init__`, `__init_subclass__`)
+- Descriptors: non-data descriptors (`__get__`) vs data descriptors (`__set__`, `__delete__`), descriptor lookup precedence
+- Optimizing instance memory with `__slots__`
+- Memory management internals: reference counting, cyclic garbage collector (`gc` module), generations, and weak references (`weakref`)
+- Enterprise Design Patterns in Python: Singleton, Factory, Dependency Injection, Strategy, Observer, Unit of Work
+
+**Why it matters:** Metaclasses and descriptors power Python's most famous frameworks (Django ORM, Pydantic, SQLAlchemy). Mastering them unlocks deep control over Python's runtime behaviors.
+
+**Mini Project:** Build a **Custom Lightweight Declarative ORM / Validation Engine** from scratch using metaclasses for model registration, descriptors for field type validation, and `__slots__` for memory optimization.
+
+---
+
+### Module 20: CPython Internals, AST, Bytecode & Native Extensions (C & Rust)
+**Topics:**
+- Python execution deep dive: Source $\rightarrow$ Tokens $\rightarrow$ AST (`ast` module) $\rightarrow$ Bytecode $\rightarrow$ Evaluation loop
+- Disassembling and inspecting bytecode using the `dis` module
+- Creating custom AST transformers and code analysis tools
+- The `PyObject` C structure, reference counts, and type pointers
+- Foreign Function Interface (FFI): calling native libraries with `ctypes` and `cffi`
+- **Building High-Performance Native Extensions with Rust & PyO3**:
+  - Setting up Rust with **PyO3** and **Maturin**
+  - Exposing Rust functions and structs to Python
+  - Bypassing the Python GIL in Rust for multi-threaded CPU-bound compute
+  - Benchmarking Python vs Rust-accelerated Python
+
+**Why it matters:** When pure Python hits a CPU performance ceiling, senior developers write native extensions. Combining Python's developer ergonomics with Rust's raw speed and safety is the modern industry standard (as done by Polars, Pydantic, and Ruff).
+
+**Mini Project:** Write a **High-Performance Cryptographic / Mathematical Compute Extension in Rust using PyO3**, package it with `maturin`, import it in Python, and benchmark a 20x–100x speedup over pure Python.
+
+---
+
+### Module 21: Strict Static Typing & Modern Python Packaging
+**Topics:**
+- Static vs Dynamic analysis: configuring `mypy` and `pyright` in strict mode
+- Advanced typing system:
+  - `TypeVar`, `Generic`, Covariance and Contravariance
+  - Structural subtyping with `typing.Protocol` (duck typing formalized)
+  - `ParamSpec` and `Concatenate` for precise decorator typing
+  - Type narrowing: `TypeGuard`, `TypeIs` (Python 3.13), `Literal`, `overload`
+  - `TypedDict`, `Self`, `Never`, `assert_never`
+- Packaging standards (PEP 517, PEP 518, PEP 621):
+  - Structuring `pyproject.toml`
+  - Building source distributions (`sdist`) and binary wheels (`bdist_wheel`)
+  - Publishing packages to **PyPI** / TestPyPI using `twine` or `uv publish`
+- Building professional CLI tools with **Typer** and **Rich**
+
+**Why it matters:** Strict static typing prevents runtime bugs before code ever executes. Packaging and distributing your libraries to PyPI allows sharing your tools across organizations and the global open-source community.
+
+**Mini Project:** Build a **Production-Ready Open-Source CLI Tool** using `Typer` and `Rich`, typed with 100% strict `mypy` compliance (using generics and protocols), package it with `pyproject.toml`, and publish it to TestPyPI.
+
+---
+
+## Phase 7: Cross-Domain Foundations & Capstone
+
+### Module 22: High-Performance Data Engineering & Web Automation Foundations
+**Topics:**
+- Fast tabular data processing: **Polars** (Rust-based columnar engine) vs **NumPy** & **Pandas**
+- Lazy query evaluation, streaming datasets, and memory-efficient data transformations
+- Modern web scraping and browser automation:
+  - Resilient HTTP scraping with `selectolax` / `BeautifulSoup`
+  - Headless browser automation with **Playwright for Python** (handling JavaScript rendering, dynamic SPAs, intercepting network requests)
+  - Anti-bot mitigation, rotating proxies, and polite crawling
+
+**Why it matters:** Python is the undisputed leader in data processing and web automation. Understanding Polars and Playwright gives you immediate superpowers for data extraction and analytics pipelines.
+
+**Mini Project:** Build an **Automated Market Price Scraper & Analytics Pipeline** that uses `Playwright` to extract dynamic pricing data from e-commerce sites, transforms the dataset with `Polars` lazy frames, and outputs analytical metrics.
+
+---
+
+### Module 23: AI Engineering & LLM Integration Fundamentals
+**Topics:**
+- Interfacing with LLM APIs using Python SDKs (OpenAI, Anthropic, Gemini)
+- Structured outputs with Pydantic and JSON mode
+- Implementing Function Calling / Tool Calling in Python
+- Embeddings and Vector Databases (e.g., Qdrant, ChromaDB, pgvector)
+- Building a basic Retrieval-Augmented Generation (RAG) pipeline in pure Python without heavy framework overhead
+
+**Why it matters:** Modern software engineers are expected to integrate AI models and semantic search into traditional backend services.
+
+**Mini Project:** Build an **Intelligent Document Search & Q&A Service** that embeds PDF documents into `pgvector` / ChromaDB and exposes a FastAPI endpoint with structured LLM tool-calling responses.
+
+---
+
+### Module 24: Final Capstone Project – High-Performance Distributed Microservices Platform
+**Project Scope:**
+Design, build, test, and deploy a production-grade, distributed multi-tenant platform combining all disciplines learned:
+
+1. **Core Backend:** FastAPI with async SQLAlchemy 2.0, PostgreSQL, and strict Pydantic v2 schemas.
+2. **Security & Auth:** OAuth2 with JWT token rotation, RBAC, and Redis-backed rate limiting.
+3. **Real-Time Layer:** WebSocket cluster with pub/sub broadcast for live events.
+4. **Native Acceleration:** CPU-heavy algorithmic computation module written in **Rust using PyO3**.
+5. **Distributed Processing:** Celery/ARQ workers consuming tasks from RabbitMQ/Kafka with dead-letter queue handling.
+6. **Data & AI:** Polars analytics generation pipeline with vector search capabilities.
+7. **Quality & Types:** 100% strict Mypy type-checked, comprehensive Pytest suite (>90% coverage with fixtures, mocks, and integration tests).
+8. **DevOps & Deployment:** Multi-stage Dockerized containers, `docker-compose`, Nginx reverse proxy, Prometheus/Grafana monitoring, and GitHub Actions CI/CD pipeline.
+
+**Deliverable:** A production-ready GitHub repository with full architecture documentation, automated deployment scripts, and complete test suites.
+
+---
+
+## Continuous Mastery Resources & Books
+
+- **Books:**
+  - *Fluent Python (2nd Edition)* by Luciano Ramalho *(Essential for pythonic mastery)*
+  - *CPython Internals* by Anthony Shaw *(Essential for VM, AST, and runtime mechanics)*
+  - *Architecture Patterns with Python* by Harry Percival & Bob Gregory *(Essential for domain-driven design)*
+  - *High Performance Python* by Micha Gorelick & Ian Ozsvald *(Essential for profiling and scaling)*
+- **Core PEPs to Study:**
+  - PEP 8 (Style), PEP 484 (Type Hints), PEP 517/518/621 (Packaging)
+  - PEP 684 (Per-Interpreter GIL), PEP 703 (Free-Threaded CPython)
+- **Open Source Contributions:** Read and contribute to libraries like FastAPI, Pydantic, Ruff, or HTTPX.

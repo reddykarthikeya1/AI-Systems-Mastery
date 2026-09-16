@@ -1,0 +1,64 @@
+[project]
+name = "data-structures-and-algorithms-mastery"
+version = "1.0.0"
+description = "SOTA Data Structures & Algorithms Mastery (0 to 100)"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.0.0",
+    "hypothesis>=6.100.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+markers = [
+    "perf: asserts a claimed speed-up is real - these FAIL if the fast algorithm is not faster",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+ignore = [
+    # `O(α(n))` is the correct notation for the inverse Ackermann function in
+    # the union-find complexity bound. It is mathematics, not a typo for "a".
+    "RUF002",
+    # `zip(a, a[1:])` is the deliberate pairwise idiom used throughout this
+    # course to check that consecutive elements satisfy a property. The two
+    # arguments are ragged BY DESIGN, so `strict=True` would raise and
+    # `strict=False` adds noise without adding meaning.
+    "B905",
+    "RUF007",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Debug labs are DELIBERATELY non-idiomatic: they contain planted defects and
+# exist to be diagnosed. Linting them would either flag the defects - spoiling
+# the exercise - or pressure someone into "fixing" them, which destroys the lab.
+"**/debug_lab/*.py" = ["ALL"]
+
+# Problem stubs and reference solutions carry the full problem statement in
+# their module docstring: constraints, worked examples, and a hint ladder.
+# That is prose, and reflowing it to 100 columns makes it harder to read, not
+# easier. The CODE in these files is still linted.
+"**/problems/p*.py" = ["E501", "ARG", "F401"]
+"**/problems/solutions/*.py" = ["E501"]
+
+# Problem-bank tests: cross-check loops use compact bodies and zip(a, a[1:])
+# pairings where that most clearly mirrors the model being compared against,
+# and assertion messages are deliberately long enough to be self-explaining.
+"**/problems/tests/*.py" = ["E501", "E701", "E702", "B905", "RUF007"]
+
+# Starters are unimplemented on purpose: unused arguments, single-raise bodies.
+"**/starter/*.py" = ["ARG", "B", "SIM", "F401", "E501"]
+
+# Notebook cells are self-contained units; an import belongs in the cell that
+# needs it rather than hoisted to the top of the file.
+#
+# I001 is exempt for the same reason E402 is. The setup cell has to run
+# `sys.path.insert(...)` pointing at `problems/solutions` BEFORE it can import
+# any problem module, which necessarily splits the imports into two blocks with
+# a statement between them. isort wants one contiguous block at the top; here
+# that ordering is not available, because the path must be set first.
+"*.ipynb" = ["E402", "E501", "I001"]

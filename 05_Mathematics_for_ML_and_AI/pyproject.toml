@@ -1,0 +1,52 @@
+[project]
+name = "ml-math"
+version = "0.1.0"
+description = "The mathematics of machine learning, built from the ground up and verified in code"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-timeout>=2.2",
+    "ruff>=0.4",
+]
+notebook = [
+    "nbclient>=0.9",
+    "nbformat>=5.9",
+    "ipykernel>=6.29",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+timeout = 300
+markers = [
+    "perf: asserts a performance property rather than a correctness one",
+]
+# norecursedirs REPLACES pytest's defaults rather than extending them, so the
+# defaults have to be restated here or they are silently lost.
+norecursedirs = [
+    "*.egg", ".*", "_darcs", "build", "CVS", "dist", "node_modules", "venv", "{arch}",
+    "starter", "debug_lab",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/starter/*.py" = ["ARG", "B", "SIM"]
+"**/debug_lab/*.py" = ["ALL"]
+
+# Logic tests classify expressions like `p or not p` and `p and not p`. SIM220
+# and SIM221 want those replaced with `True` and `False` - which would delete
+# the tautology and the contradiction the test exists to classify. E731 permits
+# the one-line lambdas used as predicates, which is what a predicate is.
+"Module_02_Logic_for_Precise_Reasoning/project_solution/test_*.py" = [
+    "SIM220", "SIM221", "E731",
+]

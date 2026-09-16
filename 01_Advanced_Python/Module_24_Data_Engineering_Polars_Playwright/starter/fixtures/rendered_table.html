@@ -1,0 +1,30 @@
+<!doctype html><html><head>
+<meta charset="utf-8"><title>Rendered Table</title>
+<style>body{font:14px system-ui;margin:2rem}table{border-collapse:collapse}
+td,th{border:1px solid #ccc;padding:.4rem .7rem}
+.product-card{border:1px solid #ddd;padding:.6rem;margin:.4rem 0}</style></head><body>
+<h1>Product Catalogue</h1>
+<p id="status">Loading products&hellip;</p>
+<table id="product-table">
+  <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Rating</th><th>Stock</th></tr></thead>
+  <tbody><!-- INTENTIONALLY EMPTY: JavaScript fills this in below.
+       A requests+BeautifulSoup scrape sees exactly this comment. --></tbody>
+</table>
+<script>
+const DATA = [{"sku": "SKU-1001", "name": "Mechanical Keyboard", "category": "peripherals", "price": "$189.99", "rating": 4.6, "in_stock": "in stock"}, {"sku": "SKU-1002", "name": "27in 4K Monitor", "category": "displays", "price": "$649.00", "rating": 4.4, "in_stock": "in stock"}, {"sku": "SKU-1003", "name": "Noise Cancel Headset", "category": "audio", "price": "$299.50", "rating": 4.8, "in_stock": "in stock"}, {"sku": "SKU-1004", "name": "USB-C Dock 11-port", "category": "peripherals", "price": "$249.00", "rating": 4.1, "in_stock": "out of stock"}, {"sku": "SKU-1005", "name": "Studio Microphone", "category": "audio", "price": "$429.00", "rating": 4.7, "in_stock": "in stock"}, {"sku": "SKU-1006", "name": "Ultrawide 34in", "category": "displays", "price": "$1,299.00", "rating": 4.5, "in_stock": "in stock"}, {"sku": "SKU-1007", "name": "Ergonomic Mouse", "category": "peripherals", "price": "$89.95", "rating": 4.3, "in_stock": "in stock"}, {"sku": "SKU-1008", "name": "Desk Audio Interface", "category": "audio", "price": "$199.00", "rating": 4.2, "in_stock": "out of stock"}, {"sku": "SKU-1009", "name": "Portable 15in Screen", "category": "displays", "price": "$379.00", "rating": 4.0, "in_stock": "in stock"}, {"sku": "SKU-1010", "name": "Split Keyboard", "category": "peripherals", "price": "$329.00", "rating": 4.9, "in_stock": "in stock"}, {"sku": "SKU-1011", "name": "Reference Monitors", "category": "audio", "price": "$899.00", "rating": 4.6, "in_stock": "in stock"}, {"sku": "SKU-1012", "name": "Curved 32in QHD", "category": "displays", "price": "$529.00", "rating": 4.3, "in_stock": "in stock"}];
+// Deliberate delay so `wait_for_selector` is genuinely required.
+setTimeout(() => {
+  const tbody = document.querySelector('#product-table tbody');
+  for (const p of DATA) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${p.sku}</td><td>${p.name}</td><td>${p.category}</td>` +
+                   `<td>${p.price}</td><td>${p.rating}</td><td>${p.in_stock}</td>`;
+    tbody.appendChild(tr);
+  }
+  // A malformed row, to prove the harvester skips instead of crashing.
+  const bad = document.createElement('tr');
+  bad.innerHTML = '<td>SKU-BAD</td><td>Truncated Row</td>';
+  tbody.appendChild(bad);
+  document.getElementById('status').textContent = DATA.length + ' products loaded';
+}, 250);
+</script></body></html>

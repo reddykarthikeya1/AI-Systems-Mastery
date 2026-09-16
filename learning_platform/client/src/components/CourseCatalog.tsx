@@ -1,0 +1,161 @@
+import React, { useState } from 'react';
+import { BookOpen, Clock, ArrowRight, Play, CheckCircle2 } from 'lucide-react';
+import { CourseSummary, ProgressPayload } from '../types';
+
+interface CourseCatalogProps {
+  courses: CourseSummary[];
+  progress: ProgressPayload;
+  onSelectCourse: (courseId: string) => void;
+}
+
+export const CourseCatalog: React.FC<CourseCatalogProps> = ({
+  courses,
+  progress,
+  onSelectCourse,
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  const categories = ['All', ...Array.from(new Set(courses.map((c) => c.category)))];
+
+  const filteredCourses = selectedCategory === 'All'
+    ? courses
+    : courses.filter((c) => c.category === selectedCategory);
+
+  const totalLessonsDone = progress.completed_lessons.length;
+  const currentCourse = courses.find((c) => c.id === progress.current_course) || courses[0];
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      {/* Editorial Overview Header */}
+      <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/90 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/80 pb-6">
+          <div className="flex items-center gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="text-[11px] font-mono font-medium tracking-wider text-zinc-500 uppercase">
+              Principal Systems Track · Production Curriculum
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-mono text-zinc-500">
+            <span>12 SPECIALIZATIONS</span>
+            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+            <span>1,296 LESSONS</span>
+            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+            <span>1,609 VERIFIED TESTS</span>
+          </div>
+        </div>
+
+        <div className="max-w-4xl space-y-3">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            AI Systems Mastery
+          </h1>
+
+          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+            From bare-metal CPython memory layout, cache-line B-Trees, and Raft consensus engines up to Triton FP8 kernels, Megatron 3D parallelism, vLLM PagedAttention, and multi-agent cognitive swarms.
+          </p>
+
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-normal leading-relaxed pt-1">
+            <strong className="text-zinc-900 dark:text-zinc-200 font-semibold">Built for all types of learners:</strong> This curriculum is curated for everyone who is interested—from beginners taking their first steps with interactive playgrounds to senior practitioners and research engineers mastering complex distributed systems.
+          </p>
+        </div>
+
+        <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            {currentCourse && (
+              <button
+                onClick={() => onSelectCourse(currentCourse.id)}
+                className="px-5 py-2.5 rounded-lg font-medium text-xs bg-coursera-blue hover:bg-blue-700 text-white transition-colors flex items-center gap-2 shadow-sm"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                Resume Curriculum ({currentCourse.title.split(' ')[0]})
+              </button>
+            )}
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/70 border border-zinc-200/70 dark:border-zinc-700/60 text-xs text-zinc-700 dark:text-zinc-300 font-medium">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+              <span>{totalLessonsDone} Completed</span>
+            </div>
+          </div>
+
+          <div className="text-[11px] text-zinc-400 font-mono">
+            Local sync active · Auto-saving to .study_progress.json
+          </div>
+        </div>
+      </div>
+
+      {/* Filter Tabs */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider font-mono">
+            Curriculum Catalog <span className="text-zinc-400 font-normal">({filteredCourses.length})</span>
+          </h2>
+        </div>
+
+        <div className="inline-flex flex-wrap gap-1 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200/70 dark:border-zinc-800">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-3 py-1.5 rounded-md text-xs transition-colors font-medium ${
+                selectedCategory === cat
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Courses Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredCourses.map((course) => {
+          return (
+            <div
+              key={course.id}
+              onClick={() => onSelectCourse(course.id)}
+              className="group cursor-pointer rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-400 dark:hover:border-zinc-700 p-6 transition-all flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
+            >
+              <div className="space-y-3.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
+                    Track {course.course_num.toString().padStart(2, '0')}
+                  </span>
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                    {course.difficulty}
+                  </span>
+                </div>
+
+                <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-coursera-blue transition-colors leading-snug">
+                  {course.title}
+                </h3>
+
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed">
+                  {course.description}
+                </p>
+              </div>
+
+              <div className="pt-5 mt-6 border-t border-zinc-100 dark:border-zinc-800/70 flex items-center justify-between text-xs text-zinc-500">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1 font-mono text-[11px]">
+                    <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
+                    {course.module_count} Modules
+                  </span>
+                  <span className="flex items-center gap-1 font-mono text-[11px]">
+                    <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                    {course.estimated_hours}h
+                  </span>
+                </div>
+
+                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-coursera-blue font-medium flex items-center gap-1 transition-colors text-xs">
+                  View Syllabus <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};

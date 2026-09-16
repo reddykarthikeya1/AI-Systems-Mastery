@@ -1,0 +1,209 @@
+# =============================================================================
+#  Advanced Python & Modern Systems Mastery — Course Root Configuration
+# =============================================================================
+#  This single file makes the entire 27-module course runnable with one command:
+#
+#      uv sync --all-extras          (recommended — fast, lockfile-backed)
+#      pip install -e ".[all]"       (fallback — plain pip)
+#
+#  Module 00 teaches you to read this file line by line. Everything the course
+#  imports is declared here; nothing is assumed to be "already installed".
+# =============================================================================
+
+[project]
+name = "advanced-python-course"
+version = "2.0.0"
+description = "From Absolute Zero to Polyglot Systems Architect — a 27-module production-grade Python curriculum"
+readme = "START_HERE_BEGINNER_GUIDE.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+# ---------------------------------------------------------------------------
+#  Core runtime dependencies — needed to run the demos and project solutions
+#  in Phases 1-4. Every entry below is genuinely imported somewhere in the
+#  course; run `python tools/check_deps.py` to verify that claim.
+# ---------------------------------------------------------------------------
+dependencies = [
+    # -- Phase 4: Modern Backend & API Engineering (Modules 13-17) --
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "python-multipart>=0.0.12",     # form parsing (Module 13)
+    "httpx>=0.27",                  # async HTTP client + FastAPI TestClient
+    "websockets>=13.1",             # WebSocket client tests
+    "starlette>=0.41",              # used directly in the ASGI/middleware demos
+
+    # -- Phase 4: Persistence (Module 15) --
+    "sqlalchemy[asyncio]>=2.0.36",
+    "aiosqlite>=0.20",              # async SQLite driver
+    "alembic>=1.14",                # schema migrations
+
+    # -- Phase 4: Security (Module 16) --
+    "bcrypt>=4.2",
+    "pyjwt>=2.9",
+
+    # -- Phase 4/5: Distributed systems & caching (Modules 18, 20) --
+    "redis>=5.2",                   # real broker + real cache backend
+
+    # -- Phase 5: Observability (Module 19) --
+    "prometheus-client>=0.21",
+    "rich>=13.9",                   # Module 00 project template CLI
+
+    # -- Phase 7: Data engineering & analytics (Module 24) --
+    "polars>=1.12",
+    "duckdb>=1.1",
+    "pyarrow>=18.0",                # Polars <-> Arrow interop
+
+    # -- Phase 7: AI engineering (Module 25) --
+    "numpy>=2.1",                   # real vector math, not hand-rolled loops
+    "scikit-learn>=1.5",            # TF-IDF + SVD = genuine semantic embeddings
+]
+
+[project.optional-dependencies]
+
+# Testing & quality toolchain (Modules 00, 08, 23). Install these to run `pytest`.
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "pytest-timeout>=2.3",
+    "hypothesis>=6.115",            # property-based testing (Module 08)
+    "ruff>=0.7",
+    "mypy>=1.13",
+    "types-redis",
+    "types-pyjwt",
+]
+
+# Browser automation (Module 24). After installing, run:  playwright install chromium
+web = [
+    "playwright>=1.48",
+]
+
+# Optional pre-trained neural embeddings (Module 25). The course works without
+# this: TfidfSvdEmbedder is a real, offline embedder and is the default.
+ai = [
+    "sentence-transformers>=3.3",
+]
+
+# Native extensions (Module 22). Requires a Rust toolchain: https://rustup.rs
+native = [
+    "maturin>=1.7",
+]
+
+# Notebooks (every module ships one).
+notebook = [
+    "jupyter>=1.1",
+    "ipykernel>=6.29",
+]
+
+# Everything, for the full course experience.
+all = [
+    "advanced-python-course[dev,web,native,notebook,ai]",
+]
+
+# =============================================================================
+#  Ruff — linting & formatting (taught in Module 00)
+# =============================================================================
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+    "Module_00_Environment_Tooling_Workflow/08_ruff_demo_broken.py",  # intentionally broken teaching file
+    "**/starter/**",                                                  # learner stubs may be incomplete
+    "target",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort — import ordering
+    "B",        # flake8-bugbear — likely bugs
+    "C4",       # comprehensions
+    "UP",       # pyupgrade — modern syntax
+    "SIM",      # simplify
+    "RUF",      # ruff-specific
+]
+ignore = [
+    "E501",     # line length handled by the formatter
+    "B008",     # FastAPI's Depends() in defaults is idiomatic
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/test_*.py" = ["S101"]          # asserts are the point of tests
+"**/debug_lab/*.py" = ["ALL"]      # planted-bug files must stay broken
+# RUF001 catches homoglyph attacks in *identifiers*. These files hold teaching
+# prose where typographic characters are deliberate: "32x" reads worse than
+# "32×", and an en dash in "Modules 09-12" is correct typography, not a threat.
+"tools/diagnostics_data_*.py" = ["RUF001", "E501"]
+"tools/add_diagnostics.py" = ["RUF001"]
+"tools/enrich_checkpoints.py" = ["RUF001"]
+"tools/add_mastery_checklists.py" = ["RUF001"]
+
+# =============================================================================
+#  Pytest — the learner's feedback loop
+# =============================================================================
+[tool.pytest.ini_options]
+testpaths = ["."]
+asyncio_mode = "strict"
+timeout = 120
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+markers = [
+    "slow: benchmarks and long-running tests (deselect with '-m \"not slow\"')",
+    "perf: performance assertions — these FAIL if an 'optimization' is not actually faster",
+    "requires_redis: needs a reachable Redis server on localhost:6379",
+    "requires_docker: needs a running Docker daemon",
+    "requires_browser: needs 'playwright install chromium'",
+    "requires_rust: needs a Rust toolchain + 'maturin develop'",
+    "capstone: the Module 26 final integration suite",
+]
+norecursedirs = [
+    # pytest's own defaults, restated because this key REPLACES them:
+    "*.egg", ".*", "_darcs", "build", "CVS", "dist", "node_modules", "venv", "{arch}",
+    # course-specific additions:
+    "target",           # Rust build output (Module 22)
+    "starter",          # learner stubs raise NotImplementedError by design
+    "debug_lab",        # planted-bug files are meant to fail
+]
+
+# =============================================================================
+#  Mypy — strict static typing (taught in Module 23)
+# =============================================================================
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+exclude = [
+    "starter/",
+    "debug_lab/",
+    "Module_00_Environment_Tooling_Workflow/02_ruff_demo_broken.py",
+]
+
+[[tool.mypy.overrides]]
+module = ["duckdb.*", "polars.*", "sklearn.*", "rust_accelerator.*"]
+ignore_missing_imports = true
+
+# =============================================================================
+#  Coverage
+# =============================================================================
+[tool.coverage.run]
+branch = true
+omit = ["*/test_*.py", "*/starter/*", "*/debug_lab/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

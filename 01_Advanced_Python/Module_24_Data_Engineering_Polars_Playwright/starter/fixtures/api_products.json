@@ -1,0 +1,100 @@
+{
+  "products": [
+    {
+      "sku": "SKU-1001",
+      "name": "Mechanical Keyboard",
+      "category": "peripherals",
+      "price": 189.99,
+      "rating": 4.6,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1002",
+      "name": "27in 4K Monitor",
+      "category": "displays",
+      "price": 649.0,
+      "rating": 4.4,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1003",
+      "name": "Noise Cancel Headset",
+      "category": "audio",
+      "price": 299.5,
+      "rating": 4.8,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1004",
+      "name": "USB-C Dock 11-port",
+      "category": "peripherals",
+      "price": 249.0,
+      "rating": 4.1,
+      "in_stock": false
+    },
+    {
+      "sku": "SKU-1005",
+      "name": "Studio Microphone",
+      "category": "audio",
+      "price": 429.0,
+      "rating": 4.7,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1006",
+      "name": "Ultrawide 34in",
+      "category": "displays",
+      "price": 1299.0,
+      "rating": 4.5,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1007",
+      "name": "Ergonomic Mouse",
+      "category": "peripherals",
+      "price": 89.95,
+      "rating": 4.3,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1008",
+      "name": "Desk Audio Interface",
+      "category": "audio",
+      "price": 199.0,
+      "rating": 4.2,
+      "in_stock": false
+    },
+    {
+      "sku": "SKU-1009",
+      "name": "Portable 15in Screen",
+      "category": "displays",
+      "price": 379.0,
+      "rating": 4.0,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1010",
+      "name": "Split Keyboard",
+      "category": "peripherals",
+      "price": 329.0,
+      "rating": 4.9,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1011",
+      "name": "Reference Monitors",
+      "category": "audio",
+      "price": 899.0,
+      "rating": 4.6,
+      "in_stock": true
+    },
+    {
+      "sku": "SKU-1012",
+      "name": "Curved 32in QHD",
+      "category": "displays",
+      "price": 529.0,
+      "rating": 4.3,
+      "in_stock": true
+    }
+  ]
+}

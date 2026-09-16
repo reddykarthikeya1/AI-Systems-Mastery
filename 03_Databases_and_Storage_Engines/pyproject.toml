@@ -1,0 +1,91 @@
+[project]
+name = "databases-mastery-course"
+version = "1.0.0"
+description = "Production-Grade Complete Database Systems Mastery Course (0 to 100)"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb>=0.10.0",
+    "polars>=0.20.0",
+    "pydantic>=2.7.0",
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.20.0",
+    "psycopg2-binary>=2.9.9",
+    "pymongo>=4.6.0",
+    "redis>=5.0.0",
+    "boto3>=1.34.0",
+    "numpy>=1.26.0",
+    "scikit-learn>=1.4.0",
+    "pytest-timeout>=2.3.0",
+]
+
+[project.optional-dependencies]
+relational = [
+    "psycopg2-binary>=2.9.9",
+    "mysql-connector-python>=8.3.0",
+    "mysql-replication>=1.0.0",
+    "pymysql>=1.1.0",
+]
+nosql = [
+    "pymongo>=4.6.0",
+    "redis>=5.0.0",
+    "cassandra-driver>=3.29.0",
+    "boto3>=1.34.0",
+    "botocore>=1.34.0",
+    "neo4j>=5.18.0",
+]
+analytics = [
+    "duckdb>=0.10.0",
+    "clickhouse-connect>=0.7.0",
+    # Upper bound is REQUIRED: the 9.x client rejects an 8.x server with
+    # "media_type_header_exception", because it sends a compatible-with=9
+    # Accept header the older cluster refuses. Client and server majors
+    # must match for Elasticsearch.
+    "elasticsearch>=8.12,<9",
+    "polars>=0.20.0",
+]
+vector = [
+    "pgvector>=0.2.5",
+    "qdrant-client>=1.8.0",
+    "scikit-learn>=1.4.0",
+    "numpy>=1.26.0",
+]
+oracle = [
+    "oracledb>=2.1.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.8",
+    "pytest-timeout>=2.3.0",
+    "ruff>=0.5.0",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+    "**/starter/**",     # learner scaffolds are intentionally incomplete
+    "**/debug_lab/**",   # planted-bug files must stay broken
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+asyncio_mode = "strict"
+addopts = "--strict-markers"
+filterwarnings = [
+    "ignore::DeprecationWarning:cassandra.io.asyncorereactor",
+]
+markers = [
+    "requires_postgres: marks test as requiring a running PostgreSQL instance",
+    "requires_mysql: marks test as requiring a running MySQL instance",
+    "requires_mongo: marks test as requiring a running MongoDB instance",
+    "requires_redis: marks test as requiring a running Redis instance",
+    "requires_cassandra: marks test as requiring a running Cassandra cluster",
+    "requires_neo4j: marks test as requiring a running Neo4j instance",
+    "requires_elastic: marks test as requiring a running Elasticsearch cluster",
+    "requires_clickhouse: marks test as requiring a running ClickHouse server",
+    "requires_oracle: marks test as requiring a running Oracle database instance",
+    "requires_dynamo: marks test as requiring a running DynamoDB Local instance",
+    "requires_duckdb: marks test as requiring DuckDB",
+    "slow: marks test as slow-running integration test",
+    "perf: marks test as a performance benchmark assertion",
+]

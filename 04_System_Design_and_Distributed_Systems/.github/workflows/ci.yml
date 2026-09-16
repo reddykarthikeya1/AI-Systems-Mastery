@@ -1,0 +1,132 @@
+# =============================================================================
+#  System Design Mastery — Continuous Integration
+# =============================================================================
+#  Module 25 teaches observability and Module 19 teaches CI-grade discipline.
+#  This file applies both to the course itself: every push proves the material
+#  still works, rather than asserting that it does.
+#
+#  Five gates, each catching a defect class this course has actually shipped:
+#    1. lint       — ruff
+#    2. links      — no broken internal link, no absolute machine path
+#    3. test        — the full suite on three Python versions
+#    4. notebooks   — every notebook EXECUTES (the old ones only pretended to)
+#    5. integrity   — starters really fail; solutions disclose they are models
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: Ruff (lint)
+        run: ruff check .
+      - name: Ruff (format check)
+        run: ruff format --check . || true   # advisory
+
+  links:
+    name: Link integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: No broken links, no absolute paths
+        run: python tools/check_links.py
+
+  test:
+    name: Tests (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: Prerequisites
+        run: python tools/check_deps.py
+      - name: Full suite
+        run: pytest -v
+
+  notebooks:
+    name: Notebooks execute
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev,notebook]"
+      - name: Every notebook must run top to bottom
+        # The deliberately-broken teaching cell is excluded by name; everything
+        # else must execute. A notebook that only prints claims would pass a
+        # "does it open" check and fail this one.
+        run: |
+          python - <<'EOF'
+          import sys
+          from pathlib import Path
+          import nbformat
+          from nbclient import NotebookClient
+
+          failures = []
+          for f in sorted(Path('.').glob('Module_*/*.ipynb')):
+              nb = nbformat.read(f, as_version=4)
+              nb.cells = [c for c in nb.cells
+                          if 'DELIBERATELY BROKEN' not in ''.join(c.get('source', ''))]
+              try:
+                  NotebookClient(
+                      nb, timeout=300, kernel_name='python3',
+                      resources={'metadata': {'path': str(f.parent)}},
+                      allow_errors=False,
+                  ).execute()
+                  print(f'ok   {f.parts[0]}')
+              except Exception as exc:
+                  failures.append((f.parts[0], str(exc).strip().splitlines()[-1]))
+                  print(f'FAIL {f.parts[0]}')
+
+          if failures:
+              print(f'\n{len(failures)} notebook(s) failed:')
+              for mod, err in failures:
+                  print(f'  {mod}: {err[:160]}')
+              sys.exit(1)
+          print('\nall notebooks executed')
+          EOF
+
+  integrity:
+    name: Pedagogical integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: Starters must FAIL against the shipped tests
+        # If a starter passes, the learner writes nothing, sees green, and the
+        # course has certified non-work. This gate makes that unmergeable.
+        run: python tools/check_integrity.py
