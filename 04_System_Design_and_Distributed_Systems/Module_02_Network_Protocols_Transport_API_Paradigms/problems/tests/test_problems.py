@@ -1,27 +1,19 @@
-"""Pytest suite for Network Protocols Transport API Paradigms problem bank."""
-
+"""Tests for Sliding Window Flow Control."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_sliding_window_flow_control import sliding_window_flow_control
+except ImportError:
+    from p01_sliding_window_flow_control import sliding_window_flow_control
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_sliding_window_flow_control():
+    # Packets 0, 2 arrive. Expected becomes 1, 2 is buffered.
+    # Packet 1 arrives -> both 1 and 2 deliver, expected becomes 3.
+    exp, buf = sliding_window_flow_control(4, [0, 2, 1])
+    assert exp == 3
+    assert buf == []
+    exp2, buf2 = sliding_window_flow_control(4, [0, 2])
+    assert exp2 == 1
+    assert buf2 == [2]

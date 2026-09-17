@@ -1,0 +1,53 @@
+{
+  "title": "Distributed Checkpointing (DCP) Shard Consolidation",
+  "algorithm": "Parallel Checkpoint Shard Merge",
+  "timeComplexity": "O(K log K + N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Collect async state dict slices from rank 0 and rank 1",
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": {
+        "r0": 0,
+        "r1": 2
+      },
+      "highlights": {
+        "0": "active",
+        "2": "active"
+      },
+      "variables": {
+        "ranks": 2
+      },
+      "invariants": "Zero GPU blocking during checkpoint write"
+    },
+    {
+      "step": 2,
+      "description": "Concatenate slices in deterministic rank order: unified master weight checkpoint saved",
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": {
+        "done": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "unified_length": 4
+      },
+      "invariants": "Instantaneous fault tolerance recovery ready"
+    }
+  ]
+}

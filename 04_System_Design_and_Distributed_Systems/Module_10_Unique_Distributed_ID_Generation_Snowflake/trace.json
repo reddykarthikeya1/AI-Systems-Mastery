@@ -1,0 +1,48 @@
+{
+  "title": "Twitter Snowflake 64-bit ID Generation",
+  "algorithm": "Distributed Snowflake Generator",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Pack 41-bit millisecond delta + 10-bit machine ID 5",
+      "array": [
+        41,
+        10,
+        12
+      ],
+      "pointers": {
+        "ts": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "epoch_delta_ms": 1000
+      },
+      "invariants": "Monotonically increasing time"
+    },
+    {
+      "step": 2,
+      "description": "Bitwise OR 12-bit sequence counter 1: composite 64-bit ID generated",
+      "array": [
+        41,
+        10,
+        12
+      ],
+      "pointers": {
+        "seq": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "id": 4194324481
+      },
+      "invariants": "Zero cross-node collision guarantee"
+    }
+  ]
+}

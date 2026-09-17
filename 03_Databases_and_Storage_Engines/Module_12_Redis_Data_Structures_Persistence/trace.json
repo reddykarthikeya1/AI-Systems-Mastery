@@ -1,0 +1,46 @@
+{
+  "title": "Redis Ziplist Memory Packing",
+  "algorithm": "Ziplist Serialization",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(B)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Pack header: 4-byte total length, 2-byte entry count",
+      "array": [
+        6,
+        12,
+        18
+      ],
+      "pointers": {
+        "hdr": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "entries": 3
+      },
+      "invariants": "Zero memory pointer overhead"
+    },
+    {
+      "step": 2,
+      "description": "Serialize contiguous elements with prefix length descriptors",
+      "array": [
+        6,
+        12,
+        18
+      ],
+      "pointers": {
+        "body": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "bytes_written": 18
+      },
+      "invariants": "Cache-friendly memory layout"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Gradient Descent with Armijo Backtracking Line Search",
+  "algorithm": "Backtracking Line Search",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute directional derivative -grad: evaluate candidate step lr=0.1",
+      "array": [
+        20,
+        16
+      ],
+      "pointers": {
+        "x": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "curr_x": 2.0,
+        "grad": 4.0
+      },
+      "invariants": "Steepest descent vector"
+    },
+    {
+      "step": 2,
+      "description": "Armijo sufficient decrease criterion met: accept candidate x=1.6",
+      "array": [
+        20,
+        16
+      ],
+      "pointers": {
+        "cand": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "loss": 2.56
+      },
+      "invariants": "Monotonic loss decrease guaranteed"
+    }
+  ]
+}

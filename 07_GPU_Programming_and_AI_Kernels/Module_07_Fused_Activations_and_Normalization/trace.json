@@ -1,0 +1,51 @@
+{
+  "title": "Fused LayerNorm Single-Pass Welford Moments",
+  "algorithm": "Welford One-Pass Variance Algorithm",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Stream values through registers: accumulate online mean and M2 variance accumulator",
+      "array": [
+        2,
+        4,
+        4,
+        4,
+        5,
+        5,
+        7,
+        9
+      ],
+      "pointers": {
+        "stream": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "running_mean": 5.0
+      },
+      "invariants": "Zero intermediate DRAM roundtrip"
+    },
+    {
+      "step": 2,
+      "description": "Emit finalized layer moments: mean=5.0, variance=4.0 for fused normalization",
+      "array": [
+        5,
+        4
+      ],
+      "pointers": {
+        "moments": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "variance": 4.0
+      },
+      "invariants": "Memory bandwidth bound 4x speedup"
+    }
+  ]
+}

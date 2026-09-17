@@ -1,0 +1,53 @@
+{
+  "title": "Raft Consensus Leader Election Quorum",
+  "algorithm": "Raft Leader Election",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Candidate self-votes and tallies votes in term 3: received 3/5 votes",
+      "array": [
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "pointers": {
+        "quorum": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "votes": 3,
+        "required": 3
+      },
+      "invariants": "Strict majority quorum achieved"
+    },
+    {
+      "step": 2,
+      "description": "Promote node to LEADER for term 3: broadcast initial empty heartbeat",
+      "array": [
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "pointers": {
+        "leader": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "state": "LEADER"
+      },
+      "invariants": "Split-brain prevented"
+    }
+  ]
+}

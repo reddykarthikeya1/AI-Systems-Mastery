@@ -1,0 +1,48 @@
+{
+  "title": "PostgreSQL MVCC Snapshot Visibility Check",
+  "algorithm": "MVCC Visibility Rules",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Verify xmin (90) < snapshot_xmin (100): Tuple creation committed",
+      "array": [
+        90,
+        100,
+        105
+      ],
+      "pointers": {
+        "xmin": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "xmin": 90,
+        "visible_create": true
+      },
+      "invariants": "xmin committed before earliest active xid"
+    },
+    {
+      "step": 2,
+      "description": "Verify xmax is None: Tuple not deleted",
+      "array": [
+        90,
+        100,
+        105
+      ],
+      "pointers": {
+        "xmax": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "xmax": null,
+        "visible": true
+      },
+      "invariants": "Tuple visible in snapshot"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "title": "IVF-Flat Nearest Neighbor Centroid Probe",
+  "algorithm": "Inverted File Index (IVF)",
+  "timeComplexity": "O(K*D + (N/K)*D)",
+  "spaceComplexity": "O(V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Probe nearest Voronoi centroid: centroid 0 selected",
+      "array": [
+        0,
+        1
+      ],
+      "pointers": {
+        "probe": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "nprobe": 1,
+        "dist": 0.005
+      },
+      "invariants": "Prunes 90% unneeded vector comparisons"
+    },
+    {
+      "step": 2,
+      "description": "Flat scan vectors in cluster 0: return nearest vector IDs [1, 2]",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "vec": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "nearest": [
+          1,
+          2
+        ]
+      },
+      "invariants": "Sub-millisecond approximate nearest neighbor result"
+    }
+  ]
+}

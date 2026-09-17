@@ -1,0 +1,46 @@
+{
+  "title": "Amazon Flash Sale Atomic Inventory Reservation",
+  "algorithm": "Atomic Stock Reservation",
+  "timeComplexity": "O(R)",
+  "spaceComplexity": "O(I)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Order ord_1 reserves 2 GPUs: stock decrements from 3 to 1",
+      "array": [
+        3,
+        1,
+        0
+      ],
+      "pointers": {
+        "stock": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "reserved": 2
+      },
+      "invariants": "Stock never negative"
+    },
+    {
+      "step": 2,
+      "description": "Order ord_2 requests 2 GPUs: insufficient stock (1 available) -> rejected",
+      "array": [
+        3,
+        1,
+        0
+      ],
+      "pointers": {
+        "stock": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "rejected": "ord_2"
+      },
+      "invariants": "Overselling strictly prevented"
+    }
+  ]
+}

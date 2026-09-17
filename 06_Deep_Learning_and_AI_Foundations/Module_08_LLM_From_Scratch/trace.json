@@ -1,0 +1,46 @@
+{
+  "title": "RoPE Rotary Position Embedding 2D Projection",
+  "algorithm": "Rotary Position Embedding (RoPE)",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Position m=0: rotation angle phi=0.0 rad (cos=1.0, sin=0.0)",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "rope": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "phi": 0.0
+      },
+      "invariants": "Identity at origin"
+    },
+    {
+      "step": 2,
+      "description": "Position m=1: rotate query/key vectors in complex plane",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "rope": 1
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "phi": 1.0
+      },
+      "invariants": "Relative distance encoded as inner product rotation"
+    }
+  ]
+}

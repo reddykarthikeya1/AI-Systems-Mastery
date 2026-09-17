@@ -1,0 +1,50 @@
+{
+  "title": "Dependency Inversion Container Toposort",
+  "algorithm": "Kahn's Topological Sort",
+  "timeComplexity": "O(V + E)",
+  "spaceComplexity": "O(V + E)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Identify leaf dependencies with indegree 0: [Database]",
+      "array": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "leaf": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "instantiated": "Database"
+      },
+      "invariants": "Zero unresolved dependencies"
+    },
+    {
+      "step": 2,
+      "description": "Cascade resolve Repository -> Service -> Controller",
+      "array": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "tail": 3
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "order_len": 4
+      },
+      "invariants": "Clean architecture dependency graph resolved"
+    }
+  ]
+}

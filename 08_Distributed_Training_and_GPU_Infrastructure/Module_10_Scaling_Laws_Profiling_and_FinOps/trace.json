@@ -1,0 +1,49 @@
+{
+  "title": "Chinchilla Compute-Optimal Frontier Allocation",
+  "algorithm": "Chinchilla Scaling Laws",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Input training FLOP budget C = 6e18: evaluate parameter/token trade-off",
+      "array": [
+        6,
+        1,
+        1
+      ],
+      "pointers": {
+        "c": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "FLOPs": "6e18"
+      },
+      "invariants": "C ~= 6 * N * D"
+    },
+    {
+      "step": 2,
+      "description": "Equal scaling equilibrium: N = 1.0B parameters, D = 1.0B tokens",
+      "array": [
+        6,
+        1,
+        1
+      ],
+      "pointers": {
+        "n": 1,
+        "d": 2
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "optimal_params": "1.0B",
+        "optimal_tokens": "1.0B"
+      },
+      "invariants": "Loss minimized per dollar spent"
+    }
+  ]
+}

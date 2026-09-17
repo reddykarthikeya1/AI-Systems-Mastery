@@ -8,6 +8,9 @@ import {
   DsaRunResult,
   SqlResult,
   FormatCodeResult,
+  ModuleProblem,
+  ModuleProblemsResponse,
+  ProblemRunResult,
 } from '../types';
 
 const API_BASE = '/api';
@@ -146,5 +149,38 @@ export async function fetchModuleTrace(modulePath: string): Promise<any | null> 
     console.warn('Could not fetch module trace', e);
   }
   return null;
+}
+
+export async function fetchModuleProblems(modulePath: string): Promise<ModuleProblemsResponse> {
+  const res = await fetch(`${API_BASE}/problems?module_path=${encodeURIComponent(modulePath)}`);
+  if (!res.ok) {
+    return {
+      has_problems: false,
+      module_path: modulePath,
+      readme: null,
+      problems: [],
+    };
+  }
+  return res.json();
+}
+
+export async function runProblemTest(
+  modulePath: string,
+  problemFilename: string,
+  code: string
+): Promise<ProblemRunResult> {
+  const res = await fetch(`${API_BASE}/run-problem-test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      module_path: modulePath,
+      problem_filename: problemFilename,
+      code,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error('Problem test execution failed');
+  }
+  return res.json();
 }
 

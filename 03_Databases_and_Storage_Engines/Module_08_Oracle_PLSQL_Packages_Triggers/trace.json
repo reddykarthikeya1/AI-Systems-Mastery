@@ -1,0 +1,44 @@
+{
+  "title": "PL/SQL Row-Level Trigger Delta Audit",
+  "algorithm": "Change Data Audit Trigger",
+  "timeComplexity": "O(F)",
+  "spaceComplexity": "O(F)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compare old_row and new_row across schema columns",
+      "array": [
+        5000,
+        6000
+      ],
+      "pointers": {
+        "col": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "col": "salary"
+      },
+      "invariants": "Column diff detected"
+    },
+    {
+      "step": 2,
+      "description": "Emit immutable audit delta record",
+      "array": [
+        5000,
+        6000
+      ],
+      "pointers": {
+        "col": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "delta_entries": 1
+      },
+      "invariants": "Audit trail updated"
+    }
+  ]
+}

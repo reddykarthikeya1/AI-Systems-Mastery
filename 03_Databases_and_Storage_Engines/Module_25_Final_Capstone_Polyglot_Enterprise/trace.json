@@ -1,0 +1,48 @@
+{
+  "title": "Polyglot Change Data Capture (CDC) Pipeline",
+  "algorithm": "Ordered CDC Stream Materialization",
+  "timeComplexity": "O(E log E)",
+  "spaceComplexity": "O(V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Sort out-of-order events by monotonically increasing log sequence number (LSN)",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "seq": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "lsn": 1
+      },
+      "invariants": "Sequential causal order ensured"
+    },
+    {
+      "step": 2,
+      "description": "Materialize final balance view in real-time OLAP store",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "view": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "A1_balance": 150.0
+      },
+      "invariants": "Idempotent downstream sync verified"
+    }
+  ]
+}

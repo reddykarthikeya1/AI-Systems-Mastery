@@ -1,0 +1,44 @@
+{
+  "title": "Agent Execution AST Static Security Sandbox",
+  "algorithm": "Python AST Security Static Analysis",
+  "timeComplexity": "O(Nodes)",
+  "spaceComplexity": "O(AST)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Parse snippet into Abstract Syntax Tree (AST): walk import nodes",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "tree": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "ast_nodes": 4
+      },
+      "invariants": "Static analysis prior to execution"
+    },
+    {
+      "step": 2,
+      "description": "Detect 'import os' forbidden syscall: block execution with security violation",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "violation": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "safe": false
+      },
+      "invariants": "Host sandbox protected against RCE"
+    }
+  ]
+}

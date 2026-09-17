@@ -1,0 +1,48 @@
+{
+  "title": "Google SimHash Near-Duplicate Web Page Detection",
+  "algorithm": "SimHash Locality-Sensitive Hashing",
+  "timeComplexity": "O(T)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Generate 16-bit weighted SimHash vectors from token streams",
+      "array": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "fp": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "tokens": 5
+      },
+      "invariants": "Locality-preserving hash"
+    },
+    {
+      "step": 2,
+      "description": "Bitwise XOR fingerprints: hamming distance 0 <= threshold 3 -> duplicate filtered",
+      "array": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "fp": 1
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "is_dup": true
+      },
+      "invariants": "Prevent crawling duplicate content"
+    }
+  ]
+}

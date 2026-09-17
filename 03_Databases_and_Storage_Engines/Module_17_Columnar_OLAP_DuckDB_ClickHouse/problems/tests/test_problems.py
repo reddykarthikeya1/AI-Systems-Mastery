@@ -1,30 +1,13 @@
-"""Pytest suite for Columnar OLAP DuckDB ClickHouse problem bank."""
-
+"""Tests for Run Length Encoding Decompress."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_run_length_encoding_decompress import run_length_encoding_decompress
+except ImportError:
+    from p01_run_length_encoding_decompress import run_length_encoding_decompress
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_run_length_encoding_decompress():
+    assert run_length_encoding_decompress([(3, 100), (2, 200), (1, 300)]) == [100, 100, 100, 200, 200, 300]
+    assert run_length_encoding_decompress([]) == []

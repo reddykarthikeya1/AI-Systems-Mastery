@@ -1,0 +1,49 @@
+{
+  "title": "LoRA Adapter Fold & Weight Merge",
+  "algorithm": "LoRA Low-Rank Weight Folding",
+  "timeComplexity": "O(d_out * r * d_in)",
+  "spaceComplexity": "O(d_out * d_in)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Multiply adapter matrices B (d_out x r) and A (r x d_in) with scaling alpha/r = 4.0",
+      "array": [
+        1,
+        4
+      ],
+      "pointers": {
+        "scale": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "scale": 4.0
+      },
+      "invariants": "Parameter-efficient adaptation"
+    },
+    {
+      "step": 2,
+      "description": "Elementwise add delta into base weight W: zero serving latency penalty",
+      "array": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "pointers": {
+        "merged": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "zero_inference_overhead": true
+      },
+      "invariants": "Exact model parameter consolidation"
+    }
+  ]
+}

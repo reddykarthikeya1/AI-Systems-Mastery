@@ -1,0 +1,46 @@
+{
+  "title": "Machine Translation BLEU-1 Clipped N-Gram Metric",
+  "algorithm": "Clipped Unigram Precision",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Count occurrences in candidate and clip against reference counts",
+      "array": [
+        2,
+        2
+      ],
+      "pointers": {
+        "the": 0,
+        "cat": 1
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "clipped_matches": 4
+      },
+      "invariants": "Repetition gaming penalized"
+    },
+    {
+      "step": 2,
+      "description": "Compute precision ratio: 4/4 = 1.0000",
+      "array": [
+        4,
+        4
+      ],
+      "pointers": {
+        "bleu": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "bleu1": 1.0
+      },
+      "invariants": "Standard NLP evaluation metric verified"
+    }
+  ]
+}

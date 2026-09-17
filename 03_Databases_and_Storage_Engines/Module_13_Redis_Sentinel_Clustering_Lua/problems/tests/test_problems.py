@@ -1,30 +1,17 @@
-"""Pytest suite for Redis Sentinel Clustering Lua problem bank."""
-
+"""Tests for Redis Crc16 Hash Slot."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_redis_crc16_hash_slot import redis_crc16_hash_slot
+except ImportError:
+    from p01_redis_crc16_hash_slot import redis_crc16_hash_slot
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_redis_crc16_hash_slot():
+    slot1 = redis_crc16_hash_slot("user:100:profile")
+    slot2 = redis_crc16_hash_slot("{user:100}:orders")
+    slot3 = redis_crc16_hash_slot("{user:100}:profile")
+    assert 0 <= slot1 < 16384
+    # Hash tags should guarantee exact same slot
+    assert slot2 == slot3

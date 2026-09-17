@@ -1,0 +1,44 @@
+{
+  "title": "Redis Cluster CRC16 Hash Slot Calculation",
+  "algorithm": "CRC16 Hash Slot Routing",
+  "timeComplexity": "O(K)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Extract hash tag {user:100}: target tag 'user:100'",
+      "array": [
+        100,
+        16384
+      ],
+      "pointers": {
+        "key": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "tag": "user:100"
+      },
+      "invariants": "Co-locate related keys on same cluster node"
+    },
+    {
+      "step": 2,
+      "description": "Compute CRC16 modulo 16384: slot mapped",
+      "array": [
+        100,
+        16384
+      ],
+      "pointers": {
+        "slot": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "slot": 5432
+      },
+      "invariants": "Slot within [0..16383] range"
+    }
+  ]
+}

@@ -1,26 +1,21 @@
-"""Pytest suite for SQLAlchemy Alembic Database problem bank."""
-
+"""Tests for Unit of Work Transaction Manager."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import pytest
+from p01_transactional_uow import UnitOfWork
+
+
 import pytest
 
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
-
-
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_transactional_uow():
+    uow = UnitOfWork()
+    with uow:
+        pass
+    assert uow.state == 'committed'
+    assert uow.log == ['commit']
+    uow2 = UnitOfWork()
+    with pytest.raises(RuntimeError):
+        with uow2:
+            raise RuntimeError('db error')
+    assert uow2.state == 'rolled_back'
+    assert uow2.log == ['rollback']

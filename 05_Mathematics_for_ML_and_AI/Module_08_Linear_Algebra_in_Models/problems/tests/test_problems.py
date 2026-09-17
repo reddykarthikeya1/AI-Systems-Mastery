@@ -1,27 +1,17 @@
-"""Pytest suite for Linear Algebra in Models problem bank."""
-
+"""Tests for Ridge Regression Closed Form."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_ridge_regression_closed_form import ridge_regression_closed_form
+except ImportError:
+    from p01_ridge_regression_closed_form import ridge_regression_closed_form
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_ridge_regression_closed_form():
+    X = [1.0, 2.0, 3.0]
+    y = [2.0, 4.0, 6.0]
+    w = ridge_regression_closed_form(X, y, lmbda=0.0)
+    assert abs(w - 2.0) < 1e-3
+    w_reg = ridge_regression_closed_form(X, y, lmbda=5.0)
+    assert w_reg < 2.0  # shrunk by regularization

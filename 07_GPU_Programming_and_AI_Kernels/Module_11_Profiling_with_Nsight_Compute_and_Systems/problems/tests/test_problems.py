@@ -1,29 +1,18 @@
-"""Pytest suite for Profiling with Nsight Compute and Systems problem bank."""
-
+"""Tests for Roofline Model Arithmetic Intensity."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_calculate_tile_occupancy import calculate_tile_occupancy
+try:
+    from solutions.p01_roofline_model_arithmetic_intensity import roofline_model_arithmetic_intensity
+except ImportError:
+    from p01_roofline_model_arithmetic_intensity import roofline_model_arithmetic_intensity
 
 
-def test_calculate_tile_occupancy():
-    res = calculate_tile_occupancy(threads_per_block=256, shared_mem_bytes=16384)
-    assert res["active_blocks"] == 6  # min(8, 6)
-    assert res["active_warps"] == 48
-    assert res["occupancy_percent"] == 75.0
-    # Invalid thread count
-    assert calculate_tile_occupancy(100, 0)["active_blocks"] == 0
-
+def test_roofline_model_arithmetic_intensity():
+    # H100 GPU: peak 1000 TFLOPS, memory 3000 GB/s -> balance ~ 333 FLOP/byte
+    # Vector add: 1 FLOP / 12 bytes -> ~0.08 FLOP/byte (MEMORY_BOUND)
+    ai, reg = roofline_model_arithmetic_intensity(1.0, 12.0, 1000.0, 3000.0)
+    assert reg == 'MEMORY_BOUND'
+    # Dense GEMM: 1000 FLOP / 2 bytes -> 500 FLOP/byte (COMPUTE_BOUND)
+    ai2, reg2 = roofline_model_arithmetic_intensity(1000.0, 2.0, 1000.0, 3000.0)
+    assert reg2 == 'COMPUTE_BOUND'

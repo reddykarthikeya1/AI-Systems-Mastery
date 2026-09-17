@@ -1,0 +1,43 @@
+{
+  "title": "Production Kubernetes LLM Horizontal Pod Autoscaler",
+  "algorithm": "Queue-Length Autoscaling Feedback Loop",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "30 total requests in flight (20 queued + 10 active): target 10 requests/replica",
+      "array": [
+        30,
+        10
+      ],
+      "pointers": {
+        "reqs": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "total_demand": 30
+      },
+      "invariants": "Proportional control law"
+    },
+    {
+      "step": 2,
+      "description": "Scale up deployment to ceil(30 / 10) = 3 replicas (within [1..5] limits)",
+      "array": [
+        3
+      ],
+      "pointers": {
+        "pods": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "desired_replicas": 3
+      },
+      "invariants": "SLA queue wait time bounded < 200ms"
+    }
+  ]
+}

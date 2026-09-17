@@ -1,0 +1,46 @@
+{
+  "title": "Bayes Rule Exact Posterior Probability Update",
+  "algorithm": "Bayesian Probability Update",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Multiply prior P(H)=0.01 by likelihood P(E|H)=0.9 -> joint probability 0.009",
+      "array": [
+        1,
+        9,
+        5
+      ],
+      "pointers": {
+        "prior": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "joint": 0.009
+      },
+      "invariants": "Likelihood weight assigned"
+    },
+    {
+      "step": 2,
+      "description": "Normalize by evidence probability P(E)=0.05: posterior = 0.18",
+      "array": [
+        1,
+        9,
+        5
+      ],
+      "pointers": {
+        "post": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "posterior": 0.18
+      },
+      "invariants": "Base-rate fallacy corrected"
+    }
+  ]
+}

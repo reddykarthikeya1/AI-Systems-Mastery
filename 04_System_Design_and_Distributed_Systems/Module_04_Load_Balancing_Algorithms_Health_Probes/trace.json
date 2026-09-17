@@ -1,0 +1,45 @@
+{
+  "title": "Weighted Least Connections Load Balancing",
+  "algorithm": "Weighted Least-Conn Routing",
+  "timeComplexity": "O(S)",
+  "spaceComplexity": "O(S)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Filter healthy backends: srv3 marked dead by health probe",
+      "array": [
+        5,
+        4
+      ],
+      "pointers": {
+        "healthy": 0
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "healthy_count": 2
+      },
+      "invariants": "Failed probes isolated"
+    },
+    {
+      "step": 2,
+      "description": "Compare conn/weight ratios: srv2 (4.0) < srv1 (5.0). Route to srv2",
+      "array": [
+        5,
+        4
+      ],
+      "pointers": {
+        "best": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "selected": "srv2"
+      },
+      "invariants": "Load balanced proportionally"
+    }
+  ]
+}

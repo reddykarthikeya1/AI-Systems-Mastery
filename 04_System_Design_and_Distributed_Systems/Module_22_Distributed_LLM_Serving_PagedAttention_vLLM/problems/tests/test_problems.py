@@ -1,27 +1,17 @@
-"""Pytest suite for Distributed LLM Serving PagedAttention vLLM problem bank."""
-
+"""Tests for Kv Cache Block Allocator."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_kv_cache_block_allocator import kv_cache_block_allocator
+except ImportError:
+    from p01_kv_cache_block_allocator import kv_cache_block_allocator
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_kv_cache_block_allocator():
+    alloc = kv_cache_block_allocator(16, [('req_1', 32), ('req_2', 17)], total_physical_blocks=10)
+    assert alloc['req_1'] == [0, 1]
+    assert alloc['req_2'] == [2, 3]
+    import pytest
+    with pytest.raises(MemoryError):
+        kv_cache_block_allocator(16, [('req_heavy', 200)], total_physical_blocks=2)

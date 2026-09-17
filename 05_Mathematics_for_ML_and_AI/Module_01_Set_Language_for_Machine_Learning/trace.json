@@ -1,0 +1,46 @@
+{
+  "title": "Jaccard Similarity Set Overlap Metric",
+  "algorithm": "Jaccard Set Metric",
+  "timeComplexity": "O(|A| + |B|)",
+  "spaceComplexity": "O(|A| + |B|)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute intersection: {'b', 'c'} (cardinality 2)",
+      "array": [
+        2,
+        4
+      ],
+      "pointers": {
+        "inter": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "intersection": 2
+      },
+      "invariants": "Subset of both sets"
+    },
+    {
+      "step": 2,
+      "description": "Compute union: {'a', 'b', 'c', 'd'} (cardinality 4): similarity = 2/4 = 0.5",
+      "array": [
+        2,
+        4
+      ],
+      "pointers": {
+        "union": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "sim": 0.5,
+        "dist": 0.5
+      },
+      "invariants": "Metric space axioms hold"
+    }
+  ]
+}

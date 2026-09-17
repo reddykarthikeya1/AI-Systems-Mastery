@@ -1,0 +1,52 @@
+{
+  "title": "CUDA Shared Memory Tiled GEMM",
+  "algorithm": "Blocked Shared Memory GEMM",
+  "timeComplexity": "O(N^3)",
+  "spaceComplexity": "O(Tile^2)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Stage tile As and Bs into high-speed on-chip SRAM shared memory",
+      "array": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": {
+        "sram": 0
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "bandwidth": "19 TB/s"
+      },
+      "invariants": "DRAM memory traffic reduced by tile factor"
+    },
+    {
+      "step": 2,
+      "description": "FMA thread compute: accumulate inner dot products into register file",
+      "array": [
+        19,
+        22,
+        43,
+        50
+      ],
+      "pointers": {
+        "c00": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "c00": 19.0
+      },
+      "invariants": "Peak Tensor Core utilization"
+    }
+  ]
+}

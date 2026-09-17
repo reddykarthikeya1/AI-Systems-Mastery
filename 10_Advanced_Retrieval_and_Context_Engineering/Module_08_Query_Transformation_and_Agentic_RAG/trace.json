@@ -1,0 +1,43 @@
+{
+  "title": "HyDE (Hypothetical Document Embeddings) Query Synthesis",
+  "algorithm": "HyDE Query Formulation",
+  "timeComplexity": "O(L)",
+  "spaceComplexity": "O(L)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "LLM hallucinations turn query into hypothetical document answer",
+      "array": [
+        15,
+        60
+      ],
+      "pointers": {
+        "hyde": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "hyde_length": 60
+      },
+      "invariants": "Shifts query from question space to document space"
+    },
+    {
+      "step": 2,
+      "description": "Compose synthetic embedding string: dense retriever cosine similarity improves 18%",
+      "array": [
+        75
+      ],
+      "pointers": {
+        "out": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "synthesized": true
+      },
+      "invariants": "Zero-shot document matching"
+    }
+  ]
+}

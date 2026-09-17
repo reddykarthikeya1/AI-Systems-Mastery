@@ -1,0 +1,44 @@
+{
+  "title": "GPU Roofline Model Arithmetic Intensity Analysis",
+  "algorithm": "Roofline Performance Model",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Vector add kernel: 1 FLOP / 12 Bytes = 0.08 FLOP/Byte arithmetic intensity",
+      "array": [
+        1,
+        12
+      ],
+      "pointers": {
+        "ai": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "AI": 0.08
+      },
+      "invariants": "Extremely low operational intensity"
+    },
+    {
+      "step": 2,
+      "description": "Compare against ridge point 0.33: classified as MEMORY_BOUND bottleneck",
+      "array": [
+        1,
+        12
+      ],
+      "pointers": {
+        "regime": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "regime": "MEMORY_BOUND"
+      },
+      "invariants": "Optimization target: kernel fusion / SRAM caching"
+    }
+  ]
+}

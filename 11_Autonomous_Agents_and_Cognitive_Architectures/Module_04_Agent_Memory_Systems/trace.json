@@ -1,0 +1,45 @@
+{
+  "title": "Hierarchical Conversation Memory Buffer & Eviction",
+  "algorithm": "Sliding Buffer Window Memory",
+  "timeComplexity": "O(M)",
+  "spaceComplexity": "O(M)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Context reaches token threshold: evict 2 oldest turns [msg1, msg2]",
+      "array": [
+        2,
+        2
+      ],
+      "pointers": {
+        "evict": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "evicted_count": 2
+      },
+      "invariants": "Context window budget respected"
+    },
+    {
+      "step": 2,
+      "description": "Compress evicted turns into summary header; retain recent active turns [msg3, msg4]",
+      "array": [
+        2,
+        2
+      ],
+      "pointers": {
+        "active": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "retained": 2
+      },
+      "invariants": "Long-term episodic continuity"
+    }
+  ]
+}

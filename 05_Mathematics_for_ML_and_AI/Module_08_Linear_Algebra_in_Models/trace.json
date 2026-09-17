@@ -1,0 +1,45 @@
+{
+  "title": "Ridge Regression L2 Closed-Form Solution",
+  "algorithm": "Regularized Normal Equation",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Calculate dot product X^T y and sum of squares X^T X",
+      "array": [
+        14,
+        28
+      ],
+      "pointers": {
+        "xtx": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "xtx": 14.0,
+        "xty": 28.0
+      },
+      "invariants": "Convex quadratic objective"
+    },
+    {
+      "step": 2,
+      "description": "Apply L2 regularization penalty lambda=5.0: shrunk slope w = 28 / 19 = 1.4737",
+      "array": [
+        14,
+        28
+      ],
+      "pointers": {
+        "w": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "w": 1.4737
+      },
+      "invariants": "Overfitting prevented via weight decay"
+    }
+  ]
+}

@@ -1,27 +1,15 @@
-"""Pytest suite for Joint Distributions and Covariance problem bank."""
-
+"""Tests for Sample Covariance Matrix."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_sample_covariance_matrix import sample_covariance_matrix
+except ImportError:
+    from p01_sample_covariance_matrix import sample_covariance_matrix
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_sample_covariance_matrix():
+    cov = sample_covariance_matrix([1.0, 2.0, 3.0], [2.0, 4.0, 6.0])
+    assert cov[0][0] == 1.0
+    assert cov[0][1] == 2.0
+    assert cov[1][1] == 4.0

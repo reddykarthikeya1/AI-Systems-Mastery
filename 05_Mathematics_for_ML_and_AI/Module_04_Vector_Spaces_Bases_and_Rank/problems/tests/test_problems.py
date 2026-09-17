@@ -1,27 +1,16 @@
-"""Pytest suite for Vector Spaces Bases and Rank problem bank."""
-
+"""Tests for Gram Schmidt Orthogonalization."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_gram_schmidt_orthogonalization import gram_schmidt_orthogonalization
+except ImportError:
+    from p01_gram_schmidt_orthogonalization import gram_schmidt_orthogonalization
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_gram_schmidt_orthogonalization():
+    v1 = [3.0, 1.0]
+    v2 = [2.0, 2.0]
+    u = gram_schmidt_orthogonalization([v1, v2])
+    assert len(u) == 2
+    assert abs(u[0][0] * u[1][0] + u[0][1] * u[1][1]) < 1e-3

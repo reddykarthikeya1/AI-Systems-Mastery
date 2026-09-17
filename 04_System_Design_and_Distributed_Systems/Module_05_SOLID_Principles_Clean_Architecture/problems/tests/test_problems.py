@@ -1,27 +1,24 @@
-"""Pytest suite for SOLID Principles Clean Architecture problem bank."""
-
+"""Tests for Dependency Inversion Container."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_dependency_inversion_container import dependency_inversion_container
+except ImportError:
+    from p01_dependency_inversion_container import dependency_inversion_container
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_dependency_inversion_container():
+    deps = {
+        'Controller': ['Service'],
+        'Service': ['Repository'],
+        'Repository': ['Database'],
+        'Database': []
+    }
+    order = dependency_inversion_container(deps)
+    assert order.index('Database') < order.index('Repository') < order.index('Service') < order.index('Controller')
+    
+    cycle = {'A': ['B'], 'B': ['A']}
+    import pytest
+    with pytest.raises(ValueError):
+        dependency_inversion_container(cycle)

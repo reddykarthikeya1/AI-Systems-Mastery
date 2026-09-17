@@ -1,0 +1,53 @@
+{
+  "title": "Count-Min Sketch Heavy Hitters Identification",
+  "algorithm": "Count-Min Sketch",
+  "timeComplexity": "O(D * N)",
+  "spaceComplexity": "O(D * W)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Stream 10 'apple' tokens: increment across 4 independent hash buckets",
+      "array": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "pointers": {
+        "depth": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "min_count": 10
+      },
+      "invariants": "Sublinear memory footprint"
+    },
+    {
+      "step": 2,
+      "description": "Query min estimate for 'apple' (10 >= threshold 5): identified as heavy hitter",
+      "array": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "pointers": {
+        "hit": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "heavy_hitters": [
+          "apple"
+        ]
+      },
+      "invariants": "Top-K frequency threshold detected"
+    }
+  ]
+}

@@ -1,28 +1,15 @@
-"""Pytest suite for PagedAttention Architecture vLLM problem bank."""
-
+"""Tests for Paged Kv Block Table."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
+try:
+    from solutions.p01_paged_kv_block_table import paged_kv_block_table
+except ImportError:
+    from p01_paged_kv_block_table import paged_kv_block_table
 
 
-def test_simulate_prefix_cache_hit():
-    cached = [[1, 2, 3, 4, 5], [1, 2, 9, 10]]
-    assert simulate_prefix_cache_hit(cached, [1, 2, 3, 4, 8]) == 4
-    assert simulate_prefix_cache_hit(cached, [1, 2, 9, 11]) == 3
-    assert simulate_prefix_cache_hit(cached, [7, 8, 9]) == 0
-    assert simulate_prefix_cache_hit([], [1, 2]) == 0
-
+def test_paged_kv_block_table():
+    # Logical block 0 -> physical 42, logical block 1 -> physical 99
+    table = [42, 99]
+    assert paged_kv_block_table(table, 5, 16) == (42, 5)
+    assert paged_kv_block_table(table, 20, 16) == (99, 4)

@@ -1,26 +1,17 @@
-"""Pytest suite for Bonus Lessons problem bank."""
-
+"""Tests for Beam Search Decoder."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_attention_budget import compute_attention_budget
+try:
+    from solutions.p01_beam_search_decoder import beam_search_decoder
+except ImportError:
+    from p01_beam_search_decoder import beam_search_decoder
 
 
-def test_compute_attention_budget():
-    res = compute_attention_budget(seq_len=1024, num_heads=32, head_dim=128, batch_size=2)
-    assert res["kv_cache_bytes"] == 2 * 1024 * (4 * 32 * 128)
-    assert res["attn_flops"] == 4 * 2 * 32 * (1024**2) * 128
-
+def test_beam_search_decoder():
+    init = [([1], -0.5)]
+    # vocab size 3: token 0 (-1.0), token 1 (-0.1), token 2 (-2.0)
+    vocab = [[-1.0, -0.1, -2.0]]
+    beams = beam_search_decoder(init, vocab, beam_width=2)
+    assert len(beams) == 2
+    assert beams[0][0] == [1, 1]  # highest score -0.6

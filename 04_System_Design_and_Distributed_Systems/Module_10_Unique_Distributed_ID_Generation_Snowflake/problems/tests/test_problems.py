@@ -1,27 +1,15 @@
-"""Pytest suite for Unique Distributed ID Generation Snowflake problem bank."""
-
+"""Tests for Twitter Snowflake Generator."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_twitter_snowflake_generator import twitter_snowflake_generator
+except ImportError:
+    from p01_twitter_snowflake_generator import twitter_snowflake_generator
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_twitter_snowflake_generator():
+    id1 = twitter_snowflake_generator(1700000001000, 5, 1)
+    id2 = twitter_snowflake_generator(1700000001000, 5, 2)
+    assert id2 > id1
+    assert id1 > 0

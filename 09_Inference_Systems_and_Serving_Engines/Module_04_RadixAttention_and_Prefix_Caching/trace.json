@@ -1,0 +1,47 @@
+{
+  "title": "SGLang RadixAttention Common Prefix Matcher",
+  "algorithm": "Radix Tree Prefix Matching",
+  "timeComplexity": "O(K * L)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Traverse radix tree nodes: match shared system prompt [101, 205] (length 2)",
+      "array": [
+        101,
+        205,
+        303
+      ],
+      "pointers": {
+        "match": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "matched_tokens": 2
+      },
+      "invariants": "System prompt KV cache reused"
+    },
+    {
+      "step": 2,
+      "description": "Branch down to leaf 303: full 3-token match achieved, skip 3 prefill steps",
+      "array": [
+        101,
+        205,
+        303
+      ],
+      "pointers": {
+        "leaf": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "cache_hit_tokens": 3
+      },
+      "invariants": "80% reduction in prefill compute latency"
+    }
+  ]
+}

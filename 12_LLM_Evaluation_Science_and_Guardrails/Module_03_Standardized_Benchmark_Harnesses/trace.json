@@ -1,0 +1,48 @@
+{
+  "title": "MMLU / ARC Standardized Multiple-Choice Benchmark",
+  "algorithm": "Log-Likelihood Choice Accuracy",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Grade 4 questions: normalize choices ['A', 'B', 'C', 'D'] against answer keys",
+      "array": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "pointers": {
+        "q": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "active"
+      },
+      "variables": {
+        "correct_count": 3
+      },
+      "invariants": "Standardized evaluation rules"
+    },
+    {
+      "step": 2,
+      "description": "Aggregate accuracy: 3/4 = 75.00% benchmark score achieved",
+      "array": [
+        75
+      ],
+      "pointers": {
+        "acc": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "mmlu_score": "75.0%"
+      },
+      "invariants": "Reproducible benchmark result"
+    }
+  ]
+}

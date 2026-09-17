@@ -34,3 +34,17 @@ python -m pytest Module_16_String_Algorithms_and_Pattern_Matching/problems -q
 Two tests assert *scale* rather than correctness - `test_p05_find_all_is_linear`
 and `test_p06_censor_is_one_pass`. A correct but quadratic answer fails them,
 which is the point: on these problems the complexity is the problem.
+
+---
+
+## 🗺️ Recommended Step-by-Step Problem Solving Path
+
+Follow this sequence to solve the module practice problems:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **1** | **Read Requirements** | Review problem docstrings and invariants in `[p01_prefix_table.py](p01_prefix_table.py)`. |
+| **2** | **Implement Solution** | Write your algorithmic solution in `problems/` to satisfy all edge cases. |
+| **3** | **Run Pytest Suite** | Execute `pytest tests/` in terminal or the web Practice Arena to verify test assertions. |
+| **4** | **Review Reference Code** | Inspect `[solutions/](solutions/)` to compare time/space complexity and idiomatic patterns. |
+

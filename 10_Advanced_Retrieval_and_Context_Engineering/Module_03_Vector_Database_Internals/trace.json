@@ -1,0 +1,46 @@
+{
+  "title": "Vector Database Cosine Similarity Computation",
+  "algorithm": "Normalized Inner Product Similarity",
+  "timeComplexity": "O(D)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute inner product dot(v1, v2) = 1.0 and norms ||v1||=1.0, ||v2||=1.0",
+      "array": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "pointers": {
+        "dot": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "dot": 1.0
+      },
+      "invariants": "Angle between vectors computed"
+    },
+    {
+      "step": 2,
+      "description": "Divide dot product by norms: cosine similarity = 1.0000 (identical semantic direction)",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "sim": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "cosine_sim": 1.0
+      },
+      "invariants": "Bounded within [-1.0, 1.0]"
+    }
+  ]
+}

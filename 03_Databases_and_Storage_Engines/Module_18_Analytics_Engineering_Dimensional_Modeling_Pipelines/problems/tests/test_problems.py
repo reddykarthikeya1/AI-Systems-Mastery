@@ -1,30 +1,21 @@
-"""Pytest suite for Analytics Engineering Dimensional Modeling Pipelines problem bank."""
-
+"""Tests for Scd Type2 Dimension Merge."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_scd_type2_dimension_merge import scd_type2_dimension_merge
+except ImportError:
+    from p01_scd_type2_dimension_merge import scd_type2_dimension_merge
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_scd_type2_dimension_merge():
+    dims = [{
+        'id': 1, 'natural_key': 'cust_101', 'val': 'NY',
+        'valid_from': '2025-01-01', 'valid_to': None, 'is_current': True
+    }]
+    updated = scd_type2_dimension_merge(dims, {'natural_key': 'cust_101', 'val': 'CA'}, '2025-06-01')
+    assert len(updated) == 2
+    assert updated[0]['is_current'] is False
+    assert updated[0]['valid_to'] == '2025-06-01'
+    assert updated[1]['is_current'] is True
+    assert updated[1]['val'] == 'CA'

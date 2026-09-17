@@ -1,0 +1,44 @@
+{
+  "title": "CUDA Global Memory Coalescing Analysis",
+  "algorithm": "Memory Transaction Coalescing",
+  "timeComplexity": "O(W)",
+  "spaceComplexity": "O(W)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Contiguous stride-1 addresses [0..124B]: map into single 128B cache sector",
+      "array": [
+        1,
+        32
+      ],
+      "pointers": {
+        "coalesced": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "transactions": 1
+      },
+      "invariants": "100% bus utilization efficiency"
+    },
+    {
+      "step": 2,
+      "description": "Strided stride-128 addresses: requires 32 separate cache lines (32x memory thrashing)",
+      "array": [
+        1,
+        32
+      ],
+      "pointers": {
+        "strided": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "transactions": 32
+      },
+      "invariants": "Severe memory bandwidth degradation"
+    }
+  ]
+}

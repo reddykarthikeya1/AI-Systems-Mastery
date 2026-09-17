@@ -1,32 +1,20 @@
-"""Pytest suite for Agent Cognitive Architectures and Loops problem bank."""
-
+"""Tests for React Thought Action Parser."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_evaluate_react_trace import evaluate_react_trace
+try:
+    from solutions.p01_react_thought_action_parser import react_thought_action_parser
+except ImportError:
+    from p01_react_thought_action_parser import react_thought_action_parser
 
 
-def test_evaluate_react_trace():
-    trace = [
-        {"type": "thought", "content": "Need current weather"},
-        {"type": "action", "content": "get_weather('Seattle')"},
-        {"type": "observation", "content": "65F, sunny"},
-        {"type": "finish", "content": "Weather is 65F"}
-    ]
-    assert evaluate_react_trace(trace)["success"] == True
-    # Exceeded budget
-    assert evaluate_react_trace(trace, max_steps=2)["status"] == "BUDGET_EXCEEDED"
-
+def test_react_thought_action_parser():
+    text = """Thought: Need to search temperature
+Action: search_weather
+Action Input: Paris
+"""
+    p = react_thought_action_parser(text)
+    assert p['thought'] == "Need to search temperature"
+    assert p['action'] == "search_weather"
+    assert p['action_input'] == "Paris"
+    assert p['final_answer'] is None

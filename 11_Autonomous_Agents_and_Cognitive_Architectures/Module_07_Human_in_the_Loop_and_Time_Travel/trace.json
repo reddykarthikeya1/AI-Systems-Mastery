@@ -1,0 +1,46 @@
+{
+  "title": "Human-in-the-Loop State Checkpoint Time Travel Fork",
+  "algorithm": "State History Time Travel",
+  "timeComplexity": "O(H)",
+  "spaceComplexity": "O(H)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Locate target historical checkpoint 'cp2' in persistent state history",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "cp": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "target_cp": "cp2"
+      },
+      "invariants": "Immutable checkpoint storage"
+    },
+    {
+      "step": 2,
+      "description": "Prune divergent turn 3: fork new execution branch from approved state",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "fork": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "forked_turns": 2
+      },
+      "invariants": "Zero loss of human intervention context"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "ColBERTv2 Late-Interaction MaxSim Operator",
+  "algorithm": "Token-Level MaxSim Scoring",
+  "timeComplexity": "O(|Q| * |D| * Dim)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Query token 0 [1, 0]: find max dot across doc tokens -> max dot = 1.0 with d0",
+      "array": [
+        10,
+        5
+      ],
+      "pointers": {
+        "q0": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "q0_match": 1.0
+      },
+      "invariants": "Fine-grained token alignment"
+    },
+    {
+      "step": 2,
+      "description": "Query token 1 [0, 1]: max dot = 0.5 with d1 -> sum MaxSim score = 1.5000",
+      "array": [
+        10,
+        5
+      ],
+      "pointers": {
+        "q1": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "maxsim_total": 1.5
+      },
+      "invariants": "Retains BERT expressive power at sublinear speed"
+    }
+  ]
+}

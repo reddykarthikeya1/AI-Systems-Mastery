@@ -23,7 +23,7 @@ import {
   Check
 } from 'lucide-react';
 import { DsaProblem, DsaRunResult } from '../types';
-import { fetchDsaProblems, runDsaTest, formatCode } from '../services/api';
+import { fetchDsaProblems, runDsaTest, formatCode, fetchModuleProblems, runProblemTest } from '../services/api';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { soundService } from '../services/sound';
 
@@ -75,18 +75,40 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     let isMounted = true;
     setLoading(true);
 
-    fetchDsaProblems(moduleFolderPath)
-      .then((data) => {
+    Promise.all([
+      fetchDsaProblems(moduleFolderPath).catch(() => []),
+      fetchModuleProblems(moduleFolderPath).catch(() => ({ has_problems: false, problems: [] })),
+    ])
+      .then(([dsaProbs, modProbs]) => {
         if (!isMounted) return;
-        setProblems(data);
-        if (data.length > 0) {
+        let combined: DsaProblem[] = [];
+        if (dsaProbs && dsaProbs.length > 0) {
+          combined = dsaProbs;
+        } else if (modProbs && modProbs.problems && modProbs.problems.length > 0) {
+          combined = modProbs.problems.map((p) => ({
+            id: p.id || p.filename,
+            filename: p.filename,
+            module_num: 1,
+            title: p.title,
+            difficulty: 'Medium' as const,
+            pattern: 'Practice Bank',
+            time_complexity: 'O(N)',
+            space_complexity: 'O(1)',
+            description: p.description || `Implement \`${p.title}\` satisfying all module architectural invariants.`,
+            starter_code: p.starter_code || p.code,
+            visible_testcases: [],
+            hidden_testcase_count: p.has_tests ? 1 : 0,
+          }));
+        }
+        setProblems(combined);
+        if (combined.length > 0) {
           setCurrentIndex(0);
-          loadProblemCode(data[0]);
+          loadProblemCode(combined[0]);
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to load DSA problems', err);
+        console.error('Failed to load problems', err);
         if (isMounted) setLoading(false);
       });
 
@@ -164,7 +186,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     }
   };
 
-  // Run code against visible testcases
+  // Run code against visible testcases or module pytest suite
   const handleRunCode = async () => {
     if (!currentProblem || isRunning || isSubmitting) return;
     soundService.playClick();
@@ -172,20 +194,41 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     setRunResult(null);
 
     try {
-      const res = await runDsaTest(currentProblem.id, userCode, false);
-      setRunResult(res);
-      setActiveCaseTab(0);
-      if (res.all_passed) {
-        soundService.playSuccess();
+      if (currentProblem.visible_testcases && currentProblem.visible_testcases.length > 0) {
+        const res = await runDsaTest(currentProblem.id, userCode, false);
+        setRunResult(res);
+        setActiveCaseTab(0);
+        if (res.all_passed) {
+          soundService.playSuccess();
+        } else {
+          soundService.playError();
+        }
       } else {
-        soundService.playError();
+        const pfile = currentProblem.filename || `${currentProblem.id}.py`;
+        const res = await runProblemTest(moduleFolderPath, pfile, userCode);
+        const allPassed = res.exit_code === 0;
+        setRunResult({
+          status: allPassed ? 'accepted' : 'wrong_answer',
+          all_passed: allPassed,
+          total_cases: 1,
+          passed_cases: allPassed ? 1 : 0,
+          duration_ms: res.duration_ms,
+          results: [],
+          error: !allPassed ? (res.stderr || res.stdout) : undefined,
+          reference_solution: allPassed ? res.stdout : undefined,
+        });
+        if (allPassed) {
+          soundService.playSuccess();
+        } else {
+          soundService.playError();
+        }
       }
     } catch (err: any) {
       soundService.playError();
       setRunResult({
         status: 'error',
         all_passed: false,
-        total_cases: currentProblem.visible_testcases.length,
+        total_cases: currentProblem.visible_testcases?.length || 1,
         passed_cases: 0,
         duration_ms: 0,
         results: [],
@@ -196,7 +239,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     }
   };
 
-  // Submit code against visible + hidden testcases
+  // Submit code against all testcases / full test suite
   const handleSubmitCode = async () => {
     if (!currentProblem || isRunning || isSubmitting) return;
     soundService.playClick();
@@ -204,33 +247,63 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     setRunResult(null);
 
     try {
-      const res = await runDsaTest(currentProblem.id, userCode, true);
-      setRunResult(res);
-      setActiveCaseTab(0);
+      if (currentProblem.visible_testcases && currentProblem.visible_testcases.length > 0) {
+        const res = await runDsaTest(currentProblem.id, userCode, true);
+        setRunResult(res);
+        setActiveCaseTab(0);
 
-      if (res.all_passed) {
-        soundService.playFanfare();
-        const nextSolved = new Set(solvedSet);
-        nextSolved.add(currentProblem.id);
-        setSolvedSet(nextSolved);
-        localStorage.setItem('academy_dsa_solved', JSON.stringify(Array.from(nextSolved)));
+        if (res.all_passed) {
+          soundService.playFanfare();
+          const nextSolved = new Set(solvedSet);
+          nextSolved.add(currentProblem.id);
+          setSolvedSet(nextSolved);
+          localStorage.setItem('academy_dsa_solved', JSON.stringify(Array.from(nextSolved)));
 
-        if (res.explanation) {
-          setRenderedExplanation(renderMarkdownWithMath(res.explanation));
-        }
+          if (res.explanation) {
+            setRenderedExplanation(renderMarkdownWithMath(res.explanation));
+          }
 
-        if (onCompleteProblem) {
-          onCompleteProblem(currentProblem.id);
+          if (onCompleteProblem) {
+            onCompleteProblem(currentProblem.id);
+          }
+        } else {
+          soundService.playError();
         }
       } else {
-        soundService.playError();
+        const pfile = currentProblem.filename || `${currentProblem.id}.py`;
+        const res = await runProblemTest(moduleFolderPath, pfile, userCode);
+        const allPassed = res.exit_code === 0;
+        setRunResult({
+          status: allPassed ? 'accepted' : 'wrong_answer',
+          all_passed: allPassed,
+          total_cases: 1,
+          passed_cases: allPassed ? 1 : 0,
+          duration_ms: res.duration_ms,
+          results: [],
+          error: !allPassed ? (res.stderr || res.stdout) : undefined,
+          reference_solution: allPassed ? res.stdout : undefined,
+        });
+
+        if (allPassed) {
+          soundService.playFanfare();
+          const nextSolved = new Set(solvedSet);
+          nextSolved.add(currentProblem.id);
+          setSolvedSet(nextSolved);
+          localStorage.setItem('academy_dsa_solved', JSON.stringify(Array.from(nextSolved)));
+
+          if (onCompleteProblem) {
+            onCompleteProblem(currentProblem.id);
+          }
+        } else {
+          soundService.playError();
+        }
       }
     } catch (err: any) {
       soundService.playError();
       setRunResult({
         status: 'error',
         all_passed: false,
-        total_cases: currentProblem.visible_testcases.length + currentProblem.hidden_testcase_count,
+        total_cases: (currentProblem.visible_testcases?.length || 0) + currentProblem.hidden_testcase_count,
         passed_cases: 0,
         duration_ms: 0,
         results: [],
@@ -733,6 +806,13 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
                 {runResult.error && (
                   <div className="p-4 bg-rose-950/20 text-rose-300 font-mono text-xs overflow-auto whitespace-pre-wrap border-b border-rose-500/20">
                     {runResult.error}
+                  </div>
+                )}
+
+                {/* Pytest Output when running module problems */}
+                {(!runResult.results || runResult.results.length === 0) && (
+                  <div className="p-4 bg-slate-950 font-mono text-xs overflow-auto whitespace-pre-wrap text-slate-300 max-h-[220px]">
+                    {runResult.error || runResult.reference_solution || (runResult.all_passed ? 'All pytest assertions passed successfully.' : 'Tests failed.')}
                   </div>
                 )}
 

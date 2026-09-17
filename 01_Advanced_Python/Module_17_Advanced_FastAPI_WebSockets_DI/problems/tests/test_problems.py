@@ -1,26 +1,15 @@
-"""Pytest suite for Advanced FastAPI WebSockets DI problem bank."""
-
+"""Tests for WebSocket Channel Multiplexer."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
+from p01_websocket_channel_hub import ChannelHub
 
 
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_websocket_channel_hub():
+    hub = ChannelHub()
+    hub.subscribe('room1', 'c1')
+    hub.subscribe('room1', 'c2')
+    assert hub.broadcast('room1') == ['c1', 'c2']
+    hub.unsubscribe('room1', 'c1')
+    assert hub.broadcast('room1') == ['c2']
+    assert hub.broadcast('empty') == []

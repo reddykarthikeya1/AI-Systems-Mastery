@@ -1,0 +1,44 @@
+{
+  "title": "Causal Autoregressive Self-Attention Masking",
+  "algorithm": "Causal Masking",
+  "timeComplexity": "O(N^2)",
+  "spaceComplexity": "O(N^2)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Token 0 attends to token 0: allow score 1.0",
+      "array": [
+        1,
+        -1
+      ],
+      "pointers": {
+        "row0": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "future_mask": false
+      },
+      "invariants": "Causal direction preserved"
+    },
+    {
+      "step": 2,
+      "description": "Token 0 attends to future token 1: mask with -1e9 (softmax drops to 0)",
+      "array": [
+        1,
+        -1
+      ],
+      "pointers": {
+        "row0": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "score": -1000000000.0
+      },
+      "invariants": "Prevents future token data leakage"
+    }
+  ]
+}

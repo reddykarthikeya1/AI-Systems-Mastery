@@ -1,0 +1,44 @@
+{
+  "title": "LLM KV Cache Physical VRAM Footprint Estimator",
+  "algorithm": "KV Cache Capacity Sizing",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Grouped-Query Attention (GQA): 8 KV heads x 32 layers x 128 dim = 128 KB per token",
+      "array": [
+        32,
+        8,
+        128
+      ],
+      "pointers": {
+        "layer": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "kb_per_tok": 128
+      },
+      "invariants": "GQA 4x memory savings vs MHA"
+    },
+    {
+      "step": 2,
+      "description": "Scale across 4096 tokens: exactly 512 MB VRAM reserved per concurrent request",
+      "array": [
+        512
+      ],
+      "pointers": {
+        "vram": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "total_mb": 512
+      },
+      "invariants": "Memory budget allocation within GPU envelope"
+    }
+  ]
+}

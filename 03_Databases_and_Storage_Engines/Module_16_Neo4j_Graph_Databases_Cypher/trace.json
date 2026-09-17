@@ -1,0 +1,53 @@
+{
+  "title": "Cypher Graph Bidirectional BFS Traversal",
+  "algorithm": "Bidirectional Breadth-First Search",
+  "timeComplexity": "O(b^(d/2))",
+  "spaceComplexity": "O(b^(d/2))",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize forward frontier from A and backward frontier from E",
+      "array": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": {
+        "f": 0,
+        "b": 4
+      },
+      "highlights": {
+        "0": "active",
+        "4": "active"
+      },
+      "variables": {
+        "f_node": "A",
+        "b_node": "E"
+      },
+      "invariants": "Search space halved"
+    },
+    {
+      "step": 2,
+      "description": "Frontiers collide at midpoint node C: total path length 4",
+      "array": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": {
+        "meet": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "dist": 4
+      },
+      "invariants": "Optimal shortest path discovered"
+    }
+  ]
+}

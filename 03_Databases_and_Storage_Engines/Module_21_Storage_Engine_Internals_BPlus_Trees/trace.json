@@ -1,0 +1,54 @@
+{
+  "title": "B+ Tree Leaf Node Split & Key Promotion",
+  "algorithm": "B+ Tree Split",
+  "timeComplexity": "O(M log M)",
+  "spaceComplexity": "O(M)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Insert key 25 into [10, 20, 30, 40]: node overflows max capacity 4",
+      "array": [
+        10,
+        20,
+        25,
+        30,
+        40
+      ],
+      "pointers": {
+        "mid": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "len": 5,
+        "max": 4
+      },
+      "invariants": "Node capacity exceeded"
+    },
+    {
+      "step": 2,
+      "description": "Split at midpoint: left=[10, 20], promote key 25 to parent, right=[25, 30, 40]",
+      "array": [
+        10,
+        20,
+        25,
+        30,
+        40
+      ],
+      "pointers": {
+        "promo": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "3": "sorted",
+        "4": "sorted"
+      },
+      "variables": {
+        "promoted": 25
+      },
+      "invariants": "B+ tree leaf chaining intact"
+    }
+  ]
+}

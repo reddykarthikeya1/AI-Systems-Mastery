@@ -1,0 +1,48 @@
+{
+  "title": "W3C Distributed Trace Context Propagation",
+  "algorithm": "W3C Traceparent Header Parsing",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Parse inbound traceparent: trace_id 4bf92f... extracted",
+      "array": [
+        2,
+        32,
+        16,
+        2
+      ],
+      "pointers": {
+        "tid": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "flags": "01"
+      },
+      "invariants": "Root trace continuity preserved"
+    },
+    {
+      "step": 2,
+      "description": "Generate child span ID 5c3562...: propagate downstream",
+      "array": [
+        2,
+        32,
+        16,
+        2
+      ],
+      "pointers": {
+        "span": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "child_span": "5c35626a576a3a4b"
+      },
+      "invariants": "End-to-end distributed transaction tracing"
+    }
+  ]
+}

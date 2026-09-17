@@ -1,0 +1,44 @@
+{
+  "title": "Distributed Saga Orchestration & Compensation",
+  "algorithm": "Saga Forward/Compensating Pattern",
+  "timeComplexity": "O(S)",
+  "spaceComplexity": "O(S)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Step 1 reserve_flight succeeds: log forward step",
+      "array": [
+        1,
+        0
+      ],
+      "pointers": {
+        "fwd": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "step": "reserve_flight"
+      },
+      "invariants": "Compensating undo log recorded"
+    },
+    {
+      "step": 2,
+      "description": "Step 2 reserve_hotel fails: trigger reverse compensation cancel_flight",
+      "array": [
+        1,
+        0
+      ],
+      "pointers": {
+        "comp": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "status": "ROLLED_BACK"
+      },
+      "invariants": "Eventual consistency restored"
+    }
+  ]
+}

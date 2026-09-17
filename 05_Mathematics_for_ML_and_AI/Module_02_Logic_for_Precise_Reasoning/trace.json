@@ -1,0 +1,44 @@
+{
+  "title": "Propositional Logic CNF Satisfiability",
+  "algorithm": "CNF Formula Evaluation",
+  "timeComplexity": "O(C * L)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Evaluate clause [1, -2]: var 1 is True, clause satisfied",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "c1": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "c1": true
+      },
+      "invariants": "Disjunction satisfied"
+    },
+    {
+      "step": 2,
+      "description": "Evaluate clause [2, 3]: var 3 is True, clause satisfied -> CNF True",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "c2": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "satisfied": true
+      },
+      "invariants": "All conjunction terms hold"
+    }
+  ]
+}

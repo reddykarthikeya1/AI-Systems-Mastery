@@ -1,0 +1,48 @@
+{
+  "title": "Sarathi Chunked Prefill Step Splitting",
+  "algorithm": "Chunked Prefill Slicing",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Split 7-token prompt into chunks of size 3: Chunk 0 [1, 2, 3] dispatched",
+      "array": [
+        3,
+        3,
+        1
+      ],
+      "pointers": {
+        "chunk": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "chunk_len": 3
+      },
+      "invariants": "Interleaves decode steps to prevent stall"
+    },
+    {
+      "step": 2,
+      "description": "Co-schedule prefill chunk alongside decode batch: finishes in 3 iterations",
+      "array": [
+        3,
+        3,
+        1
+      ],
+      "pointers": {
+        "all": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "chunks": 3
+      },
+      "invariants": "Stable tail latency for concurrent queries"
+    }
+  ]
+}

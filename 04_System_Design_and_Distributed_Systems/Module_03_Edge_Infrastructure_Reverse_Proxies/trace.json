@@ -1,0 +1,46 @@
+{
+  "title": "Edge CDN Surrogate-Key Invalidation",
+  "algorithm": "Surrogate Tag Cache Invalidation",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scan edge cache entries for tag 'apparel': match found at '/item/1'",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "entry": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "matched_url": "/item/1"
+      },
+      "invariants": "Instantaneous purge across PoPs"
+    },
+    {
+      "step": 2,
+      "description": "Evict matching surrogate keys: 1 entry purged from PoP edge cache",
+      "array": [
+        2,
+        3
+      ],
+      "pointers": {
+        "purged": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "remaining": 2
+      },
+      "invariants": "Zero stale read SLA maintained"
+    }
+  ]
+}

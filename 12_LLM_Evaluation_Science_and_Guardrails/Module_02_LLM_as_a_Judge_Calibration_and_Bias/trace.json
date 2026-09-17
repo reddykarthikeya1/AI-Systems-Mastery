@@ -1,0 +1,49 @@
+{
+  "title": "LLM-as-a-Judge Position Bias Debiasing",
+  "algorithm": "Symmetric Pairwise Swap Averaging",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Collect Trial 1 (A first): scores (9.0, 6.0). Collect Trial 2 (B first): scores (8.0, 7.0)",
+      "array": [
+        9,
+        6,
+        8,
+        7
+      ],
+      "pointers": {
+        "t1": 0,
+        "t2": 2
+      },
+      "highlights": {
+        "0": "active",
+        "2": "active"
+      },
+      "variables": {
+        "bias_detected": true
+      },
+      "invariants": "Primacy effect detected"
+    },
+    {
+      "step": 2,
+      "description": "Average candidate scores across order permutation: debiased A=8.0, B=7.0",
+      "array": [
+        8,
+        7
+      ],
+      "pointers": {
+        "final": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "debiased_winner": "Model A"
+      },
+      "invariants": "Position bias eliminated"
+    }
+  ]
+}

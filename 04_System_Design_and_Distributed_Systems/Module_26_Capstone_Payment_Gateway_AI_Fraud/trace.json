@@ -1,0 +1,44 @@
+{
+  "title": "Payment Gateway Idempotent Deduplication",
+  "algorithm": "Idempotency Key Lease Deduplication",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "First attempt with key 'order_xyz_123': lock acquired, txn_order_xyz_123 processed",
+      "array": [
+        100,
+        0
+      ],
+      "pointers": {
+        "txn": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "is_replay": false
+      },
+      "invariants": "Fresh transaction billed exactly once"
+    },
+    {
+      "step": 2,
+      "description": "Network retry with identical key: return cached result without double billing",
+      "array": [
+        100,
+        0
+      ],
+      "pointers": {
+        "cached": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "is_replay": true
+      },
+      "invariants": "Zero double charges guaranteed"
+    }
+  ]
+}

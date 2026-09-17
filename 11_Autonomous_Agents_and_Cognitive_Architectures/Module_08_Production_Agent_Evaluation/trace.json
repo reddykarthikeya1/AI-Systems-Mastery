@@ -1,0 +1,50 @@
+{
+  "title": "Agent Execution Trajectory Evaluation Metric",
+  "algorithm": "Sequential Trajectory Alignment",
+  "timeComplexity": "O(T)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Align agent tool sequence [search, scrape, summarize] against ground truth",
+      "array": [
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "match": 0
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active",
+        "2": "active"
+      },
+      "variables": {
+        "matches": 3
+      },
+      "invariants": "Ordered tool invocation contract"
+    },
+    {
+      "step": 2,
+      "description": "Compute trajectory fidelity: 3/3 matched = 1.0000 trajectory pass rate",
+      "array": [
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "score": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "accuracy": 1.0
+      },
+      "invariants": "100% policy compliance"
+    }
+  ]
+}

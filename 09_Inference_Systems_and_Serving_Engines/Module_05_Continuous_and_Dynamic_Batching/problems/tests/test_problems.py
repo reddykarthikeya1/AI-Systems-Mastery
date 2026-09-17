@@ -1,28 +1,16 @@
-"""Pytest suite for Continuous and Dynamic Batching problem bank."""
-
+"""Tests for Iteration Level Scheduler."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
+try:
+    from solutions.p01_iteration_level_scheduler import iteration_level_scheduler
+except ImportError:
+    from p01_iteration_level_scheduler import iteration_level_scheduler
 
 
-def test_simulate_prefix_cache_hit():
-    cached = [[1, 2, 3, 4, 5], [1, 2, 9, 10]]
-    assert simulate_prefix_cache_hit(cached, [1, 2, 3, 4, 8]) == 4
-    assert simulate_prefix_cache_hit(cached, [1, 2, 9, 11]) == 3
-    assert simulate_prefix_cache_hit(cached, [7, 8, 9]) == 0
-    assert simulate_prefix_cache_hit([], [1, 2]) == 0
-
+def test_iteration_level_scheduler():
+    running = ['r1', 'r2']  # uses 2 tokens
+    waiting = [('w1', 5), ('w2', 10)]
+    new_run, rem = iteration_level_scheduler(running, waiting, max_batch_tokens=8)
+    assert new_run == ['r1', 'r2', 'w1']
+    assert rem == [('w2', 10)]

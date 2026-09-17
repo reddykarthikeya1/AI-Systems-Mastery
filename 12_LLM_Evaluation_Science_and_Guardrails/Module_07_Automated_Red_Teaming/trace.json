@@ -1,0 +1,45 @@
+{
+  "title": "Automated LLM Red-Teaming Mutation Fuzzer",
+  "algorithm": "Adversarial Prompt Fuzzing Mutation",
+  "timeComplexity": "O(L)",
+  "spaceComplexity": "O(L)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Apply leetspeak substitution to 'hello' -> 'h3ll0' to test tokenizer bypass",
+      "array": [
+        5,
+        5
+      ],
+      "pointers": {
+        "leet": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "variant": "h3ll0"
+      },
+      "invariants": "Adversarial perturbation generated"
+    },
+    {
+      "step": 2,
+      "description": "Apply intra-token spacing -> 'h e l l o': probe guardrail token boundary robustness",
+      "array": [
+        5,
+        9
+      ],
+      "pointers": {
+        "space": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "fuzzed_count": 2
+      },
+      "invariants": "Automated security coverage expanded"
+    }
+  ]
+}

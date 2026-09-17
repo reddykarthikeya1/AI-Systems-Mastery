@@ -1,0 +1,46 @@
+{
+  "title": "Hopper TMA Asynchronous Double-Buffering Pipeline",
+  "algorithm": "Asynchronous Memory Double Buffering",
+  "timeComplexity": "O(T)",
+  "spaceComplexity": "O(T)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "TMA initiates async DMA load of Tile 0 into Shared Memory Buffer 0",
+      "array": [
+        0,
+        1
+      ],
+      "pointers": {
+        "buf0": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "stage": "PROLOGUE"
+      },
+      "invariants": "SM warp registers bypassed"
+    },
+    {
+      "step": 2,
+      "description": "Overlap: Warp executes GEMM on Buffer 0 while TMA prefetches Tile 1 into Buffer 1",
+      "array": [
+        0,
+        1
+      ],
+      "pointers": {
+        "comp": 0,
+        "load": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "active"
+      },
+      "variables": {
+        "overlap_efficiency": "100%"
+      },
+      "invariants": "Zero DRAM memory stalls"
+    }
+  ]
+}

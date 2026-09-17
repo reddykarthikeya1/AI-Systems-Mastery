@@ -1,0 +1,48 @@
+{
+  "title": "ReAct (Reasoning + Acting) Agent Step Parser",
+  "algorithm": "ReAct Thought-Action Extraction",
+  "timeComplexity": "O(L)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Parse Thought line: internal model reasoning trace extracted",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "thought": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "thought": "Need to search temperature"
+      },
+      "invariants": "Cognitive rationale recorded"
+    },
+    {
+      "step": 2,
+      "description": "Extract Action & Action Input: tool dispatch 'search_weather' with param 'Paris'",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "action": 1,
+        "input": 2
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "tool": "search_weather"
+      },
+      "invariants": "Environment execution step ready"
+    }
+  ]
+}

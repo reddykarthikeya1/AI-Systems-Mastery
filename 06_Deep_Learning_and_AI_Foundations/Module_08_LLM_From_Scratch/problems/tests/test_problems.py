@@ -1,26 +1,14 @@
-"""Pytest suite for LLM From Scratch problem bank."""
-
+"""Tests for Rotary Position Embedding."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_attention_budget import compute_attention_budget
+try:
+    from solutions.p01_rotary_position_embedding import rotary_position_embedding
+except ImportError:
+    from p01_rotary_position_embedding import rotary_position_embedding
 
 
-def test_compute_attention_budget():
-    res = compute_attention_budget(seq_len=1024, num_heads=32, head_dim=128, batch_size=2)
-    assert res["kv_cache_bytes"] == 2 * 1024 * (4 * 32 * 128)
-    assert res["attn_flops"] == 4 * 2 * 32 * (1024**2) * 128
-
+def test_rotary_position_embedding():
+    # At position 0, cos(0)=1, sin(0)=0 -> unchanged
+    r0, r1 = rotary_position_embedding(1.0, 2.0, 0)
+    assert r0 == 1.0 and r1 == 2.0

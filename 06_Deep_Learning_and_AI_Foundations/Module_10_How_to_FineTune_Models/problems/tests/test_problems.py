@@ -1,26 +1,18 @@
-"""Pytest suite for How to FineTune Models problem bank."""
-
+"""Tests for Lora Weight Merge."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_attention_budget import compute_attention_budget
+try:
+    from solutions.p01_lora_weight_merge import lora_weight_merge
+except ImportError:
+    from p01_lora_weight_merge import lora_weight_merge
 
 
-def test_compute_attention_budget():
-    res = compute_attention_budget(seq_len=1024, num_heads=32, head_dim=128, batch_size=2)
-    assert res["kv_cache_bytes"] == 2 * 1024 * (4 * 32 * 128)
-    assert res["attn_flops"] == 4 * 2 * 32 * (1024**2) * 128
-
+def test_lora_weight_merge():
+    W = [[1.0, 0.0], [0.0, 1.0]]
+    B = [[1.0], [0.0]]
+    A = [[0.5, 0.5]]
+    merged = lora_weight_merge(W, B, A, alpha=4.0, r=1)
+    # scale = 4.0. delta = [[0.5, 0.5], [0.0, 0.0]].
+    # row 0: [1 + 2.0, 0 + 2.0] = [3.0, 2.0]
+    assert merged[0] == [3.0, 2.0]

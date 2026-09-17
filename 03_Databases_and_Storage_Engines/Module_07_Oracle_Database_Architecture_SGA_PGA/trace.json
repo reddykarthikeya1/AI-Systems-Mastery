@@ -1,0 +1,46 @@
+{
+  "title": "Oracle SGA Buffer Cache Clock Sweep",
+  "algorithm": "Clock Page Replacement",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Hand at frame 0 (ref=1): clear ref bit to 0 and advance hand",
+      "array": [
+        0,
+        0,
+        1
+      ],
+      "pointers": {
+        "hand": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "ref": 0
+      },
+      "invariants": "Second chance granted"
+    },
+    {
+      "step": 2,
+      "description": "Hand at frame 1 (ref=0, clean): select for eviction",
+      "array": [
+        0,
+        0,
+        1
+      ],
+      "pointers": {
+        "hand": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "evicted_frame": 1
+      },
+      "invariants": "Victim page selected"
+    }
+  ]
+}

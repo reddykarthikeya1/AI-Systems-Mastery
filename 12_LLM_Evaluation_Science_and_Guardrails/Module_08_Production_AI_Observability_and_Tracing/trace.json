@@ -1,0 +1,48 @@
+{
+  "title": "OpenTelemetry Distributed Trace Span Aggregator",
+  "algorithm": "OpenTelemetry Trace Metrics Aggregation",
+  "timeComplexity": "O(S)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Ingest trace spans: llm_call (250.5ms) + db_query (45.2ms, error flag set)",
+      "array": [
+        250,
+        45
+      ],
+      "pointers": {
+        "spans": 0
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "span_count": 2
+      },
+      "invariants": "Standard OTel semantic conventions"
+    },
+    {
+      "step": 2,
+      "description": "Aggregate root metrics: total duration 295.7ms, max span 250.5ms, 1 error registered",
+      "array": [
+        295,
+        250,
+        1
+      ],
+      "pointers": {
+        "agg": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "error_rate": "50%"
+      },
+      "invariants": "Production dashboard telemetry finalized"
+    }
+  ]
+}

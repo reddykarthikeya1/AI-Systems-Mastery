@@ -1,0 +1,48 @@
+{
+  "title": "INT8 Symmetric Tensor Quantization Scale & Clamp",
+  "algorithm": "Symmetric Uniform Quantization",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Find maximum absolute value 127.0: compute scale = 127.0 / 127 = 1.0000",
+      "array": [
+        127,
+        0,
+        127
+      ],
+      "pointers": {
+        "scale": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "scale": 1.0
+      },
+      "invariants": "Dynamic range mapped to 8 bits"
+    },
+    {
+      "step": 2,
+      "description": "Quantize float values into signed int8 integers [-127, 0, 127]",
+      "array": [
+        -127,
+        0,
+        127
+      ],
+      "pointers": {
+        "q": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "memory_reduction": "4x"
+      },
+      "invariants": "Zero-point symmetric at 0"
+    }
+  ]
+}

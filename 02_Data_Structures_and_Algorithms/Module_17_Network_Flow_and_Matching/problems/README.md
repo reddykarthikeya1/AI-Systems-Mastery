@@ -37,3 +37,17 @@ python -m pytest tests -q -k p05       # just one problem
 ```
 
 From the course root the same tests grade the reference solutions instead.
+
+---
+
+## 🗺️ Recommended Step-by-Step Problem Solving Path
+
+Follow this sequence to solve the module practice problems:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **1** | **Read Requirements** | Review problem docstrings and invariants in `[p01_max_flow_value.py](p01_max_flow_value.py)`. |
+| **2** | **Implement Solution** | Write your algorithmic solution in `problems/` to satisfy all edge cases. |
+| **3** | **Run Pytest Suite** | Execute `pytest tests/` in terminal or the web Practice Arena to verify test assertions. |
+| **4** | **Review Reference Code** | Inspect `[solutions/](solutions/)` to compare time/space complexity and idiomatic patterns. |
+

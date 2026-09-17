@@ -1,0 +1,51 @@
+{
+  "title": "Bootstrap Non-Parametric Confidence Intervals",
+  "algorithm": "Bootstrap Percentile CI",
+  "timeComplexity": "O(B log B)",
+  "spaceComplexity": "O(B)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Sort 100 bootstrap sample estimates: empirical distribution ranked",
+      "array": [
+        0,
+        5,
+        50,
+        94,
+        99
+      ],
+      "pointers": {
+        "low": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "alpha": 0.1
+      },
+      "invariants": "Order statistics preserved"
+    },
+    {
+      "step": 2,
+      "description": "Clip 5th and 95th percentiles: 90% confidence interval [5.0, 94.0]",
+      "array": [
+        0,
+        5,
+        50,
+        94,
+        99
+      ],
+      "pointers": {
+        "high": 3
+      },
+      "highlights": {
+        "1": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "interval": "[5.0, 94.0]"
+      },
+      "invariants": "Coverage probability calibrated"
+    }
+  ]
+}

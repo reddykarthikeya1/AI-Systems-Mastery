@@ -1,27 +1,13 @@
-"""Pytest suite for LowRank Structure and Quadratic Forms problem bank."""
-
+"""Tests for Truncated Svd Reconstruction."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_truncated_svd_reconstruction import truncated_svd_reconstruction
+except ImportError:
+    from p01_truncated_svd_reconstruction import truncated_svd_reconstruction
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_truncated_svd_reconstruction():
+    rec = truncated_svd_reconstruction(10.0, [1.0, 0.5], [1.0, 2.0])
+    assert rec == [[10.0, 20.0], [5.0, 10.0]]

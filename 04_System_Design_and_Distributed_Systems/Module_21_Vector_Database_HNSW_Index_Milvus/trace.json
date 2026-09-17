@@ -1,0 +1,46 @@
+{
+  "title": "HNSW / Skip List Probabilistic Multi-Layer Navigation",
+  "algorithm": "Hierarchical Skip List Search",
+  "timeComplexity": "O(log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Top layer search: express jump from 10 to 50 (> target 30) -> drop to layer 1",
+      "array": [
+        10,
+        30,
+        50
+      ],
+      "pointers": {
+        "l2": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "layer": 2
+      },
+      "invariants": "Exponential speedup"
+    },
+    {
+      "step": 2,
+      "description": "Layer 1 advance: step from 10 to 30 === target! Target located",
+      "array": [
+        10,
+        30,
+        50
+      ],
+      "pointers": {
+        "l1": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "target_found": 30
+      },
+      "invariants": "Search completed in 2 hops"
+    }
+  ]
+}

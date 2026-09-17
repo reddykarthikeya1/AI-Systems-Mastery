@@ -1,0 +1,50 @@
+{
+  "title": "SQL Moving Window Aggregate",
+  "algorithm": "Window Frame Evaluation",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Frame index 0: no preceding row, sum is 10.0",
+      "array": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "pointers": {
+        "curr": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "sum": 10.0
+      },
+      "invariants": "Boundary clamped to start"
+    },
+    {
+      "step": 2,
+      "description": "Frame index 1: sum 10.0 + 20.0 = 30.0",
+      "array": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "pointers": {
+        "prev": 0,
+        "curr": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "active"
+      },
+      "variables": {
+        "sum": 30.0
+      },
+      "invariants": "1 PRECEDING included"
+    }
+  ]
+}

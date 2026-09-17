@@ -1,27 +1,17 @@
-"""Pytest suite for Observability Distributed Tracing SRE problem bank."""
-
+"""Tests for W3C Trace Context Propagation."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_w3c_trace_context_propagation import w3c_trace_context_propagation
+except ImportError:
+    from p01_w3c_trace_context_propagation import w3c_trace_context_propagation
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_w3c_trace_context_propagation():
+    parent = "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01"
+    child = w3c_trace_context_propagation(parent, "5c35626a576a3a4b")
+    assert child == "00-4bf92f3577b34da6a3ce929d0e0e4736-5c35626a576a3a4b-01"
+    import pytest
+    with pytest.raises(ValueError):
+        w3c_trace_context_propagation("invalid-header", "1234567890abcdef")

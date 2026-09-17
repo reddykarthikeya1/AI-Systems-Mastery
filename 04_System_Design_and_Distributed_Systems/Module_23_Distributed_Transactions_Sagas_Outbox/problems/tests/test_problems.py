@@ -1,27 +1,24 @@
-"""Pytest suite for Distributed Transactions Sagas Outbox problem bank."""
-
+"""Tests for Orchestrated Saga Coordinator."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_orchestrated_saga_coordinator import orchestrated_saga_coordinator
+except ImportError:
+    from p01_orchestrated_saga_coordinator import orchestrated_saga_coordinator
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_orchestrated_saga_coordinator():
+    steps_ok = [
+        {'name': 'reserve_flight', 'succeeds': True, 'compensate': 'cancel_flight'},
+        {'name': 'reserve_hotel', 'succeeds': True, 'compensate': 'cancel_hotel'},
+    ]
+    ok, roll = orchestrated_saga_coordinator(steps_ok)
+    assert ok is True and roll == []
+    
+    steps_fail = [
+        {'name': 'reserve_flight', 'succeeds': True, 'compensate': 'cancel_flight'},
+        {'name': 'reserve_hotel', 'succeeds': False, 'compensate': 'cancel_hotel'},
+    ]
+    ok2, roll2 = orchestrated_saga_coordinator(steps_fail)
+    assert ok2 is False and roll2 == ['cancel_flight']

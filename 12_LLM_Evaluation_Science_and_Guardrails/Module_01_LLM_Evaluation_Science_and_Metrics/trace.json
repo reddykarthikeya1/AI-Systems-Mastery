@@ -1,0 +1,44 @@
+{
+  "title": "SQuAD QA Exact Match (EM) and Token F1 Evaluator",
+  "algorithm": "Token Precision & Recall Harmonic Mean",
+  "timeComplexity": "O(P + G)",
+  "spaceComplexity": "O(P + G)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Tokenize prediction ['the', 'eiffel', 'tower'] and reference ['eiffel', 'tower']",
+      "array": [
+        3,
+        2
+      ],
+      "pointers": {
+        "tokens": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "shared_tokens": 2
+      },
+      "invariants": "Lowercased token set intersection"
+    },
+    {
+      "step": 2,
+      "description": "Compute Precision=2/3, Recall=2/2 -> F1 = 0.8000 (EM = 0 due to article 'the')",
+      "array": [
+        0,
+        80
+      ],
+      "pointers": {
+        "f1": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "f1_score": 0.8
+      },
+      "invariants": "Partial credit assigned fairly"
+    }
+  ]
+}

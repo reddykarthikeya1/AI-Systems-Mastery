@@ -1,0 +1,46 @@
+{
+  "title": "Spectral Power Iteration for Dominant Eigenpair",
+  "algorithm": "Power Iteration Method",
+  "timeComplexity": "O(K * N^2)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize uniform vector b0 and multiply by matrix A",
+      "array": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "pointers": {
+        "iter": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "norm": 2.12
+      },
+      "invariants": "Geometric contraction begins"
+    },
+    {
+      "step": 2,
+      "description": "Normalize iterate: converges toward dominant eigenvector lambda=3.0",
+      "array": [
+        3,
+        0
+      ],
+      "pointers": {
+        "iter": 15
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "dominant_eigenvalue": 3.0
+      },
+      "invariants": "Rayleigh quotient converged"
+    }
+  ]
+}

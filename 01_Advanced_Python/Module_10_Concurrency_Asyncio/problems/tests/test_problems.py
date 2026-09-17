@@ -1,26 +1,16 @@
-"""Pytest suite for Concurrency Asyncio problem bank."""
-
+"""Tests for Token Bucket Rate Limiter."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
+try:
+    from solutions.p01_token_bucket_limiter import TokenBucket
+except ImportError:
+    from p01_token_bucket_limiter import TokenBucket
 
 
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_token_bucket_limiter():
+    b = TokenBucket(2.0, 1.0)
+    assert b.allow(0.0) is True
+    assert b.allow(0.0) is True
+    assert b.allow(0.0) is False
+    assert b.allow(1.0) is True

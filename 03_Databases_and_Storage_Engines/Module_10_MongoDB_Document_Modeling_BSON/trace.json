@@ -1,0 +1,47 @@
+{
+  "title": "MongoDB BSON Size Calculation",
+  "algorithm": "BSON Document Sizing",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Inspect root keys and calculate byte payload offsets",
+      "array": [
+        5,
+        12,
+        28
+      ],
+      "pointers": {
+        "key": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "key": "name",
+        "size": 12
+      },
+      "invariants": "Strict 16MB document limit monitored"
+    },
+    {
+      "step": 2,
+      "description": "Verify total document size within limits",
+      "array": [
+        5,
+        12,
+        28
+      ],
+      "pointers": {
+        "key": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "valid": true
+      },
+      "invariants": "Document valid for collection insert"
+    }
+  ]
+}

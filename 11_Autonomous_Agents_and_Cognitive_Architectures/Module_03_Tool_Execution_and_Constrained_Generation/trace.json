@@ -1,0 +1,44 @@
+{
+  "title": "Agent Tool Invocation JSON Schema Validation",
+  "algorithm": "Constrained Tool Argument Validator",
+  "timeComplexity": "O(P)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Verify required parameters: 'city' found in arguments dictionary",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "req": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "param": "city"
+      },
+      "invariants": "Mandatory parameters present"
+    },
+    {
+      "step": 2,
+      "description": "Validate data types: 'city' is str, 'days' is int -> schema approved",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "type": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "valid": true
+      },
+      "invariants": "Guarantees runtime function calling safety"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "Binary Cross-Entropy Loss & Analytical Gradient",
+  "algorithm": "Binary Cross Entropy",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Clip prediction p=0.9 against epsilon boundaries: evaluate log-likelihood",
+      "array": [
+        1,
+        9
+      ],
+      "pointers": {
+        "p": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "loss": 0.1054
+      },
+      "invariants": "Strictly positive loss"
+    },
+    {
+      "step": 2,
+      "description": "Compute loss gradient dL/dp: negative gradient (-1.11) signals increase p",
+      "array": [
+        1,
+        9
+      ],
+      "pointers": {
+        "grad": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "grad": -1.1111
+      },
+      "invariants": "Direct error feedback to weights"
+    }
+  ]
+}

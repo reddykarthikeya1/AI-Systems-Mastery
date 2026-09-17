@@ -1,0 +1,48 @@
+{
+  "title": "FP8 E4M3 Weight Dequantization Vector Scaling",
+  "algorithm": "FP8 Scaled Dequantization",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Load packed FP8 E4M3 weights with per-tensor scale factor 0.05",
+      "array": [
+        10,
+        -5,
+        0
+      ],
+      "pointers": {
+        "scale": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "scale": 0.05
+      },
+      "invariants": "2x memory throughput vs FP16"
+    },
+    {
+      "step": 2,
+      "description": "Multiply by scale factor into float32 registers: [0.5, -0.25, 0.0]",
+      "array": [
+        50,
+        -25,
+        0
+      ],
+      "pointers": {
+        "res": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "dequantized": true
+      },
+      "invariants": "Numerical precision within FP8 tolerances"
+    }
+  ]
+}

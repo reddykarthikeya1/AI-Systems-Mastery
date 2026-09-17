@@ -1,0 +1,49 @@
+{
+  "title": "FlashAttention Online Softmax Normalization Rescaling",
+  "algorithm": "Online Softmax Rescaling",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Block 1 (max=10.0, sum=5.0) merged with Block 2 (max=10.0, sum=5.0)",
+      "array": [
+        10,
+        5,
+        10,
+        5
+      ],
+      "pointers": {
+        "b1": 0,
+        "b2": 2
+      },
+      "highlights": {
+        "0": "active",
+        "2": "active"
+      },
+      "variables": {
+        "new_max": 10.0
+      },
+      "invariants": "Numerical stability preserved"
+    },
+    {
+      "step": 2,
+      "description": "Rescale accumulator: new_sum = 10.0 with zero materialization of N x N attention matrix",
+      "array": [
+        10,
+        10
+      ],
+      "pointers": {
+        "res": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "new_sum": 10.0
+      },
+      "invariants": "O(N) IO complexity achieved"
+    }
+  ]
+}

@@ -1,27 +1,15 @@
-"""Pytest suite for System Design Fundamentals Interview Playbook problem bank."""
-
+"""Tests for Back Of Envelope Capacity."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_back_of_envelope_capacity import back_of_envelope_capacity
+except ImportError:
+    from p01_back_of_envelope_capacity import back_of_envelope_capacity
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_back_of_envelope_capacity():
+    res = back_of_envelope_capacity(10_000_000, 20, 0.9, 500)
+    assert res['read_qps'] > 0
+    assert res['write_qps'] > 0
+    assert res['daily_storage_gb'] > 0

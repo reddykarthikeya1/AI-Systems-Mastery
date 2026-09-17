@@ -1,26 +1,17 @@
-"""Pytest suite for Transformers problem bank."""
-
+"""Tests for Multi Head Attention Mask."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_attention_budget import compute_attention_budget
+try:
+    from solutions.p01_multi_head_attention_mask import multi_head_attention_mask
+except ImportError:
+    from p01_multi_head_attention_mask import multi_head_attention_mask
 
 
-def test_compute_attention_budget():
-    res = compute_attention_budget(seq_len=1024, num_heads=32, head_dim=128, batch_size=2)
-    assert res["kv_cache_bytes"] == 2 * 1024 * (4 * 32 * 128)
-    assert res["attn_flops"] == 4 * 2 * 32 * (1024**2) * 128
-
+def test_multi_head_attention_mask():
+    scores = [[1.0, 2.0], [3.0, 4.0]]
+    masked = multi_head_attention_mask(scores)
+    assert masked[0][0] == 1.0
+    assert masked[0][1] == -1e9  # future masked
+    assert masked[1][0] == 3.0
+    assert masked[1][1] == 4.0

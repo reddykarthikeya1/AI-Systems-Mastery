@@ -1,27 +1,16 @@
-"""Pytest suite for Distributed Web Crawler Deduplication Google problem bank."""
-
+"""Tests for Simhash Near Duplicate Filter."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_simhash_near_duplicate_filter import simhash_near_duplicate_filter
+except ImportError:
+    from p01_simhash_near_duplicate_filter import simhash_near_duplicate_filter
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_simhash_near_duplicate_filter():
+    tokens1 = ["distributed", "crawler", "python", "systems", "dedup"]
+    tokens2 = ["distributed", "crawler", "python", "systems", "dedup"]
+    is_dup, d = simhash_near_duplicate_filter(tokens1, tokens2, 3)
+    assert is_dup is True
+    assert d == 0

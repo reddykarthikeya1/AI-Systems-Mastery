@@ -1,0 +1,48 @@
+{
+  "title": "Subspace Vector Orthogonal Projection",
+  "algorithm": "Orthogonal Projection",
+  "timeComplexity": "O(K * D)",
+  "spaceComplexity": "O(D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute inner product <v, u1>: projection coefficient 3.0",
+      "array": [
+        3,
+        4
+      ],
+      "pointers": {
+        "coeff": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "dot": 3.0
+      },
+      "invariants": "Minimal distance projection"
+    },
+    {
+      "step": 2,
+      "description": "Scale basis vector: projected vector [3.0, 0.0] resides in subspace",
+      "array": [
+        3,
+        0
+      ],
+      "pointers": {
+        "proj": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "residual": [
+          0.0,
+          4.0
+        ]
+      },
+      "invariants": "Residual perpendicular to subspace"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "title": "GIN Inverted Index Posting List Intersection",
+  "algorithm": "Inverted Index Intersect",
+  "timeComplexity": "O(K * M)",
+  "spaceComplexity": "O(M)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Fetch posting list for 'postgres': {1, 2, 3}",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "term": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "candidates": 3
+      },
+      "invariants": "Initial candidate set loaded"
+    },
+    {
+      "step": 2,
+      "description": "Intersect with 'acid' posting list: {2, 3}",
+      "array": [
+        2,
+        3
+      ],
+      "pointers": {
+        "term": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "candidates": 2
+      },
+      "invariants": "Posting list intersection verified"
+    }
+  ]
+}

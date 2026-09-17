@@ -1,27 +1,16 @@
-"""Pytest suite for Multivariable Calculus for Learning problem bank."""
-
+"""Tests for Gradient Descent Backtracking."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_gradient_descent_backtracking import gradient_descent_backtracking
+except ImportError:
+    from p01_gradient_descent_backtracking import gradient_descent_backtracking
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_gradient_descent_backtracking():
+    loss = lambda x: x ** 2
+    # At x=2, grad=4. Candidate with lr=1 -> x_new = -2 (loss 4 == 4 ok)
+    # With small step, x drops toward 0
+    x_next = gradient_descent_backtracking(2.0, 4.0, loss, lr=0.1)
+    assert x_next == 1.6

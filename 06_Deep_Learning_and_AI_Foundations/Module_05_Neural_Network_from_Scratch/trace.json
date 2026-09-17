@@ -1,0 +1,48 @@
+{
+  "title": "2-Layer MLP Analytical Backpropagation",
+  "algorithm": "Backpropagation with ReLU Chain Rule",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Forward pass: z1=2.0 -> ReLU h=2.0 -> linear prediction y_hat=2.0",
+      "array": [
+        2,
+        2,
+        2
+      ],
+      "pointers": {
+        "fwd": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "y_hat": 2.0,
+        "target": 4.0
+      },
+      "invariants": "Error delta -2.0 computed"
+    },
+    {
+      "step": 2,
+      "description": "Reverse pass: apply ReLU gating and propagate analytical gradients gw1=-4.0, gw2=-4.0",
+      "array": [
+        -4,
+        -4
+      ],
+      "pointers": {
+        "gw": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "grad_w1": -4.0,
+        "grad_w2": -4.0
+      },
+      "invariants": "Exact chain rule derivative verified"
+    }
+  ]
+}

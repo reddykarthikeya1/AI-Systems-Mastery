@@ -1,0 +1,48 @@
+{
+  "title": "DeepSpeed ZeRO-1/2/3 Memory Partitioning",
+  "algorithm": "ZeRO Memory Sharding Analysis",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "10 Billion parameter model baseline: requires 160GB per GPU (impossible on 80GB H100)",
+      "array": [
+        160,
+        41,
+        22,
+        2
+      ],
+      "pointers": {
+        "base": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "baseline_vram": "160 GB"
+      },
+      "invariants": "OOM without state sharding"
+    },
+    {
+      "step": 2,
+      "description": "ZeRO-3 shards Optimizer + Gradients + Parameters across 64 GPUs: shrinks to 2.5GB per GPU",
+      "array": [
+        160,
+        41,
+        22,
+        2
+      ],
+      "pointers": {
+        "z3": 3
+      },
+      "highlights": {
+        "3": "sorted"
+      },
+      "variables": {
+        "zero3_vram": "2.5 GB"
+      },
+      "invariants": "Enables 100B+ models on commodity clusters"
+    }
+  ]
+}

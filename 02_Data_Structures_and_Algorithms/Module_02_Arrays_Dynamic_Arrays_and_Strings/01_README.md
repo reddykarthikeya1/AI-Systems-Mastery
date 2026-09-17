@@ -55,6 +55,28 @@ flowchart LR
 
 ---
 
+---
+
+## 🗺️ Recommended Step-by-Step Learning Path
+
+Follow this exact sequence to achieve complete mastery of this module:
+
+| Step | File to Open | What You Will Do |
+| :---: | :--- | :--- |
+| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
+| **4** | **[00_interactive_arrays_dynamic_arrays_and_strings.ipynb](00_interactive_arrays_dynamic_arrays_and_strings.ipynb)** | Open in Jupyter/VS Code to run interactive visual experiments and benchmarks. |
+| **5** | **[05_two_pointers_and_sliding_window_demos.py](05_two_pointers_and_sliding_window_demos.py)** | Run in terminal (`python 05_two_pointers_and_sliding_window_demos.py`) to explore 05 Two Pointers And Sliding Window Demos code patterns. |
+| **6** | **[06_prefix_sum_and_kadane_demos.py](06_prefix_sum_and_kadane_demos.py)** | Run in terminal (`python 06_prefix_sum_and_kadane_demos.py`) to explore 06 Prefix Sum And Kadane Demos code patterns. |
+| **7** | **[09_TROUBLESHOOTING_AND_EDGE_CASES.md](09_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
+| **8** | **[08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
+| **9** | **[07_PROJECT_GUIDE.md](07_PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
+| **10** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
+| **11** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
+
+---
+
 ## 1. Physical Hardware Memory Layout & Cache Physics
 
 ### Contiguous Allocation & Address Calculation

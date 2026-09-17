@@ -1,0 +1,45 @@
+{
+  "title": "Anthropic Contextual Retrieval Header Enrichment",
+  "algorithm": "Contextual Retrieval Enrichment",
+  "timeComplexity": "O(C)",
+  "spaceComplexity": "O(C)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Construct global document contextual synopsis header: '[Q3 Earnings: Revenue up 15%]'",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "hdr": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "header_len": 31
+      },
+      "invariants": "Solves pronoun ambiguity in isolated chunks"
+    },
+    {
+      "step": 2,
+      "description": "Prepend to passage: vector embedding now captures document-wide context",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "chunk": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "retrieval_failure_rate": "-35%"
+      },
+      "invariants": "High-fidelity semantic embedding"
+    }
+  ]
+}

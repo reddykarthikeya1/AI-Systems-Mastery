@@ -1,0 +1,51 @@
+{
+  "title": "PyTorch DDP Gradient Bucketing & Communication Overlap",
+  "algorithm": "Reverse Backward Gradient Bucketing",
+  "timeComplexity": "O(P)",
+  "spaceComplexity": "O(P)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Backward pass starts at output layer: place param 3 (10MB) in Bucket 0",
+      "array": [
+        10,
+        20,
+        15,
+        10
+      ],
+      "pointers": {
+        "b0": 3
+      },
+      "highlights": {
+        "3": "active"
+      },
+      "variables": {
+        "curr_bucket": [
+          3
+        ]
+      },
+      "invariants": "Asynchronous AllReduce dispatched"
+    },
+    {
+      "step": 2,
+      "description": "Param 2 (20MB) exceeds 25MB bucket limit: trigger async AllReduce on Bucket 0 and start Bucket 1",
+      "array": [
+        10,
+        20,
+        15,
+        10
+      ],
+      "pointers": {
+        "b1": 2
+      },
+      "highlights": {
+        "3": "sorted",
+        "2": "active"
+      },
+      "variables": {
+        "buckets_dispatched": 1
+      },
+      "invariants": "100% compute/communication overlap"
+    }
+  ]
+}

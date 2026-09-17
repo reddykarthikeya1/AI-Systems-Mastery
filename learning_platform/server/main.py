@@ -106,6 +106,7 @@ class ModuleItem(BaseModel):
     has_solution: bool
     has_starter: bool
     has_debug_lab: bool = False
+    has_problems: bool = False
     quickstart_script: Optional[str] = None
     word_count: int = 0
     reading_minutes: int = 0
@@ -471,6 +472,7 @@ def discover_course_modules(course_folder_name: str) -> List[ModuleItem]:
             has_solution=(mod_dir / "project_solution").is_dir(),
             has_starter=(mod_dir / "starter").is_dir(),
             has_debug_lab=(mod_dir / "debug_lab").is_dir(),
+            has_problems=(mod_dir / "problems").is_dir(),
             quickstart_script=quickstart_rel,
             word_count=mod_words,
             reading_minutes=reading_mins,

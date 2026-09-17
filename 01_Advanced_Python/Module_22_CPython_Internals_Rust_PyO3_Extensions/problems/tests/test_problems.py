@@ -1,26 +1,11 @@
-"""Pytest suite for CPython Internals Rust PyO3 Extensions problem bank."""
-
+"""Tests for Binary Struct Network Protocol Header."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
+from p01_binary_header_packer import pack_protocol_header, unpack_protocol_header
 
 
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_binary_header_packer():
+    b = pack_protocol_header(1, 1024, 0xAA55)
+    assert len(b) == 8
+    assert unpack_protocol_header(b) == (1, 1024, 0xAA55)

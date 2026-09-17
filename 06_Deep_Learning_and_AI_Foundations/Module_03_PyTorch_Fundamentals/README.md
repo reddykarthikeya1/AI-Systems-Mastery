@@ -5,6 +5,30 @@
 
 ---
 
+## 🗺️ Recommended Step-by-Step Learning Path
+
+Follow this exact sequence to achieve complete mastery of this module:
+
+| Step | File to Open | What You Will Do |
+| :---: | :--- | :--- |
+| **1** | **[README.md](README.md)** | Read conceptual overview, architectural foundations, and mental models. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
+| **4** | **[01_Tensors_Devices_and_dtypes.md](lessons/01_Tensors_Devices_and_dtypes.md)** | Complete deep-dive curriculum lesson on 01 Tensors Devices And Dtypes. |
+| **5** | **[02_Autograd_How_requiresgrad_Actually_Works.md](lessons/02_Autograd_How_requiresgrad_Actually_Works.md)** | Complete deep-dive curriculum lesson on 02 Autograd How Requiresgrad Actually Works. |
+| **6** | **[03_nnModule_and_Parameter_Registration.md](lessons/03_nnModule_and_Parameter_Registration.md)** | Complete deep-dive curriculum lesson on 03 Nnmodule And Parameter Registration. |
+| **7** | **[04_Datasets_DataLoaders_and_Collate_Functions.md](lessons/04_Datasets_DataLoaders_and_Collate_Functions.md)** | Complete deep-dive curriculum lesson on 04 Datasets Dataloaders And Collate Functions. |
+| **8** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
+| **9** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
+| **10** | **[PROJECT_GUIDE.md](PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
+| **11** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
+| **12** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
+
+---
+
+
+---
+
 
 ## PyTorch Tensor Memory Layout: Storage vs Strides
 

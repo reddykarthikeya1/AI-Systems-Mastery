@@ -1,27 +1,15 @@
-"""Pytest suite for Distributed Messaging Event Streaming Queues problem bank."""
-
+"""Tests for Partitioned Consumer Group."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_partitioned_consumer_group import partitioned_consumer_group
+except ImportError:
+    from p01_partitioned_consumer_group import partitioned_consumer_group
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_partitioned_consumer_group():
+    alloc = partitioned_consumer_group([0, 1, 2, 3, 4], ['c1', 'c2'])
+    assert alloc['c1'] == [0, 2, 4]
+    assert alloc['c2'] == [1, 3]
+    assert partitioned_consumer_group([0, 1], []) == {}

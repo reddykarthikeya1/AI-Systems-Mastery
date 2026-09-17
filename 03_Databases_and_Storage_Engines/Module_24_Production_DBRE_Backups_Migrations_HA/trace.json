@@ -1,0 +1,49 @@
+{
+  "title": "Point-in-Time Database Recovery (PITR)",
+  "algorithm": "PITR WAL Stream Replay",
+  "timeComplexity": "O(W)",
+  "spaceComplexity": "O(K)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Restore base backup snapshot into fresh data directory",
+      "array": [
+        0,
+        100,
+        200,
+        300
+      ],
+      "pointers": {
+        "base": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "records": 2
+      },
+      "invariants": "Base LSN established"
+    },
+    {
+      "step": 2,
+      "description": "Replay WAL to target_ts=250: apply updates up to ts=200 and halt before corrupt ts=300",
+      "array": [
+        0,
+        100,
+        200,
+        300
+      ],
+      "pointers": {
+        "target": 2
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "restored_ts": 200
+      },
+      "invariants": "Zero RPO loss, corruption avoided"
+    }
+  ]
+}

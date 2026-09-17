@@ -1,0 +1,48 @@
+{
+  "title": "Orca Continuous Iteration-Level Request Scheduler",
+  "algorithm": "Continuous Batching Dynamic Scheduling",
+  "timeComplexity": "O(W)",
+  "spaceComplexity": "O(R + W)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Current iteration: 2 decoding requests (r1, r2) consuming 2 tokens",
+      "array": [
+        2,
+        8
+      ],
+      "pointers": {
+        "active": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "budget_remaining": 6
+      },
+      "invariants": "Iteration-level granularity"
+    },
+    {
+      "step": 2,
+      "description": "Admit waiting request w1 (5 tokens): total 7 <= 8 budget, w2 queued",
+      "array": [
+        7,
+        8
+      ],
+      "pointers": {
+        "admit": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "scheduled": [
+          "r1",
+          "r2",
+          "w1"
+        ]
+      },
+      "invariants": "Eliminates static batch padding bubbles"
+    }
+  ]
+}

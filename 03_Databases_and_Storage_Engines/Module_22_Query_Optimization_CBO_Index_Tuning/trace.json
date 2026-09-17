@@ -1,0 +1,48 @@
+{
+  "title": "Cost-Based Query Optimizer Join Ordering",
+  "algorithm": "Dynamic Programming Join Enumeration",
+  "timeComplexity": "O(N!)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Evaluate permutation [items, users, orders]: calculate intermediate card",
+      "array": [
+        50,
+        100,
+        1000
+      ],
+      "pointers": {
+        "head": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "intermediate_cost": 450.0
+      },
+      "invariants": "Early filter reduces pipeline volume"
+    },
+    {
+      "step": 2,
+      "description": "Identify minimal cost left-deep execution plan",
+      "array": [
+        50,
+        100,
+        1000
+      ],
+      "pointers": {
+        "best": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "optimal_cost": 450.0
+      },
+      "invariants": "CBO physical plan finalized"
+    }
+  ]
+}

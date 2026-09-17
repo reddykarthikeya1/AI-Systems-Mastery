@@ -1,0 +1,45 @@
+{
+  "title": "Little's Law Concurrency Modeling",
+  "algorithm": "Little's Law Queue Analysis",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Arrival rate lambda = 5000 RPS, p99 latency W = 50ms (0.05s)",
+      "array": [
+        5000,
+        50
+      ],
+      "pointers": {
+        "rps": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "lambda": 5000.0,
+        "W": 0.05
+      },
+      "invariants": "Steady-state assumption holds"
+    },
+    {
+      "step": 2,
+      "description": "Concurrence L = 250 in-flight requests: size connection pool to 300",
+      "array": [
+        5000,
+        50
+      ],
+      "pointers": {
+        "concurrency": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "L": 250.0
+      },
+      "invariants": "Thread pool sizing calibrated"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Hybrid Dense-Sparse Reciprocal Rank Fusion (RRF)",
+  "algorithm": "Reciprocal Rank Fusion (RRF)",
+  "timeComplexity": "O(N log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Score docB: rank 2 in dense (1/62) + rank 1 in BM25 (1/61) -> score 0.0325",
+      "array": [
+        61,
+        62
+      ],
+      "pointers": {
+        "docB": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "rrf_b": 0.0325
+      },
+      "invariants": "Eliminates score normalization bias"
+    },
+    {
+      "step": 2,
+      "description": "Sort combined candidates: docB ranks #1 overall ahead of single-modality candidates",
+      "array": [
+        32,
+        16,
+        16
+      ],
+      "pointers": {
+        "top": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "rank_1": "docB"
+      },
+      "invariants": "Robust out-of-domain retrieval"
+    }
+  ]
+}

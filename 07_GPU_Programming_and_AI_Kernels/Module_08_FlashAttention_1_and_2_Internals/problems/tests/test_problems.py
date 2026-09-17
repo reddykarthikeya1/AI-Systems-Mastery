@@ -1,29 +1,17 @@
-"""Pytest suite for FlashAttention 1 and 2 Internals problem bank."""
-
+"""Tests for Online Softmax Rescaling."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_calculate_tile_occupancy import calculate_tile_occupancy
+try:
+    from solutions.p01_online_softmax_rescaling import online_softmax_rescaling
+except ImportError:
+    from p01_online_softmax_rescaling import online_softmax_rescaling
 
 
-def test_calculate_tile_occupancy():
-    res = calculate_tile_occupancy(threads_per_block=256, shared_mem_bytes=16384)
-    assert res["active_blocks"] == 6  # min(8, 6)
-    assert res["active_warps"] == 48
-    assert res["occupancy_percent"] == 75.0
-    # Invalid thread count
-    assert calculate_tile_occupancy(100, 0)["active_blocks"] == 0
-
+def test_online_softmax_rescaling():
+    # Two identical blocks: max 10.0, sum 5.0
+    m, s = online_softmax_rescaling(10.0, 5.0, 10.0, 5.0)
+    assert m == 10.0 and s == 10.0
+    # Block 2 has higher max
+    m2, s2 = online_softmax_rescaling(5.0, 2.0, 10.0, 3.0)
+    assert m2 == 10.0

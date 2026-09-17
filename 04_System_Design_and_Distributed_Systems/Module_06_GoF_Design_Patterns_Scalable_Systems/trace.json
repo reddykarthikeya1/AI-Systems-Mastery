@@ -1,0 +1,47 @@
+{
+  "title": "Circuit Breaker Resiliency State Transitions",
+  "algorithm": "Finite State Machine Pattern",
+  "timeComplexity": "O(E)",
+  "spaceComplexity": "O(E)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "3 consecutive failures at t=12: trip circuit from CLOSED to OPEN",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "fail": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "state": "OPEN",
+        "trip_ts": 12
+      },
+      "invariants": "Cascading backend failure prevented"
+    },
+    {
+      "step": 2,
+      "description": "t=80 >= 72: probe trial in HALF_OPEN succeeds -> circuit resets to CLOSED",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "reset": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "state": "CLOSED"
+      },
+      "invariants": "Normal traffic flow restored"
+    }
+  ]
+}

@@ -5,6 +5,30 @@
 
 ---
 
+## 🗺️ Recommended Step-by-Step Learning Path
+
+Follow this exact sequence to achieve complete mastery of this module:
+
+| Step | File to Open | What You Will Do |
+| :---: | :--- | :--- |
+| **1** | **[README.md](README.md)** | Read conceptual overview, architectural foundations, and mental models. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
+| **4** | **[01_Tokenization_BytePair_Encoding_From_Scratch.md](lessons/01_Tokenization_BytePair_Encoding_From_Scratch.md)** | Complete deep-dive curriculum lesson on 01 Tokenization Bytepair Encoding From Scratch. |
+| **5** | **[02_Pretraining_a_Small_GPT.md](lessons/02_Pretraining_a_Small_GPT.md)** | Complete deep-dive curriculum lesson on 02 Pretraining A Small Gpt. |
+| **6** | **[03_Sampling_Temperature_Topk_Topp_and_Beam_Search.md](lessons/03_Sampling_Temperature_Topk_Topp_and_Beam_Search.md)** | Complete deep-dive curriculum lesson on 03 Sampling Temperature Topk Topp And Beam Search. |
+| **7** | **[04_Checkpoint_Train_Sample_and_Evaluate_Your_Own_LLM.md](lessons/04_Checkpoint_Train_Sample_and_Evaluate_Your_Own_LLM.md)** | Complete deep-dive curriculum lesson on 04 Checkpoint Train Sample And Evaluate Your Own Llm. |
+| **8** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
+| **9** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
+| **10** | **[PROJECT_GUIDE.md](PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
+| **11** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
+| **12** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
+
+---
+
+
+---
+
 
 ## Scaled Dot-Product Attention Pipeline
 

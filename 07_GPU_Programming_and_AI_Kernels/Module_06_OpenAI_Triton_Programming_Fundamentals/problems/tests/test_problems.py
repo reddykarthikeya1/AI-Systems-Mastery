@@ -1,29 +1,15 @@
-"""Pytest suite for OpenAI Triton Programming Fundamentals problem bank."""
-
+"""Tests for Triton Pointer Offset Math."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_calculate_tile_occupancy import calculate_tile_occupancy
+try:
+    from solutions.p01_triton_pointer_offset_math import triton_pointer_offset_math
+except ImportError:
+    from p01_triton_pointer_offset_math import triton_pointer_offset_math
 
 
-def test_calculate_tile_occupancy():
-    res = calculate_tile_occupancy(threads_per_block=256, shared_mem_bytes=16384)
-    assert res["active_blocks"] == 6  # min(8, 6)
-    assert res["active_warps"] == 48
-    assert res["occupancy_percent"] == 75.0
-    # Invalid thread count
-    assert calculate_tile_occupancy(100, 0)["active_blocks"] == 0
-
+def test_triton_pointer_offset_math():
+    offs, masks = triton_pointer_offset_math(1, 4, 6)
+    # pid 1 with block 4 -> offsets [4, 5, 6, 7]. For n=6, masks = [True, True, False, False]
+    assert offs == [4, 5, 6, 7]
+    assert masks == [True, True, False, False]

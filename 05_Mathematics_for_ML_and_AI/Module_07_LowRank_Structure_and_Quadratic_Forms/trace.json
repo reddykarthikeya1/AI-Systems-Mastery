@@ -1,0 +1,51 @@
+{
+  "title": "Truncated SVD Low-Rank Outer Product Reconstruction",
+  "algorithm": "Rank-1 SVD Reconstruction",
+  "timeComplexity": "O(M * N)",
+  "spaceComplexity": "O(M * N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scale singular vectors by dominant singular value sigma=10.0",
+      "array": [
+        10,
+        20,
+        5,
+        10
+      ],
+      "pointers": {
+        "sigma": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "sigma": 10.0
+      },
+      "invariants": "Captures maximum matrix variance"
+    },
+    {
+      "step": 2,
+      "description": "Compute outer product u * v^T: rank-1 matrix constructed",
+      "array": [
+        10,
+        20,
+        5,
+        10
+      ],
+      "pointers": {
+        "rank": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "rank": 1
+      },
+      "invariants": "Eckart-Young optimal approximation"
+    }
+  ]
+}

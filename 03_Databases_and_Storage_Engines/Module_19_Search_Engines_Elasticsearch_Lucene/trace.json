@@ -1,0 +1,47 @@
+{
+  "title": "Lucene BM25 Document Term Relevance Scoring",
+  "algorithm": "Okapi BM25 Ranking",
+  "timeComplexity": "O(Q + D)",
+  "spaceComplexity": "O(D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Score term 'database': TF=2, IDF=2.26, normalized saturation",
+      "array": [
+        10,
+        5,
+        100
+      ],
+      "pointers": {
+        "term": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "tf": 2,
+        "term_score": 3.12
+      },
+      "invariants": "Length normalization penalty applied"
+    },
+    {
+      "step": 2,
+      "description": "Aggregate query term scores: cumulative BM25 relevance computed",
+      "array": [
+        10,
+        5,
+        100
+      ],
+      "pointers": {
+        "term": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "final_score": 6.84
+      },
+      "invariants": "Document ranked in top-K"
+    }
+  ]
+}

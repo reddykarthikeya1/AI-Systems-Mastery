@@ -1,0 +1,44 @@
+{
+  "title": "GPU SIMT Warp Divergence Execution Efficiency",
+  "algorithm": "SIMT Warp Branch Serialization",
+  "timeComplexity": "O(B)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Execute IF branch: 16 lanes active, 16 masked off (efficiency 50%)",
+      "array": [
+        16,
+        16
+      ],
+      "pointers": {
+        "branch_if": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "active_lanes": 16
+      },
+      "invariants": "SIMT serialization penalty"
+    },
+    {
+      "step": 2,
+      "description": "Execute ELSE branch: remaining 16 lanes active -> total 2 cycles to complete",
+      "array": [
+        16,
+        16
+      ],
+      "pointers": {
+        "branch_else": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "efficiency": 0.5
+      },
+      "invariants": "Hardware convergence re-syncs warp"
+    }
+  ]
+}

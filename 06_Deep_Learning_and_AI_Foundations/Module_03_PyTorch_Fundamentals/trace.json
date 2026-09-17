@@ -1,0 +1,51 @@
+{
+  "title": "Tensor NumPy/PyTorch Strided Broadcasting",
+  "algorithm": "Multi-Dimensional Tensor Broadcast",
+  "timeComplexity": "O(D)",
+  "spaceComplexity": "O(D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Align dimensions from trailing axes: [8, 1, 64] and [1, 7, 64]",
+      "array": [
+        8,
+        7,
+        64
+      ],
+      "pointers": {
+        "dim": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "trailing_dim": 64
+      },
+      "invariants": "Compatible equal dimension 64"
+    },
+    {
+      "step": 2,
+      "description": "Broadcast singleton dimension 1 against 7: broadcasted shape [8, 7, 64]",
+      "array": [
+        8,
+        7,
+        64
+      ],
+      "pointers": {
+        "dim": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "shape": [
+          8,
+          7,
+          64
+        ]
+      },
+      "invariants": "Zero memory copy virtual stride=0"
+    }
+  ]
+}

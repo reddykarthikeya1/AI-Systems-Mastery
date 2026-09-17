@@ -1,0 +1,49 @@
+{
+  "title": "Uber Geospatial Driver Proximity Dispatch",
+  "algorithm": "Geohash Spatial Prefix Filtering",
+  "timeComplexity": "O(D)",
+  "spaceComplexity": "O(M)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Extract passenger 5-character geohash prefix '9q8yy'",
+      "array": [
+        5,
+        4
+      ],
+      "pointers": {
+        "prefix": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "box_km": 4.9
+      },
+      "invariants": "Spatial partition bounding box"
+    },
+    {
+      "step": 2,
+      "description": "Match drivers d1 and d2 in bounding box, filter out d3 and d4",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "d1": 0,
+        "d2": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "candidate_drivers": [
+          "d1",
+          "d2"
+        ]
+      },
+      "invariants": "Sub-10ms driver matching dispatch"
+    }
+  ]
+}

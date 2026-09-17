@@ -1,0 +1,48 @@
+{
+  "title": "vLLM PagedAttention Virtual-to-Physical Address Translation",
+  "algorithm": "PagedAttention Block Lookup",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Query token index 20: logical block 20 // 16 = 1, intra-block offset 4",
+      "array": [
+        42,
+        99
+      ],
+      "pointers": {
+        "logical": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "logical_page": 1,
+        "offset": 4
+      },
+      "invariants": "Paging virtual memory abstraction"
+    },
+    {
+      "step": 2,
+      "description": "Page table lookup: physical GPU block 99 at slot offset 4 accessed",
+      "array": [
+        42,
+        99
+      ],
+      "pointers": {
+        "physical": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "physical_addr": [
+          99,
+          4
+        ]
+      },
+      "invariants": "Zero memory fragmentation, instant eviction"
+    }
+  ]
+}

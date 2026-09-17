@@ -1,0 +1,46 @@
+{
+  "title": "Back-of-Envelope Capacity Sizing",
+  "algorithm": "Traffic & Storage Estimation",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "10M DAU * 20 actions/day = 200M total daily requests",
+      "array": [
+        10,
+        20,
+        200
+      ],
+      "pointers": {
+        "dau": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "total_actions": 200000000
+      },
+      "invariants": "Peak multiplier 2x reserved"
+    },
+    {
+      "step": 2,
+      "description": "Compute QPS split: 90% reads (2083.33 QPS), 10% writes (231.48 QPS)",
+      "array": [
+        10,
+        20,
+        200
+      ],
+      "pointers": {
+        "qps": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "storage_gb": 9.31
+      },
+      "invariants": "Capacity envelope sizing approved"
+    }
+  ]
+}

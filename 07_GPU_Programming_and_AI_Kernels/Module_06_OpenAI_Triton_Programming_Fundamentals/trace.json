@@ -1,0 +1,51 @@
+{
+  "title": "OpenAI Triton Block Pointer & Mask Generation",
+  "algorithm": "Triton Block Pointer Indexing",
+  "timeComplexity": "O(B)",
+  "spaceComplexity": "O(B)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute vectorized offsets for pid=1: [4, 5, 6, 7]",
+      "array": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "pointers": {
+        "base": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "start": 4
+      },
+      "invariants": "Block-strided pointer arithmetic"
+    },
+    {
+      "step": 2,
+      "description": "Apply boundary predicate mask (offs < 6): [True, True, False, False]",
+      "array": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "pointers": {
+        "mask": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "active",
+        "3": "active"
+      },
+      "variables": {
+        "valid_loads": 2
+      },
+      "invariants": "Prevents out-of-bounds memory segfaults"
+    }
+  ]
+}

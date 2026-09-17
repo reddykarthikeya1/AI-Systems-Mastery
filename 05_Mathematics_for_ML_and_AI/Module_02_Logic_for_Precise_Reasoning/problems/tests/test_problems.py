@@ -1,27 +1,14 @@
-"""Pytest suite for Logic for Precise Reasoning problem bank."""
-
+"""Tests for Boolean Satisfiability Dpll."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_matrix_metric import compute_matrix_metric
+try:
+    from solutions.p01_boolean_satisfiability_dpll import boolean_satisfiability_dpll
+except ImportError:
+    from p01_boolean_satisfiability_dpll import boolean_satisfiability_dpll
 
 
-def test_compute_matrix_metric():
-    res = compute_matrix_metric([[1.0, 2.0], [3.0, 4.0]])
-    assert res["trace"] == 5.0
-    assert abs(res["frobenius_norm"] - 5.4772) < 1e-3
-    assert compute_matrix_metric([]) == {"trace": 0.0, "frobenius_norm": 0.0}
-
+def test_boolean_satisfiability_dpll():
+    clauses = [[1, -2], [2, 3]]
+    assert boolean_satisfiability_dpll(clauses, {1: True, 2: False, 3: True}) is True
+    assert boolean_satisfiability_dpll(clauses, {1: False, 2: True, 3: False}) is False

@@ -1,0 +1,44 @@
+{
+  "title": "LLM Serving TTFT & TBT SLA Latency Percentile Profiler",
+  "algorithm": "Serving SLA Percentile Analysis",
+  "timeComplexity": "O(N log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Sort TTFT distribution: median TTFT p50=50ms, tail p99=99ms",
+      "array": [
+        50,
+        99
+      ],
+      "pointers": {
+        "ttft": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "p50": 50.0
+      },
+      "invariants": "Interactive streaming SLA verified"
+    },
+    {
+      "step": 2,
+      "description": "Sort token decode step latency: inter-token latency p99 within 99ms target",
+      "array": [
+        50,
+        99
+      ],
+      "pointers": {
+        "tbt": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "p99": 99.0
+      },
+      "invariants": "User perceived stutter-free generation"
+    }
+  ]
+}

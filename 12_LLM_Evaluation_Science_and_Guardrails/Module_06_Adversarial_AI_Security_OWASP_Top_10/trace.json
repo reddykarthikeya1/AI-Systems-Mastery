@@ -1,0 +1,44 @@
+{
+  "title": "OWASP LLM Top 10 Prompt Injection Heuristic Classifier",
+  "algorithm": "Heuristic Injection Detection",
+  "timeComplexity": "O(S)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scan prompt for adversarial injection signatures: detected 2 attack phrases",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "sig": 0
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "matches": 2
+      },
+      "invariants": "Jailbreak intent detected"
+    },
+    {
+      "step": 2,
+      "description": "Flag request as high-confidence injection (0.99 probability): abort LLM forward pass",
+      "array": [
+        99
+      ],
+      "pointers": {
+        "flag": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "risk_score": 0.99
+      },
+      "invariants": "System prompt confidentiality preserved"
+    }
+  ]
+}

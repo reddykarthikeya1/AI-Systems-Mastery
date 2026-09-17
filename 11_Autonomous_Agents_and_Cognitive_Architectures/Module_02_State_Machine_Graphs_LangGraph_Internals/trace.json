@@ -1,0 +1,45 @@
+{
+  "title": "LangGraph State Reducer Transition Engine",
+  "algorithm": "State Reducer Message Append",
+  "timeComplexity": "O(K + M)",
+  "spaceComplexity": "O(S)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Inspect channel 'messages': list detected, trigger append reducer",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "msg": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "new_messages": 1
+      },
+      "invariants": "Message history strictly append-only"
+    },
+    {
+      "step": 2,
+      "description": "Overwrite channel 'iteration' = 1: graph node output merged",
+      "array": [
+        2,
+        1
+      ],
+      "pointers": {
+        "state": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "iter": 1
+      },
+      "invariants": "Deterministic state snapshot produced"
+    }
+  ]
+}

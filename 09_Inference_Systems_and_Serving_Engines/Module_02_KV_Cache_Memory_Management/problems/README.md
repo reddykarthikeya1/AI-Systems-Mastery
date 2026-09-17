@@ -22,3 +22,17 @@ Every problem must **fail** before you start — each stub raises `NotImplemente
 | # | Problem | Focus | Difficulty | Target |
 | :--- | :--- | :--- | :--- | :--- |
 | 01 | [simulate_prefix_cache_hit](p01_simulate_prefix_cache_hit.py) | KV Cache Memory Management | Medium | Production Grade |
+
+---
+
+## 🗺️ Recommended Step-by-Step Problem Solving Path
+
+Follow this sequence to solve the module practice problems:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **1** | **Read Requirements** | Review problem docstrings and invariants in `[p01_simulate_prefix_cache_hit.py](p01_simulate_prefix_cache_hit.py)`. |
+| **2** | **Implement Solution** | Write your algorithmic solution in `problems/` to satisfy all edge cases. |
+| **3** | **Run Pytest Suite** | Execute `pytest tests/` in terminal or the web Practice Arena to verify test assertions. |
+| **4** | **Review Reference Code** | Inspect `[solutions/](solutions/)` to compare time/space complexity and idiomatic patterns. |
+

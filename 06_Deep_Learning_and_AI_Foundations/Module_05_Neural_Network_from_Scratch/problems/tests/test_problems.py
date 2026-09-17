@@ -1,26 +1,14 @@
-"""Pytest suite for Neural Network from Scratch problem bank."""
-
+"""Tests for Two Layer Mlp Backward."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_attention_budget import compute_attention_budget
+try:
+    from solutions.p01_two_layer_mlp_backward import two_layer_mlp_backward
+except ImportError:
+    from p01_two_layer_mlp_backward import two_layer_mlp_backward
 
 
-def test_compute_attention_budget():
-    res = compute_attention_budget(seq_len=1024, num_heads=32, head_dim=128, batch_size=2)
-    assert res["kv_cache_bytes"] == 2 * 1024 * (4 * 32 * 128)
-    assert res["attn_flops"] == 4 * 2 * 32 * (1024**2) * 128
-
+def test_two_layer_mlp_backward():
+    gw1, gw2 = two_layer_mlp_backward(2.0, 4.0, 1.0, 1.0)
+    # z1 = 2, h = 2, y_hat = 2. dloss = -2. grad_w2 = -4. grad_w1 = -4 * 1 * 2 = -4.
+    assert gw1 == -4.0 and gw2 == -4.0

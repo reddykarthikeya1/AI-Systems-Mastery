@@ -1,30 +1,20 @@
-"""Pytest suite for Oracle Database Architecture SGA PGA problem bank."""
-
+"""Tests for Buffer Cache Clock Sweep."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_buffer_cache_clock_sweep import buffer_cache_clock_sweep
+except ImportError:
+    from p01_buffer_cache_clock_sweep import buffer_cache_clock_sweep
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_buffer_cache_clock_sweep():
+    frames = [
+        {'page_id': 101, 'ref_bit': 1, 'dirty': False},
+        {'page_id': 102, 'ref_bit': 0, 'dirty': False},
+        {'page_id': 103, 'ref_bit': 1, 'dirty': True},
+    ]
+    evicted, hand = buffer_cache_clock_sweep(frames, 0)
+    assert frames[0]['ref_bit'] == 0  # cleared
+    assert evicted == 1               # frame 1 had ref_bit 0 and clean
+    assert hand == 2

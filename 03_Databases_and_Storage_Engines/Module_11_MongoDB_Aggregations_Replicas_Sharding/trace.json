@@ -1,0 +1,47 @@
+{
+  "title": "MongoDB Sharded Chunk Routing",
+  "algorithm": "Range Partition Lookup",
+  "timeComplexity": "O(C)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Evaluate shard key value 50 against chunk intervals",
+      "array": [
+        100,
+        200,
+        1000
+      ],
+      "pointers": {
+        "chunk": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "min": 0,
+        "max": 100
+      },
+      "invariants": "0 <= 50 < 100"
+    },
+    {
+      "step": 2,
+      "description": "Direct mongos query router to target shard: shard01",
+      "array": [
+        100,
+        200,
+        1000
+      ],
+      "pointers": {
+        "chunk": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "target_shard": "shard01"
+      },
+      "invariants": "Targeted single-shard query dispatched"
+    }
+  ]
+}

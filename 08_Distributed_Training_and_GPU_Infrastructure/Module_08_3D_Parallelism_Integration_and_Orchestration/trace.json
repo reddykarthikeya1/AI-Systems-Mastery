@@ -1,0 +1,48 @@
+{
+  "title": "3D Hybrid Parallelism (DP x TP x PP) Grid Mapping",
+  "algorithm": "3D Communicator Topology",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Decompose global rank 11 over (TP=2, PP=4, DP=8) cluster grid",
+      "array": [
+        8,
+        4,
+        2
+      ],
+      "pointers": {
+        "rank": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "global_rank": 11
+      },
+      "invariants": "Topology-aware mapping"
+    },
+    {
+      "step": 2,
+      "description": "Coordinates mapped: DP=1 (data parallel), PP=1 (pipeline stage), TP=1 (tensor slice)",
+      "array": [
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "coord": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "coords": "(1, 1, 1)"
+      },
+      "invariants": "Zero cross-communicator crosstalk"
+    }
+  ]
+}

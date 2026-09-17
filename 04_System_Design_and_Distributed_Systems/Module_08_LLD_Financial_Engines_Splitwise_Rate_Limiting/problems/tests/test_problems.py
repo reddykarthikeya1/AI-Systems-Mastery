@@ -1,27 +1,15 @@
-"""Pytest suite for LLD Financial Engines Splitwise Rate Limiting problem bank."""
-
+"""Tests for Debt Simplification Graph."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_debt_simplification_graph import debt_simplification_graph
+except ImportError:
+    from p01_debt_simplification_graph import debt_simplification_graph
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_debt_simplification_graph():
+    balances = {'Alice': 50.0, 'Bob': -30.0, 'Charlie': -20.0}
+    txs = debt_simplification_graph(balances)
+    assert len(txs) == 2
+    assert sum(amt for _, _, amt in txs) == 50.0

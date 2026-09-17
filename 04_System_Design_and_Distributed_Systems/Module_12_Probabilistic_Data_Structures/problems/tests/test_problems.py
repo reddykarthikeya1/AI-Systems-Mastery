@@ -1,27 +1,15 @@
-"""Pytest suite for Probabilistic Data Structures problem bank."""
-
+"""Tests for Count Min Sketch Heavy Hitters."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_count_min_sketch_heavy_hitters import count_min_sketch_heavy_hitters
+except ImportError:
+    from p01_count_min_sketch_heavy_hitters import count_min_sketch_heavy_hitters
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_count_min_sketch_heavy_hitters():
+    stream = ["apple"] * 10 + ["banana"] * 2 + ["orange"] * 1
+    heavy = count_min_sketch_heavy_hitters(stream, width=50, depth=4, threshold=5)
+    assert "apple" in heavy
+    assert "banana" not in heavy

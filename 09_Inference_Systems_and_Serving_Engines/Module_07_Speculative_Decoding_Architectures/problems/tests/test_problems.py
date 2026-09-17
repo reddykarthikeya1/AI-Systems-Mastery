@@ -1,28 +1,17 @@
-"""Pytest suite for Speculative Decoding Architectures problem bank."""
-
+"""Tests for Speculative Rejection Sampler."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
+try:
+    from solutions.p01_speculative_rejection_sampler import speculative_rejection_sampler
+except ImportError:
+    from p01_speculative_rejection_sampler import speculative_rejection_sampler
 
 
-def test_simulate_prefix_cache_hit():
-    cached = [[1, 2, 3, 4, 5], [1, 2, 9, 10]]
-    assert simulate_prefix_cache_hit(cached, [1, 2, 3, 4, 8]) == 4
-    assert simulate_prefix_cache_hit(cached, [1, 2, 9, 11]) == 3
-    assert simulate_prefix_cache_hit(cached, [7, 8, 9]) == 0
-    assert simulate_prefix_cache_hit([], [1, 2]) == 0
-
+def test_speculative_rejection_sampler():
+    # draft=0.8, target=0.9 -> ratio 1.0 (draw 0.5 <= 1.0 -> accept)
+    # draft=0.8, target=0.4 -> ratio 0.5 (draw 0.6 > 0.5 -> reject)
+    dp = [0.8, 0.8]
+    tp = [0.9, 0.4]
+    r = [0.5, 0.6]
+    assert speculative_rejection_sampler(dp, tp, r) == 1

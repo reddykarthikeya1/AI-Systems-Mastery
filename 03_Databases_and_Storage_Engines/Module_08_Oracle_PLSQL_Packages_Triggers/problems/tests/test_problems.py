@@ -1,30 +1,15 @@
-"""Pytest suite for Oracle PLSQL Packages Triggers problem bank."""
-
+"""Tests for Deterministic Audit Trigger."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_deterministic_audit_trigger import deterministic_audit_trigger
+except ImportError:
+    from p01_deterministic_audit_trigger import deterministic_audit_trigger
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_deterministic_audit_trigger():
+    audit = deterministic_audit_trigger('UPDATE', {'salary': 5000, 'dept': 'Eng'}, {'salary': 6000, 'dept': 'Eng'})
+    assert audit['action'] == 'UPDATE'
+    assert audit['delta'] == {'salary': (5000, 6000)}
+    assert audit['timestamp_token'] == 'DETERMINISTIC_COMMIT'

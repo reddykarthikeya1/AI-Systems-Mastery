@@ -1,0 +1,48 @@
+{
+  "title": "Multi-Agent Supervisor Routing & Dispatch Topology",
+  "algorithm": "Supervisor Intent Dispatcher",
+  "timeComplexity": "O(Q)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scan query 'Optimize SQL query' for specialized domain keywords",
+      "array": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "keyword": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "match": "sql"
+      },
+      "invariants": "Deterministic intent routing"
+    },
+    {
+      "step": 2,
+      "description": "Route task payload to DatabaseAgent worker in multi-agent swarm",
+      "array": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "target": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "worker": "DatabaseAgent"
+      },
+      "invariants": "Specialized domain capability leveraged"
+    }
+  ]
+}

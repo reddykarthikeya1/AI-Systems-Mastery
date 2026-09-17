@@ -1,26 +1,11 @@
-"""Pytest suite for Networking Sockets HTTP problem bank."""
-
+"""Tests for HTTP Chunked Transfer Decoder."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
+from p01_parse_chunked_body import parse_chunked_body
 
 
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_parse_chunked_body():
+    stream = b'4\r\nWiki\r\n5\r\npedia\r\n0\r\n\r\n'
+    assert parse_chunked_body(stream) == b'Wikipedia'
+    assert parse_chunked_body(b'0\r\n\r\n') == b''

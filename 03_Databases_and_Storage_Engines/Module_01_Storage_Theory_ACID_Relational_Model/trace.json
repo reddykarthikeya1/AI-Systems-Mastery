@@ -1,0 +1,50 @@
+{
+  "title": "Slotted Page Tuple Placement",
+  "algorithm": "Slotted Page Architecture",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Check free space between slot array and high watermark",
+      "array": [
+        4096,
+        4085,
+        4070
+      ],
+      "pointers": {
+        "slot_header": 0,
+        "free_offset": 4096
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "rec_len": 11,
+        "available": 4096
+      },
+      "invariants": "free_offset - slot_header_size >= rec_len"
+    },
+    {
+      "step": 2,
+      "description": "Append tuple to upper memory boundary and register slot index",
+      "array": [
+        4096,
+        4085,
+        4070
+      ],
+      "pointers": {
+        "slot_header": 8,
+        "free_offset": 4085
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "slot_idx": 0,
+        "offset": 4085
+      },
+      "invariants": "Slot index 0 maps to [4085, 11]"
+    }
+  ]
+}

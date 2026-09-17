@@ -1,0 +1,46 @@
+{
+  "title": "LSM-Tree Multi-Way Leveled Compaction",
+  "algorithm": "SSTable K-Way Merge",
+  "timeComplexity": "O(N log K)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Resolve key k1: run2 ts=20 overrides run1 ts=10",
+      "array": [
+        10,
+        20
+      ],
+      "pointers": {
+        "k1": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "key": "k1",
+        "val": "v1_new"
+      },
+      "invariants": "Latest timestamp wins"
+    },
+    {
+      "step": 2,
+      "description": "Process key k2: latest entry is tombstone (ts=25), purge key",
+      "array": [
+        15,
+        25
+      ],
+      "pointers": {
+        "k2": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "key": "k2",
+        "action": "purged"
+      },
+      "invariants": "Disk space reclaimed"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "HLS Adaptive Bitrate Media Playlist Generator",
+  "algorithm": "Adaptive Video Chunk Slicing",
+  "timeComplexity": "O(S)",
+  "spaceComplexity": "O(S)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Partition 15s stream into 6s GOP chunks: slice segment 0 (6.0s)",
+      "array": [
+        6,
+        6,
+        3
+      ],
+      "pointers": {
+        "seg": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "rem": 9.0
+      },
+      "invariants": "Keyframe I-frame aligned"
+    },
+    {
+      "step": 2,
+      "description": "Emit final segment 2 (3.0s): playlist #EXT-X-ENDLIST appended",
+      "array": [
+        6,
+        6,
+        3
+      ],
+      "pointers": {
+        "seg": 2
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "segments": 3
+      },
+      "invariants": "Adaptive HLS manifest ready"
+    }
+  ]
+}

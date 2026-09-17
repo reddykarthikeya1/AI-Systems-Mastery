@@ -1,0 +1,45 @@
+{
+  "title": "Microsoft GraphRAG Entity Subgraph Extraction",
+  "algorithm": "1-Hop Knowledge Graph Neighborhood",
+  "timeComplexity": "O(T log T)",
+  "spaceComplexity": "O(T)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Index seed entity 'Guido': match inbound edge (Python, designed_by, Guido)",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "in": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "inbound": 1
+      },
+      "invariants": "Traverse directional graph links"
+    },
+    {
+      "step": 2,
+      "description": "Match outbound edge (Guido, worked_at, Google): 2-edge community extracted",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "out": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "subgraph_size": 2
+      },
+      "invariants": "Multi-hop reasoning context compiled"
+    }
+  ]
+}

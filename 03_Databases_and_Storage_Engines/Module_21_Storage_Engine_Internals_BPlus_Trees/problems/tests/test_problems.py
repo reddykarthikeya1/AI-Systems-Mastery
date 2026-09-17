@@ -1,30 +1,18 @@
-"""Pytest suite for Storage Engine Internals BPlus Trees problem bank."""
-
+"""Tests for Bplus Tree Node Split."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_bplus_tree_node_split import bplus_tree_node_split
+except ImportError:
+    from p01_bplus_tree_node_split import bplus_tree_node_split
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_bplus_tree_node_split():
+    left, promo, right = bplus_tree_node_split([10, 20, 30, 40], 25, max_capacity=4)
+    assert left == [10, 20]
+    assert promo == 25
+    assert right == [25, 30, 40]
+    k, p, r = bplus_tree_node_split([10, 20], 15, max_capacity=4)
+    assert k == [10, 15, 20]
+    assert p is None

@@ -1,27 +1,18 @@
-"""Pytest suite for Distributed Consensus Raft Vector Clocks problem bank."""
-
+"""Tests for Raft Leader Election."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_raft_leader_election import raft_leader_election
+except ImportError:
+    from p01_raft_leader_election import raft_leader_election
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_raft_leader_election():
+    votes_quorum = [('node2', 3, True), ('node3', 3, True), ('node4', 3, False), ('node5', 3, False)]
+    role, term = raft_leader_election(5, 3, votes_quorum)
+    assert role == 'LEADER' and term == 3
+    
+    votes_higher = [('node2', 4, False)]
+    role2, term2 = raft_leader_election(5, 3, votes_higher)
+    assert role2 == 'FOLLOWER' and term2 == 4

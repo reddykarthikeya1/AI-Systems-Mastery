@@ -1,0 +1,49 @@
+{
+  "title": "RingAttention Sequence Chunk Circular Shift",
+  "algorithm": "Ring Attention P2P Shift",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Rank 0 computes local Q with KV chunk 0, simultaneously initiates P2P send to Rank 1",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "r0": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "send_to": 1
+      },
+      "invariants": "Zero GPU memory blowup for 1M context"
+    },
+    {
+      "step": 2,
+      "description": "Circular ring shift: Rank 0 receives KV chunk 3 from Rank 3, computes cross-attention",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "recv": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "recv_from": 3
+      },
+      "invariants": "Overlap communication with attention compute"
+    }
+  ]
+}

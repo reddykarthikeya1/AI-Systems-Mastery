@@ -1,26 +1,13 @@
-"""Pytest suite for Pydantic V2 Validation Routing problem bank."""
-
+"""Tests for Pydantic Schema Field Pruner."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_solve_systems_task import solve_systems_task
+from p01_schema_field_pruner import prune_sensitive_fields
 
 
-def test_solve_systems_task():
-    assert solve_systems_task([1, 2, 2, "a", "a", "b"]) == {"1": 1, "2": 2, "a": 2, "b": 1}
-    assert solve_systems_task([]) == {}
-    assert solve_systems_task(["x"]) == {"x": 1}
-
+def test_schema_field_pruner():
+    data = {'user': 'alice', 'password_hash': 'secret', 'meta': {'token': 'abc', 'active': True}}
+    c = prune_sensitive_fields(data, {'password_hash', 'token'})
+    assert 'password_hash' not in c
+    assert 'token' not in c['meta']
+    assert c['meta']['active'] is True

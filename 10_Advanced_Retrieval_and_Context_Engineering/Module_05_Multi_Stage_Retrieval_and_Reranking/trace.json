@@ -1,0 +1,46 @@
+{
+  "title": "Cross-Encoder Second-Stage Reranking Pipeline",
+  "algorithm": "Cross-Encoder Score Sorting & Filtering",
+  "timeComplexity": "O(N log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Filter candidates against relevance threshold 0.5: prune low-scoring doc d1 (0.3)",
+      "array": [
+        3,
+        9,
+        6
+      ],
+      "pointers": {
+        "d1": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "pruned": "d1"
+      },
+      "invariants": "Hallucination noise reduction"
+    },
+    {
+      "step": 2,
+      "description": "Sort survivors by full cross-attention relevance: d2 (0.9) > d3 (0.6)",
+      "array": [
+        9,
+        6
+      ],
+      "pointers": {
+        "d2": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "top_doc": "d2"
+      },
+      "invariants": "Precision@K elevated to 95%+"
+    }
+  ]
+}

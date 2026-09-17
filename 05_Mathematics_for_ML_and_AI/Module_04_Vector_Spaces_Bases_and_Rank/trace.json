@@ -1,0 +1,44 @@
+{
+  "title": "Gram-Schmidt Orthogonalization Process",
+  "algorithm": "Gram-Schmidt Process",
+  "timeComplexity": "O(K^2 * D)",
+  "spaceComplexity": "O(K * D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Set u1 = v1: [3.0, 1.0] basis direction established",
+      "array": [
+        3,
+        1
+      ],
+      "pointers": {
+        "u1": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "norm_sq": 10.0
+      },
+      "invariants": "First basis vector initialized"
+    },
+    {
+      "step": 2,
+      "description": "Subtract projection of v2 along u1: u2 orthogonalized",
+      "array": [
+        3,
+        1
+      ],
+      "pointers": {
+        "u2": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "dot_product": 0.0
+      },
+      "invariants": "Mutual orthogonality <u1, u2> = 0"
+    }
+  ]
+}

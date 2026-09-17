@@ -1,0 +1,44 @@
+{
+  "title": "1F1B (One-Forward-One-Backward) Pipeline Schedule",
+  "algorithm": "1F1B Pipeline Parallel Scheduling",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Warmup phase: stage 0 dispatches 3 microbatches to fill 4-stage pipeline",
+      "array": [
+        3,
+        35
+      ],
+      "pointers": {
+        "warmup": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "warmup_steps": 3
+      },
+      "invariants": "Activation memory capped at num_stages"
+    },
+    {
+      "step": 2,
+      "description": "Steady state 1F1B: alternate 1 forward with 1 backward -> bubble shrinks below 9%",
+      "array": [
+        3,
+        35
+      ],
+      "pointers": {
+        "bubble": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "bubble_pct": "8%"
+      },
+      "invariants": "Near-linear pipeline scaling efficiency"
+    }
+  ]
+}

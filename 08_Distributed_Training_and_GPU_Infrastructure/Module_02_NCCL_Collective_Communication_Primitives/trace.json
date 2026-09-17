@@ -1,0 +1,48 @@
+{
+  "title": "NCCL Ring AllReduce Stepwise Communication",
+  "algorithm": "Ring AllReduce Algorithm",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scatter-reduce phase across 8 GPUs: each device transmits 7/8th of model gradient",
+      "array": [
+        7000,
+        7000,
+        14000
+      ],
+      "pointers": {
+        "scatter": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "scatter_bytes": 7000.0
+      },
+      "invariants": "Ring neighbor transmission pipeline"
+    },
+    {
+      "step": 2,
+      "description": "Allgather phase: circular broadcast of reduced partitions; total transferred 14000 bytes",
+      "array": [
+        7000,
+        7000,
+        14000
+      ],
+      "pointers": {
+        "total": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "bandwidth_optimality": "2*(N-1)/N"
+      },
+      "invariants": "Cluster scale independent bandwidth"
+    }
+  ]
+}

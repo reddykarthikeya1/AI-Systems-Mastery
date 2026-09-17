@@ -1,0 +1,44 @@
+{
+  "title": "NeMo Guardrails Dialogue Policy Category Filter",
+  "algorithm": "Policy Enforcement Filter",
+  "timeComplexity": "O(P * T)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Inspect prompt against safety policy categories: 'malware' matched",
+      "array": [
+        1,
+        0,
+        0
+      ],
+      "pointers": {
+        "hit": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "policy": "malware"
+      },
+      "invariants": "Safety taxonomy violation"
+    },
+    {
+      "step": 2,
+      "description": "Trigger deterministic rail intervention: block request with policy violation",
+      "array": [
+        0
+      ],
+      "pointers": {
+        "block": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "action": "BLOCKED"
+      },
+      "invariants": "Prevent unsafe generation"
+    }
+  ]
+}

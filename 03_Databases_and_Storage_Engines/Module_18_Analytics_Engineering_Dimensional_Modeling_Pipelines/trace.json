@@ -1,0 +1,46 @@
+{
+  "title": "SCD Type 2 Dimensional Table Versioning",
+  "algorithm": "Slowly Changing Dimension Type 2",
+  "timeComplexity": "O(D)",
+  "spaceComplexity": "O(D)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Match natural key 'cust_101': detected value change 'NY' -> 'CA'",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "curr": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "old_val": "NY",
+        "new_val": "CA"
+      },
+      "invariants": "Historical audit record preserved"
+    },
+    {
+      "step": 2,
+      "description": "Expire old record (valid_to='2025-06-01') and append new version",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "curr": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "new_id": 2
+      },
+      "invariants": "Temporal consistency guaranteed"
+    }
+  ]
+}

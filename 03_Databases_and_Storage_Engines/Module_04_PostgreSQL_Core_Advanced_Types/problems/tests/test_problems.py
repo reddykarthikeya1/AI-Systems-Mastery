@@ -1,30 +1,20 @@
-"""Pytest suite for PostgreSQL Core Advanced Types problem bank."""
-
+"""Tests for Gin Inverted Index Query."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_gin_inverted_index_query import gin_inverted_index_query
+except ImportError:
+    from p01_gin_inverted_index_query import gin_inverted_index_query
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_gin_inverted_index_query():
+    idx = {
+        "postgres": {1, 2, 3},
+        "acid": {2, 3, 4},
+        "jsonb": {1, 3}
+    }
+    assert gin_inverted_index_query(idx, ["postgres", "acid"]) == {2, 3}
+    assert gin_inverted_index_query(idx, ["postgres", "jsonb"]) == {1, 3}
+    assert gin_inverted_index_query(idx, ["unknown"]) == set()
+    assert gin_inverted_index_query(idx, []) == set()

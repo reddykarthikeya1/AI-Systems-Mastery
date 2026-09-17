@@ -22,3 +22,17 @@ A memory-efficient streaming analytics pipeline that parses and filters gigabyte
 ```bash
 pytest test_log_analyzer.py -v
 ```
+
+---
+
+## 🗺️ Recommended Step-by-Step Project Study Path
+
+Follow this sequence to analyze and master the project architecture:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **1** | **Architecture Review** | Read the specification and design breakdown in this `README.md`. |
+| **2** | **Examine Implementation** | Study modular design patterns and invariant safeguards across source files. |
+| **3** | **Run Test Suite** | Execute `pytest tests/` to see all production test cases pass green. |
+| **4** | **Independent Re-Build** | Re-implement the solution from scratch in `[../starter/](../starter/)` until all tests pass. |
+

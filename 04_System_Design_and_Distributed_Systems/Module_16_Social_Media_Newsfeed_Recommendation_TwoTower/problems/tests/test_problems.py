@@ -1,27 +1,15 @@
-"""Pytest suite for Social Media Newsfeed Recommendation TwoTower problem bank."""
-
+"""Tests for Fanout On Write Feed."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_fanout_on_write_feed import fanout_on_write_feed
+except ImportError:
+    from p01_fanout_on_write_feed import fanout_on_write_feed
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_fanout_on_write_feed():
+    res1 = fanout_on_write_feed("regular_user", "post_1", ["f1", "f2"], 5)
+    assert res1 == {"f1": ["post_1"], "f2": ["post_1"]}
+    res2 = fanout_on_write_feed("celebrity", "post_2", ["f1", "f2", "f3", "f4", "f5", "f6"], 5)
+    assert res2 == {"celebrity": ["post_2"]}

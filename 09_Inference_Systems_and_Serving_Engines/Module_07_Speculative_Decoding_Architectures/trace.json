@@ -1,0 +1,44 @@
+{
+  "title": "Speculative Decoding Rejection Sampling Verification",
+  "algorithm": "Speculative Rejection Sampling",
+  "timeComplexity": "O(K)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Draft token 0: target prob 0.9 >= draft prob 0.8 (acceptance ratio 1.0) -> ACCEPTED",
+      "array": [
+        1,
+        0
+      ],
+      "pointers": {
+        "tok0": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "token_0": "ACCEPTED"
+      },
+      "invariants": "Distribution match guaranteed"
+    },
+    {
+      "step": 2,
+      "description": "Draft token 1: target prob 0.4 < 0.8 (ratio 0.5, draw 0.6) -> REJECTED & resample",
+      "array": [
+        1,
+        0
+      ],
+      "pointers": {
+        "tok1": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "accepted_count": 1
+      },
+      "invariants": "Zero quality degradation vs base model"
+    }
+  ]
+}

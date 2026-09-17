@@ -1,30 +1,20 @@
-"""Pytest suite for Search Engines Elasticsearch Lucene problem bank."""
-
+"""Tests for Bm25 Score Tokens."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_bm25_score_tokens import bm25_score_tokens
+except ImportError:
+    from p01_bm25_score_tokens import bm25_score_tokens
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_bm25_score_tokens():
+    score = bm25_score_tokens(
+        query_terms=["database", "acid"],
+        doc_tokens=["database", "storage", "database", "acid", "engine"],
+        avg_doc_len=5.0,
+        doc_freqs={"database": 10, "acid": 5},
+        total_docs=100
+    )
+    assert score > 0.0
+    assert bm25_score_tokens(["unknown"], ["a", "b"], 2.0, {}, 10) == 0.0

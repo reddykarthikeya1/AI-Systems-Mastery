@@ -1,0 +1,50 @@
+{
+  "title": "vLLM PagedAttention Physical KV Cache Block Allocator",
+  "algorithm": "PagedAttention Page Table Allocation",
+  "timeComplexity": "O(R)",
+  "spaceComplexity": "O(B)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Allocate req_1 (32 tokens, block_size 16): assign physical blocks [0, 1]",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "req_1": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "blocks_used": 2
+      },
+      "invariants": "Zero internal fragmentation"
+    },
+    {
+      "step": 2,
+      "description": "Allocate req_2 (17 tokens): ceil(17/16)=2 blocks, assign physical blocks [2, 3]",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "req_2": 2
+      },
+      "highlights": {
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "blocks_used": 4
+      },
+      "invariants": "GPU memory utilization 96%"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "XFetch Probabilistic Early Recomputation",
+  "algorithm": "XFetch Cache Stampede Prevention",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Current t=100.0, TTL expires at t=200.0: delta large, cache hit served",
+      "array": [
+        100,
+        200
+      ],
+      "pointers": {
+        "t": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "early_recompute": false
+      },
+      "invariants": "Zero CPU wasted on healthy cache"
+    },
+    {
+      "step": 2,
+      "description": "t=199.0 near expiry: single worker probabilistically triggers async refresh",
+      "array": [
+        199,
+        200
+      ],
+      "pointers": {
+        "refresh": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "early_recompute": true
+      },
+      "invariants": "Stampede prevented: 0 backend thundering herds"
+    }
+  ]
+}

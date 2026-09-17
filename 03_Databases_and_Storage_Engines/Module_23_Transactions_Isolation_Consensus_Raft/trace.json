@@ -1,0 +1,45 @@
+{
+  "title": "Strict 2PL Deadlock Detection Graph",
+  "algorithm": "Strict 2PL Wait-For Graph",
+  "timeComplexity": "O(V + E)",
+  "spaceComplexity": "O(V + E)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "tx1 holds R1, tx2 holds R2: both grant successful",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "tx": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "locks_granted": 2
+      },
+      "invariants": "Growing phase active"
+    },
+    {
+      "step": 2,
+      "description": "tx2 requests R1 held by tx1: cycle tx2 -> tx1 -> tx2 detected! Abort tx2",
+      "array": [
+        1,
+        2
+      ],
+      "pointers": {
+        "abort": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "aborted": "tx2"
+      },
+      "invariants": "Deadlock cycle resolved"
+    }
+  ]
+}

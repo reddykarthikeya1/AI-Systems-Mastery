@@ -1,27 +1,17 @@
-"""Pytest suite for Distributed Data Parallel DDP problem bank."""
-
+"""Tests for Bucket Gradient Allreduce."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_ring_allreduce_cost import compute_ring_allreduce_cost
+try:
+    from solutions.p01_bucket_gradient_allreduce import bucket_gradient_allreduce
+except ImportError:
+    from p01_bucket_gradient_allreduce import bucket_gradient_allreduce
 
 
-def test_compute_ring_allreduce_cost():
-    res = compute_ring_allreduce_cost(param_bytes=1000000, world_size=4, bus_bandwidth_gbps=100.0)
-    assert res["comm_bytes"] == 2.0 * (3.0 / 4.0) * 1000000  # 1,500,000
-    assert res["time_ms"] > 0.0
-    assert compute_ring_allreduce_cost(1000, 1, 100.0)["comm_bytes"] == 0.0
-
+def test_bucket_gradient_allreduce():
+    params = [10.0, 15.0, 20.0, 10.0]  # indices 0, 1, 2, 3
+    # Reverse order: 3 (10MB) + 2 (20MB) > 25MB -> bucket 1: [3], bucket 2: [2], bucket 3: [1, 0]
+    buckets = bucket_gradient_allreduce(params, 25.0)
+    assert buckets[0] == [3]
+    assert buckets[1] == [2]
+    assert buckets[2] == [1, 0]

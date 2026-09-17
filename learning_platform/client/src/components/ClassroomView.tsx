@@ -684,10 +684,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const hasProject = Boolean(module.has_starter || module.has_solution || allLessons.some((l) => l.type === 'project'));
   const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || allLessons.some((l) => l.type === 'quiz'));
   const hasDebugLab = Boolean(module.has_debug_lab);
-  const hasDsaArena = Boolean(
+  const isDsaCourse = Boolean(
     courseTitle.toLowerCase().includes('data structure') ||
     courseTitle.toLowerCase().includes('dsa') ||
-    module.folder_path.toLowerCase().includes('02_data_structures') ||
+    module.folder_path.toLowerCase().includes('02_data_structures')
+  );
+  const hasArena = Boolean(
+    module.has_problems ||
+    isDsaCourse ||
     allLessons.some((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('problems/'))
   );
 
@@ -772,15 +776,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </button>
         )}
 
-        {hasDsaArena && (
+        {hasArena && (
           <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'arena'
                 ? 'bg-amber-600 text-white shadow-sm font-bold'
                 : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'
             }`} onClick={() => setActiveTab('arena')} >
-            <Brain className="w-3.5 h-3.5 text-amber-300" /> LeetCode Arena
+            <Brain className="w-3.5 h-3.5 text-amber-300" /> {isDsaCourse ? 'LeetCode Arena' : 'Practice Arena'}
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
-              Sandbox
+              {isDsaCourse ? 'Sandbox' : 'Problems'}
             </span>
           </button>
         )}

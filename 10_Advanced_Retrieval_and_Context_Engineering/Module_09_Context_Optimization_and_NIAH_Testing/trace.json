@@ -1,0 +1,47 @@
+{
+  "title": "Needle In A Haystack (NIAH) Retrieval Pressure Test",
+  "algorithm": "Long-Context Needle Retrieval Benchmark",
+  "timeComplexity": "O(C)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Probe 10% depth (pass) and 90% depth (pass): attention mechanisms strong at boundaries",
+      "array": [
+        10,
+        50,
+        90
+      ],
+      "pointers": {
+        "pass": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "passed": 2
+      },
+      "invariants": "Primacy & recency effect"
+    },
+    {
+      "step": 2,
+      "description": "Probe 50% depth: needle missed! 'Lost in the middle' phenomenon captured at 50.0% depth",
+      "array": [
+        10,
+        50,
+        90
+      ],
+      "pointers": {
+        "fail": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "failure_depth": 50.0
+      },
+      "invariants": "Pinpoints architectural attention decay"
+    }
+  ]
+}

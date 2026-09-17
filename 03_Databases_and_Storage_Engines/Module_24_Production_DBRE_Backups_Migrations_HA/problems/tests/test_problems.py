@@ -1,30 +1,20 @@
-"""Pytest suite for Production DBRE Backups Migrations HA problem bank."""
-
+"""Tests for Point In Time Recovery."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_point_in_time_recovery import point_in_time_recovery
+except ImportError:
+    from p01_point_in_time_recovery import point_in_time_recovery
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_point_in_time_recovery():
+    base = {'k1': 'v1_initial', 'k2': 'v2_initial'}
+    wal = [
+        (100, 'k1', 'v1_updated'),
+        (200, 'k2', 'v2_updated'),
+        (300, 'k1', 'v1_corrupted')  # after target_ts
+    ]
+    recovered = point_in_time_recovery(base, wal, target_ts=250)
+    assert recovered['k1'] == 'v1_updated'
+    assert recovered['k2'] == 'v2_updated'

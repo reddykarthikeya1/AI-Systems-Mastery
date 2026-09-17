@@ -1,28 +1,16 @@
-"""Pytest suite for KV Cache Memory Management problem bank."""
-
+"""Tests for Kv Cache Footprint Estimator."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
+try:
+    from solutions.p01_kv_cache_footprint_estimator import kv_cache_footprint_estimator
+except ImportError:
+    from p01_kv_cache_footprint_estimator import kv_cache_footprint_estimator
 
 
-def test_simulate_prefix_cache_hit():
-    cached = [[1, 2, 3, 4, 5], [1, 2, 9, 10]]
-    assert simulate_prefix_cache_hit(cached, [1, 2, 3, 4, 8]) == 4
-    assert simulate_prefix_cache_hit(cached, [1, 2, 9, 11]) == 3
-    assert simulate_prefix_cache_hit(cached, [7, 8, 9]) == 0
-    assert simulate_prefix_cache_hit([], [1, 2]) == 0
-
+def test_kv_cache_footprint_estimator():
+    # 32 layers, 8 KV heads (GQA), 128 dim, 4096 tokens, FP16 (2 bytes)
+    # bytes_per_tok = 2 * 32 * 8 * 128 * 2 = 131,072 bytes (128 KB)
+    # 4096 tokens = 128 KB * 4096 = 536,870,912 bytes (512 MB)
+    mem = kv_cache_footprint_estimator(32, 8, 128, 4096, 2)
+    assert mem == 536870912

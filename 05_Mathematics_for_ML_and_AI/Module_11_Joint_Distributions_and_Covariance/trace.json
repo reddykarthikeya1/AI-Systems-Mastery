@@ -1,0 +1,48 @@
+{
+  "title": "Bivariate Sample Covariance Matrix",
+  "algorithm": "Centered Covariance Matrix",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Subtract sample means mu_x=2.0, mu_y=4.0 from data points",
+      "array": [
+        1,
+        2,
+        4
+      ],
+      "pointers": {
+        "mean": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "mean_x": 2.0,
+        "mean_y": 4.0
+      },
+      "invariants": "Data centered at origin"
+    },
+    {
+      "step": 2,
+      "description": "Calculate outer product expectation: positive covariance cov(x, y)=2.0",
+      "array": [
+        1,
+        2,
+        4
+      ],
+      "pointers": {
+        "cov": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "c_xy": 2.0
+      },
+      "invariants": "Positive linear correlation verified"
+    }
+  ]
+}

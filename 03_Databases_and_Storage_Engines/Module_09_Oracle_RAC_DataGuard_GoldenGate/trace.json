@@ -1,0 +1,48 @@
+{
+  "title": "Two-Phase Commit Distributed Consensus",
+  "algorithm": "Two-Phase Commit (2PC)",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Prepare phase: collect vote promises from all RAC instances",
+      "array": [
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "node": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "votes": 3
+      },
+      "invariants": "All nodes prepared"
+    },
+    {
+      "step": 2,
+      "description": "Commit phase: broadcast global COMMIT decision",
+      "array": [
+        1,
+        1,
+        1
+      ],
+      "pointers": {
+        "coord": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "status": "COMMIT"
+      },
+      "invariants": "Atomic consensus reached"
+    }
+  ]
+}

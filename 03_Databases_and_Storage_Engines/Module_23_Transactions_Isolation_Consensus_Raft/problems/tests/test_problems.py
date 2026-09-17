@@ -1,30 +1,20 @@
-"""Pytest suite for Transactions Isolation Consensus Raft problem bank."""
-
+"""Tests for Strict Two Phase Locking."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_strict_two_phase_locking import strict_two_phase_locking
+except ImportError:
+    from p01_strict_two_phase_locking import strict_two_phase_locking
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_strict_two_phase_locking():
+    # tx1 holds R1, tx2 holds R2. tx1 requests R2 (waits for tx2). tx2 requests R1 (cycle!).
+    reqs = [
+        ('tx1', 'R1', 'X'),
+        ('tx2', 'R2', 'X'),
+        ('tx1', 'R2', 'X'),
+        ('tx2', 'R1', 'X'),
+    ]
+    acquired, aborted = strict_two_phase_locking(reqs)
+    assert 'tx2' in aborted

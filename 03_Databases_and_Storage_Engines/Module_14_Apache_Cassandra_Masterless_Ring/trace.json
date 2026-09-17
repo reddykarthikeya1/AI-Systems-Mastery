@@ -1,0 +1,50 @@
+{
+  "title": "Cassandra Consistent Token Ring Routing",
+  "algorithm": "Token Ring Replica Placement",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(RF)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Token 150 falls between nodeA (100) and nodeB (200)",
+      "array": [
+        100,
+        200,
+        300,
+        400
+      ],
+      "pointers": {
+        "coord": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "coordinator": "nodeB"
+      },
+      "invariants": "First node >= token chosen"
+    },
+    {
+      "step": 2,
+      "description": "Walk clockwise to select RF=3 unique replicas: [nodeB, nodeC, nodeD]",
+      "array": [
+        100,
+        200,
+        300,
+        400
+      ],
+      "pointers": {
+        "rep": 3
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "replicas": 3
+      },
+      "invariants": "High availability partition tolerance verified"
+    }
+  ]
+}

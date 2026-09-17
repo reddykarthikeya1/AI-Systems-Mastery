@@ -1,27 +1,18 @@
-"""Pytest suite for Load Balancing Algorithms Health Probes problem bank."""
-
+"""Tests for Weighted Least Connections."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_weighted_least_connections import weighted_least_connections
+except ImportError:
+    from p01_weighted_least_connections import weighted_least_connections
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_weighted_least_connections():
+    servers = [
+        {'id': 'srv1', 'weight': 2, 'active_conns': 10, 'is_healthy': True},   # 10/2 = 5.0
+        {'id': 'srv2', 'weight': 1, 'active_conns': 4, 'is_healthy': True},    # 4/1 = 4.0
+        {'id': 'srv3', 'weight': 5, 'active_conns': 2, 'is_healthy': False},   # unhealthy
+    ]
+    assert weighted_least_connections(servers) == 'srv2'
+    assert weighted_least_connections([{'id': 's1', 'weight': 1, 'active_conns': 0, 'is_healthy': False}]) is None

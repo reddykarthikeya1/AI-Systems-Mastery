@@ -1,0 +1,48 @@
+{
+  "title": "Consistent Hashing Ring with Virtual Nodes",
+  "algorithm": "Consistent Hashing Ring",
+  "timeComplexity": "O(log(N * V))",
+  "spaceComplexity": "O(N * V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Hash key 'user:12345' to MD5 integer on 128-bit ring",
+      "array": [
+        10,
+        45,
+        88,
+        120
+      ],
+      "pointers": {
+        "key": 1
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "key_hash": "0x3f..."
+      },
+      "invariants": "Ring position fixed"
+    },
+    {
+      "step": 2,
+      "description": "Binary search next clockwise vnode: server_b#v3 reached",
+      "array": [
+        10,
+        45,
+        88,
+        120
+      ],
+      "pointers": {
+        "vnode": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "assigned_node": "server_b"
+      },
+      "invariants": "Virtual nodes prevent hot-spot skew"
+    }
+  ]
+}

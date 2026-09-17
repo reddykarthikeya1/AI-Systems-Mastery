@@ -1,0 +1,48 @@
+{
+  "title": "MySQL GTID Replication Reconciliation",
+  "algorithm": "Interval Difference Reconciliation",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Primary has [1..10], replica has [1..8]. Missing: [9..10]",
+      "array": [
+        8,
+        9,
+        10
+      ],
+      "pointers": {
+        "gap_start": 1,
+        "gap_end": 2
+      },
+      "highlights": {
+        "1": "active",
+        "2": "active"
+      },
+      "variables": {
+        "range": "9-10"
+      },
+      "invariants": "Replica lag detected"
+    },
+    {
+      "step": 2,
+      "description": "Reconcile gap intervals into replication catchup request",
+      "array": [
+        9,
+        10
+      ],
+      "pointers": {
+        "req": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "gaps": 1
+      },
+      "invariants": "Catchup stream prepared"
+    }
+  ]
+}

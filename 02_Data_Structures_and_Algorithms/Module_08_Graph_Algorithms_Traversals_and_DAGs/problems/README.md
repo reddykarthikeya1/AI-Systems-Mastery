@@ -75,3 +75,17 @@ force, then ask what the brute force repeats.
 ---
 
 [Module README](../01_README.md) · [Pattern Guide](../../PATTERN_RECOGNITION_GUIDE.md)
+
+---
+
+## 🗺️ Recommended Step-by-Step Problem Solving Path
+
+Follow this sequence to solve the module practice problems:
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **1** | **Read Requirements** | Review problem docstrings and invariants in `[p01_num_islands.py](p01_num_islands.py)`. |
+| **2** | **Implement Solution** | Write your algorithmic solution in `problems/` to satisfy all edge cases. |
+| **3** | **Run Pytest Suite** | Execute `pytest tests/` in terminal or the web Practice Arena to verify test assertions. |
+| **4** | **Review Reference Code** | Inspect `[solutions/](solutions/)` to compare time/space complexity and idiomatic patterns. |
+

@@ -1,0 +1,48 @@
+{
+  "title": "Megatron-LM Column-Row Tensor Parallelism",
+  "algorithm": "Megatron-LM Tensor Sharding",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Column-parallel W1: split intermediate FFN dimension 16384 across 8 ranks -> 2048 cols/rank",
+      "array": [
+        2048,
+        2048,
+        1
+      ],
+      "pointers": {
+        "col": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "w1_cols": 2048
+      },
+      "invariants": "Activation function evaluated locally without communication"
+    },
+    {
+      "step": 2,
+      "description": "Row-parallel W2 + AllReduce: single AllReduce sums partial outputs into final hidden tensor",
+      "array": [
+        2048,
+        2048,
+        1
+      ],
+      "pointers": {
+        "allreduce": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "allreduce_count": 1
+      },
+      "invariants": "Minimal communication overhead (1 AllReduce per MLP)"
+    }
+  ]
+}

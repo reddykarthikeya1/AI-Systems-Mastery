@@ -1,0 +1,48 @@
+{
+  "title": "SQLite WAL Frame Replay Checkpoint",
+  "algorithm": "WAL Checkpoint Merge",
+  "timeComplexity": "O(F)",
+  "spaceComplexity": "O(P)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scan WAL frame 1 (page 1): buffer pending delta",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "frame": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "page": 1,
+        "committed": false
+      },
+      "invariants": "Hold uncommitted frames in memory"
+    },
+    {
+      "step": 2,
+      "description": "Scan WAL frame 2 commit marker: flush pending to database pages",
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "frame": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "page": 2,
+        "committed": true
+      },
+      "invariants": "Transaction durability achieved"
+    }
+  ]
+}

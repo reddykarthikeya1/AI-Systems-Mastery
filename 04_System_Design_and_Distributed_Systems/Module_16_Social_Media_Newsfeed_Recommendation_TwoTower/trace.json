@@ -1,0 +1,46 @@
+{
+  "title": "Newsfeed Hybrid Fanout Ingestion",
+  "algorithm": "Hybrid Fanout Ingestion",
+  "timeComplexity": "O(F)",
+  "spaceComplexity": "O(F)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Evaluate author follower count: 2 followers <= threshold 5",
+      "array": [
+        2,
+        5
+      ],
+      "pointers": {
+        "count": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "strategy": "fanout_on_write"
+      },
+      "invariants": "Write amplifications kept within bounds"
+    },
+    {
+      "step": 2,
+      "description": "Push post_1 directly into timelines of followers f1 and f2",
+      "array": [
+        2,
+        5
+      ],
+      "pointers": {
+        "f1": 0,
+        "f2": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "fanout_writes": 2
+      },
+      "invariants": "Instantaneous feed read response"
+    }
+  ]
+}

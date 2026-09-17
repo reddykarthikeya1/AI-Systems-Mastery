@@ -1,0 +1,44 @@
+{
+  "title": "TinyURL Base62 Short Token Encoding",
+  "algorithm": "Base62 Bijective Numeration",
+  "timeComplexity": "O(log_62 N)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Encode snowflake ID 125,000,000,000 via Base62 modulus radix",
+      "array": [
+        62,
+        125
+      ],
+      "pointers": {
+        "radix": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "id": 125000000000
+      },
+      "invariants": "Collision-free bijective mapping"
+    },
+    {
+      "step": 2,
+      "description": "Form compact 7-character string: '1b4fD8q'",
+      "array": [
+        62,
+        125
+      ],
+      "pointers": {
+        "str": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "short_url": "https://tiny.url/1b4fD8q"
+      },
+      "invariants": "Minimal URL string length verified"
+    }
+  ]
+}

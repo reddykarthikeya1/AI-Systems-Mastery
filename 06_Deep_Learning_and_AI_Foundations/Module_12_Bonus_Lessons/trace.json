@@ -1,0 +1,46 @@
+{
+  "title": "Autoregressive LLM Beam Search Decoding",
+  "algorithm": "Top-K Beam Search",
+  "timeComplexity": "O(B * V)",
+  "spaceComplexity": "O(B * V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Expand initial beam across vocab: candidate [1, 1] score=-0.6, [1, 0] score=-1.5",
+      "array": [
+        -6,
+        -15,
+        -25
+      ],
+      "pointers": {
+        "top": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "candidates": 3
+      },
+      "invariants": "Heuristic tree search"
+    },
+    {
+      "step": 2,
+      "description": "Prune to beam width 2: retain hypotheses [[1, 1], [1, 0]]",
+      "array": [
+        -6,
+        -15
+      ],
+      "pointers": {
+        "beam": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "active_beams": 2
+      },
+      "invariants": "Greedy degeneration avoided"
+    }
+  ]
+}

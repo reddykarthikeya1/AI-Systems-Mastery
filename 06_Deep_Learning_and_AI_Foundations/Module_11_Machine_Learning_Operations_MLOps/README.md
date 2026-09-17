@@ -5,6 +5,30 @@
 
 ---
 
+## 🗺️ Recommended Step-by-Step Learning Path
+
+Follow this exact sequence to achieve complete mastery of this module:
+
+| Step | File to Open | What You Will Do |
+| :---: | :--- | :--- |
+| **1** | **[README.md](README.md)** | Read conceptual overview, architectural foundations, and mental models. |
+| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
+| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
+| **4** | **[01_What_Breaks_Between_Notebook_and_Production.md](lessons/01_What_Breaks_Between_Notebook_and_Production.md)** | Complete deep-dive curriculum lesson on 01 What Breaks Between Notebook And Production. |
+| **5** | **[02_Experiment_Tracking.md](lessons/02_Experiment_Tracking.md)** | Complete deep-dive curriculum lesson on 02 Experiment Tracking. |
+| **6** | **[03_Data_and_Model_Versioning.md](lessons/03_Data_and_Model_Versioning.md)** | Complete deep-dive curriculum lesson on 03 Data And Model Versioning. |
+| **7** | **[04_Reproducible_Environments.md](lessons/04_Reproducible_Environments.md)** | Complete deep-dive curriculum lesson on 04 Reproducible Environments. |
+| **8** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
+| **9** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
+| **10** | **[PROJECT_GUIDE.md](PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
+| **11** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
+| **12** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
+
+---
+
+
+---
+
 
 ## Normalization Dimension Comparison
 

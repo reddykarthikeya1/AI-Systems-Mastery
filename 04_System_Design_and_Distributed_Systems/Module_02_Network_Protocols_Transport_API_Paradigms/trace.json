@@ -1,0 +1,52 @@
+{
+  "title": "TCP Sliding Window Acknowledgment Flow",
+  "algorithm": "Sliding Window Protocol",
+  "timeComplexity": "O(P)",
+  "spaceComplexity": "O(W)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Packet 0 received: advance expected seq to 1",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "expected": 1
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "expected": 1,
+        "buffered": []
+      },
+      "invariants": "In-order deliver successful"
+    },
+    {
+      "step": 2,
+      "description": "Packet 2 received: out-of-order, buffer packet 2 and wait for 1",
+      "array": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": {
+        "buffered": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "expected": 1,
+        "buffered": [
+          2
+        ]
+      },
+      "invariants": "Receiver buffer absorbs jitter"
+    }
+  ]
+}

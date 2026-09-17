@@ -1,0 +1,51 @@
+{
+  "title": "Columnar RLE Block Vector Decompression",
+  "algorithm": "Run Length Vector Expansion",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Expand run (3, 100) -> [100, 100, 100]",
+      "array": [
+        100,
+        100,
+        100
+      ],
+      "pointers": {
+        "run": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "expanded": 3
+      },
+      "invariants": "Columnar compression ratio 3:1"
+    },
+    {
+      "step": 2,
+      "description": "Expand run (2, 200) -> append to columnar vector",
+      "array": [
+        100,
+        100,
+        100,
+        200,
+        200
+      ],
+      "pointers": {
+        "run": 1
+      },
+      "highlights": {
+        "3": "active",
+        "4": "active"
+      },
+      "variables": {
+        "expanded": 5
+      },
+      "invariants": "SIMD vectorized memory alignment"
+    }
+  ]
+}

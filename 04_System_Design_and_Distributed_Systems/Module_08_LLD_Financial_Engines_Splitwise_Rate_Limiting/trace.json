@@ -1,0 +1,45 @@
+{
+  "title": "Splitwise Debt Graph Simplification",
+  "algorithm": "Greedy Net Settlement Matching",
+  "timeComplexity": "O(N log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Match largest debtor Bob (-$30) with largest creditor Alice (+$50)",
+      "array": [
+        30,
+        50
+      ],
+      "pointers": {
+        "match": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "transfer": 30.0
+      },
+      "invariants": "Bob fully settled"
+    },
+    {
+      "step": 2,
+      "description": "Match Charlie (-$20) with Alice remaining (+$20): debts zeroed",
+      "array": [
+        20,
+        20
+      ],
+      "pointers": {
+        "match": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "transactions": 2
+      },
+      "invariants": "Optimal O(N) transaction reduction"
+    }
+  ]
+}

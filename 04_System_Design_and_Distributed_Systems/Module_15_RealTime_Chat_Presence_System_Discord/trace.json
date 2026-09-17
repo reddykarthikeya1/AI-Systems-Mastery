@@ -1,0 +1,46 @@
+{
+  "title": "Discord Gateway Ephemeral Presence Heartbeats",
+  "algorithm": "Heartbeat Sliding Expiration",
+  "timeComplexity": "O(U)",
+  "spaceComplexity": "O(U)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Check user u1 last heartbeat t=100 at curr t=110: delta 10s <= TTL 30s -> ONLINE",
+      "array": [
+        100,
+        80,
+        60
+      ],
+      "pointers": {
+        "u1": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "u1_status": "ONLINE"
+      },
+      "invariants": "Gateway WebSocket session active"
+    },
+    {
+      "step": 2,
+      "description": "Check user u3 last heartbeat t=60: delta 50s > TTL 30s -> mark OFFLINE",
+      "array": [
+        100,
+        80,
+        60
+      ],
+      "pointers": {
+        "u3": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "u3_status": "OFFLINE"
+      },
+      "invariants": "Broadcast presence change to guild"
+    }
+  ]
+}

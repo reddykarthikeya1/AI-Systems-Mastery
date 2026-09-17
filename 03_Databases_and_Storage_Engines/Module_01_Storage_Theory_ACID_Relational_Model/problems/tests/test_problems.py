@@ -1,30 +1,21 @@
-"""Pytest suite for Storage Theory ACID Relational Model problem bank."""
-
+"""Tests for Slotted Page Insert."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_compute_storage_layout import compute_storage_layout
+try:
+    from solutions.p01_slotted_page_insert import slotted_page_insert
+except ImportError:
+    from p01_slotted_page_insert import slotted_page_insert
 
 
-def test_compute_storage_layout():
-    records = [1000, 2000, 1500, 3000]
-    layout = compute_storage_layout(records, block_size=4096)
-    assert layout[0] == (0, 0)
-    assert layout[1] == (0, 1000)
-    assert layout[2] == (1, 0)  # 1000+2000+1500 = 4500 > 4096 -> next block
-    assert layout[3] == (2, 0)
-    assert compute_storage_layout([], 4096) == []
-
+def test_slotted_page_insert():
+    page = {'capacity': 4096, 'slots': [], 'free_offset': 4096}
+    s0 = slotted_page_insert(page, b"record_zero")
+    assert s0 == 0
+    assert page['slots'][0] == (4096 - 11, 11)
+    s1 = slotted_page_insert(page, b"record_one")
+    assert s1 == 1
+    # Check out of space
+    page['free_offset'] = 20
+    page['slots'] = [(100, 10)]
+    assert slotted_page_insert(page, b"way_too_long_payload_to_fit") == -1

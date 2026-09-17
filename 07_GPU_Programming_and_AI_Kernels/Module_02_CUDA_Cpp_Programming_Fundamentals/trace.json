@@ -1,0 +1,46 @@
+{
+  "title": "CUDA Grid / Block / Thread Linear Memory Indexing",
+  "algorithm": "Global Memory Thread Mapping",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Multiply blockIdx.x=2 by blockDim.x=256 -> block base offset 512",
+      "array": [
+        2,
+        256,
+        10
+      ],
+      "pointers": {
+        "base": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "block_base": 512
+      },
+      "invariants": "Uniform thread block partition"
+    },
+    {
+      "step": 2,
+      "description": "Add threadIdx.x=10: thread global address = 522",
+      "array": [
+        2,
+        256,
+        10
+      ],
+      "pointers": {
+        "tid": 2
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "global_idx": 522
+      },
+      "invariants": "Bijective thread-to-data mapping"
+    }
+  ]
+}

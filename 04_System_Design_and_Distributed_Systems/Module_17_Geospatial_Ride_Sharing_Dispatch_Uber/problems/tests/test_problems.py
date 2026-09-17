@@ -1,27 +1,19 @@
-"""Pytest suite for Geospatial Ride Sharing Dispatch Uber problem bank."""
-
+"""Tests for Geohash Proximity Search."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_reconcile_vector_clocks import reconcile_vector_clocks
+try:
+    from solutions.p01_geohash_proximity_search import geohash_proximity_search
+except ImportError:
+    from p01_geohash_proximity_search import geohash_proximity_search
 
 
-def test_reconcile_vector_clocks():
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 2}) == "B_HAPPENED_BEFORE_A"
-    assert reconcile_vector_clocks({"node1": 2}, {"node1": 1}) == "A_HAPPENED_BEFORE_B"
-    assert reconcile_vector_clocks({"node1": 2, "node2": 1}, {"node1": 1, "node2": 2}) == "CONCURRENT"
-    assert reconcile_vector_clocks({"node1": 1}, {"node1": 1}) == "IDENTICAL"
-
+def test_geohash_proximity_search():
+    drivers = {
+        "d1": "9q8yy1",
+        "d2": "9q8yy9",
+        "d3": "9q8zaa",
+        "d4": "8k1111"
+    }
+    matched = geohash_proximity_search("9q8yy0", drivers, 5)
+    assert matched == ["d1", "d2"]

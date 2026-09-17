@@ -1,0 +1,44 @@
+{
+  "title": "NVLink Cluster Interconnect Bandwidth Simulation",
+  "algorithm": "Interconnect Latency Calculation",
+  "timeComplexity": "O(1)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "1GB tensor scheduled over 900 GB/s NVLink Fabric: theoretical speed 1.19 ms",
+      "array": [
+        1024,
+        900
+      ],
+      "pointers": {
+        "bw": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "raw_bw": "900 GB/s"
+      },
+      "invariants": "Direct peer-to-peer DMA"
+    },
+    {
+      "step": 2,
+      "description": "Apply 90% link packet protocol efficiency: transfer completed in 1.32 ms",
+      "array": [
+        1024,
+        900
+      ],
+      "pointers": {
+        "ms": 1
+      },
+      "highlights": {
+        "1": "sorted"
+      },
+      "variables": {
+        "transfer_time_ms": 1.32
+      },
+      "invariants": "Multi-GPU all-to-all communication cleared"
+    }
+  ]
+}

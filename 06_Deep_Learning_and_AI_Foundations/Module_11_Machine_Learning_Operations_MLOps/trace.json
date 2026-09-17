@@ -1,0 +1,50 @@
+{
+  "title": "MLOps Feature Distribution PSI Drift Detection",
+  "algorithm": "Population Stability Index (PSI)",
+  "timeComplexity": "O(B)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Normalize bin frequencies to baseline and production probability mass",
+      "array": [
+        80,
+        20,
+        20,
+        80
+      ],
+      "pointers": {
+        "bin": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "base": 0.8,
+        "curr": 0.2
+      },
+      "invariants": "Kullback-Leibler symmetric divergence"
+    },
+    {
+      "step": 2,
+      "description": "PSI = 1.66 > 0.25 threshold: trigger automated model retraining alert",
+      "array": [
+        80,
+        20,
+        20,
+        80
+      ],
+      "pointers": {
+        "alert": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "alert": "DRIFT_CRITICAL"
+      },
+      "invariants": "Data drift caught before silent degradation"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ export interface ModuleItem {
   has_solution: boolean;
   has_starter: boolean;
   has_debug_lab?: boolean;
+  has_problems?: boolean;
   quickstart_script?: string | null;
   word_count?: number;
   reading_minutes?: number;
@@ -126,6 +127,7 @@ export interface DsaProblem {
   hidden_testcase_count: number;
   is_design?: boolean;
   target_class?: string;
+  filename?: string;
 }
 
 export interface DsaTestCaseResult {
@@ -162,4 +164,29 @@ export interface SqlResult {
 export interface FormatCodeResult {
   formatted: string;
   status: 'formatted' | 'normalized' | 'unchanged' | 'error';
+}
+
+export interface ModuleProblem {
+  id: string;
+  filename: string;
+  title: string;
+  description: string;
+  code: string;
+  starter_code: string;
+  has_tests: boolean;
+}
+
+export interface ModuleProblemsResponse {
+  has_problems: boolean;
+  module_path: string;
+  readme: string | null;
+  problems: ModuleProblem[];
+}
+
+export interface ProblemRunResult {
+  status: 'passed' | 'failed' | 'timeout' | 'error';
+  exit_code: number;
+  stdout: string;
+  stderr: string;
+  duration_ms: number;
 }

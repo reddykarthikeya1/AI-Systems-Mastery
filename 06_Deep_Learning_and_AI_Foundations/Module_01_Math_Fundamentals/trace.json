@@ -1,0 +1,48 @@
+{
+  "title": "Numerically Stable Softmax Probabilities",
+  "algorithm": "Stable Softmax with Max Subtraction",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Subtract max logit 1002.0 from [1000, 1001, 1002] -> [-2, -1, 0]",
+      "array": [
+        -2,
+        -1,
+        0
+      ],
+      "pointers": {
+        "max": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "max_val": 1002.0
+      },
+      "invariants": "Prevents float overflow exp(1000)"
+    },
+    {
+      "step": 2,
+      "description": "Normalize exponentials: probabilities sum exactly to 1.0",
+      "array": [
+        9,
+        24,
+        67
+      ],
+      "pointers": {
+        "sum": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "sum_p": 1.0
+      },
+      "invariants": "Valid simplex probability distribution"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Gaussian Elimination Forward Elimination & Back-Sub",
+  "algorithm": "Gaussian Elimination with Pivoting",
+  "timeComplexity": "O(N^3)",
+  "spaceComplexity": "O(N^2)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Form augmented matrix [A | b] and pivot on M[0][0]=2.0",
+      "array": [
+        2,
+        1,
+        5
+      ],
+      "pointers": {
+        "pivot": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "pivot": 2.0
+      },
+      "invariants": "Row operations preserve solution set"
+    },
+    {
+      "step": 2,
+      "description": "Back-substitution yields solution vector: x=[2.0, 1.0]",
+      "array": [
+        2,
+        1
+      ],
+      "pointers": {
+        "x": 0,
+        "y": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "x": 2.0,
+        "y": 1.0
+      },
+      "invariants": "Residual ||Ax - b|| < 1e-9"
+    }
+  ]
+}

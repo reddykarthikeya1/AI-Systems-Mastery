@@ -1,0 +1,57 @@
+{
+  "title": "Static Computational Graph Execution Toposort",
+  "algorithm": "Directed Acyclic Graph Scheduler",
+  "timeComplexity": "O(V + E)",
+  "spaceComplexity": "O(V + E)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Identify leaf input tensors with indegree 0: [W, X, Y]",
+      "array": [
+        0,
+        0,
+        0,
+        2,
+        2
+      ],
+      "pointers": {
+        "inputs": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "ready_nodes": [
+          "W",
+          "X",
+          "Y"
+        ]
+      },
+      "invariants": "Inputs feed forward"
+    },
+    {
+      "step": 2,
+      "description": "Propagate forward to activation Pred and cost Loss",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pointers": {
+        "loss": 4
+      },
+      "highlights": {
+        "3": "sorted",
+        "4": "sorted"
+      },
+      "variables": {
+        "complete": true
+      },
+      "invariants": "Strict forward dependency schedule"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Elevator Dispatcher SCAN Algorithm",
+  "algorithm": "LOOK / SCAN Floor Dispatch",
+  "timeComplexity": "O(N log N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Elevator at floor 5 moving UP: sweep floors [5, 7, 8]",
+      "array": [
+        5,
+        7,
+        8,
+        3,
+        2
+      ],
+      "pointers": {
+        "sweep_up": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "floors_serviced": 3
+      },
+      "invariants": "Monotonic upward motion"
+    },
+    {
+      "step": 2,
+      "description": "Reverse direction at top floor 8: sweep downward floors [3, 2]",
+      "array": [
+        5,
+        7,
+        8,
+        3,
+        2
+      ],
+      "pointers": {
+        "sweep_down": 4
+      },
+      "highlights": {
+        "3": "sorted",
+        "4": "sorted"
+      },
+      "variables": {
+        "total_serviced": 5
+      },
+      "invariants": "Zero starvation disk/elevator scheduling"
+    }
+  ]
+}

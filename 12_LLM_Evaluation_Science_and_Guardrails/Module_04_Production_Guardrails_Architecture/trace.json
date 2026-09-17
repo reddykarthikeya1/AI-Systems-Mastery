@@ -1,0 +1,46 @@
+{
+  "title": "Deterministic PII Guardrail Redaction Pipeline",
+  "algorithm": "Regex Pattern Redaction Guardrail",
+  "timeComplexity": "O(L)",
+  "spaceComplexity": "O(L)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Scan outbound response for PII patterns: match 1 email and 1 SSN",
+      "array": [
+        1,
+        1
+      ],
+      "pointers": {
+        "email": 0,
+        "ssn": 1
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "pii_detected": 2
+      },
+      "invariants": "Zero regulatory PII leakage"
+    },
+    {
+      "step": 2,
+      "description": "Substitute redaction tokens: '[REDACTED_EMAIL]' and '[REDACTED_SSN]' inserted",
+      "array": [
+        0,
+        0
+      ],
+      "pointers": {
+        "safe": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "sanitized": true
+      },
+      "invariants": "Data privacy compliance guaranteed"
+    }
+  ]
+}

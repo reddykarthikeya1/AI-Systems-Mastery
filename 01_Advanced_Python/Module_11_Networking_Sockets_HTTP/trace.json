@@ -1,0 +1,75 @@
+{
+  "title": "HTTP Chunked Transfer Decoder Execution Trace",
+  "algorithm": "HTTP Chunked Transfer Decoder",
+  "timeComplexity": "O(N) sequential processing",
+  "spaceComplexity": "O(1) auxiliary memory",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize internal state for HTTP Chunked Transfer Decoder.",
+      "array": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "pointers": {
+        "head": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "stage": "init",
+        "items": 4
+      },
+      "invariants": "Pre-conditions satisfied."
+    },
+    {
+      "step": 2,
+      "description": "Execute transform and validate invariants.",
+      "array": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "pointers": {
+        "head": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "active"
+      },
+      "variables": {
+        "stage": "processing",
+        "processed": 1
+      },
+      "invariants": "State consistent."
+    },
+    {
+      "step": 3,
+      "description": "Complete processing and prepare output contract.",
+      "array": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "pointers": {
+        "head": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "stage": "done",
+        "status": "ok"
+      },
+      "invariants": "All invariants satisfied."
+    }
+  ]
+}

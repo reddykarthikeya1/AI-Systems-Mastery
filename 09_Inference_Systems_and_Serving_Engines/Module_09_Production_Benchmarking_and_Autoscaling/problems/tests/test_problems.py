@@ -1,28 +1,14 @@
-"""Pytest suite for Production Benchmarking and Autoscaling problem bank."""
-
+"""Tests for Concurrency Queue Autoscaler."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
+try:
+    from solutions.p01_concurrency_queue_autoscaler import concurrency_queue_autoscaler
+except ImportError:
+    from p01_concurrency_queue_autoscaler import concurrency_queue_autoscaler
 
 
-def test_simulate_prefix_cache_hit():
-    cached = [[1, 2, 3, 4, 5], [1, 2, 9, 10]]
-    assert simulate_prefix_cache_hit(cached, [1, 2, 3, 4, 8]) == 4
-    assert simulate_prefix_cache_hit(cached, [1, 2, 9, 11]) == 3
-    assert simulate_prefix_cache_hit(cached, [7, 8, 9]) == 0
-    assert simulate_prefix_cache_hit([], [1, 2]) == 0
-
+def test_concurrency_queue_autoscaler():
+    assert concurrency_queue_autoscaler(20, 10, target_concurrency_per_pod=10, min_pods=1, max_pods=5) == 3
+    assert concurrency_queue_autoscaler(0, 0, 10, min_pods=2, max_pods=10) == 2
+    assert concurrency_queue_autoscaler(500, 500, 10, min_pods=1, max_pods=10) == 10

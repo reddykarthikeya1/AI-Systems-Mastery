@@ -1,0 +1,45 @@
+{
+  "title": "Hierarchical Recursive Document Chunking",
+  "algorithm": "Recursive Token Splitting",
+  "timeComplexity": "O(N)",
+  "spaceComplexity": "O(N)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Tokenize text stream: slice Chunk 0 [one, two, three, four] of length 4",
+      "array": [
+        4,
+        4
+      ],
+      "pointers": {
+        "c0": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "chunk_0": "one two three four"
+      },
+      "invariants": "Semantic boundary preserved"
+    },
+    {
+      "step": 2,
+      "description": "Step forward with 1-word overlap: slice Chunk 1 [four, five, six, seven]",
+      "array": [
+        4,
+        4
+      ],
+      "pointers": {
+        "c1": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted"
+      },
+      "variables": {
+        "chunk_1": "four five six seven"
+      },
+      "invariants": "Context window continuity guaranteed"
+    }
+  ]
+}

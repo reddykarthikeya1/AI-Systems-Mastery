@@ -1,29 +1,17 @@
-"""Pytest suite for CUDA Memory Hierarchy and Coalescing problem bank."""
-
+"""Tests for Memory Coalescing Detector."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 import pytest
-
-# Test the solution by default, or stub if imported from problems/
-SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
-PROB_DIR = Path(__file__).resolve().parent.parent
-if Path.cwd().resolve() == PROB_DIR.resolve():
-    if str(PROB_DIR) not in sys.path:
-        sys.path.insert(0, str(PROB_DIR))
-else:
-    if str(SOL_DIR) not in sys.path:
-        sys.path.insert(0, str(SOL_DIR))
-
-from p01_calculate_tile_occupancy import calculate_tile_occupancy
+try:
+    from solutions.p01_memory_coalescing_detector import memory_coalescing_detector
+except ImportError:
+    from p01_memory_coalescing_detector import memory_coalescing_detector
 
 
-def test_calculate_tile_occupancy():
-    res = calculate_tile_occupancy(threads_per_block=256, shared_mem_bytes=16384)
-    assert res["active_blocks"] == 6  # min(8, 6)
-    assert res["active_warps"] == 48
-    assert res["occupancy_percent"] == 75.0
-    # Invalid thread count
-    assert calculate_tile_occupancy(100, 0)["active_blocks"] == 0
-
+def test_memory_coalescing_detector():
+    # Contiguous 32 floats (4 bytes each) = 128 bytes total -> 1 or 2 lines
+    coalesced = [i * 4 for i in range(32)]
+    assert memory_coalescing_detector(coalesced, 128) == 1
+    # Strided access jumping 128 bytes each thread -> 32 cache lines!
+    strided = [i * 128 for i in range(32)]
+    assert memory_coalescing_detector(strided, 128) == 32
