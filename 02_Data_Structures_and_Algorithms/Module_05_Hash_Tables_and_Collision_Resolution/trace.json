@@ -1,0 +1,56 @@
+{
+  "title": "Robin Hood Hashing Probe Sequence Length (PSL)",
+  "algorithm": "Open Addressing with Robin Hood Swaps",
+  "timeComplexity": "O(1) average",
+  "spaceComplexity": "O(n)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Insert Key 'X' (ideal index 1). Slot 1 is occupied by 'A' (PSL=0). 'X' PSL becomes 1.",
+      "array": [
+        "KeyA (0)",
+        "KeyX (1)",
+        "Empty",
+        "Empty",
+        "Empty"
+      ],
+      "pointers": {
+        "probe": 1
+      },
+      "highlights": {
+        "0": "active",
+        "1": "comparing"
+      },
+      "variables": {
+        "incomingKey": "X",
+        "incomingPSL": 1,
+        "occupantPSL": 0
+      },
+      "invariants": "incomingPSL (1) > occupantPSL (0) -> Robin Hood displacement swap!"
+    },
+    {
+      "step": 2,
+      "description": "Key 'X' takes slot 1. Displaced 'A' probes next slot 2 with PSL 1.",
+      "array": [
+        "KeyA (0)",
+        "KeyX (0)",
+        "KeyA (1)",
+        "Empty",
+        "Empty"
+      ],
+      "pointers": {
+        "probe": 2
+      },
+      "highlights": {
+        "1": "sorted",
+        "2": "active"
+      },
+      "variables": {
+        "slot1": "KeyX",
+        "slot2": "KeyA",
+        "displaced": true
+      },
+      "invariants": "Robin Hood reduces variance of search times across keys"
+    }
+  ]
+}

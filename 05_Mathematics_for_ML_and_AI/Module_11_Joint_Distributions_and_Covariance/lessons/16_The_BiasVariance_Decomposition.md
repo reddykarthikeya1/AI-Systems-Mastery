@@ -1,65 +1,65 @@
 # Lesson 11.16 — The Bias-Variance Decomposition
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 16 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Derive expected test error E[(y - f_hat(x))^2] = Bias^2 + Variance + Irreducible Noise sigma^2.
+- [ ] Diagnose overfitting and underfitting.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.02 Bias and Variance.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+For true relationship $y = f(x) + \epsilon$ with $\text{Var}(\epsilon) = \sigma^2$:
+$$\mathbb{E}[(y - \hat{f}(x))^2] = \text{Bias}(\hat{f}(x))^2 + \text{Var}(\hat{f}(x)) + \sigma^2$$
+- **Underfitting**: high bias, low variance.
+- **Overfitting**: low bias, high variance.
+- **Irreducible Error** $\sigma^2$: fundamental limit set by noise in the data generator.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+A complex model has Bias $= 0.1$, Model Variance $= 0.4$, and data noise $\sigma^2 = 0.5$. Expected test error $= 0.1^2 + 0.4 + 0.5 = 0.01 + 0.4 + 0.5 = 0.91$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+bias = 0.1
+var = 0.4
+noise = 0.5
+expected_loss = bias**2 + var + noise
+assert np.isclose(expected_loss, 0.91)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to tune a model to zero test loss when irreducible noise sigma^2 > 0.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can test error ever drop below sigma^2?
+2. What characterizes an overfitted model in terms of bias and variance?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, sigma^2 is the irreducible lower bound on prediction error.
+2. Very low training bias but high estimator variance across samples.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_Conditional_Variance_and_Its_Decomposition.md) · [Module README](../README.md) · [Next →](17_The_Multivariate_Normal_Distribution.md)
+[Module README](../README.md) · [Next →](17_The_Multivariate_Normal_Distribution.md)

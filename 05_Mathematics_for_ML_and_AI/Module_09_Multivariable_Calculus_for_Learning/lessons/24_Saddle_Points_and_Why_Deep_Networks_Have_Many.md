@@ -1,78 +1,65 @@
-# Lesson 09.24 — Saddle Points and Why Deep Networks Have Many
+# Lesson 09.24: Saddle Points and Why Deep Networks Have Many
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 24 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Understand the curse of dimensionality on critical point classification.
+- Explain why high-dimensional non-convex loss landscapes are dominated by saddle points, not poor local minima.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.23 The Second Derivative Test in Rn.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+In dimension $D$, for a random critical point to be a local minimum, all $D$ independent Hessian eigenvalues must be positive.
+Assuming equal probability of $\pm$ signs:
+$$P(\text{local minimum}) \approx 2^{-D}$$
+For $D = 10^6$, $2^{-10^6} \approx 0$. Virtually all stationary points encountered in deep learning are **saddle points** with many negative escape directions.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+In 10 dimensions, probability that all 10 independent eigenvalues are positive is $0.5^{10} = 1/1024 \approx 0.097\%$. Over $99.9\%$ of stationary points are saddle points.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+D = 10
+p_min = 0.5**D
+assert np.isclose(p_min, 1.0 / 1024.0)
+assert p_min < 0.001
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Worrying about getting trapped in sub-optimal local minima; in modern deep learning, the primary obstacle is escaping high-dimensional saddle plateaus.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the probability that D independent fair coin flips all land heads?
+2. Why do saddle points dominate high-dimensional optimization?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. (1/2)^D.
+2. Because requiring all D eigenvalues of the Hessian to share the same positive sign has exponentially vanishing probability.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](23_The_Second_Derivative_Test_in_Rn.md) · [Module README](../README.md) · [Next →](25_Convex_Functions_Definition.md)
+Next: [25_Convex_Functions_Definition.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\25_Convex_Functions_Definition.md)

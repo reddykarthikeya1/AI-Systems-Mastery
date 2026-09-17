@@ -1,6 +1,6 @@
 # 08. Distributed Training & Large-Scale GPU Infrastructure
 
-> **The Definitive 10/10 Production Masterclass**: Scaling foundation models to hundreds of billions of parameters across thousands of GPUs. Covers GPU cluster fabrics, InfiniBand/NVLink interconnects, NCCL collective primitives, PyTorch DDP bucket overlapping, DeepSpeed ZeRO-1/2/3, PyTorch FSDP, Megatron-LM Tensor & Sequence Parallelism, Pipeline Parallelism (1F1B & Zero-Bubble), Ring Attention Context Parallelism, 3D/4D Cartesian Grid Orchestration, Distributed Checkpointing (DCP), and Chinchilla FinOps/MFU Optimization.
+> Scale foundation models to hundreds of billions of parameters across multi-GPU clusters. Design and benchmark GPU cluster fabrics, NCCL collective primitives, PyTorch DDP and FSDP, DeepSpeed ZeRO-1/2/3, 3D/4D tensor/pipeline/sequence parallelism, and Chinchilla MFU optimization.
 
 ---
 

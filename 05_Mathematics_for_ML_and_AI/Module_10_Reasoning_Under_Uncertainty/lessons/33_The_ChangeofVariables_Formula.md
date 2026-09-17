@@ -1,65 +1,63 @@
 # Lesson 10.33 — The Change-of-Variables Formula
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 33 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State change-of-variables formula: f_Y(y) = f_X(g^(-1)(y)) |d/dy g^(-1)(y)|.
+- [ ] Understand Normalizing Flows in modern generative AI.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.32 Transformations of Random Variables.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+For invertible monotonic map $y = g(x)$, the **change-of-variables formula** preserves probability mass:
+$$f_Y(y) = f_X(g^{-1}(y)) \left| \frac{d}{dy} g^{-1}(y) \right| = f_X(x) \left| \frac{dg}{dx} \right|^{-1}$$
+In multi-dimensions, this generalizes to multiplying by the absolute determinant of the Jacobian $|\det J_{g^{-1}}|$, the mathematical engine behind **Normalizing Flows**.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $y = 3x + 2$. Inverse is $x = (y-2)/3$, derivative is $1/3$. So $f_Y(y) = \frac{1}{3}f_X(\frac{y-2}{3})$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Linear scaling X ~ N(0, 1), Y = 3X
+# PDF of Y at 0 should be (1 / (3 * sqrt(2 * pi)))
+f_x_0 = 1.0 / np.sqrt(2.0 * np.pi)
+f_y_0 = f_x_0 * (1.0 / 3.0)
+assert np.isclose(f_y_0, 1.0 / (3.0 * np.sqrt(2.0 * np.pi)))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Forgetting the absolute value on the Jacobian determinant, leading to negative probability densities.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What term compensates for the stretching or compression of space in change-of-variables?
+2. What deep generative model family relies directly on this formula?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The absolute value of the derivative |dx/dy| (or Jacobian determinant).
+2. Normalizing Flows.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](32_Transformations_of_Random_Variables.md) · [Module README](../README.md) · [Next →](34_Markovs_and_Chebyshevs_Inequalities.md)
+[Module README](../README.md) · [Next →](34_Markovs_and_Chebyshevs_Inequalities.md)

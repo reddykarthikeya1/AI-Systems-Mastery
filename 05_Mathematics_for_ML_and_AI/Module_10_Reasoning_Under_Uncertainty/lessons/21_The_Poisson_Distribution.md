@@ -1,65 +1,65 @@
 # Lesson 10.21 — The Poisson Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 21 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Formulate Poisson(lambda) PMF: P(k) = lambda^k e^(-lambda) / k!.
+- [ ] Derive Poisson as the limit of Binomial(n, p) with n -> inf, p -> 0, np = lambda.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.19 Binomial Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Poisson distribution** models count of rare independent events occurring at constant average rate $\lambda$:
+$$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$$
+Key fingerprint: **mean equals variance**: $\mathbb{E}[X] = \text{Var}(X) = \lambda$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Website receives $\lambda = 3$ requests/sec. Probability of exactly 0 requests: $3^0 e^{-3} / 0! = e^{-3} \approx 0.0498$ (4.98%).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+from math import factorial
+lam = 3.0
+p_0 = (lam**0 * np.exp(-lam)) / factorial(0)
+assert np.isclose(p_0, np.exp(-3.0))
+# Sum of probabilities over k=0..20
+probs = [(lam**k * np.exp(-lam)) / factorial(k) for k in range(25)]
+assert np.isclose(np.sum(probs), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Fitting a Poisson model to overdispersed data where empirical variance significantly exceeds the mean (Negative Binomial is required).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What unique property characterizes the mean and variance of a Poisson distribution?
+2. Under what conditions does Binomial approach Poisson?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. They are identical: E[X] = Var(X) = lambda.
+2. When n is large, p is small, and np = lambda is constant (Law of Rare Events).
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](20_The_Geometric_and_Negative_Binomial_Distributions.md) · [Module README](../README.md) · [Next →](22_The_Uniform_Distribution.md)
+[Module README](../README.md) · [Next →](22_The_Uniform_Distribution.md)

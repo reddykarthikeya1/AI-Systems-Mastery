@@ -1,65 +1,63 @@
 # Lesson 11.04 — Independence in Terms of Joints
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 4 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State independence as factorization P(X=x, Y=y) = P(X=x) P(Y=y).
+- [ ] Test statistical independence via outer product comparison.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.02 Marginal Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Random variables $X$ and $Y$ are **statistically independent** ($X \perp Y$) if and only if their joint distribution factors into the outer product of their marginals for all pairs: $P(X = x, Y = y) = P(X = x) P(Y = y)$. Equivalently, $P(Y \mid X) = P(Y)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $P(X) = [0.6, 0.4]$ and $P(Y) = [0.5, 0.5]$. If independent, $P(X, Y) = \begin{bmatrix} 0.3 & 0.3 \\ 0.2 & 0.2 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p_x = np.array([0.6, 0.4])
+p_y = np.array([0.5, 0.5])
+joint_indep = np.outer(p_x, p_y)
+
+assert np.allclose(joint_indep, [[0.3, 0.3], [0.2, 0.2]])
+assert np.allclose(np.sum(joint_indep, axis=1), p_x)
+assert np.allclose(np.sum(joint_indep, axis=0), p_y)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming variables are independent just because one cell satisfies P(x, y) = P(x)P(y). It must hold for every cell.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the rank of an independent discrete joint probability matrix?
+2. If X and Y are independent, what does P(Y | X) equal?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Rank 1 (it is an outer product of two vectors).
+2. P(Y).
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_Conditional_Distributions.md) · [Module README](../README.md) · [Next →](05_Joint_Marginal_and_Conditional_Densities.md)
+[Module README](../README.md) · [Next →](05_Joint_Marginal_and_Conditional_Densities.md)

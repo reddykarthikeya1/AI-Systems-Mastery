@@ -1,65 +1,65 @@
-# Lesson 11.13 — Conditional Expectation
+# Lesson 11.03 — Conditional Expectation
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 13 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define conditional expectation E[Y | X=x] = sum y P(y | x).
+- [ ] Recognize E[Y | X] as the minimum mean squared error (MMSE) regression function.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.03 Conditional Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **conditional expectation** $\mathbb{E}[Y \mid X = x] = \int y f_{Y|X}(y \mid x) dy$ is a function of $x$, denoted $g(X) = \mathbb{E}[Y \mid X]$. A foundational theorem of statistical learning proves that $\mathbb{E}[Y \mid X]$ is the unique function $f(X)$ that minimizes expected squared prediction error $\mathbb{E}[(Y - f(X))^2]$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $Y = 3X + \epsilon$ where $\mathbb{E}[\epsilon \mid X] = 0$, then $\mathbb{E}[Y \mid X = 2] = 3(2) + 0 = 6$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+x = np.random.uniform(0, 10, 10000)
+noise = np.random.normal(0, 1, 10000)
+y = 3.0 * x + noise
+
+# Conditional expectation around x = 2
+mask = np.abs(x - 2.0) < 0.2
+e_y_given_x2 = np.mean(y[mask])
+assert np.isclose(e_y_given_x2, 6.0, atol=0.1)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating E[Y | X] as a single number. E[Y | X = x] is a number, but E[Y | X] is a random variable that depends on X.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What predictor minimizes mean squared error E[(Y - f(X))^2]?
+2. Is E[Y | X] a constant or a random variable?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The conditional expectation E[Y | X].
+2. It is a random variable (a function of the random variable X).
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](12_Linear_Combinations_and_Their_Variance.md) · [Module README](../README.md) · [Next →](14_The_Tower_Property.md)
+[Module README](../README.md) · [Next →](14_The_Tower_Property.md)

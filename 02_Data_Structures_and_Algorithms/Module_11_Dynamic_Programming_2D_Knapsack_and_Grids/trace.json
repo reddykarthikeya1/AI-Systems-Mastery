@@ -1,0 +1,76 @@
+{
+  "title": "0/1 Knapsack State Space Transition",
+  "algorithm": "2D Dynamic Programming",
+  "timeComplexity": "O(N * W)",
+  "spaceComplexity": "O(W)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Item 1 (wt: 2, val: 3). Capacities w < 2 cannot take item. Capacities >= 2 store 3.",
+      "array": [
+        "w=0: 0",
+        "w=1: 0",
+        "w=2: 3",
+        "w=3: 3",
+        "w=4: 3"
+      ],
+      "pointers": {
+        "w": 2
+      },
+      "highlights": {
+        "2": "active"
+      },
+      "variables": {
+        "item": 1,
+        "wt": 2,
+        "val": 3
+      },
+      "invariants": "Base transition: dp[i][w] = max(dp[i-1][w], dp[i-1][w-wt] + val)"
+    },
+    {
+      "step": 2,
+      "description": "Item 2 (wt: 3, val: 4). At capacity w=4, can include Item 2 (wt 3) + Item 1 (wt 1 impossible).",
+      "array": [
+        "w=0: 0",
+        "w=1: 0",
+        "w=2: 3",
+        "w=3: 4",
+        "w=4: 4"
+      ],
+      "pointers": {
+        "w": 3
+      },
+      "highlights": {
+        "3": "active"
+      },
+      "variables": {
+        "item": 2,
+        "wt": 3,
+        "val": 4
+      },
+      "invariants": "Compare excluding item 2 (val 3) vs including item 2 (val 4) -> Choose 4"
+    },
+    {
+      "step": 3,
+      "description": "Item 3 (wt: 1, val: 2). At capacity w=4: take Item 3 (wt 1) + Item 2 (wt 3) = val 6! Optimal!",
+      "array": [
+        "w=0: 0",
+        "w=1: 2",
+        "w=2: 3",
+        "w=3: 5",
+        "w=4: 6"
+      ],
+      "pointers": {
+        "w": 4
+      },
+      "highlights": {
+        "4": "sorted"
+      },
+      "variables": {
+        "maxVal": 6,
+        "capacity": 4
+      },
+      "invariants": "Optimal solution: total value 6 with weight 4"
+    }
+  ]
+}

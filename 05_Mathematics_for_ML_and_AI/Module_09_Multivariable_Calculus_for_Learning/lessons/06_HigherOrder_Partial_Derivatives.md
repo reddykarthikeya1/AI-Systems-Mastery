@@ -1,78 +1,66 @@
-# Lesson 09.06 — Higher-Order Partial Derivatives
+# Lesson 09.06: Higher-Order Partial Derivatives
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 6 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Compute second-order pure and mixed partial derivatives.
+- Construct the components of the Hessian curvature tensor.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.05 Partial Derivatives.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+Taking the partial derivative of an existing partial derivative yields **higher-order partial derivatives**:
+$$f_{xx} = \frac{\partial^2 f}{\partial x^2}, \quad f_{xy} = \frac{\partial}{\partial y}\left(\frac{\partial f}{\partial x}\right) = \frac{\partial^2 f}{\partial y \partial x}$$
+These second derivatives characterize curvature and rate of change of gradients.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x, y) = x^3 y^2$: $f_x = 3x^2 y^2$, $f_{xx} = 6x y^2$, and $f_{xy} = \frac{\partial}{\partial y}(3x^2 y^2) = 6x^2 y$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x, y = 2.0, 3.0
+f_xx = 6.0 * x * (y**2)
+f_xy = 6.0 * (x**2) * y
+
+assert np.isclose(f_xx, 6.0 * 2.0 * 9.0)  # 108.0
+assert np.isclose(f_xy, 6.0 * 4.0 * 3.0)  # 72.0
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing notation: in d^2 f / (dy dx), the x derivative is performed first, followed by y.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What does f_xx measure geometrically?
+2. If f(x, y) = x^2 + y^2, what is f_xy?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Curvature (acceleration) along the x coordinate direction.
+2. 0, because df/dx = 2x, which contains no y terms.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](05_Partial_Derivatives.md) · [Module README](../README.md) · [Next →](07_Clairauts_Theorem_on_Mixed_Partials.md)
+Next: [07_Clairauts_Theorem_on_Mixed_Partials.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\07_Clairauts_Theorem_on_Mixed_Partials.md)

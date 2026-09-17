@@ -1,65 +1,63 @@
 # Lesson 03.15 — Matrix Multiplication as Composition
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 15 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Interpret matrix multiplication C = A B as functional composition T_A(T_B(x)).
+- [ ] Verify associative law (A B) C = A (B C).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.14 Matrix Addition.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Matrix multiplication is defined so that multiplying by $AB$ corresponds to applying linear transformation $B$ followed by linear transformation $A$: $(A B)\mathbf{x} = A(B\mathbf{x})$. For $A \in \mathbb{R}^{m \times k}$ and $B \in \mathbb{R}^{k \times n}$, $C_{ij} = \sum_{p=1}^k A_{ip} B_{pj}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}, B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}$. $AB = \begin{bmatrix} 1(2)+2(1) & 1(0)+2(3) \\ 0(2)+1(1) & 0(0)+1(3) \end{bmatrix} = \begin{bmatrix} 4 & 6 \\ 1 & 3 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0], [0.0, 1.0]])
+B = np.array([[2.0, 0.0], [1.0, 3.0]])
+C = A @ B
+assert np.allclose(C, [[4.0, 6.0], [1.0, 3.0]])
+# Associativity
+D = np.array([[1.0], [-1.0]])
+assert np.allclose((A @ B) @ D, A @ (B @ D))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing matrix multiplication (@) with elementwise Hadamard multiplication (*).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why must the inner dimensions match for matrix multiplication A @ B?
+2. Is matrix multiplication associative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because the output space of map B must match the input domain of map A.
+2. Yes, (A B) C = A (B C).
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_Matrix_Addition_and_Scalar_Multiplication.md) · [Module README](../README.md) · [Next →](16_Why_Matrix_Multiplication_Is_Not_Commutative.md)
+[Module README](../README.md) · [Next →](16_Why_Matrix_Multiplication_Is_Not_Commutative.md)

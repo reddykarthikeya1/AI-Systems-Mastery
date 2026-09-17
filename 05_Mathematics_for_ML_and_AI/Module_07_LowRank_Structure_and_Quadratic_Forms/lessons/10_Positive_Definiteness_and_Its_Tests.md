@@ -1,65 +1,67 @@
 # Lesson 07.10 — Positive Definiteness and Its Tests
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 10 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 10 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Test positive definiteness via eigenvalues (all > 0) and Sylvester's criterion (leading principal minors > 0).
+- [ ] Recognize positive definite Hessians as local minima.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 07.09 Quadratic Forms and 05.11 Spectral Theorem.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A symmetric matrix $A$ is **positive definite** ($A \succ 0$) if $\mathbf{x}^T A \mathbf{x} > 0$ for all $\mathbf{x} \neq \mathbf{0}$. Equivalent conditions:
+1. All eigenvalues are strictly positive ($\lambda_i > 0$).
+2. All leading principal minors are strictly positive (Sylvester's criterion).
+3. In optimization, if the Hessian $\nabla^2 f(\mathbf{x}^*) \succ 0$, $\mathbf{x}^*$ is a strict local minimum.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$. Minors: $M_1 = 2 > 0$, $M_2 = \det(A) = 4 - 1 = 3 > 0$. Eigenvalues: $\lambda = 3, 1 > 0$. Therefore $A$ is positive definite.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[2.0, 1.0], [1.0, 2.0]])
+eigs = np.linalg.eigvalsh(A)
+assert np.all(eigs > 0)
+
+# Positive definite quadratic form
+x = np.array([1.5, -2.0])
+assert (x @ A @ x) > 0
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming all positive matrix entries implies positive definiteness. A matrix can have all positive entries and still have negative eigenvalues.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can a matrix with all positive entries be indefinite?
+2. What does a positive definite Hessian matrix guarantee at a critical point?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Yes (e.g. [[1, 2], [2, 1]] has det = -3 and eigenvalue -1).
+2. It guarantees the critical point is a strict local minimum.
 
 </details>
 
@@ -67,12 +69,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_Quadratic_Forms_and_Their_Matrices.md) · [Module README](../README.md) · [Next →](11_Cholesky_Decomposition.md)
+[Module README](../README.md) · [Next →](11_Cholesky_Decomposition.md)

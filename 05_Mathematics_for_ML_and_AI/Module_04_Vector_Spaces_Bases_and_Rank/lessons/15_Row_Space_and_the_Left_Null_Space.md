@@ -1,65 +1,60 @@
 # Lesson 04.15 — Row Space and the Left Null Space
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 15 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define row space row(A) = col(A^T) and left null space null(A^T).
+- [ ] Verify dimensions of all 4 subspaces in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.13 Column Space and 04.14 Null Space.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **row space** of $A$ is $\text{row}(A) = \text{col}(A^T) \subseteq \mathbb{R}^n$. The **left null space** is $\text{null}(A^T) = \{\mathbf{y} \in \mathbb{R}^m : \mathbf{y}^T A = \mathbf{0}^T\} \subseteq \mathbb{R}^m$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$, $\text{row}(A) = \text{span}([1, 2]^T)$. Left null space $\text{null}(A^T) = \text{span}([-2, 1]^T)$ because $[-2, 1]\begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix} = [0, 0]$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0], [2.0, 4.0]])
+y = np.array([-2.0, 1.0])
+assert np.allclose(y @ A, [0.0, 0.0])
+assert np.allclose(A.T @ y, [0.0, 0.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing left null space (subspace of R^m) with null space (subspace of R^n).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is row(A) identical to?
+2. Why is null(A^T) called the left null space?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The column space of the transpose: col(A^T).
+2. Because y^T multiplies A from the left: y^T A = 0.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_Null_Space_and_Nullity.md) · [Module README](../README.md) · [Next →](16_Rank_of_a_Matrix.md)
+[Module README](../README.md) · [Next →](16_Rank_of_a_Matrix.md)

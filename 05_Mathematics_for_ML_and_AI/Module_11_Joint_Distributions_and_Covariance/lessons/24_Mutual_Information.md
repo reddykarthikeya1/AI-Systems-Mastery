@@ -1,65 +1,68 @@
 # Lesson 11.24 — Mutual Information
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 24 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute Mutual Information I(X; Y) = D_KL(P(X, Y) || P(X) P(Y)) = H(X) - H(X | Y).
+- [ ] Detect non-linear dependence that correlation misses.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.04 Independence and 11.07 Correlation Limits.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Mutual Information (MI)** $I(X; Y) = \sum_{x,y} P(x, y) \log \frac{P(x, y)}{P(x)P(y)}$ measures total statistical dependence (linear AND non-linear). $I(X; Y) \ge 0$, with equality if and only if $X$ and $Y$ are strictly independent. It captures non-linear relationships that correlation completely overlooks.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $X \perp Y$, $P(x, y) = P(x)P(y) \implies \log(1) = 0 \implies I(X; Y) = 0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Independent joint
+p_x = np.array([0.5, 0.5])
+p_y = np.array([0.5, 0.5])
+joint_indep = np.outer(p_x, p_y)
+mi_indep = np.sum(joint_indep * np.log(joint_indep / np.outer(p_x, p_y)))
+assert np.isclose(mi_indep, 0.0)
+
+# Dependent joint (perfect correlation)
+joint_dep = np.array([[0.5, 0.0], [0.0, 0.5]])
+# MI = H(X) = - (0.5 log 0.5 + 0.5 log 0.5) = log(2)
+mi_dep = np.sum(joint_dep[joint_dep > 0] * np.log(joint_dep[joint_dep > 0] / np.outer(p_x, p_y)[joint_dep > 0]))
+assert np.isclose(mi_dep, np.log(2.0))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using correlation for feature selection when features have strong parabolic or sinusoidal dependencies.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. When is Mutual Information I(X; Y) equal to zero?
+2. Does Mutual Information detect non-linear dependencies?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. If and only if X and Y are strictly independent.
+2. Yes, it captures all forms of statistical dependence.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](23_Copulas_Separating_Marginals_From_Dependence.md) · [Module README](../README.md) · [Next →](25_Simpsons_Paradox.md)
+[Module README](../README.md) · [Next →](25_Simpsons_Paradox.md)

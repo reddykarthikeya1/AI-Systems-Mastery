@@ -1,78 +1,64 @@
-# Lesson 09.10 — Directional Derivatives
+# Lesson 09.10: Directional Derivatives
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 10 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Compute the directional derivative D_v f = nabla f . v.
+- Connect directional derivatives to line search updates in optimization.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.08 The Gradient Vector.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+The **directional derivative** of $f$ at $\mathbf{x}$ in direction $\mathbf{v}$ ($\|\mathbf{v}\| = 1$) is:
+$$D_\mathbf{v} f(\mathbf{x}) = \lim_{t \to 0} \frac{f(\mathbf{x} + t \mathbf{v}) - f(\mathbf{x})}{t} = \nabla f(\mathbf{x}) \cdot \mathbf{v}$$
+It represents the slope of the 1D slice of $f$ along the ray $\mathbf{x} + t\mathbf{v}$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x, y) = x^2 y$, $\nabla f = [2xy, x^2]^T$. At $(2, 1)$, $\nabla f = [4, 4]^T$. Direction $\mathbf{v} = [1/\sqrt{2}, 1/\sqrt{2}]^T$. $D_\mathbf{v} f = 4(1/\sqrt{2}) + 4(1/\sqrt{2}) = 8/\sqrt{2} = 4\sqrt{2} \approx 5.657$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+g = np.array([4.0, 4.0])
+v = np.array([1.0, 1.0]) / np.sqrt(2.0)
+d_v = np.dot(g, v)
+assert np.isclose(d_v, 4.0 * np.sqrt(2.0))
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Failing to normalize direction vector v to unit length before computing D_v f.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. How is a partial derivative df/dx_i related to directional derivatives?
+2. What is D_v f if v is perpendicular to nabla f?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. df/dx_i is the directional derivative along the unit basis vector e_i.
+2. 0 (zero instantaneous change).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_Why_the_Gradient_Points_Uphill.md) · [Module README](../README.md) · [Next →](11_Differentiability_versus_Existence_of_Partials.md)
+Next: [11_Differentiability_versus_Existence_of_Partials.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\11_Differentiability_versus_Existence_of_Partials.md)

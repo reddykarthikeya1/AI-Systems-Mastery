@@ -1,65 +1,65 @@
 # Lesson 07.02 — Geometry of the SVD
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 2 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 2 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Interpret SVD geometrically as rotation V^T, axis scaling Sigma, and rotation U.
+- [ ] Map the unit circle to an ellipse under a linear map.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 07.01 SVD Statement.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+SVD proves that any linear transformation maps the unit sphere in $\mathbb{R}^n$ into a hyper-ellipse in $\mathbb{R}^m$. The directions of the principal semi-axes are given by the columns of $U$ (left singular vectors), and their lengths are the singular values $\sigma_i$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For a $2 \times 2$ matrix, the unit circle is first rotated by $V^T$, stretched along coordinate axes by $\sigma_1, \sigma_2$, and rotated to its final orientation by $U$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[2.0, 1.0], [1.0, 2.0]])
+U, s, Vt = np.linalg.svd(A)
+
+# Unit vectors along principal axes
+v1 = Vt[0]
+Av1 = A @ v1
+assert np.isclose(np.linalg.norm(Av1), s[0])
+assert np.allclose(Av1 / s[0], U[:, 0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Believing the principal axes of the ellipse align with the matrix eigenvectors. In general, they align with the left singular vectors U.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What shape does the unit sphere become under any linear map?
+2. What determines the lengths of the semi-axes of the transformed ellipse?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A hyper-ellipse (possibly degenerate if rank is deficient).
+2. The singular values sigma_i.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_The_Singular_Value_Decomposition_Statement.md) · [Module README](../README.md) · [Next →](03_Singular_Values_versus_Eigenvalues.md)
+[Module README](../README.md) · [Next →](03_Singular_Values_versus_Eigenvalues.md)

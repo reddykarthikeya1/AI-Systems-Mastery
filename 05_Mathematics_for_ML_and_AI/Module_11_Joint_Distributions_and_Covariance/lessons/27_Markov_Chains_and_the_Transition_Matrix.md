@@ -1,65 +1,63 @@
 # Lesson 11.27 — Markov Chains and the Transition Matrix
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 27 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Markov property: P(X_t+1 | X_t, ..., X_0) = P(X_t+1 | X_t).
+- [ ] Multiply state distribution vector by transition matrix P.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.03 Conditional Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A **Markov Chain** satisfies the memoryless Markov property: the future depends only on the present, not the past. Its dynamics are governed by transition matrix $P_{ij} = P(X_{t+1} = j \mid X_t = i)$. Row vectors evolve as $\mathbf{p}_{t+1} = \mathbf{p}_t P$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Weather model: Sunny ($0$) or Rainy ($1$). $P = \begin{bmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{bmatrix}$. If today is Sunny ($[1, 0]$), tomorrow is $[0.8, 0.2]$. Day after tomorrow is $[0.8, 0.2] P = [0.72, 0.28]$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+P = np.array([[0.8, 0.2], [0.4, 0.6]])
+p0 = np.array([1.0, 0.0])
+p1 = p0 @ P
+p2 = p1 @ P
+assert np.allclose(p1, [0.8, 0.2])
+assert np.allclose(p2, [0.72, 0.28])
+assert np.allclose(np.sum(P, axis=1), [1.0, 1.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Transposing the transition matrix convention (row stochastic where rows sum to 1 vs column stochastic).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the Markov property?
+2. What must each row of a row-stochastic transition matrix sum to?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The future state is conditionally independent of past history given the current state.
+2. Exactly 1.0.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](26_Confounders_Colliders_and_Selection_Bias.md) · [Module README](../README.md) · [Next →](28_Stationary_Distributions.md)
+[Module README](../README.md) · [Next →](28_Stationary_Distributions.md)

@@ -1,65 +1,64 @@
 # Lesson 07.01 — The Singular Value Decomposition: Statement
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 1 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 1 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the SVD theorem A = U Sigma V^T for arbitrary m x n matrices.
+- [ ] Verify SVD factor dimensions and reconstruction with np.linalg.svd.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.11 Spectral Theorem and Orthogonal matrices.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Every real matrix $A \in \mathbb{R}^{m \times n}$ factors as $A = U \Sigma V^T$, where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are orthogonal matrices, and $\Sigma \in \mathbb{R}^{m \times n}$ is a diagonal matrix containing non-negative singular values $\sigma_1 \ge \sigma_2 \ge \dots \ge 0$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 3 & 0 \\ 0 & -2 \end{bmatrix}$. $A^T A = \begin{bmatrix} 9 & 0 \\ 0 & 4 \end{bmatrix}$. Singular values are $\sigma_1 = 3, \sigma_2 = 2$. $U = I$, $V = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$, $\Sigma = \text{diag}(3, 2)$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[3.0, 0.0], [0.0, -2.0]])
+U, s, Vt = np.linalg.svd(A)
+
+assert np.allclose(s, [3.0, 2.0])
+assert np.allclose(U @ np.diag(s) @ Vt, A)
+assert np.allclose(U.T @ U, np.eye(2))
+assert np.allclose(Vt @ Vt.T, np.eye(2))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing V with V^T. NumPy's `np.linalg.svd` returns Vt (V transposed), not V.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can a non-square matrix have an SVD?
+2. Can singular values be negative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Yes, SVD exists unconditionally for any rectangular matrix.
+2. No, singular values are non-negative square roots of eigenvalues of A^T A.
 
 </details>
 
@@ -67,11 +66,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

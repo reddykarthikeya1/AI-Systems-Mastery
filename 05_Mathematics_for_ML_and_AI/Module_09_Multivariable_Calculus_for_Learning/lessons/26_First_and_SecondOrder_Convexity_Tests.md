@@ -1,78 +1,66 @@
-# Lesson 09.26 — First- and Second-Order Convexity Tests
+# Lesson 09.26: First- and Second-Order Convexity Tests
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 26 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Apply the first-order condition: f(y) >= f(x) + nabla f(x)^T (y - x).
+- Apply the second-order condition: nabla^2 f(x) >= 0 (positive semidefinite everywhere).
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.25 Convex Functions Definition.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+For differentiable $f$:
+- **First-Order Condition**: $f$ is convex iff the tangent plane is a global lower bound:
+$$f(\mathbf{y}) \ge f(\mathbf{x}) + \nabla f(\mathbf{x})^T (\mathbf{y} - \mathbf{x}) \quad \forall \mathbf{x}, \mathbf{y}$$
+- **Second-Order Condition**: $f$ is convex iff its Hessian is positive semidefinite everywhere:
+$$\nabla^2 f(\mathbf{x}) \succeq 0 \quad \forall \mathbf{x}$$
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(\mathbf{x}) = \frac{1}{2} \mathbf{x}^T \mathbf{A} \mathbf{x}$ with symmetric $\mathbf{A}$: $\nabla^2 f(\mathbf{x}) = \mathbf{A}$.
+$f$ is convex if and only if $\mathbf{A} \succeq 0$ (all eigenvalues $\lambda_i \ge 0$).
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[3.0, 1.0], [1.0, 2.0]])
+eigvals = np.linalg.eigvalsh(A)
+assert np.all(eigvals >= 0)  # A is PSD -> f is convex everywhere
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Testing the Hessian at only a single point; global convexity requires H >= 0 across the entire domain.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What does the first-order convexity condition say about tangent hyperplanes?
+2. What condition on the Hessian characterizes C^2 convex functions?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The tangent hyperplane at any point lies entirely on or below the graph of the function.
+2. The Hessian is positive semidefinite everywhere (nabla^2 f >= 0).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](25_Convex_Functions_Definition.md) · [Module README](../README.md) · [Next →](27_Strong_Convexity_and_Smoothness.md)
+Next: [27_Strong_Convexity_and_Smoothness.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\27_Strong_Convexity_and_Smoothness.md)

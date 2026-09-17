@@ -1,65 +1,62 @@
 # Lesson 10.26 — The Standard Normal and Z-Scores
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 26 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Standardize variables into Z-scores: Z = (X - mu) / sigma.
+- [ ] Map between standard normal and arbitrary Gaussian coordinates.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.24 Normal Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Standard Normal** $Z \sim \mathcal{N}(0, 1)$ has $\mu = 0$ and $\sigma = 1$. Any normal $X \sim \mathcal{N}(\mu, \sigma^2)$ is standardized via $Z = \frac{X - \mu}{\sigma}$. A Z-score expresses how many standard deviations an observation lies from the mean.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Student scores 85 on exam with $\mu = 70, \sigma = 10$. $Z = (85 - 70)/10 = 1.5$ (1.5 standard deviations above class average).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+mu, sigma = 70.0, 10.0
+x = 85.0
+z = (x - mu) / sigma
+assert np.isclose(z, 1.5)
+# Reverse transformation
+assert np.isclose(mu + z * sigma, x)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Standardizing test sets using test-set mean and variance instead of training-set statistics (data leakage).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What are the mean and standard deviation of a standard normal distribution?
+2. What does a Z-score of -2.0 mean?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Mean = 0, Standard Deviation = 1.
+2. The observation is exactly 2 standard deviations below the mean.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](25_Why_the_Normal_Appears_Everywhere.md) · [Module README](../README.md) · [Next →](27_The_LogNormal_Distribution.md)
+[Module README](../README.md) · [Next →](27_The_LogNormal_Distribution.md)

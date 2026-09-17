@@ -1,65 +1,63 @@
 # Lesson 07.03 — Singular Values versus Eigenvalues
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 3 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 3 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compare singular values and eigenvalues across symmetric and non-symmetric matrices.
+- [ ] Identify cases where eigenvalues are zero but singular values are non-zero.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.02 Eigenvalues and 07.01 SVD.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Eigenvalues satisfy $A\mathbf{v} = \lambda \mathbf{v}$ (same basis on input and output). Singular values satisfy $A\mathbf{v} = \sigma \mathbf{u}$ (different input and output bases). For symmetric positive semi-definite matrices, eigenvalues and singular values coincide.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 0 & 5 \\ 0 & 0 \end{bmatrix}$. Eigenvalues are both 0. But $A^T A = \begin{bmatrix} 0 & 0 \\ 0 & 25 \end{bmatrix}$, so singular values are 5 and 0. Singular values capture true operator norm even when eigenvalues vanish.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[0.0, 5.0], [0.0, 0.0]])
+eigs = np.linalg.eigvals(A)
+s = np.linalg.svd(A, compute_uv=False)
+
+assert np.allclose(eigs, [0.0, 0.0])
+assert np.allclose(s, [5.0, 0.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming small eigenvalues imply a matrix cannot significantly amplify any vector. Nilpotent matrices have zero eigenvalues but large singular values.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. When are singular values equal to absolute values of eigenvalues?
+2. Can singular values be computed for non-square matrices?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. When the matrix is normal (e.g. real symmetric).
+2. Yes, singular values are defined for any m x n matrix.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Geometry_of_the_SVD.md) · [Module README](../README.md) · [Next →](04_Truncated_SVD_and_the_EckartYoung_Theorem.md)
+[Module README](../README.md) · [Next →](04_Truncated_SVD_and_the_EckartYoung_Theorem.md)

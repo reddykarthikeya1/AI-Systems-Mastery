@@ -45,11 +45,27 @@ BANNER = r"""
 
 
 def ensure_client_built() -> None:
-    """Ensures the React client is built into dist/ before starting server."""
-    if not (DIST_DIR / "index.html").is_file():
-        print("[*] Client production build not detected. Attempting to build frontend...")
+    """Ensures the React client is built into dist/ before starting server.
+    Rebuilds if dist/index.html is missing or if any source file under client/src/ is newer.
+    """
+    dist_index = DIST_DIR / "index.html"
+    needs_build = not dist_index.is_file()
+
+    if not needs_build:
+        dist_mtime = dist_index.stat().st_mtime
+        src_candidates = [CLIENT_DIR / "index.html", CLIENT_DIR / "package.json"]
+        src_dir = CLIENT_DIR / "src"
+        if src_dir.is_dir():
+            src_candidates.extend(src_dir.rglob("*"))
+        for p in src_candidates:
+            if p.is_file() and p.stat().st_mtime > dist_mtime:
+                needs_build = True
+                break
+
+    if needs_build:
+        print("[*] Client production build is missing or stale. Building frontend...")
         try:
-            subprocess.run(["npm", "run", "build"], cwd=str(CLIENT_DIR), check=True)
+            subprocess.run(["npm", "run", "build"], cwd=str(CLIENT_DIR), check=True, shell=(sys.platform == "win32"))
             print("[OK] Frontend successfully built.")
         except Exception as exc:
             print(f"[!] Warning: Frontend build skipped or encountered an error ({exc}).")

@@ -1,65 +1,68 @@
 # Lesson 11.21 — The Precision Matrix and Partial Correlation
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 21 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define precision matrix Lambda = Sigma^(-1).
+- [ ] Prove Lambda_ij = 0 iff X_i perp X_j | rest (conditional independence in Gaussian graphical models).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.17 Multivariate Normal.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **precision matrix** $\Lambda = \Sigma^{-1}$ encodes **conditional independence**. In a Gaussian Graphical Model, $X_i$ and $X_j$ are conditionally independent given all other variables if and only if $\Lambda_{ij} = 0$. While $\Sigma_{ij} = 0$ means marginal independence, $\Lambda_{ij} = 0$ means no direct edge exists between them.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let Markov chain $X \to Y \to Z$. $X$ and $Z$ have non-zero covariance $\Sigma_{13} \neq 0$ through $Y$, but precision entry $\Lambda_{13} = 0$ because $X \perp Z \mid Y$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Chain X - Y - Z
+# Sigma has non-zero entries everywhere
+Sigma = np.array([
+    [1.0, 0.8, 0.64],
+    [0.8, 1.0, 0.8],
+    [0.64, 0.8, 1.0]
+])
+Lambda = np.linalg.inv(Sigma)
+
+# Lambda[0, 2] is zero (conditional independence)
+assert np.isclose(Lambda[0, 2], 0.0, atol=1e-10)
+assert not np.isclose(Sigma[0, 2], 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing marginal independence (Sigma_ij = 0) with conditional independence (Lambda_ij = 0).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does a zero entry Lambda_ij = 0 in the precision matrix indicate?
+2. What is the inverse of the covariance matrix called?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Conditional independence between variables i and j given all other variables.
+2. The precision (or concentration) matrix.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](20_Marginals_of_a_Multivariate_Normal.md) · [Module README](../README.md) · [Next →](22_Whitening_and_Mahalanobis_Distance.md)
+[Module README](../README.md) · [Next →](22_Whitening_and_Mahalanobis_Distance.md)

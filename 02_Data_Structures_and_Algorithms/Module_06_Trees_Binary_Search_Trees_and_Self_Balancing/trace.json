@@ -1,0 +1,83 @@
+{
+  "title": "Binary Search Tree Key Search & Invariant",
+  "algorithm": "BST Divide-and-Conquer Search",
+  "timeComplexity": "O(log n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Target is 25. Compare with Root (30). 25 < 30 -> Traverse Left.",
+      "array": [
+        30,
+        15,
+        45,
+        10,
+        25,
+        35,
+        60
+      ],
+      "pointers": {
+        "curr": 0
+      },
+      "highlights": {
+        "0": "comparing"
+      },
+      "variables": {
+        "target": 25,
+        "currKey": 30,
+        "action": "go_left"
+      },
+      "invariants": "All keys in left subtree are strictly less than current node key"
+    },
+    {
+      "step": 2,
+      "description": "Compare with Node (15). 25 > 15 -> Traverse Right.",
+      "array": [
+        30,
+        15,
+        45,
+        10,
+        25,
+        35,
+        60
+      ],
+      "pointers": {
+        "curr": 1
+      },
+      "highlights": {
+        "1": "comparing"
+      },
+      "variables": {
+        "target": 25,
+        "currKey": 15,
+        "action": "go_right"
+      },
+      "invariants": "All keys in right subtree are strictly greater than current node key"
+    },
+    {
+      "step": 3,
+      "description": "Compare with Node (25). 25 === 25 -> Key Found in 3 steps!",
+      "array": [
+        30,
+        15,
+        45,
+        10,
+        25,
+        35,
+        60
+      ],
+      "pointers": {
+        "curr": 4
+      },
+      "highlights": {
+        "4": "sorted"
+      },
+      "variables": {
+        "target": 25,
+        "currKey": 25,
+        "found": true
+      },
+      "invariants": "Search completed in O(h) comparisons where h = tree height"
+    }
+  ]
+}

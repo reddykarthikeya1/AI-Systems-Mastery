@@ -1,65 +1,64 @@
 # Lesson 03.33 — Least Squares via the Normal Equations
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 33 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Derive the normal equations A^T A x = A^T b by setting the gradient of ||Ax - b||^2 to zero.
+- [ ] Compute least-squares parameters in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.04 Matrices as Compact Notation and 06.09 Least Squares.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+To minimize the sum of squared errors $L(\mathbf{x}) = \|A\mathbf{x} - \mathbf{b}\|_2^2 = (A\mathbf{x} - \mathbf{b})^T(A\mathbf{x} - \mathbf{b})$, differentiate with respect to $\mathbf{x}$:
+$$\nabla_{\mathbf{x}} L(\mathbf{x}) = 2 A^T(A\mathbf{x} - \mathbf{b}) = \mathbf{0} \implies A^T A \mathbf{x} = A^T \mathbf{b}$$
+When $A$ has linearly independent columns, $A^T A$ is strictly invertible, yielding the closed-form ordinary least squares (OLS) solution $\hat{\mathbf{x}} = (A^T A)^{-1}A^T \mathbf{b}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Given points $(1, 1), (2, 2), (3, 2)$. Model $y = w x$. $A = [1, 2, 3]^T, \mathbf{b} = [1, 2, 2]^T$. $A^T A = 1 + 4 + 9 = 14$. $A^T \mathbf{b} = 1(1) + 2(2) + 3(2) = 11$. $w = 11/14 \approx 0.786$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0], [2.0], [3.0]])
+b = np.array([1.0, 2.0, 2.0])
+w = (A.T @ b) / (A.T @ A)
+assert np.isclose(w[0], 11.0 / 14.0)
+w_lstsq, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
+assert np.isclose(w[0], w_lstsq[0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using normal equations when features are collinear, which makes A^T A non-invertible.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the dimension of A^T A for an m x n matrix A?
+2. What matrix equation defines the least squares solution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. n x n.
+2. The normal equations: A^T A x = A^T b.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](32_Homogeneous_Coordinates.md) · [Module README](../README.md) · [Next →](34_Linear_Systems_in_NumPy_and_SciPy.md)
+[Module README](../README.md) · [Next →](34_Linear_Systems_in_NumPy_and_SciPy.md)

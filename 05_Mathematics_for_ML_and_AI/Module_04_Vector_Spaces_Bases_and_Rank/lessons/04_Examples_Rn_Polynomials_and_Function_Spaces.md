@@ -1,65 +1,61 @@
-# Lesson 04.04 — Examples: R^n, Polynomials and Function Spaces
+# Lesson 04.04 — Examples: Rn, Polynomials and Function Spaces
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 4 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Recognize polynomials P_n and continuous functions C[a, b] as vector spaces.
+- [ ] Represent polynomial addition as vector addition of coefficients.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.03 Vector Space Axioms.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Vector spaces extend far beyond $\mathbb{R}^n$. The set of polynomials of degree $\le n$ forms a vector space of dimension $n+1$, where vectors are polynomial coefficient lists. The set of continuous functions $C[a, b]$ is an infinite-dimensional vector space.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $p(x) = 2 + 3x$ and $q(x) = 1 - x + 4x^2$. In degree-2 basis $\{1, x, x^2\}$, $\mathbf{p} = [2, 3, 0]^T$ and $\mathbf{q} = [1, -1, 4]^T$. Sum $p+q = [3, 2, 4]^T \implies 3 + 2x + 4x^2$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Polynomial coefficients in ascending powers [c0, c1, c2]
+p = np.array([2.0, 3.0, 0.0])
+q = np.array([1.0, -1.0, 4.0])
+pq_sum = p + q
+assert np.allclose(pq_sum, [3.0, 2.0, 4.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Restricting linear algebra intuition to physical 3D space rather than recognizing functions as vectors.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the dimension of the space of polynomials of degree at most d?
+2. Is the set of all continuous functions C[0, 1] finite dimensional?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. d + 1.
+2. No, it is infinite dimensional.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_The_Vector_Space_Axioms.md) · [Module README](../README.md) · [Next →](05_Subspaces_and_How_to_Test_for_One.md)
+[Module README](../README.md) · [Next →](05_Subspaces_and_How_to_Test_for_One.md)

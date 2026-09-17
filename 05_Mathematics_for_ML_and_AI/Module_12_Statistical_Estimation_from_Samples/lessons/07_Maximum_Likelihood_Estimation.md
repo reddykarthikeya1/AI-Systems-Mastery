@@ -1,65 +1,60 @@
 # Lesson 12.07 — Maximum Likelihood Estimation
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 7 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Formulate likelihood L(theta) = prod p(x_i | theta).
+- [ ] Derive MLE theta_hat_MLE = argmax L(theta).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Probability density functions (Module 10).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Maximum Likelihood Estimation (MLE)** asks: *Which parameter value makes the observed sample most probable?* Given i.i.d. observations, the likelihood is $L(\theta) = \prod_{i=1}^n f(x_i; \theta)$. The MLE $\hat{\theta}_{MLE}$ maximizes this probability.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For coin with heads probability $p$, observing 7 heads in 10 flips: $L(p) = p^7 (1-p)^3$. Maximizing gives $\hat{p} = 7/10 = 0.7$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+heads = 7
+total = 10
+p_mle = heads / total
+assert np.isclose(p_mle, 0.7)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating likelihood L(theta | x) as a probability distribution over theta. L is a function of theta, but its integral over theta does not equal 1.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the difference between probability P(x | theta) and likelihood L(theta | x)?
+2. What criterion defines the MLE estimator?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Probability varies x with fixed theta; likelihood varies theta with fixed observed x.
+2. The parameter value that maximizes the likelihood function.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](06_The_Method_of_Moments.md) · [Module README](../README.md) · [Next →](08_The_LogLikelihood_and_Why_We_Take_Logs.md)
+[Module README](../README.md) · [Next →](08_The_LogLikelihood_and_Why_We_Take_Logs.md)

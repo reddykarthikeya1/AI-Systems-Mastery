@@ -137,3 +137,14 @@ export async function executeSql(query: string, schemaPreset: string = 'storage_
   if (!res.ok) throw new Error('SQL execution failed');
   return res.json();
 }
+
+export async function fetchModuleTrace(modulePath: string): Promise<any | null> {
+  try {
+    const res = await fetch(`${API_BASE}/trace?module_path=${encodeURIComponent(modulePath)}`);
+    if (res.ok) return res.json();
+  } catch (e) {
+    console.warn('Could not fetch module trace', e);
+  }
+  return null;
+}
+

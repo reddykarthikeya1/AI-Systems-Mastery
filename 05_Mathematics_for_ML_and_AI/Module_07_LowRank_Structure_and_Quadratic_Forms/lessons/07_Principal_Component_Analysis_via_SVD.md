@@ -1,65 +1,73 @@
 # Lesson 07.07 — Principal Component Analysis via SVD
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 7 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 7 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Derive PCA directly from the SVD of the centered data matrix.
+- [ ] Project high-dimensional data onto principal components.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 07.04 Truncated SVD.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Given centered data matrix $X \in \mathbb{R}^{N \times D}$ ($X_c = X - \mu$), sample covariance is $C = \frac{1}{N-1}X_c^T X_c$. Computing the SVD $X_c = U \Sigma V^T$ gives $V$, whose columns are the exact principal component loading vectors.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let centered data $X_c$ have shape $(100, 5)$. The right singular vectors $V$ give directions of maximal variance. Projected coordinates are $Z = X_c V_k$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+np.random.seed(42)
+X = np.random.randn(50, 4) + np.array([10.0, -5.0, 2.0, 0.0])
+
+# Center data
+X_c = X - np.mean(X, axis=0)
+
+# SVD of centered data
+U, s, Vt = np.linalg.svd(X_c, full_matrices=False)
+V = Vt.T
+
+# Projected coordinates
+Z = X_c @ V[:, :2]
+assert Z.shape == (50, 2)
+# Orthogonal columns in projection
+cov_Z = np.cov(Z, rowvar=False)
+assert np.isclose(cov_Z[0, 1], 0.0, atol=1e-5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Applying PCA without centering the data first. Without subtracting the mean, the first principal component points to the mean rather than direction of maximum variance.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why must data be centered before applying PCA via SVD?
+2. How do the singular values s relate to the eigenvalues of the covariance matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because covariance is defined around the mean: Cov(X) = E[(X - mu)(X - mu)^T].
+2. lambda_i = s_i^2 / (N - 1).
 
 </details>
 
@@ -67,12 +75,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](06_The_MoorePenrose_Pseudoinverse.md) · [Module README](../README.md) · [Next →](08_PCA_versus_Autoencoders_What_Actually_Differs.md)
+[Module README](../README.md) · [Next →](08_PCA_versus_Autoencoders_What_Actually_Differs.md)

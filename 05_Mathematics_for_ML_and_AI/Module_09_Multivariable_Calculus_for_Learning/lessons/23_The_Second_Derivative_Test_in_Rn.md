@@ -1,78 +1,67 @@
-# Lesson 09.23 — The Second Derivative Test in R^n
+# Lesson 09.23: The Second Derivative Test in Rn
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 23 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Apply the eigenvalue test: H > 0 (local min), H < 0 (local max), indefinite (saddle).
+- Evaluate determinants and eigenvalues to determine definiteness.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.22 Critical Points and Their Classification.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+At a critical point $\nabla f(\mathbf{x}^*) = \mathbf{0}$:
+1. $\mathbf{H} \succ 0$ (all $\lambda_i > 0$): **Strict Local Minimum**
+2. $\mathbf{H} \prec 0$ (all $\lambda_i < 0$): **Strict Local Maximum**
+3. $\mathbf{H}$ indefinite (some $\lambda_i > 0$, some $\lambda_j < 0$): **Saddle Point**
+4. If $\det(\mathbf{H}) = 0$ with no opposing signs: Test is inconclusive.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Hessian at $(0, 0)$ is $\mathbf{H} = \begin{bmatrix} 4 & 1 \\ 1 & 3 \end{bmatrix}$.
+Eigenvalues: $\det(\mathbf{H} - \lambda \mathbf{I}) = (4-\lambda)(3-\lambda) - 1 = \lambda^2 - 7\lambda + 11 = 0$.
+$\lambda = \frac{7 \pm \sqrt{49 - 44}}{2} = \frac{7 \pm \sqrt{5}}{2} > 0$. Both positive $\implies$ strict local minimum.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+H = np.array([[4.0, 1.0], [1.0, 3.0]])
+eigvals = np.linalg.eigvalsh(H)
+assert np.all(eigvals > 0)  # Positive definite -> local minimum
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Claiming a point is a local minimum when some eigenvalues are zero without checking higher-order terms.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What does H > 0 (positive definite) imply for a critical point?
+2. What if H has both positive and negative eigenvalues?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Strict local minimum.
+2. It is a saddle point.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](22_Critical_Points_and_Their_Classification.md) · [Module README](../README.md) · [Next →](24_Saddle_Points_and_Why_Deep_Networks_Have_Many.md)
+Next: [24_Saddle_Points_and_Why_Deep_Networks_Have_Many.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\24_Saddle_Points_and_Why_Deep_Networks_Have_Many.md)

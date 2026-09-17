@@ -1,65 +1,62 @@
 # Lesson 10.23 — The Exponential Distribution and Memorylessness
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 23 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Exponential(lambda) PDF f(x) = lambda e^(-lambda x).
+- [ ] Verify memorylessness P(X > s + t | X > s) = P(X > t) in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.13 Continuous PDF and 10.20 Geometric Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Exponential distribution** models waiting time between Poisson events. $\mathbb{E}[X] = 1/\lambda$, $\text{Var}(X) = 1/\lambda^2$. It is the **only continuous distribution with memorylessness**: $\forall s, t > 0$, $P(X > s + t \mid X > s) = P(X > t)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Server time between crashes with $\lambda = 0.5$ per day. Mean $= 1/0.5 = 2$ days. Given server survived 3 days, probability of surviving another day is $P(X > 1) = e^{-0.5} \approx 0.606$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+lam = 0.5
+# Survival function S(t) = P(X > t) = exp(-lam * t)
+s_t = lambda t: np.exp(-lam * t)
+# Memorylessness: S(s + t) / S(s) == S(t)
+s, t = 3.0, 1.0
+assert np.isclose(s_t(s + t) / s_t(s), s_t(t))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using exponential distribution for component lifespans subject to mechanical wear and tear (Weibull is required).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the mean of Exponential(lambda)?
+2. What is the only continuous memoryless distribution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 1 / lambda.
+2. The Exponential distribution.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](22_The_Uniform_Distribution.md) · [Module README](../README.md) · [Next →](24_The_Normal_Distribution.md)
+[Module README](../README.md) · [Next →](24_The_Normal_Distribution.md)

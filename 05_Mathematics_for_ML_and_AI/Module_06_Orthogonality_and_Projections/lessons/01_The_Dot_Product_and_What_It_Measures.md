@@ -1,65 +1,62 @@
 # Lesson 06.01 — The Dot Product and What It Measures
 
 > **Module 06:** Orthogonality and Projections · Lesson 1 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute inner product u^T v and express it as ||u|| ||v|| cos(theta).
+- [ ] Verify geometric projection using dot products in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Vector arithmetic (Module 04).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The dot product $\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^n u_i v_i = \mathbf{u}^T \mathbf{v}$ bridges algebraic coordinates and geometric concepts of length and angle. It quantifies how much two vectors point in the same direction.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $\mathbf{u} = [3, 4]^T, \mathbf{v} = [1, 0]^T$. $\mathbf{u} \cdot \mathbf{v} = 3(1) + 4(0) = 3$. $\|\mathbf{u}\| = 5, \|\mathbf{v}\| = 1$. $\cos(\theta) = 3 / 5 = 0.6$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+u = np.array([3.0, 4.0])
+v = np.array([1.0, 0.0])
+dot = np.dot(u, v)
+cos_theta = dot / (np.linalg.norm(u) * np.linalg.norm(v))
+assert np.isclose(dot, 3.0)
+assert np.isclose(cos_theta, 0.6)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Conflating elementwise product (u * v) with dot product (np.dot(u, v)).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the dot product of two perpendicular vectors?
+2. Can the dot product be negative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly zero.
+2. Yes, when the angle between them exceeds 90 degrees (obtuse angle).
 
 </details>
 
@@ -67,11 +64,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

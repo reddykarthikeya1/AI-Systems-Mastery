@@ -1,65 +1,63 @@
 # Lesson 06.16 — Orthogonal Bases for Function Spaces
 
 > **Module 06:** Orthogonality and Projections · Lesson 16 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Generalize inner products to continuous functions <f, g> = integral f(x) g(x) dx.
+- [ ] Represent Fourier basis functions as orthogonal vectors in function space.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 06.01 The Dot Product.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In continuous function space $L^2$, the inner product is $\langle f, g \rangle = \int_a^b f(x)g(x)dx$. The Fourier basis functions $\{\sin(nx), \cos(nx)\}$ are mutually orthogonal under this inner product, decomposing functions into frequency coefficients exactly as vectors decompose onto coordinate axes.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Consider $f(x) = \sin(x)$ and $g(x) = \cos(x)$ over $[-\pi, \pi]$. $\int_{-\pi}^\pi \sin(x)\cos(x)dx = \frac{1}{2}\int \sin(2x)dx = 0$. They are orthogonal functions.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Numerical integration approximation over [-pi, pi]
+x = np.linspace(-np.pi, np.pi, 1000)
+dx = x[1] - x[0]
+f = np.sin(x)
+g = np.cos(x)
+inner_prod = np.sum(f * g) * dx
+assert np.isclose(inner_prod, 0.0, atol=1e-4)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming inner products only apply to discrete finite vectors.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How is the inner product of two continuous functions f and g defined?
+2. Are sin(x) and cos(x) orthogonal on [-pi, pi]?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. As the definite integral of their pointwise product: integral f(x) g(x) dx.
+2. Yes, their integral product is zero.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_Orthogonal_Matrices_and_Isometries.md) · [Module README](../README.md) · [Next →](17_Whitening_and_Decorrelation.md)
+[Module README](../README.md) · [Next →](17_Whitening_and_Decorrelation.md)

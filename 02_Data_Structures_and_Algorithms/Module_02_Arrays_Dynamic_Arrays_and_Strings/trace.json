@@ -1,0 +1,90 @@
+{
+  "title": "Two Pointers Search Verification: Two Sum II",
+  "algorithm": "Two Pointers on Sorted Array",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize left=0 and right=5. Sum = 2 + 20 = 22 > 18 (Target = 18).",
+      "array": [
+        2,
+        4,
+        7,
+        11,
+        14,
+        20
+      ],
+      "pointers": {
+        "left": 0,
+        "right": 5
+      },
+      "highlights": {
+        "0": "active",
+        "5": "active"
+      },
+      "variables": {
+        "left": 0,
+        "right": 5,
+        "currentSum": 22,
+        "target": 18
+      },
+      "invariants": "Current sum (22) > target (18): Decrement right pointer to reduce sum"
+    },
+    {
+      "step": 2,
+      "description": "Decrement right to index 4. Sum = 2 + 14 = 16 < 18.",
+      "array": [
+        2,
+        4,
+        7,
+        11,
+        14,
+        20
+      ],
+      "pointers": {
+        "left": 0,
+        "right": 4
+      },
+      "highlights": {
+        "0": "active",
+        "4": "active"
+      },
+      "variables": {
+        "left": 0,
+        "right": 4,
+        "currentSum": 16,
+        "target": 18
+      },
+      "invariants": "Current sum (16) < target (18): Increment left pointer to increase sum"
+    },
+    {
+      "step": 3,
+      "description": "Increment left to index 1. Sum = 4 + 14 = 18 === target! Target pair found.",
+      "array": [
+        2,
+        4,
+        7,
+        11,
+        14,
+        20
+      ],
+      "pointers": {
+        "left": 1,
+        "right": 4
+      },
+      "highlights": {
+        "1": "sorted",
+        "4": "sorted"
+      },
+      "variables": {
+        "left": 1,
+        "right": 4,
+        "currentSum": 18,
+        "target": 18,
+        "found": true
+      },
+      "invariants": "Target match verified: return indices [1, 4] (1-indexed: [2, 5])"
+    }
+  ]
+}

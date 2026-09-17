@@ -1,78 +1,71 @@
-# Lesson 09.44 — Quasi-Newton Methods and L-BFGS
+# Lesson 09.44: Quasi-Newton Methods and L-BFGS
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 44 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Understand the BFGS secant equation: B_{k+1} s_k = y_k.
+- Explain why Limited-memory BFGS (L-BFGS) stores only the last m vector pairs (s, y).
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.43 Newton's Method.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+Inverting the $D \times D$ Hessian costs $O(D^3)$ time and $O(D^2)$ space.
+**Quasi-Newton methods** (BFGS) build an iterative approximation $\mathbf{B}_{k+1}$ to the Hessian satisfying the secant equation:
+$$\mathbf{B}_{k+1} \mathbf{s}_k = \mathbf{y}_k \quad (\mathbf{s}_k = \mathbf{x}_{k+1} - \mathbf{x}_k, \mathbf{y}_k = \nabla f_{k+1} - \nabla f_k)$$
+**L-BFGS** stores only the last $m$ displacement pairs $(\mathbf{s}_k, \mathbf{y}_k)$ ($m \approx 5\text{--}20$), reducing memory to $O(m D)$ and computing direction updates via a two-loop recursion.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+In 100,000 dimensions: full Hessian requires $10^{10}$ floats ($40\text{ GB}$).
+L-BFGS with history $m = 10$ requires only $2 \times 10 \times 100,000 = 2 \times 10^6$ floats ($8\text{ MB}$), a $5000\times$ reduction!
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+D = 100000
+m = 10
+full_hessian_elements = D**2
+lbfgs_elements = 2 * m * D
+savings = full_hessian_elements / lbfgs_elements
+
+assert full_hessian_elements == 10**10
+assert lbfgs_elements == 2 * 10**6
+assert savings == 5000.0
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to use L-BFGS with small stochastic mini-batches; L-BFGS requires highly accurate gradient differences and degrades under stochastic noise.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the secant equation in Quasi-Newton optimization?
+2. Why is L-BFGS preferred over standard BFGS in high dimensions?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. B_{k+1} s_k = y_k where s_k = Delta x and y_k = Delta g.
+2. It replaces the D x D matrix with a small history buffer of m vectors, scaling linearly in O(mD).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](43_Newtons_Method.md) · [Module README](../README.md) · [Next →](45_Constrained_Optimization_The_Setup.md)
+Next: [45_Constrained_Optimization_The_Setup.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\45_Constrained_Optimization_The_Setup.md)

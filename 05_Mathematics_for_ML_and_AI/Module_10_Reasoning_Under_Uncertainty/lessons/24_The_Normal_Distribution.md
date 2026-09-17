@@ -1,65 +1,71 @@
 # Lesson 10.24 — The Normal Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 24 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Formulate Gaussian PDF: 1/(sigma sqrt(2 pi)) exp(-(x - mu)^2 / (2 sigma^2)).
+- [ ] Verify 68-95-99.7 empirical rule.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.13 Continuous PDF.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Normal (Gaussian) distribution** $\mathcal{N}(\mu, \sigma^2)$ is symmetric and bell-shaped. The **68-95-99.7 rule**:
+- 68.27% within $\mu \pm 1\sigma$.
+- 95.45% within $\mu \pm 2\sigma$.
+- 99.73% within $\mu \pm 3\sigma$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $\mu = 100, \sigma = 15$, 95% of observations fall between $100 \pm 30 = [70, 130]$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+from math import erf
+def norm_cdf(x):
+    return 0.5 * (1.0 + erf(x / np.sqrt(2.0)))
+
+# 68-95-99.7 verification
+p1 = norm_cdf(1.0) - norm_cdf(-1.0)
+p2 = norm_cdf(2.0) - norm_cdf(-2.0)
+p3 = norm_cdf(3.0) - norm_cdf(-3.0)
+
+assert np.isclose(p1, 0.6827, atol=1e-3)
+assert np.isclose(p2, 0.9545, atol=1e-3)
+assert np.isclose(p3, 0.9973, atol=1e-3)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming real-world heavy-tailed financial returns follow a Normal distribution, dramatically underestimating tail risk.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What percentage of values fall within 2 standard deviations of the mean in a Gaussian?
+2. What parameters define a normal distribution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Approximately 95.45%.
+2. The mean mu (location) and variance sigma^2 (scale).
 
 </details>
 
@@ -67,12 +73,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](23_The_Exponential_Distribution_and_Memorylessness.md) · [Module README](../README.md) · [Next →](25_Why_the_Normal_Appears_Everywhere.md)
+[Module README](../README.md) · [Next →](25_Why_the_Normal_Appears_Everywhere.md)

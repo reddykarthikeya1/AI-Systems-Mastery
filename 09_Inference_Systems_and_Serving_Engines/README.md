@@ -1,6 +1,6 @@
 # 09. AI Inference Systems & Serving Engines
 
-> **The Definitive 10/10 Production Masterclass**: High-throughput, low-latency LLM serving engines at scale. Covers vLLM PagedAttention, physical block allocation, SGLang RadixAttention prefix caching, continuous / iteration-level batching, chunked prefill, disaggregated prefill-decode (PD) serving, speculative decoding, model quantization (FP8, INT4 AWQ, SmoothQuant, Marlin), and production SLA capacity planning.
+> Build high-throughput, low-latency LLM serving engines from first principles. Implement vLLM PagedAttention, SGLang prefix caching, continuous batching, chunked prefill, speculative decoding, and quantized execution for production SLAs.
 
 ---
 

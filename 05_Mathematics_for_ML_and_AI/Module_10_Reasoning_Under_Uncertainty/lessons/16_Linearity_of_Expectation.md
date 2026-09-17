@@ -1,65 +1,65 @@
 # Lesson 10.16 — Linearity of Expectation
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 16 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Apply universal property E[a X + b Y] = a E[X] + b E[Y].
+- [ ] Prove linearity holds unconditionally without requiring independence.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.15 Expected Value.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Linearity of Expectation** is the most powerful algebraic weapon in probability:
+$$\mathbb{E}[aX + bY + c] = a\mathbb{E}[X] + b\mathbb{E}[Y] + c$$
+It holds **unconditionally**, whether $X$ and $Y$ are independent, correlated, or adversarial!
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Sum of 10 dice: expected value of each is $3.5$. Expected sum is $10 \times 3.5 = 35$, even if dice are magnetic and strongly correlated.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Even for correlated X and Y
+x = np.array([1.0, 2.0, 3.0])
+y = x**2
+e_x = np.mean(x)
+e_y = np.mean(y)
+e_comb = np.mean(2.0 * x + 3.0 * y)
+assert np.isclose(e_comb, 2.0 * e_x + 3.0 * e_y)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming variables must be independent to use E[X + Y] = E[X] + E[Y]. Linearity requires no independence at all.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Must X and Y be independent for E[X + Y] = E[X] + E[Y] to hold?
+2. What is E[c] for constant c?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, linearity holds for any random variables whatsoever.
+2. c.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_Expected_Value.md) · [Module README](../README.md) · [Next →](17_Variance_and_Standard_Deviation.md)
+[Module README](../README.md) · [Next →](17_Variance_and_Standard_Deviation.md)

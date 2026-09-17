@@ -1,65 +1,66 @@
 # Lesson 04.06 — Span of a Set of Vectors
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 6 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define span(S) as the set of all linear combinations of S.
+- [ ] Check whether target vector b lies in span(A) via rank.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.02 Linear Combinations and 04.05 Subspaces.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **span** of vectors $\{\mathbf{v}_1, \dots, \mathbf{v}_k\}$ is the set of all possible linear combinations: $\text{span}(\mathbf{v}_1, \dots, \mathbf{v}_k) = \{\sum_{i=1}^k c_i \mathbf{v}_i : c_i \in \mathbb{R}\}$. The span of any set of vectors is guaranteed to be a valid subspace.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+In $\mathbb{R}^3$, the span of $\mathbf{v}_1 = [1, 0, 0]^T$ and $\mathbf{v}_2 = [0, 1, 0]^T$ is the entire 2D xy-plane ($z = 0$). Vector $[2, 5, 0]^T \in \text{span}$, but $[2, 5, 1]^T \notin \text{span}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+v1 = np.array([1.0, 0.0, 0.0])
+v2 = np.array([0.0, 1.0, 0.0])
+A = np.column_stack([v1, v2])
+
+b_in = np.array([2.0, 5.0, 0.0])
+b_out = np.array([2.0, 5.0, 1.0])
+
+# b in span(A) iff rank([A b]) == rank(A)
+assert np.linalg.matrix_rank(np.column_stack([A, b_in])) == np.linalg.matrix_rank(A)
+assert np.linalg.matrix_rank(np.column_stack([A, b_out])) > np.linalg.matrix_rank(A)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming the span of 3 vectors in R^3 must be all of R^3. If vectors are coplanar, their span is only a 2D plane.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the span of a single non-zero vector in R^3?
+2. Is span(S) always a subspace?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A line passing through the origin.
+2. Yes, the span of any set of vectors is always a subspace.
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](05_Subspaces_and_How_to_Test_for_One.md) · [Module README](../README.md) · [Next →](07_Linear_Independence.md)
+[Module README](../README.md) · [Next →](07_Linear_Independence.md)

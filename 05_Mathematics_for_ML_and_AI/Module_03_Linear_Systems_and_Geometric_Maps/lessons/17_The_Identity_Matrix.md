@@ -1,65 +1,60 @@
 # Lesson 03.17 — The Identity Matrix
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 17 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define identity matrix I_n with delta_ij Kronecker delta entries.
+- [ ] Verify neutral element property I A = A I = A.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.15 Matrix Multiplication.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **identity matrix** $I_n \in \mathbb{R}^{n \times n}$ has 1s on the main diagonal and 0s elsewhere ($I_{ij} = \delta_{ij}$). It acts as the multiplicative identity: $A I_n = A$ and $I_m A = A$ for any $m \times n$ matrix $A$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $\mathbf{x} = [3, -5]^T$: $I_2 \mathbf{x} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 3 \\ -5 \end{bmatrix} = \begin{bmatrix} 3 \\ -5 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+I = np.eye(3)
+A = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]])
+assert np.allclose(I @ A, A)
+assert np.allclose(A @ I, A)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming an identity matrix can be non-square. By definition, identity matrices are square.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What are the diagonal entries of the identity matrix?
+2. What is I^k for any integer power k?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. All ones (1.0).
+2. Always the identity matrix I.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_Why_Matrix_Multiplication_Is_Not_Commutative.md) · [Module README](../README.md) · [Next →](18_Transpose_and_Its_Algebraic_Rules.md)
+[Module README](../README.md) · [Next →](18_Transpose_and_Its_Algebraic_Rules.md)

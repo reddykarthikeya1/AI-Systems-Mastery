@@ -1,78 +1,73 @@
-# Lesson 09.28 — Jensen's Inequality
+# Lesson 09.28: Jensen's Inequality
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 28 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- State Jensen's inequality: f(E[X]) <= E[f(X)] for convex f.
+- Apply Jensen's inequality to derive the Evidence Lower Bound (ELBO) in variational autoencoders.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.25 Convex Functions Definition.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+For any random variable $X$ and convex function $g$:
+$$g(\mathbb{E}[X]) \le \mathbb{E}[g(X)]$$
+For strictly concave functions (like $\ln$), the inequality reverses: $\mathbb{E}[\ln(X)] \le \ln(\mathbb{E}[X])$.
+This provides the mathematical cornerstone for Expectation-Maximization (EM) and VAE ELBO objectives.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Let $g(x) = x^2$ (convex). Let $X \in \{1, 3\}$ with equal probability $1/2$.
+$\mathbb{E}[X] = 2 \implies g(\mathbb{E}[X]) = 2^2 = 4$.
+$\mathbb{E}[g(X)] = \frac{1}{2}(1^2) + \frac{1}{2}(3^2) = \frac{1 + 9}{2} = 5$.
+Indeed $4 \le 5$, with difference equal to $\text{Var}(X) = 1$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+X = np.array([1.0, 3.0])
+mean_x = np.mean(X)
+g_mean = mean_x**2
+mean_g = np.mean(X**2)
+
+assert g_mean <= mean_g
+assert np.isclose(g_mean, 4.0)
+assert np.isclose(mean_g, 5.0)
+assert np.isclose(mean_g - g_mean, np.var(X))
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Flipping the direction of the inequality for concave functions like log(x).
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is Jensen's inequality for a convex function g and random variable X?
+2. Why is Jensen's inequality fundamental to Variational Inference?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. g(E[X]) <= E[g(X)].
+2. It allows lower-bounding intractable log-marginal likelihoods log p(x) with tractable expected joint likelihoods (ELBO).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](27_Strong_Convexity_and_Smoothness.md) · [Module README](../README.md) · [Next →](29_Gradient_Descent_The_Update_Rule.md)
+Next: [29_Gradient_Descent_The_Update_Rule.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\29_Gradient_Descent_The_Update_Rule.md)

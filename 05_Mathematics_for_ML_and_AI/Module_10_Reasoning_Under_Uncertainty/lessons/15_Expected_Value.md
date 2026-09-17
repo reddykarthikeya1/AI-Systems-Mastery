@@ -1,65 +1,61 @@
 # Lesson 10.15 — Expected Value
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 15 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute expected value E[X] = sum x p(x) and integral x f(x) dx.
+- [ ] Interpret expectation as the center of mass of the probability distribution.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.12 PMF and 10.13 PDF.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **expected value** $\mathbb{E}[X]$ is the probability-weighted average of all possible values, representing the physical center of mass of the distribution:
+$$\mathbb{E}[X] = \sum_x x p(x) \quad (\text{discrete}), \quad \mathbb{E}[X] = \int_{-\infty}^\infty x f(x) dx \quad (\text{continuous})$$
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Fair die roll: $\mathbb{E}[X] = \frac{1}{6}(1 + 2 + 3 + 4 + 5 + 6) = 21/6 = 3.5$. Notice $3.5$ is not an outcome on the die.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+faces = np.arange(1, 7)
+probs = np.full(6, 1.0 / 6.0)
+expected_val = np.sum(faces * probs)
+assert np.isclose(expected_val, 3.5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Expecting the expected value to be an outcome that can actually be observed in a single trial (e.g. 3.5 on a die).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Must E[X] be a possible value that X can take?
+2. What does E[X] represent physically?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No (e.g. average heads is 3.5 on a die).
+2. The center of mass (balance point) of the probability distribution.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_The_Cumulative_Distribution_Function.md) · [Module README](../README.md) · [Next →](16_Linearity_of_Expectation.md)
+[Module README](../README.md) · [Next →](16_Linearity_of_Expectation.md)

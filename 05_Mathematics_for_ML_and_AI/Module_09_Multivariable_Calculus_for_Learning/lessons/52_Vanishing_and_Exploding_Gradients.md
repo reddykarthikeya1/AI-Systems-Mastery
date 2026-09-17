@@ -1,78 +1,68 @@
-# Lesson 09.52 — Vanishing and Exploding Gradients
+# Lesson 09.52: Vanishing and Exploding Gradients
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 52 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Analyze backpropagation through L layers as repeated Jacobian multiplication.
+- Relate vanishing/exploding gradients to the spectral radius of layer weight matrices.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.15 The Multivariable Chain Rule.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+In an $L$-layer network, gradient flow to input $\mathbf{x}_0$ is a product of Jacobians:
+$$\frac{\partial L}{\partial \mathbf{x}_0} = \frac{\partial L}{\partial \mathbf{x}_L} \prod_{l=1}^L \mathbf{J}_l$$
+If the largest singular value $\sigma_{\max}(\mathbf{J}_l) < 1$, gradients decay exponentially to zero ($\sigma^L \to 0$, **vanishing gradients**). If $\sigma_{\max}(\mathbf{J}_l) > 1$, gradients explode exponentially ($\sigma^L \to \infty$, **exploding gradients**).
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+In a 50-layer network:
+If $\sigma = 0.9$: $0.9^{50} \approx 0.00515$ ($99.5\%$ attenuation).
+If $\sigma = 1.1$: $1.1^{50} \approx 117.39$ ($117\times$ amplification).
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+L = 50
+decay = 0.9**L
+explosion = 1.1**L
+
+assert np.isclose(decay, 0.005153775)
+assert np.isclose(explosion, 117.39085)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using saturating activations like sigmoid or tanh across hundreds of unnormalized layers without residual connections.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What causes gradients to vanish across deep networks?
+2. How do residual connections (ResNets) mitigate vanishing gradients?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Repeated multiplication by layer Jacobians with singular values strictly less than 1.
+2. The skip connection x_{l+1} = x_l + F(x_l) creates an additive identity path J = I + nabla F, ensuring gradients flow unimpeded.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](51_Why_L1_Produces_Sparsity.md) · [Module README](../README.md) · [Next →](53_Gradient_Clipping.md)
+Next: [53_Gradient_Clipping.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\53_Gradient_Clipping.md)

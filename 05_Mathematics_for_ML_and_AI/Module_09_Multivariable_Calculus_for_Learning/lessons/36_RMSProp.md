@@ -1,78 +1,71 @@
-# Lesson 09.36 — RMSProp
+# Lesson 09.36: RMSProp
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 36 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Formulate RMSProp with Exponential Moving Average (EMA): v_{t+1} = gamma v_t + (1-gamma) g_t^2.
+- Resolve AdaGrad's learning rate decay problem.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.35 AdaGrad.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+**RMSProp** (Hinton) replaces AdaGrad's monotonic accumulation with an **exponential moving average** of squared gradients:
+$$v_{t+1} = \gamma v_t + (1 - \gamma) g_t^2, \quad \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{v_{t+1} + \epsilon}} g_t$$
+With $\gamma \approx 0.99$, RMSProp discards ancient gradient history, allowing the effective learning rate to adapt dynamically to the local curvature throughout training.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+$\gamma = 0.9, \eta = 0.01, \epsilon = 1e-8, v_0 = 0$.
+Step 1: $g = 10.0 \implies v_1 = 0.1(100) = 10.0$. Step $= \frac{0.01}{\sqrt{10}} 10 \approx 0.0316$.
+Step 2: $g = 0.1 \implies v_2 = 0.9(10) + 0.1(0.01) = 9.001$. Step $= \frac{0.01}{\sqrt{9.001}} 0.1 \approx 0.00033$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+gamma = 0.9
+eta = 0.01
+v = 0.0
+g1 = 10.0
+v1 = gamma * v + (1.0 - gamma) * (g1**2)
+step1 = (eta / np.sqrt(v1)) * g1
+
+assert np.isclose(v1, 10.0)
+assert np.isclose(step1, (0.01 / np.sqrt(10.0)) * 10.0)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Omitting the small epsilon (e.g. 1e-8) in the denominator, causing division by zero when gradients vanish.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. How does RMSProp fix AdaGrad's premature freezing?
+2. What does the parameter gamma control in RMSProp?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. By using an exponential moving average of squared gradients instead of an unweighted cumulative sum.
+2. The memory horizon (decay rate) of past squared gradients.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](35_AdaGrad.md) · [Module README](../README.md) · [Next →](37_Adam_and_Its_Bias_Correction.md)
+Next: [37_Adam_and_Its_Bias_Correction.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\37_Adam_and_Its_Bias_Correction.md)

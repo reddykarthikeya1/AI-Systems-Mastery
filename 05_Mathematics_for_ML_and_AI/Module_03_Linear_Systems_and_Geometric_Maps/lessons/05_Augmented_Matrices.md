@@ -1,65 +1,61 @@
 # Lesson 03.05 — Augmented Matrices
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 5 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Construct the augmented matrix [A | b] for linear systems.
+- [ ] Manipulate augmented matrices in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.04 Matrices as Compact Notation.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+An **augmented matrix** $[A \mid \mathbf{b}]$ concatenates the coefficient matrix $A$ and constant vector $\mathbf{b}$ into an $m \times (n+1)$ table, keeping track of equations and constants together without writing variable names.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For system with $A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ and $\mathbf{b} = [5, 11]^T$, augmented matrix is $[A \mid \mathbf{b}] = \begin{bmatrix} 1 & 2 & 5 \\ 3 & 4 & 11 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0], [3.0, 4.0]])
+b = np.array([5.0, 11.0])
+Ab = np.column_stack([A, b])
+assert Ab.shape == (2, 3)
+assert np.allclose(Ab[:, -1], b)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Applying a row operation to the coefficient block A while forgetting to update the constant vector b.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the shape of [A | b] for an m x n system?
+2. Why are augmented matrices useful?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Shape is m x (n + 1).
+2. They permit simultaneous row operations on equations and constants.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](04_Matrices_as_Compact_Notation.md) · [Module README](../README.md) · [Next →](06_Elementary_Row_Operations.md)
+[Module README](../README.md) · [Next →](06_Elementary_Row_Operations.md)

@@ -1,78 +1,72 @@
-# Lesson 09.19 — Backpropagation Is Reverse-Mode Chain Rule
+# Lesson 09.19: Backpropagation Is Reverse-Mode Chain Rule
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 19 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Identify standard backprop as reverse-mode AD applied to layer tensors.
+- Derive the weight and bias gradients for an affine layer y = W x + b.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.18 Reverse-Mode Differentiation.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+**Backpropagation** is simply reverse-mode automatic differentiation specialized to neural networks with tensor variables.
+For linear layer $\mathbf{y} = \mathbf{W}\mathbf{x} + \mathbf{b}$ and upstream gradient $\bar{\mathbf{y}} = \frac{\partial L}{\partial \mathbf{y}}$:
+$$\frac{\partial L}{\partial \mathbf{W}} = \bar{\mathbf{y}} \mathbf{x}^T, \quad \frac{\partial L}{\partial \mathbf{b}} = \bar{\mathbf{y}}, \quad \frac{\partial L}{\partial \mathbf{x}} = \mathbf{W}^T \bar{\mathbf{y}}$$
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Let $\mathbf{x} = [1, 2]^T$, $\mathbf{W} = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}$, $\mathbf{b} = [0, 0]^T$.
+$\mathbf{y} = [4, 6]^T$. If loss $L = \frac{1}{2}\|\mathbf{y}\|^2$, $\bar{\mathbf{y}} = \mathbf{y} = [4, 6]^T$.
+Then $\frac{\partial L}{\partial \mathbf{W}} = \begin{bmatrix} 4 \\ 6 \end{bmatrix} \begin{bmatrix} 1 & 2 \end{bmatrix} = \begin{bmatrix} 4 & 8 \\ 6 & 12 \end{bmatrix}$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x = np.array([1.0, 2.0])
+W = np.array([[2.0, 1.0], [0.0, 3.0]])
+y = W @ x
+dL_dy = y  # from L = 0.5 * ||y||^2
+
+dL_dW = np.outer(dL_dy, x)
+dL_dx = W.T @ dL_dy
+
+assert np.allclose(dL_dW, np.array([[4.0, 8.0], [6.0, 12.0]]))
+assert np.allclose(dL_dx, np.array([8.0, 22.0]))
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Mixing up matrix transpose orientations: dL/dW is outer product (dL/dy) x^T, not x (dL/dy)^T.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the gradient dL/dW for y = W x?
+2. How is the gradient propagated to the preceding layer x?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. dL/dW = (dL/dy) x^T.
+2. dL/dx = W^T (dL/dy).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](18_ReverseMode_Differentiation.md) · [Module README](../README.md) · [Next →](20_The_Hessian_Matrix.md)
+Next: [20_The_Hessian_Matrix.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\20_The_Hessian_Matrix.md)

@@ -1,65 +1,61 @@
 # Lesson 04.11 — Coordinates Relative to a Basis
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 11 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute coordinate vector [x]_B by solving B [x]_B = x.
+- [ ] Verify that coordinate mapping is an isomorphism.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.09 Basis of a Vector Space.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Given basis $\mathcal{B} = \{\mathbf{b}_1, \dots, \mathbf{b}_n\}$, the **coordinates** $[\mathbf{x}]_\mathcal{B} = [c_1, \dots, c_n]^T$ are the unique scalars such that $\mathbf{x} = \sum c_i \mathbf{b}_i$. In matrix notation: $\mathbf{x} = B [\mathbf{x}]_\mathcal{B} \implies [\mathbf{x}]_\mathcal{B} = B^{-1}\mathbf{x}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $B = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}$ and $\mathbf{x} = [4, 9]^T$. Then $[\mathbf{x}]_B = B^{-1}\mathbf{x} = [4/2, 9/3]^T = [2, 3]^T$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+B = np.array([[2.0, 0.0], [0.0, 3.0]])
+x = np.array([4.0, 9.0])
+coords = np.linalg.solve(B, x)
+assert np.allclose(coords, [2.0, 3.0])
+assert np.allclose(B @ coords, x)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Multiplying B @ x instead of inverting/solving B [x]_B = x to find coordinates.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What matrix converts coordinates [x]_B to standard coordinates x?
+2. What matrix converts standard coordinates to [x]_B?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The basis matrix B.
+2. The inverse basis matrix B^(-1).
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](10_Dimension_and_Why_It_Is_Well_Defined.md) · [Module README](../README.md) · [Next →](12_Change_of_Basis.md)
+[Module README](../README.md) · [Next →](12_Change_of_Basis.md)

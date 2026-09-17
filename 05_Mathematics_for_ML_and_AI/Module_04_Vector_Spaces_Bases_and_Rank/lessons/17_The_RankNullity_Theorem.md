@@ -1,65 +1,67 @@
 # Lesson 04.17 — The Rank-Nullity Theorem
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 17 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State and verify rank(A) + nullity(A) = n for any m x n matrix.
+- [ ] Apply rank-nullity to dimension analysis of linear maps.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.14 Null Space and 04.16 Rank of a Matrix.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Rank-Nullity Theorem** states: for any matrix $A \in \mathbb{R}^{m \times n}$:
+$$\text{rank}(A) + \text{nullity}(A) = n$$
+Every input dimension either survives into the column space or is crushed into the null space. None is unaccounted for.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For a $3 \times 5$ matrix ($n = 5$ columns) with rank 3, nullity must be $5 - 3 = 2$. Exactly 2 degrees of freedom are crushed to zero.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+# 3 x 5 matrix of rank 2
+A = np.random.randn(3, 2) @ np.random.randn(2, 5)
+n = A.shape[1]
+rank = np.linalg.matrix_rank(A)
+nullity = n - rank
+assert rank == 2
+assert nullity == 3
+assert rank + nullity == n
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using m (number of rows) instead of n (number of columns) in the rank-nullity equation.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does n represent in rank(A) + nullity(A) = n?
+2. If a 4 x 4 matrix has nullity 0, what is its rank?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The number of columns (dimension of the domain R^n).
+2. Rank 4 (full rank, invertible).
 
 </details>
 
@@ -67,12 +69,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_Rank_of_a_Matrix.md) · [Module README](../README.md) · [Next →](18_The_Four_Fundamental_Subspaces.md)
+[Module README](../README.md) · [Next →](18_The_Four_Fundamental_Subspaces.md)

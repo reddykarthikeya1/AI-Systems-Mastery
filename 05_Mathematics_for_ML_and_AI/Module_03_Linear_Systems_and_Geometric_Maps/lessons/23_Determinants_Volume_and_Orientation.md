@@ -1,65 +1,59 @@
-# Lesson 03.23 — Determinants, Volume and Orientation
+# Lesson 03.23 — Determinants: Volume and Orientation
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 23 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Interpret |det(A)| as the volume distortion factor under linear transformation.
+- [ ] Interpret sign of det(A) as preservation (+1) or reversal (-1) of orientation.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.21 Determinants.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Geometrically, $|\det(A)|$ represents the ratio of transformed volume to original volume for any region in $\mathbb{R}^n$. The sign indicates **orientation**: positive preserves chirality (right-handed systems stay right-handed), while negative indicates a reflection occurred.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Reflection matrix $R = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$ has $\det(R) = -1$. Volume is preserved ($|-1| = 1$), but orientation is flipped.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+R = np.array([[1.0, 0.0], [0.0, -1.0]])
+assert np.isclose(np.linalg.det(R), -1.0)
+assert np.isclose(abs(np.linalg.det(R)), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming negative determinant means the matrix shrinks volume. The absolute value determines volume change; the sign determines orientation.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What happens to the volume of a cube when transformed by matrix A?
+2. What does a negative determinant indicate?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. It is multiplied by |det(A)|.
+2. The orientation of space has been flipped (reflection).
 
 </details>
 
@@ -67,12 +61,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](22_Determinant_Properties_and_Row_Operations.md) · [Module README](../README.md) · [Next →](24_Cramers_Rule_and_Why_It_Is_Impractical.md)
+[Module README](../README.md) · [Next →](24_Cramers_Rule_and_Why_It_Is_Impractical.md)

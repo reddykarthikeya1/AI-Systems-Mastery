@@ -1,65 +1,64 @@
 # Lesson 05.06 — Diagonalization: When and Why
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 6 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the diagonalization criterion A = P D P^(-1).
+- [ ] Diagonalize symmetric and distinct-eigenvalue matrices in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.05 Algebraic vs Geometric Multiplicity.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+An $n \times n$ matrix $A$ is **diagonalizable** if and only if it has $n$ linearly independent eigenvectors. Then $A = PDP^{-1}$, where $P$ contains eigenvectors as columns and $D$ is the diagonal matrix of eigenvalues.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}$. Eigenvalues are 3 and -1 with eigenvectors $[1, 1]^T$ and $[-1, 1]^T$. Then $P = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix}$, $D = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}$. Then $PDP^{-1} = A$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[1.0, 2.0], [2.0, 1.0]])
+vals, P = np.linalg.eig(A)
+D = np.diag(vals)
+
+P_inv = np.linalg.inv(P)
+reconstructed = P @ D @ P_inv
+assert np.allclose(A, reconstructed)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to invert P when eigenvectors are not linearly independent.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. When is a matrix guaranteed to be diagonalizable?
+2. Why is computing A^k easy when A is diagonalizable?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. When all its eigenvalues are distinct, or when it is symmetric.
+2. Because A^k = P D^k P^(-1), where D^k simply raises each diagonal entry to the power k.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](05_Algebraic_versus_Geometric_Multiplicity.md) · [Module README](../README.md) · [Next →](07_Similar_Matrices_and_Their_Invariants.md)
+[Module README](../README.md) · [Next →](07_Similar_Matrices_and_Their_Invariants.md)

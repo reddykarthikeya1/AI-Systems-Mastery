@@ -1,78 +1,66 @@
-# Lesson 09.41 — Mini-Batch Size and the Gradient Noise Scale
+# Lesson 09.41: Mini-Batch Size and the Gradient Noise Scale
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 41 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define the Gradient Noise Scale (GNS): B_{noise} = tr(Sigma) / ||G||^2.
+- Determine critical batch sizes for distributed data parallelism.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.40 Variance of the Stochastic Gradient.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+The **Gradient Noise Scale** (McCandlish et al., OpenAI) quantifies the signal-to-noise ratio of training:
+$$B_{\text{noise}} = \frac{\text{tr}(\boldsymbol{\Sigma})}{\|\mathbf{G}\|^2}$$
+- If batch size $B \ll B_{\text{noise}}$: gradients are noise-dominated; increasing $B$ yields linear scaling speedups without wasting compute.
+- If $B \gg B_{\text{noise}}$: gradients are signal-dominated; further increasing $B$ yields diminishing returns.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Let trace of noise covariance $\text{tr}(\boldsymbol{\Sigma}) = 8000$ and squared true gradient norm $\|\mathbf{G}\|^2 = 2.0$.
+Critical batch size $B_{\text{noise}} = 8000 / 2.0 = 4000$ tokens/samples.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+tr_sigma = 8000.0
+g_norm_sq = 2.0
+b_noise = tr_sigma / g_norm_sq
+assert b_noise == 4000.0
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Scaling batch size into the millions early in training when B_noise is small, wasting compute on redundant gradient evaluations.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the Gradient Noise Scale formula?
+2. What happens when training with batch size B >> B_noise?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. B_noise = tr(Sigma) / ||G||^2.
+2. Diminishing parallel returns; compute is wasted because gradient variance has already been squashed.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](40_Variance_of_the_Stochastic_Gradient.md) · [Module README](../README.md) · [Next →](42_Learning_Rate_Schedules.md)
+Next: [42_Learning_Rate_Schedules.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\42_Learning_Rate_Schedules.md)

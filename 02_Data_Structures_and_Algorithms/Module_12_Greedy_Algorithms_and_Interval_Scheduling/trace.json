@@ -1,0 +1,76 @@
+{
+  "title": "Greedy Interval Scheduling: Earliest Finish Time",
+  "algorithm": "Greedy Activity Selection",
+  "timeComplexity": "O(n log n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Sort intervals by finish time. Select Job 1 [0, 2] (finishes earliest).",
+      "array": [
+        "[0, 2]",
+        "[1, 4]",
+        "[2, 5]",
+        "[3, 7]",
+        "[5, 8]"
+      ],
+      "pointers": {
+        "selected": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "currentEnd": 2,
+        "selectedCount": 1
+      },
+      "invariants": "Greedy choice property: picking earliest finish leaves maximum remaining time"
+    },
+    {
+      "step": 2,
+      "description": "Inspect Job 2 [1, 4]: Start time 1 < currentEnd 2 -> Conflict! Reject Job 2.",
+      "array": [
+        "[0, 2]",
+        "[1, 4] (Conflict)",
+        "[2, 5]",
+        "[3, 7]",
+        "[5, 8]"
+      ],
+      "pointers": {
+        "curr": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "pivot"
+      },
+      "variables": {
+        "currentEnd": 2,
+        "action": "reject"
+      },
+      "invariants": "Non-overlapping invariant requires start_time >= previous end_time"
+    },
+    {
+      "step": 3,
+      "description": "Inspect Job 3 [2, 5]: Start time 2 >= currentEnd 2 -> Compatible! Select Job 3.",
+      "array": [
+        "[0, 2]",
+        "[1, 4]",
+        "[2, 5]",
+        "[3, 7]",
+        "[5, 8]"
+      ],
+      "pointers": {
+        "selected": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "currentEnd": 5,
+        "selectedCount": 2
+      },
+      "invariants": "Update active end time boundary to 5"
+    }
+  ]
+}

@@ -1,65 +1,66 @@
 # Lesson 11.17 — The Multivariate Normal Distribution
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 17 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Write PDF of MVN: (2 pi)^(-d/2) det(Sigma)^(-1/2) exp(-1/2 (x - mu)^T Sigma^(-1) (x - mu)).
+- [ ] Evaluate MVN log-likelihood in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.09 Covariance Matrix and 07.10 Positive Definiteness.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Multivariate Normal (MVN)** $\mathcal{N}(\boldsymbol{\mu}, \Sigma)$ in $\mathbb{R}^d$ has density:
+$$f(\mathbf{x}) = \frac{1}{(2\pi)^{d/2} \det(\Sigma)^{1/2}} \exp\left(-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x} - \boldsymbol{\mu})\right)$$
+The quadratic form $(\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x} - \boldsymbol{\mu})$ is the squared **Mahalanobis distance**.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For 2D standard normal ($\boldsymbol{\mu}=\mathbf{0}, \Sigma = I_2$), $f(\mathbf{0}) = \frac{1}{2\pi \sqrt{1}} \exp(0) = \frac{1}{2\pi} \approx 0.159$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+mu = np.zeros(2)
+Sigma = np.eye(2)
+d = 2
+x = np.zeros(2)
+
+norm_const = 1.0 / (((2.0 * np.pi)**(d / 2.0)) * np.sqrt(np.linalg.det(Sigma)))
+pdf_val = norm_const * np.exp(-0.5 * (x - mu) @ np.linalg.inv(Sigma) @ (x - mu))
+assert np.isclose(pdf_val, 1.0 / (2.0 * np.pi))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Inverting singular covariance matrices in the MVN density formula. Regularization (adding eps * I) is required.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the normalization prefactor of a d-dimensional Gaussian?
+2. What is the exponent term in the MVN PDF?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 1 / ((2 pi)^(d/2) det(Sigma)^(1/2)).
+2. -0.5 (x - mu)^T Sigma^(-1) (x - mu).
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_The_BiasVariance_Decomposition.md) · [Module README](../README.md) · [Next →](18_Geometry_of_the_Multivariate_Normal.md)
+[Module README](../README.md) · [Next →](18_Geometry_of_the_Multivariate_Normal.md)

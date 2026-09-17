@@ -1,65 +1,62 @@
 # Lesson 03.16 — Why Matrix Multiplication Is Not Commutative
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 16 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove AB != BA in general using geometric rotation and reflection examples.
+- [ ] Identify commutators [A, B] = AB - BA.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.15 Matrix Multiplication as Composition.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Unlike real numbers, matrix multiplication is **non-commutative**: in general $AB \neq BA$. Geometrically, the order of geometric transformations matters: reflecting across the x-axis then rotating 90 degrees produces a different orientation than rotating 90 degrees then reflecting.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}$ and $B = \begin{bmatrix} 0 & 0 \\ 1 & 0 \end{bmatrix}$. $AB = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}$, but $BA = \begin{bmatrix} 0 & 0 \\ 0 & 1 \end{bmatrix}$. Clearly $AB \neq BA$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[0.0, 1.0], [0.0, 0.0]])
+B = np.array([[0.0, 0.0], [1.0, 0.0]])
+AB = A @ B
+BA = B @ A
+assert not np.allclose(AB, BA)
+assert np.allclose(AB - BA, [[1.0, 0.0], [0.0, -1.0]])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming (A + B)^2 = A^2 + 2AB + B^2. Because AB != BA, (A + B)^2 = A^2 + AB + BA + B^2.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is (A + B)^2 expanded correctly for matrices?
+2. When do two diagonal matrices commute?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A^2 + AB + BA + B^2.
+2. Always; diagonal matrices always commute with each other.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_Matrix_Multiplication_as_Composition.md) · [Module README](../README.md) · [Next →](17_The_Identity_Matrix.md)
+[Module README](../README.md) · [Next →](17_The_Identity_Matrix.md)

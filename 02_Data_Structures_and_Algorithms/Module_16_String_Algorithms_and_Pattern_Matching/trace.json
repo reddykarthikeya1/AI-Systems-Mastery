@@ -1,0 +1,72 @@
+{
+  "title": "KMP Pattern Matching Prefix Function (Pi Table)",
+  "algorithm": "Knuth-Morris-Pratt Search",
+  "timeComplexity": "O(n + m)",
+  "spaceComplexity": "O(m)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Text: 'ABABDABACD', Pattern: 'ABAC'. Match 'A', 'B', 'A' (3 chars matched).",
+      "array": [
+        "A",
+        "B",
+        "A",
+        "B",
+        "D",
+        "A",
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "pointers": {
+        "textIdx": 2,
+        "patIdx": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "matched": "ABA",
+        "pi_table": [
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "invariants": "Prefix function pi[2] = 1 indicates prefix 'A' matches suffix 'A'"
+    },
+    {
+      "step": 2,
+      "description": "Mismatch at text[3] ('B') vs pat[3] ('C'). Fallback to patIdx = pi[2] = 1! Do NOT backtrack text pointer!",
+      "array": [
+        "A",
+        "B",
+        "A",
+        "B",
+        "D",
+        "A",
+        "B",
+        "A",
+        "C",
+        "D"
+      ],
+      "pointers": {
+        "textIdx": 3,
+        "patIdx": 1
+      },
+      "highlights": {
+        "3": "pivot"
+      },
+      "variables": {
+        "textChar": "B",
+        "patChar": "C",
+        "fallbackIdx": 1
+      },
+      "invariants": "KMP avoids rolling back text index, guaranteeing strict O(n) text scan"
+    }
+  ]
+}

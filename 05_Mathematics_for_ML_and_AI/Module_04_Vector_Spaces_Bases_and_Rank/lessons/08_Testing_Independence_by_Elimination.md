@@ -1,65 +1,64 @@
 # Lesson 04.08 — Testing Independence by Elimination
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 8 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Use Gaussian elimination to identify pivot and free columns.
+- [ ] Prove that columns with pivots are linearly independent.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.07 Linear Independence and Row Echelon Form.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+To test independence of $\{\mathbf{v}_1, \dots, \mathbf{v}_k\}$, form matrix $A = [\mathbf{v}_1 \dots \mathbf{v}_k]$ and reduce to Row Echelon Form (REF). Columns with pivots correspond to linearly independent vectors. Free columns indicate linear dependence.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Matrix $A = \begin{bmatrix} 1 & 2 & 3 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{bmatrix}$. Pivots are in columns 1 and 2. Column 3 is a free column ($v_3 = v_1 + v_2$). Columns 1 and 2 form the independent set.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([
+    [1.0, 2.0, 3.0],
+    [0.0, 1.0, 1.0],
+    [1.0, 3.0, 4.0]
+])
+rank = np.linalg.matrix_rank(A)
+assert rank == 2  # 2 independent columns, 1 redundant
+assert np.isclose(np.linalg.det(A), 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Picking pivot columns from the row-reduced echelon matrix rather than taking the corresponding original columns of A.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does a free column in row echelon form signify?
+2. If an n x n matrix has rank n, are its columns independent?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. That the corresponding column is a linear combination of previous pivot columns.
+2. Yes, all n columns are linearly independent.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_Linear_Independence.md) · [Module README](../README.md) · [Next →](09_Basis_of_a_Vector_Space.md)
+[Module README](../README.md) · [Next →](09_Basis_of_a_Vector_Space.md)

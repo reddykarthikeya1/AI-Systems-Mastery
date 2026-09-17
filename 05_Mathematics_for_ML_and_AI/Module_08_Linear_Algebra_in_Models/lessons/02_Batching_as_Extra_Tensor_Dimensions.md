@@ -1,65 +1,79 @@
 # Lesson 08.02 — Batching as Extra Tensor Dimensions
 
 > **Module 08:** Linear Algebra in Models · Lesson 2 of 9
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Explain how batching transforms single-sample vector operations into high-throughput parallel matrix operations.
+- [ ] Verify multi-dimensional tensor contractions and batch matrix multiplications with NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 08.01 Linear Layer Matrix Multiplication.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Batching stacks $B$ independent samples into a single matrix $\mathbf{X} \in \mathbb{R}^{B \times d_{in}}$. Instead of evaluating $B$ separate matrix-vector products, the GPU performs one single General Matrix Multiply (GEMM):
+$$\mathbf{Y} = \mathbf{X}\mathbf{W}^T + \mathbf{b}$$
+For sequence models (transformers), an extra sequence length dimension $S$ is added, yielding 3D tensors $\mathbf{X} \in \mathbb{R}^{B \times S \times d}$ where matrix multiplication operates over trailing dimensions.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let batch size $B = 2$, sequence length $S = 3$, feature dimension $D = 4$, and projection dimension $D_{out} = 2$.
+Input tensor shape: $(2, 3, 4)$.
+Projection weight shape: $(2, 4)$.
+Evaluating batched contraction over the last axis yields shape $(2, 3, 2)$. Each of the $2 \times 3 = 6$ token vectors undergoes an identical independent affine map.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+B, S, D_in, D_out = 2, 3, 4, 2
+np.random.seed(42)
+X = np.random.randn(B, S, D_in)
+W = np.random.randn(D_out, D_in)
+b = np.random.randn(D_out)
+
+# Batched matrix multiplication: (B, S, D_in) @ (D_in, D_out) -> (B, S, D_out)
+Y = X @ W.T + b
+assert Y.shape == (B, S, D_out)
+
+for b_idx in range(B):
+    for s_idx in range(S):
+        sample_vec = X[b_idx, s_idx]
+        single_y = sample_vec @ W.T + b
+        assert np.allclose(Y[b_idx, s_idx], single_y)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
+**Collapsing batch and sequence dimensions incorrectly when reshaping.**
 
-TODO
+When reshaping tensors between $(B, S, D)$ and $(B \times S, D)$, transposing axes incorrectly mixes tokens across batch samples without triggering shape errors.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. If X has shape (16, 50, 768) and W has shape (256, 768), what is the shape of X @ W.T?
+2. Does batching across dimension 0 introduce cross-sample information leakage in a linear layer?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The output shape is (16, 50, 256).
+2. No. Each sample is processed independently; the matrix multiply is block-diagonal across the batch axis.
 
 </details>
 
@@ -67,12 +81,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_A_Linear_Layer_Is_a_Matrix_Multiply.md) · [Module README](../README.md) · [Next →](03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md)
+[Module README](../README.md) · [Next →](03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md)

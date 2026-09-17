@@ -1,65 +1,73 @@
 # Lesson 08.03 — Broadcasting Rules and the Silent Bugs They Cause
 
 > **Module 08:** Linear Algebra in Models · Lesson 3 of 9
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the two universal broadcasting rules and predict the resulting output shape of binary operations.
+- [ ] Identify and debug silent 1D vs 2D column-vector broadcasting bugs.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Tensor dimensions and array indexing.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Broadcasting allows arithmetic operations between arrays of different shapes without copying data in memory.
+1. Alignment: Shapes are aligned from right to left (trailing dimensions first).
+2. Compatibility: Two dimensions are compatible if they are equal, or one of them is 1. If one array has fewer dimensions, prepending 1s extends its shape.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Adding a 2D column vector of shape $(3, 1)$ to a 1D vector of length 3:
+Array A shape $(3, 1)$, Array B shape $(3,)$.
+During addition $A + B$, B is aligned as $(1, 3)$.
+Both stretch to $(3, 3)$, creating an outer sum matrix of 9 elements instead of an elementwise vector!
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+a = np.array([[10], [20], [30]])  # Shape (3, 1)
+b = np.array([1, 2, 3])            # Shape (3,)
+
+buggy_sum = a + b
+assert buggy_sum.shape == (3, 3)
+
+correct_sum = a + b[:, np.newaxis]
+assert correct_sum.shape == (3, 1)
+assert np.allclose(correct_sum, np.array([[11], [22], [33]]))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
+**Subtracting model predictions of shape (N, 1) from targets of shape (N,).**
 
-TODO
+In regression loss computation, broadcasting creates an (N, N) matrix of all pairwise squared differences instead of N elementwise errors, silently skewing gradients.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the broadcasted shape of array X of shape (4, 1, 8) and array Y of shape (2, 8)?
+2. Why does PyTorch emit a warning when computing MSELoss on shapes (N, 1) and (N,)?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The shape is (4, 2, 8). Y is aligned as (1, 2, 8), and the size-1 dimensions stretch to 4 and 2.
+2. Because broadcasting expands the inputs to an (N, N) matrix of all pairwise squared differences instead of N elementwise errors.
 
 </details>
 
@@ -67,12 +75,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Batching_as_Extra_Tensor_Dimensions.md) · [Module README](../README.md) · [Next →](04_Weight_Initialization_and_Spectral_Norm.md)
+[Module README](../README.md) · [Next →](04_Weight_Initialization_and_Spectral_Norm.md)

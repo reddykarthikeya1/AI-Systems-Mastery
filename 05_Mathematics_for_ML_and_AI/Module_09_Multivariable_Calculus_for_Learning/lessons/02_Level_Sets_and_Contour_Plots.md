@@ -1,78 +1,65 @@
-# Lesson 09.02 — Level Sets and Contour Plots
+# Lesson 09.02: Level Sets and Contour Plots
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 2 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define level sets {x in R^n : f(x) = c}.
+- Interpret contour curves as slices of the loss landscape.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.01 Functions of Several Variables.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A **level set** (or contour line in 2D) of $f: \mathbb{R}^n \to \mathbb{R}$ is the locus of points where the function takes a constant value: $S_c = \{\mathbf{x} \in \mathbb{R}^n : f(\mathbf{x}) = c\}$. In optimization, gradient vectors are always orthogonal to these level sets.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x, y) = x^2 + 4y^2 = 16$, the level curve is an ellipse with semi-major axis $a = 4$ along the x-axis and semi-minor axis $b = 2$ along the y-axis.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def f(x, y):
+    return x**2 + 4.0 * y**2
+
+# Point on level set c = 16
+assert np.isclose(f(4.0, 0.0), 16.0)
+assert np.isclose(f(0.0, 2.0), 16.0)
+assert np.isclose(f(np.sqrt(8.0), np.sqrt(2.0)), 16.0)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming gradient vectors are tangent to contour curves; they are strictly orthogonal (perpendicular) to level sets.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What geometric shape is the level set x^2 + y^2 = r^2?
+2. Why are contour lines closer together in regions of steep slope?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A circle of radius r centered at the origin.
+2. Because the function value changes by a fixed delta over a much smaller physical distance.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_Functions_of_Several_Variables.md) · [Module README](../README.md) · [Next →](03_Limits_in_Several_Variables.md)
+Next: [03_Limits_in_Several_Variables.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\03_Limits_in_Several_Variables.md)

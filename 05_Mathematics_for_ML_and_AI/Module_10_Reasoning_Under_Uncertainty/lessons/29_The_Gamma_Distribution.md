@@ -1,65 +1,61 @@
 # Lesson 10.29 — The Gamma Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 29 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Gamma(alpha, beta) distribution over positive reals (0, inf).
+- [ ] Model sum of alpha independent Exponential waiting times.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.23 Exponential Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Gamma distribution** models waiting times for $\alpha$ independent Poisson events to occur: $f(x) \propto x^{\alpha - 1} e^{-\beta x}$ for $x > 0$. $\mathbb{E}[X] = \alpha / \beta$, $\text{Var}(X) = \alpha / \beta^2$. It serves as the conjugate prior for precision (inverse variance) of Gaussians.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Waiting for 3 customer arrivals ($\alpha = 3$) at rate $\beta = 2$ per hour: expected waiting time is $3/2 = 1.5$ hours.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+alpha, beta = 3.0, 2.0
+mean = alpha / beta
+var = alpha / (beta**2)
+assert np.isclose(mean, 1.5)
+assert np.isclose(var, 0.75)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing rate parameterization beta with scale parameterization theta = 1/beta.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Gamma(1, beta) identical to?
+2. What is the support of the Gamma distribution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The Exponential(beta) distribution.
+2. All positive real numbers: (0, infinity).
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](28_The_Beta_Distribution.md) · [Module README](../README.md) · [Next →](30_The_Categorical_and_Multinomial_Distributions.md)
+[Module README](../README.md) · [Next →](30_The_Categorical_and_Multinomial_Distributions.md)

@@ -1,65 +1,62 @@
 # Lesson 11.03 — Conditional Distributions
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 3 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute conditional probability P(Y=y | X=x) = P(x, y) / P(x).
+- [ ] Normalize rows of joint probability matrices into conditional stochastic matrices.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.02 Marginal Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **conditional distribution** $P(Y = y \mid X = x) = \frac{P(X = x, Y = y)}{P(X = x)}$ slices the joint distribution along the condition $X = x$ and renormalizes so the sum equals 1.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Given $P(X=0, Y=1) = 0.2$ and $P(X=0) = 0.6$: $P(Y=1 \mid X=0) = 0.2 / 0.6 = 1/3 \approx 0.333$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+joint = np.array([[0.4, 0.2], [0.1, 0.3]])
+p_x = np.sum(joint, axis=1, keepdims=True)
+cond_y_given_x = joint / p_x
+
+assert np.isclose(cond_y_given_x[0, 1], 0.2 / 0.6)
+assert np.allclose(np.sum(cond_y_given_x, axis=1), [1.0, 1.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Dividing by the joint probability instead of the marginal conditioning probability.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What must sum_y P(Y=y | X=x) equal for any fixed x?
+2. When is P(Y | X) undefined?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly 1.0.
+2. When P(X=x) = 0 (division by zero).
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Marginal_Distributions.md) · [Module README](../README.md) · [Next →](04_Independence_in_Terms_of_Joints.md)
+[Module README](../README.md) · [Next →](04_Independence_in_Terms_of_Joints.md)

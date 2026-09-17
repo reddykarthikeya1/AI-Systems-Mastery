@@ -1,78 +1,75 @@
-# Lesson 09.17 — Forward-Mode Differentiation
+# Lesson 09.17: Forward-Mode Differentiation
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 17 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Implement forward-mode automatic differentiation using dual numbers a + b eps with eps^2 = 0.
+- Understand when forward mode is optimal (f: R -> R^m).
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.16 Computational Graphs.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+**Forward-mode AD** propagates directional derivatives forward alongside primal values using **dual numbers** $x + \dot{x}\epsilon$ where $\epsilon^2 = 0$. One forward pass computes the directional derivative $\mathbf{J} \mathbf{v}$.
+Cost: $O(n)$ forward passes for $n$ inputs. Ideal when input dimension $n \ll$ output dimension $m$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Function $f(x) = x^2 + 3x$. With dual number $x = 2 + 1\epsilon$:
+$f(2 + \epsilon) = (2 + \epsilon)^2 + 3(2 + \epsilon) = 4 + 4\epsilon + 6 + 3\epsilon = 10 + 7\epsilon$.
+Value is 10, derivative is 7!
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+class Dual:
+    def __init__(self, val, der=0.0):
+        self.val = float(val)
+        self.der = float(der)
+    def __add__(self, o):
+        o = o if isinstance(o, Dual) else Dual(o, 0.0)
+        return Dual(self.val + o.val, self.der + o.der)
+    def __mul__(self, o):
+        o = o if isinstance(o, Dual) else Dual(o, 0.0)
+        return Dual(self.val * o.val, self.val * o.der + self.der * o.val)
+
+x = Dual(2.0, 1.0)
+y = x * x + Dual(3.0) * x
+assert y.val == 10.0
+assert y.der == 7.0
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to use forward-mode AD to train deep networks with millions of parameters; requiring 1 pass per parameter makes it computationally intractable.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is a dual number?
+2. When is forward-mode AD faster than reverse-mode AD?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A number a + b eps where eps is an infinitesimal element satisfying eps^2 = 0.
+2. When the number of inputs n is much smaller than the number of outputs m (n << m).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_Computational_Graphs.md) · [Module README](../README.md) · [Next →](18_ReverseMode_Differentiation.md)
+Next: [18_ReverseMode_Differentiation.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\18_ReverseMode_Differentiation.md)

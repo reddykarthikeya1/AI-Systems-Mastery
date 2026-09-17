@@ -1,65 +1,68 @@
 # Lesson 03.24 — Cramer's Rule and Why It Is Impractical
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 24 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Solve small 2x2 systems using Cramer's rule x_i = det(A_i) / det(A).
+- [ ] Explain why O((n+1)!) complexity makes Cramer's rule useless for n > 4.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.21 Determinants.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Cramer's Rule** expresses solutions analytically as $x_i = \frac{\det(A_i)}{\det(A)}$, where $A_i$ replaces column $i$ of $A$ with $\mathbf{b}$. While theoretically elegant, computing $n+1$ determinants takes $O((n+1)!)$ operations via definition or $O(n^4)$ via elimination, far worse than Gaussian elimination ($O(n^3)$).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+System $x + 2y = 5$, $3x + y = 5$. $\det(A) = 1(1) - 2(3) = -5$. $A_1 = \begin{bmatrix} 5 & 2 \\ 5 & 1 \end{bmatrix}, \det(A_1) = -5 \implies x = -5/-5 = 1$. $A_2 = \begin{bmatrix} 1 & 5 \\ 3 & 5 \end{bmatrix}, \det(A_2) = -10 \implies y = -10/-5 = 2$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0], [3.0, 1.0]])
+b = np.array([5.0, 5.0])
+detA = np.linalg.det(A)
+
+A1 = A.copy()
+A1[:, 0] = b
+A2 = A.copy()
+A2[:, 1] = b
+
+x = np.linalg.det(A1) / detA
+y = np.linalg.det(A2) / detA
+assert np.allclose([x, y], [1.0, 2.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Implementing Cramer's rule in code for large systems. For n = 20, Cramer's rule takes longer than the age of the universe.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Cramer's formula for variable x_i?
+2. What is the computational complexity of Cramer's rule using naive determinants?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. x_i = det(A_i) / det(A).
+2. O((n + 1)!).
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](23_Determinants_Volume_and_Orientation.md) · [Module README](../README.md) · [Next →](25_LU_Decomposition.md)
+[Module README](../README.md) · [Next →](25_LU_Decomposition.md)

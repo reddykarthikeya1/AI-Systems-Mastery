@@ -1,0 +1,75 @@
+{
+  "title": "Skip List Geometric Multi-Level Index Search",
+  "algorithm": "Skip List Forward Traversal",
+  "timeComplexity": "O(log n)",
+  "spaceComplexity": "O(n)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Target is 17. Start at top Express Level 2. Next node is 10 (10 < 17). Advance to 10.",
+      "array": [
+        "L2: 0 -> 10 -> 25",
+        "L1: 0 -> 10 -> 15 -> 20 -> 25",
+        "L0: All nodes"
+      ],
+      "pointers": {
+        "level": 2,
+        "curr": 10
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "level": 2,
+        "currVal": 10,
+        "target": 17
+      },
+      "invariants": "Skip large spans of elements on high express lanes"
+    },
+    {
+      "step": 2,
+      "description": "At Node 10, next in L2 is 25 (25 > 17). Cannot advance in L2! Drop down to Level 1.",
+      "array": [
+        "L2: 0 -> 10 -> 25",
+        "L1: 0 -> 10 -> 15 -> 20 -> 25",
+        "L0: All nodes"
+      ],
+      "pointers": {
+        "level": 1,
+        "curr": 10
+      },
+      "highlights": {
+        "1": "active"
+      },
+      "variables": {
+        "level": 1,
+        "currVal": 10,
+        "action": "drop_level"
+      },
+      "invariants": "Drop one level down when next node exceeds target key"
+    },
+    {
+      "step": 3,
+      "description": "In L1: 10 -> 15 (15 < 17, advance). Next is 20 (20 > 17). Drop to L0: 15 -> 17 Match found!",
+      "array": [
+        "L2: 0 -> 10 -> 25",
+        "L1: 0 -> 10 -> 15 -> 20 -> 25",
+        "L0: 0..15 -> 17 -> 20"
+      ],
+      "pointers": {
+        "level": 0,
+        "curr": 17
+      },
+      "highlights": {
+        "2": "sorted"
+      },
+      "variables": {
+        "found": true,
+        "target": 17,
+        "comparisons": 5
+      },
+      "invariants": "Search cost bounded by O(log n) expected steps with 1/2 geometric coin flips"
+    }
+  ]
+}

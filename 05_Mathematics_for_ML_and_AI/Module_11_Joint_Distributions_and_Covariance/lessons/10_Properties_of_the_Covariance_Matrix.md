@@ -1,65 +1,64 @@
 # Lesson 11.10 — Properties of the Covariance Matrix
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 10 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove symmetry Sigma^T = Sigma.
+- [ ] Prove scaling property Cov(A x) = A Cov(x) A^T.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.09 The Covariance Matrix.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Key algebraic properties of covariance matrices:
+1. **Symmetry**: $\Sigma^T = \Sigma$ because $\text{Cov}(X_i, X_j) = \text{Cov}(X_j, X_i)$.
+2. **Affine Transformation**: If $\mathbf{y} = A\mathbf{x} + \mathbf{b}$, then $\text{Cov}(\mathbf{y}) = A \Sigma_{\mathbf{x}} A^T$.
+3. **Variance Non-negativity**: $\mathbf{a}^T \Sigma \mathbf{a} = \text{Var}(\mathbf{a}^T \mathbf{x}) \ge 0$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $\Sigma_x = I_2$ and $A = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}$. $\Sigma_y = A I A^T = \begin{bmatrix} 4 & 0 \\ 0 & 9 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+Sigma_x = np.eye(2)
+A = np.array([[2.0, 0.0], [0.0, 3.0]])
+Sigma_y = A @ Sigma_x @ A.T
+assert np.allclose(Sigma_y, [[4.0, 0.0], [0.0, 9.0]])
+assert np.allclose(Sigma_y, Sigma_y.T)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Writing Cov(A x) = A Cov(x) instead of the quadratic form A Cov(x) A^T.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Cov(A x) in terms of Cov(x)?
+2. Why is a covariance matrix always symmetric?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A Cov(x) A^T.
+2. Because Cov(X_i, X_j) = Cov(X_j, X_i).
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_The_Covariance_Matrix.md) · [Module README](../README.md) · [Next →](11_Why_Covariance_Matrices_Are_Positive_Semidefinite.md)
+[Module README](../README.md) · [Next →](11_Why_Covariance_Matrices_Are_Positive_Semidefinite.md)

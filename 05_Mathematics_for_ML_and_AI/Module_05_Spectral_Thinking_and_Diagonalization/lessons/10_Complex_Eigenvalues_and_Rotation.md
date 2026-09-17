@@ -1,65 +1,64 @@
 # Lesson 05.10 — Complex Eigenvalues and Rotation
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 10 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Interpret complex eigenvalues a +- bi geometrically as rotation and scaling.
+- [ ] Extract the angle of rotation theta = atan2(b, a).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.02 Characteristic Polynomial.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A real matrix can have complex conjugate eigenvalues $\lambda = a \pm bi = r e^{\pm i \theta}$. Geometrically, such transformations cannot leave any 1D real subspace unrotated; they represent a combination of 2D rotation by angle $\theta$ and radial scaling by magnitude $r = \sqrt{a^2 + b^2}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $R = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$. Characteristic equation is $\lambda^2 + 1 = 0 \implies \lambda = \pm i$. Here $a = 0, b = 1$. The scale factor is $r = 1$ and angle $\theta = \pi/2$ (90 degree counter-clockwise rotation).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+R = np.array([[0.0, -1.0], [1.0, 0.0]])
+vals = np.linalg.eigvals(R)
+
+# Verify eigenvalues are +/- 1j
+assert np.allclose(np.abs(vals), [1.0, 1.0])
+assert np.isclose(vals[0].real, 0.0)
+assert np.isclose(abs(vals[0].imag), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Discarding complex eigenvalues as invalid bugs when training recurrent networks. Complex eigenvalues govern oscillations.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What physical geometric motion does a complex eigenvalue pair correspond to?
+2. What is the spectral radius of a pure 2D rotation matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A combination of rotation in a 2D plane and scaling.
+2. The spectral radius is exactly 1.0.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_Defective_Matrices_and_Jordan_Form.md) · [Module README](../README.md) · [Next →](11_The_Spectral_Theorem_for_Symmetric_Matrices.md)
+[Module README](../README.md) · [Next →](11_The_Spectral_Theorem_for_Symmetric_Matrices.md)

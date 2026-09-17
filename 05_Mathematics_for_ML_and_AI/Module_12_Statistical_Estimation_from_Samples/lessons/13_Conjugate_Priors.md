@@ -1,65 +1,69 @@
 # Lesson 12.13 — Conjugate Priors
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 13 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define conjugacy: posterior p(theta | x) belongs to the same family as prior p(theta).
+- [ ] Perform Beta-Binomial and Gaussian-Gaussian updates analytically.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.11 MAP Estimation.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A prior is **conjugate** to a likelihood if the posterior belongs to the exact same parametric family. This allows exact analytical Bayesian updates without numerical integration:
+- **Beta prior + Binomial likelihood** $\to$ **Beta posterior**: $\text{Beta}(\alpha + k, \beta + n - k)$.
+- **Gaussian prior + Gaussian likelihood** $\to$ **Gaussian posterior**.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Prior $\text{Beta}(3, 3)$. Observe 4 heads and 1 tail ($n=5, k=4$). Posterior is $\text{Beta}(3+4, 3+1) = \text{Beta}(7, 4)$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+alpha_prior, beta_prior = 3.0, 3.0
+heads, tails = 4, 1
+
+alpha_post = alpha_prior + heads
+beta_post = beta_prior + tails
+
+assert alpha_post == 7.0
+assert beta_post == 4.0
+# Posterior mean
+post_mean = alpha_post / (alpha_post + beta_post)
+assert np.isclose(post_mean, 7.0 / 11.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using non-conjugate priors and expecting closed-form analytical posterior distributions.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the conjugate prior for the Bernoulli/Binomial likelihood?
+2. What is the conjugate prior for the mean of a Normal likelihood with known variance?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The Beta distribution.
+2. A Normal distribution.
 
 </details>
 
@@ -67,12 +71,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](12_MAP_as_Regularized_MLE.md) · [Module README](../README.md) · [Next →](14_Confidence_Intervals.md)
+[Module README](../README.md) · [Next →](14_Confidence_Intervals.md)

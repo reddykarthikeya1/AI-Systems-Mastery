@@ -1,65 +1,66 @@
 # Lesson 10.03 — The Axioms of Probability
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 3 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State Kolmogorov's 3 axioms: non-negativity P(E) >= 0, unitarity P(Omega) = 1, countable additivity.
+- [ ] Derive complement rule P(not E) = 1 - P(E).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.02 Sample Spaces and Events.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Kolmogorov's Three Axioms:
+1. **Non-negativity**: $P(E) \ge 0$ for every event $E$.
+2. **Unitarity**: $P(\Omega) = 1$.
+3. **Countable Additivity**: For disjoint events $E_1, E_2, \dots$ ($E_i \cap E_j = \emptyset$): $P(\bigcup E_i) = \sum P(E_i)$.
+All probability laws (e.g. $P(A \cup B) = P(A) + P(B) - P(A \cap B)$) derive from these 3 axioms.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $P(A) = 0.6$ and $P(B) = 0.5$ with $P(A \cap B) = 0.2$: $P(A \cup B) = 0.6 + 0.5 - 0.2 = 0.9$. $P(A^c) = 1 - 0.6 = 0.4$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p_a = 0.6
+p_b = 0.5
+p_ab = 0.2
+p_union = p_a + p_b - p_ab
+assert np.isclose(p_union, 0.9)
+assert np.isclose(1.0 - p_a, 0.4)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Summing probabilities of non-disjoint events without subtracting their intersection.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Kolmogorov's third axiom?
+2. What is P(empty set)?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Countable additivity for mutually disjoint events.
+2. Zero: P(empty) = 0.
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Sample_Spaces_and_Events.md) · [Module README](../README.md) · [Next →](04_Counting_Permutations_and_Combinations.md)
+[Module README](../README.md) · [Next →](04_Counting_Permutations_and_Combinations.md)

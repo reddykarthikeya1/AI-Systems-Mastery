@@ -18,6 +18,7 @@ import { PrerequisiteMapModal } from './components/PrerequisiteMapModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
+import { AlertCircle, RotateCcw } from 'lucide-react';
 // -----------------------------------------------------------------------------
 // Top-Level Route Components (Declared outside App for stable component identities)
 // -----------------------------------------------------------------------------
@@ -42,29 +43,73 @@ const CourseSyllabusRoute: React.FC<CourseSyllabusRouteProps> = ({
   const { courseId } = useParams<{ courseId: string }>();
   const [mods, setMods] = useState<ModuleItem[]>([]);
   const [isLoadingMods, setIsLoadingMods] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const course = courses.find((c) => c.id === courseId || c.folder_name === courseId);
 
-  useEffect(() => {
+  const loadModules = useCallback(() => {
     if (!courseId) return;
+    setIsLoadingMods(true);
+    setLoadError(null);
     let isMounted = true;
-    getCourseModules(courseId).then((data) => {
-      if (isMounted) {
-        setMods(data);
-        setIsLoadingMods(false);
-      }
-    });
+    getCourseModules(courseId)
+      .then((data) => {
+        if (isMounted) {
+          if (!data || data.length === 0) {
+            setLoadError('Failed to load track modules. The server returned an empty syllabus or is unreachable.');
+          } else {
+            setMods(data);
+          }
+          setIsLoadingMods(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setLoadError(err?.message || 'Failed to load track modules.');
+          setIsLoadingMods(false);
+        }
+      });
     return () => { isMounted = false; };
   }, [courseId, getCourseModules]);
+
+  useEffect(() => {
+    const cleanup = loadModules();
+    return cleanup;
+  }, [loadModules]);
 
   if (!course && !loading) {
     return <Navigate to="/" replace />;
   }
 
+  if (loadError) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+        <div className="p-8 rounded-2xl bg-surface border border-border/80 shadow-sm space-y-4">
+          <div className="w-12 h-12 mx-auto rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center">
+            <AlertCircle className="w-6 h-6" />
+          </div>
+          <h2 className="text-lg font-bold text-fg">Failed to Load Track Modules</h2>
+          <p className="text-sm text-fg-muted max-w-md mx-auto">
+            {loadError}
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={loadModules}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              Retry Loading
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoadingMods || !course) {
     return (
-      <div className="flex items-center justify-center h-96 text-zinc-400 text-xs font-mono">
-        Loading track modules and assessments...
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <LessonSkeleton />
       </div>
     );
   }
@@ -135,6 +180,11 @@ const ClassroomRoute: React.FC<ClassroomRouteProps> = ({
     getCourseModules(courseId).then((data) => {
       if (isMounted) {
         setMods(data);
+        setIsLoadingMods(false);
+      }
+    }).catch((err) => {
+      if (isMounted) {
+        console.error(`Failed to load modules for classroom ${courseId}:`, err);
         setIsLoadingMods(false);
       }
     });
@@ -418,14 +468,16 @@ export const App: React.FC = () => {
 
   // Helper to fetch or get cached modules
   const getCourseModules = useCallback(async (courseId: string): Promise<ModuleItem[]> => {
-    if (modulesMap[courseId]) return modulesMap[courseId];
+    if (modulesMap[courseId] && modulesMap[courseId].length > 0) return modulesMap[courseId];
     try {
       const mods = await fetchCourseModules(courseId);
-      setModulesMap((prev) => ({ ...prev, [courseId]: mods }));
+      if (mods && mods.length > 0) {
+        setModulesMap((prev) => ({ ...prev, [courseId]: mods }));
+      }
       return mods;
     } catch (e) {
       console.error(`Failed to load modules for ${courseId}`, e);
-      return [];
+      throw e;
     }
   }, [modulesMap]);
 
@@ -435,16 +487,20 @@ export const App: React.FC = () => {
     const courseFolder = parts[0];
     if (!courseFolder) return;
 
-    const mods = await getCourseModules(courseFolder);
-    for (const mod of mods) {
-      const found = mod.lessons.find((l) => l.id === lessonId || l.file_path === filePath);
-      if (found) {
-        const modNumStr = mod.module_num.toString().padStart(2, '0');
-        const tabQuery = initialTab ? `?tab=${initialTab}` : '';
-        navigate(`/course/${courseFolder}/module/${modNumStr}/lesson/${found.id}${tabQuery}`);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
+    try {
+      const mods = await getCourseModules(courseFolder);
+      for (const mod of mods) {
+        const found = mod.lessons.find((l) => l.id === lessonId || l.file_path === filePath);
+        if (found) {
+          const modNumStr = mod.module_num.toString().padStart(2, '0');
+          const tabQuery = initialTab ? `?tab=${initialTab}` : '';
+          navigate(`/course/${courseFolder}/module/${modNumStr}/lesson/${found.id}${tabQuery}`);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
       }
+    } catch {
+      // ignore
     }
   }, [getCourseModules, navigate]);
 

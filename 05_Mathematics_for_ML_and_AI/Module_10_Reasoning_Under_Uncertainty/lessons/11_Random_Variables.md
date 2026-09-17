@@ -1,65 +1,60 @@
 # Lesson 10.11 — Random Variables
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 11 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define random variable X: Omega -> R as a deterministic function mapping sample space outcomes to real numbers.
+- [ ] Compute pre-images X^(-1)(A).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.02 Sample Spaces and Events.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A **random variable** $X$ is neither random nor a variable: it is a deterministic mathematical function $X: \Omega \to \mathbb{R}$ that assigns a numerical value to each outcome in the sample space. $P(X \le x)$ is shorthand for $P(\{\omega \in \Omega : X(\omega) \le x\})$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Flipping 2 coins: $\Omega = \{HH, HT, TH, TT\}$. Let $X$ be the number of heads. $X(HH)=2, X(HT)=1, X(TH)=1, X(TT)=0$. $P(X=1) = 2/4 = 0.5$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+omega = ['HH', 'HT', 'TH', 'TT']
+X = {'HH': 2, 'HT': 1, 'TH': 1, 'TT': 0}
+p_X_1 = sum(1 for w in omega if X[w] == 1) / len(omega)
+assert np.isclose(p_X_1, 0.5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Thinking a random variable changes its value unpredictably. The randomness lies in which outcome omega is drawn from Omega.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is a random variable mathematically?
+2. What does P(X = k) represent?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A deterministic function from the sample space Omega to the real numbers R.
+2. The probability measure of all outcomes omega in Omega where X(omega) = k.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](10_Bayesian_versus_Frequentist_Interpretations.md) · [Module README](../README.md) · [Next →](12_Discrete_Distributions_and_the_PMF.md)
+[Module README](../README.md) · [Next →](12_Discrete_Distributions_and_the_PMF.md)

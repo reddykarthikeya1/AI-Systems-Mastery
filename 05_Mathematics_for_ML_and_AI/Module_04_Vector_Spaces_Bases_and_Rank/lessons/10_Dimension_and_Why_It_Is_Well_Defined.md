@@ -1,65 +1,65 @@
 # Lesson 04.10 — Dimension and Why It Is Well Defined
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 10 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the Dimension Theorem: all bases of a vector space have the exact same number of elements.
+- [ ] Determine the dimension of subspaces in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.09 Basis of a Vector Space.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **dimension** $\dim(V)$ of a vector space $V$ is the number of vectors in any basis. While a space has infinitely many bases, the Fundamental Theorem of Linear Algebra guarantees every basis has the exact same cardinality.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+In $\mathbb{R}^3$, the xy-plane has basis $\{[1, 0, 0]^T, [0, 1, 0]^T\}$ (size 2). Another basis is $\{[1, 1, 0]^T, [1, -1, 0]^T\}$ (size 2). Both have 2 vectors, so the dimension is 2.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Basis 1
+B1 = np.array([[1.0, 0.0], [0.0, 1.0], [0.0, 0.0]])
+# Basis 2
+B2 = np.array([[1.0, 1.0], [1.0, -1.0], [0.0, 0.0]])
+
+dim1 = np.linalg.matrix_rank(B1)
+dim2 = np.linalg.matrix_rank(B2)
+assert dim1 == 2
+assert dim2 == 2
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing the number of elements in a vector (its ambient coordinate length) with the dimension of the subspace.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can a 2D subspace of R^5 have a basis with 3 vectors?
+2. What is the dimension of the zero subspace {0}?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, any basis of a 2D space must contain exactly 2 vectors.
+2. Zero.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_Basis_of_a_Vector_Space.md) · [Module README](../README.md) · [Next →](11_Coordinates_Relative_to_a_Basis.md)
+[Module README](../README.md) · [Next →](11_Coordinates_Relative_to_a_Basis.md)

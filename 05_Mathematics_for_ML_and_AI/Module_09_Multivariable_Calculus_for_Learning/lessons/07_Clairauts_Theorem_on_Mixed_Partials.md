@@ -1,78 +1,64 @@
-# Lesson 09.07 — Clairaut's Theorem on Mixed Partials
+# Lesson 09.07: Clairaut's Theorem on Mixed Partials
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 7 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- State Clairaut's (Schwarz's) Theorem: f_xy = f_yx for C^2 functions.
+- Deduce why Hessian matrices in ML are symmetric.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.06 Higher-Order Partial Derivatives.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+**Clairaut's Theorem**: If the mixed second partial derivatives of $f: \mathbb{R}^n \to \mathbb{R}$ are continuous on an open ball around $\mathbf{x}_0$, then the order of differentiation does not matter:
+$$\frac{\partial^2 f}{\partial x_j \partial x_i} = \frac{\partial^2 f}{\partial x_i \partial x_j}$$
+This ensures the Hessian matrix $\mathbf{H} = \nabla^2 f$ is always symmetric ($H_{ij} = H_{ji}$) for smooth objective functions.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Let $f(x, y) = e^x \cos(y)$. $f_x = e^x \cos(y) \implies f_{xy} = -e^x \sin(y)$. Now $f_y = -e^x \sin(y) \implies f_{yx} = -e^x \sin(y)$. Indeed $f_{xy} = f_{yx}$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x, y = 1.2, 0.7
+f_xy = -np.exp(x) * np.sin(y)
+f_yx = -np.exp(x) * np.sin(y)
+assert np.isclose(f_xy, f_yx)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming symmetry holds for non-smooth functions where second partials are discontinuous at the evaluation point.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What condition guarantees that f_xy = f_yx?
+2. What property of the Hessian matrix follows directly from Clairaut's theorem?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Continuous second-order partial derivatives (C^2 smoothness).
+2. The Hessian matrix is symmetric: H^T = H.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](06_HigherOrder_Partial_Derivatives.md) · [Module README](../README.md) · [Next →](08_The_Gradient_Vector.md)
+Next: [08_The_Gradient_Vector.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\08_The_Gradient_Vector.md)

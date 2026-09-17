@@ -1,78 +1,76 @@
-# Lesson 09.16 — Computational Graphs
+# Lesson 09.16: Computational Graphs
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 16 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Represent mathematical expressions as Directed Acyclic Graphs (DAGs).
+- Identify nodes as operations/tensors and edges as intermediate dependencies.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.15 The Multivariable Chain Rule.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A **computational graph** is a DAG where nodes represent input variables or primitive operations ($+, \times, \exp, \dots$), and directed edges represent data flow. Evaluating values along edges is the **forward pass**; propagating derivatives backwards is the **reverse pass**.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Expression $e = (a + b) \cdot (b + 1)$.
+Let $c = a + b$, $d = b + 1$, $e = c \cdot d$.
+At $a = 2, b = 3$: $c = 5, d = 4, e = 20$.
+$\frac{\partial e}{\partial c} = d = 4$, $\frac{\partial e}{\partial d} = c = 5$.
+$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 4(1) = 4$.
+$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial b} + \frac{\partial e}{\partial d} \frac{\partial d}{\partial b} = 4(1) + 5(1) = 9$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+a, b = 2.0, 3.0
+c = a + b
+d = b + 1.0
+e = c * d
+
+de_dc = d
+de_dd = c
+de_da = de_dc * 1.0
+de_db = de_dc * 1.0 + de_dd * 1.0
+
+assert np.isclose(e, 20.0)
+assert np.isclose(de_da, 4.0)
+assert np.isclose(de_db, 9.0)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Forgetting that a shared node (like b appearing in both c and d) accumulates gradient contributions from all outgoing edges.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What graph structure is used to represent neural network computation?
+2. Why must gradients sum at branches during reverse accumulation?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A directed acyclic graph (DAG).
+2. By the multivariable chain rule, each outgoing path contributes additively to total sensitivity.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_The_Multivariable_Chain_Rule.md) · [Module README](../README.md) · [Next →](17_ForwardMode_Differentiation.md)
+Next: [17_ForwardMode_Differentiation.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\17_ForwardMode_Differentiation.md)

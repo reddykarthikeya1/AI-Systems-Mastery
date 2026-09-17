@@ -1,65 +1,61 @@
 # Lesson 12.03 — Consistency and Efficiency
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 3 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define consistency as convergence in probability: theta_hat_n -> theta as n -> inf.
+- [ ] Define efficiency as achieving the lowest possible variance among unbiased estimators.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.02 Bias and Variance.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+An estimator is **consistent** if it converges in probability to the true parameter as sample size grows: $\lim_{n \to \infty} P(|\hat{\theta}_n - \theta| > \epsilon) = 0$. An unbiased estimator is **efficient** if its variance attains the Cramér-Rao Lower Bound.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For sample mean $\bar{X}_n$, $\text{Var}(\bar{X}_n) = \sigma^2 / n \to 0$ as $n \to \infty$. By Chebyshev's inequality, $\bar{X}_n$ is consistent for $\mu$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+true_mu = 5.0
+ns = [10, 100, 1000, 10000]
+errors = [abs(np.mean(np.random.normal(true_mu, 1.0, n)) - true_mu) for n in ns]
+assert errors[-1] < errors[0]
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing unbiasedness (a finite-sample property) with consistency (an asymptotic property as n -> inf).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Does consistency guarantee an estimator is unbiased for small samples?
+2. What happens to the variance of a consistent estimator as n -> infinity?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, an estimator can be biased for small n yet consistent asymptotically (e.g. 1/n sum (x - x_bar)^2).
+2. It shrinks to zero.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Bias_Variance_and_Mean_Squared_Error.md) · [Module README](../README.md) · [Next →](04_The_Sampling_Distribution.md)
+[Module README](../README.md) · [Next →](04_The_Sampling_Distribution.md)

@@ -1,65 +1,64 @@
 # Lesson 10.17 — Variance and Standard Deviation
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 17 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute Var(X) = E[(X - mu)^2] = E[X^2] - (E[X])^2.
+- [ ] Verify scaling rule Var(c X) = c^2 Var(X).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.15 Expected Value.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Variance** measures spread around the mean: $\text{Var}(X) = \mathbb{E}[(X - \mu)^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$. **Standard deviation** $\sigma = \sqrt{\text{Var}(X)}$ restores the original units of measurement. Scaling rule: $\text{Var}(cX + d) = c^2 \text{Var}(X)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Fair die: $\mathbb{E}[X] = 3.5$. $\mathbb{E}[X^2] = \frac{1}{6}(1+4+9+16+25+36) = 91/6 \approx 15.167$. $\text{Var}(X) = 91/6 - (7/2)^2 = 91/6 - 49/4 = 35/12 \approx 2.917$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+faces = np.arange(1, 7)
+probs = np.full(6, 1.0 / 6.0)
+e_x = np.sum(faces * probs)
+e_x2 = np.sum((faces**2) * probs)
+var_x = e_x2 - e_x**2
+assert np.isclose(var_x, 35.0 / 12.0)
+# Var(2X) == 4 Var(X)
+assert np.isclose(np.sum(((2 * faces)**2) * probs) - (2 * e_x)**2, 4.0 * var_x)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Claiming Var(c X) = c Var(X). Scaling factor c must be squared: c^2.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Var(c X + d) in terms of Var(X)?
+2. Can variance ever be negative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. c^2 Var(X) (additive constants do not affect spread).
+2. Never; variance is an expected square, so Var(X) >= 0.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_Linearity_of_Expectation.md) · [Module README](../README.md) · [Next →](18_Moments_and_Moment_Generating_Functions.md)
+[Module README](../README.md) · [Next →](18_Moments_and_Moment_Generating_Functions.md)

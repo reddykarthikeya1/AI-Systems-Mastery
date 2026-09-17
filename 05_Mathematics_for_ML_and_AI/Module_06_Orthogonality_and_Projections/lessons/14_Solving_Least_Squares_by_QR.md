@@ -1,65 +1,69 @@
 # Lesson 06.14 — Solving Least Squares by QR
 
 > **Module 06:** Orthogonality and Projections · Lesson 14 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Solve least squares via R x_hat = Q^T b using back-substitution.
+- [ ] Explain why QR avoids squaring the condition number kappa(A^T A) = kappa(A)^2.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 06.13 QR Decomposition and 06.09 Least Squares.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Normal equations $A^T A \hat{\mathbf{x}} = A^T \mathbf{b}$ square the condition number: $\kappa(A^T A) = \kappa(A)^2$, destroying numerical accuracy for ill-conditioned data. Substituting $A = QR$: $(R^T Q^T Q R)\hat{\mathbf{x}} = R^T Q^T \mathbf{b} \implies R\hat{\mathbf{x}} = Q^T \mathbf{b}$. Solved via fast, stable back-substitution with condition number $\kappa(A)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $Q^T \mathbf{b} = [3, 1]^T$ and $R = \begin{bmatrix} 2 & 1 \\ 0 & 1 \end{bmatrix}$.
+Back substitution:
+$x_2 = 1 / 1 = 1$.
+$2 x_1 + 1(1) = 3 \implies x_1 = 1$. $\hat{\mathbf{x}} = [1, 1]^T$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 0.0], [1.0, 1.0], [1.0, 2.0]])
+b = np.array([1.0, 2.0, 2.0])
+
+Q, R = np.linalg.qr(A)
+# Solve R x = Q.T @ b
+qty = Q.T @ b
+x_qr = np.linalg.solve(R, qty)
+
+x_lstsq = np.linalg.lstsq(A, b, rcond=None)[0]
+assert np.allclose(x_qr, x_lstsq)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Explicitly computing A^T A when solving regression on ill-conditioned data, which doubles condition number.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is solving least squares via QR numerically superior to normal equations?
+2. What algorithm solves R x = Q^T b since R is triangular?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because it operates with condition number kappa(A) rather than squared condition number kappa(A)^2.
+2. Back-substitution (O(n^2) operations).
 
 </details>
 
@@ -67,12 +71,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](13_QR_Decomposition.md) · [Module README](../README.md) · [Next →](15_Orthogonal_Matrices_and_Isometries.md)
+[Module README](../README.md) · [Next →](15_Orthogonal_Matrices_and_Isometries.md)

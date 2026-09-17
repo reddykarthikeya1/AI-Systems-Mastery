@@ -1,65 +1,64 @@
 # Lesson 05.04 — Eigenspaces and Geometric Multiplicity
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 4 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute the eigenspace null(A - lambda I) by Gaussian elimination.
+- [ ] Define geometric multiplicity as the dimension of the eigenspace.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.02 Characteristic Polynomial and Null Space.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+For an eigenvalue $\lambda$, the set of all eigenvectors along with $\mathbf{0}$ forms a subspace called the **eigenspace** $E_\lambda = \text{null}(A - \lambda I)$. The **geometric multiplicity** of $\lambda$ is $\dim(E_\lambda) = \text{nullity}(A - \lambda I)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}$ with eigenvalue $\lambda = 2$. $A - 2I = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$. The null space is all of $\mathbb{R}^2$. The geometric multiplicity is 2.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[2.0, 0.0], [0.0, 2.0]])
+lam = 2.0
+M = A - lam * np.eye(2)
+rank = np.linalg.matrix_rank(M)
+geo_mult = A.shape[0] - rank
+assert geo_mult == 2
+assert rank == 0
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing the number of eigenvectors (which is infinite) with the dimension of the eigenspace.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can the geometric multiplicity of an eigenvalue be zero?
+2. What is the minimum geometric multiplicity for any valid eigenvalue?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, by definition an eigenvalue must have at least one non-zero eigenvector.
+2. The minimum geometric multiplicity is always 1.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_Computing_Eigenvalues_by_Hand.md) · [Module README](../README.md) · [Next →](05_Algebraic_versus_Geometric_Multiplicity.md)
+[Module README](../README.md) · [Next →](05_Algebraic_versus_Geometric_Multiplicity.md)

@@ -1,78 +1,68 @@
-# Lesson 09.47 — The KKT Conditions
+# Lesson 09.47: The KKT Conditions
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 47 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- State the 4 Karush-Kuhn-Tucker (KKT) conditions: Stationarity, Primal Feasibility, Dual Feasibility, and Complementary Slackness.
+- Verify KKT conditions on support vector machine (SVM) margins.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.46 Lagrange Multipliers.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+For $\min f(\mathbf{x})$ s.t. $g_i(\mathbf{x}) \le 0, h_j(\mathbf{x}) = 0$, the **KKT conditions** are necessary for optimality:
+1. **Stationarity**: $\nabla f(\mathbf{x}^*) + \sum \lambda_i^* \nabla g_i(\mathbf{x}^*) + \sum \nu_j^* \nabla h_j(\mathbf{x}^*) = \mathbf{0}$
+2. **Primal Feasibility**: $g_i(\mathbf{x}^*) \le 0, \; h_j(\mathbf{x}^*) = 0$
+3. **Dual Feasibility**: $\lambda_i^* \ge 0$
+4. **Complementary Slackness**: $\lambda_i^* g_i(\mathbf{x}^*) = 0$
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+In SVM classification, complementary slackness requires $\alpha_i (y_i(\mathbf{w}^T \mathbf{x}_i + b) - 1) = 0$.
+If a point is not on the margin ($y_i(\dots) > 1$), then $\alpha_i = 0$ (does not affect model). Only points strictly on the margin have $\alpha_i > 0$ (**support vectors**)!
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Complementary slackness check
+alpha = np.array([0.0, 1.5, 0.0])
+margin_slack = np.array([0.8, 0.0, 1.2])  # g_i(x)
+# Product must be 0 for all i
+assert np.allclose(alpha * margin_slack, 0.0)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Allowing negative dual multipliers lambda_i < 0 for inequality constraints (violates dual feasibility).
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What are the four KKT conditions?
+2. What does complementary slackness imply for support vector machines?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Stationarity, Primal Feasibility, Dual Feasibility, and Complementary Slackness.
+2. Only data points lying strictly on the margin boundary have non-zero alpha_i weights.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](46_Lagrange_Multipliers.md) · [Module README](../README.md) · [Next →](48_Duality_and_the_Dual_Problem.md)
+Next: [48_Duality_and_the_Dual_Problem.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\48_Duality_and_the_Dual_Problem.md)

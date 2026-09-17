@@ -1,65 +1,64 @@
 # Lesson 06.15 — Orthogonal Matrices and Isometries
 
 > **Module 06:** Orthogonality and Projections · Lesson 15 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove orthogonal transformations preserve vector lengths (isometry) and inner products.
+- [ ] Verify condition number kappa(Q) = 1.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 06.04 Orthogonal Vectors.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A square matrix $Q$ is **orthogonal** if $Q^T Q = Q Q^T = I$. It acts as an **isometry**: $\|Q\mathbf{x}\| = \|\mathbf{x}\|$ and $(Q\mathbf{u}) \cdot (Q\mathbf{v}) = \mathbf{u} \cdot \mathbf{v}$. Orthogonal maps perform rigid rotations and reflections, never amplifying numerical noise ($\kappa(Q) = 1$).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $Q = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}$ for $\theta = \pi/4$. Length of $\mathbf{x} = [2, 0]^T$ is 2. Length of $Q\mathbf{x} = [\sqrt{2}, \sqrt{2}]^T$ is $\sqrt{2+2} = 2$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+theta = np.pi / 4
+Q = np.array([[np.cos(theta), -np.sin(theta)],
+              [np.sin(theta),  np.cos(theta)]])
+
+assert np.allclose(Q.T @ Q, np.eye(2))
+x = np.array([3.0, -4.0])
+assert np.isclose(np.linalg.norm(Q @ x), np.linalg.norm(x))
+assert np.isclose(np.linalg.cond(Q), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming an orthogonal matrix must have determinant +1. Det can be +1 (rotation) or -1 (reflection).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the condition number of an orthogonal matrix?
+2. What are the two possible values for det(Q) of an orthogonal matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly 1.0.
+2. +1 (pure rotation) or -1 (reflection).
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_Solving_Least_Squares_by_QR.md) · [Module README](../README.md) · [Next →](16_Orthogonal_Bases_for_Function_Spaces.md)
+[Module README](../README.md) · [Next →](16_Orthogonal_Bases_for_Function_Spaces.md)

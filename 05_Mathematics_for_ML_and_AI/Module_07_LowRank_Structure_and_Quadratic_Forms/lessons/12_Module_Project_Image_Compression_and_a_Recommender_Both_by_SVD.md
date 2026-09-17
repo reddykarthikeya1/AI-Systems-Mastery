@@ -1,65 +1,74 @@
-# Lesson 07.12 — Module Project: Image Compression and a Recommender, Both by SVD
+# Lesson 07.12 — Module Project: Image Compression and a Recommender Both by SVD
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 12 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 12 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Build a collaborative filtering recommender system using truncated SVD.
+- [ ] Reconstruct low-rank compressed matrix approximations.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- All previous Module 07 lessons.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In recommender systems (e.g. the Netflix Prize), the user-item rating matrix $R \in \mathbb{R}^{U \times I}$ is low-rank because preferences are governed by latent factors. Truncated SVD factorizes $R \approx U_k \Sigma_k V_k^T$, completing missing ratings via dot products of latent user and item embeddings.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+A $4 \times 4$ user-item matrix decomposed with rank $k=2$ captures user preferences along 2 latent genres (e.g. Action vs Drama).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+# Synthetic user-movie rating matrix
+R = np.array([
+    [5.0, 4.0, 1.0, 1.0],
+    [4.0, 5.0, 1.0, 2.0],
+    [1.0, 1.0, 5.0, 4.0],
+    [1.0, 2.0, 4.0, 5.0]
+])
+
+# SVD rank-2 reconstruction
+U, s, Vt = np.linalg.svd(R, full_matrices=False)
+k = 2
+R_k = U[:, :k] @ np.diag(s[:k]) @ Vt[:k, :]
+
+assert R_k.shape == R.shape
+# Error is small compared to original norm
+assert np.linalg.norm(R - R_k) < 2.0
+assert np.linalg.norm(R - R_k) < np.linalg.norm(R)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating unobserved ratings as zero ratings in collaborative filtering without proper masking or mean imputation.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What do the singular vectors represent in collaborative filtering?
+2. How does rank truncation reduce noise in recommendations?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. They represent latent user preferences and latent item characteristics.
+2. By eliminating small singular values that correspond to idiosyncratic user noise.
 
 </details>
 
@@ -67,12 +76,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](11_Cholesky_Decomposition.md) · [Module README](../README.md)
+[Module README](../README.md)

@@ -1,78 +1,74 @@
-# Lesson 09.25 — Convex Functions: Definition
+# Lesson 09.25: Convex Functions Definition
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 25 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define convex functions via chord inequality: f(theta x + (1-theta) y) <= theta f(x) + (1-theta) f(y).
+- Recognize that every local minimum of a convex function is a global minimum.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.01 Functions of Several Variables.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A function $f: \mathbb{R}^n \to \mathbb{R}$ is **convex** on a convex domain if for all $\mathbf{x}, \mathbf{y}$ and $\theta \in [0, 1]$:
+$$f(\theta \mathbf{x} + (1-\theta) \mathbf{y}) \le \theta f(\mathbf{x}) + (1-\theta) f(\mathbf{y})$$
+Geometrically, the line segment (chord) connecting $(\mathbf{x}, f(\mathbf{x}))$ and $(\mathbf{y}, f(\mathbf{y}))$ lies on or above the graph of $f$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x) = x^2$ with $x = 2, y = 6, \theta = 0.5$:
+Midpoint $\theta x + (1-\theta)y = 4$. $f(4) = 16$.
+Chord height: $0.5 f(2) + 0.5 f(6) = 0.5(4) + 0.5(36) = 20$.
+Since $16 \le 20$, the convexity inequality holds.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def f(x):
+    return x**2
+
+x, y = 2.0, 6.0
+theta = 0.5
+lhs = f(theta * x + (1.0 - theta) * y)
+rhs = theta * f(x) + (1.0 - theta) * f(y)
+
+assert lhs <= rhs
+assert np.isclose(lhs, 16.0)
+assert np.isclose(rhs, 20.0)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing concave and convex functions (a concave function satisfies f(theta x + (1-theta) y) >= theta f(x) + (1-theta) f(y)).
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the defining geometric property of a convex function?
+2. What is special about local minima of convex functions?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The line segment connecting any two points on the graph lies above or on the graph.
+2. Every local minimum is guaranteed to be a global minimum.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](24_Saddle_Points_and_Why_Deep_Networks_Have_Many.md) · [Module README](../README.md) · [Next →](26_First_and_SecondOrder_Convexity_Tests.md)
+Next: [26_First_and_SecondOrder_Convexity_Tests.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\26_First_and_SecondOrder_Convexity_Tests.md)

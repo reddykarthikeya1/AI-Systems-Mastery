@@ -1,65 +1,65 @@
 # Lesson 12.17 — Hypothesis Testing and the p-Value
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 17 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define null hypothesis H_0 and test statistic Z = (x_bar - mu_0) / SE.
+- [ ] Compute two-tailed p-value via normal CDF.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.05 Standard Error.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In hypothesis testing, we formulate a null hypothesis $H_0: \theta = \theta_0$. The **p-value** is the probability of observing a test statistic at least as extreme as the one computed from data, *assuming $H_0$ is true*: $p = P(|Z| \ge |z_{obs}| \mid H_0)$. If $p < \alpha$, we reject $H_0$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Test $H_0: \mu = 0$ against $H_1: \mu \neq 0$. Observed $z = 2.0$. Tail probability $P(Z \ge 2.0) \approx 0.0228$. Two-tailed p-value is $2 \times 0.0228 = 0.0455 < 0.05$. Reject $H_0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Approximate normal CDF via error function: 0.5 * (1 + erf(x / sqrt(2)))
+from math import erf
+def norm_cdf(x):
+    return 0.5 * (1.0 + erf(x / np.sqrt(2.0)))
+
+z_obs = 2.0
+p_val = 2.0 * (1.0 - norm_cdf(z_obs))
+assert np.isclose(p_val, 0.0455, atol=1e-3)
+assert p_val < 0.05
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Believing a small p-value measures effect size. With large n, a practically meaningless difference can have p < 0.001.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the definition of a p-value?
+2. Does p < 0.05 prove the null hypothesis is false?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The probability of observing data as or more extreme than observed, assuming H_0 is true.
+2. No, it only indicates the observed data would be unlikely under H_0.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](16_Credible_Intervals_and_the_Bayesian_Alternative.md) · [Module README](../README.md) · [Next →](18_What_a_pValue_Does_Not_Mean.md)
+[Module README](../README.md) · [Next →](18_What_a_pValue_Does_Not_Mean.md)

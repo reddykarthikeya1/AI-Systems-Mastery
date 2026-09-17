@@ -1,65 +1,63 @@
 # Lesson 12.05 — The Standard Error
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 5 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute standard error of the mean SE = s / sqrt(n).
+- [ ] Explain why doubling precision requires quadrupling the sample size.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.04 The Sampling Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Standard Error (SE)** is the standard deviation of the sampling distribution: $\text{SE}(\bar{X}) = \frac{\sigma}{\sqrt{n}}$. Because of the square root $\sqrt{n}$, reducing estimation error by half requires $4\times$ as much data.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Sample has standard deviation $s = 10$, $n = 100$. $\text{SE} = 10 / \sqrt{100} = 1.0$. To get $\text{SE} = 0.5$, $n$ must increase to $400$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+s = 10.0
+n1 = 100
+se1 = s / np.sqrt(n1)
+assert np.isclose(se1, 1.0)
+n2 = 400
+se2 = s / np.sqrt(n2)
+assert np.isclose(se2, 0.5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Reporting sample standard deviation s (spread of individuals) instead of standard error s/sqrt(n) (precision of mean).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How much larger must sample size n be to reduce standard error by a factor of 10?
+2. What does standard error measure?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 100 times larger (10^2).
+2. The variability and precision of an estimator across repeated samples.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](04_The_Sampling_Distribution.md) · [Module README](../README.md) · [Next →](06_The_Method_of_Moments.md)
+[Module README](../README.md) · [Next →](06_The_Method_of_Moments.md)

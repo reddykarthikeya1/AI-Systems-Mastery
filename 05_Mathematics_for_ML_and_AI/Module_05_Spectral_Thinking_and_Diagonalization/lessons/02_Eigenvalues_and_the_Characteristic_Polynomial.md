@@ -1,65 +1,64 @@
 # Lesson 05.02 — Eigenvalues and the Characteristic Polynomial
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 2 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Formulate the characteristic equation det(A - lambda I) = 0.
+- [ ] Find eigenvalues by solving the roots of the characteristic polynomial in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.01 Eigenvectors and Determinants (Module 03).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The relation $A\mathbf{v} = \lambda \mathbf{v}$ can be rewritten as $(A - \lambda I)\mathbf{v} = \mathbf{0}$. For non-trivial solutions $\mathbf{v} \neq \mathbf{0}$ to exist, the matrix $(A - \lambda I)$ must have a non-trivial null space, which means its determinant must be zero: $p(\lambda) = \det(A - \lambda I) = 0$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$. $\det(A - \lambda I) = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = (\lambda - 3)(\lambda - 1) = 0$. The eigenvalues are $\lambda_1 = 3, \lambda_2 = 1$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[2.0, 1.0], [1.0, 2.0]])
+w, v = np.linalg.eig(A)
+assert np.allclose(np.sort(w), [1.0, 3.0])
+
+# Verify det(A - lambda I) == 0
+for lam in [1.0, 3.0]:
+    assert np.isclose(np.linalg.det(A - lam * np.eye(2)), 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to compute eigenvalues by directly factoring non-square matrices. Eigenvalues are strictly defined for square matrices.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the degree of the characteristic polynomial for an n x n matrix?
+2. Can an n x n real matrix have complex eigenvalues?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The degree is always n.
+2. Yes, if the roots of det(A - lambda I) = 0 are complex conjugate pairs.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_Eigenvectors_Directions_a_Map_Does_Not_Turn.md) · [Module README](../README.md) · [Next →](03_Computing_Eigenvalues_by_Hand.md)
+[Module README](../README.md) · [Next →](03_Computing_Eigenvalues_by_Hand.md)

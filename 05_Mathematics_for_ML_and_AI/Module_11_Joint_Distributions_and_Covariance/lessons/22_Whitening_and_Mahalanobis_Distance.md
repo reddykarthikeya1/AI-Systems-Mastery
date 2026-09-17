@@ -1,65 +1,68 @@
 # Lesson 11.22 — Whitening and Mahalanobis Distance
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 22 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute Mahalanobis distance d_M(x, mu) = sqrt((x - mu)^T Sigma^(-1) (x - mu)).
+- [ ] Demonstrate outlier detection using Mahalanobis metric.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.09 Covariance Matrix and 06.17 Whitening.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Euclidean distance treats all directions equally. The **Mahalanobis distance** $d_M(\mathbf{x}, \boldsymbol{\mu}) = \sqrt{(\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1} (\mathbf{x} - \boldsymbol{\mu})}$ scales distance along the principal variance axes of the data, correctly penalizing deviations in low-variance directions.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $\Sigma = \begin{bmatrix} 100 & 0 \\ 0 & 1 \end{bmatrix}$. A point at $(10, 0)$ has Euclidean dist 10, but Mahalanobis dist $\sqrt{10^2/100} = 1.0$ (normal point). Point at $(0, 3)$ has Euclidean dist 3, but Mahalanobis dist $\sqrt{3^2/1} = 3.0$ (severe outlier!).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+Sigma = np.array([[100.0, 0.0], [0.0, 1.0]])
+inv_Sigma = np.linalg.inv(Sigma)
+
+p1 = np.array([10.0, 0.0])
+p2 = np.array([0.0, 3.0])
+
+d_m1 = np.sqrt(p1 @ inv_Sigma @ p1)
+d_m2 = np.sqrt(p2 @ inv_Sigma @ p2)
+
+assert np.isclose(d_m1, 1.0)
+assert np.isclose(d_m2, 3.0)
+assert d_m2 > d_m1  # p2 is much more of an outlier despite smaller Euclidean distance!
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using Euclidean distance for k-nearest neighbors on unnormalized correlated features.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is Mahalanobis distance preferred over Euclidean distance for multivariate outlier detection?
+2. What does Mahalanobis distance reduce to when Sigma = I?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. It accounts for feature correlations and unequal variance scales.
+2. Standard Euclidean distance.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](21_The_Precision_Matrix_and_Partial_Correlation.md) · [Module README](../README.md) · [Next →](23_Copulas_Separating_Marginals_From_Dependence.md)
+[Module README](../README.md) · [Next →](23_Copulas_Separating_Marginals_From_Dependence.md)

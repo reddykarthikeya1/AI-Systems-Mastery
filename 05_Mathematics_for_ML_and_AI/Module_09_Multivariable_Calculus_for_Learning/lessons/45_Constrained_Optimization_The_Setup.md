@@ -1,78 +1,65 @@
-# Lesson 09.45 — Constrained Optimization: The Setup
+# Lesson 09.45: Constrained Optimization: The Setup
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 45 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Formulate standard constrained programs: min f(x) s.t. g_i(x) <= 0, h_j(x) = 0.
+- Define the feasible region and active constraints.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.25 Convex Functions Definition.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A standard **constrained optimization problem** is formulated as:
+$$\min_{\mathbf{x} \in \mathbb{R}^n} f(\mathbf{x}) \quad \text{subject to } g_i(\mathbf{x}) \le 0 \; (i=1,\dots,m), \quad h_j(\mathbf{x}) = 0 \; (j=1,\dots,p)$$
+The **feasible region** $\mathcal{F}$ is the set of points satisfying all constraints simultaneously. An inequality constraint $g_i$ is **active** at $\mathbf{x}^*$ if $g_i(\mathbf{x}^*) = 0$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Minimize $f(x, y) = x + y$ subject to $x^2 + y^2 \le 1$.
+The feasible region $\mathcal{F}$ is the unit disc.
+Since $\nabla f = [1, 1]^T \ne \mathbf{0}$, the minimum cannot lie in the interior; it must occur on the active boundary $x^2 + y^2 = 1$ at $(-1/\sqrt{2}, -1/\sqrt{2})$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+pt = np.array([-1.0/np.sqrt(2.0), -1.0/np.sqrt(2.0)])
+assert np.isclose(np.sum(pt**2), 1.0)  # On boundary (active)
+assert np.isclose(np.sum(pt), -np.sqrt(2.0))
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Ignoring the constraint boundary and solving via unconstrained nabla f = 0, which often produces an infeasible point.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is an active constraint?
+2. What is the feasible region of an optimization problem?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. An inequality constraint g_i(x) <= 0 that holds with strict equality g_i(x*) = 0 at the optimum.
+2. The intersection of all sets where all constraints are satisfied.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](44_QuasiNewton_Methods_and_LBFGS.md) · [Module README](../README.md) · [Next →](46_Lagrange_Multipliers.md)
+Next: [46_Lagrange_Multipliers.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\46_Lagrange_Multipliers.md)

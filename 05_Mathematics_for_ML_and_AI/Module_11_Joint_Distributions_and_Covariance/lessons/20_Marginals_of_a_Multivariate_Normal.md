@@ -1,65 +1,63 @@
 # Lesson 11.20 — Marginals of a Multivariate Normal
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 20 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Extract marginal distributions of subset variables simply by dropping irrelevant rows and columns.
+- [ ] Contrast ease of Gaussian marginalization with non-Gaussian integration.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.17 Multivariate Normal.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Marginal distributions of an MVN are trivial: to find the marginal distribution of $\mathbf{x}_1$, simply read off $\boldsymbol{\mu}_1$ and $\Sigma_{11}$ from the joint parameters. $\mathbf{x}_1 \sim \mathcal{N}(\boldsymbol{\mu}_1, \Sigma_{11})$. No integration is required!
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $[\mathbf{x}_1, \mathbf{x}_2]^T \sim \mathcal{N}([3, 5]^T, \begin{bmatrix} 4 & 1 \\ 1 & 9 \end{bmatrix})$, then marginal $x_1 \sim \mathcal{N}(3, 4)$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+mu_joint = np.array([3.0, 5.0])
+Sigma_joint = np.array([[4.0, 1.0], [1.0, 9.0]])
+
+mu_x1 = mu_joint[0]
+sigma2_x1 = Sigma_joint[0, 0]
+assert mu_x1 == 3.0
+assert sigma2_x1 == 4.0
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to compute marginals of a Gaussian by integrating over conditional distributions.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How are marginals obtained from a joint Gaussian covariance matrix?
+2. What distribution does any linear combination of Gaussian variables follow?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. By simply selecting the corresponding sub-block of the covariance matrix.
+2. A univariate or multivariate Gaussian distribution.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](19_Conditionals_of_a_Multivariate_Normal.md) · [Module README](../README.md) · [Next →](21_The_Precision_Matrix_and_Partial_Correlation.md)
+[Module README](../README.md) · [Next →](21_The_Precision_Matrix_and_Partial_Correlation.md)

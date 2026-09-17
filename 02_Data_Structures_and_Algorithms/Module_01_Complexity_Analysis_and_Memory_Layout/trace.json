@@ -1,0 +1,91 @@
+{
+  "title": "CPU Memory Hierarchy & Cache Line Latency Trace",
+  "algorithm": "Memory Access Stride (Cache Line Snooping)",
+  "timeComplexity": "O(1) cache hit vs O(100) DRAM stall",
+  "spaceComplexity": "64-byte Cache Lines",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Sequential memory access at offset 0x00: L1 Cache Hit (4 clock cycles, 1.0 ns).",
+      "array": [
+        64,
+        128,
+        192,
+        256,
+        320,
+        384,
+        448,
+        512
+      ],
+      "pointers": {
+        "offset": 0
+      },
+      "highlights": {
+        "0": "sorted"
+      },
+      "variables": {
+        "address": "0x7fff00",
+        "latency_ns": 1.0,
+        "level": "L1 Data Cache",
+        "hit": true
+      },
+      "invariants": "Stride-1 access accesses spatial cache line already residing in L1"
+    },
+    {
+      "step": 2,
+      "description": "Access offset 0x40 (Next 64B cache line): L1 line fill prefetched from L2.",
+      "array": [
+        64,
+        128,
+        192,
+        256,
+        320,
+        384,
+        448,
+        512
+      ],
+      "pointers": {
+        "offset": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "active"
+      },
+      "variables": {
+        "address": "0x7fff40",
+        "latency_ns": 3.5,
+        "level": "L2 Cache",
+        "hit": true
+      },
+      "invariants": "Hardware prefetcher tracks sequential access stream"
+    },
+    {
+      "step": 3,
+      "description": "Strided jump to offset 0x1000 (4KB stride): L1/L2/L3 Cache Miss! DRAM access stalled.",
+      "array": [
+        64,
+        128,
+        192,
+        256,
+        320,
+        384,
+        448,
+        512
+      ],
+      "pointers": {
+        "offset": 7
+      },
+      "highlights": {
+        "0": "sorted",
+        "7": "pivot"
+      },
+      "variables": {
+        "address": "0x7fff1000",
+        "latency_ns": 85.0,
+        "level": "Main Memory (DRAM)",
+        "hit": false
+      },
+      "invariants": "DRAM roundtrip incurs 200+ CPU cycle pipeline bubble"
+    }
+  ]
+}

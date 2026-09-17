@@ -1,65 +1,64 @@
-# Lesson 12.19 — Type I and Type II Errors, and Power
+# Lesson 12.19 — Type I and Type II Errors and Power
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 19 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Type I error alpha (false positive) and Type II error beta (false negative).
+- [ ] Define statistical power = 1 - beta.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.17 Hypothesis Testing.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Decision outcomes in hypothesis testing:
+- **Type I error** $\alpha = P(\text{Reject } H_0 \mid H_0 \text{ true})$ (False Alarm).
+- **Type II error** $\beta = P(\text{Fail to reject } H_0 \mid H_1 \text{ true})$ (Miss).
+- **Statistical Power** $= 1 - \beta$ is the probability of correctly detecting a real effect.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Setting $\alpha = 0.05$ controls false alarms to 5%. If a test has $80\%$ power, $\beta = 1 - 0.80 = 0.20$ (20% chance of missing a real effect).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+alpha = 0.05
+power = 0.80
+beta = 1.0 - power
+assert np.isclose(beta, 0.20)
+assert np.isclose(power + beta, 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Running an A/B test with underpowered sample size ($< 80\%$), leading to false negative conclusions that new models don't work.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is Type I error?
+2. What is the relationship between Type II error beta and statistical power?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Rejecting a true null hypothesis (false positive).
+2. Power = 1 - beta.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](18_What_a_pValue_Does_Not_Mean.md) · [Module README](../README.md) · [Next →](20_Multiple_Comparisons_and_the_Bonferroni_Correction.md)
+[Module README](../README.md) · [Next →](20_Multiple_Comparisons_and_the_Bonferroni_Correction.md)

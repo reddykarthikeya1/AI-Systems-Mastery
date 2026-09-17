@@ -1,78 +1,69 @@
-# Lesson 09.51 — Why L1 Produces Sparsity
+# Lesson 09.51: Why L1 Produces Sparsity
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 51 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Derive the soft-thresholding operator: S_lambda(w) = sign(w) max(0, |w| - lambda).
+- Demonstrate exact feature selection mathematically.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.50 L1 versus L2 Regularization Geometrically.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+For the 1D objective $f(w) = \frac{1}{2}(w - z)^2 + \lambda |w|$, the exact analytical minimizer is given by the **soft-thresholding operator**:
+$$w^* = \mathcal{S}_\lambda(z) = \text{sign}(z) \max(0, |z| - \lambda) = \begin{cases} z - \lambda & \text{if } z > \lambda \\ 0 & \text{if } |z| \le \lambda \\ z + \lambda & \text{if } z < -\lambda \end{cases}$$
+Whenever $|z| \le \lambda$, the parameter is snapped to exact zero.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+With threshold $\lambda = 0.5$:
+- For $z = 0.3$: $|0.3| \le 0.5 \implies w^* = 0.0$ (sparsified).
+- For $z = 1.2$: $w^* = 1.2 - 0.5 = 0.7$.
+- For $z = -0.9$: $w^* = -0.9 + 0.5 = -0.4$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def soft_threshold(z, lam):
+    return np.sign(z) * np.maximum(0.0, np.abs(z) - lam)
+
+assert soft_threshold(0.3, 0.5) == 0.0
+assert np.isclose(soft_threshold(1.2, 0.5), 0.7)
+assert np.isclose(soft_threshold(-0.9, 0.5), -0.4)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Trying to differentiate |w| at w = 0 using standard derivatives (requires subgradient calculus).
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the soft-thresholding operator formula?
+2. What happens to a parameter whose unregularized value satisfies |z| <= lambda?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. sign(z) * max(0, |z| - lambda).
+2. It is set to exactly 0.0.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](50_L1_versus_L2_Regularization_Geometrically.md) · [Module README](../README.md) · [Next →](52_Vanishing_and_Exploding_Gradients.md)
+Next: [52_Vanishing_and_Exploding_Gradients.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\52_Vanishing_and_Exploding_Gradients.md)

@@ -1,65 +1,63 @@
 # Lesson 12.20 — Multiple Comparisons and the Bonferroni Correction
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 20 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Calculate family-wise error rate FWER = 1 - (1 - alpha)^m for m tests.
+- [ ] Apply Bonferroni threshold alpha / m to prevent p-hacking.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.19 Type I and Type II Errors.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Testing $m$ independent hypotheses at level $\alpha = 0.05$ causes the **family-wise error rate** to explode: $\text{FWER} = 1 - (1 - \alpha)^m$. For $m = 20$ tests, $\text{FWER} = 1 - (0.95)^{20} \approx 64.2\%$ (you are more likely than not to find a false positive!). The **Bonferroni correction** uses threshold $\alpha_{adj} = \alpha / m$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $m = 20$ tests and $\alpha = 0.05$, adjusted threshold is $\alpha_{adj} = 0.05 / 20 = 0.0025$. Only tests with $p < 0.0025$ are declared significant.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+m = 20
+alpha = 0.05
+fwer_naive = 1.0 - (1.0 - alpha)**m
+assert fwer_naive > 0.60  # 64% chance of false positive!
+
+alpha_bonferroni = alpha / m
+assert np.isclose(alpha_bonferroni, 0.0025)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Testing 50 different feature variations and celebrating the one that reached p < 0.05 without multiple testing correction (p-hacking).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the probability of at least one false positive when running 20 independent tests at alpha=0.05?
+2. What is the Bonferroni corrected threshold for m tests?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Approximately 64.2%.
+2. alpha / m.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](19_Type_I_and_Type_II_Errors_and_Power.md) · [Module README](../README.md) · [Next →](21_The_Bootstrap.md)
+[Module README](../README.md) · [Next →](21_The_Bootstrap.md)

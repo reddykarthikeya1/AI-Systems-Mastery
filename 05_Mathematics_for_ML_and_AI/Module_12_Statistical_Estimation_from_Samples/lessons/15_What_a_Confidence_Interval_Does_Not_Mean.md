@@ -1,65 +1,72 @@
 # Lesson 12.15 — What a Confidence Interval Does Not Mean
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 15 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Explain why P(theta in [L, U]) is either 0 or 1 once data is observed.
+- [ ] Interpret confidence level as procedural coverage frequency over repeated experiments.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.14 Confidence Intervals.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The most common statistical fallacy: *There is a 95% probability that the parameter is in $[a, b]$.* In frequentist statistics, $\theta$ is fixed, not random. Once numbers $[a, b]$ are computed, the interval either contains $\theta$ (probability 1) or it doesn't (probability 0). The '95%' describes the **procedure**: 95% of generated intervals contain $\theta$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Simulating 1,000 independent 95% intervals: approximately 950 cover true $\mu = 0$, while roughly 50 miss entirely.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+true_mu = 0.0
+n = 30
+z = 1.96
+covered = 0
+reps = 500
+
+for _ in range(reps):
+    sample = np.random.normal(true_mu, 1.0, n)
+    m = np.mean(sample)
+    se = 1.0 / np.sqrt(n)
+    if (m - z * se) <= true_mu <= (m + z * se):
+        covered += 1
+
+coverage = covered / reps
+assert 0.92 < coverage < 0.98
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Stating that a single calculated 95% CI has a 95% chance of containing the parameter.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does the 95% in a 95% confidence interval describe?
+2. In frequentist statistics, is the parameter theta random?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The long-run coverage rate of the procedure across hypothetical repeated samples.
+2. No, theta is a fixed unknown constant.
 
 </details>
 
@@ -67,12 +74,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_Confidence_Intervals.md) · [Module README](../README.md) · [Next →](16_Credible_Intervals_and_the_Bayesian_Alternative.md)
+[Module README](../README.md) · [Next →](16_Credible_Intervals_and_the_Bayesian_Alternative.md)

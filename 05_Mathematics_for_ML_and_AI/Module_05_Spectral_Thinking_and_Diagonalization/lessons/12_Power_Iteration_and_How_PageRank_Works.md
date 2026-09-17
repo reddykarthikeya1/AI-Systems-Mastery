@@ -1,65 +1,67 @@
 # Lesson 05.12 — Power Iteration and How PageRank Works
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 12 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Implement power iteration to compute dominant eigenvalue and eigenvector.
+- [ ] Explain PageRank as finding the stationary eigenvector of a Markov transition matrix.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.08 Matrix Powers and 05.11 Spectral Theorem.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Power iteration computes the dominant eigenvector of $A$. Starting from a random vector $\mathbf{b}_0$, it repeatedly computes $\mathbf{b}_{k+1} = \frac{A\mathbf{b}_k}{\|A\mathbf{b}_k\|}$. By the Perron-Frobenius theorem, for a positive stochastic matrix, the dominant eigenvalue is $\lambda_1 = 1$, and its eigenvector is the stationary distribution $\mathbf{p} = M\mathbf{p}$ (PageRank).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $M = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}$ (columns sum to 1). Dominant eigenvalue is 1.0. Stationary vector satisfies $0.8 p_1 + 0.3 p_2 = p_1 \implies 0.3 p_2 = 0.2 p_1 \implies p_1 / p_2 = 3/2$. Normalized: $\mathbf{p} = [0.6, 0.4]^T$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+M = np.array([[0.8, 0.3], [0.2, 0.7]])
+
+# Power iteration
+b = np.array([0.5, 0.5])
+for _ in range(50):
+    b = M @ b
+    b = b / np.sum(b)
+
+assert np.allclose(b, [0.6, 0.4], atol=1e-5)
+assert np.allclose(M @ b, b)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Failing to normalize at each iteration, which causes exponential numerical overflow or underflow.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What governs the rate of convergence of power iteration?
+2. What is the dominant eigenvalue of a column-stochastic matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The ratio |lambda_2 / lambda_1|: smaller ratios converge faster.
+2. It is always exactly 1.0.
 
 </details>
 
@@ -67,12 +69,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](11_The_Spectral_Theorem_for_Symmetric_Matrices.md) · [Module README](../README.md) · [Next →](13_Module_Project_Spectral_Clustering_From_Scratch.md)
+[Module README](../README.md) · [Next →](13_Module_Project_Spectral_Clustering_From_Scratch.md)

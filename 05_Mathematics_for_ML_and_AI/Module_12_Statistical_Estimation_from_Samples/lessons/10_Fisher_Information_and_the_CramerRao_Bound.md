@@ -1,65 +1,62 @@
-# Lesson 12.10 — Fisher Information and the Cramer-Rao Bound
+# Lesson 12.10 — Fisher Information and the Cramér-Rao Bound
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 10 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute Fisher Information I(theta) = -E[d^2/dtheta^2 log f(X; theta)].
+- [ ] State Cramér-Rao Lower Bound: Var(theta_hat) >= 1 / (n I(theta)).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.09 Normal MLE.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Fisher Information** $I(\theta) = \mathbb{E}[(\frac{\partial \ell}{\partial \theta})^2] = -\mathbb{E}[\frac{\partial^2 \ell}{\partial \theta^2}]$ measures the curvature of the log-likelihood (how much information data carries about $\theta$). The **Cramér-Rao Lower Bound (CRLB)** states that no unbiased estimator can have variance lower than $\frac{1}{n I(\theta)}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $\mathcal{N}(\mu, \sigma^2)$, $I(\mu) = 1/\sigma^2$. CRLB is $\sigma^2/n$. The sample mean has variance $\sigma^2/n$, proving $\bar{X}$ is a Minimum Variance Unbiased Estimator (MVUE).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+sigma = 2.0
+n = 50
+fisher_info = 1.0 / (sigma**2)
+crlb = 1.0 / (n * fisher_info)
+assert np.isclose(crlb, (sigma**2) / n)
+assert np.isclose(crlb, 4.0 / 50.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming estimators can have zero variance. Any estimator based on a finite noisy sample is bounded below by the CRLB.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does the Cramér-Rao Lower Bound establish?
+2. What does high Fisher Information indicate about the likelihood peak?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The theoretical minimum variance achievable by any unbiased estimator.
+2. Sharp curvature (high confidence and low variance in parameter estimates).
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_MLE_for_the_Normal_and_Bernoulli.md) · [Module README](../README.md) · [Next →](11_Maximum_A_Posteriori_Estimation.md)
+[Module README](../README.md) · [Next →](11_Maximum_A_Posteriori_Estimation.md)

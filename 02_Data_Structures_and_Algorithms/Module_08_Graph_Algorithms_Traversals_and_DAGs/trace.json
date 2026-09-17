@@ -1,0 +1,88 @@
+{
+  "title": "Kahn's Algorithm BFS Topological Sort",
+  "algorithm": "Topological Sort via In-Degree Queue",
+  "timeComplexity": "O(V + E)",
+  "spaceComplexity": "O(V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Compute in-degrees: Node 0 in-degree is 0. Push 0 into queue.",
+      "array": [
+        "Node 0 (in:0)",
+        "Node 1 (in:1)",
+        "Node 2 (in:1)",
+        "Node 3 (in:2)"
+      ],
+      "pointers": {
+        "queue": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "queue": [
+          0
+        ],
+        "topoOrder": []
+      },
+      "invariants": "Nodes with 0 incoming dependencies are ready for scheduling"
+    },
+    {
+      "step": 2,
+      "description": "Pop Node 0, append to order. Decrement in-degree of Node 1 and 2 to 0! Push both.",
+      "array": [
+        "Node 0 (done)",
+        "Node 1 (in:0)",
+        "Node 2 (in:0)",
+        "Node 3 (in:2)"
+      ],
+      "pointers": {
+        "queue": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "active",
+        "2": "active"
+      },
+      "variables": {
+        "queue": [
+          1,
+          2
+        ],
+        "topoOrder": [
+          0
+        ]
+      },
+      "invariants": "Removing processed node reduces dependency counts of immediate neighbors"
+    },
+    {
+      "step": 3,
+      "description": "Process Nodes 1 and 2. Node 3 in-degree reaches 0. All 4 nodes processed!",
+      "array": [
+        "Node 0 (done)",
+        "Node 1 (done)",
+        "Node 2 (done)",
+        "Node 3 (done)"
+      ],
+      "pointers": {
+        "queue": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "topoOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "isDAG": true
+      },
+      "invariants": "Processed node count == V proves graph is a valid DAG (no cycles)"
+    }
+  ]
+}

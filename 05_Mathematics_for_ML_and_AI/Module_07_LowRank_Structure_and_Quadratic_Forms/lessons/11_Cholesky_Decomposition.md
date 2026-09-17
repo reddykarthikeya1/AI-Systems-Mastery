@@ -1,65 +1,67 @@
 # Lesson 07.11 — Cholesky Decomposition
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 11 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 11 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Decompose symmetric positive definite matrix A = L L^T.
+- [ ] Sample multivariate Gaussian vectors using Cholesky factor L.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 07.10 Positive Definiteness.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Every symmetric positive definite matrix $A$ has a unique decomposition $A = L L^T$, where $L$ is a lower triangular matrix with strictly positive diagonal entries. Cholesky is twice as fast as LU decomposition ($O(\frac{1}{3}n^3)$ vs $O(\frac{2}{3}n^3)$) and numerically stable.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 4 & 2 \\ 2 & 10 \end{bmatrix}$. $L_{11} = \sqrt{4} = 2$. $L_{21} = 2 / 2 = 1$. $L_{22} = \sqrt{10 - 1^2} = 3$. So $L = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[4.0, 2.0], [2.0, 10.0]])
+L = np.linalg.cholesky(A)
+
+assert np.allclose(L, [[2.0, 0.0], [1.0, 3.0]])
+assert np.allclose(L @ L.T, A)
+
+# Sampling multivariate normal: y = mu + L @ z
+z = np.array([1.0, -1.0])
+sample = L @ z
+assert len(sample) == 2
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Calling Cholesky on a covariance matrix with numerical zero/negative eigenvalues due to floating point roundoff. Adding jitter (eps * I) fixes it.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is Cholesky faster than LU decomposition?
+2. How is Cholesky used to sample from a Gaussian distribution with covariance Sigma?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because symmetry halves the required arithmetic operations to n^3 / 3.
+2. Sample standard normal z ~ N(0, I) and compute x = mu + L z where Sigma = L L^T.
 
 </details>
 
@@ -67,12 +69,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](10_Positive_Definiteness_and_Its_Tests.md) · [Module README](../README.md) · [Next →](12_Module_Project_Image_Compression_and_a_Recommender_Both_by_SVD.md)
+[Module README](../README.md) · [Next →](12_Module_Project_Image_Compression_and_a_Recommender_Both_by_SVD.md)

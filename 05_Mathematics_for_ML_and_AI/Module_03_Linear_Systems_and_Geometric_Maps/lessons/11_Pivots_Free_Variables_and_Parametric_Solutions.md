@@ -1,65 +1,65 @@
 # Lesson 03.11 — Pivots, Free Variables and Parametric Solutions
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 11 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Identify basic (pivot) variables and free variables.
+- [ ] Express under-determined solution sets in parametric vector form x = x_p + s v1.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.08 RREF.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In RREF, columns containing pivots correspond to **pivot variables**. Columns without pivots correspond to **free variables** (parameters that can take any value). The general solution is expressed as $\mathbf{x} = \mathbf{x}_p + \sum t_i \mathbf{v}_i$, where $\mathbf{x}_p$ is a particular solution and $\mathbf{v}_i$ span the null space.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Equation $x_1 + 2x_2 = 4$. Pivot in col 1, $x_2$ free ($x_2 = t$). General solution: $\begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 4 \\ 0 \end{bmatrix} + t \begin{bmatrix} -2 \\ 1 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0]])
+b = np.array([4.0])
+x_p = np.array([4.0, 0.0])
+v_null = np.array([-2.0, 1.0])
+
+# For any parameter t, A @ (x_p + t * v_null) == b
+for t in [-5.0, 0.0, 2.5, 10.0]:
+    sol = x_p + t * v_null
+    assert np.allclose(A @ sol, b)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Setting free variables to arbitrary constants and claiming the result is the only solution.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How many free variables does an m x n matrix with rank r have?
+2. What is the role of x_p in the parametric solution x = x_p + t v?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly n - r free variables.
+2. x_p is a particular solution satisfying A x_p = b.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](10_GaussJordan_Elimination.md) · [Module README](../README.md) · [Next →](12_Consistency_and_the_Rank_Condition.md)
+[Module README](../README.md) · [Next →](12_Consistency_and_the_Rank_Condition.md)

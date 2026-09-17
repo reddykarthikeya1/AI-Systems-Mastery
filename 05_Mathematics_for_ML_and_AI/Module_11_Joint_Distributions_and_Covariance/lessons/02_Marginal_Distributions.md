@@ -1,65 +1,65 @@
 # Lesson 11.02 — Marginal Distributions
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 2 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute marginal distributions by summing out nuisance variables: P(X=x) = sum_y P(x, y).
+- [ ] Perform axis summation in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.01 Joint Distributions.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Marginalization** collapses a joint distribution onto one variable by summing over all possible states of the other: $P(X = x) = \sum_y P(X = x, Y = y)$. In machine learning, marginalization removes unobserved latent variables.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Using the joint table: $P(X=0) = 0.4 + 0.2 = 0.6$. $P(X=1) = 0.1 + 0.3 = 0.4$. Note $0.6 + 0.4 = 1.0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+joint = np.array([[0.4, 0.2], [0.1, 0.3]])
+# Marginal of X (sum across columns)
+p_x = np.sum(joint, axis=1)
+# Marginal of Y (sum across rows)
+p_y = np.sum(joint, axis=0)
+
+assert np.allclose(p_x, [0.6, 0.4])
+assert np.allclose(p_y, [0.5, 0.5])
+assert np.isclose(np.sum(p_x), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Summing along the wrong NumPy axis (axis=0 vs axis=1) when computing marginals.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How is P(X=x) obtained from the joint distribution P(X=x, Y=y)?
+2. What is the sum of a marginal distribution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. By summing out y over all its possible values.
+2. Exactly 1.0.
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_Joint_Distributions_of_Two_Variables.md) · [Module README](../README.md) · [Next →](03_Conditional_Distributions.md)
+[Module README](../README.md) · [Next →](03_Conditional_Distributions.md)

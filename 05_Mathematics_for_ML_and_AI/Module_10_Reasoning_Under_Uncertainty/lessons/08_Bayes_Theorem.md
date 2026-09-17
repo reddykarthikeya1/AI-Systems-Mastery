@@ -1,65 +1,63 @@
 # Lesson 10.08 — Bayes' Theorem
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 8 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Invert conditional probabilities via Bayes' Theorem: P(B | A) = P(A | B) P(B) / P(A).
+- [ ] Update prior beliefs into posterior probabilities.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.05 Conditional Probability and 10.07 Law of Total Probability.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Bayes' Theorem** is the mathematical engine of belief revision:
+$$P(B_j \mid A) = \frac{P(A \mid B_j) P(B_j)}{\sum_i P(A \mid B_i) P(B_i)} = \frac{\text{Likelihood} \times \text{Prior}}{\text{Evidence}}$$
+It calculates the probability of cause $B_j$ given observed effect $A$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Using the factory: Given a part is defective ($D$), what is the probability it came from Machine 2? $P(M_2 \mid D) = \frac{P(D \mid M_2) P(M_2)}{P(D)} = \frac{0.05 \times 0.4}{0.032} = \frac{0.020}{0.032} = 0.625$ (62.5%).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p_m2 = 0.4
+p_d_m2 = 0.05
+p_d = 0.032
+p_m2_given_d = (p_d_m2 * p_m2) / p_d
+assert np.isclose(p_m2_given_d, 0.625)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Neglecting the prior P(B) and equating P(B | A) with the likelihood P(A | B).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the numerator in Bayes' rule?
+2. What role does the denominator P(A) play?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Likelihood times Prior: P(A | B) P(B).
+2. It acts as a normalizer ensuring posterior probabilities sum to 1.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_The_Law_of_Total_Probability.md) · [Module README](../README.md) · [Next →](09_Base_Rates_and_the_Prosecutors_Fallacy.md)
+[Module README](../README.md) · [Next →](09_Base_Rates_and_the_Prosecutors_Fallacy.md)

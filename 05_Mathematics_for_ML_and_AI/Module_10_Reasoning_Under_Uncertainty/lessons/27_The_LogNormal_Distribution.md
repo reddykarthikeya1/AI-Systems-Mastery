@@ -1,65 +1,59 @@
 # Lesson 10.27 — The Log-Normal Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 27 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Log-Normal: X ~ LogNormal iff log(X) ~ Normal.
+- [ ] Model multiplicative growth and heavy-tailed positive quantities.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.24 Normal Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A variable $X > 0$ is **Log-Normal** if its logarithm is normally distributed: $\log X \sim \mathcal{N}(\mu, \sigma^2)$. By the multiplicative CLT, products of many positive random variables converge to Log-Normal (incomes, stock prices, latency).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $\log X \sim \mathcal{N}(0, 1)$, median is $e^0 = 1.0$, but mean is $e^{0 + 1/2} = \sqrt{e} \approx 1.649$ (right-skewed).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+mu, sigma = 0.0, 1.0
+theoretical_mean = np.exp(mu + (sigma**2) / 2.0)
+assert np.isclose(theoretical_mean, np.exp(0.5))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Taking arithmetic mean of log-normal data and assuming it represents the typical (median) user experience.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. If X is Log-Normal, what distribution does log(X) follow?
+2. Why is network latency typically Log-Normal rather than Normal?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A Normal distribution.
+2. Because latency compounds multiplicatively across routing hops and queue stages.
 
 </details>
 
@@ -67,12 +61,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](26_The_Standard_Normal_and_ZScores.md) · [Module README](../README.md) · [Next →](28_The_Beta_Distribution.md)
+[Module README](../README.md) · [Next →](28_The_Beta_Distribution.md)

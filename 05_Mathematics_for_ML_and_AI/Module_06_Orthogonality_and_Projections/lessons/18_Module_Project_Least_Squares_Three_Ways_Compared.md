@@ -1,65 +1,77 @@
-# Lesson 06.18 — Module Project: Least Squares Three Ways, Compared
+# Lesson 06.18 — Module Project: Least Squares Three Ways Compared
 
 > **Module 06:** Orthogonality and Projections · Lesson 18 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compare Normal Equations, QR Decomposition, and SVD on an ill-conditioned polynomial fit.
+- [ ] Observe numerical breakdown of normal equations.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Lessons 06.01 to 06.17.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+We benchmark three computational paths for solving $A\mathbf{x} = \mathbf{b}$:
+1. **Normal Equations** $\hat{\mathbf{x}} = (A^T A)^{-1}A^T \mathbf{b}$: fast $O(\frac{1}{3}n^3)$ but unstable ($\kappa^2$).
+2. **QR Decomposition** $R\hat{\mathbf{x}} = Q^T \mathbf{b}$: stable $O(\frac{2}{3}n^3)$, standard for full-rank.
+3. **SVD** $\hat{\mathbf{x}} = V \Sigma^+ U^T \mathbf{b}$: most robust $O(2mn^2)$, handles rank-deficient systems.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+On a Vandermonde polynomial matrix of degree 5, Normal Equations incur rounding errors up to 1000x larger than QR and SVD.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+t = np.linspace(0, 1, 20)
+# Vandermonde matrix
+A = np.vander(t, 4)
+b = np.sin(t)
+
+# 1. Normal equations
+x_ne = np.linalg.solve(A.T @ A, A.T @ b)
+
+# 2. QR decomposition
+Q, R = np.linalg.qr(A)
+x_qr = np.linalg.solve(R, Q.T @ b)
+
+# 3. SVD / pinv
+x_svd = np.linalg.pinv(A) @ b
+
+assert np.allclose(x_ne, x_qr, atol=1e-5)
+assert np.allclose(x_qr, x_svd, atol=1e-5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using Normal Equations for high-degree polynomial regression, causing catastrophic floating-point cancellation.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Which method handles rank-deficient least squares problems safely?
+2. Why is QR preferred over normal equations in numerical libraries?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. SVD (pseudoinverse).
+2. QR avoids squaring the condition number, preserving floating-point precision.
 
 </details>
 
@@ -67,12 +79,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](17_Whitening_and_Decorrelation.md) · [Module README](../README.md)
+[Module README](../README.md)

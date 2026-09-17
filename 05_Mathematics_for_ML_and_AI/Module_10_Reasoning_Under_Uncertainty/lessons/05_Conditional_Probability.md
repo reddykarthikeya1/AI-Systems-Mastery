@@ -1,65 +1,62 @@
 # Lesson 10.05 — Conditional Probability
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 5 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define conditional probability P(A | B) = P(A cap B) / P(B).
+- [ ] Update sample space from Omega to B.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.03 Probability Axioms.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Conditioning on event $B$ shrinks the effective sample space from $\Omega$ down to $B$:
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)} \quad (\text{for } P(B) > 0)$$
+It answers: *Given that B has definitively occurred, what fraction of B also belongs to A?*
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Die roll: $P(\text{roll } 4) = 1/6$. Given that the roll is even ($B=\{2, 4, 6\}$, $P(B)=1/2$), $P(4 \mid \text{even}) = (1/6) / (1/2) = 1/3$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p_ab = 1.0 / 6.0
+p_b = 3.0 / 6.0
+p_a_given_b = p_ab / p_b
+assert np.isclose(p_a_given_b, 1.0 / 3.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing P(A | B) with P(B | A). (e.g. P(cough | lung cancer) != P(lung cancer | cough)).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Is P(A | B) generally equal to P(B | A)?
+2. What is P(B | B)?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, the direction of conditioning alters the denominator and meaning.
+2. Exactly 1.0.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](04_Counting_Permutations_and_Combinations.md) · [Module README](../README.md) · [Next →](06_Independence_versus_Conditional_Independence.md)
+[Module README](../README.md) · [Next →](06_Independence_versus_Conditional_Independence.md)

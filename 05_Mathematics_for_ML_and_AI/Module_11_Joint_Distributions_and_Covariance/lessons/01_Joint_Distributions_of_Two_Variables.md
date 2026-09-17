@@ -1,65 +1,59 @@
 # Lesson 11.01 — Joint Distributions of Two Variables
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 1 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Represent joint probability tables P(X = x, Y = y).
+- [ ] Verify total probability normalization sum_{x, y} P(x, y) = 1 in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Discrete probability (Module 10).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **joint distribution** $P(X = x, Y = y)$ assigns probabilities to simultaneous outcomes of two random variables. It captures both individual behavior and the dependencies between them. Normalization requires $\sum_x \sum_y P(X=x, Y=y) = 1$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $X, Y \in \{0, 1\}$. Probabilities: $P(0, 0) = 0.4, P(0, 1) = 0.2, P(1, 0) = 0.1, P(1, 1) = 0.3$. Sum is $0.4 + 0.2 + 0.1 + 0.3 = 1.0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+joint = np.array([[0.4, 0.2], [0.1, 0.3]])
+assert np.isclose(np.sum(joint), 1.0)
+assert np.all(joint >= 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Summing joint probabilities across rows only and forgetting that normalization applies to the entire 2D table.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What must the sum of all elements in a joint probability table equal?
+2. Can any joint probability entry be negative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly 1.0.
+2. No, probabilities must be non-negative.
 
 </details>
 
@@ -67,11 +61,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

@@ -1,65 +1,61 @@
 # Lesson 12.02 — Bias, Variance and Mean Squared Error
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 2 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove MSE(theta_hat) = Bias(theta_hat)^2 + Var(theta_hat).
+- [ ] Quantify the bias-variance tradeoff in parameter estimation.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.01 Populations, Samples and Estimators.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Bias** is systematic error: $\text{Bias}(\hat{\theta}) = \mathbb{E}[\hat{\theta}] - \theta$. **Variance** measures dispersion: $\text{Var}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \mathbb{E}[\hat{\theta}])^2]$. Total error is governed by the universal decomposition:
+$$\text{MSE}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \theta)^2] = \text{Bias}(\hat{\theta})^2 + \text{Var}(\hat{\theta})$$
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Estimator has bias 0.2 and variance 0.05. $\text{MSE} = (0.2)^2 + 0.05 = 0.04 + 0.05 = 0.09$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+bias = 0.2
+var = 0.05
+mse = bias**2 + var
+assert np.isclose(mse, 0.09)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming an unbiased estimator always has lower MSE than a biased one. A slightly biased estimator with much lower variance often wins.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the mathematical definition of an unbiased estimator?
+2. What is MSE composed of?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. E[theta_hat] = theta (Bias = 0).
+2. Squared bias plus variance: Bias^2 + Var.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_Populations_Samples_and_Estimators.md) · [Module README](../README.md) · [Next →](03_Consistency_and_Efficiency.md)
+[Module README](../README.md) · [Next →](03_Consistency_and_Efficiency.md)

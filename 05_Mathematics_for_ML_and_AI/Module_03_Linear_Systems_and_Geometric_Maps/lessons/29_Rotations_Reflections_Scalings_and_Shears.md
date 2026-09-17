@@ -1,65 +1,69 @@
 # Lesson 03.29 — Rotations, Reflections, Scalings and Shears
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 29 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Construct 2D matrices for rotation R(theta), reflection, non-uniform scaling, and horizontal/vertical shear.
+- [ ] Verify geometric properties in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.28 Linear Maps as Geometric Transformations.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Fundamental 2D linear building blocks:
+- **Rotation**: $R_\theta = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}$
+- **Scaling**: $S = \begin{bmatrix} s_x & 0 \\ 0 & s_y \end{bmatrix}$
+- **Reflection**: $M_x = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$
+- **Shear**: $H_x = \begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix}$ (preserves area, $\det = 1$).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Horizontal shear with $k = 2$: point $(1, 1)$ transforms to $(1 + 2(1), 1) = (3, 1)$. Area of unit square is preserved: $\det(H) = 1(1) - 2(0) = 1$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+theta = np.pi / 2
+R = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+v = np.array([1.0, 0.0])
+assert np.allclose(R @ v, [0.0, 1.0])
+
+H = np.array([[1.0, 2.0], [0.0, 1.0]])
+p = np.array([1.0, 1.0])
+assert np.allclose(H @ p, [3.0, 1.0])
+assert np.isclose(np.linalg.det(H), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming shear transformations alter area. A pure shear preserves area perfectly (det = 1).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the determinant of a shear matrix?
+2. What is the determinant of a 2D rotation matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly 1.0.
+2. Exactly 1.0.
 
 </details>
 
@@ -67,12 +71,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](28_Linear_Maps_as_Geometric_Transformations.md) · [Module README](../README.md) · [Next →](30_Composing_Transformations.md)
+[Module README](../README.md) · [Next →](30_Composing_Transformations.md)

@@ -1,65 +1,62 @@
 # Lesson 04.01 — Vectors as Arrows and as Lists
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 1 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Connect the geometric view of vectors (directed arrows) with the algebraic view (ordered lists of numbers).
+- [ ] Perform vector operations and verify length invariance in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Cartesian coordinates.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In physics and geometry, a **vector** is a directed arrow having magnitude and direction, invariant to where its tail is placed. In computer science and ML, a vector is an ordered tuple $\mathbf{x} = [x_1, \dots, x_n]^T \in \mathbb{R}^n$ representing coordinates relative to standard basis axes.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Vector from $(1, 2)$ to $(4, 6)$ has displacement components $\mathbf{v} = [4-1, 6-2]^T = [3, 4]^T$. Its Euclidean magnitude is $\|\mathbf{v}\| = \sqrt{3^2 + 4^2} = 5$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+tail = np.array([1.0, 2.0])
+tip = np.array([4.0, 6.0])
+v = tip - tail
+length = np.linalg.norm(v)
+assert np.allclose(v, [3.0, 4.0])
+assert np.isclose(length, 5.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating points and vectors as identical objects without recognizing that vectors represent displacements.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Does shifting the origin change the displacement vector between two points?
+2. What does a coordinate vector represent?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, displacements are invariant under pure translation.
+2. The coordinates of a vector relative to a specific chosen basis.
 
 </details>
 
@@ -67,11 +64,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

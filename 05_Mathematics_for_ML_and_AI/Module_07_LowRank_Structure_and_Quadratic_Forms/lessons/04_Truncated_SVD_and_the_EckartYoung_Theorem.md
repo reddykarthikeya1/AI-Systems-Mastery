@@ -1,65 +1,68 @@
 # Lesson 07.04 — Truncated SVD and the Eckart-Young Theorem
 
-> **Module 07:** Low-Rank Structure and Quadratic Forms · Lesson 4 of 12
-> **Status:** 🔴 Not written — this is a scaffold stub.
+> **Module 07:** LowRank Structure and Quadratic Forms · Lesson 4 of 12
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Formulate the Eckart-Young-Mirsky optimal low-rank approximation theorem.
+- [ ] Construct rank-k truncated SVD approximations.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 07.01 SVD Statement.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Eckart-Young Theorem** states that the best rank-$k$ approximation ($k < r$) to matrix $A$ in both Frobenius and Spectral norms is the truncated SVD: $A_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T$. The approximation error is $\|A - A_k\|_2 = \sigma_{k+1}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A$ have singular values 10, 4, 1. The best rank-1 approximation error is $\sigma_2 = 4$. The best rank-2 approximation error is $\sigma_3 = 1$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+A = np.array([[10.0, 0.0, 0.0],
+              [0.0,  4.0, 0.0],
+              [0.0,  0.0, 1.0]])
+
+U, s, Vt = np.linalg.svd(A)
+
+# Rank-1 approximation
+A1 = s[0] * np.outer(U[:, 0], Vt[0])
+err_spectral = np.linalg.norm(A - A1, ord=2)
+assert np.isclose(err_spectral, s[1])
+assert np.isclose(err_spectral, 4.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Trying to obtain low-rank approximations by zeroing arbitrary elements of A instead of truncating singular components.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the spectral norm error of the rank-k truncated SVD?
+2. What does the Eckart-Young theorem guarantee?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. sigma_{k+1}.
+2. That truncated SVD is the globally optimal rank-k approximation under both Frobenius and spectral norms.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_Singular_Values_versus_Eigenvalues.md) · [Module README](../README.md) · [Next →](05_LowRank_Approximation_in_Practice.md)
+[Module README](../README.md) · [Next →](05_LowRank_Approximation_in_Practice.md)

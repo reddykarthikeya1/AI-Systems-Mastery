@@ -1,6 +1,6 @@
 # Course 12: LLM Evaluation Science, Guardrails & Safety
 
-Welcome to the definitive, production-grade engineering masterclass on **LLM Evaluation Science, Guardrails & Safety**.
+Implement rigorous evaluation harnesses, red teaming suites, and safety guardrails. Build deterministic sanitizers, semantic moderation classifiers, jailbreak probes, and automated LLM judge pipelines.
 
 ---
 

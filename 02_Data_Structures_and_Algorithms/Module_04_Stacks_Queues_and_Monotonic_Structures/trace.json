@@ -1,0 +1,91 @@
+{
+  "title": "Monotonic Decreasing Stack: Next Greater Element",
+  "algorithm": "Monotonic Stack Evaluation",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(n)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Process element 2 (idx 0). Stack is empty -> push 0.",
+      "array": [
+        2,
+        1,
+        5,
+        6,
+        2,
+        3
+      ],
+      "pointers": {
+        "curr": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "stack": [
+          0
+        ],
+        "val": 2
+      },
+      "invariants": "Stack stores indices of elements waiting for next greater target"
+    },
+    {
+      "step": 2,
+      "description": "Process element 1 (idx 1). 1 < 2 -> push 1. Stack = [0, 1].",
+      "array": [
+        2,
+        1,
+        5,
+        6,
+        2,
+        3
+      ],
+      "pointers": {
+        "curr": 1
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active"
+      },
+      "variables": {
+        "stack": [
+          0,
+          1
+        ],
+        "val": 1
+      },
+      "invariants": "Decreasing order maintained: array[0] (2) >= array[1] (1)"
+    },
+    {
+      "step": 3,
+      "description": "Process element 5 (idx 2). 5 > 1: Pop 1! 5 > 2: Pop 0! Next greater of 1 and 2 is 5.",
+      "array": [
+        2,
+        1,
+        5,
+        6,
+        2,
+        3
+      ],
+      "pointers": {
+        "curr": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "pivot"
+      },
+      "variables": {
+        "stack": [
+          2
+        ],
+        "val": 5,
+        "popped": [
+          1,
+          0
+        ]
+      },
+      "invariants": "Each element is pushed and popped at most once -> Amortized O(n)"
+    }
+  ]
+}

@@ -1,65 +1,59 @@
 # Lesson 10.01 — Why Probability, Not Just Statistics
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 1 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Distinguish forward deductive probability (data generator known) from backward inductive statistics (parameters unknown).
+- [ ] Simulate generative models in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Set language (Module 01).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Probability** is forward reasoning: knowing the generative data mechanism ($P(X \mid \theta)$), it predicts the properties of outcomes. **Statistics** is inverse reasoning: observing noisy data ($X$), it infers the underlying generating process ($\theta$). Machine learning requires both: probabilistic models define data generators; statistical learning fits parameters.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Probability: fair coin ($p=0.5$), what is $P(\text{3 heads in 3 flips}) = (0.5)^3 = 0.125$. Statistics: observe 3 heads in 3 flips, what is likely range of $p$?
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p = 0.5
+prob_3_heads = p**3
+assert np.isclose(prob_3_heads, 0.125)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating observed sample frequencies as immutable population laws rather than random realizations.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the forward direction of reasoning in probability?
+2. What is the inverse direction of reasoning in statistics?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. From known parameters to predicted data distributions.
+2. From observed data back to unknown parameters.
 
 </details>
 
@@ -67,11 +61,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

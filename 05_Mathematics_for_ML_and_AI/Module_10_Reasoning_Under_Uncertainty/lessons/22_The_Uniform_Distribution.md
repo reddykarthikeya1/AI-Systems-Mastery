@@ -1,65 +1,61 @@
 # Lesson 10.22 — The Uniform Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 22 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Uniform U(a, b) PDF f(x) = 1/(b-a).
+- [ ] Compute mean (a+b)/2 and variance (b-a)^2 / 12.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.13 Continuous PDF.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The continuous **Uniform distribution** $U(a, b)$ assigns constant probability density $f(x) = \frac{1}{b-a}$ over $[a, b]$. It represents maximum ignorance (maximum entropy) over a bounded interval. $\mathbb{E}[X] = \frac{a+b}{2}$, $\text{Var}(X) = \frac{(b-a)^2}{12}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $U(0, 10)$: mean is 5.0, variance is $10^2 / 12 = 100/12 \approx 8.333$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+a, b = 0.0, 10.0
+mean = (a + b) / 2.0
+var = (b - a)**2 / 12.0
+assert np.isclose(mean, 5.0)
+assert np.isclose(var, 100.0 / 12.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming standard pseudorandom generators like `np.random.rand()` generate discrete integers rather than continuous floats in [0, 1).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the variance of a standard uniform U(0, 1)?
+2. What distribution maximizes entropy on a bounded interval?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 1/12.
+2. The Uniform distribution.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](21_The_Poisson_Distribution.md) · [Module README](../README.md) · [Next →](23_The_Exponential_Distribution_and_Memorylessness.md)
+[Module README](../README.md) · [Next →](23_The_Exponential_Distribution_and_Memorylessness.md)

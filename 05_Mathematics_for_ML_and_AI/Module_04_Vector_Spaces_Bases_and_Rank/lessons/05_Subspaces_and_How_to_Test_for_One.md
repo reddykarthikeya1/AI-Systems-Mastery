@@ -1,65 +1,68 @@
 # Lesson 04.05 — Subspaces and How to Test for One
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 5 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Test a subset for the 3 subspace criteria: contains 0, closed under addition, closed under scalar multiplication.
+- [ ] Verify that lines/planes not passing through the origin are NOT subspaces.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.03 Vector Space Axioms.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A subset $W \subseteq V$ is a **subspace** if and only if:
+1. The zero vector $\mathbf{0} \in W$.
+2. If $\mathbf{u}, \mathbf{v} \in W$, then $\mathbf{u} + \mathbf{v} \in W$ (closed under addition).
+3. If $\mathbf{u} \in W$ and $c \in \mathbb{R}$, then $c\mathbf{u} \in W$ (closed under scalar multiplication).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+The line $x_1 + x_2 = 0$ is a subspace: $(0, 0)$ is on the line, sum of two points is on the line, and scaling preserves the line. The line $x_1 + x_2 = 1$ is NOT a subspace because $(0, 0)$ is not on the line.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Test line through origin x1 + x2 = 0
+v1 = np.array([1.0, -1.0])
+v2 = np.array([-3.0, 3.0])
+zero = np.array([0.0, 0.0])
+
+# Subspace checks
+assert np.isclose(zero[0] + zero[1], 0.0)
+assert np.isclose((v1 + v2)[0] + (v1 + v2)[1], 0.0)
+assert np.isclose((5.0 * v1)[0] + (5.0 * v1)[1], 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Claiming an affine plane (e.g. z = 5) is a subspace. Because 0 is not in the plane, it is not a subspace.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is a plane not passing through the origin never a vector subspace?
+2. How many conditions are needed to verify a subset is a subspace?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because it does not contain the zero vector.
+2. Three: contains zero, closed under addition, closed under scalar multiplication.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](04_Examples_Rn_Polynomials_and_Function_Spaces.md) · [Module README](../README.md) · [Next →](06_Span_of_a_Set_of_Vectors.md)
+[Module README](../README.md) · [Next →](06_Span_of_a_Set_of_Vectors.md)

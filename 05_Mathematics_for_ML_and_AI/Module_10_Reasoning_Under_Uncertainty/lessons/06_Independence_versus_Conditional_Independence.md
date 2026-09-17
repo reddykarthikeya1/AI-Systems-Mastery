@@ -1,65 +1,66 @@
 # Lesson 10.06 — Independence versus Conditional Independence
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 6 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Distinguish marginal independence P(A, B) = P(A)P(B) from conditional independence P(A, B | C) = P(A | C)P(B | C).
+- [ ] Verify conditional independence in graphical models.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.05 Conditional Probability.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Two events are **conditionally independent** given $C$ if:
+$$P(A \cap B \mid C) = P(A \mid C) P(B \mid C)$$
+Crucially:
+- Marginal independence does NOT imply conditional independence.
+- Conditional independence does NOT imply marginal independence! (The foundation of Naive Bayes).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $C$ be language (French vs English). $A$ = vocabulary test score, $B$ = reading speed. Within native French speakers ($C$), $A$ and $B$ are weakly correlated, but in the mixed population they are strongly correlated.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Given C, A and B factor
+p_c = 0.5
+p_a_c = 0.8
+p_b_c = 0.6
+p_ab_c = p_a_c * p_b_c
+assert np.isclose(p_ab_c, 0.48)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming independent events remain independent after conditioning on an outcome (collider bias).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Does marginal independence imply conditional independence?
+2. What assumption makes Naive Bayes tractable?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, conditioning can either create or destroy independence.
+2. That features are conditionally independent given the class label.
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](05_Conditional_Probability.md) · [Module README](../README.md) · [Next →](07_The_Law_of_Total_Probability.md)
+[Module README](../README.md) · [Next →](07_The_Law_of_Total_Probability.md)

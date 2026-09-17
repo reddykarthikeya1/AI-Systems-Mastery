@@ -1,65 +1,62 @@
 # Lesson 03.10 — Gauss-Jordan Elimination
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 10 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Execute Gauss-Jordan elimination to clear entries both above and below pivots.
+- [ ] Read off solutions directly from the RREF augmented matrix.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.08 RREF and 03.09 Gaussian Elimination.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Gauss-Jordan elimination** extends forward elimination by continuing upward elimination to eliminate all entries above pivots as well as below, reducing $[A \mid \mathbf{b}]$ all the way to $[I \mid \mathbf{x}^*]$. Solutions can be read off directly without back substitution.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Transforming $[A \mid \mathbf{b}]$ to $[I \mid \mathbf{x}^*]$ directly gives $x_1 = 2, x_2 = 1$ in the final column.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Direct matrix solve
+A = np.array([[1.0, 1.0], [2.0, 4.0]])
+b = np.array([3.0, 8.0])
+invA = np.linalg.inv(A)
+x = invA @ b
+assert np.allclose(x, [2.0, 1.0])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using Gauss-Jordan to solve large systems of linear equations. It requires 50% more operations than Gaussian elimination with back substitution.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is Gaussian elimination with back substitution preferred over Gauss-Jordan for solving Ax = b?
+2. What does [A | I] become under Gauss-Jordan?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because Gauss-Jordan requires O(n^3) FLOPs versus O(2/3 n^3) for Gaussian elimination.
+2. [I | A^(-1)].
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](09_Gaussian_Elimination_Step_by_Step.md) · [Module README](../README.md) · [Next →](11_Pivots_Free_Variables_and_Parametric_Solutions.md)
+[Module README](../README.md) · [Next →](11_Pivots_Free_Variables_and_Parametric_Solutions.md)

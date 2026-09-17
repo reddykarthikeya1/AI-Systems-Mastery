@@ -1,65 +1,62 @@
 # Lesson 12.01 — Populations, Samples and Estimators
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 1 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Distinguish fixed population parameter theta from random sample estimator theta_hat.
+- [ ] Compute plug-in empirical sample estimates in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Random variables and expectation (Module 10).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **population** is the full underlying data distribution with fixed true parameter $\theta$. A **sample** $\{x_1, \dots, x_n\}$ is a random draw of size $n$. An **estimator** $\hat{\theta}(X_1, \dots, X_n)$ is a function (statistic) of the sample. Because the sample is random, $\hat{\theta}$ is itself a random variable with its own distribution.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For population mean $\mu = 10$, sample is $[8, 12, 11, 9]$. Sample mean is $\hat{\mu} = (8+12+11+9)/4 = 10.0$. Another sample might yield $9.5$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+pop_mean = 10.0
+sample = np.array([8.0, 12.0, 11.0, 9.0])
+sample_mean = np.mean(sample)
+assert np.isclose(sample_mean, pop_mean)
+assert isinstance(sample_mean, float)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Treating sample statistics as fixed constants rather than realizations of random variables.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Is the true population parameter theta random?
+2. Why does estimator theta_hat vary across samples?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, in classical statistics theta is a fixed unknown constant.
+2. Because each sample contains a different random subset of data.
 
 </details>
 
@@ -67,11 +64,11 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 

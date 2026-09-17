@@ -1,78 +1,67 @@
-# Lesson 09.29 — Gradient Descent: The Update Rule
+# Lesson 09.29: Gradient Descent: The Update Rule
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 29 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Formulate the gradient descent iteration: x_{t+1} = x_t - eta nabla f(x_t).
+- Implement basic gradient descent on quadratic surfaces.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.09 Why the Gradient Points Uphill.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+**Gradient descent** iteratively updates parameters along the negative gradient direction:
+$$\mathbf{x}_{t+1} = \mathbf{x}_t - \eta \nabla f(\mathbf{x}_t)$$
+where $\eta > 0$ is the learning rate (step size). For sufficiently small $\eta$, each step guarantees a local decrease in objective value: $f(\mathbf{x}_{t+1}) < f(\mathbf{x}_t)$ whenever $\nabla f(\mathbf{x}_t) \ne \mathbf{0}$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x) = x^2$, $\nabla f(x) = 2x$. With $x_0 = 4.0$ and $\eta = 0.1$:
+$x_1 = 4.0 - 0.1(2 \times 4.0) = 4.0 - 0.8 = 3.2$.
+$x_2 = 3.2 - 0.1(2 \times 3.2) = 3.2 - 0.64 = 2.56$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x = 4.0
+eta = 0.1
+for _ in range(2):
+    x = x - eta * (2.0 * x)
+assert np.isclose(x, 2.56)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Setting learning rate too high, causing gradient descent to oscillate and diverge exponentially.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the update equation for standard gradient descent?
+2. When does gradient descent stop moving?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. x_{t+1} = x_t - eta * nabla f(x_t).
+2. When nabla f(x_t) = 0 (at a stationary/critical point).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](28_Jensens_Inequality.md) · [Module README](../README.md) · [Next →](30_Learning_Rate_and_Convergence.md)
+Next: [30_Learning_Rate_and_Convergence.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\30_Learning_Rate_and_Convergence.md)

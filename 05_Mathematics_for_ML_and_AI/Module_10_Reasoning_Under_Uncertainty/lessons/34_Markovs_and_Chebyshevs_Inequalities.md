@@ -1,65 +1,62 @@
 # Lesson 10.34 — Markov's and Chebyshev's Inequalities
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 34 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Apply Markov's inequality P(X >= a) <= E[X] / a for non-negative X.
+- [ ] Apply Chebyshev's inequality P(|X - mu| >= k sigma) <= 1 / k^2.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.15 Expected Value and 10.17 Variance.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Fundamental concentration inequalities:
+- **Markov's Inequality**: For non-negative $X \ge 0$ and $a > 0$: $P(X \ge a) \le \frac{\mathbb{E}[X]}{a}$.
+- **Chebyshev's Inequality**: For any distribution with finite variance: $P(|X - \mu| \ge k\sigma) \le \frac{1}{k^2}$.
+These provide rigorous distribution-free bounds on tail probabilities.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For any distribution whatsoever, the probability of deviating by more than $3\sigma$ from the mean is at most $1/3^2 = 1/9 \approx 11.1\%$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+k = 3.0
+chebyshev_bound = 1.0 / (k**2)
+assert np.isclose(chebyshev_bound, 1.0 / 9.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Applying Markov's inequality to variables that can take negative values.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What condition must X satisfy to apply Markov's inequality?
+2. According to Chebyshev, what is the maximum probability of deviating by >= 2 sigma?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. X must be non-negative: X >= 0.
+2. At most 1 / 2^2 = 25%.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](33_The_ChangeofVariables_Formula.md) · [Module README](../README.md) · [Next →](35_Concentration_and_Hoeffdings_Inequality.md)
+[Module README](../README.md) · [Next →](35_Concentration_and_Hoeffdings_Inequality.md)

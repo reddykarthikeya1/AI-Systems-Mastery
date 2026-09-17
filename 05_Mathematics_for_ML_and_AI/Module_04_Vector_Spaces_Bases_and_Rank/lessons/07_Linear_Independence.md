@@ -1,65 +1,68 @@
 # Lesson 04.07 — Linear Independence
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 7 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define linear independence: c1 v1 + ... + ck vk = 0 implies all c_i = 0.
+- [ ] Verify independence using matrix determinant and rank.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.06 Span of Vectors.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A set of vectors is **linearly independent** if no vector in the set can be written as a linear combination of the others:
+$$\sum_{i=1}^k c_i \mathbf{v}_i = \mathbf{0} \implies c_1 = c_2 = \dots = c_k = 0$$
+If non-trivial weights exist that produce $\mathbf{0}$, the vectors are **linearly dependent** (redundant).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $\mathbf{v}_1 = [1, 2]^T, \mathbf{v}_2 = [2, 4]^T$. Since $\mathbf{v}_2 = 2\mathbf{v}_1$, $2\mathbf{v}_1 - \mathbf{v}_2 = \mathbf{0}$. The coefficients $(2, -1)$ are non-zero, so the vectors are linearly dependent.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+# Independent vectors
+v1 = np.array([1.0, 0.0])
+v2 = np.array([0.0, 1.0])
+A_indep = np.column_stack([v1, v2])
+assert np.linalg.matrix_rank(A_indep) == 2
+
+# Dependent vectors
+v3 = np.array([2.0, 0.0])
+A_dep = np.column_stack([v1, v3])
+assert np.linalg.matrix_rank(A_dep) == 1
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming any set containing the zero vector can be independent. Any set containing 0 is automatically dependent since 1 * 0 = 0.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can a set of 4 vectors in R^3 ever be linearly independent?
+2. Can a set containing the zero vector be independent?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, at most 3 vectors can be linearly independent in R^3.
+2. Never.
 
 </details>
 
@@ -67,12 +70,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](06_Span_of_a_Set_of_Vectors.md) · [Module README](../README.md) · [Next →](08_Testing_Independence_by_Elimination.md)
+[Module README](../README.md) · [Next →](08_Testing_Independence_by_Elimination.md)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, Clock, ArrowRight, Play, CheckCircle2, Flame, Bookmark, Sparkles, Compass } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 import { soundService } from '../services/sound';
+import { renderMarkdownWithMath } from '../services/markdown';
 
 interface CourseCatalogProps {
   courses: CourseSummary[];
@@ -268,9 +269,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                   {course.title}
                 </h3>
 
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed">
-                  {course.description}
-                </p>
+                <div
+                  className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed [&>p]:inline [&>p]:m-0"
+                  dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(course.description) }}
+                />
               </div>
 
               <div className="pt-5 mt-6 border-t border-zinc-100 dark:border-zinc-800/70 flex items-center justify-between text-xs text-zinc-500">
@@ -295,9 +297,13 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                   ) : null}
                 </div>
 
-                <span className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs shrink-0">
+                <button
+                  type="button"
+                  aria-label={`View syllabus for ${course.title}`}
+                  className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs shrink-0 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
+                >
                   View Syllabus <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+                </button>
               </div>
             </div>
           );

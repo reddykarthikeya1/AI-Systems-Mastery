@@ -4,6 +4,7 @@ import {
   Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain, ShieldCheck 
 } from 'lucide-react';
 import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types';
+import { renderMarkdownWithMath } from '../services/markdown';
 
 interface SyllabusViewProps {
   course: CourseSummary;
@@ -113,9 +114,10 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
             {course.title}
           </h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-4xl leading-relaxed mt-2">
-            {course.description}
-          </p>
+          <div
+            className="text-sm text-zinc-600 dark:text-zinc-400 max-w-4xl leading-relaxed mt-2 [&>p]:inline [&>p]:m-0"
+            dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(course.description) }}
+          />
         </div>
 
         {/* Course Progress & Interactive Features Overview Bar */}

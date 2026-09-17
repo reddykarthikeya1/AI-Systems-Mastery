@@ -1,65 +1,63 @@
 # Lesson 03.07 — Row Echelon Form
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 7 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Identify the 3 criteria of Row Echelon Form (REF): leading entries move strictly right, zero rows at bottom.
+- [ ] Extract pivot positions.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.06 Elementary Row Operations.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A matrix is in **Row Echelon Form (REF)** if:
+1. All zero rows are at the bottom.
+2. The leading entry (pivot) of each non-zero row is strictly to the right of the leading entry above it.
+3. All entries below a pivot are zero.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Matrix $\begin{bmatrix} 2 & 1 & 4 \\ 0 & 3 & -1 \\ 0 & 0 & 5 \end{bmatrix}$ is in REF with pivots at $(0, 0), (1, 1), (2, 2)$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+M = np.array([[2.0, 1.0, 4.0], [0.0, 3.0, -1.0], [0.0, 0.0, 5.0]])
+# Check upper triangular structure (below diagonal entries are 0)
+assert np.allclose(np.tril(M, -1), 0.0)
+assert M[0, 0] != 0 and M[1, 1] != 0 and M[2, 2] != 0
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing Row Echelon Form (REF) with Reduced Row Echelon Form (RREF). REF requires zeros only below pivots.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Where must all-zero rows be located in REF?
+2. Must pivots in REF equal 1?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. At the very bottom of the matrix.
+2. No; pivots can be any non-zero number in general REF.
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](06_Elementary_Row_Operations.md) · [Module README](../README.md) · [Next →](08_Reduced_Row_Echelon_Form.md)
+[Module README](../README.md) · [Next →](08_Reduced_Row_Echelon_Form.md)

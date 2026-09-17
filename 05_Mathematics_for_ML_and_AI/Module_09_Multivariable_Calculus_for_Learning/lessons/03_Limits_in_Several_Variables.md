@@ -1,78 +1,69 @@
-# Lesson 09.03 — Limits in Several Variables
+# Lesson 09.03: Limits in Several Variables
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 3 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Understand path-dependent limits in R^n.
+- Prove non-existence of a multivariable limit by evaluating along different trajectories.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.01 Functions of Several Variables.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+In single-variable calculus, $x \to x_0$ has only two directions (left and right). In $\mathbb{R}^n$, $\mathbf{x} \to \mathbf{x}_0$ along infinitely many continuous paths. For $\lim_{\mathbf{x} \to \mathbf{x}_0} f(\mathbf{x}) = L$ to exist, the limit along **every conceivable trajectory** must equal $L$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Consider $f(x, y) = \frac{xy}{x^2 + y^2}$ as $(x, y) \to (0, 0)$. Along $y = mx$: $f(x, mx) = \frac{m x^2}{x^2 + m^2 x^2} = \frac{m}{1 + m^2}$. Since this depends on slope $m$, the limit does not exist!
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def f(x, y):
+    return (x * y) / (x**2 + y**2)
+
+# Path y = x (m = 1): limit is 1/2 = 0.5
+val_m1 = f(1e-5, 1e-5)
+# Path y = 2x (m = 2): limit is 2/5 = 0.4
+val_m2 = f(1e-5, 2e-5)
+
+assert np.isclose(val_m1, 0.5)
+assert np.isclose(val_m2, 0.4)
+assert not np.isclose(val_m1, val_m2)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Testing only the coordinate axes x=0 and y=0 to conclude a limit exists, missing diagonal or parabolic approach paths.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. How many approach directions exist when taking a limit in R^2?
+2. If lim along y=x is 1 and lim along y=2x is 2, does the limit exist?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Infinitely many paths (straight lines, parabolas, spirals, etc.).
+2. No, limit existence requires the exact same value along all paths.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](02_Level_Sets_and_Contour_Plots.md) · [Module README](../README.md) · [Next →](04_Continuity_in_Rn.md)
+Next: [04_Continuity_in_Rn.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\04_Continuity_in_Rn.md)

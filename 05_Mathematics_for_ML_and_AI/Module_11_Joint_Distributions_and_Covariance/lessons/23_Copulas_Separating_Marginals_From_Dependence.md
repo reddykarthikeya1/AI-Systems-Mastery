@@ -1,65 +1,66 @@
 # Lesson 11.23 — Copulas: Separating Marginals From Dependence
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 23 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State Sklar's Theorem: any joint CDF can be written as C(F_1(x_1), ..., F_d(x_d)).
+- [ ] Generate correlated non-Gaussian variables using Gaussian copula.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.01 Joint Distributions and Cumulative distribution functions (Module 10).
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+**Sklar's Theorem** states that any multivariate joint distribution can be decomposed into its **marginal distributions** and a **copula** $C:[0, 1]^d \to [0, 1]$ that models the pure dependence structure. This enables pairing arbitrary marginals (e.g. Student-t and Beta) with a joint dependency model.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Probability integral transform converts any continuous $X$ to uniform $U = F_X(X) \sim U(0, 1)$. Applying copula $C(u_1, u_2)$ couples them.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+from math import erf
+def norm_cdf(x):
+    return 0.5 * (1.0 + erf(x / np.sqrt(2.0)))
+
+# Standard normal samples transformed to uniform (0, 1)
+z = np.array([-1.96, 0.0, 1.96])
+u = np.array([norm_cdf(val) for val in z])
+assert np.isclose(u[1], 0.5)
+assert np.isclose(u[0], 0.025, atol=1e-3)
+assert np.isclose(u[2], 0.975, atol=1e-3)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming correlated variables must have identical distribution families.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does Sklar's theorem separate?
+2. What distribution does F_X(X) follow for any continuous random variable?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Marginal distributions from their underlying dependence structure (copula).
+2. The standard Uniform distribution U(0, 1).
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](22_Whitening_and_Mahalanobis_Distance.md) · [Module README](../README.md) · [Next →](24_Mutual_Information.md)
+[Module README](../README.md) · [Next →](24_Mutual_Information.md)

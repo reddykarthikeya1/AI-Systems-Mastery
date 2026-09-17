@@ -1,65 +1,63 @@
 # Lesson 04.18 — The Four Fundamental Subspaces
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 18 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State Gilbert Strang's Big Picture of Linear Algebra: col(A) perp null(A^T) in R^m and row(A) perp null(A) in R^n.
+- [ ] Verify orthogonal complements in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Lessons 04.13 through 04.17.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Strang's Four Fundamental Subspaces:
+- In Domain $\mathbb{R}^n$: $\text{row}(A)$ (dim $r$) $\perp$ $\text{null}(A)$ (dim $n-r$).
+- In Codomain $\mathbb{R}^m$: $\text{col}(A)$ (dim $r$) $\perp$ $\text{null}(A^T)$ (dim $m-r$).
+Every vector in the row space is orthogonal to every vector in the null space!
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 1 & 2 \end{bmatrix}$. Row space is $\text{span}([1, 2]^T)$. Null space is $\text{span}([-2, 1]^T)$. Dot product: $1(-2) + 2(1) = 0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0]])
+row_vec = A[0]
+null_vec = np.array([-2.0, 1.0])
+assert np.isclose(np.dot(row_vec, null_vec), 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Believing col(A) and null(A) are orthogonal. They live in different spaces (R^m vs R^n) when m != n!
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Which subspace is the orthogonal complement of the null space null(A)?
+2. Which subspace is the orthogonal complement of the column space col(A)?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The row space row(A).
+2. The left null space null(A^T).
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](17_The_RankNullity_Theorem.md) · [Module README](../README.md) · [Next →](19_What_Rank_Tells_You_About_a_Dataset.md)
+[Module README](../README.md) · [Next →](19_What_Rank_Tells_You_About_a_Dataset.md)

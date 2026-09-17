@@ -1,65 +1,61 @@
 # Lesson 11.18 — Geometry of the Multivariate Normal
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 18 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Identify contours of constant density as ellipsoids (x - mu)^T Sigma^(-1) (x - mu) = c^2.
+- [ ] Connect principal axes to eigenvectors and eigenvalues of Sigma.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.17 Multivariate Normal and 05.11 Spectral Theorem.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Equi-density surfaces of the MVN are hyper-ellipsoids centered at $\boldsymbol{\mu}$. By spectral theorem $\Sigma = Q \Lambda Q^T$, the directions of the semi-axes are given by eigenvectors $\mathbf{q}_i$, and the lengths of the semi-axes are proportional to standard deviations $\sqrt{\lambda_i}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+If $\Sigma = \begin{bmatrix} 4 & 0 \\ 0 & 1 \end{bmatrix}$, axes are aligned with coordinate axes with standard deviations $\sqrt{4}=2$ along $x$ and $\sqrt{1}=1$ along $y$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+Sigma = np.array([[4.0, 0.0], [0.0, 1.0]])
+vals, vecs = np.linalg.eigh(Sigma)
+axis_lengths = np.sqrt(vals)
+assert np.allclose(axis_lengths, [1.0, 2.0])
+assert np.allclose(vecs.T @ vecs, np.eye(2))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Believing Gaussian contours are spherical when variables are correlated. They are tilted ellipsoids.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What geometric shape do equi-density contours of an MVN form?
+2. What determines the orientation of the contour ellipsoids?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Hyper-ellipsoids.
+2. The eigenvectors of the covariance matrix Sigma.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](17_The_Multivariate_Normal_Distribution.md) · [Module README](../README.md) · [Next →](19_Conditionals_of_a_Multivariate_Normal.md)
+[Module README](../README.md) · [Next →](19_Conditionals_of_a_Multivariate_Normal.md)

@@ -1,65 +1,66 @@
 # Lesson 05.09 — Defective Matrices and Jordan Form
 
 > **Module 05:** Spectral Thinking and Diagonalization · Lesson 9 of 13
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Characterize Jordan canonical form J = V^(-1) A V for defective matrices.
+- [ ] Identify generalized eigenvectors.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.05 Algebraic vs Geometric Multiplicity.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+When a matrix lacks a full set of eigenvectors ($\text{GM} < \text{AM}$), it cannot be diagonalized. Instead, it can be decomposed into **Jordan Normal Form** $A = M J M^{-1}$, where $J$ consists of Jordan blocks with eigenvalues on the diagonal and 1s on the superdiagonal.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+The shear matrix $A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}$ is already a Jordan block of size 2. Its only eigenvector direction is $[1, 0]^T$. The generalized eigenvector $\mathbf{v}_2$ satisfies $(A - 2I)\mathbf{v}_2 = \mathbf{v}_1$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+J = np.array([[2.0, 1.0], [0.0, 2.0]])
+v1 = np.array([1.0, 0.0])
+
+# Verify v1 is eigenvector
+assert np.allclose(J @ v1, 2.0 * v1)
+
+# Generalized eigenvector v2
+v2 = np.array([0.0, 1.0])
+assert np.allclose((J - 2.0 * np.eye(2)) @ v2, v1)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming defective matrices are common in real machine learning data. Most noisy empirical data yields distinct eigenvalues, but defective structures arise in dynamical systems.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What sits on the superdiagonal of a non-trivial Jordan block?
+2. How many independent eigenvectors does a single k x k Jordan block possess?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Ones (1s).
+2. Exactly one independent eigenvector.
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](08_Matrix_Powers_via_Diagonalization.md) · [Module README](../README.md) · [Next →](10_Complex_Eigenvalues_and_Rotation.md)
+[Module README](../README.md) · [Next →](10_Complex_Eigenvalues_and_Rotation.md)

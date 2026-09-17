@@ -1,0 +1,97 @@
+{
+  "title": "Disjoint Set Union (Union by Rank & Path Compression)",
+  "algorithm": "Union-Find DSU",
+  "timeComplexity": "O(\u03b1(n)) amortized inverse Ackermann",
+  "spaceComplexity": "O(n)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initial forest: 5 singleton sets [0, 1, 2, 3, 4], each pointing to self.",
+      "array": [
+        "0->0",
+        "1->1",
+        "2->2",
+        "3->3",
+        "4->4"
+      ],
+      "pointers": {
+        "sets": 5
+      },
+      "highlights": {
+        "0": "active",
+        "1": "active",
+        "2": "active",
+        "3": "active",
+        "4": "active"
+      },
+      "variables": {
+        "numComponents": 5,
+        "ranks": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "invariants": "Parent pointers establish partition components"
+    },
+    {
+      "step": 2,
+      "description": "Union(0, 1) and Union(2, 3): Roots merged by rank. Components reduce 5 -> 3.",
+      "array": [
+        "0->0",
+        "1->0",
+        "2->2",
+        "3->2",
+        "4->4"
+      ],
+      "pointers": {
+        "root0": 0,
+        "root2": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "numComponents": 3,
+        "ranks": [
+          1,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "invariants": "Lower rank tree becomes child of higher rank root to maintain shallow depth"
+    },
+    {
+      "step": 3,
+      "description": "Find(3) with Path Compression: node 3 updates parent pointer directly to root 0! Depth becomes 1.",
+      "array": [
+        "0->0",
+        "1->0",
+        "2->0",
+        "3->0",
+        "4->4"
+      ],
+      "pointers": {
+        "root": 0
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "findResult": 0,
+        "compressed": true
+      },
+      "invariants": "Path compression flattens tree structure during traversal"
+    }
+  ]
+}

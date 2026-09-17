@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, CheckCircle2, Activity } from 'lucide-react';
 import { LessonItem } from '../../types';
 import { LessonSkeleton } from '../LessonSkeleton';
 import { MasteryChecklist } from '../MasteryChecklist';
 import { AlgorithmTraceScrubber } from '../AlgorithmTraceScrubber';
+import { fetchModuleTrace } from '../../services/api';
 
 interface MarkdownViewerProps {
   isLoading: boolean;
@@ -49,6 +50,28 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
   getLessonBadge,
 }) => {
   const [showScrubber, setShowScrubber] = useState<boolean>(false);
+  const [moduleTrace, setModuleTrace] = useState<any | null>(null);
+
+  const currentLesson = allLessons[currentLessonIndex];
+
+  useEffect(() => {
+    let active = true;
+    if (currentLesson?.file_path) {
+      const norm = currentLesson.file_path.replace(/\\/g, '/');
+      const parts = norm.split('/');
+      if (parts.length > 1) {
+        const moduleDir = parts.slice(0, parts.length - 1).join('/');
+        fetchModuleTrace(moduleDir).then((trace) => {
+          if (active && trace) {
+            setModuleTrace(trace);
+          }
+        });
+      }
+    }
+    return () => {
+      active = false;
+    };
+  }, [currentLesson?.file_path]);
 
   // Check for embedded trace block in markdown
   const traceMatch = content.match(/```(?:trace|algorithm-trace)\n([\s\S]*?)```/);
@@ -61,8 +84,10 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
     }
   }
 
+  const activeTrace = parsedTrace || moduleTrace;
+
   const isAlgorithmic =
-    Boolean(parsedTrace) ||
+    Boolean(activeTrace) ||
     /binary search|two pointer|sliding window|quickselect|partition|dijkstra|bfs|dfs|fenwick/i.test(content) ||
     lessonId.toLowerCase().includes('algorithm') ||
     lessonId.toLowerCase().includes('dsa');
@@ -98,7 +123,7 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
           {/* Scrubber component if active */}
           {(showScrubber || parsedTrace) && (
             <div className="mb-8">
-              <AlgorithmTraceScrubber trace={parsedTrace || undefined} />
+              <AlgorithmTraceScrubber trace={activeTrace || undefined} />
             </div>
           )}
 

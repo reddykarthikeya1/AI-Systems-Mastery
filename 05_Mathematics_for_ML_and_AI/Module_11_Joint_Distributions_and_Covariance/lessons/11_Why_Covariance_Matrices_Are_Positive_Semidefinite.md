@@ -1,65 +1,66 @@
 # Lesson 11.11 — Why Covariance Matrices Are Positive Semidefinite
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 11 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove a^T Sigma a = Var(a^T x) >= 0.
+- [ ] Verify all eigenvalues of Sigma are non-negative in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.10 Properties of Covariance and 07.10 Positive Definiteness.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+For any non-zero vector $\mathbf{a}$, the scalar $\mathbf{a}^T \mathbf{x}$ is a linear combination of random variables. Its variance is:
+$$\text{Var}(\mathbf{a}^T \mathbf{x}) = \mathbf{a}^T \Sigma \mathbf{a}$$
+Because variance cannot be negative by definition ($\text{Var} \ge 0$), $\mathbf{a}^T \Sigma \mathbf{a} \ge 0$ for all $\mathbf{a}$. Therefore every covariance matrix is **positive semi-definite** ($\Sigma \succeq 0$), and all its eigenvalues are $\ge 0$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $\Sigma = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$. Eigenvalues are 3 and 1 (both $> 0$). For $\mathbf{a} = [1, -1]^T$, $\mathbf{a}^T \Sigma \mathbf{a} = 1(2) - 2(1) + 1(2) = 2 \ge 0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+Sigma = np.array([[2.0, 1.0], [1.0, 2.0]])
+eigs = np.linalg.eigvalsh(Sigma)
+assert np.all(eigs >= 0.0)
+
+a = np.array([1.0, -1.0])
+var_proj = a @ Sigma @ a
+assert var_proj >= 0.0
+assert np.isclose(var_proj, 2.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Constructing an empirical covariance with pairwise missing data imputation that accidentally yields negative eigenvalues.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Can a valid covariance matrix have negative eigenvalues?
+2. What does a^T Sigma a represent physically?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. No, all eigenvalues of a covariance matrix must be >= 0.
+2. The variance of the scalar projection of the random vector along direction a.
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](10_Properties_of_the_Covariance_Matrix.md) · [Module README](../README.md) · [Next →](12_Linear_Combinations_and_Their_Variance.md)
+[Module README](../README.md) · [Next →](12_Linear_Combinations_and_Their_Variance.md)

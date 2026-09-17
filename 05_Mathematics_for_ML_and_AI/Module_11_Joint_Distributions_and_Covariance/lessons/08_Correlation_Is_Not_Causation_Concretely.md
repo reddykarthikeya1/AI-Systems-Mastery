@@ -1,65 +1,69 @@
 # Lesson 11.08 — Correlation Is Not Causation, Concretely
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 8 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Identify confounding variables that induce spurious correlation.
+- [ ] Explain why observational regression coefficients fail to predict intervention effects.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.07 Correlation and Its Limits.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Statistical correlation between $X$ and $Y$ can arise from three distinct causal structures:
+1. $X \to Y$ ($X$ causes $Y$).
+2. $Y \to X$ ($Y$ causes $X$).
+3. $X \leftarrow Z \to Y$ ($Z$ is a **confounder** causing both).
+Observational models cannot distinguish these without randomized controlled trials or causal graphs.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Ice cream sales ($X$) and drownings ($Y$) have high correlation ($\rho = 0.9$) because Summer heat ($Z$) causes both. Intervening to ban ice cream does not save lives.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+N = 1000
+temp = np.random.uniform(20, 35, N) # Confounder Z
+ice_cream = 10 * temp + np.random.randn(N) * 5
+drownings = 2 * temp + np.random.randn(N) * 2
+
+# High spurious correlation
+corr = np.corrcoef(ice_cream, drownings)[0, 1]
+assert corr > 0.8
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Interpreting positive model feature weights as causal levers in policy decisions without controlling for confounders.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What third variable creates spurious correlation between two unrelated variables?
+2. What gold-standard experimental design breaks confounding?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. A common cause (confounder).
+2. Randomized controlled trials (A/B testing).
 
 </details>
 
@@ -67,12 +71,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_Correlation_and_Its_Limits.md) · [Module README](../README.md) · [Next →](09_The_Covariance_Matrix.md)
+[Module README](../README.md) · [Next →](09_The_Covariance_Matrix.md)

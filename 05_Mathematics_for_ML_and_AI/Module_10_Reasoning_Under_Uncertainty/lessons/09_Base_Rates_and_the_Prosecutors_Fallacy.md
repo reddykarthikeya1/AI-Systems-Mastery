@@ -1,65 +1,65 @@
 # Lesson 10.09 — Base Rates and the Prosecutor's Fallacy
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 9 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Demonstrate the Base Rate Fallacy: rare conditions have low positive predictive value even with 99% accurate tests.
+- [ ] Identify the Prosecutor's Fallacy P(match | innocent) vs P(innocent | match).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.08 Bayes Theorem.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Base Rate Fallacy** occurs when people ignore the low prior prevalence $P(Disease)$ of a rare condition. If a disease affects 1 in 10,000, a test with 99% sensitivity and 99% specificity yields mostly false positives: $P(Disease \mid +) \approx 1\%$, because the false alarm count from the 9,999 healthy people ($~100$) swamps the 1 true positive!
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Prior $P(D) = 0.001$. Test accuracy 99% ($P(+ \mid D)=0.99, P(+ \mid D^c)=0.01$).
+$P(+) = 0.001(0.99) + 0.999(0.01) = 0.00099 + 0.00999 = 0.01098$.
+$P(D \mid +) = 0.00099 / 0.01098 \approx 0.090$ (only 9% chance of having disease despite positive test!).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+p_d = 0.001
+sens = 0.99
+spec = 0.99
+p_pos = p_d * sens + (1.0 - p_d) * (1.0 - spec)
+ppv = (sens * p_d) / p_pos
+assert np.isclose(ppv, 0.09016, atol=1e-3)
+assert ppv < 0.10
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Interpreting 99% test accuracy as meaning a person who tests positive has a 99% chance of being sick.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why are most positive test results false positives for ultra-rare diseases?
+2. What is Positive Predictive Value (PPV)?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because the vast healthy population generates far more false alarms than true cases.
+2. P(Disease | Positive test).
 
 </details>
 
@@ -67,12 +67,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](08_Bayes_Theorem.md) · [Module README](../README.md) · [Next →](10_Bayesian_versus_Frequentist_Interpretations.md)
+[Module README](../README.md) · [Next →](10_Bayesian_versus_Frequentist_Interpretations.md)

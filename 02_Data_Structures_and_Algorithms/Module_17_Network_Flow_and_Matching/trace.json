@@ -1,0 +1,79 @@
+{
+  "title": "Dinic's Algorithm Level Graph BFS & Augmenting Path",
+  "algorithm": "Dinic Maximum Flow",
+  "timeComplexity": "O(V^2 * E)",
+  "spaceComplexity": "O(V + E)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "BFS builds Layered Graph: Source S (Layer 0), U & V (Layer 1), W & X (Layer 2), Sink T (Layer 3).",
+      "array": [
+        "S (L0)",
+        "U (L1)",
+        "V (L1)",
+        "W (L2)",
+        "X (L2)",
+        "T (L3)"
+      ],
+      "pointers": {
+        "source": 0,
+        "sink": 5
+      },
+      "highlights": {
+        "0": "sorted",
+        "5": "pivot"
+      },
+      "variables": {
+        "sinkLevel": 3,
+        "layeredGraphBuilt": true
+      },
+      "invariants": "Residual edges are only admissible if level[v] == level[u] + 1"
+    },
+    {
+      "step": 2,
+      "description": "DFS pushes blocking flow along path S -> U -> W -> T: bottleneck capacity = 4.",
+      "array": [
+        "S: 4/10",
+        "U: 4/10",
+        "W: 4/4 (Saturated!)",
+        "T: 4/10"
+      ],
+      "pointers": {
+        "bottleneck": 2
+      },
+      "highlights": {
+        "2": "pivot",
+        "3": "sorted"
+      },
+      "variables": {
+        "pushedFlow": 4,
+        "totalFlow": 4
+      },
+      "invariants": "Edge W->T is saturated, blocking further flow along this subpath"
+    },
+    {
+      "step": 3,
+      "description": "DFS pushes blocking flow along S -> U -> X -> T (flow 6) and S -> V -> X -> T (flow 4). Total max flow = 14!",
+      "array": [
+        "S: 14",
+        "U: 10",
+        "V: 4",
+        "W: 4",
+        "X: 10",
+        "T: 14 (Max Flow)"
+      ],
+      "pointers": {
+        "sink": 5
+      },
+      "highlights": {
+        "0": "sorted",
+        "5": "sorted"
+      },
+      "variables": {
+        "maxFlow": 14,
+        "iterations": 2
+      },
+      "invariants": "Max-Flow Min-Cut Theorem: Total cut capacity == Max flow == 14"
+    }
+  ]
+}

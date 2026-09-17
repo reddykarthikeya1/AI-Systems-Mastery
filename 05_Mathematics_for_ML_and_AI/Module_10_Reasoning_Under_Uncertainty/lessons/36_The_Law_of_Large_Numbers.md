@@ -1,65 +1,62 @@
 # Lesson 10.36 — The Law of Large Numbers
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 36 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Distinguish Weak Law (convergence in probability) from Strong Law (almost sure convergence).
+- [ ] Verify convergence of sample mean to population mean in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.34 Chebyshev's Inequality.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Law of Large Numbers (LLN)** guarantees that the sample mean $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$ converges to the true population mean $\mu$:
+- **Weak Law (WLLN)**: $\lim_{n \to \infty} P(|\bar{X}_n - \mu| > \epsilon) = 0$ (proved by Chebyshev).
+- **Strong Law (SLLN)**: $P(\lim_{n \to \infty} \bar{X}_n = \mu) = 1$ (almost sure convergence).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Flipping a coin: as $n \to \infty$, the fraction of heads converges almost surely to $0.5$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+flips = np.random.binomial(1, 0.5, 100000)
+running_mean = np.cumsum(flips) / np.arange(1, 100001)
+assert np.isclose(running_mean[-1], 0.5, atol=1e-3)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Thinking the Law of Large Numbers balances past luck (e.g. 5 heads in a row will be balanced by 5 tails). The law dilutes deviations; it does not compensate.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What type of convergence is guaranteed by the Weak Law of Large Numbers?
+2. Does the LLN predict future coin flips will compensate for past streaks?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Convergence in probability.
+2. No, it dilutes deviations by increasing n, never compensating.
 
 </details>
 
@@ -67,12 +64,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](35_Concentration_and_Hoeffdings_Inequality.md) · [Module README](../README.md) · [Next →](37_The_Central_Limit_Theorem.md)
+[Module README](../README.md) · [Next →](37_The_Central_Limit_Theorem.md)

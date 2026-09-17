@@ -1,65 +1,60 @@
 # Lesson 06.02 — Norms: L1, L2 and Beyond
 
 > **Module 06:** Orthogonality and Projections · Lesson 2 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Distinguish L1 (Manhattan), L2 (Euclidean), and L-infinity norms.
+- [ ] Connect L1 regularization to sparsity in Lasso regression.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 06.01 The Dot Product.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A norm $\|\mathbf{x}\|$ maps vectors to non-negative lengths. $L_p = (\sum |x_i|^p)^{1/p}$. $L_1$ induces sparsity (sharp diamond unit ball), while $L_2$ penalizes large values smoothly (smooth circular unit ball).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $\mathbf{x} = [-3, 4]$: $L_1 = |-3| + |4| = 7$. $L_2 = \sqrt{(-3)^2 + 4^2} = 5$. $L_\infty = \max(|-3|, |4|) = 4$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x = np.array([-3.0, 4.0])
+assert np.isclose(np.linalg.norm(x, ord=1), 7.0)
+assert np.isclose(np.linalg.norm(x, ord=2), 5.0)
+assert np.isclose(np.linalg.norm(x, ord=np.inf), 4.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using squared L2 norm when a proper metric distance is required (squared L2 violates triangle inequality).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why does L1 regularization produce sparse weights?
+2. Which norm corresponds to max absolute coordinate?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because the L1 ball has sharp corners on coordinate axes where level sets of loss first intersect.
+2. The L-infinity norm.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](01_The_Dot_Product_and_What_It_Measures.md) · [Module README](../README.md) · [Next →](03_Angles_Cosine_Similarity_and_Correlation.md)
+[Module README](../README.md) · [Next →](03_Angles_Cosine_Similarity_and_Correlation.md)

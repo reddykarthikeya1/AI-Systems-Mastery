@@ -55,12 +55,14 @@ app.add_middleware(
 )
 
 _last_activity_time: float = time.time()
+_request_counter: int = 0
 _shutdown_thread: Optional[Any] = None
 
 @app.middleware("http")
 async def track_activity_middleware(request, call_next):
-    global _last_activity_time
+    global _last_activity_time, _request_counter
     _last_activity_time = time.time()
+    _request_counter += 1
     response = await call_next(request)
     return response
 
@@ -72,9 +74,9 @@ def client_disconnect():
         return {"status": "shutdown_scheduled"}
 
     def _graceful_shutdown():
-        # Wait 3.5 seconds to allow any fast page refresh (F5) to cancel shutdown
+        count_before = _request_counter
         time.sleep(3.5)
-        if time.time() - _last_activity_time >= 3.0:
+        if _request_counter == count_before:
             print("\n[*] Application window/tab closed. Cleaning up and stopping backend...")
             os._exit(0)
 
@@ -490,7 +492,7 @@ def get_course_modules(course_id: str):
 def get_file_content(path: str = Query(..., description="Relative path from repository root")):
     """Safely loads file content from disk."""
     safe_path = (BASE_DIR / path).resolve()
-    if not str(safe_path).startswith(str(BASE_DIR)):
+    if not safe_path.is_relative_to(BASE_DIR):
         raise HTTPException(status_code=403, detail="Access denied: Path traversal detected")
     if not safe_path.is_file():
         raise HTTPException(status_code=404, detail="File not found")
@@ -513,7 +515,7 @@ def get_file_content(path: str = Query(..., description="Relative path from repo
 def run_test_command(req: RunTestRequest):
     """Executes pytest or python demo and returns execution output."""
     safe_target = (BASE_DIR / req.target_path).resolve()
-    if not str(safe_target).startswith(str(BASE_DIR)):
+    if not safe_target.is_relative_to(BASE_DIR):
         raise HTTPException(status_code=403, detail="Access denied")
 
     if req.command_type == "pytest":
@@ -562,7 +564,7 @@ def run_interactive_code(req: RunCodeRequest):
     target_cwd = BASE_DIR
     if req.working_dir:
         candidate = (BASE_DIR / req.working_dir).resolve()
-        if candidate.is_dir() and str(candidate).startswith(str(BASE_DIR)):
+        if candidate.is_dir() and candidate.is_relative_to(BASE_DIR):
             target_cwd = candidate
 
     env = os.environ.copy()
@@ -597,13 +599,14 @@ def run_interactive_code(req: RunCodeRequest):
                 temp_file = tf.name
             cmd = [sys.executable, temp_file]
 
+        effective_timeout = max(1, min(req.timeout_sec, 120))
         proc = subprocess.run(
             cmd,
             cwd=str(target_cwd),
             env=env,
             capture_output=True,
             text=True,
-            timeout=req.timeout_sec,
+            timeout=effective_timeout,
             input="",
         )
         duration = time.perf_counter() - start_time
@@ -688,6 +691,23 @@ def run_dsa_test_endpoint(req: DsaRunRequest):
             "results": []
         }
 
+@app.get("/api/trace")
+def get_trace_endpoint(module_path: str = Query(..., description="Module folder path")):
+    """Returns trace.json for algorithm visualization scrubber if available."""
+    safe_mod = (BASE_DIR / module_path).resolve()
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    trace_file = safe_mod / "trace.json"
+    if not trace_file.is_file():
+        raise HTTPException(status_code=404, detail="Trace file not found")
+
+    try:
+        with open(trace_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
 
 # -----------------------------------------------------------------------------
 # In-Browser Project Studio & Debug Lab Endpoints
@@ -696,7 +716,7 @@ def run_dsa_test_endpoint(req: DsaRunRequest):
 def get_project_files(module_path: str = Query(..., description="Module folder path")):
     """Safely retrieves starter and reference solution files for the in-browser IDE."""
     safe_mod = (BASE_DIR / module_path).resolve()
-    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
         raise HTTPException(status_code=404, detail="Module not found")
 
     starter_dir = safe_mod / "starter"
@@ -753,7 +773,7 @@ def get_project_files(module_path: str = Query(..., description="Module folder p
 def save_project_file(payload: SaveFilePayload):
     """Saves student edits to the local project workspace."""
     safe_mod = (BASE_DIR / payload.module_path).resolve()
-    if not str(safe_mod).startswith(str(BASE_DIR)):
+    if not safe_mod.is_relative_to(BASE_DIR):
         raise HTTPException(status_code=403, detail="Access denied")
 
     target_dir = BASE_DIR / ".user_workspaces" / payload.module_path
@@ -767,7 +787,7 @@ def save_project_file(payload: SaveFilePayload):
 def get_debug_files(module_path: str = Query(..., description="Module folder path")):
     """Safely retrieves debug lab broken code and symptoms."""
     safe_mod = (BASE_DIR / module_path).resolve()
-    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
         raise HTTPException(status_code=404, detail="Module not found")
 
     debug_dir = safe_mod / "debug_lab"
@@ -791,7 +811,7 @@ def get_debug_files(module_path: str = Query(..., description="Module folder pat
 def get_module_quiz(module_path: str = Query(..., description="Module relative folder path")):
     """Returns structured quiz questions with authentic options and explanations."""
     safe_mod = (BASE_DIR / module_path).resolve()
-    if not str(safe_mod).startswith(str(BASE_DIR)) or not safe_mod.is_dir():
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
         raise HTTPException(status_code=404, detail="Module not found")
 
     quiz_file = safe_mod / "quiz.json"

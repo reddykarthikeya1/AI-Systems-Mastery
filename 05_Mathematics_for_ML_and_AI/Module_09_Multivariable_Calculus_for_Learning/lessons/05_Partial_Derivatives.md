@@ -1,78 +1,69 @@
-# Lesson 09.05 — Partial Derivatives
+# Lesson 09.05: Partial Derivatives
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 5 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define partial derivatives as limits of difference quotients holding all other variables constant.
+- Compute partial derivatives of loss functions with respect to specific weights.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.01 Functions of Several Variables.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+The **partial derivative** $\frac{\partial f}{\partial x_i}$ measures the instantaneous rate of change of $f$ along the coordinate axis $x_i$, holding all other variables $x_j$ ($j \ne i$) strictly fixed:
+$$\frac{\partial f}{\partial x_i}(\mathbf{x}) = \lim_{h \to 0} \frac{f(\mathbf{x} + h \mathbf{e}_i) - f(\mathbf{x})}{h}$$
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+For $f(x, y) = 3x^2 y + \sin(y)$: $\frac{\partial f}{\partial x} = 6xy$ (treating $y$ as a constant). At $(x, y) = (2, 3)$, $\frac{\partial f}{\partial x} = 6(2)(3) = 36$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def f(x, y):
+    return 3.0 * x**2 * y + np.sin(y)
+
+x, y = 2.0, 3.0
+h = 1e-7
+num_df_dx = (f(x + h, y) - f(x, y)) / h
+exact_df_dx = 6.0 * x * y
+
+assert np.isclose(exact_df_dx, 36.0)
+assert np.isclose(num_df_dx, exact_df_dx, atol=1e-4)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Accidentally differentiating variables held constant instead of treating them as numerical constants.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is d/dx (x * y^3)?
+2. In a neural network with 10 weights, how many first-order partial derivatives exist?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. y^3.
+2. 10 partial derivatives (one per parameter).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](04_Continuity_in_Rn.md) · [Module README](../README.md) · [Next →](06_HigherOrder_Partial_Derivatives.md)
+Next: [06_HigherOrder_Partial_Derivatives.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\06_HigherOrder_Partial_Derivatives.md)

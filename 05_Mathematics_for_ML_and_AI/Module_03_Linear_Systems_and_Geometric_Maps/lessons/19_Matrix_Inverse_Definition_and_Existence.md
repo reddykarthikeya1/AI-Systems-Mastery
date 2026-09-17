@@ -1,65 +1,60 @@
 # Lesson 03.19 — Matrix Inverse: Definition and Existence
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 19 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define inverse A^(-1) such that A A^(-1) = A^(-1) A = I.
+- [ ] State invertibility criteria: square, full rank, non-zero determinant.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.17 The Identity Matrix.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A square matrix $A \in \mathbb{R}^{n \times n}$ is **invertible** (or non-singular) if there exists $A^{-1}$ such that $A A^{-1} = A^{-1} A = I_n$. If $\det(A) = 0$ or $\text{rank}(A) < n$, $A$ has a non-trivial null space and no inverse exists.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $2 \times 2$ matrix $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$, $A^{-1} = \frac{1}{ad - bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$ provided $ad - bc \neq 0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[4.0, 7.0], [2.0, 6.0]])
+A_inv = np.linalg.inv(A)
+assert np.allclose(A @ A_inv, np.eye(2))
+assert np.allclose(A_inv @ A, np.eye(2))
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to invert a non-square rectangular matrix with standard matrix inverse.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is (A B)^(-1) for invertible matrices?
+2. Can a matrix with determinant 0 be inverted?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. B^(-1) A^(-1) (order is reversed).
+2. No, singular matrices have no inverse.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](18_Transpose_and_Its_Algebraic_Rules.md) · [Module README](../README.md) · [Next →](20_Computing_the_Inverse_by_Elimination.md)
+[Module README](../README.md) · [Next →](20_Computing_the_Inverse_by_Elimination.md)

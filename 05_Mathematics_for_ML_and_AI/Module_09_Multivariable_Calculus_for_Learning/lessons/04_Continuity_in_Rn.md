@@ -1,78 +1,65 @@
-# Lesson 09.04 — Continuity in R^n
+# Lesson 09.04: Continuity in Rn
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 4 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define multivariable continuity: lim_{x -> x_0} f(x) = f(x_0).
+- Recognize continuity of polynomials, exponentials, and compositions in neural architectures.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.03 Limits in Several Variables.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A function $f: \mathbb{R}^n \to \mathbb{R}$ is continuous at $\mathbf{x}_0$ if $\lim_{\mathbf{x} \to \mathbf{x}_0} f(\mathbf{x}) = f(\mathbf{x}_0)$. Compositions and sums of continuous functions (e.g. affine layers + sigmoid/GELU activations) remain continuous across their entire domain.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+$f(x, y) = \exp(-(x^2 + y^2))$. As $(x, y) \to (0, 0)$, $-(x^2 + y^2) \to 0$, so $\lim f(x, y) = \exp(0) = 1 = f(0, 0)$. Thus $f$ is continuous everywhere.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+def f(x, y):
+    return np.exp(-(x**2 + y**2))
+
+coords = np.array([[0.01, 0.01], [1e-4, 1e-4], [1e-6, 1e-6]])
+vals = [f(x, y) for x, y in coords]
+assert np.isclose(f(0.0, 0.0), 1.0)
+assert np.allclose(vals[-1], 1.0, atol=1e-5)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming piecewise activation functions like ReLU are discontinuous; ReLU is continuous everywhere, though not differentiable at 0.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. Is f(x) = max(0, x) (ReLU) continuous at x = 0?
+2. What happens to the product of two continuous multivariable functions?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Yes, the left and right limits both equal 0 = f(0).
+2. The product of continuous functions is guaranteed to be continuous.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_Limits_in_Several_Variables.md) · [Module README](../README.md) · [Next →](05_Partial_Derivatives.md)
+Next: [05_Partial_Derivatives.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\05_Partial_Derivatives.md)

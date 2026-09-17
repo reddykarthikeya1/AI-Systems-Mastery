@@ -1,6 +1,6 @@
 # 10. Advanced Retrieval & Context Engineering
 
-> **The Definitive 10/10 Production Masterclass**: Advanced RAG, Context Optimization, and Retrieval Science. Covers hierarchical AST parsing, parent-child chunking, Anthropic Contextual Retrieval, vector database internals (HNSW multi-layer graph navigation & quantization), Hybrid Search with Reciprocal Rank Fusion (RRF), Cross-Encoder two-stage reranking, ColBERTv2 Late Interaction with MaxSim, Microsoft GraphRAG (hierarchical Leiden community clustering), agentic query transformation, and Needle-in-a-Haystack (NIAH) testing.
+> Engineer production-grade retrieval-augmented generation and context engines. Build hierarchical AST chunkers, HNSW vector indexes, hybrid search with Reciprocal Rank Fusion, ColBERT late interaction, and GraphRAG community clusters.
 
 ---
 

@@ -1,65 +1,59 @@
 # Lesson 10.28 — The Beta Distribution
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 28 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Beta(alpha, beta) on support [0, 1]: f(x) = x^(alpha-1) (1-x)^(beta-1) / B(alpha, beta).
+- [ ] Interpret alpha and beta as pseudo-counts in Bayesian learning.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.13 Continuous PDF.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Beta distribution** is the canonical continuous distribution over probabilities $p \in [0, 1]$. Its parameters $\alpha, \beta > 0$ behave as pseudo-counts: $\alpha - 1$ prior successes and $\beta - 1$ prior failures. $\mathbb{E}[X] = \frac{\alpha}{\alpha + \beta}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+$\text{Beta}(1, 1)$ is the uniform distribution $U(0, 1)$. $\text{Beta}(5, 5)$ is symmetric around $0.5$. $\text{Beta}(10, 2)$ concentrates near $10/12 \approx 0.833$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+alpha, beta = 10.0, 2.0
+mean = alpha / (alpha + beta)
+assert np.isclose(mean, 10.0 / 12.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Setting alpha or beta to 0, which violates parameter support (alpha, beta > 0).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the support domain of the Beta distribution?
+2. What does Beta(1, 1) simplify to?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The interval [0, 1].
+2. The standard Uniform distribution U(0, 1).
 
 </details>
 
@@ -67,12 +61,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](27_The_LogNormal_Distribution.md) · [Module README](../README.md) · [Next →](29_The_Gamma_Distribution.md)
+[Module README](../README.md) · [Next →](29_The_Gamma_Distribution.md)

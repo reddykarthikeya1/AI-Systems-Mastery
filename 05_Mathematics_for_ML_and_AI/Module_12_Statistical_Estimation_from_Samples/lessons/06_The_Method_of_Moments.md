@@ -1,65 +1,60 @@
 # Lesson 12.06 — The Method of Moments
 
 > **Module 12:** Statistical Estimation from Samples · Lesson 6 of 22
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Equate theoretical population moments E[X^k] with sample moments 1/n sum x_i^k.
+- [ ] Estimate Gamma and Uniform parameters via method of moments.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 12.01 Populations, Samples and Estimators.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Method of Moments (MoM)** estimates parameters by setting sample moments $m_k = \frac{1}{n}\sum x_i^k$ equal to theoretical moments $\mu_k(\theta) = \mathbb{E}[X^k]$ and solving for $\theta$. It is simple and computationally fast, serving as a reliable initialization for iterative MLE.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Uniform $U(0, b)$: theoretical mean is $b/2$. Setting $\bar{x} = b/2 \implies \hat{b}_{MoM} = 2\bar{x}$. For $\bar{x} = 3.5$, $\hat{b} = 7.0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+x = np.array([2.0, 4.0, 3.0, 5.0])
+sample_mean = np.mean(x)
+b_hat = 2.0 * sample_mean
+assert np.isclose(b_hat, 7.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using method of moments estimates without verifying that parameters fall within valid distribution boundaries.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. How does Method of Moments derive parameter estimators?
+2. What is a major advantage of Method of Moments?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. By matching theoretical population moments with empirical sample moments.
+2. It often yields simple closed-form algebraic solutions.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](05_The_Standard_Error.md) · [Module README](../README.md) · [Next →](07_Maximum_Likelihood_Estimation.md)
+[Module README](../README.md) · [Next →](07_Maximum_Likelihood_Estimation.md)

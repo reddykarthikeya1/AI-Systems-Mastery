@@ -1,65 +1,59 @@
 # Lesson 03.08 — Reduced Row Echelon Form
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 8 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define RREF: all pivots equal 1 and are the only non-zero entries in their column.
+- [ ] Prove RREF is unique for every matrix.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.07 Row Echelon Form.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A matrix is in **Reduced Row Echelon Form (RREF)** if it is in REF, every pivot is 1, and every pivot is the *only* non-zero entry in its entire column. Unlike REF, the RREF of any matrix is mathematically unique.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Matrix $\begin{bmatrix} 1 & 0 & 3 \\ 0 & 1 & -2 \\ 0 & 0 & 0 \end{bmatrix}$ is in RREF. Pivots are at $(0, 0)$ and $(1, 1)$ with 1s, and column 3 contains free variable weights.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+R = np.array([[1.0, 0.0, 3.0], [0.0, 1.0, -2.0], [0.0, 0.0, 0.0]])
+assert np.isclose(R[0, 0], 1.0) and np.isclose(R[1, 1], 1.0)
+assert np.isclose(R[0, 1], 0.0) and np.isclose(R[1, 0], 0.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Believing a matrix can have multiple distinct RREFs. The RREF is strictly unique.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What must every pivot equal in RREF?
+2. Is RREF unique for a given matrix?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Exactly 1.
+2. Yes, every matrix has exactly one unique RREF.
 
 </details>
 
@@ -67,12 +61,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_Row_Echelon_Form.md) · [Module README](../README.md) · [Next →](09_Gaussian_Elimination_Step_by_Step.md)
+[Module README](../README.md) · [Next →](09_Gaussian_Elimination_Step_by_Step.md)

@@ -1,0 +1,93 @@
+{
+  "title": "Binary Min-Heap Sift-Down Invariant Scrubber",
+  "algorithm": "Binary Heap Sift-Down",
+  "timeComplexity": "O(log n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Root has invalid high value 50 after extract-min. Check children 4 and 7.",
+      "array": [
+        50,
+        4,
+        7,
+        12,
+        15,
+        20,
+        30
+      ],
+      "pointers": {
+        "parent": 0,
+        "child": 1
+      },
+      "highlights": {
+        "0": "pivot",
+        "1": "active",
+        "2": "comparing"
+      },
+      "variables": {
+        "parentVal": 50,
+        "leftVal": 4,
+        "rightVal": 7,
+        "minChild": 4
+      },
+      "invariants": "Left child (4) is smaller than parent (50) -> Swap required"
+    },
+    {
+      "step": 2,
+      "description": "Swapped 50 and 4. Parent at idx 1. Check children 12 and 15.",
+      "array": [
+        4,
+        50,
+        7,
+        12,
+        15,
+        20,
+        30
+      ],
+      "pointers": {
+        "parent": 1,
+        "child": 3
+      },
+      "highlights": {
+        "1": "pivot",
+        "3": "active",
+        "4": "comparing"
+      },
+      "variables": {
+        "parentVal": 50,
+        "leftVal": 12,
+        "rightVal": 15,
+        "minChild": 12
+      },
+      "invariants": "Child (12) is smaller than parent (50) -> Swap required"
+    },
+    {
+      "step": 3,
+      "description": "Swapped 50 and 12. Index 3 is a leaf. Min-heap invariant restored!",
+      "array": [
+        4,
+        12,
+        7,
+        50,
+        15,
+        20,
+        30
+      ],
+      "pointers": {
+        "parent": 3
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted",
+        "3": "sorted"
+      },
+      "variables": {
+        "parentVal": 50,
+        "heapPropertyRestored": true
+      },
+      "invariants": "Min-heap condition satisfied: parent <= both children"
+    }
+  ]
+}

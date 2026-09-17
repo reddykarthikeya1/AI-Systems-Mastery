@@ -1,78 +1,70 @@
-# Lesson 09.15 — The Multivariable Chain Rule
+# Lesson 09.15: The Multivariable Chain Rule
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 15 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- State the multivariable chain rule as matrix multiplication of Jacobians.
+- Sum over intermediate computational paths.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.13 The Jacobian Matrix.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+For composite maps $\mathbf{z} = \mathbf{g}(\mathbf{y})$ and $\mathbf{y} = \mathbf{f}(\mathbf{x})$:
+$$\mathbf{J}_{\mathbf{g} \circ \mathbf{f}}(\mathbf{x}) = \mathbf{J}_\mathbf{g}(\mathbf{f}(\mathbf{x})) \mathbf{J}_\mathbf{f}(\mathbf{x})$$
+For scalar $z = f(x_1(t), x_2(t), \dots, x_n(t))$: $\frac{dz}{dt} = \sum_{i=1}^n \frac{\partial f}{\partial x_i} \frac{dx_i}{dt} = \nabla f \cdot \frac{d\mathbf{x}}{dt}$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+Let $z = x^2 + y^2$ with $x = r \cos \theta, y = r \sin \theta$. $\frac{\partial z}{\partial r} = \frac{\partial z}{\partial x} \frac{\partial x}{\partial r} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial r} = 2x(\cos \theta) + 2y(\sin \theta) = 2r \cos^2 \theta + 2r \sin^2 \theta = 2r$.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+r, theta = 3.0, np.pi / 4.0
+x = r * np.cos(theta)
+y = r * np.sin(theta)
+dz_dx = 2.0 * x
+dz_dy = 2.0 * y
+dx_dr = np.cos(theta)
+dy_dr = np.sin(theta)
+
+dz_dr = dz_dx * dx_dr + dz_dy * dy_dr
+assert np.isclose(dz_dr, 2.0 * r)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Summing only a single path and omitting alternative parallel dependency paths in the chain rule.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. How do Jacobians compose under function composition?
+2. If z depends on x through two paths u and v, what is dz/dx?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. By standard matrix multiplication: J_(g o f) = J_g * J_f.
+2. (dz/du)(du/dx) + (dz/dv)(dv/dx).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](14_The_SingleVariable_Chain_Rule_Revisited.md) · [Module README](../README.md) · [Next →](16_Computational_Graphs.md)
+Next: [16_Computational_Graphs.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\16_Computational_Graphs.md)

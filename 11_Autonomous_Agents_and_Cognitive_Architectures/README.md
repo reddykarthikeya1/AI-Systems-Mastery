@@ -1,6 +1,6 @@
 # Course 11: Autonomous Agents & Cognitive Architectures
 
-Welcome to the definitive, production-grade engineering masterclass on **Autonomous Agents & Cognitive Architectures**.
+Design, sandbox, orchestrate, and evaluate resilient autonomous multi-agent systems. Build ReAct loops, deterministic state machines, memory topologies, tool-calling pipelines, and consensus protocols.
 
 ---
 

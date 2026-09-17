@@ -1,0 +1,84 @@
+{
+  "title": "Floyd's Tortoise and Hare Cycle Detection",
+  "algorithm": "Two Pointers Fast & Slow",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize slow=0 and fast=0 at list head.",
+      "array": [
+        10,
+        20,
+        30,
+        40,
+        50,
+        30
+      ],
+      "pointers": {
+        "slow": 0,
+        "fast": 0
+      },
+      "highlights": {
+        "0": "active"
+      },
+      "variables": {
+        "slowIdx": 0,
+        "fastIdx": 0,
+        "cycleDetected": false
+      },
+      "invariants": "Distance between fast and slow increases by 1 each iteration"
+    },
+    {
+      "step": 2,
+      "description": "slow advances 1 step (idx 1), fast advances 2 steps (idx 2).",
+      "array": [
+        10,
+        20,
+        30,
+        40,
+        50,
+        30
+      ],
+      "pointers": {
+        "slow": 1,
+        "fast": 2
+      },
+      "highlights": {
+        "1": "comparing",
+        "2": "active"
+      },
+      "variables": {
+        "slowIdx": 1,
+        "fastIdx": 2,
+        "cycleDetected": false
+      },
+      "invariants": "Fast traverses 2x faster than slow"
+    },
+    {
+      "step": 3,
+      "description": "Fast wraps around cycle: slow at idx 3, fast loops back to idx 3! Pointers collide.",
+      "array": [
+        10,
+        20,
+        30,
+        40,
+        50,
+        30
+      ],
+      "pointers": {
+        "slow": 3,
+        "fast": 3
+      },
+      "highlights": {
+        "3": "sorted"
+      },
+      "variables": {
+        "slowIdx": 3,
+        "fastIdx": 3,
+        "cycleDetected": true
+      },
+      "invariants": "Fast and slow collision proves existence of cycle in O(n) time"
+    }
+  ]
+}

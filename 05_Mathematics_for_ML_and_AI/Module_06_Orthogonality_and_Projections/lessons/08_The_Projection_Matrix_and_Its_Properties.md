@@ -1,65 +1,66 @@
 # Lesson 06.08 — The Projection Matrix and Its Properties
 
 > **Module 06:** Orthogonality and Projections · Lesson 8 of 18
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Prove projection matrices are idempotent (P^2 = P) and symmetric (P^T = P).
+- [ ] Identify eigenvalues of projection matrices (only 0 and 1).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 06.07 Projection Onto a Subspace.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+An orthogonal projection matrix $P = A(A^T A)^{-1}A^T$ satisfies two algebraic identities:
+1. **Idempotence**: $P^2 = P$ (projecting twice gives the same point).
+2. **Symmetry**: $P^T = P$ (orthogonality of the projection).
+Its eigenvalues can only be 1 (for vectors in the subspace) or 0 (for vectors in the orthogonal complement). $\text{trace}(P) = \text{rank}(P) = \dim(V)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$. $P = \frac{1}{2}\begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}$. $P^2 = \frac{1}{4}\begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix} = P$. $P^T = P$. Trace $= 0.5 + 0.5 = 1 = \text{rank}(P)$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+a = np.array([[1.0], [1.0]])
+P = a @ np.linalg.inv(a.T @ a) @ a.T
+assert np.allclose(P @ P, P)
+assert np.allclose(P.T, P)
+eigs = np.linalg.eigvalsh(P)
+assert np.allclose(np.sort(eigs), [0.0, 1.0])
+assert np.isclose(np.trace(P), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing non-orthogonal oblique projections (P^2 = P but P != P^T) with orthogonal projections (P^2 = P and P = P^T).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What are the only possible eigenvalues of a projection matrix?
+2. What is the trace of a projection matrix equal to?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 0 and 1.
+2. The rank of the projection matrix (dimension of the subspace).
 
 </details>
 
@@ -67,12 +68,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_Projection_Onto_a_Subspace.md) · [Module README](../README.md) · [Next →](09_Least_Squares_as_Orthogonal_Projection.md)
+[Module README](../README.md) · [Next →](09_Least_Squares_as_Orthogonal_Projection.md)

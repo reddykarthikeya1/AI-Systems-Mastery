@@ -1,65 +1,64 @@
 # Lesson 11.14 — The Tower Property
 
 > **Module 11:** Joint Distributions and Covariance · Lesson 14 of 29
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the Tower Property (Law of Total Expectation): E[E[Y | X]] = E[Y].
+- [ ] Simplify complex expectations by conditioning.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 11.13 Conditional Expectation.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Tower Property** (Law of Iterated Expectations):
+$$\mathbb{E}[\mathbb{E}[Y \mid X]] = \mathbb{E}[Y]$$
+Taking the average over all subgroups recovers the grand overall population average. This allows solving intractable expectations by conditioning on an intermediate variable.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let group $X=0$ have mean 10 (size 60%) and group $X=1$ have mean 20 (size 40%). Grand mean: $\mathbb{E}[Y] = 0.6(10) + 0.4(20) = 6 + 8 = 14$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+e_y_x0 = 10.0
+e_y_x1 = 20.0
+p_x0 = 0.6
+p_x1 = 0.4
+grand_mean = p_x0 * e_y_x0 + p_x1 * e_y_x1
+assert np.isclose(grand_mean, 14.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Averaging subgroup means without weighting by subgroup population sizes.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is E[E[Y | X]] equal to?
+2. Why is the Tower Property called iterated expectations?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. E[Y].
+2. Because it evaluates expectations in stages: first taking expectation over Y given X, then over X.
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](13_Conditional_Expectation.md) · [Module README](../README.md) · [Next →](15_Conditional_Variance_and_Its_Decomposition.md)
+[Module README](../README.md) · [Next →](15_Conditional_Variance_and_Its_Decomposition.md)

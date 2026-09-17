@@ -1,65 +1,61 @@
 # Lesson 04.16 — Rank of a Matrix
 
 > **Module 04:** Vector Spaces, Bases and Rank · Lesson 16 of 21
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define rank(A) as dimension of column space.
+- [ ] Prove row rank equals column rank: dim(col(A)) = dim(row(A)).
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 04.15 Row Space and Column Space.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **rank** of matrix $A$ is the maximum number of linearly independent column vectors. One of the most fundamental miracles of mathematics is that **row rank always equals column rank**: $\dim(\text{col}(A)) = \dim(\text{row}(A)) = \text{rank}(A)$. Rank cannot exceed $\min(m, n)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let $A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \end{bmatrix}$. Rows are multiples ($R_2 = 2R_1 \implies \text{row rank} = 1$). Columns are also multiples ($C_2 = 2C_1, C_3 = 3C_1 \implies \text{col rank} = 1$). Both equal 1.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0, 3.0], [2.0, 4.0, 6.0]])
+rank_A = np.linalg.matrix_rank(A)
+rank_AT = np.linalg.matrix_rank(A.T)
+assert rank_A == 1
+assert rank_A == rank_AT
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming an m x n matrix can have rank > min(m, n).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the maximum possible rank of a 10 x 3 matrix?
+2. Is row rank ever different from column rank?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. At most 3.
+2. Never; they are always identically equal.
 
 </details>
 
@@ -67,12 +63,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](15_Row_Space_and_the_Left_Null_Space.md) · [Module README](../README.md) · [Next →](17_The_RankNullity_Theorem.md)
+[Module README](../README.md) · [Next →](17_The_RankNullity_Theorem.md)

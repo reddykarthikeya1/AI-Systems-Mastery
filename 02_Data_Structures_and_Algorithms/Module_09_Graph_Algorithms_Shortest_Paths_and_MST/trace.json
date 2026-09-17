@@ -1,0 +1,78 @@
+{
+  "title": "Dijkstra Shortest Path Relaxation Frontier",
+  "algorithm": "Dijkstra with Priority Queue",
+  "timeComplexity": "O((V + E) log V)",
+  "spaceComplexity": "O(V)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize Start node S with dist=0. All other nodes dist=\u221e. Pop S from PQ.",
+      "array": [
+        "S: 0",
+        "A: \u221e",
+        "B: \u221e",
+        "C: \u221e",
+        "T: \u221e"
+      ],
+      "pointers": {
+        "curr": 0
+      },
+      "highlights": {
+        "0": "pivot"
+      },
+      "variables": {
+        "activeNode": "S",
+        "activeDist": 0
+      },
+      "invariants": "Priority queue extracts globally minimum tentative distance"
+    },
+    {
+      "step": 2,
+      "description": "Relax neighbors of S: A becomes 4 (0+4), B becomes 2 (0+2). Pop B (min dist 2).",
+      "array": [
+        "S: 0",
+        "A: 4",
+        "B: 2",
+        "C: \u221e",
+        "T: \u221e"
+      ],
+      "pointers": {
+        "curr": 2
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "comparing",
+        "2": "pivot"
+      },
+      "variables": {
+        "activeNode": "B",
+        "activeDist": 2
+      },
+      "invariants": "Edge relaxation: if dist[u] + w < dist[v], update dist[v]"
+    },
+    {
+      "step": 3,
+      "description": "Relax edge B -> A with weight 1: dist[A] updates 4 -> 3! Shortest path to A is via B.",
+      "array": [
+        "S: 0",
+        "A: 3",
+        "B: 2",
+        "C: 7",
+        "T: \u221e"
+      ],
+      "pointers": {
+        "curr": 1
+      },
+      "highlights": {
+        "0": "sorted",
+        "1": "sorted",
+        "2": "sorted"
+      },
+      "variables": {
+        "activeNode": "A",
+        "improved": true
+      },
+      "invariants": "Optimal substructure property: sub-paths of shortest paths are shortest paths"
+    }
+  ]
+}

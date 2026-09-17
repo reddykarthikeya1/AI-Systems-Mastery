@@ -1,65 +1,59 @@
 # Lesson 10.12 — Discrete Distributions and the PMF
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 12 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Define Probability Mass Function p(x) = P(X = x).
+- [ ] Verify normalization sum_x p(x) = 1 in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.11 Random Variables.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+For a discrete random variable, the **Probability Mass Function (PMF)** $p(x) = P(X = x)$ satisfies $p(x) \ge 0$ and $\sum_x p(x) = 1$. The probability of any event $A$ is $\sum_{x \in A} p(x)$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Fair die: $p(x) = 1/6$ for $x \in \{1, 2, 3, 4, 5, 6\}$. $\sum_{x=1}^6 1/6 = 1.0$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+pmf = np.full(6, 1.0 / 6.0)
+assert np.all(pmf >= 0.0)
+assert np.isclose(np.sum(pmf), 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assigning PMF values greater than 1. For discrete variables, p(x) is a true probability, so 0 <= p(x) <= 1.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the maximum possible value of a discrete PMF p(x)?
+2. What must the sum of a PMF over all supported values equal?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. 1.0.
+2. Exactly 1.0.
 
 </details>
 
@@ -67,12 +61,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](11_Random_Variables.md) · [Module README](../README.md) · [Next →](13_Continuous_Distributions_and_the_PDF.md)
+[Module README](../README.md) · [Next →](13_Continuous_Distributions_and_the_PDF.md)

@@ -1,65 +1,72 @@
 # Lesson 08.04 — Weight Initialization and Spectral Norm
 
 > **Module 08:** Linear Algebra in Models · Lesson 4 of 9
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Derive Xavier/Glorot variance scaling to preserve activation variance across deep linear layers.
+- [ ] Compute the spectral norm of a weight matrix using SVD and power iteration in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 05.01 Eigenvalues and SVD singular values.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In deep networks, activations $\mathbf{x}^{(l+1)} = \mathbf{W}^{(l)}\mathbf{x}^{(l)}$ undergo repeated matrix multiplications.
+The **spectral norm** $\|\mathbf{W}\|_2 = \sigma_{\max}(\mathbf{W})$ is the largest singular value of $\mathbf{W}$. It defines the exact Lipschitz constant of the linear map: $\|\mathbf{W}\mathbf{x}\| \le \sigma_{\max} \|\mathbf{x}\|$. Spectral normalization divides $\mathbf{W}$ by $\sigma_{\max}$ to guarantee numerical stability.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Consider a $2 \times 2$ diagonal weight matrix with entries 3.0 and 0.5.
+The singular values are $\sigma_1 = 3.0$ and $\sigma_2 = 0.5$.
+The spectral norm is 3.0.
+Normalizing by $\sigma_{\max}$ produces a matrix with singular values 1.0 and 1/6.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+W = np.array([[3.0, 0.0],
+              [0.0, 0.5]])
+
+singular_values = np.linalg.svd(W, compute_uv=False)
+spectral_norm = singular_values[0]
+assert np.isclose(spectral_norm, 3.0)
+
+W_spectral = W / spectral_norm
+assert np.isclose(np.linalg.svd(W_spectral, compute_uv=False)[0], 1.0)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
+**Initializing weights with uniform random values without scaling by $1/\sqrt{d_{in}}$.**
 
-TODO
+In a layer with $d_{in} = 1024$, standard unit variance weights cause output variance to scale by 1024 at each layer, rapidly overflowing float16 into inf/NaN.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What is the mathematical definition of the spectral norm of a matrix W?
+2. Why is spectral normalization used in deep networks?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The spectral norm is the maximum singular value of W, representing the supremum of ||W x|| / ||x|| for non-zero vectors x.
+2. It bounds the Lipschitz constant of the network layer to at most 1, preventing exploding activations and gradients.
 
 </details>
 
@@ -67,12 +74,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md) · [Module README](../README.md) · [Next →](05_Attention_as_Three_Matrix_Products.md)
+[Module README](../README.md) · [Next →](05_Attention_as_Three_Matrix_Products.md)

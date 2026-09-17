@@ -1,65 +1,73 @@
 # Lesson 08.08 — Where Numerical Precision Bites
 
 > **Module 08:** Linear Algebra in Models · Lesson 8 of 9
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Identify catastrophic cancellation, underflow, and overflow in floating point linear algebra.
+- [ ] Implement numerically stable log-sum-exp and numerically safe vector normalization.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Linear algebra operations and floating point representation.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+In floating point arithmetic, computing softmax directly overflows when logits are large.
+The **Log-Sum-Exp trick** stabilizes this by shifting logits by their maximum:
+$$\log \sum_{i=1}^n e^{x_i} = c + \log \sum_{i=1}^n e^{x_i - c}, \quad \text{where } c = \max_j x_j$$
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Let logits x = [1000.0, 1001.0, 999.0].
+Directly computing e^1000 overflows to inf in float32.
+Shifting by c = 1001.0 gives [-1.0, 0.0, -2.0].
+Exponentials are [0.3679, 1.0, 0.1353], sum = 1.5032.
+The softmax probabilities are safely computed as [0.2447, 0.6652, 0.0900].
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+logits = np.array([1000.0, 1001.0, 999.0])
+c = np.max(logits)
+shifted_exp = np.exp(logits - c)
+stable_softmax = shifted_exp / np.sum(shifted_exp)
+
+assert not np.isnan(stable_softmax).any()
+assert np.isclose(np.sum(stable_softmax), 1.0)
+assert np.allclose(stable_softmax, [0.24472847, 0.66524096, 0.09003057], atol=1e-5)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
+**Evaluating cross-entropy loss by computing log(softmax(x)) in two separate calls.**
 
-TODO
+Small probabilities underflow to 0.0, and log(0.0) produces -inf, generating NaN gradients.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why does subtracting max(x) from all elements not alter the softmax probability distribution?
+2. What happens when dividing by norm(x) when x is the zero vector?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Because e^(x_i - c) / sum(e^(x_j - c)) = (e^x_i * e^-c) / (e^-c * sum(e^x_j)) = e^x_i / sum(e^x_j). The e^-c factor cancels exactly.
+2. Division by zero occurs, producing NaN or inf. Adding a small epsilon (e.g. 1e-8) prevents numerical instability.
 
 </details>
 
@@ -67,12 +75,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](07_Embeddings_as_Lookup_Into_a_Matrix.md) · [Module README](../README.md) · [Next →](09_Module_Project_A_Forward_Pass_With_Only_NumPy.md)
+[Module README](../README.md) · [Next →](09_Module_Project_A_Forward_Pass_With_Only_NumPy.md)

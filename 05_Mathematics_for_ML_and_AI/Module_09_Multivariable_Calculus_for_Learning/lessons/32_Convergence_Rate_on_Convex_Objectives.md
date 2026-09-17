@@ -1,78 +1,65 @@
-# Lesson 09.32 — Convergence Rate on Convex Objectives
+# Lesson 09.32: Convergence Rate on Convex Objectives
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 32 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- State convergence rates: O(1/T) for convex L-smooth functions, O((1 - mu/L)^T) for strongly convex functions.
+- Analyze sublinear versus linear (geometric) convergence.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.31 Lipschitz Gradients and the Safe Step Size.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+Optimization rates under step size $\eta = 1/L$:
+1. **Convex + $L$-smooth**: $f(\mathbf{x}_T) - f^* \le \frac{L \|\mathbf{x}_0 - \mathbf{x}^*\|^2}{2T} = O\left(\frac{1}{T}\right)$ (**sublinear**).
+2. **$\mu$-strongly convex + $L$-smooth**: $\|\mathbf{x}_T - \mathbf{x}^*\|^2 \le \left(1 - \frac{\mu}{L}\right)^T \|\mathbf{x}_0 - \mathbf{x}^*\|^2$ (**linear/exponential** convergence).
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+With condition number $\kappa = L/\mu = 20$: factor is $1 - 1/20 = 0.95$.
+After $T = 50$ iterations, error factor is $0.95^{50} \approx 0.0769$ (over $92\%$ reduction).
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+kappa = 20.0
+factor = 1.0 - 1.0 / kappa
+err_50 = factor**50
+assert np.isclose(err_50, 0.0769449985)
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Confusing 'linear convergence' with polynomial O(T); in numerical optimization, linear convergence means error decreases geometrically like C * r^T with r < 1.
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What is the convergence rate of gradient descent on a general convex L-smooth function?
+2. What convergence rate is achieved under strong convexity?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. O(1 / T).
+2. Linear (geometric) rate: O((1 - mu/L)^T).
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](31_Lipschitz_Gradients_and_the_Safe_Step_Size.md) · [Module README](../README.md) · [Next →](33_Momentum.md)
+Next: [33_Momentum.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\33_Momentum.md)

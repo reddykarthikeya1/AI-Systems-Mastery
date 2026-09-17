@@ -1,65 +1,60 @@
 # Lesson 03.14 — Matrix Addition and Scalar Multiplication
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 14 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Perform elementwise addition A + B and scalar scaling c A.
+- [ ] Verify distributive and commutative laws in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.04 Matrices as Compact Notation.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+Matrix addition $(A + B)_{ij} = A_{ij} + B_{ij}$ and scalar multiplication $(cA)_{ij} = c A_{ij}$ operate elementwise on matrices of identical dimensions, making the space $\mathbb{R}^{m \times n}$ a vector space of dimension $m \cdot n$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} + 2\begin{bmatrix} 0 & 1 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 1 & 4 \\ 1 & 8 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[1.0, 2.0], [3.0, 4.0]])
+B = np.array([[0.0, 1.0], [-1.0, 2.0]])
+res = A + 2.0 * B
+assert np.allclose(res, [[1.0, 4.0], [1.0, 8.0]])
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Attempting to add matrices with mismatched shapes without proper broadcasting rules.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What condition is required to add two matrices A and B?
+2. Is matrix addition commutative?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. They must have identical shapes (dimensions).
+2. Yes, A + B = B + A.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](13_Homogeneous_Systems_and_the_Null_Space.md) · [Module README](../README.md) · [Next →](15_Matrix_Multiplication_as_Composition.md)
+[Module README](../README.md) · [Next →](15_Matrix_Multiplication_as_Composition.md)

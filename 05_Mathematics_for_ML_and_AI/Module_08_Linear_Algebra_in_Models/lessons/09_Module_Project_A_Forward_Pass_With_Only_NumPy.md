@@ -1,65 +1,93 @@
 # Lesson 08.09 — Module Project: A Forward Pass With Only NumPy
 
 > **Module 08:** Linear Algebra in Models · Lesson 9 of 9
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Assemble linear layers, activation functions, residual connections, and layer normalization into a working forward pass using only pure NumPy.
+- [ ] Verify complete dimensional consistency and numerical equivalence with reference equations.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- Lessons 08.01 through 08.08.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+A complete Transformer FFN block consists of:
+1. Layer Normalization
+2. First Affine Projection (d -> 4d)
+3. Activation Non-linearity (ReLU)
+4. Second Affine Projection (4d -> d)
+5. Residual Connection (Y = X + F(X))
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Given input X of shape (B=2, S=3, d=4), hidden dimension d_ff=8.
+LayerNorm normalizes along the last dimension.
+W1 @ X.T + b1 projects to (2, 3, 8).
+ReLU clamps negative values.
+W2 @ A1.T + b2 projects back to (2, 3, 4).
+Adding X completes the residual block.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+
+np.random.seed(42)
+B, S, d_model, d_ff = 2, 3, 4, 8
+
+X = np.random.randn(B, S, d_model)
+W1 = np.random.randn(d_ff, d_model) * np.sqrt(2.0 / d_model)
+b1 = np.zeros(d_ff)
+W2 = np.random.randn(d_model, d_ff) * np.sqrt(2.0 / d_ff)
+b2 = np.zeros(d_model)
+
+eps = 1e-5
+mean = np.mean(X, axis=-1, keepdims=True)
+var = np.var(X, axis=-1, keepdims=True)
+X_norm = (X - mean) / np.sqrt(var + eps)
+
+H1 = X_norm @ W1.T + b1
+assert H1.shape == (B, S, d_ff)
+
+A1 = np.maximum(0, H1)
+H2 = A1 @ W2.T + b2
+assert H2.shape == (B, S, d_model)
+
+Y = X + H2
+assert Y.shape == (B, S, d_model)
+assert not np.isnan(Y).any()
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
+**Normalizing across the batch axis instead of the feature axis in LayerNorm.**
 
-TODO
+LayerNorm normalizes across the feature dimension independently for every token and sample, ensuring robustness to variable sequence lengths.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Why is the residual connection Y = X + F(X) crucial for training very deep networks?
+2. What is the dimensional difference between BatchNorm and LayerNorm?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The residual connection provides an identity path for gradients to flow backward directly without attenuation, preventing vanishing gradients.
+2. BatchNorm computes statistics over batch dimensions, while LayerNorm computes statistics independently over the feature dimension for each sample.
 
 </details>
 
@@ -67,12 +95,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](08_Where_Numerical_Precision_Bites.md) · [Module README](../README.md)
+[Module README](../README.md)

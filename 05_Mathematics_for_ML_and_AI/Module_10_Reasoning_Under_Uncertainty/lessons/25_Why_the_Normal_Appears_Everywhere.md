@@ -1,65 +1,63 @@
 # Lesson 10.25 — Why the Normal Appears Everywhere
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 25 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Explain Maximum Entropy property: Gaussian maximizes entropy for fixed variance.
+- [ ] Connect sums of independent disturbances to Gaussian emergence via CLT.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.24 Normal Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The Normal distribution dominates nature and machine learning for two mathematical reasons:
+1. **Central Limit Theorem**: Sums of many small independent random noise sources converge to a Gaussian.
+2. **Maximum Entropy**: Among all continuous distributions with fixed mean and variance, the Gaussian has the **maximum entropy** (assumes the least additional structure).
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Summing 12 independent Uniform $U(-0.5, 0.5)$ variables creates a nearly indistinguishable standard normal $\mathcal{N}(0, 1)$ ($12 \times 1/12 = 1.0$).
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+# Sum of 12 uniforms has variance 1.0 and mean 0.0
+x = np.sum(np.random.uniform(-0.5, 0.5, size=(10000, 12)), axis=1)
+assert np.isclose(np.mean(x), 0.0, atol=0.05)
+assert np.isclose(np.var(x), 1.0, atol=0.05)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming CLT applies when variables have infinite variance (e.g. Cauchy distribution sums do NOT become Gaussian).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. Which distribution maximizes entropy for a given mean and variance?
+2. Why does sensor noise typically follow a Gaussian distribution?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The Normal (Gaussian) distribution.
+2. Because sensor noise aggregates millions of microscopic independent thermal molecular collisions (CLT).
 
 </details>
 
@@ -67,12 +65,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](24_The_Normal_Distribution.md) · [Module README](../README.md) · [Next →](26_The_Standard_Normal_and_ZScores.md)
+[Module README](../README.md) · [Next →](26_The_Standard_Normal_and_ZScores.md)

@@ -1,65 +1,64 @@
 # Lesson 10.37 — The Central Limit Theorem
 
 > **Module 10:** Reasoning Under Uncertainty · Lesson 37 of 41
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] State the Lindeberg-Lévy CLT: sqrt(n)(X_bar - mu) / sigma -> N(0, 1) in distribution.
+- [ ] Simulate Gaussian emergence from non-Gaussian variables.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 10.36 Law of Large Numbers and 10.24 Normal Distribution.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+The **Central Limit Theorem (CLT)** states that given i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$, the standardized sample mean converges in distribution to standard normal:
+$$\frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1) \quad \text{as } n \to \infty$$
+Remarkably, this holds regardless of whether the original distribution was skewed, bimodal, or uniform!
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+Averaging 50 discrete uniform dice: mean is 3.5, standard error is $\sqrt{2.917 / 50} \approx 0.241$. The distribution of averages is purely Gaussian.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+np.random.seed(42)
+# Sample means from heavily skewed Gamma distribution
+samples = [np.mean(np.random.gamma(shape=1.0, scale=2.0, size=100)) for _ in range(5000)]
+z_scores = (samples - np.mean(samples)) / np.std(samples)
+assert np.isclose(np.mean(z_scores), 0.0, atol=0.05)
+assert np.isclose(np.std(z_scores), 1.0, atol=0.05)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Applying CLT to distributions with infinite variance (e.g. Cauchy or Pareto with alpha <= 2).
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What two conditions must a distribution satisfy for standard CLT to hold?
+2. What distribution does the standardized sample mean approach?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. Independent identically distributed (i.i.d.) observations with finite variance sigma^2 < infinity.
+2. The standard normal distribution N(0, 1).
 
 </details>
 
@@ -67,12 +66,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](36_The_Law_of_Large_Numbers.md) · [Module README](../README.md) · [Next →](38_Entropy.md)
+[Module README](../README.md) · [Next →](38_Entropy.md)

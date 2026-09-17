@@ -1,65 +1,60 @@
 # Lesson 03.20 — Computing the Inverse by Elimination
 
 > **Module 03:** Linear Systems and Geometric Maps · Lesson 20 of 35
-> **Status:** 🔴 Not written — this is a scaffold stub.
 
 ---
 
 ## What you will be able to do after this lesson
 
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+- [ ] Compute A^(-1) by applying Gauss-Jordan elimination to [A | I] -> [I | A^(-1)].
+- [ ] Verify inverse reconstruction in NumPy.
 
 ## Prerequisites
 
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 03.10 Gauss-Jordan Elimination and 03.19 Matrix Inverse.
 
 ---
 
 ## 1. The idea
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+To find $A^{-1}$, augment $A$ with identity $I$: $[A \mid I]$. Row operations apply elementary matrices $E$: $E[A \mid I] = [EA \mid E]$. When the left block reaches $I$, $EA = I \implies E = A^{-1}$, so the right block is $E I = A^{-1}$.
 
-TODO
+---
 
 ## 2. Worked example
 
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
+For $A = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$, row reducing $[A \mid I]$ yields $A^{-1} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}$.
 
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+A = np.array([[2.0, 1.0], [1.0, 1.0]])
+inv_manual = np.array([[1.0, -1.0], [-1.0, 2.0]])
+assert np.allclose(A @ inv_manual, np.eye(2))
+assert np.allclose(np.linalg.inv(A), inv_manual)
 ```
+
+---
 
 ## 4. The mistake people actually make
 
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Using matrix inversion to solve Ax = b in computer code. Solving via LU decomposition (`np.linalg.solve`) is 3x faster and far more numerically stable.
 
 ---
 
 ## Check yourself
 
-1. TODO
-2. TODO
+1. What does the augmented matrix [A | I] reduce to?
+2. Why is np.linalg.solve(A, b) preferred over np.linalg.inv(A) @ b?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. [I | A^(-1)].
+2. It is faster and avoids the numerical errors and instability of explicit matrix inversion.
 
 </details>
 
@@ -67,12 +62,12 @@ TODO
 
 ## Lesson checklist
 
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](19_Matrix_Inverse_Definition_and_Existence.md) · [Module README](../README.md) · [Next →](21_Determinants_of_2x2_and_3x3_Matrices.md)
+[Module README](../README.md) · [Next →](21_Determinants_of_2x2_and_3x3_Matrices.md)

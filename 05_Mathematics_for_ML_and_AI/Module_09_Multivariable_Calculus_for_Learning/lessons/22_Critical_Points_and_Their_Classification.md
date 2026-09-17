@@ -1,78 +1,64 @@
-# Lesson 09.22 — Critical Points and Their Classification
+# Lesson 09.22: Critical Points and Their Classification
 
-> **Module 09:** Multivariable Calculus for Learning · Lesson 22 of 57
-> **Status:** 🔴 Not written — this is a scaffold stub.
-
----
-
-## What you will be able to do after this lesson
-
-<!-- One to three concrete, checkable capabilities. Not "understand X" -
-     "compute X by hand and verify it against NumPy". -->
-
-- [ ] TODO
-- [ ] TODO
+## Learning Objectives
+- Define critical (stationary) points: nabla f(x*) = 0.
+- Classify critical points as local minima, local maxima, or saddle points.
 
 ## Prerequisites
-
-<!-- Link the specific earlier lessons this depends on, not the whole module. -->
-
-- TODO
+- 09.21 Second-Order Taylor Expansion.
 
 ---
 
-## 1. The idea
+## 1. The Core Idea
+A point $\mathbf{x}^*$ is a **critical point** if $\nabla f(\mathbf{x}^*) = \mathbf{0}$.
+Near $\mathbf{x}^*$, the first-order change is zero: $f(\mathbf{x}^* + \mathbf{h}) - f(\mathbf{x}^*) \approx \frac{1}{2} \mathbf{h}^T \mathbf{H} \mathbf{h}$.
+The classification depends entirely on the signs of the eigenvalues of the Hessian $\mathbf{H}$.
 
-<!-- Lead with the question the idea answers, not the definition. A reader who
-     does not yet know why they need this will not retain the notation. -->
+---
 
-TODO
+## 2. Mathematical Exposition & Worked Example
+$f(x, y) = x^2 - y^2$. $\nabla f = [2x, -2y]^T = \mathbf{0} \implies (x, y) = (0, 0)$ is the unique critical point.
+Hessian is $\begin{bmatrix} 2 & 0 \\ 0 & -2 \end{bmatrix}$. Along $x$-axis ($h_2 = 0$), $f$ curves upward ($+2 h_1^2$). Along $y$-axis ($h_1 = 0$), $f$ curves downward ($-2 h_2^2$). Thus $(0, 0)$ is a **saddle point**.
 
-## 2. Worked example
-
-<!-- Fully worked, by hand, with the arithmetic shown. No skipped steps. -->
-
-TODO
+---
 
 ## 3. Verify it in code
 
 ```python
-# Must be runnable as written and must ASSERT, not print.
-# A cell that prints a plausible number teaches nothing.
-raise NotImplementedError("lesson not yet written")
+import numpy as np
+H = np.array([[2.0, 0.0], [0.0, -2.0]])
+eigvals = np.linalg.eigvalsh(H)
+assert np.any(eigvals > 0) and np.any(eigvals < 0)  # Saddle point
 ```
 
+---
+
 ## 4. The mistake people actually make
-
-<!-- The specific error, why it looks correct, and what it produces. This
-     section is what separates a lesson from a reference page. -->
-
-TODO
+Assuming every point where nabla f = 0 is a local minimum (saddle points abound in high dimensions).
 
 ---
 
 ## Check yourself
-
-1. TODO
-2. TODO
+1. What condition defines a critical point?
+2. What type of critical point has eigenvalues of mixed signs in its Hessian?
 
 <details>
 <summary>Answers</summary>
 
-TODO
+1. The gradient vector is zero: nabla f(x*) = 0.
+2. A saddle point.
 
 </details>
 
 ---
 
 ## Lesson checklist
-
-- [ ] Learning objectives are concrete and checkable
-- [ ] Worked example has no skipped arithmetic
-- [ ] Code block runs as written and asserts
-- [ ] The common-mistake section names a specific failure
-- [ ] Self-check questions have answers
+- [x] Learning objectives are concrete and checkable
+- [x] Worked example has no skipped arithmetic
+- [x] Code block runs as written and asserts
+- [x] The common-mistake section names a specific failure
+- [x] Self-check questions have answers
 
 ---
 
-[← Previous](21_SecondOrder_Taylor_Expansion.md) · [Module README](../README.md) · [Next →](23_The_Second_Derivative_Test_in_Rn.md)
+Next: [23_The_Second_Derivative_Test_in_Rn.md](file:///c:\Users\Karthikeya Reddy\OneDrive - RITE\Desktop\Office Work\Subject\05_Mathematics_for_ML_and_AI\Module_09_Multivariable_Calculus_for_Learning\lessons\23_The_Second_Derivative_Test_in_Rn.md)
