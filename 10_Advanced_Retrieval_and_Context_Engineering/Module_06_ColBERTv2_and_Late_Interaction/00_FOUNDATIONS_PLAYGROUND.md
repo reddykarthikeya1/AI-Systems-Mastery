@@ -1,43 +1,81 @@
-# Module 06: Beginner Playground - ColBERTv2 & Late Interaction
+# 🐣 Interactive Foundations Playground: ColBERTv2 & Late Interaction
 
+> *"Late interaction preserves every token vector until the very end, computing fast MaxSim alignments."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **ColBERTv2** (Contextualized Late Interaction over BERT)!
-In the previous module, we learned that:
-- Bi-Encoders compress an entire 500-word passage into a **single vector** (lossy!).
-- Cross-Encoders evaluate full word-to-word attention, but take too long!
+**Brand new to this topic? Start here, not with the README.**
 
-What if you could keep **all token vectors** and compute word-to-word alignment in **just 10 milliseconds**?
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Welcome to **ColBERT's Late Interaction**!
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. How Late Interaction Works: The MaxSim Operator
+## 0. Everything this page needs
 
-Instead of collapsing a document into 1 vector:
-- Query $Q$ has 5 token vectors: $(q_1, q_2, q_3, q_4, q_5)$
-- Document $D$ has 100 token vectors: $(d_1, d_2, \dots, d_{100})$
+Nothing here is installed. These all ship with Python.
 
-For every single query word:
-1. Find the **highest similarity match** across all words in the document (**Max**).
-2. Sum those best scores together (**Sim**)!
-
-$$\text{Score}(Q, D) = \sum_{i \in Q} \max_{j \in D} (q_i \cdot d_j)$$
-
-```
-Query Token "Leaky"   --> [Max similarity with Document Token "Dripping"] = 0.88
-Query Token "Faucet"  --> [Max similarity with Document Token "Pipe"]     = 0.91
-Query Token "Fix"     --> [Max similarity with Document Token "Repair"]   = 0.85
-
-Total MaxSim Score = 0.88 + 0.91 + 0.85 = 2.64!
+```python
+import math
 ```
 
 ---
 
-## 2. Why is ColBERTv2 So Fast?
+## 1. ColBERT Token-Level MaxSim Scoring
 
-- Document token embeddings are pre-computed offline and compressed using **centroid quantization** down to $< 2$ bits per dimension!
-- When a query arrives, vector dot products execute in fast GPU registers without launching heavy transformer layers!
-- You get **Cross-Encoder precision at Bi-Encoder speed**!
+ColBERT computes the sum of maximum cosine similarities for each query token vector across all document token vectors: $\text{Score} = \sum_{i \in Q} \max_{j \in D} (E_{q_i} \cdot E_{d_j})$.
+
+```python
+# 2 query tokens, 3 document tokens (1D scalars for illustration)
+E_q = [1.0, 0.5]
+E_d = [0.2, 0.9, 0.4]
+
+max_sim_q0 = max(E_q[0] * d for d in E_d)  # 1.0 * 0.9 = 0.9
+max_sim_q1 = max(E_q[1] * d for d in E_d)  # 0.5 * 0.9 = 0.45
+colbert_score = max_sim_q0 + max_sim_q1
+
+assert max_sim_q0 == 0.9
+assert max_sim_q1 == 0.45
+assert colbert_score == 1.35
+print(f"ColBERT MaxSim score: {colbert_score:.2f}")
+```
+
+---
+
+## 2. Late Interaction vs Single-Vector Bottleneck
+
+Single dense embeddings crush an entire 500-word passage into one 768-dim vector; ColBERT stores token-level vectors, preserving fine-grained facts.
+
+```python
+doc_tokens = 128
+emb_dim = 128
+colbert_matrix_shape = (doc_tokens, emb_dim)
+dense_vector_shape = (1, emb_dim)
+
+assert colbert_matrix_shape[0] == 128
+assert dense_vector_shape[0] == 1
+print(f"ColBERT preserves {doc_tokens} distinct token vectors per passage.")
+```
+
+---
+
+## 3. Residual Vector Quantization Compression
+
+ColBERTv2 compresses each 128-dim token vector to just 16-32 bytes using residual centroid quantization.
+
+```python
+raw_bytes = emb_dim * 2  # FP16 = 256 bytes
+compressed_bytes = 20    # 20 bytes in ColBERTv2
+compression_ratio = raw_bytes / compressed_bytes
+
+assert compression_ratio > 10.0
+assert round(compression_ratio, 1) == 12.8
+print(f"ColBERTv2 achieves {compression_ratio:.1f}x compression on token vectors.")
+```
+
+---

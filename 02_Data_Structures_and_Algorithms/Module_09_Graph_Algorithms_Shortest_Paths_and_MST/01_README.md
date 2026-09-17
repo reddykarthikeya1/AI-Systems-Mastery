@@ -36,82 +36,266 @@ flowchart LR
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Network Delay Time ([LeetCode 743](https://leetcode.com/problems/network-delay-time/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: Dijkstra's Algorithm with Min-Heap
+### Problem 1: Network Delay Time ([LeetCode #743](https://leetcode.com/problems/network-delay-time/)) — Medium
+
+> **Pattern**: `Dijkstra's Single-Source Shortest Path` | **Target Time**: $O(E \log V)$ | **Target Space**: $O(V + E)
+
+#### Problem Specification
+You are given a network of `n` nodes, labeled from `1` to `n`. You are also given `times`, a list of travel times as directed edges `times[i] = (ui, vi, wi)`, where `ui` is the source node, `vi` is the target node, and `wi` is the time it takes for a signal to travel from source to target.
+
+We will send a signal from a given node `k`. Return the minimum time it takes for all the `n` nodes to receive the signal. If it is impossible for all the `n` nodes to receive the signal, return `-1`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Classic Dijkstra's algorithm with a min-priority queue. The answer is $\max(	ext{dist}[v])$ across all nodes once all have been settled.
+
 ```python
 import heapq
 from collections import defaultdict
 
-def network_delay_time(times: list[list[int]], n: int, k: int) -> int:
-    adj = defaultdict(list)
-    for u, v, w in times:
-        adj[u].append((v, w))
-        
-    pq = [(0, k)]  # (dist, node)
-    dist = {}
-    
-    while pq:
-        d, u = heapq.heappop(pq)
-        if u in dist:
-            continue
-        dist[u] = d
-        for v, w in adj[u]:
-            if v not in dist:
-                heapq.heappush(pq, (d + w, v))
-                
-    return max(dist.values()) if len(dist) == n else -1
+class Solution:
+    def networkDelayTime(self, times: list[list[int]], n: int, k: int) -> int:
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w))
+        pq = [(0, k)]
+        dist = {}
+        while pq:
+            d, node = heapq.heappop(pq)
+            if node in dist:
+                continue
+            dist[node] = d
+            for neighbor, weight in graph[node]:
+                if neighbor not in dist:
+                    heapq.heappush(pq, (d + weight, neighbor))
+        return max(dist.values()) if len(dist) == n else -1
 ```
-- **Time Complexity**: $O(E \\log V)$, **Space Complexity**: $O(V + E)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Min Cost to Connect All Points ([LeetCode 1584](https://leetcode.com/problems/min-cost-to-connect-all-points/)) — Medium
+### Problem 2: Cheapest Flights Within K Stops ([LeetCode #787](https://leetcode.com/problems/cheapest-flights-within-k-stops/)) — Medium
 
-#### Optimized: Prim's Algorithm ($O(V^2 \\log V)$ Time)
-Maintain min-heap of candidate edges connecting visited components to unvisited vertices. Add closest point greedily until all $V$ points are connected.
-- **Time Complexity**: $O(V^2 \\log V)$, **Space Complexity**: $O(V^2)$.
+> **Pattern**: `Bellman-Ford / BFS Step-Bounded Relaxation` | **Target Time**: $O(K 	imes E)$ | **Target Space**: $O(V)
 
----
+#### Problem Specification
+There are `n` cities connected by some number of flights. You are given an array `flights` where `flights[i] = [fromi, toi, pricei]` indicates that there is a flight from city `fromi` to city `toi` with cost `pricei`.
 
-### Problem 3: Cheapest Flights Within K Stops ([LeetCode 787](https://leetcode.com/problems/cheapest-flights-within-k-stops/)) — Medium
+You are also given three integers `src`, `dst`, and `k`, return the cheapest price from `src` to `dst` with at most `k` stops. If there is no such route, return `-1`.
 
-#### Optimized: Bellman-Ford Modified for $K + 1$ Steps
-Relax edges at most $K + 1$ times using a snapshot of the previous distance array to prevent cascaded multi-hop relaxations within a single step.
+#### Algorithmic Invariants & Optimal Derivation
+Bellman-Ford relaxation executed exactly $K + 1$ rounds. Using a cloned copy `tmp_prices` prevents using flights from the same iteration (which would count as multiple stops).
+
 ```python
-def find_cheapest_price(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int:
-    prices = [float("inf")] * n
-    prices[src] = 0
-    
-    for _ in range(k + 1):
-        temp = list(prices)
-        for u, v, w in flights:
-            if prices[u] != float("inf") and prices[u] + w < temp[v]:
-                temp[v] = prices[u] + w
-        prices = temp
-        
-    return int(prices[dst]) if prices[dst] != float("inf") else -1
+class Solution:
+    def findCheapestPrice(self, n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int:
+        prices = [float('inf')] * n
+        prices[src] = 0
+        for _ in range(k + 1):
+            tmp_prices = prices.copy()
+            for u, v, w in flights:
+                if prices[u] == float('inf'):
+                    continue
+                if prices[u] + w < tmp_prices[v]:
+                    tmp_prices[v] = prices[u] + w
+            prices = tmp_prices
+        return prices[dst] if prices[dst] != float('inf') else -1
 ```
-- **Time Complexity**: $O(K \\times E)$, **Space Complexity**: $O(V)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Swim in Rising Water ([LeetCode 778](https://leetcode.com/problems/swim-in-rising-water/)) — Hard
+### Problem 3: Min Cost to Connect All Points ([LeetCode #1584](https://leetcode.com/problems/min-cost-to-connect-all-points/)) — Medium
 
-#### Optimized: Dijkstra Modified for Minimax Path
-Use a min-heap storing `(max_elevation_so_far, r, c)`. Pop smallest elevation cell and explore 4 neighbors.
-- **Time Complexity**: $O(N^2 \\log N)$, **Space Complexity**: $O(N^2)$.
+> **Pattern**: `Prim's Algorithm / Minimum Spanning Tree (MST)` | **Target Time**: $O(N^2)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+You are given an array `points` representing integer coordinates of some points on a 2D-plane, where `points[i] = [xi, yi]`.
+
+The cost of connecting two points `[xi, yi]` and `[xj, yj]` is the Manhattan distance between them: $|xi - xj| + |yi - yj|$.
+
+Return the minimum cost to make all points connected. All points are connected if there is exactly one simple path between any two points.
+
+#### Algorithmic Invariants & Optimal Derivation
+Prim's algorithm builds an MST by greedily adding the lowest-cost edge connecting an unvisited vertex to the growing connected tree component.
+
+```python
+import heapq
+
+class Solution:
+    def minCostConnectPoints(self, points: list[list[int]]) -> int:
+        n = len(points)
+        visited = set()
+        min_heap = [(0, 0)]  # (cost, point_idx)
+        total_cost = 0
+        while len(visited) < n:
+            cost, u = heapq.heappop(min_heap)
+            if u in visited:
+                continue
+            visited.add(u)
+            total_cost += cost
+            x1, y1 = points[u]
+            for v in range(n):
+                if v not in visited:
+                    x2, y2 = points[v]
+                    dist = abs(x1 - x2) + abs(y1 - y2)
+                    heapq.heappush(min_heap, (dist, v))
+        return total_cost
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Word Ladder ([LeetCode 127](https://leetcode.com/problems/word-ladder/)) — Hard
+### Problem 4: Path With Minimum Effort ([LeetCode #1631](https://leetcode.com/problems/path-with-minimum-effort/)) — Medium
 
-#### Optimized: Bidirectional BFS
-Simultaneously expand forward from `beginWord` and backward from `endWord`. Terminate the moment frontiers intersect.
-- **Time Complexity**: $O(M^2 \\times N)$ where $M$ is word length and $N$ is dictionary size.
-- **Space Complexity**: $O(M \\times N)$.
+> **Pattern**: `Minimax Path / Modified Dijkstra` | **Target Time**: $O(M 	imes N \log(M 	imes N))$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+You are a hiker preparing for an upcoming hike. You are given `heights`, a 2D array of size `rows x columns`, where `heights[row][col]` represents the height of cell `(row, col)`.
+A route's effort is the maximum absolute difference in heights between two consecutive cells of the route.
+Return the minimum effort required to travel from the top-left cell `(0, 0)` to the bottom-right cell `(rows - 1, columns - 1)`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Modify Dijkstra's distance update rule from addition to minimax: $	ext{new\_effort} = \max(	ext{effort}, |h_{curr} - h_{next}|)$.
+
+```python
+import heapq
+
+class Solution:
+    def minimumEffortPath(self, heights: list[list[int]]) -> int:
+        rows, cols = len(heights), len(heights[0])
+        pq = [(0, 0, 0)]  # (effort, r, c)
+        dist = [[float('inf')] * cols for _ in range(rows)]
+        dist[0][0] = 0
+        while pq:
+            effort, r, c = heapq.heappop(pq)
+            if r == rows - 1 and c == cols - 1:
+                return effort
+            if effort > dist[r][c]:
+                continue
+            for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    new_effort = max(effort, abs(heights[r][c] - heights[nr][nc]))
+                    if new_effort < dist[nr][nc]:
+                        dist[nr][nc] = new_effort
+                        heapq.heappush(pq, (new_effort, nr, nc))
+        return 0
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
+### Problem 5: Swim in Rising Water ([LeetCode #778](https://leetcode.com/problems/swim-in-rising-water/)) — Hard
+
+> **Pattern**: `Minimax Dijkstra on Grid` | **Target Time**: $O(N^2 \log N)$ | **Target Space**: $O(N^2)
+
+#### Problem Specification
+You are given an `n x n` integer matrix `grid` where each value `grid[i][j]` represents the elevation at that point `(i, j)`.
+
+The rain starts to fall at time `t = 0`. At time `t`, the depth of the water everywhere is `t`. You can swim from a square to any 4-directionally adjacent square if and only if the elevation of both squares is at most `t`.
+
+Return the least time until you can reach the bottom right square `(n - 1, n - 1)` if you start at the top left square `(0, 0)`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Dijkstra using max elevation on path: `max(current_t, grid[nr][nc])`. The first time the destination is popped from the priority queue, its time is guaranteed to be minimal.
+
+```python
+import heapq
+
+class Solution:
+    def swimInWater(self, grid: list[list[int]]) -> int:
+        n = len(grid)
+        visited = set([(0, 0)])
+        pq = [(grid[0][0], 0, 0)]
+        while pq:
+            t, r, c = heapq.heappop(pq)
+            if r == n - 1 and c == n - 1:
+                return t
+            for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < n and 0 <= nc < n and (nr, nc) not in visited:
+                    visited.add((nr, nc))
+                    heapq.heappush(pq, (max(t, grid[nr][nc]), nr, nc))
+        return 0
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Find City With Smallest Neighbors at Threshold ([LeetCode #1334](https://leetcode.com/problems/find-city-with-smallest-neighbors-at-threshold/)) — Medium
+
+> **Pattern**: `Floyd-Warshall All-Pairs Shortest Path` | **Target Time**: $O(N^3)$ | **Target Space**: $O(N^2)
+
+#### Problem Specification
+There are `n` cities numbered from `0` to `n-1`. Given the array `edges` where `edges[i] = [fromi, toi, weighti]` represents a bidirectional and weighted edge between cities `fromi` and `toi`, and given the integer `distanceThreshold`.
+
+Return the city with the smallest number of cities that are reachable through some path and whose distance is at most `distanceThreshold`. If there are multiple such cities, return the city with the greatest number.
+
+#### Algorithmic Invariants & Optimal Derivation
+Floyd-Warshall dynamic programming computes all-pairs shortest paths in $O(N^3)$ via `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`. Then count neighbors within threshold for each city.
+
+```python
+class Solution:
+    def findTheCity(self, n: int, edges: list[list[int]], distanceThreshold: int) -> int:
+        dist = [[float('inf')] * n for _ in range(n)]
+        for i in range(n):
+            dist[i][i] = 0
+        for u, v, w in edges:
+            dist[u][v] = w
+            dist[v][u] = w
+
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    if dist[i][k] + dist[k][j] < dist[i][j]:
+                        dist[i][j] = dist[i][k] + dist[k][j]
+
+        min_reachable = float('inf')
+        best_city = -1
+        for i in range(n):
+            reachable = sum(1 for j in range(n) if i != j and dist[i][j] <= distanceThreshold)
+            if reachable <= min_reachable:
+                min_reachable = reachable
+                best_city = i
+        return best_city
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
 
 ## 3. Hands-On Project & Test Suite
 

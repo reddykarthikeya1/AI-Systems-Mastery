@@ -2,121 +2,121 @@
   {
     "id": 1,
     "tier": "Recall",
-    "question": "In Network Flow and Matching, what core system invariant does 'Learning path' establish?",
-    "category": "Recall: Architecture",
+    "question": "What does the Max-Flow Min-Cut theorem state?",
+    "category": "Recall: Graph Theory",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Learning path.",
+        "text": "The maximum volume of flow passing from source to sink equals the minimum capacity of an s-t cut.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "The maximum flow is strictly bounded by the number of vertices times the maximum edge capacity.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "Every directed graph contains at least one cycle with zero net residual capacity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "Bipartite matching can only be solved using dynamic programming memoization.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under 'Learning path' in Network Flow and Matching.",
+    "explanation": "Max-Flow Min-Cut proves that the bottleneck cut capacity across any partition separating s and t equals the maximum achievable flow.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
     "tier": "Recall",
-    "question": "In Network Flow and Matching, what core system invariant does '1. The one idea: the residual graph' establish?",
-    "category": "Recall: Architecture",
+    "question": "How does Edmonds-Karp improve over basic Ford-Fulkerson?",
+    "category": "Recall: Algorithms",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. The one idea: the residual graph.",
+        "text": "It uses BFS to always choose the shortest augmenting path in terms of edge count, guaranteeing O(V E^2) runtime.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "It converts all edge capacities to powers of two to perform bitwise binary search.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "It sorts vertices topologically and executes dynamic programming.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "It replaces residual networks with minimum spanning trees.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '1. The one idea: the residual graph' in Network Flow and Matching.",
+    "explanation": "Edmonds-Karp uses BFS rather than arbitrary DFS, ensuring augmenting path lengths never decrease and capping total augmentations at O(V E).",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
     "tier": "Recall",
-    "question": "In Network Flow and Matching, what core system invariant does '2. Edmonds-Karp' establish?",
-    "category": "Recall: Architecture",
+    "question": "In Dinic's algorithm, what role does the level graph play?",
+    "category": "Recall: Algorithms",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Edmonds-Karp.",
+        "text": "It restricts search to forward edges where level[v] == level[u] + 1 to find blocking flows rapidly.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "It stores all s-t paths in a priority queue sorted by residual capacity.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "It partitions vertices into strongly connected components using Tarjan's algorithm.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "It computes the all-pairs shortest paths using Floyd-Warshall.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '2. Edmonds-Karp' in Network Flow and Matching.",
+    "explanation": "Dinic constructs a level graph using BFS and pushes blocking flow along admissible edges using DFS, achieving O(V^2 E) time.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 4,
     "tier": "Recall",
-    "question": "In Network Flow and Matching, what core system invariant does '3. Dinic' establish?",
-    "category": "Recall: Architecture",
+    "question": "How is Maximum Bipartite Matching reduced to a network flow problem?",
+    "category": "Recall: Reductions",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Dinic.",
+        "text": "Connect source s to left partition, right partition to sink t, all with capacity 1, and find max flow.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "Run Dijkstra from each left node to each right node and sum the shortest path weights.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "Compute Eulerian paths between matching vertices in the bipartite graph.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "Contract edges greedily in descending order of node degrees.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '3. Dinic' in Network Flow and Matching.",
+    "explanation": "Adding source s and sink t with unit capacity edges creates an integral network where max flow directly yields the maximum cardinality matching.",
     "lesson_ref": "01_README.md"
   },
   {

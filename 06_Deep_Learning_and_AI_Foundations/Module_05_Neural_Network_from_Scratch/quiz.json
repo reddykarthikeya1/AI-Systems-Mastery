@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Neural Network from Scratch, what core system invariant does 'Why this module exists' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Why this module exists' in Neural Network from Scratch.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Neural Network from Scratch, what core system invariant does 'What you will be able to do' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'What you will be able to do' in Neural Network from Scratch.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Neural Network from Scratch, what core system invariant does 'Lessons' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Lessons' in Neural Network from Scratch.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Neural Network from Scratch, what core system invariant does 'Module project' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Module project.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Module project' in Neural Network from Scratch.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 5,
     "tier": "Apply",
     "question": "Given the implementation in `test_micrograd_engine.py`, what is the exact evaluated result of:\n\n```python\nb.grad\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +30,7 @@
     "lesson_ref": "test_micrograd_engine.py"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_micrograd_engine.py`, what is the exact evaluated result of:\n\n```python\nloss.data\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +60,7 @@
     "lesson_ref": "test_micrograd_engine.py"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_micrograd_engine.py`, what is the exact evaluated result of:\n\n```python\nx.grad\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +90,7 @@
     "lesson_ref": "test_micrograd_engine.py"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_micrograd_engine.py`, what is the exact evaluated result of:\n\n```python\na.grad\n```",
     "category": "Apply: Code Execution",
@@ -238,5 +118,125 @@
     ],
     "explanation": "Evaluates to `pytest.approx(float(a_pt.grad.item()))` as verified in test suite `test_micrograd_engine.py`.",
     "lesson_ref": "test_micrograd_engine.py"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In Neural Network from Scratch, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for neural network from scratch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in neural network from scratch depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In Neural Network from Scratch, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for neural network from scratch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in neural network from scratch depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Neural Network from Scratch, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for neural network from scratch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in neural network from scratch depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Neural Network from Scratch, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for neural network from scratch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in neural network from scratch depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

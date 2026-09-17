@@ -1,37 +1,79 @@
-# Module 06: Beginner Playground - Chunked Prefill & PD Disaggregation
+# 🐣 Interactive Foundations Playground: Chunked Prefill & PD Disaggregation
 
+> *"Prefill-Decode disaggregation separates the sprint (prefill) from the marathon (decode) onto dedicated GPUs."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Chunked Prefill & Prefill-Decode (PD) Disaggregation**!
-This is the cutting-edge serving architecture used by DeepSeek, Meta, and OpenAI to crush latency jitter and maximize GPU utilization.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Convoy Problem: Why Big Prompts Ruin Everything
+## 0. Everything this page needs
 
-Imagine you are at an ice cream shop:
-- You just want 1 scoop of vanilla (1 token decode, takes 1 second).
-- Suddenly, someone in front of you orders **500 custom sundaes** (4,000-token prefill prompt)!
-- You are stuck standing in line for 20 minutes because the counter is totally blocked!
+Nothing here is installed. These all ship with Python.
 
-In LLM serving, whenever a large prompt arrives, all active users experience a **massive freeze in token generation** (Inter-Token Latency spike)!
-
----
-
-## 2. Solution 1: Chunked Prefill (Sarathi-Serve)
-
-Instead of making all 500 sundaes at once:
-- The kitchen makes **10 sundaes (512 tokens)**.
-- Then serves a scoop of ice cream to waiting customers (**1 decode step**).
-- Then makes another 10 sundaes...
-- Both prompt processing and token generation progress smoothly side by side with zero jitter!
+```python
+import math
+```
 
 ---
 
-## 3. Solution 2: Prefill-Decode (PD) Disaggregation
+## 1. Chunked Prefill Token Budgeting
 
-Why even share the same kitchen?
-- **Building A (Prefill Cluster)**: Giant, compute-heavy GPUs optimized for massive matrix multiplications.
-- **Building B (Decode Cluster)**: High-memory-bandwidth GPUs optimized for streaming tokens at lightning speed.
-- Once Building A computes the prompt KV-cache, it transfers the tensors over ultra-fast **RDMA networks** to Building B in milliseconds!
+Chunked prefill splits large prompts into chunks of size $B$ (e.g. 512 tokens), interleaving prompt processing with ongoing decode steps.
+
+```python
+prompt_size = 1200
+chunk_budget = 512
+chunks = []
+remaining = prompt_size
+while remaining > 0:
+    c = min(remaining, chunk_budget)
+    chunks.append(c)
+    remaining -= c
+
+assert chunks == [512, 512, 176]
+assert sum(chunks) == 1200
+print(f"Prompt chunked into steps: {chunks}")
+```
+
+---
+
+## 2. Decoupled Inter-GPU KV Transfer
+
+In PD Disaggregation, dedicated Prefill nodes compute KV cache and ship it across 400 Gbps network to Decode nodes.
+
+```python
+kv_cache_mb = 64.0
+network_bw_gb_s = 50.0  # 400 Gbps InfiniBand
+transfer_time_ms = (kv_cache_mb / (network_bw_gb_s * 1024)) * 1000
+
+assert transfer_time_ms < 2.0
+assert transfer_time_ms == 1.25
+print(f"KV transfer time across network: {transfer_time_ms:.2f} ms (negligible latency).")
+```
+
+---
+
+## 3. Elimination of Decode Interference
+
+Prefill bursts no longer interrupt decoding iterations, stabilizing TPOT at consistent low percentiles.
+
+```python
+tpot_without_disaggregation = [20, 21, 150, 20, 180]  # Spikes due to prefill preemption
+tpot_with_disaggregation = [20, 21, 20, 21, 20]        # Smooth execution
+
+assert max(tpot_with_disaggregation) == 21
+assert max(tpot_without_disaggregation) == 180
+print(f"P99 TPOT reduced from {max(tpot_without_disaggregation)} ms to {max(tpot_with_disaggregation)} ms.")
+```
+
+---

@@ -34,7 +34,9 @@ PROBLEMS_MOD10_12 = [
         "hidden_testcases": [
             {"input": {"n": 1}, "expected": 1},
             {"input": {"n": 4}, "expected": 5},
-            {"input": {"n": 10}, "expected": 89}
+            {"input": {"n": 10}, "expected": 89},
+            {"input": {"n": 5}, "expected": 8},
+            {"input": {"n": 6}, "expected": 13}
         ],
         "explanation": "Recurrence relation $dp[i] = dp[i-1] + dp[i-2]$ with base cases $dp[1]=1, dp[2]=2$. Compute using two rolling variables in $O(N)$ time and $O(1)$ auxiliary space."
     },
@@ -65,7 +67,8 @@ You can either start from step 0, or step 1. Return the minimum cost to reach th
         ],
         "hidden_testcases": [
             {"input": {"cost": [0, 0, 0, 0]}, "expected": 0},
-            {"input": {"cost": [10, 1]}, "expected": 1}
+            {"input": {"cost": [10, 1]}, "expected": 1},
+            {"input": {"cost": [10, 15]}, "expected": 10}
         ],
         "explanation": "Backward recurrence: $dp[i] = \text{cost}[i] + \min(dp[i+1], dp[i+2])$. Answer is $\min(dp[0], dp[1])$."
     },
@@ -97,7 +100,9 @@ Given an integer array `nums` representing the amount of money of each house, re
         "hidden_testcases": [
             {"input": {"nums": [0]}, "expected": 0},
             {"input": {"nums": [2, 1, 1, 2]}, "expected": 4},
-            {"input": {"nums": [5]}, "expected": 5}
+            {"input": {"nums": [5]}, "expected": 5},
+            {"input": {"nums": [1]}, "expected": 1},
+            {"input": {"nums": [1, 2]}, "expected": 2}
         ],
         "explanation": "At house i, choose either rob current house + max profit from two houses prior ($rob1 + n$), or skip current house and keep profit from previous house ($rob2$)."
     },
@@ -133,7 +138,9 @@ You may assume that you have an infinite number of each kind of coin.""",
         ],
         "hidden_testcases": [
             {"input": {"coins": [1], "amount": 2}, "expected": 2},
-            {"input": {"coins": [186, 419, 83, 408], "amount": 6249}, "expected": 20}
+            {"input": {"coins": [186, 419, 83, 408], "amount": 6249}, "expected": 20},
+            {"input": {"coins": [1], "amount": 1}, "expected": 1},
+            {"input": {"coins": [2, 5, 10, 1], "amount": 27}, "expected": 4}
         ],
         "explanation": "Define $dp[a]$ as the minimum coins needed for amount $a$. For each coin $c$, $dp[a] = \min(dp[a], 1 + dp[a - c])$. Initialize $dp[0] = 0$."
     },
@@ -170,7 +177,9 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"nums": [1]}, "expected": 1},
-            {"input": {"nums": [4, 10, 4, 3, 8, 9]}, "expected": 3}
+            {"input": {"nums": [4, 10, 4, 3, 8, 9]}, "expected": 3},
+            {"input": {"nums": [0]}, "expected": 1},
+            {"input": {"nums": [7, 7, 7, 7, 7]}, "expected": 1}
         ],
         "explanation": "Maintain array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length $i+1$. Using `bisect_left` guarantees $O(N \log N)$ time."
     },
@@ -182,7 +191,7 @@ class Solution:
         "pattern": "String Prefix Segmentation DP",
         "time_complexity": "O(N^2)",
         "space_complexity": "O(N)",
-        "description": """Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words. Note that the same word in the dictionary may be reused multiple times.""",
+        "description": """Given a string `s` and a dictionary of strings `wordDict`, return `True` if `s` can be segmented into a space-separated sequence of one or more dictionary words. Note that the same word in the dictionary may be reused multiple times.""",
         "starter_code": """class Solution:
     def wordBreak(self, s: str, wordDict: list[str]) -> bool:
         pass
@@ -279,7 +288,8 @@ Given two integers `m` and `n`, return the number of possible unique paths that 
         "hidden_testcases": [
             {"input": {"m": 1, "n": 1}, "expected": 1},
             {"input": {"m": 7, "n": 3}, "expected": 28},
-            {"input": {"m": 3, "n": 3}, "expected": 6}
+            {"input": {"m": 3, "n": 3}, "expected": 6},
+            {"input": {"m": 1, "n": 5}, "expected": 1}
         ],
         "explanation": "$dp[r][c] = dp[r+1][c] + dp[r][c+1]$. Compress into a single 1D row of length N to optimize space to $O(N)$."
     },
@@ -317,7 +327,9 @@ Given two integers `m` and `n`, return the number of possible unique paths that 
         ],
         "hidden_testcases": [
             {"input": {"grid": [[5]]}, "expected": 5},
-            {"input": {"grid": [[1, 2], [1, 1]]}, "expected": 3}
+            {"input": {"grid": [[1, 2], [1, 1]]}, "expected": 3},
+            {"input": {"grid": [[1]]}, "expected": 1},
+            {"input": {"grid": [[1, 2], [5, 6]]}, "expected": 9}
         ],
         "explanation": "At cell $(r, c)$, minimum path sum is $\text{grid}[r][c] + \min(dp[r-1][c], dp[r][c-1])$. We can accumulate directly into the matrix in-place."
     },
@@ -355,7 +367,8 @@ A subsequence of a string is a new string generated from the original string wit
         ],
         "hidden_testcases": [
             {"input": {"text1": "bsbininm", "text2": "jmjkbkjkv"}, "expected": 1},
-            {"input": {"text1": "a", "text2": "a"}, "expected": 1}
+            {"input": {"text1": "a", "text2": "a"}, "expected": 1},
+            {"input": {"text1": "ezupkr", "text2": "ubmrapg"}, "expected": 2}
         ],
         "explanation": "If characters match, $dp[i][j] = 1 + dp[i-1][j-1]$. If they don't, take $\max(dp[i-1][j], dp[i][j-1])$."
     },
@@ -389,7 +402,8 @@ After you sell your stock, you cannot buy stock on the next day (i.e., 1 day coo
         ],
         "hidden_testcases": [
             {"input": {"prices": [2, 1, 4]}, "expected": 3},
-            {"input": {"prices": [6, 1, 3, 2, 4, 7]}, "expected": 6}
+            {"input": {"prices": [6, 1, 3, 2, 4, 7]}, "expected": 6},
+            {"input": {"prices": [1, 2]}, "expected": 1}
         ],
         "explanation": "Model three distinct states: `held` (own a share), `sold` (just sold today), and `reset` (ready to buy after cooldown). Transitions run in $O(N)$ with $O(1)$ space."
     },
@@ -424,7 +438,8 @@ You may assume that you have an infinite number of each kind of coin.""",
         ],
         "hidden_testcases": [
             {"input": {"amount": 0, "coins": [7]}, "expected": 1},
-            {"input": {"amount": 500, "coins": [3, 5, 7, 8, 9, 10, 11]}, "expected": 35502874}
+            {"input": {"amount": 500, "coins": [3, 5, 7, 8, 9, 10, 11]}, "expected": 35502874},
+            {"input": {"amount": 0, "coins": [1, 2, 5]}, "expected": 1}
         ],
         "explanation": "Outer loop iterates through each coin, inner loop increments amount. By placing the coin loop on the outside, we count unordered combinations rather than permutations."
     },
@@ -471,7 +486,9 @@ You have the following three operations permitted on a word:
         ],
         "hidden_testcases": [
             {"input": {"word1": "", "word2": "a"}, "expected": 1},
-            {"input": {"word1": "abc", "word2": "abc"}, "expected": 0}
+            {"input": {"word1": "abc", "word2": "abc"}, "expected": 0},
+            {"input": {"word1": "a", "word2": ""}, "expected": 1},
+            {"input": {"word1": "", "word2": ""}, "expected": 0}
         ],
         "explanation": "Classic Levenshtein distance table where cell $(i, j)$ represents min operations to convert prefix $w1[0\dots i]$ to $w2[0\dots j]$."
     },
@@ -483,7 +500,7 @@ You have the following three operations permitted on a word:
         "pattern": "0/1 Knapsack Boolean Reachability",
         "time_complexity": "O(N \times \text{target})",
         "space_complexity": "O(\text{target})",
-        "description": """Given an integer array `nums`, return `true` if you can partition the array into two subsets such that the sum of the elements in both subsets is equal or `false` otherwise.""",
+        "description": """Given an integer array `nums`, return `True` if you can partition the array into two subsets such that the sum of the elements in both subsets is equal or `False` otherwise.""",
         "starter_code": """class Solution:
     def canPartition(self, nums: list[int]) -> bool:
         pass
@@ -511,7 +528,8 @@ You have the following three operations permitted on a word:
         ],
         "hidden_testcases": [
             {"input": {"nums": [1, 2, 5]}, "expected": False},
-            {"input": {"nums": [2, 2]}, "expected": True}
+            {"input": {"nums": [2, 2]}, "expected": True},
+            {"input": {"nums": [1, 1]}, "expected": True}
         ],
         "explanation": "If total sum is odd, partition is impossible. Otherwise target is $\text{sum} / 2$. This maps to 0/1 Knapsack: can a subset sum exactly to target?"
     },
@@ -528,7 +546,7 @@ You have the following three operations permitted on a word:
         "time_complexity": "O(N)",
         "space_complexity": "O(1)",
         "description": """You are given an integer array `nums`. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
-Return `true` if you can reach the last index, or `false` otherwise.""",
+Return `True` if you can reach the last index, or `False` otherwise.""",
         "starter_code": """class Solution:
     def canJump(self, nums: list[int]) -> bool:
         pass
@@ -549,7 +567,8 @@ Return `true` if you can reach the last index, or `false` otherwise.""",
         "hidden_testcases": [
             {"input": {"nums": [0]}, "expected": True},
             {"input": {"nums": [2, 0, 0]}, "expected": True},
-            {"input": {"nums": [1, 0, 1, 0]}, "expected": False}
+            {"input": {"nums": [1, 0, 1, 0]}, "expected": False},
+            {"input": {"nums": [2, 0]}, "expected": True}
         ],
         "explanation": "Track the maximum index reachable so far `max_reach`. If the current index `i` ever exceeds `max_reach`, we are stuck and cannot proceed."
     },
@@ -586,7 +605,9 @@ Return the minimum number of jumps to reach `nums[n - 1]`. You may assume you ca
         ],
         "hidden_testcases": [
             {"input": {"nums": [1]}, "expected": 0},
-            {"input": {"nums": [7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3]}, "expected": 2}
+            {"input": {"nums": [7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3]}, "expected": 2},
+            {"input": {"nums": [0]}, "expected": 0},
+            {"input": {"nums": [1, 1, 1, 1]}, "expected": 3}
         ],
         "explanation": "Treat each jump as a BFS layer. When current pointer reaches `cur_end`, increment jump count and update `cur_end = cur_farthest` in $O(N)$."
     },
@@ -659,7 +680,8 @@ Return the starting gas station's index if you can travel around the circuit onc
         ],
         "hidden_testcases": [
             {"input": {"intervals": [[1, 4], [0, 4]]}, "expected": [[0, 4]]},
-            {"input": {"intervals": [[1, 4], [2, 3]]}, "expected": [[1, 4]]}
+            {"input": {"intervals": [[1, 4], [2, 3]]}, "expected": [[1, 4]]},
+            {"input": {"intervals": [[1, 4]]}, "expected": [[1, 4]]}
         ],
         "explanation": "Sort intervals by start coordinate. If the current interval overlaps with the last interval in `merged` ($start \le end_{prev}$), extend $end_{prev} = \max(end_{prev}, end_{curr})$."
     },
@@ -694,7 +716,8 @@ Return the starting gas station's index if you can travel around the circuit onc
             {"input": {"intervals": [[1, 2], [2, 3]]}, "expected": 0}
         ],
         "hidden_testcases": [
-            {"input": {"intervals": [[1, 100], [11, 22], [1, 11], [2, 12]]}, "expected": 2}
+            {"input": {"intervals": [[1, 100], [11, 22], [1, 11], [2, 12]]}, "expected": 2},
+            {"input": {"intervals": [[1, 2]]}, "expected": 0}
         ],
         "explanation": "Interval Scheduling Theorem: sorting by earliest end time greedily maximizes the number of mutually compatible intervals. Any interval starting before `prev_end` is removed."
     },
@@ -731,7 +754,8 @@ Return a list of integers representing the size of these parts.""",
         ],
         "hidden_testcases": [
             {"input": {"s": "a"}, "expected": [1]},
-            {"input": {"s": "caedbdedda"}, "expected": [1, 9]}
+            {"input": {"s": "caedbdedda"}, "expected": [1, 9]},
+            {"input": {"s": "abcdef"}, "expected": [1, 1, 1, 1, 1, 1]}
         ],
         "explanation": "Precompute the last occurrence index of each character. Scan through `s` expanding the partition boundary `end = max(end, last[c])`. When `i == end`, finalize partition."
     }

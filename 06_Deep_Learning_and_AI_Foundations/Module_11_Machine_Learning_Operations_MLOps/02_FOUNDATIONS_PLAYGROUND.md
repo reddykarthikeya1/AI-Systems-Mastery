@@ -1,23 +1,77 @@
-# 🐣 Interactive Foundations Playground: MLOps, Dynamic Batching & Drift
+# 🐣 Interactive Foundations Playground: Machine Learning Operations (MLOps)
 
-> *"A trained model in a Jupyter notebook is a science project. A model deployed behind an auto-scaling dynamic batching inference gateway with drift detection is a business."*
-
+> *"MLOps is the plumbing of AI: ensuring trained models reach production reliably, reproducibly, and safely."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
 ---
 
-## 1. Dynamic Batching: 10x Inference Throughput
+## 0. Everything this page needs
 
-A modern GPU can execute a forward pass for a batch of 32 requests in almost the **exact same time** as a single request!
-- **Without Dynamic Batching**: If 32 users send queries at slightly different milliseconds, the GPU runs 32 sequential passes (e.g. $32 \times 10\text{ ms} = 320\text{ ms}$).
-- **With Dynamic Batching (Triton / vLLM)**: An in-memory queue collects incoming queries for up to `max_wait_ms` (e.g. 2 ms). It packs all waiting queries into one $(B, D)$ tensor, runs 1 forward pass in 12 ms, and fans the answers back out. Throughput jumps from 100 QPS to 1,500 QPS!
+Nothing here is installed. These all ship with Python.
+
+```python
+import hashlib
+import json
+```
 
 ---
 
-## 2. Data Drift & Concept Drift
+## 1. Model Checkpoint Checksum Hashing
 
-Once deployed, models silently degrade over time:
-- **Data Drift**: The input distribution $P(X)$ changes (e.g. camera lens gets scratched, or new slang enters customer queries).
-- **Concept Drift**: The relationship $P(Y \mid X)$ changes (e.g. inflation changes what constitutes a "high price").
-- **Detection**: The **Kolmogorov-Smirnov (KS) Test** compares the empirical cumulative distribution function (eCDF) of production inputs against the training baseline. If the maximum distance $D$ exceeds a critical threshold, sound the alarm for automated retraining!
+Cryptographic SHA256 checksums verify model artifact integrity during deployment across cluster nodes.
+
+```python
+model_weights_data = b"weights_layer1_0.42_layer2_-0.15"
+checksum = hashlib.sha256(model_weights_data).hexdigest()
+
+assert len(checksum) == 64
+assert checksum == hashlib.sha256(model_weights_data).hexdigest()
+print(f"Model artifact SHA-256: {checksum[:16]}...")
+```
+
+---
+
+## 2. Model Version Semantics and Metadata Tagging
+
+Tracking dataset hash, git commit hash, and validation metrics in an immutable JSON model card.
+
+```python
+model_card = {
+    "model_name": "sentiment-classifier",
+    "version": "1.2.0",
+    "f1_score": 0.912,
+    "promoted_to_prod": True
+}
+assert model_card["version"] == "1.2.0"
+assert model_card["f1_score"] > 0.90
+print(f"Model Card: {json.dumps(model_card)}")
+```
+
+---
+
+## 3. Data Drift Detection via Mean Shift
+
+Alerting when production inference feature distributions shift significantly from training distributions.
+
+```python
+train_feature_mean = 0.0
+prod_feature_mean = 0.45
+drift_threshold = 0.30
+
+drift_detected = abs(prod_feature_mean - train_feature_mean) > drift_threshold
+assert drift_detected is True
+print("Data drift alert triggered: retraining pipeline scheduled.")
+```
+
+---

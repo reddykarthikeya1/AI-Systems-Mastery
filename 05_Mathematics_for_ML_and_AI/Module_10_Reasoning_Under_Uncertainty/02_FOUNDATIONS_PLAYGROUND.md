@@ -1,43 +1,77 @@
 # 🐣 Interactive Foundations Playground: Reasoning Under Uncertainty
 
-> *"Probability is not about rolling dice in a casino; it is the logic of science when information is incomplete. Bayes' Theorem tells you exactly how much to update your belief when new evidence arrives."*
-
+> *"Probability is quantifying what you do not know until observation collapses the distribution."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Rare Disease Paradox (Base Rate Fallacy)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Suppose a rare disease affects **1 in 1,000 people** (0.1% prior).
-You take a medical test with:
-- **Sensitivity = 99%**: If you have it, test says POSITIVE 99% of the time.
-- **False Positive Rate = 5%**: If you are healthy, test still says POSITIVE 5% of the time.
+```bash
+python 03_try_it_yourself.py
+```
 
-You test POSITIVE. Do you have a 99% chance of having the disease?
-**NO! You only have ~1.9% chance!**
-
-Why?
-- In a crowd of 100,000 people:
-  - 100 people are sick. 99 of them test positive.
-  - 99,900 people are healthy. 5% of them (4,995 people) test positive!
-- Total positive tests = $99 + 4,995 = 5,094$.
-- Your chance of actually being sick = $99 / 5,094 \approx 1.94\%$!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Bayes' Theorem: The Machine Learning Belief Engine
+## 0. Everything this page needs
 
-$$P(\text{Hypothesis} \mid \text{Data}) = \frac{P(\text{Data} \mid \text{Hypothesis}) \times P(\text{Hypothesis})}{P(\text{Data})}$$
+Nothing here is installed. These all ship with Python.
 
-- **Prior $P(H)$**: What you believed before seeing the evidence.
-- **Likelihood $P(D \mid H)$**: How probable the observed data would be if the hypothesis were true.
-- **Posterior $P(H \mid D)$**: Your updated, rational belief after seeing the data!
+```python
+import math
+```
 
 ---
 
-## 3. Naive Bayes: Why "Naive" Works So Well in Practice
+## 1. Sample Space and Probability Axioms
 
-A Gaussian Naive Bayes classifier assumes that given the class label $y$, all features $x_1, x_2, \dots, x_d$ are **conditionally independent**:
-$$P(x_1, x_2, \dots, x_d \mid y) = \prod_{j=1}^{d} P(x_j \mid y)$$
-Even though features in real life are rarely independent, this "naive" assumption turns intractable multi-dimensional integrals into fast, stable products of 1D Gaussians!
+Probabilities are non-negative real numbers whose sum across all mutually exclusive outcomes in the sample space equals exactly 1.0.
+
+```python
+sample_space = {"heads": 0.5, "tails": 0.5}
+assert sum(sample_space.values()) == 1.0
+assert all(0.0 <= p <= 1.0 for p in sample_space.values())
+print(f"Valid probability distribution over {list(sample_space.keys())}")
+```
+
+---
+
+## 2. Conditional Probability and Bayes' Theorem
+
+Bayes' Theorem updates the prior probability of hypothesis $H$ given observed evidence $E$: $P(H|E) = \frac{P(E|H) P(H)}{P(E)}$.
+
+```python
+p_disease = 0.01          # Prior P(D)
+p_pos_given_disease = 0.95 # Sensitivity P(+|D)
+p_pos_given_healthy = 0.05 # False positive rate P(+|H)
+
+p_healthy = 1.0 - p_disease
+p_pos = p_pos_given_disease * p_disease + p_pos_given_healthy * p_healthy
+p_disease_given_pos = (p_pos_given_disease * p_disease) / p_pos
+
+assert 0.15 < p_disease_given_pos < 0.20
+assert p_disease_given_pos > p_disease, "Posterior must exceed prior on positive test"
+print(f"Prior: {p_disease:.1%}, Posterior given positive test: {p_disease_given_pos:.1%}")
+```
+
+---
+
+## 3. Independence of Random Variables
+
+Two events $A$ and $B$ are statistically independent if and only if $P(A \cap B) = P(A) \cdot P(B)$.
+
+```python
+p_a = 0.4
+p_b = 0.5
+p_a_and_b = 0.2
+
+is_independent = abs(p_a_and_b - (p_a * p_b)) < 1e-6
+assert is_independent is True
+assert (p_a * p_b) == 0.2
+print(f"Events A and B are independent: P(A)*P(B) = {p_a * p_b} == P(A and B) = {p_a_and_b}")
+```
+
+---

@@ -1,154 +1,73 @@
-# 🐣 Interactive Foundations Playground: Python Fundamentals
+# 🐣 Interactive Foundations Playground: Python Fundamentals & Data Model
 
-> *"A variable is just a name tag stuck on an object in your computer's memory."*
-
+> *"In Python, everything is an object, and every variable holds a reference."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the Module 01 Playground! Here we explore variables, data types, math, decisions (`if`/`else`), and loops through bite-sized examples.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Variables and Data Types in 30 Seconds
-
-```python
-# Integer (whole number)
-age = 25
-
-# Float (decimal number)
-height = 1.75
-
-# String (text)
-name = "Taylor"
-
-# Boolean (True or False)
-is_student = True
-```
-
-### Line-by-Line Breakdown:
-- `age = 25`: Python creates the number `25` in memory and sticks the name tag `age` onto it.
-- `=` is the **assignment operator**. It copies the right side into the left name tag.
-- Variable names should use `snake_case` (lowercase letters separated by underscores).
-
----
-
-## 2. Common Math Operators
-
-```python
-x = 10
-y = 3
-
-print(x + y)   # 13  (Add)
-print(x - y)   # 7   (Subtract)
-print(x * y)   # 30  (Multiply)
-print(x / y)   # 3.3333333333333335 (True Float Division)
-print(x // y)  # 3   (Floor Division: drops the decimal remainder!)
-print(x % y)   # 1   (Modulo: remainder when 10 is divided by 3)
-print(x ** y)  # 1000 (Exponent: 10 * 10 * 10)
-```
-
----
-
-## 3. String Formatting with f-Strings
-
-Instead of ugly string additions like `"Hello " + name + "!"`, always use modern **f-strings**:
-
-```python
-item = "Espresso"
-price = 3.50
-quantity = 2
-
-# Put an 'f' before the quote, and put variables inside {}:
-bill = f"You ordered {quantity}x {item} for a total of ${quantity * price:.2f}."
-print(bill)
-# Output: You ordered 2x Espresso for a total of $7.00.
-```
-
----
-
-## 4. Making Decisions (`if`, `elif`, `else`)
-
-```python
-temperature = 28
-
-if temperature > 30:
-    print("It's scorching hot!")
-elif temperature >= 20:
-    print("The weather is pleasant.")
-else:
-    print("It's chilly, bring a jacket!")
-```
-
-> [!WARNING]
-> **Don't Forget the Colon `:`**  
-> Every `if`, `elif`, and `else` line MUST end with a colon `:`. The next line MUST be indented with 4 spaces!
-
----
-
-## 5. Repeating Actions: Loops
-
-### The `for` Loop (Counted Repetitions)
-```python
-# range(1, 6) counts: 1, 2, 3, 4, 5 (stops BEFORE 6!)
-for step in range(1, 6):
-    print(f"Pushup #{step}")
-```
-
-### The `while` Loop (Condition-Based)
-```python
-fuel = 3
-while fuel > 0:
-    print(f"Driving... Fuel remaining: {fuel}")
-    fuel -= 1
-
-print("Out of gas!")
-```
-
----
-
-## 6. Run the Interactive Playground
-Launch the standalone terminal script right now:
 ```bash
 python 03_try_it_yourself.py
 ```
-It includes a live temperature converter and a guess-the-number game you can play directly!
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 7. Beginner Quick-Check Drills
+## 0. Everything this page needs
 
-### Drill 1: Remainder Math
-What is the output of `print(14 % 4)`?
-<details><summary><b>Show Answer</b></summary>
-<b>2</b> (Because 4 fits into 14 three times (12), with a remainder of 2).
-</details>
+Nothing here is installed. These all ship with Python.
+
+```python
+import copy
+```
 
 ---
 
-### Drill 2: String to Float Conversion
-Convert the text `"19.99"` into a real decimal float:
-```python
-price = ___("19.99")
-```
-<details><summary><b>Show Answer</b></summary>
+## 1. Reference Semantics and Object Identity
+
+Variables in Python are pointers to memory addresses. Reassigning a name modifies the pointer, not the object in place.
 
 ```python
-price = float("19.99")
+a = [1, 2, 3]
+b = a
+b.append(4)
+assert a == [1, 2, 3, 4]
+assert a is b
+c = copy.deepcopy(a)
+assert c == a
+assert c is not a
+print(f"Object identity verified: id(a)==id(b): {id(a)==id(b)}, id(a)==id(c): {id(a)==id(c)}")
 ```
-</details>
 
 ---
 
-### Drill 3: Modulo Even/Odd Check
-How do you check if a number `n` is even?
-```python
-if n % 2 ___ 0:
-    print("Even!")
-```
-<details><summary><b>Show Answer</b></summary>
+## 2. Comprehensions and Filtering
+
+Comprehensions evaluate expressions in a local scope without polluting enclosing namespaces.
 
 ```python
-if n % 2 == 0:
-    print("Even!")
+numbers = range(10)
+evens_squared = [x**2 for x in numbers if x % 2 == 0]
+assert evens_squared == [0, 4, 16, 36, 64]
+assert len(evens_squared) == 5
+print(f"Computed even squares: {evens_squared}")
 ```
-</details>\n
+
+---
+
+## 3. Dictionary Invariants and Keys
+
+Only hashable, immutable objects can serve as dictionary keys.
+
+```python
+lookup = {(1, 2): "coordinate", "title": "metadata"}
+assert lookup[(1, 2)] == "coordinate"
+assert "title" in lookup
+assert len(lookup) == 2
+print("Hashable tuple key accessed successfully.")
+```
+
+---

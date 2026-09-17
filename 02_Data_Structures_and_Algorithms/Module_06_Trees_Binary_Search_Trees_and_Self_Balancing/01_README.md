@@ -55,184 +55,206 @@ class TreeNode:
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Invert Binary Tree ([LeetCode 226](https://leetcode.com/problems/invert-binary-tree/)) — Easy
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: Recursive Depth-First Swap
+### Problem 1: Maximum Depth of Binary Tree ([LeetCode #104](https://leetcode.com/problems/maximum-depth-of-binary-tree/)) — Easy
+
+> **Pattern**: `Post-Order Recursive DFS` | **Target Time**: $O(N)$ | **Target Space**: $O(H)
+
+#### Problem Specification
+Given the `root` of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+#### Algorithmic Invariants & Optimal Derivation
+Base case: depth of empty subtree is 0. Inductive step: depth of current node is $1 + \max(	ext{depth}(left), 	ext{depth}(right))$.
+
 ```python
-def invert_tree(root: TreeNode | None) -> TreeNode | None:
-    if not root:
-        return None
-    root.left, root.right = invert_tree(root.right), invert_tree(root.left)
-    return root
-```
-- **Time Complexity**: $O(N)$ — Visits every node once.
-- **Space Complexity**: $O(H)$ recursion stack, where $H = \\log N$ (balanced) or $N$ (worst-case).
-
----
-
-### Problem 2: Maximum Depth of Binary Tree ([LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/)) — Easy
-
-#### Optimized: Post-Order DFS
-```python
-def max_depth(root: TreeNode | None) -> int:
-    if not root:
-        return 0
-    return 1 + max(max_depth(root.left), max_depth(root.right))
-```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(H)$.
-
----
-
-### Problem 3: Diameter of Binary Tree ([LeetCode 543](https://leetcode.com/problems/diameter-of-binary-tree/)) — Easy
-
-#### Brute Force: Height Calculation per Node
-Calling `height(node.left) + height(node.right)` at each node takes $O(N^2)$ time.
-
-#### Optimized: Bottom-Up Post-Order DFS ($O(N)$ Time)
-Return the height from each subtree, while updating a global diameter maximum at each node.
-```python
-def diameter_of_binary_tree(root: TreeNode | None) -> int:
-    max_d = 0
-    def dfs(node: TreeNode | None) -> int:
-        nonlocal max_d
-        if not node:
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
             return 0
-        left_h = dfs(node.left)
-        right_h = dfs(node.right)
-        max_d = max(max_d, left_h + right_h)
-        return 1 + max(left_h, right_h)
-        
-    dfs(root)
-    return max_d
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 ```
-- **Time Complexity**: $O(N)$ — Exactly 1 pass.
-- **Space Complexity**: $O(H)$ stack space.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Balanced Binary Tree ([LeetCode 110](https://leetcode.com/problems/balanced-binary-tree/)) — Easy
+### Problem 2: Invert Binary Tree ([LeetCode #226](https://leetcode.com/problems/invert-binary-tree/)) — Easy
 
-#### Optimized: Bottom-Up Height Sentinel (-1)
-If any subtree is unbalanced ($|h_{left} - h_{right}| > 1$), immediately bubble up `-1`.
+> **Pattern**: `Recursive Tree Transformation` | **Target Time**: $O(N)$ | **Target Space**: $O(H)
+
+#### Problem Specification
+Given the `root` of a binary tree, invert the tree (mirroring all left and right subtrees), and return its root.
+
+#### Algorithmic Invariants & Optimal Derivation
+Recursively invert the left and right subtrees and swap the children pointers on the root.
+
 ```python
-def is_balanced(root: TreeNode | None) -> bool:
-    def check(node: TreeNode | None) -> int:
-        if not node:
-            return 0
-        left = check(node.left)
-        if left == -1:
-            return -1
-        right = check(node.right)
-        if right == -1 or abs(left - right) > 1:
-            return -1
-        return 1 + max(left, right)
-        
-    return check(root) != -1
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
+        return root
 ```
-- **Time Complexity**: $O(N)$ — Early-exits on imbalance.
-- **Space Complexity**: $O(H)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Lowest Common Ancestor of a BST ([LeetCode 235](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)) — Medium
+### Problem 3: Diameter of Binary Tree ([LeetCode #543](https://leetcode.com/problems/diameter-of-binary-tree/)) — Easy
 
-#### Optimized: BST Value Split ($O(H)$ Time, $O(1)$ Space)
-If both $p$ and $q$ are smaller than `root.val`, LCA must be in left subtree. If both are larger, LCA is in right subtree. The moment they split, `root` is the LCA.
+> **Pattern**: `Bottom-Up Subtree Heights` | **Target Time**: $O(N)$ | **Target Space**: $O(H)
+
+#### Problem Specification
+Given the `root` of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+#### Algorithmic Invariants & Optimal Derivation
+At any node, the longest path passing through that node is $	ext{height}(	ext{left}) + 	ext{height}(	ext{right})$. Track the global maximum while returning node height bottom-up.
+
 ```python
-def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-    curr = root
-    while curr:
-        if p.val < curr.val and q.val < curr.val:
-            curr = curr.left
-        elif p.val > curr.val and q.val > curr.val:
-            curr = curr.right
-        else:
-            return curr
-    return root
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        diameter = 0
+        def height(node):
+            nonlocal diameter
+            if not node:
+                return 0
+            lh = height(node.left)
+            rh = height(node.right)
+            diameter = max(diameter, lh + rh)
+            return 1 + max(lh, rh)
+        height(root)
+        return diameter
 ```
-- **Time Complexity**: $O(H)$ — Traverses one branch.
-- **Space Complexity**: $O(1)$ iterative.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Binary Tree Level Order Traversal ([LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/)) — Medium
+### Problem 4: Validate Binary Search Tree ([LeetCode #98](https://leetcode.com/problems/validate-binary-search-tree/)) — Medium
 
-#### Optimized: Queue-Based BFS with Level Batch Sizing
+> **Pattern**: `Range Invariant Bounding` | **Target Time**: $O(N)$ | **Target Space**: $O(H)
+
+#### Problem Specification
+Given the `root` of a binary tree, determine if it is a valid binary search tree (BST).
+
+A valid BST is defined as follows:
+- The left subtree of a node contains only nodes with keys strictly less than the node's key.
+- The right subtree of a node contains only nodes with keys strictly greater than the node's key.
+- Both the left and right subtrees must also be binary search trees.
+
+#### Algorithmic Invariants & Optimal Derivation
+Pass lower and upper bounds $(low, high)$ into recursive calls. Going left updates the upper bound to current node value; going right updates the lower bound.
+
 ```python
-from collections import deque
-
-def level_order(root: TreeNode | None) -> list[list[int]]:
-    if not root:
-        return []
-    res = []
-    q: deque[TreeNode] = deque([root])
-    
-    while q:
-        level = []
-        for _ in range(len(q)):  # Process all nodes currently in queue
-            node = q.popleft()
-            level.append(node.val)
-            if node.left:
-                q.append(node.left)
-            if node.right:
-                q.append(node.right)
-        res.append(level)
-        
-    return res
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def validate(node, low=-float('inf'), high=float('inf')):
+            if not node:
+                return True
+            if not (low < node.val < high):
+                return False
+            return validate(node.left, low, node.val) and validate(node.right, node.val, high)
+        return validate(root)
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(N/2) = O(N)$ width of tree.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 7: Validate Binary Search Tree ([LeetCode 98](https://leetcode.com/problems/validate-binary-search-tree/)) — Medium
+### Problem 5: Lowest Common Ancestor of a BST ([LeetCode #235](https://leetcode.com/problems/lowest-common-ancestor-of-a-bst/)) — Medium
 
-#### Optimized: DFS with Valid Min/Max Value Bounds
-Every node must strictly satisfy $low < node.val < high$.
+> **Pattern**: `BST Value Branching` | **Target Time**: $O(H)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given values `p` and `q`.
+
+The lowest common ancestor is defined between two nodes `p` and `q` as the lowest node in `T` that has both `p` and `q` as descendants.
+
+#### Algorithmic Invariants & Optimal Derivation
+Take advantage of BST property: if both p and q are smaller than curr.val, LCA must be in left subtree. If both larger, right subtree. The first node where p and q split (or one equals curr.val) is the LCA.
+
 ```python
-def is_valid_bst(root: TreeNode | None) -> bool:
-    def validate(node: TreeNode | None, low: float, high: float) -> bool:
-        if not node:
-            return True
-        if not (low < node.val < high):
-            return False
-        return validate(node.left, low, node.val) and validate(node.right, node.val, high)
-        
-    return validate(root, float("-inf"), float("inf"))
-```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(H)$.
-
----
-
-### Problem 8: Kth Smallest Element in a BST ([LeetCode 230](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)) — Medium
-
-#### Optimized: Early-Stopping Iterative In-Order Traversal
-In a BST, in-order traversal visits values in strictly ascending order. Pop $k$ times.
-```python
-def kth_smallest(root: TreeNode | None, k: int) -> int:
-    stack = []
-    curr = root
-    while curr or stack:
+class Solution:
+    def lowestCommonAncestor(self, root: Optional[TreeNode], p: int, q: int) -> int:
+        curr = root
         while curr:
-            stack.append(curr)
-            curr = curr.left
-        curr = stack.pop()
-        k -= 1
-        if k == 0:
-            return curr.val
-        curr = curr.right
-    return -1
+            if p < curr.val and q < curr.val:
+                curr = curr.left
+            elif p > curr.val and q > curr.val:
+                curr = curr.right
+            else:
+                return curr.val
+        return -1
 ```
-- **Time Complexity**: $O(H + K)$, **Space Complexity**: $O(H)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 9: Binary Tree Maximum Path Sum ([LeetCode 124](https://leetcode.com/problems/binary-tree-maximum-path-sum/)) — Hard
+### Problem 6: Binary Tree Maximum Path Sum ([LeetCode #124](https://leetcode.com/problems/binary-tree-maximum-path-sum/)) — Hard
 
-#### Optimized: Post-Order Maximum Branch Gain
-For each node, compute `max(0, gain(left))` and `max(0, gain(right))`. Update `max_path = max(max_path, left + right + node.val)`. Return `node.val + max(left, right)`.
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(H)$.
+> **Pattern**: `Bottom-Up Path Gain Propagation` | **Target Time**: $O(N)$ | **Target Space**: $O(H)
+
+#### Problem Specification
+A path in a binary tree is a sequence of nodes where each pair of adjacent nodes has an edge connecting them. A node can only appear in the sequence at most once.
+
+Given the `root` of a binary tree, return the maximum path sum of any non-empty path.
+
+#### Algorithmic Invariants & Optimal Derivation
+Compute the maximum branch gain contributed by subtrees bottom-up (clamped to 0 if negative). At each node, the combined arch sum is `node.val + left_gain + right_gain`.
+
+```python
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        max_sum = -float('inf')
+        def max_gain(node):
+            nonlocal max_sum
+            if not node:
+                return 0
+            left_gain = max(max_gain(node.left), 0)
+            right_gain = max(max_gain(node.right), 0)
+            curr_path = node.val + left_gain + right_gain
+            max_sum = max(max_sum, curr_path)
+            return node.val + max(left_gain, right_gain)
+        max_gain(root)
+        return max_sum
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
 
 ## 3. Hands-On Project & Test Suite
 

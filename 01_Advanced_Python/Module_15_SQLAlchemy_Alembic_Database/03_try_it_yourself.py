@@ -1,40 +1,59 @@
+"""Beginner playground for Module 15 - Database Internals & ORM Patterns.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 15: Interactive SQLite Database Sandbox
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
 import sqlite3
 
+# -------------------------------------------- 1. In-Memory Relational Transactions
+conn = sqlite3.connect(":memory:")
+conn.execute("CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price REAL)")
+conn.execute("INSERT INTO products VALUES (1, 'Keyboard', 49.99)")
+conn.commit()
 
-def main():
-    print("=" * 60)
-    print("  MODULE 15: DATABASE PERSISTENCE PLAYGROUND [*]")
-    print("=" * 60)
+cursor = conn.cursor()
+cursor.execute("SELECT name, price FROM products WHERE id = 1")
+row = cursor.fetchone()
+assert row == ("Keyboard", 49.99)
+assert len(row) == 2
+print(f"Queried product row: {row}")
 
-    conn = sqlite3.connect(":memory:")
-    cursor = conn.cursor()
+# -------------------------------------------- 2. Identity Map Pattern
+class IdentityMap:
+    def __init__(self):
+        self._cache = {}
 
-    cursor.execute("""
-        CREATE TABLE products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            price REAL NOT NULL
-        )
-    """)
+    def get_or_set(self, pk, entity):
+        if pk not in self._cache:
+            self._cache[pk] = entity
+        return self._cache[pk]
 
-    sample_items = [("Keyboard", 79.99), ("Mouse", 29.50), ("Monitor", 249.00)]
-    cursor.executemany("INSERT INTO products (name, price) VALUES (?, ?)", sample_items)
-    conn.commit()
+imap = IdentityMap()
+e1 = imap.get_or_set(1, {"id": 1, "name": "Alice"})
+e2 = imap.get_or_set(1, {"id": 1, "name": "Different"})
+assert e1 is e2
+assert e2["name"] == "Alice"
+print("Identity map preserved single object reference for PK 1.")
 
-    print(f"Inserted {len(sample_items)} items into SQLite table.")
-    print("\nQuerying products priced above $50.00:")
-    cursor.execute("SELECT id, name, price FROM products WHERE price > 50.00")
-    for row in cursor.fetchall():
-        print(f"  Item #{row[0]}: {row[1]} - ${row[2]:.2f}")
+# -------------------------------------------- 3. Transactional Rollback on Failure
+try:
+    with conn:
+        conn.execute("INSERT INTO products VALUES (2, 'Mouse', 19.99)")
+        raise RuntimeError("Simulated transaction abort")
+except RuntimeError:
+    pass
 
-    conn.close()
-    print("\n[OK] Database query and transaction executed successfully!")
+cursor.execute("SELECT COUNT(*) FROM products")
+count = cursor.fetchone()[0]
+assert count == 1
+print(f"Transaction safely rolled back: row count remained {count}")
 
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

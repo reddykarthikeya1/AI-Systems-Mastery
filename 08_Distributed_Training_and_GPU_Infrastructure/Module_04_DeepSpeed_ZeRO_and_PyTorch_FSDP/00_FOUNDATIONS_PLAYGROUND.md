@@ -1,95 +1,70 @@
-# Module 04: Beginner Playground - DeepSpeed ZeRO & PyTorch FSDP
+# 🐣 Interactive Foundations Playground: DeepSpeed ZeRO & PyTorch FSDP
 
+> *"ZeRO eliminates redundancy by sharding optimizer states, gradients, and model parameters across GPUs."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **ZeRO** (Zero Redundancy Optimizer) and **FSDP** (Fully Sharded Data Parallel)! If you've ever tried training a modern Large Language Model (LLM) and hit the dreaded `torch.cuda.OutOfMemoryError: CUDA out of memory`, this module is your cure.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. The Real-World Memory Crisis
-
-Imagine you have a **70 Billion parameter** model.
-In half-precision (FP16 or BF16), each parameter takes **2 bytes**.
-So just the weights take:
-$$70 \times 10^9 \times 2 \text{ bytes} = 140 \text{ GB}$$
-
-Can you train this on an NVIDIA A100 (80 GB GPU)?
-You might think: *"If I get two 80 GB GPUs ($2 \times 80 = 160 \text{ GB}$), can I train it?"*
-**NO! You cannot even train a 14B model on one 80 GB GPU!**
-
-Why? Because training requires **far more than just model weights**:
-1. **Model Weights (FP16)**: $2\Phi$ bytes ($140$ GB)
-2. **Gradients (FP16)**: $2\Phi$ bytes ($140$ GB)
-3. **Adam Optimizer States (FP32)**:
-   - FP32 copy of weights (master weights): $4\Phi$ bytes ($280$ GB)
-   - Momentum (first moment): $4\Phi$ bytes ($280$ GB)
-   - Variance (second moment): $4\Phi$ bytes ($280$ GB)
-   - **Total Optimizer State = $12\Phi$ bytes ($840$ GB)!**
-
-$$\text{Total Static Memory} = 2\Phi + 2\Phi + 12\Phi = 16\Phi \text{ bytes} = 1,120 \text{ GB}!$$
-
-In traditional DDP (Distributed Data Parallel), **every single GPU stores all 1,120 GB**. That is $100\%$ redundancy!
-
----
-
-## 2. The Library Analogy: What is ZeRO?
-
-Imagine 8 students are studying for a giant exam using an encyclopedia of 8 volumes ($1,120$ pages total).
-
-- **Standard DDP (Replication)**: Every student buys their own copy of all 8 volumes. They need huge bookshelves. Redundancy is $8\times$.
-- **ZeRO Stage 1 (Partition Optimizer States)**:
-  Student 0 tracks the study notes (optimizer states) for Volume 1.
-  Student 1 tracks notes for Volume 2...
-  Memory drops by $4\times$ to $8\times$! No communication overhead during forward or backward pass!
-- **ZeRO Stage 2 (Partition Optimizer States + Gradients)**:
-  Students also share gradient tracking. As soon as Student 0 computes a gradient for Volume 2, they hand it to Student 1 and forget it!
-- **ZeRO Stage 3 / PyTorch FSDP (Partition Weights + Gradients + Optimizer)**:
-  Nobody keeps the full encyclopedia on their desk.
-  Each student keeps only 1 volume.
-  When Student 0 needs to read Volume 2 to solve a question:
-  1. Student 0 asks Student 1 for Volume 2 (`All-Gather`).
-  2. Student 0 does the math.
-  3. Student 0 **shreds** Volume 2 immediately (`Discard`)!
-  Static memory per GPU drops by an exact factor of $N$ (world size)!
-
----
-
-## 3. Interactive Comparison Matrix
-
-| Feature | Standard DDP | ZeRO-1 | ZeRO-2 | ZeRO-3 / PyTorch FSDP |
-| :--- | :--- | :--- | :--- | :--- |
-| **Optimizer States** | Replicated on all GPUs | Sharded ($1/N$) | Sharded ($1/N$) | Sharded ($1/N$) |
-| **Gradients** | Replicated on all GPUs | Replicated | Sharded ($1/N$) | Sharded ($1/N$) |
-| **Model Weights** | Replicated on all GPUs | Replicated | Replicated | Sharded ($1/N$) |
-| **Communication Volume** | $2\Phi$ (All-Reduce) | $2\Phi$ (All-Reduce) | $2\Phi$ (Reduce-Scatter) | $3\Phi$ ($1.5\times$ DDP) |
-| **Max Model on 8x 80GB** | ~13B params | ~20B params | ~30B params | **120B+ params** |
-
----
-
-## 4. PyTorch FSDP in 5 Lines of Code
-
-PyTorch provides native ZeRO-3 via `FullyShardedDataParallel` (FSDP):
-
-```python
-import torch
-from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
-from torch.distributed.fsdp.fully_sharded_data_parallel import ShardingStrategy
-
-# Wrap model with FSDP
-model = MyTransformerModel().cuda()
-sharded_model = FSDP(
-    model,
-    sharding_strategy=ShardingStrategy.FULL_SHARD, # ZeRO-3
-    auto_wrap_policy=my_transformer_layer_wrap_policy, # Shard layer by layer
-)
-
-# Standard training loop remains identical!
-optimizer = torch.optim.AdamW(sharded_model.parameters(), lr=1e-4)
-out = sharded_model(inputs)
-loss = criterion(out, targets)
-loss.backward()
-optimizer.step()
+```bash
+python 00_try_it_yourself.py
 ```
 
-Let's dive into the production implementation and exact mathematical derivation in the next chapters!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
+---
+
+## 0. Everything this page needs
+
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
+
+---
+
+## 1. Adam Optimizer State Memory Footprint (16 Bytes / Param)
+
+Adam maintains FP32 master weights (4B), momentum (4B), and variance (4B), plus FP16 gradients (2B) and weights (2B) = 16 bytes per parameter.
+
+```python
+num_params = 1_000_000_000  # 1 Billion params
+bytes_per_param_adam = 16
+total_gb = (num_params * bytes_per_param_adam) / (1024**3)
+
+assert round(total_gb, 1) == 14.9
+assert bytes_per_param_adam == 16
+print(f"Adam training state memory for 1B model: {total_gb:.2f} GB")
+```
+
+---
+
+## 2. ZeRO-1 Optimizer State Sharding
+
+ZeRO Stage 1 shards Adam states across $N_d$ GPUs: memory drops from 16 GB per GPU to $16 / N_d$ GB.
+
+```python
+world_size = 8
+sharded_adam_gb = (num_params * 12) / (world_size * (1024**3))  # 12 bytes of Adam states sharded
+
+assert sharded_adam_gb < total_gb
+assert round(sharded_adam_gb, 2) == 1.40
+print(f"ZeRO-1 sharded optimizer memory on 8 GPUs: {sharded_adam_gb:.2f} GB per GPU.")
+```
+
+---
+
+## 3. ZeRO-3 Full Sharding Memory Savings
+
+ZeRO Stage 3 shards parameters, gradients, and optimizer states; each GPU only holds $\frac{1}{N_d}$ of total training state.
+
+```python
+zero3_memory_per_gpu = total_gb / world_size
+assert round(zero3_memory_per_gpu, 2) == 1.86
+print(f"ZeRO-3 memory per GPU on 8 GPUs: {zero3_memory_per_gpu:.2f} GB (8x reduction)")
+```
+
+---

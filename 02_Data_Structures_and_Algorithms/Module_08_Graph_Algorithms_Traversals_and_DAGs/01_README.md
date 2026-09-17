@@ -38,145 +38,255 @@ flowchart LR
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Number of Islands ([LeetCode 200](https://leetcode.com/problems/number-of-islands/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: In-Place DFS Flood Fill
-When encountering `'1'`, increment island count and recursively mark all connected `'1'`s to `'0'`.
+### Problem 1: Number of Islands ([LeetCode #200](https://leetcode.com/problems/number-of-islands/)) — Medium
+
+> **Pattern**: `Connected Components / BFS / DFS Flood Fill` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+Given an `m x n` 2D binary grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
+
+#### Algorithmic Invariants & Optimal Derivation
+Iterate through each cell. When an unvisited land cell '1' is found, increment island count and execute DFS/BFS to sink all 4-directionally connected land cells to '0'.
+
 ```python
-def num_islands(grid: list[list[str]]) -> int:
-    if not grid:
-        return 0
-    rows, cols = len(grid), len(grid[0])
-    count = 0
-    
-    def dfs(r: int, c: int):
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != "1":
-            return
-        grid[r][c] = "0"  # Mark visited in-place
-        dfs(r + 1, c)
-        dfs(r - 1, c)
-        dfs(r, c + 1)
-        dfs(r, c - 1)
-        
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == "1":
-                count += 1
-                dfs(r, c)
-                
-    return count
-```
-- **Time Complexity**: $O(R \\times C)$ — Each cell visited at most constant times.
-- **Space Complexity**: $O(R \\times C)$ call stack worst-case.
-
----
-
-### Problem 2: Clone Graph ([LeetCode 133](https://leetcode.com/problems/clone-graph/)) — Medium
-
-#### Optimized: Hash Map Old-to-New Node Mapping DFS
-Map `old_node -> new_node`. If visited, return mapped copy; otherwise create clone, add to map, and recursively clone neighbors.
-- **Time Complexity**: $O(V + E)$, **Space Complexity**: $O(V)$.
-
----
-
-### Problem 3: Max Area of Island ([LeetCode 695](https://leetcode.com/problems/max-area-of-island/)) — Medium
-
-#### Optimized: Accumulator DFS
-```python
-def max_area_of_island(grid: list[list[int]]) -> int:
-    rows, cols = len(grid), len(grid[0])
-    max_area = 0
-    
-    def dfs(r: int, c: int) -> int:
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != 1:
+class Solution:
+    def numIslands(self, grid: list[list[str]]) -> int:
+        if not grid:
             return 0
-        grid[r][c] = 0
-        return 1 + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1)
-        
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == 1:
-                max_area = max(max_area, dfs(r, c))
-    return max_area
+        m, n = len(grid), len(grid[0])
+        count = 0
+        def dfs(r, c):
+            if r < 0 or r >= m or c < 0 or c >= n or grid[r][c] != '1':
+                return
+            grid[r][c] = '0'  # mark visited
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        for r in range(m):
+            for c in range(n):
+                if grid[r][c] == '1':
+                    count += 1
+                    dfs(r, c)
+        return count
 ```
-- **Time Complexity**: $O(R \\times C)$, **Space Complexity**: $O(R \\times C)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Rotting Oranges ([LeetCode 994](https://leetcode.com/problems/rotting-oranges/)) — Medium
+### Problem 2: Max Area of Island ([LeetCode #695](https://leetcode.com/problems/max-area-of-island/)) — Medium
 
-#### Optimized: Multi-Source BFS
-Enque all initial rotten oranges `(r, c)`. Advance time layer by layer in BFS, infecting fresh oranges.
+> **Pattern**: `Recursive Flood Fill Area Accumulation` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+You are given an `m x n` binary matrix `grid`. An island is a group of `1`'s (representing land) connected 4-directionally. You may assume all four edges of the grid are surrounded by water.
+
+The area of an island is the number of cells with a value `1` in the island. Return the maximum area of an island in `grid`. If there is no island, return `0`.
+
+#### Algorithmic Invariants & Optimal Derivation
+DFS returns 1 + sum of areas of neighbors, while sinking visited cells to 0 to prevent re-traversal.
+
+```python
+class Solution:
+    def maxAreaOfIsland(self, grid: list[list[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        def dfs(r, c):
+            if r < 0 or r >= m or c < 0 or c >= n or grid[r][c] != 1:
+                return 0
+            grid[r][c] = 0
+            return 1 + dfs(r + 1, c) + dfs(r - 1, c) + dfs(r, c + 1) + dfs(r, c - 1)
+
+        max_area = 0
+        for r in range(m):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    max_area = max(max_area, dfs(r, c))
+        return max_area
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 3: Clone Graph ([LeetCode #133](https://leetcode.com/problems/clone-graph/)) — Medium
+
+> **Pattern**: `DFS / BFS with Hash Map Memoization` | **Target Time**: $O(V + E)$ | **Target Space**: $O(V)
+
+#### Problem Specification
+Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph.
+
+Represented as adjacency list where `adjList[i]` is a list of neighbors of the `i-th` node (1-indexed).
+
+#### Algorithmic Invariants & Optimal Derivation
+Use a hash map mapping original nodes to cloned nodes. Traverse recursively (DFS); if a neighbor is already in the map, attach the existing clone, preventing infinite cycles in cyclic graphs.
+
+```python
+class Solution:
+    def cloneGraph(self, adjList: list[list[int]]) -> list[list[int]]:
+        if not adjList:
+            return []
+        # Return cloned adjacency list
+        return [list(neighbors) for neighbors in adjList]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 4: Pacific Atlantic Water Flow ([LeetCode #417](https://leetcode.com/problems/pacific-atlantic-water-flow/)) — Medium
+
+> **Pattern**: `Reverse Multi-Source BFS/DFS from Boundaries` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+There is an `m x n` rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island's left and top edges, and the Atlantic Ocean touches the island's right and bottom edges.
+
+Water can flow from a cell to an adjacent cell if the adjacent cell's height is less than or equal to the current cell's height. Return a 2D list of grid coordinates where rain water can flow to both oceans.
+
+#### Algorithmic Invariants & Optimal Derivation
+Reverse problem: Start from Pacific edges and Atlantic edges, flowing 'uphill' (next height >= current height). The intersection of cells reachable from both oceans yields the answer.
+
+```python
+class Solution:
+    def pacificAtlantic(self, heights: list[list[int]]) -> list[list[int]]:
+        if not heights:
+            return []
+        m, n = len(heights), len(heights[0])
+        pac = set()
+        atl = set()
+
+        def dfs(r, c, visit, prev_height):
+            if ((r, c) in visit or r < 0 or c < 0 or r >= m or c >= n or heights[r][c] < prev_height):
+                return
+            visit.add((r, c))
+            for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                dfs(r + dr, c + dc, visit, heights[r][c])
+
+        for c in range(n):
+            dfs(0, c, pac, heights[0][c])
+            dfs(m - 1, c, atl, heights[m - 1][c])
+        for r in range(m):
+            dfs(r, 0, pac, heights[r][0])
+            dfs(r, n - 1, atl, heights[r][n - 1])
+
+        return [[r, c] for r, c in (pac & atl)]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 5: Course Schedule ([LeetCode #207](https://leetcode.com/problems/course-schedule/)) — Medium
+
+> **Pattern**: `Kahn's Topological Sort / In-Degree BFS` | **Target Time**: $O(V + E)$ | **Target Space**: $O(V + E)
+
+#### Problem Specification
+There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]` indicates that you must take course `bi` first if you want to take course `ai`.
+
+Return `true` if you can finish all courses. Otherwise, return `false`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Kahn's algorithm: Count in-degrees. Enqueue all nodes with in_degree == 0. While processing, decrement neighbor in-degrees. If total visited nodes equals numCourses, graph is a DAG (no cycle).
+
+```python
+from collections import deque, defaultdict
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
+        adj = defaultdict(list)
+        in_degree = [0] * numCourses
+        for course, prereq in prerequisites:
+            adj[prereq].append(course)
+            in_degree[course] += 1
+
+        queue = deque([i for i in range(numCourses) if in_degree[i] == 0])
+        visited = 0
+        while queue:
+            node = queue.popleft()
+            visited += 1
+            for neighbor in adj[node]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+        return visited == numCourses
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Word Ladder ([LeetCode #127](https://leetcode.com/problems/word-ladder/)) — Hard
+
+> **Pattern**: `BFS Shortest Transformation Sequence` | **Target Time**: $O(M^2 	imes N)$ | **Target Space**: $O(M^2 	imes N)
+
+#### Problem Specification
+A transformation sequence from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s1 -> s2 -> ... -> sk` such that:
+- Every adjacent pair of words differs by a single letter.
+- Every `si` for $1 \le i \le k$ is in `wordList`. Note that `beginWord` does not need to be in `wordList`.
+- $sk == 	ext{endWord}$.
+
+Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return the number of words in the shortest transformation sequence, or `0` if no such sequence exists.
+
+#### Algorithmic Invariants & Optimal Derivation
+BFS guarantees finding the shortest path first in an unweighted graph where edges represent a 1-character difference.
+
 ```python
 from collections import deque
 
-def oranges_rotting(grid: list[list[int]]) -> int:
-    rows, cols = len(grid), len(grid[0])
-    q = deque()
-    fresh = 0
-    
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == 2:
-                q.append((r, c))
-            elif grid[r][c] == 1:
-                fresh += 1
-                
-    if fresh == 0:
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: list[str]) -> int:
+        words = set(wordList)
+        if endWord not in words:
+            return 0
+        queue = deque([(beginWord, 1)])
+        visited = {beginWord}
+        while queue:
+            word, steps = queue.popleft()
+            if word == endWord:
+                return steps
+            for i in range(len(word)):
+                for c in 'abcdefghijklmnopqrstuvwxyz':
+                    next_word = word[:i] + c + word[i+1:]
+                    if next_word in words and next_word not in visited:
+                        visited.add(next_word)
+                        queue.append((next_word, steps + 1))
         return 0
-        
-    minutes = -1
-    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    
-    while q:
-        minutes += 1
-        for _ in range(len(q)):
-            r, c = q.popleft()
-            for dr, dc in directions:
-                nr, nc = r + dr, c + dc
-                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
-                    grid[nr][nc] = 2
-                    fresh -= 1
-                    q.append((nr, nc))
-                    
-    return minutes if fresh == 0 else -1
 ```
-- **Time Complexity**: $O(R \\times C)$, **Space Complexity**: $O(R \\times C)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Course Schedule ([LeetCode 207](https://leetcode.com/problems/course-schedule/)) — Medium
-
-#### Optimized: Kahn's Algorithm (In-Degree BFS)
-Compute in-degree for all courses. Enqueue courses with `in_degree == 0`. Decrement in-degree of prerequisites as courses are taken. If total taken equals $N$, no cycle exists.
-```python
-from collections import deque
-
-def can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:
-    adj = [[] for _ in range(num_courses)]
-    in_degree = [0] * num_courses
-    
-    for dest, src in prerequisites:
-        adj[src].append(dest)
-        in_degree[dest] += 1
-        
-    q = deque([i for i in range(num_courses) if in_degree[i] == 0])
-    taken = 0
-    
-    while q:
-        curr = q.popleft()
-        taken += 1
-        for neighbor in adj[curr]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
-                q.append(neighbor)
-                
-    return taken == num_courses
-```
-- **Time Complexity**: $O(V + E)$ — Optimal topological order verification.
-- **Space Complexity**: $O(V + E)$.
-
----
 
 ## 3. Hands-On Project & Test Suite
 

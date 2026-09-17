@@ -1,47 +1,79 @@
-# 🐣 Interactive Foundations Playground: Core AI Intuitions & Representation
+# 🐣 Interactive Foundations Playground: Core AI Intuitions & Gradient Descent
 
-> *"A single neuron is just a knife that cuts space with a straight line. Deep learning is stacking millions of little knives so you can carve out any shape imaginable."*
-
+> *"Gradient descent is hiking down a foggy mountain by following the steepest slope under your boots."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Perceptron & The XOR Wall (1969)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-A single artificial neuron calculates:
-$$y = \sigma(w_1 x_1 + w_2 x_2 + b)$$
-Geometrically, $w_1 x_1 + w_2 x_2 + b = 0$ is a **straight line** dividing the 2D plane:
-- It can easily solve AND (separate $(1,1)$ from $(0,0), (0,1), (1,0)$).
-- It can easily solve OR.
-- But it **cannot solve XOR**! In XOR, $(0,1)$ and $(1,0)$ are true, while $(0,0)$ and $(1,1)$ are false. You cannot separate them with a single straight line!
+```bash
+python 03_try_it_yourself.py
+```
 
-This historical limitation led to the first "AI Winter".
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Folding Space Like Origami
+## 0. Everything this page needs
 
-How does a Multi-Layer Perceptron (MLP) solve XOR?
-- The first hidden layer doesn't classify the data; it **transforms the coordinate space**!
-- It applies non-linear activations (ReLU, Sigmoid) that stretch, twist, and bend the plane.
-- By the time the inputs reach the output layer, the space has been folded so that the two XOR points are grouped together, and a single straight cut separates them!
+Nothing here is installed. These all ship with Python.
 
----
-
-## 3. The Universal Approximation Theorem
-
-The **Cybenko-Hornik Theorem** proves:
-> *A feedforward neural network with just a single hidden layer containing a finite number of neurons can approximate any continuous function on a compact subset of $\mathbb{R}^n$ to arbitrary precision.*
-
-- If 1 hidden layer can approximate anything, **why do we build deep networks with 100 layers?**
-- Because a shallow network needs an **exponential number of neurons** ($2^n$) to memorize complex functions, whereas deep networks reuse hierarchical features (edges $\to$ textures $\to$ parts $\to$ objects) with polynomial parameters!
+```python
+import math
+```
 
 ---
 
-## 4. Inductive Biases: What Assumptions Are Baked In?
+## 1. 1D Gradient Descent Iteration
 
-Every architecture makes an inherent assumption about data:
-- **CNNs (Locality & Translation Invariance)**: Assumes a pixel's meaning depends on its neighbors, and a cat in the top-left corner is the same as a cat in the bottom-right.
-- **RNNs (Sequential Dependency)**: Assumes step $t$ depends on step $t-1$.
-- **Transformers (Zero Spatial Inductive Bias)**: Assumes any token can connect to any other token via Attention. It must learn geometry from scratch!
+Iteratively subtracting the learning rate times derivative of the loss function drives the parameter toward the local minimum.
+
+```python
+# Minimize L(w) = (w - 4)^2; derivative is 2*(w - 4)
+w = 0.0
+lr = 0.2
+for _ in range(10):
+    grad = 2.0 * (w - 4.0)
+    w -= lr * grad
+
+assert abs(w - 4.0) < 0.1, "Weight must converge near 4.0"
+print(f"Converged weight after 10 steps: {w:.4f} (target: 4.0)")
+```
+
+---
+
+## 2. Learning Rate Stability Bounds
+
+If learning rate is too large ($\eta > 2/L$), gradient descent overshoots and diverges to infinity.
+
+```python
+w_divergent = 0.0
+bad_lr = 1.1  # For loss with curvature 2, lr > 1.0 diverges
+for _ in range(3):
+    grad = 2.0 * (w_divergent - 4.0)
+    w_divergent -= bad_lr * grad
+
+assert abs(w_divergent - 4.0) > 4.0, "Divergence creates expanding oscillations"
+print(f"Divergent weight after unstable learning rate: {w_divergent:.2f}")
+```
+
+---
+
+## 3. Loss Function Monotonic Reduction
+
+With an appropriate step size, every gradient step monotonically decreases the objective value.
+
+```python
+def loss(val): return (val - 4.0)**2
+w_step = 0.0
+l1 = loss(w_step)
+w_step -= 0.1 * 2.0 * (w_step - 4.0)
+l2 = loss(w_step)
+assert l2 < l1
+assert l1 == 16.0
+print(f"Loss decreased from {l1} to {l2}")
+```
+
+---

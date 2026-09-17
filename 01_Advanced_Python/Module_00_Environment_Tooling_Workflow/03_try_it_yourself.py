@@ -1,41 +1,38 @@
-"""Module 00: Interactive Foundations Interactive Terminal Playground.
+"""Beginner playground for Module 00 - Environment, Tooling & Modern Workflow.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
 import os
 import platform
 import sys
 
+# -------------------------------------------- 1. Inspecting System Runtime & Executable
+version_info = sys.version_info
+assert version_info.major == 3
+assert version_info.minor >= 10
+print(f"Python major.minor: {version_info.major}.{version_info.minor}")
 
-def main():
-    print("=" * 60)
-    print("  WELCOME TO YOUR FIRST PYTHON TERMINAL PLAYGROUND! [*]")
-    print("=" * 60)
-    print()
-    print(f"[*] Python Version:      {platform.python_version()}")
-    print(f"[*] Python Executable:   {sys.executable}")
-    print(f"[*] Operating System:    {platform.system()} ({platform.release()})")
-    print(f"[*] Current Directory:   {os.getcwd()}")
-    print()
-    print("-" * 60)
-    print("Let's try interactive user input!")
-    print("-" * 60)
+# -------------------------------------------- 2. Working with the Standard Library Pathlib
+from pathlib import Path
+cwd = Path.cwd()
+assert cwd.is_absolute()
+parent = cwd.parent
+assert parent != cwd or cwd == Path(cwd.root)
+print(f"Verified current working directory: {cwd.name}")
 
-    name = input("Enter your name (or press Enter for 'Coder'): ").strip()
-    if not name:
-        name = "Coder"
+# -------------------------------------------- 3. Virtual Environment Detection
+is_venv = sys.prefix != sys.base_prefix or hasattr(sys, "real_prefix")
+assert isinstance(is_venv, bool)
+assert os.path.exists(sys.executable)
+print(f"Python environment detected (in virtual environment: {is_venv})")
 
-    print()
-    print(f"Hello, {name}! Welcome to the Advanced Python Masterclass.")
-    print("You just executed your first interactive Python program!")
-    print()
-    print("Next step: Open Module_01_Python_Fundamentals/FOUNDATIONS_PLAYGROUND.md")
-    print("=" * 60)
-
-if __name__ == "__main__":
-    try:
-        main()
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended. Happy coding!")
+print()
+print("All checks passed.")

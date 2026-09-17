@@ -1,43 +1,71 @@
-"""
-Module 26: Capstone Platform Component Health Check Simulator
-Run: python try_it_yourself.py
-"""
+"""Beginner playground for Module 26 - Final Capstone Project: Production Engine.
 
+    python 03_try_it_yourself.py
 
-class CapstoneSystem:
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Dict, Optional
+
+# -------------------------------------------- 1. Domain Entity and Value Model
+@dataclass
+class Order:
+    id: str
+    total: float
+    status: str = "created"
+
+    def complete(self):
+        if self.total <= 0:
+            raise ValueError("Invalid order total")
+        self.status = "completed"
+
+order = Order("ord-001", 129.50)
+assert order.status == "created"
+order.complete()
+assert order.status == "completed"
+print(f"Order {order.id} transitioned to {order.status}.")
+
+# -------------------------------------------- 2. In-Memory Repository Pattern
+class OrderRepository:
     def __init__(self):
-        self.services = [
-            ("REST API Gateway", True),
-            ("Pydantic Validation Engine", True),
-            ("Database Connection Pool", True),
-            ("Authentication & JWT Gate", True),
-            ("Background Task Worker Pool", True),
-            ("LRU In-Memory Cache", True),
-        ]
+        self._storage: Dict[str, Order] = {}
 
-    def run_health_check(self):
-        print("Running full capstone ecosystem diagnostic:")
-        all_passed = True
-        for name, healthy in self.services:
-            badge = "[OK] ONLINE" if healthy else "[X] DOWN"
-            print(f"  {badge:15} | {name}")
-            if not healthy:
-                all_passed = False
-        return all_passed
+    def save(self, order: Order) -> None:
+        self._storage[order.id] = order
 
+    def find_by_id(self, order_id: str) -> Optional[Order]:
+        return self._storage.get(order_id)
 
-def main():
-    print("=" * 60)
-    print("  MODULE 26: CAPSTONE PLATFORM PLAYGROUND [*]")
-    print("=" * 60)
+repo = OrderRepository()
+repo.save(order)
+retrieved = repo.find_by_id("ord-001")
+assert retrieved is not None
+assert retrieved.total == 129.50
+assert repo.find_by_id("missing") is None
+print("Repository pattern retrieved stored entity.")
 
-    system = CapstoneSystem()
-    healthy = system.run_health_check()
-    print("-" * 60)
-    if healthy:
-        print("Capstone Platform Status: 100% HEALTHY & READY FOR PRODUCTION!")
-    print("Congratulations on completing the entire 27-Module Masterclass!")
+# -------------------------------------------- 3. End-to-End Service Layer Integration
+class OrderService:
+    def __init__(self, repository: OrderRepository):
+        self.repo = repository
 
+    def checkout(self, order_id: str, amount: float) -> Order:
+        o = Order(id=order_id, total=amount)
+        o.complete()
+        self.repo.save(o)
+        return o
 
-if __name__ == "__main__":
-    main()
+service = OrderService(repo)
+res_order = service.checkout("ord-002", 75.0)
+assert res_order.status == "completed"
+assert repo.find_by_id("ord-002") is not None
+print("Capstone service layer checkout pipeline verified end-to-end.")
+
+print()
+print("All checks passed.")

@@ -1,55 +1,80 @@
-# 🐣 Interactive Foundations Playground: OpenAI Triton Programming Fundamentals
+# 🐣 Interactive Foundations Playground: OpenAI Triton Fundamentals
 
-> *"Writing CUDA is like laying bricks by hand—you control every single trowel stroke and mortar drop. Triton is like 3D printing a house—you specify block operations, and the compiler figures out how to lay the bricks without making mistakes."*
-
+> *"Triton lets you write high-performance GPU kernels in Python without wrestling with C++ CUDA boilerplates."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Block Paradigm Shift
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-In CUDA, you write a function executed by a **single thread**:
-```cpp
-// CUDA: Thread-level
-__global__ void add(float *x, float *y, int n) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) y[idx] += x[idx];
-}
+```bash
+python 00_try_it_yourself.py
 ```
 
-In Triton, you write a function executed by an entire **Block of threads**:
-```python
-# Triton: Block-level
-@triton.jit
-def add_kernel(x_ptr, y_ptr, n_elements, BLOCK_SIZE: tl.constexpr):
-    pid = tl.program_id(axis=0)  # Which block are we?
-    block_start = pid * BLOCK_SIZE
-    offsets = block_start + tl.arange(0, BLOCK_SIZE)  # Vector of offsets!
-    mask = offsets < n_elements  # Protect against out-of-bounds memory!
-    x = tl.load(x_ptr + offsets, mask=mask)
-    y = tl.load(y_ptr + offsets, mask=mask)
-    tl.store(y_ptr + offsets, x + y, mask=mask)
-```
-
-Notice the power:
-1. `tl.arange(0, BLOCK_SIZE)` creates a **NumPy-like vector** of indices.
-2. `mask` automatically prevents illegal memory segmentation faults without thread divergence.
-3. The Triton compiler generates memory coalescing, register allocations, and warp shuffle instructions automatically!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Block Pointers: Strided Multi-Dimensional Memory
+## 0. Everything this page needs
 
-For 2D matrices, Triton provides **Block Pointers** (`tl.make_block_ptr`):
-- **Base**: Pointer to matrix start.
-- **Shape**: `(M, N)` total dimensions.
-- **Strides**: `(stride_m, stride_n)` memory layout strides.
-- **Offsets**: `(block_m * BLOCK_M, block_n * BLOCK_N)` current block origin.
-- **Block Shape**: `(BLOCK_M, BLOCK_N)` size of block to load.
-- **Order**: `(1, 0)` row-major order.
+Nothing here is installed. These all ship with Python.
 
-Triton advances pointers across iterations with a single line:
 ```python
-ptr = tl.advance(ptr, (0, BLOCK_K))
+import math
 ```
+
+---
+
+## 1. Block Pointer Offsets and Range Masks
+
+Triton kernels operate over blocks of threads with explicit masking for boundary elements.
+
+```python
+block_size = 64
+pid = 2
+offsets = [pid * block_size + i for i in range(block_size)]
+n_elements = 150
+mask = [off < n_elements for off in offsets]
+
+assert offsets[0] == 128
+assert offsets[-1] == 191
+assert sum(mask) == 22, "150 - 128 = 22 elements inside bounds"
+print(f"Triton block offsets {offsets[0]}..{offsets[-1]}, valid masked elements: {sum(mask)}")
+```
+
+---
+
+## 2. Triton Vectorized Add Kernel Simulation
+
+A Triton block loads a vector tile, executes an element-wise binary operator, and stores results with mask.
+
+```python
+x = list(range(10))
+y = [x_val * 2 for x_val in x]
+output = [0] * len(x)
+
+for i in range(len(x)):
+    output[i] = x[i] + y[i]
+
+assert output == [3 * i for i in range(10)]
+assert output[-1] == 27
+print(f"Triton simulated vector add result: {output}")
+```
+
+---
+
+## 3. Triton Autotuning Grid Search
+
+Triton automatically selects the optimal `BLOCK_SIZE` and `num_warps` that maximize kernel throughput on the hardware.
+
+```python
+configs = [(32, 2), (64, 4), (128, 8)]
+best_config = max(configs, key=lambda c: c[0] * c[1])
+
+assert best_config == (128, 8)
+assert best_config[0] == 128
+print(f"Selected best autotuned configuration: BLOCK_SIZE={best_config[0]}, WARPS={best_config[1]}")
+```
+
+---

@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Fused Activations and Normalization, what core system invariant does '1. The Memory Wall in Modern Transformer Architectures' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. The Memory Wall in Modern Transformer Architectures.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. The Memory Wall in Modern Transformer Architectures' in Fused Activations and Normalization.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Fused Activations and Normalization, what core system invariant does '2. Kernel Fusion Architecture' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Kernel Fusion Architecture.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Kernel Fusion Architecture' in Fused Activations and Normalization.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Fused Activations and Normalization, what core system invariant does '3. Fused RMSNorm Formulation' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Fused RMSNorm Formulation.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. Fused RMSNorm Formulation' in Fused Activations and Normalization.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Fused Activations and Normalization, what core system invariant does '4. Online Safe Softmax Mathematical Proof' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 4. Online Safe Softmax Mathematical Proof.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '4. Online Safe Softmax Mathematical Proof' in Fused Activations and Normalization.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
     "tier": "Diagnose",
     "question": "In Fused Activations and Normalization, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -150,7 +30,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In Fused Activations and Normalization, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
     "category": "Diagnose: Failure Analysis",
@@ -180,7 +60,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Diagnose",
     "question": "In Fused Activations and Normalization, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,7 +90,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Fused Activations and Normalization, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -238,5 +118,125 @@
     ],
     "explanation": "Diagnostic Analysis: Loss becomes NaN within 50 iterations of LLM pre-training.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In Fused Activations and Normalization, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for fused activations and normalization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in fused activations and normalization depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In Fused Activations and Normalization, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for fused activations and normalization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in fused activations and normalization depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Fused Activations and Normalization, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for fused activations and normalization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in fused activations and normalization depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Fused Activations and Normalization, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for fused activations and normalization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in fused activations and normalization depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

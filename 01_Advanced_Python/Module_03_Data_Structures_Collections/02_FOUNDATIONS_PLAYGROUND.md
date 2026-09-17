@@ -1,118 +1,76 @@
 # 🐣 Interactive Foundations Playground: Data Structures & Collections
 
-> *"Choosing the right collection is like choosing the right container: use a list for a shopping list, a dictionary for a phone book, and a set for unique tags."*
-
+> *"Choosing the right collection changes algorithm runtime from $O(N)$ to $O(1)$."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Module 03! In this playground, you will master the 4 built-in Python collections.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Quick Summary of the 4 Collections
-
-| Collection | Syntax | Ordered? | Changeable (Mutable)? | Allows Duplicates? |
-| :--- | :---: | :---: | :---: | :---: |
-| **List** | `["a", "b"]` | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Tuple** | `("a", "b")` | ✅ Yes | ❌ No (Locked) | ✅ Yes |
-| **Set** | `{"a", "b"}` | ❌ No | ✅ Yes | ❌ No (Unique only!) |
-| **Dictionary** | `{"key": "value"}`| ✅ Yes | ✅ Yes | Keys must be unique |
-
----
-
-## 2. Lists in Action
-
-```python
-tasks = ["Email boss", "Buy milk", "Walk dog"]
-
-# Add to the end:
-tasks.append("Schedule dentist")
-
-# Remove an item:
-tasks.remove("Buy milk")
-
-# Access by index (starts at 0!):
-print(tasks[0])   # "Email boss"
-print(tasks[-1])  # "Schedule dentist" (negative index means from the end!)
-
-# Length:
-print(len(tasks)) # 3
-```
-
----
-
-## 3. Dictionaries in Action
-
-A dictionary stores pairs of **Keys** and **Values**:
-
-```python
-user = {
-    "name": "Jordan",
-    "email": "jordan@example.com",
-    "role": "Admin"
-}
-
-# 1. Look up value:
-print(user["name"])  # Output: Jordan
-
-# 2. Safe look up with .get() (never crashes on missing key!):
-phone = user.get("phone", "Not Provided")
-print(phone)  # Output: Not Provided
-
-# 3. Add or update a key:
-user["status"] = "Active"
-```
-
----
-
-## 4. Sets in Action (Deduplication)
-
-Need to remove duplicates from a list in 1 line? Cast it to a `set`!
-
-```python
-emails = ["a@corp.com", "b@corp.com", "a@corp.com", "c@corp.com"]
-unique_emails = list(set(emails))
-print(unique_emails)
-# Output: ['a@corp.com', 'b@corp.com', 'c@corp.com']
-```
-
----
-
-## 5. Run the Interactive Playground
 ```bash
 python 03_try_it_yourself.py
 ```
-Try managing an interactive task list and querying a mock user dictionary!
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 6. Beginner Quick-Check Drills
+## 0. Everything this page needs
 
-### Drill 1: Negative Indexing
-What does `colors[-1]` return for `colors = ["red", "green", "blue"]`?
-<details><summary><b>Show Answer</b></summary>
-<b><code>"blue"</code></b> (Index <code>-1</code> always gets the very last item in a sequence).
-</details>
-
----
-
-### Drill 2: Dictionary Safe Access
-Why is `dict.get("key")` safer than `dict["key"]`?
-<details><summary><b>Show Answer</b></summary>
-Because <code>dict["missing"]</code> crashes with a <b>KeyError</b>, while <code>dict.get("missing")</code> safely returns <b>None</b> (or a custom default).
-</details>
-
----
-
-### Drill 3: Adding to a Set
-Which method adds a single item to a set?
-```python
-my_set = {1, 2}
-my_set.___(3)
-```
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
 ```python
-my_set.add(3)  # Lists use .append(), Sets use .add()!
+from collections import Counter, defaultdict, deque
 ```
-</details>\n
+
+---
+
+## 1. Double-Ended Queues for O(1) Push and Pop
+
+Python `deque` provides $O(1)$ operations on both ends, avoiding list reallocation overhead.
+
+```python
+d = deque([1, 2, 3], maxlen=3)
+d.append(4)
+assert list(d) == [2, 3, 4]
+d.appendleft(10)
+assert list(d) == [10, 2, 3]
+assert len(d) == 3
+print(f"Deque bounded buffer maintained state: {list(d)}")
+```
+
+---
+
+## 2. Frequency Counting with Counter
+
+`Counter` computes multiset statistics and frequency intersections in a single pass.
+
+```python
+text = "banana"
+counts = Counter(text)
+assert counts["a"] == 3
+assert counts["b"] == 1
+assert counts.most_common(1)[0] == ("a", 3)
+print(f"Most frequent character: {counts.most_common(1)}")
+```
+
+---
+
+## 3. Defaultdict Dynamic Grouping
+
+`defaultdict` eliminates boilerplate KeyError checks when accumulating groupings.
+
+```python
+groups = defaultdict(list)
+pairs = [("odd", 1), ("even", 2), ("odd", 3), ("even", 4)]
+for k, v in pairs:
+    groups[k].append(v)
+
+assert groups["odd"] == [1, 3]
+assert groups["even"] == [2, 4]
+assert len(groups) == 2
+print(f"Defaultdict accumulated categories: {dict(groups)}")
+```
+
+---

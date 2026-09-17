@@ -45,7 +45,10 @@ An input string is valid if:
             {"input": {"s": "([)]"}, "expected": False},
             {"input": {"s": "{[]}"}, "expected": True},
             {"input": {"s": "["}, "expected": False},
-            {"input": {"s": "]"}, "expected": False}
+            {"input": {"s": "]"}, "expected": False},
+            {"input": {"s": ""}, "expected": True},
+            {"input": {"s": "((("}, "expected": False},
+            {"input": {"s": ")))"}, "expected": False}
         ],
         "explanation": "Push open brackets onto a LIFO stack. When a closing bracket is encountered, pop the top of the stack and check for type matching. At the end, verify stack is empty."
     },
@@ -157,7 +160,11 @@ Implement the `MinStack` class:
         ],
         "hidden_testcases": [
             {"input": {"temperatures": [89, 62, 70, 58, 47, 47, 46, 76, 100, 70]}, "expected": [8, 1, 5, 4, 3, 2, 1, 1, 0, 0]},
-            {"input": {"temperatures": [50, 50, 50]}, "expected": [0, 0, 0]}
+            {"input": {"temperatures": [50, 50, 50]}, "expected": [0, 0, 0]},
+            {"input": {"temperatures": [30]}, "expected": [0]},
+            {"input": {"temperatures": [30, 40]}, "expected": [1, 0]},
+            {"input": {"temperatures": [40, 30]}, "expected": [0, 0]},
+            {"input": {"temperatures": [30, 30, 30]}, "expected": [0, 0, 0]}
         ],
         "explanation": "Use a monotonic stack storing indices of days. As soon as a warmer temperature appears, pop smaller previous temperatures and compute distance $i - \text{prev\_idx}$."
     },
@@ -314,7 +321,10 @@ Division between two integers always truncates toward zero.""",
         "hidden_testcases": [
             {"input": {"heights": [1]}, "expected": 1},
             {"input": {"heights": [2, 1, 2]}, "expected": 3},
-            {"input": {"heights": [5, 4, 3, 2, 1]}, "expected": 9}
+            {"input": {"heights": [5, 4, 3, 2, 1]}, "expected": 9},
+            {"input": {"heights": [2]}, "expected": 2},
+            {"input": {"heights": [0, 0]}, "expected": 0},
+            {"input": {"heights": [1, 1, 1, 1]}, "expected": 4}
         ],
         "explanation": "Maintain a monotonic increasing stack of (start_index, height). When a shorter bar is encountered, pop taller bars and calculate rectangle area with popped height extending from its start_index to current index."
     },
@@ -330,7 +340,7 @@ Division between two integers always truncates toward zero.""",
         "pattern": "Hash Set Membership",
         "time_complexity": "O(N)",
         "space_complexity": "O(N)",
-        "description": """Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.""",
+        "description": """Given an integer array `nums`, return `True` if any value appears at least twice in the array, and return `False` if every element is distinct.""",
         "starter_code": """class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         pass
@@ -351,7 +361,10 @@ Division between two integers always truncates toward zero.""",
         ],
         "hidden_testcases": [
             {"input": {"nums": [99]}, "expected": False},
-            {"input": {"nums": [0, -1, -2, -1]}, "expected": True}
+            {"input": {"nums": [0, -1, -2, -1]}, "expected": True},
+            {"input": {"nums": [1]}, "expected": False},
+            {"input": {"nums": [1, 1]}, "expected": True},
+            {"input": {"nums": [0, -1, -2, 0]}, "expected": True}
         ],
         "explanation": "Iterate through elements adding to a hash set. If an element is already in the set, a duplicate is found in $O(1)$ amortized time."
     },
@@ -363,7 +376,7 @@ Division between two integers always truncates toward zero.""",
         "pattern": "Character Frequency Counting",
         "time_complexity": "O(N)",
         "space_complexity": "O(1) (bounded alphabet)",
-        "description": """Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
+        "description": """Given two strings `s` and `t`, return `True` if `t` is an anagram of `s`, and `False` otherwise.
 
 An Anagram is a word formed by rearranging the letters of a different word, typically using all the original letters exactly once.""",
         "starter_code": """class Solution:
@@ -384,7 +397,10 @@ An Anagram is a word formed by rearranging the letters of a different word, typi
         "hidden_testcases": [
             {"input": {"s": "a", "t": "ab"}, "expected": False},
             {"input": {"s": "ab", "t": "a"}, "expected": False},
-            {"input": {"s": "aa", "t": "bb"}, "expected": False}
+            {"input": {"s": "aa", "t": "bb"}, "expected": False},
+            {"input": {"s": "a", "t": "a"}, "expected": True},
+            {"input": {"s": "a", "t": "b"}, "expected": False},
+            {"input": {"s": "aacc", "t": "ccac"}, "expected": False}
         ],
         "explanation": "Compare character frequency counts. If lengths differ, immediately return False. Otherwise tally frequencies and verify equality in $O(N)$ time."
     },
@@ -457,7 +473,8 @@ An Anagram is a word formed by rearranging the letters of a different word, typi
         ],
         "hidden_testcases": [
             {"input": {"nums": [4, 1, -1, 2, -1, 2, 3], "k": 2}, "expected": [-1, 2]},
-            {"input": {"nums": [5, 3, 1, 1, 1, 3, 73, 1], "k": 1}, "expected": [1]}
+            {"input": {"nums": [5, 3, 1, 1, 1, 3, 73, 1], "k": 1}, "expected": [1]},
+            {"input": {"nums": [1, 2], "k": 2}, "expected": [1, 2]}
         ],
         "explanation": "Tally counts with a hash map, then use Bucket Sort where index represents frequency (0 to N). Traverse buckets from highest frequency downwards to collect k elements in $O(N)$ linear time."
     },
@@ -496,7 +513,9 @@ You must write an algorithm that runs in $O(n)$ time.""",
         ],
         "hidden_testcases": [
             {"input": {"nums": []}, "expected": 0},
-            {"input": {"nums": [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]}, "expected": 7}
+            {"input": {"nums": [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]}, "expected": 7},
+            {"input": {"nums": [0]}, "expected": 1},
+            {"input": {"nums": [1, 2, 0, 1]}, "expected": 3}
         ],
         "explanation": "Store numbers in a hash set. Only begin counting sequence length from numbers that are the start of a streak (i.e., `num - 1` is not in set). Each number is visited at most twice, guaranteeing $O(N)$ time."
     },
@@ -535,7 +554,8 @@ A subarray is a contiguous non-empty sequence of elements within an array.""",
         "hidden_testcases": [
             {"input": {"nums": [1, -1, 0], "k": 0}, "expected": 3},
             {"input": {"nums": [1], "k": 0}, "expected": 0},
-            {"input": {"nums": [-1, -1, 1], "k": 0}, "expected": 1}
+            {"input": {"nums": [-1, -1, 1], "k": 0}, "expected": 1},
+            {"input": {"nums": [1], "k": 1}, "expected": 1}
         ],
         "explanation": "Subarray sum $(i \dots j) = \text{prefix}[j] - \text{prefix}[i-1] = k$. Thus $\text{prefix}[i-1] = \text{prefix}[j] - k$. As we accumulate running prefix sum, add occurrences of `prefix_sum - k` to count in $O(N)$."
     },
@@ -646,7 +666,8 @@ The diameter of a binary tree is the length of the longest path between any two 
         ],
         "hidden_testcases": [
             {"input": {"root": [1]}, "expected": 0},
-            {"input": {"root": [2, 3, None, 1]}, "expected": 2}
+            {"input": {"root": [2, 3, None, 1]}, "expected": 2},
+            {"input": {"root": [1, 2, None, 3, 4]}, "expected": 2}
         ],
         "explanation": "At any node, the longest path passing through that node is $\text{height}(\text{left}) + \text{height}(\text{right})$. Track the global maximum while returning node height bottom-up."
     },
@@ -685,7 +706,8 @@ A valid BST is defined as follows:
         "hidden_testcases": [
             {"input": {"root": [2, 2, 2]}, "expected": False},
             {"input": {"root": [2147483647]}, "expected": True},
-            {"input": {"root": [5, 4, 6, None, None, 3, 7]}, "expected": False}
+            {"input": {"root": [5, 4, 6, None, None, 3, 7]}, "expected": False},
+            {"input": {"root": [1]}, "expected": True}
         ],
         "explanation": "Pass lower and upper bounds $(low, high)$ into recursive calls. Going left updates the upper bound to current node value; going right updates the lower bound."
     },

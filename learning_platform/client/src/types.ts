@@ -60,6 +60,7 @@ export interface MasteryGateStatus {
   quizPassed: boolean;
   labPassed: boolean;
   dsaPassed?: boolean;
+  projectPassed?: boolean;
   cleared: boolean;
   cleared_at?: number;
 }

@@ -142,6 +142,262 @@ test written with non-overlapping examples. This is planted defect 3.
 
 ---
 
+## 6. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
+
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
+
+### Problem 1: Find the Index of the First Occurrence in a String ([LeetCode #28](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)) — Easy
+
+> **Pattern**: `Knuth-Morris-Pratt (KMP) / LPS Array` | **Target Time**: $O(N + M)$ | **Target Space**: $O(M)
+
+#### Problem Specification
+Given two strings `needle` and `haystack`, return the index of the first occurrence of `needle` in `haystack`, or `-1` if `needle` is not part of `haystack`.
+
+#### Algorithmic Invariants & Optimal Derivation
+KMP algorithm builds the Longest Prefix Suffix (LPS) array in $O(M)$ time and skips redundant character comparisons in haystack, matching in $O(N + M)$ total time.
+
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        if not needle:
+            return 0
+        # Build KMP LPS array
+        lps = [0] * len(needle)
+        prev_lps, i = 0, 1
+        while i < len(needle):
+            if needle[i] == needle[prev_lps]:
+                lps[i] = prev_lps + 1
+                prev_lps += 1
+                i += 1
+            elif prev_lps == 0:
+                lps[i] = 0
+                i += 1
+            else:
+                prev_lps = lps[prev_lps - 1]
+
+        # KMP Matching
+        h_idx, n_idx = 0, 0
+        while h_idx < len(haystack):
+            if haystack[h_idx] == needle[n_idx]:
+                h_idx += 1
+                n_idx += 1
+            else:
+                if n_idx == 0:
+                    h_idx += 1
+                else:
+                    n_idx = lps[n_idx - 1]
+            if n_idx == len(needle):
+                return h_idx - len(needle)
+        return -1
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 2: Repeated DNA Sequences ([LeetCode #187](https://leetcode.com/problems/repeated-dna-sequences/)) — Medium
+
+> **Pattern**: `Rabin-Karp / Rolling Hash Substring` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+The DNA sequence is composed of a series of nucleotides abbreviated as `'A'`, `'C'`, `'G'`, and `'T'`.
+Given a string `s` that represents a DNA sequence, return all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule. You may return the answer in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Extract length-10 substrings with sliding window. Add to `seen` set, and if already seen, record in `repeated` set.
+
+```python
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> list[str]:
+        seen = set()
+        repeated = set()
+        for i in range(len(s) - 9):
+            sub = s[i:i + 10]
+            if sub in seen:
+                repeated.add(sub)
+            else:
+                seen.add(sub)
+        return list(repeated)
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 3: Longest Happy Prefix ([LeetCode #1392](https://leetcode.com/problems/longest-happy-prefix/)) — Hard
+
+> **Pattern**: `KMP Prefix Function (Pi-Array)` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+A string is called a happy prefix if is a non-empty prefix which is also a suffix (excluding itself).
+Given a string `s`, return the longest happy prefix of `s`. Return an empty string `""` if no such prefix exists.
+
+#### Algorithmic Invariants & Optimal Derivation
+The length of the longest proper prefix that is also a suffix for string s is given directly by the final entry of the KMP LPS array `lps[-1]`.
+
+```python
+class Solution:
+    def longestPrefix(self, s: str) -> str:
+        n = len(s)
+        lps = [0] * n
+        length = 0
+        i = 1
+        while i < n:
+            if s[i] == s[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            elif length > 0:
+                length = lps[length - 1]
+            else:
+                lps[i] = 0
+                i += 1
+        return s[:lps[-1]]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 4: Distinct Subsequences ([LeetCode #115](https://leetcode.com/problems/distinct-subsequences/)) — Hard
+
+> **Pattern**: `2D String Matching Dynamic Programming` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+Given two strings `s` and `t`, return the number of distinct subsequences of `s` which equals `t`.
+
+#### Algorithmic Invariants & Optimal Derivation
+If `s[i-1] == t[j-1]`, we can either match the character ($dp[i-1][j-1]$) or skip it ($dp[i-1][j]$). If they don't match, we must skip ($dp[i-1][j]$).
+
+```python
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        m, n = len(s), len(t)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m + 1):
+            dp[i][0] = 1
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if s[i - 1] == t[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+                else:
+                    dp[i][j] = dp[i - 1][j]
+        return dp[m][n]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 5: Palindrome Pairs ([LeetCode #336](https://leetcode.com/problems/palindrome-pairs/)) — Hard
+
+> **Pattern**: `Prefix/Suffix Partitioning with Hash Map` | **Target Time**: $O(N 	imes K^2)$ | **Target Space**: $O(N 	imes K)
+
+#### Problem Specification
+Given a list of unique words, return all pairs of distinct indices `(i, j)` in the given list, so that the concatenation of the two words `words[i] + words[j]` is a palindrome.
+
+#### Algorithmic Invariants & Optimal Derivation
+Split word into prefix and suffix. If prefix is palindromic, look up reversed suffix in hash map. If suffix is palindromic, look up reversed prefix in hash map.
+
+```python
+class Solution:
+    def palindromePairs(self, words: list[str]) -> list[list[int]]:
+        word_map = {w: i for i, w in enumerate(words)}
+        res = []
+
+        for i, word in enumerate(words):
+            n = len(word)
+            for j in range(n + 1):
+                # Prefix split
+                pref = word[:j]
+                suff = word[j:]
+                # If prefix is palindrome, reverse of suffix followed by word is palindrome
+                if pref == pref[::-1]:
+                    rev_suff = suff[::-1]
+                    if rev_suff in word_map and word_map[rev_suff] != i:
+                        res.append([word_map[rev_suff], i])
+                # If suffix is palindrome, word followed by reverse of prefix is palindrome
+                if j != n and suff == suff[::-1]:
+                    rev_pref = pref[::-1]
+                    if rev_pref in word_map and word_map[rev_pref] != i:
+                        res.append([i, word_map[rev_pref]])
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Longest Palindromic Substring ([LeetCode #5](https://leetcode.com/problems/longest-palindromic-substring/)) — Medium
+
+> **Pattern**: `Expand Around Center / Two Pointers` | **Target Time**: $O(N^2)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given a string `s`, return the longest palindromic substring in `s`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Every palindrome has a center: either a single character (odd length) or between two characters (even length). Expand outward from all $2N - 1$ centers.
+
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        res = ""
+        res_len = 0
+
+        for i in range(len(s)):
+            # Odd length center
+            l, r = i, i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if (r - l + 1) > res_len:
+                    res = s[l:r + 1]
+                    res_len = r - l + 1
+                l -= 1
+                r += 1
+
+            # Even length center
+            l, r = i, i + 1
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if (r - l + 1) > res_len:
+                    res = s[l:r + 1]
+                    res_len = r - l + 1
+                l -= 1
+                r += 1
+
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+
+---
+
 ## Choosing between them
 
 | Situation | Use |

@@ -9,8 +9,12 @@ import pytest
 # Test the solution by default, or stub if imported from problems/
 SOL_DIR = Path(__file__).resolve().parent.parent / "solutions"
 PROB_DIR = Path(__file__).resolve().parent.parent
-if str(SOL_DIR) not in sys.path:
-    sys.path.insert(0, str(SOL_DIR))
+if Path.cwd().resolve() == PROB_DIR.resolve():
+    if str(PROB_DIR) not in sys.path:
+        sys.path.insert(0, str(PROB_DIR))
+else:
+    if str(SOL_DIR) not in sys.path:
+        sys.path.insert(0, str(SOL_DIR))
 
 from p01_simulate_prefix_cache_hit import simulate_prefix_cache_hit
 

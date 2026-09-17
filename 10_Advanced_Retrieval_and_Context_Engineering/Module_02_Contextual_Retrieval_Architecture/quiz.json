@@ -1,36 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Contextual Retrieval Architecture, what core system invariant does '1. Algorithmic Principles of Contextual Retrieval' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Algorithmic Principles of Contextual Retrieval.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Algorithmic Principles of Contextual Retrieval' in Contextual Retrieval Architecture.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
     "tier": "Diagnose",
     "question": "In Contextual Retrieval Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -60,67 +30,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 3,
-    "tier": "Diagnose",
-    "question": "In Contextual Retrieval Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
-    "category": "Diagnose: Failure Analysis",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Vector search returns top hits, but LLM receives empty context strings.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Diagnostic Analysis: If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.\n",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
-  },
-  {
-    "id": 4,
-    "tier": "Diagnose",
-    "question": "In Contextual Retrieval Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
-    "category": "Diagnose: Failure Analysis",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Diagnostic Analysis: Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.\n",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
-  },
-  {
-    "id": 5,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In Contextual Retrieval Architecture, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Contextual Retrieval'\"",
     "category": "Diagnose: Failure Analysis",
@@ -150,97 +60,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 6,
-    "tier": "Diagnose",
-    "question": "When operating Contextual Retrieval Architecture workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 7,
-    "tier": "Diagnose",
-    "question": "When operating Contextual Retrieval Architecture workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Vector search returns top hits, but LLM receives empty context strings.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": ": BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates. -",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: Vector search returns top hits, but LLM receives empty context strings.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 8,
-    "tier": "Diagnose",
-    "question": "When operating Contextual Retrieval Architecture workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 9,
+    "id": 3,
     "tier": "Diagnose",
     "question": "When operating Contextual Retrieval Architecture workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -268,5 +88,155 @@
     ],
     "explanation": "Root Cause Analysis: Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In 02 Contextual Retrieval Architecture, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 02 contextual retrieval architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 02 contextual retrieval architecture.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In 02 Contextual Retrieval Architecture, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 02 contextual retrieval architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 02 contextual retrieval architecture.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In 02 Contextual Retrieval Architecture, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 02 contextual retrieval architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 02 contextual retrieval architecture.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In 02 Contextual Retrieval Architecture, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 02 contextual retrieval architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 02 contextual retrieval architecture.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In 02 Contextual Retrieval Architecture, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 02 contextual retrieval architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 02 contextual retrieval architecture.",
+    "lesson_ref": "01_README.md"
   }
 ]

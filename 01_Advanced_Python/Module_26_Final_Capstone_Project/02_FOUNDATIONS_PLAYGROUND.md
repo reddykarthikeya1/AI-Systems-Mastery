@@ -1,70 +1,103 @@
-# Interactive Foundations Playground: Final Capstone Platform Architecture
+# 🐣 Interactive Foundations Playground: Final Capstone Project: Production Engine
 
-> *"Senior engineering is the art of connecting modular components into a resilient ecosystem."*
-
+> *"Production-grade software integrates clean architecture, repository patterns, and automated tests."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 26 Final Capstone Project** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-The Capstone synthesizes every module into an enterprise-grade platform: REST API routes, Pydantic validation, database persistence, JWT authentication, background task queues, and automated test coverage.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-# Component Health Matrix
-components = {
-    "API Gateway": "ONLINE",
-    "Auth Service": "HEALTHY",
-    "SQL Database": "CONNECTED",
-    "Task Queue": "ACTIVE",
-    "Cache Layer": "READY",
-}
-
-for service, status in components.items():
-    print(f"[{status}] {service}")
-```
-
-### Line-by-Line Breakdown:
-- **Layered Architecture:** Decouple Presentation (API), Domain (Business Logic), and Infrastructure (DB/Queues).
-- **Graceful Degradation:** If the cache or queue slows down, the core API remains responsive.
-- **End-to-End Verification:** Automated integration tests ensure all services communicate reliably.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-What is the primary benefit of layered architecture?
-
-<details><summary><b>Show Answer</b></summary>
-
-Each component can be developed, tested, and scaled independently without breaking others.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-How do you ensure zero data loss during background worker restarts?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-By acknowledging tasks only after successful execution (message acking).
-</details>
+```python
+from dataclasses import dataclass
+from typing import Dict, Optional
+```
+
+---
+
+## 1. Domain Entity and Value Model
+
+Domain entities encapsulate business identity and invariant validation rules.
+
+```python
+@dataclass
+class Order:
+    id: str
+    total: float
+    status: str = "created"
+
+    def complete(self):
+        if self.total <= 0:
+            raise ValueError("Invalid order total")
+        self.status = "completed"
+
+order = Order("ord-001", 129.50)
+assert order.status == "created"
+order.complete()
+assert order.status == "completed"
+print(f"Order {order.id} transitioned to {order.status}.")
+```
+
+---
+
+## 2. In-Memory Repository Pattern
+
+The repository pattern abstracts data persistence behind a uniform collection interface.
+
+```python
+class OrderRepository:
+    def __init__(self):
+        self._storage: Dict[str, Order] = {}
+
+    def save(self, order: Order) -> None:
+        self._storage[order.id] = order
+
+    def find_by_id(self, order_id: str) -> Optional[Order]:
+        return self._storage.get(order_id)
+
+repo = OrderRepository()
+repo.save(order)
+retrieved = repo.find_by_id("ord-001")
+assert retrieved is not None
+assert retrieved.total == 129.50
+assert repo.find_by_id("missing") is None
+print("Repository pattern retrieved stored entity.")
+```
+
+---
+
+## 3. End-to-End Service Layer Integration
+
+The service layer orchestrates business workflows across repositories.
+
+```python
+class OrderService:
+    def __init__(self, repository: OrderRepository):
+        self.repo = repository
+
+    def checkout(self, order_id: str, amount: float) -> Order:
+        o = Order(id=order_id, total=amount)
+        o.complete()
+        self.repo.save(o)
+        return o
+
+service = OrderService(repo)
+res_order = service.checkout("ord-002", 75.0)
+assert res_order.status == "completed"
+assert repo.find_by_id("ord-002") is not None
+print("Capstone service layer checkout pipeline verified end-to-end.")
+```
 
 ---

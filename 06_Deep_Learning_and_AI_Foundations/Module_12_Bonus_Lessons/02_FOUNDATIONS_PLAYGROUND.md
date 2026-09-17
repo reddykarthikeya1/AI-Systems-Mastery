@@ -1,36 +1,77 @@
-# 🐣 Interactive Foundations Playground: Modern Frontiers (MoE, Diffusion, Mamba)
+# 🐣 Interactive Foundations Playground: Bonus Lessons: Quantization & Pruning
 
-> *"Dense models are a company where every employee must vote on every email. Mixture of Experts (MoE) is routing each email to the two engineers who actually know how to answer it."*
-
+> *"Quantization is rounding numbers to fit into smaller memory boxes without losing the big picture."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. Sparse Mixture of Experts (MoE)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-In a traditional Dense LLM (like LLaMA-2), every token activates 100% of the model's weights.
-In a Sparse MoE (like Mixtral 8x7B or GPT-4):
-- The Feedforward Network (FFN) is replaced by $E$ independent Expert networks (e.g. 8 experts).
-- A lightweight **Router (Gating Network)** computes:
-$$G(x) = \text{Softmax}(\text{Top2}(x \cdot W_g))$$
-- For each token, only the **top-2 experts** execute! The other 6 experts consume **0 FLOPs**.
-- **The Load Balancing Danger**: If expert #1 gets lucky early in training, the router might send all tokens to expert #1 forever (Winner-Takes-All collapse). We add an **Auxiliary Load Balancing Loss** to enforce equal distribution of tokens across all experts!
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Diffusion Models: Carving Statues from Static
+## 0. Everything this page needs
 
-How does Midjourney or Stable Diffusion create photorealistic art?
-1. **Forward Process (T=1,000 steps)**: Add tiny Gaussian noise to an image step-by-step until it becomes pure TV static.
-2. **Reverse Process (Neural Network)**: Train a U-Net to predict: *"Given noisy image $x_t$ and timestep $t$, what was the noise $\epsilon$ added on this step?"*
-3. By subtracting the predicted noise iteratively, the model turns pure white noise into high-resolution masterpieces!
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
 
 ---
 
-## 3. State Space Models (Mamba)
+## 1. FP32 to INT8 Symmetric Quantization
 
-Transformers suffer from $O(N^2)$ quadratic complexity in context length.
-**Mamba (Gu & Dao, 2023)** adapts classical control theory State Space Models ($h'(t) = A h(t) + B x(t)$) with **Selective State Spaces**:
-- It can remember relevant tokens and forget irrelevant tokens with an $O(1)$ constant-time recurrent state!
-- During training, it uses a hardware-aware parallel prefix scan on GPU SRAM to train as fast as Attention!
+Quantization maps 32-bit floating point values into 8-bit integers $[-128, 127]$ using a scale factor $S = \frac{\max(|X|)}{127}$.
+
+```python
+weights = [-2.5, 0.0, 1.25, 2.5]
+max_abs = max(abs(w) for w in weights)
+scale = max_abs / 127.0
+
+int8_weights = [int(round(w / scale)) for w in weights]
+assert int8_weights[0] == -127
+assert int8_weights[1] == 0
+assert int8_weights[-1] == 127
+print(f"Quantized INT8 weights: {int8_weights} with scale {scale:.4f}")
+```
+
+---
+
+## 2. INT8 Dequantization Reconstruction
+
+Dequantization reconstructs the floating point values by multiplying integer codes by scale: $\hat{X} = q \cdot S$.
+
+```python
+reconstructed = [q * scale for q in int8_weights]
+for orig, recon in zip(weights, reconstructed):
+    assert abs(orig - recon) < 0.02
+
+assert abs(reconstructed[2] - 1.25) < 0.02
+print(f"Dequantized weights match original: {reconstructed}")
+```
+
+---
+
+## 3. Magnitude-Based Weight Pruning
+
+Zeroing out weights whose absolute value falls below threshold $\tau$ induces sparsity, reducing memory and computation.
+
+```python
+layer_w = [0.02, -0.85, 0.01, 0.45, -0.005]
+threshold = 0.05
+pruned = [0.0 if abs(w) < threshold else w for w in layer_w]
+
+assert pruned == [0.0, -0.85, 0.0, 0.45, 0.0]
+sparsity = pruned.count(0.0) / len(pruned)
+assert sparsity == 0.60
+print(f"Pruned layer: {pruned}, Sparsity: {sparsity:.1%}")
+```
+
+---

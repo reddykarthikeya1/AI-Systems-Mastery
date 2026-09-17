@@ -1,42 +1,83 @@
-# Module 05: Beginner Playground - Continuous & Iteration-Level Batching
+# 🐣 Interactive Foundations Playground: Continuous & Dynamic Batching
 
+> *"Continuous batching is a subway train: open the doors at every station to let finished passengers off and new ones on."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Continuous Batching** (the architecture pioneered by Orca and used by vLLM & TensorRT-LLM)!
-In traditional deep learning serving (like ResNet or BERT), you batch 16 images together, run forward pass, and return 16 answers.
-Why does that **fail completely** for Large Language Models?
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Elevator Analogy: Static vs Continuous Batching
+## 0. Everything this page needs
 
-Imagine an elevator in a 100-story building:
-- **Static Batching (The Silly Elevator)**:
-  The elevator waits until 8 passengers step on. It goes up.
-  Passenger 1 wants Floor 3.
-  Passenger 2 wants Floor 90.
-  The elevator **forces Passenger 1 to stand trapped inside until Floor 90** before letting anyone out or in!
-  GPUs running static batching sit idle generating blank `<pad>` tokens for finished requests until the longest request finishes!
-- **Continuous Batching (The Smart Elevator)**:
-  At **every single floor** (iteration), the doors open:
-  - If a passenger reached their floor (generated `<eos>`), they step out immediately!
-  - If someone is waiting in the lobby, they step into the empty slot immediately!
-  - The GPU is **never idle, never computing useless padding**!
+Nothing here is installed. These all ship with Python.
+
+```python
+from collections import deque
+```
 
 ---
 
-## 2. Why Continuous Batching Doubles Serving Capacity
+## 1. Iteration-Level Scheduling vs Static Batching
 
-```
-Static Batching (Padding Waste):
-Req 1: [Tok][Tok][Tok][PAD][PAD][PAD]  <-- 50% wasted compute!
-Req 2: [Tok][Tok][Tok][Tok][Tok][Tok]
+Static batching waits until the longest request in a batch finishes; continuous batching swaps finished requests on every iteration.
 
-Continuous Batching (No Waste):
-Step 1: Req 1 [Tok], Req 2 [Tok]
-Step 2: Req 1 [Tok], Req 2 [Tok]
-Step 3: Req 1 [EOS] -> Retired! Req 3 Admitted!
-Step 4: Req 3 [Tok], Req 2 [Tok]
+```python
+active_requests = {"req_1": 2, "req_2": 5, "req_3": 1}  # Remaining tokens
+finished = []
+
+# One decode iteration
+for rid in list(active_requests.keys()):
+    active_requests[rid] -= 1
+    if active_requests[rid] == 0:
+        finished.append(rid)
+        del active_requests[rid]
+
+assert finished == ["req_3"]
+assert "req_1" in active_requests and "req_2" in active_requests
+print(f"Iteration finished requests: {finished}; slots immediately freed for new arrivals.")
 ```
-Throughput increases by **$2\times$ to $4\times$** with zero hardware changes!
+
+---
+
+## 2. Padding Token Elimination
+
+Continuous batching concatenates active tokens into a 1D flattened buffer without inserting pad tokens.
+
+```python
+seq_lengths = [3, 5, 2]
+static_padded_matrix_elements = max(seq_lengths) * len(seq_lengths)  # 5 * 3 = 15
+continuous_flattened_elements = sum(seq_lengths)                     # 10
+tokens_saved = static_padded_matrix_elements - continuous_flattened_elements
+
+assert static_padded_matrix_elements == 15
+assert continuous_flattened_elements == 10
+assert tokens_saved == 5
+print(f"Continuous batching eliminated {tokens_saved} wasteful padding tokens (33% compute saved).")
+```
+
+---
+
+## 3. GPU Utilization Saturation
+
+By keeping the active batch size close to maximum capacity $B_{\max}$, continuous batching achieves sustained GPU utilization.
+
+```python
+max_capacity = 8
+waiting_queue = deque(["req_4", "req_5"])
+while len(active_requests) < max_capacity and waiting_queue:
+    active_requests[waiting_queue.popleft()] = 4
+
+assert len(active_requests) == 4
+print(f"Active batch replenished to {len(active_requests)} requests.")
+```
+
+---

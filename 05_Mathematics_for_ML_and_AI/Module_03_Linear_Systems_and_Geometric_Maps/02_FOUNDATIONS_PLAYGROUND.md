@@ -1,61 +1,86 @@
-# 🐣 Interactive Foundations Playground: Matrices as Space Transformers
+# 🐣 Interactive Foundations Playground: Linear Systems and Geometric Maps
 
-> *"Forget rows and columns for a minute: a matrix is simply a machine that bends, stretches, and rotates space."*
-
+> *"A matrix is a geometric transformation that stretches, rotates, and shears coordinate space."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
 ---
 
-## 1. The 3Blue1Brown Intuition: Where Do $\hat{i}$ and $\hat{j}$ Land?
+## 0. Everything this page needs
 
-In regular 2D coordinate space:
-- $\hat{i} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$ (Step 1 unit right along the X-axis)
-- $\hat{j} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$ (Step 1 unit up along the Y-axis)
+Nothing here is installed. These all ship with Python.
 
-When you look at ANY $2 \times 2$ matrix:
-$$A = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}$$
-The columns tell you **exactly where $\hat{i}$ and $\hat{j}$ land after the space is transformed**!
-- Column 1: $\hat{i}$ lands at $(2, 0)$!
-- Column 2: $\hat{j}$ lands at $(1, 3)$!
-
-```
-Original Grid:
-  ^ Y
-  |   (0, 1) [j]
-  |
-  +------> X
-     (1, 0) [i]
-
-After Matrix A:
-  ^ Y
-  |     (1, 3) [transformed j]
-  |    /
-  |   /
-  +------->-----> X
-        (2, 0) [transformed i, stretched 2x!]
+```python
+import math
 ```
 
 ---
 
-## 2. What Actually Is a Determinant? ($\\det(A)$)
+## 1. Vector Addition and Scalar Scaling
 
-In high school math, they teach you a boring formula: $ad - bc$.
-In Machine Learning, the determinant has a beautiful physical meaning:
-> **The Determinant is the factor by which areas are scaled when space is transformed.**
+Vectors represent directed arrows in space; scalar multiplication stretches their magnitude while preserving orientation.
 
-- If a $1 \times 1$ square has area $1$:
-  - After transformation by $A$, its area becomes $|\\det(A)|$!
-- **What if $\\det(A) = 0$?**
-  - The matrix flattened 2D space into a 1D flat line (or a single point)!
-  - Area becomes $0$!
-  - You **cannot invert the matrix** because you cannot un-flatten a 1D line back into 2D space (information is permanently lost!).
+```python
+v1 = [2.0, 3.0]
+v2 = [4.0, -1.0]
+
+v_sum = [a + b for a, b in zip(v1, v2)]
+scaled = [2.5 * x for x in v1]
+
+assert v_sum == [6.0, 2.0]
+assert scaled == [5.0, 7.5]
+print(f"v1 + v2 = {v_sum}, 2.5 * v1 = {scaled}")
+```
 
 ---
 
-## 3. Solving $Ax = b$ via Gaussian Elimination
+## 2. Matrix-Vector Multiplication as Linear Map
 
-When solving $Ax = b$, you are asking:
-> *"Which vector $x$ lands on $b$ after space is transformed by $A$?"*
+Multiplying a $2 \times 2$ matrix by a $2 \times 1$ vector maps the point to new coordinates through dot products of rows with the input vector.
 
-If $\\det(A) \neq 0$, the inverse $A^{-1}$ exists and $x = A^{-1} b$ is unique!
+```python
+A = [[2.0, 1.0],
+     [0.0, 3.0]]
+x = [3.0, 2.0]
+
+Ax = [sum(row[i] * x[i] for i in range(len(x))) for row in A]
+
+assert Ax == [8.0, 6.0], "Row 0: 2*3+1*2=8; Row 1: 0*3+3*2=6"
+assert len(Ax) == 2
+print(f"Matrix A applied to vector x yields: {Ax}")
+```
+
+---
+
+## 3. 2D Rotation Matrix Invariant
+
+A rotation matrix $R(\theta)$ rotates a vector counter-clockwise by $\theta$ while strictly preserving its Euclidean length (norm).
+
+```python
+theta = math.pi / 2  # 90 degrees
+R = [[math.cos(theta), -math.sin(theta)],
+     [math.sin(theta),  math.cos(theta)]]
+
+p = [1.0, 0.0]  # Point on x-axis
+p_rot = [sum(R[r][c] * p[c] for c in range(2)) for r in range(2)]
+
+# After 90 deg rotation, (1, 0) becomes (0, 1)
+assert abs(p_rot[0] - 0.0) < 1e-6
+assert abs(p_rot[1] - 1.0) < 1e-6
+orig_len = math.sqrt(p[0]**2 + p[1]**2)
+rot_len = math.sqrt(p_rot[0]**2 + p_rot[1]**2)
+assert abs(orig_len - rot_len) < 1e-6, "Length must be preserved"
+print(f"Point (1, 0) rotated by 90 deg: ({p_rot[0]:.1f}, {p_rot[1]:.1f})")
+```
+
+---

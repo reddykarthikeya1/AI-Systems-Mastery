@@ -1,34 +1,48 @@
+"""Beginner playground for Module 22 - CPython Internals & Extensions.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 22: Native C Function Caller via ctypes
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
-import ctypes
-import os
+import struct
 
+# -------------------------------------------- 1. Binary Struct Packing and Unpacking
+# Pack: int32, float32, char[4]
+fmt = "=if4s"
+packed = struct.pack(fmt, 42, 3.14, b"TEST")
+assert len(packed) == 12
 
-def main():
-    print("=" * 60)
-    print("  MODULE 22: NATIVE C / FFI INTEROP PLAYGROUND [*]")
-    print("=" * 60)
+i_val, f_val, s_val = struct.unpack(fmt, packed)
+assert i_val == 42
+assert abs(f_val - 3.14) < 1e-4
+assert s_val == b"TEST"
+print(f"Binary struct packed to {len(packed)} bytes and unpacked accurately.")
 
-    print("Accessing standard C runtime library...")
-    try:
-        libc = ctypes.cdll.msvcrt if os.name == "nt" else ctypes.CDLL("libc.so.6")
+# -------------------------------------------- 2. Zero-Copy Memoryviews on Byte Arrays
+data = bytearray(b"0123456789ABCDEF")
+view = memoryview(data)
+slice_view = view[4:8]
+assert slice_view.tobytes() == b"4567"
 
-        # Call C's standard abs() function:
-        c_abs = libc.abs
-        c_abs.argtypes = [ctypes.c_int]
-        c_abs.restype = ctypes.c_int
+# Modify through view:
+slice_view[0] = ord("X")
+assert data[4:8] == b"X567"
+print(f"Zero-copy in-place buffer mutation verified: {bytes(data[:8])}")
 
-        test_val = -42
-        res = c_abs(test_val)
-        print(f"  Called C standard library abs({test_val}) --> Result: {res}")
-        print("\n[OK] Native compiled function executed across Python boundary!")
-    except Exception as e:
-        print(f"  FFI demo notice: {e}")
-        print("  [OK] FFI architecture concepts verified.")
+# -------------------------------------------- 3. Little-Endian vs Big-Endian Integer Representation
+val = 0x12345678
+le = struct.pack("<I", val)
+be = struct.pack(">I", val)
+assert le != be
+assert le == bytes([0x78, 0x56, 0x34, 0x12])
+assert be == bytes([0x12, 0x34, 0x56, 0x78])
+print("Endianness byte ordering validated.")
 
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

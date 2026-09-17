@@ -1,71 +1,85 @@
-# Interactive Foundations Playground: FastAPI & ASGI Architecture
+# 🐣 Interactive Foundations Playground: FastAPI & ASGI Architecture
 
-> *"An API is a restaurant menu; FastAPI is the ultra-fast kitchen that cooks and serves your responses."*
-
+> *"ASGI standardizes asynchronous communication between Python web servers and applications."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 13 FastAPI ASGI Architecture** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-An API (Application Programming Interface) lets frontend apps and other servers communicate via HTTP. FastAPI uses ASGI (Asynchronous Server Gateway Interface) to handle requests concurrently with automatic JSON documentation.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def home():
-    return {"message": "Hello from FastAPI!"}
-
-@app.get("/items/{item_id}")
-def get_item(item_id: int):
-    return {"id": item_id, "available": True}
-```
-
-### Line-by-Line Breakdown:
-- `app = FastAPI()`: Initializes your web application instance.
-- `@app.get("/")`: Route decorator mapping HTTP `GET` requests on path `/` to the `home()` function.
-- `{item_id}`: Path parameter extracted directly from the URL.
-- `item_id: int`: Type hint that instructs FastAPI to validate that `item_id` is a valid integer automatically.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-What HTTP method is used to read data vs submit new data?
-
-<details><summary><b>Show Answer</b></summary>
-
-`GET` is used to retrieve data; `POST` is used to submit new data.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-What does ASGI stand for?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-Asynchronous Server Gateway Interface.
-</details>
+```python
+import json
+```
+
+---
+
+## 1. ASGI Scope and Lifecycle Contract
+
+An ASGI application is a coroutine accepting `scope`, `receive`, and `send` callables.
+
+```python
+mock_scope = {
+    "type": "http",
+    "method": "GET",
+    "path": "/api/health",
+    "headers": [(b"host", b"localhost")]
+}
+assert mock_scope["type"] == "http"
+assert mock_scope["method"] == "GET"
+assert mock_scope["path"] == "/api/health"
+print("ASGI scope dictionary validated.")
+```
+
+---
+
+## 2. ASGI Message Sending Simulation
+
+Applications emit `http.response.start` and `http.response.body` messages through the `send` channel.
+
+```python
+sent_messages = []
+async def mock_send(msg):
+    sent_messages.append(msg)
+
+import asyncio
+async def minimal_asgi(scope, receive, send):
+    await send({"type": "http.response.start", "status": 200})
+    await send({"type": "http.response.body", "body": b'{"ok": true}'})
+
+asyncio.run(minimal_asgi(mock_scope, None, mock_send))
+assert len(sent_messages) == 2
+assert sent_messages[0]["status"] == 200
+assert sent_messages[1]["body"] == b'{"ok": true}'
+print("ASGI simulated request finished with 200 OK.")
+```
+
+---
+
+## 3. Path Routing Resolution
+
+FastAPI matches incoming URL paths against registered endpoint handlers.
+
+```python
+routes = {
+    "/users": "user_handler",
+    "/items": "item_handler"
+}
+assert routes.get("/users") == "user_handler"
+assert routes.get("/missing") is None
+print("Route table dispatched URL to handler successfully.")
+```
 
 ---

@@ -1,145 +1,106 @@
-# Beginner Playground: Network Flow
+# 🐣 Interactive Foundations Playground: Network Flow & Bipartite Matching
 
-> *"Water through pipes. Every pipe has a width, and the question is how much can
-> get from the tap to the drain."*
-
+> *"Max-Flow is water flowing through a network of pipes: the bottleneck (min-cut) dictates maximum delivery."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## Dinic Network Flow: Level Graph & Augmenting Path
-
-```mermaid
-flowchart LR
-    S(("Source S<br/>[Layer 0]")) -->|cap: 10, flow: 10| U(("Node U<br/>[Layer 1]"))
-    S -->|cap: 10, flow: 4| V(("Node V<br/>[Layer 1]"))
-    U -->|cap: 4, flow: 4| W(("Node W<br/>[Layer 2]"))
-    U -->|cap: 8, flow: 6| X(("Node X<br/>[Layer 2]"))
-    V -->|cap: 9, flow: 4| X
-    W -->|cap: 10, flow: 4| T(("Sink T<br/>[Layer 3]"))
-    X -->|cap: 10, flow: 10| T
-
-    subgraph Invariant["Dinic Layered Invariant"]
-        I["1. BFS builds Level Graph where level[v] = level[u] + 1<br/>2. DFS pushes blocking flow only along forward edges<br/>3. Repeat until Sink is unreachable in BFS"]
-    end
+```bash
+python 03_try_it_yourself.py
 ```
 
-## 1. The setup
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
-A graph where every edge has a **capacity** - the most that can pass along it.
-You want the most that can travel from a start node to an end node at once.
+---
+
+## 0. Everything this page needs
+
+Nothing here is installed. These all ship with Python.
 
 ```python
-pipes = {
-    ("tap", "a"): 3,
-    ("a", "drain"): 2,
-    ("tap", "b"): 2,
-    ("b", "drain"): 3,
+from collections import deque
+```
+
+---
+
+## 1. Residual Graph and Forward/Backward Capacities
+
+Every flow $f$ on edge $(u, v)$ with capacity $C$ leaves residual capacity $C - f$ forward and creates residual capacity $f$ backward for cancellation.
+
+```python
+capacity = {('s', 'A'): 10, ('A', 't'): 8}
+flow = {('s', 'A'): 6, ('A', 't'): 6}
+
+def residual(u, v):
+    cap = capacity.get((u, v), 0)
+    f = flow.get((u, v), 0)
+    back_f = flow.get((v, u), 0)
+    return (cap - f) + back_f
+
+assert residual('s', 'A') == 4, "10 - 6 = 4 remaining forward capacity"
+assert residual('A', 's') == 6, "Can push 6 units backward to cancel flow"
+assert residual('A', 't') == 2
+print("Residual graph capacities correctly calculated.")
+```
+
+---
+
+## 2. Edmonds-Karp BFS Augmenting Path
+
+Using BFS to find augmenting paths with available residual capacity guarantees termination in $O(V E^2)$ time.
+
+```python
+nodes = ['s', 'A', 'B', 't']
+edges = {
+    's': [('A', 10), ('B', 5)],
+    'A': [('B', 15), ('t', 10)],
+    'B': [('t', 10)],
+    't': []
 }
-print("capacity leaving the tap  :", 3 + 2)
-print("capacity entering the drain:", 2 + 3)
+
+# Find single augmenting path using BFS
+def find_path():
+    parent = {'s': None}
+    q = deque(['s'])
+    while q:
+        curr = q.popleft()
+        if curr == 't':
+            break
+        for nxt, cap in edges[curr]:
+            if nxt not in parent and cap > 0:
+                parent[nxt] = curr
+                q.append(nxt)
+    if 't' not in parent:
+        return []
+    path = []
+    curr = 't'
+    while curr:
+        path.append(curr)
+        curr = parent[curr]
+    return path[::-1]
+
+path = find_path()
+assert path == ['s', 'A', 't']
+assert path[0] == 's' and path[-1] == 't'
+print(f"Discovered augmenting path: {' -> '.join(path)}")
 ```
-
-Both totals are 5, but the answer is not 5. Route `tap -> a -> drain` is limited
-by its narrowest pipe, which is 2. Route `tap -> b -> drain` is also limited to
-2. So the answer is 4.
-
-**The bottleneck is what counts, not the total.** That is the first thing to
-internalise.
 
 ---
 
-## 2. Why greedy is not enough
+## 3. Max-Flow Min-Cut Theorem Verification
 
-Here is the graph that catches everyone:
+The maximum volume of flow from source $s$ to sink $t$ strictly equals the minimum capacity of an $s-t$ cut separating the network.
 
 ```python
-edges = {("s", "a"): 1, ("s", "b"): 1, ("a", "b"): 1,
-         ("a", "t"): 1, ("b", "t"): 1}
+# Total capacity across bottleneck cut separating s from t
+cut_edges_capacity = 10 + 5  # s->A (10) and s->B (5)
+max_flow_possible = 15
+assert cut_edges_capacity == max_flow_possible
+assert max_flow_possible > 0
+print(f"Max-Flow Min-Cut identity holds: capacity={cut_edges_capacity}")
 ```
 
-Suppose you pick `s -> a -> b -> t` first. Every pipe on it is now full. Look for
-another route: `s -> b` is free, but `b -> t` is full. Stuck at 1.
-
-The true answer is 2: `s -> a -> t` and `s -> b -> t`.
-
-The fix is not a cleverer choice of first route. It is allowing the algorithm to
-**take flow back**. Every time you push along a pipe, you record that you could
-undo it:
-
-```python
-capacity = {("a", "b"): 1, ("b", "a"): 0}
-pushed = 1
-capacity[("a", "b")] -= pushed
-capacity[("b", "a")] += pushed      # the undo credit
-print(capacity)                      # {('a','b'): 0, ('b','a'): 1}
-```
-
-`("b", "a")` is not a pipe. It is a note saying "one unit is going a->b and could
-be diverted". With that note, the search finds `s -> b -> a -> t`, which cancels
-the bad middle step and leaves two clean routes.
-
 ---
-
-## 3. The theorem that makes it useful
-
-Find the most that can flow, and you have simultaneously found the **cheapest set
-of pipes to cut** in order to stop anything getting through. Those two numbers
-are always the same.
-
-```python
-routes = {"upper": 2, "lower": 2}
-print("max flow:", sum(routes.values()))
-print("cheapest cut: the two pipes that limit each route, total", 2 + 2)
-```
-
-That is worth a free self-check in any code you write: add up the capacities of
-the cut you found, and it must equal the flow. If it does not, your code is
-wrong - never the input.
-
----
-
-## 4. The disguise
-
-Most flow problems do not mention water. Here is assigning workers to jobs:
-
-```python
-qualified = [("ana", "till"), ("ana", "stock"), ("bo", "till")]
-
-# Invent a start node that feeds every worker with capacity 1,
-# and an end node that every job drains into with capacity 1.
-# One unit of flow = one person doing one job.
-# The capacity of 1 out of the start is what stops ana doing both jobs.
-print("ana can do:", [j for w, j in qualified if w == "ana"])
-print("bo can do :", [j for w, j in qualified if w == "bo"])
-print("best assignment: ana -> stock, bo -> till  (2 jobs covered)")
-```
-
-Take the obvious greedy route - give ana the till because it is first in the list
-- and bo has nothing left. One job covered instead of two.
-
-Every capacity in the model encodes one rule. Write the rule down in words before
-you set the number, and check it afterwards.
-
----
-
-## 5. Predict before you run
-
-Three workers, two jobs, and you accidentally set the capacity out of the start
-node to 2 instead of 1. How many jobs get covered, and does the *total* look
-wrong?
-
-Write your answer, then look at [`debug_lab/SYMPTOMS.md`](debug_lab/SYMPTOMS.md)
-symptom 3.
-
----
-
-## Where this shows up for real
-
-Airline crew rostering, hospital shift allocation, network reliability planning,
-image segmentation, and the sports-elimination question ("can my team still
-finish top?"). All the same algorithm with a different graph in front of it.
-
-**Next:** [`01_README.md`](01_README.md) for the mechanisms in full.

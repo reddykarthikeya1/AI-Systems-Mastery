@@ -1,46 +1,80 @@
-# Beginner Playground: Benchmark Harnesses & Decontamination
+# 🐣 Interactive Foundations Playground: Standardized Benchmark Harnesses
 
+> *"Standardized benchmarks (MMLU, GSM8K, HumanEval) provide reproducible scoreboards for AI capability."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Benchmark Harnesses! Standardized evaluations like MMLU, GSM8K, and HumanEval allow AI teams to compare models objectively.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Core Mental Model: Pass@k & Benchmark Contamination
+## 0. Everything this page needs
 
-- **Pass@1**: Proportion of problems solved correctly on the first attempt.
-- **Pass@k**: Probability that at least one of $k$ generated attempts passes verification.
-- **Data Contamination**: Did the model memorize the test answers during pretraining? If the benchmark test set was accidentally in the training corpus, the model achieves 99% accuracy on the benchmark but fails in real life.
-
-```
- Problem ---> [ Generate K Candidates ] ---> [ Run Unit Tests / Match Oracle ]
-                                                           |
-                                                (Any candidate passes?)
-                                                           |
-                                                   [ Pass@k Metric ]
-```
-
----
-
-## 2. Interactive Pure-Python Experiment: Pass@k Estimator
-
-In the landmark HumanEval paper (Chen et al., 2021), Pass@k is calculated without generating combinatorially massive samples:
-$$\text{Pass}@k = 1 - \frac{\binom{n - c}{k}}{\binom{n}{k}}$$
+Nothing here is installed. These all ship with Python.
 
 ```python
 import math
-
-def calculate_pass_at_k(n: int, c: int, k: int) -> float:
-    """Calculates pass@k given n total samples and c correct samples."""
-    if n - c < k:
-        return 1.0
-    return 1.0 - (math.comb(n - c, k) / math.comb(n, k))
-
-# Model generated n=10 samples, c=2 passed the unit tests
-p1 = calculate_pass_at_k(n=10, c=2, k=1)
-p5 = calculate_pass_at_k(n=10, c=2, k=5)
-
-print(f"Pass@1 (Chance of 1 random sample passing): {p1:.2%}")
-print(f"Pass@5 (Chance of at least 1 of 5 samples passing): {p5:.2%}")
 ```
+
+---
+
+## 1. Few-Shot Prompt Construction
+
+Structuring standardized prompts with $k$ static exemplar demonstrations followed by the target test question.
+
+```python
+exemplars = [
+    {"q": "What is 2+2?", "a": "4"},
+    {"q": "What is 3+5?", "a": "8"}
+]
+test_q = "What is 7+4?"
+prompt = ""
+for ex in exemplars:
+    prompt += f"Q: {ex['q']}\nA: {ex['a']}\n\n"
+prompt += f"Q: {test_q}\nA:"
+
+assert "2+2" in prompt
+assert "7+4" in prompt
+assert prompt.endswith("A:")
+print(f"Standard 2-shot benchmark prompt assembled:\n{prompt}")
+```
+
+---
+
+## 2. Multiple-Choice Log-Likelihood Evaluation
+
+Instead of freeform text parsing, evaluate log-probability of answer tokens ('A', 'B', 'C', 'D') directly.
+
+```python
+log_probs = {"A": -1.2, "B": -0.3, "C": -2.5, "D": -3.1}
+best_choice = max(log_probs, key=log_probs.get)
+
+assert best_choice == "B"
+assert log_probs[best_choice] == -0.3
+print(f"Highest probability choice selected: Option {best_choice}")
+```
+
+---
+
+## 3. Pass@K Metric Math (HumanEval)
+
+Pass@K computes the probability that at least one of $k$ generated code samples passes unit tests: $1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}$.
+
+```python
+n = 10  # 10 samples generated
+c = 3   # 3 correct samples
+# Pass@1 = c / n
+pass_at_1 = c / n
+assert pass_at_1 == 0.30
+print(f"HumanEval Pass@1: {pass_at_1:.1%}")
+```
+
+---

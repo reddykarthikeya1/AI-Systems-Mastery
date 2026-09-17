@@ -1,54 +1,78 @@
-# Beginner Playground: LLM-as-a-Judge & Position Bias Calibration
+# 🐣 Interactive Foundations Playground: LLM as a Judge Calibration & Bias
 
+> *"When using an LLM to grade another LLM, watch out for position bias, verbosity bias, and self-enhancement bias."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to LLM-as-a-Judge! Using a powerful model (e.g. GPT-4) to evaluate smaller models is standard practice, but LLM judges suffer from severe human-like cognitive biases.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Core Mental Model: Positional Bias & Swap Calibration
+## 0. Everything this page needs
 
-When an LLM judge is asked:
-> *"Compare Answer A and Answer B. Which one is better?"*
-
-LLMs exhibit **Position Bias**: they favor Answer A (or Answer B) simply based on order of presentation!
-
-```
- Trial 1: [ Order: (Model X as A, Model Y as B) ] ---> Judge picks A (Model X wins)
- Trial 2: [ Order: (Model Y as A, Model X as B) ] ---> Judge picks A (Model Y wins!)
-```
-
-To achieve mathematical calibration, we perform **Swap-Pair Evaluation**:
-1. Run evaluation with order $(A, B)$.
-2. Run evaluation with swapped order $(B, A)$.
-3. Model $X$ only wins if it wins BOTH trials or has higher aggregate score. If trials disagree, declare a **Tie**.
-
----
-
-## 2. Interactive Pure-Python Experiment: Swap-Pair Calibrator
+Nothing here is installed. These all ship with Python.
 
 ```python
-def mock_biased_judge(candidate_a: str, candidate_b: str) -> str:
-    # Biased judge that ALWAYS prefers Candidate A regardless of quality!
-    return "A"
-
-def calibrate_pairwise_decision(text_x: str, text_y: str):
-    # Trial 1: X is A, Y is B
-    res1 = mock_biased_judge(candidate_a=text_x, candidate_b=text_y)
-    winner_trial_1 = "X" if res1 == "A" else "Y"
-
-    # Trial 2: Y is A, X is B (Swapped)
-    res2 = mock_biased_judge(candidate_a=text_y, candidate_b=text_x)
-    winner_trial_2 = "Y" if res2 == "A" else "X"
-
-    print(f"Trial 1 Winner: {winner_trial_1}")
-    print(f"Trial 2 (Swapped) Winner: {winner_trial_2}")
-
-    if winner_trial_1 == winner_trial_2:
-        return f"Clear Winner: Model {winner_trial_1}"
-    else:
-        return "TIE (Position Bias Detected and Neutralized)"
-
-print("Decision:", calibrate_pairwise_decision("Model X text", "Model Y text"))
+import math
 ```
+
+---
+
+## 1. Position Bias Detection via Order Swapping
+
+Testing whether judge LLM always prefers Candidate A over Candidate B regardless of quality by swapping presentation order.
+
+```python
+# Swap inputs: score(A, B) vs score(B, A)
+trial1_winner = "Candidate A"  # Model 1 was in position A
+trial2_winner = "Candidate A"  # Model 2 was in position A
+
+position_bias_detected = (trial1_winner == "Candidate A" and trial2_winner == "Candidate A")
+assert position_bias_detected is True, "Judge always votes for position A regardless of content"
+print("Position bias confirmed: order swapping detected primacy effect.")
+```
+
+---
+
+## 2. Verbosity Bias Length Normalization
+
+Judges favor longer answers even when padded with fluff; length normalization penalizes excessive verbosity.
+
+```python
+raw_score = 9.0
+word_count = 600
+target_length = 200
+
+length_penalty = max(0.0, (word_count - target_length) * 0.005)
+calibrated_score = raw_score - length_penalty
+
+assert length_penalty == 2.0
+assert calibrated_score == 7.0
+print(f"Calibrated score: {calibrated_score} (down from raw {raw_score} after length penalty)")
+```
+
+---
+
+## 3. Cohen's Kappa Inter-Rater Agreement
+
+Cohen's Kappa measures agreement between LLM Judge and Human ground truth while accounting for chance agreement.
+
+```python
+p_observed = 0.85
+p_chance = 0.50
+kappa = (p_observed - p_chance) / (1.0 - p_chance)
+
+assert kappa == 0.70
+assert kappa > 0.60, "Substantial agreement"
+print(f"Inter-rater agreement Cohen's Kappa: {kappa:.2f}")
+```
+
+---

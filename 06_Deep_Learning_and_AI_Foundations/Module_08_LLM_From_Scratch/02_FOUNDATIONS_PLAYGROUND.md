@@ -1,44 +1,79 @@
-# 🐣 Interactive Foundations Playground: LLM From Scratch & KV-Cache
+# 🐣 Interactive Foundations Playground: LLM from Scratch & Tokenization
 
-> *"Without KV-Cache, generating a 1,000-word essay requires recalculating the entire essay from word 1 on every single keystroke. With KV-Cache, you only calculate the new word!"*
-
+> *"An LLM is an advanced next-token prediction engine: it repeatedly answers 'what word comes next?'."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. What is an Autoregressive Language Model?
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-An LLM is a machine that plays one game:
-$$P(w_{t} \mid w_1, w_2, \dots, w_{t-1})$$
-Given the previous words, predict the probability distribution of the very next word!
-When generating text:
-1. Sample token $w_t$.
-2. Append $w_t$ to the context.
-3. Feed the new sequence back into the model to predict $w_{t+1}$.
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. The KV-Cache: The Engine of Fast Generation
+## 0. Everything this page needs
 
-In a standard transformer layer:
-- $Q = X W_Q$
-- $K = X W_K$
-- $V = X W_V$
+Nothing here is installed. These all ship with Python.
 
-Notice something crucial:
-When you generate token 100, **tokens 1 through 99 do not change**! Their Keys ($K$) and Values ($V$) are identical to what they were on the previous step!
-- **Naive Generation ($O(N^2)$)**: Recomputes $K$ and $V$ for all 99 tokens again $\to$ massive waste of GPU FLOPs.
-- **KV-Cache Generation ($O(N)$)**: Store $K_{1..99}$ and $V_{1..99}$ in GPU memory. Only compute $Q_{100}$, $K_{100}$, $V_{100}$. Append $K_{100}$ to cache, compute attention with the cached keys, and generate token 101!
+```python
+from collections import Counter
+```
 
 ---
 
-## 3. Sampling Strategies: Temperature, Top-K, Top-P
+## 1. Byte-Pair Encoding (BPE) Pair Counting
 
-Raw logits are converted to probabilities via $\text{Softmax}(z / T)$:
-- **Temperature ($T$)**:
-  - $T = 0.1$: Extremely sharp peaks $\implies$ focused, factual, greedy.
-  - $T = 1.0$: True learned distribution.
-  - $T = 2.0$: Uniform, chaotic, hallucinations.
-- **Top-K**: Truncate logits to only the top $K$ highest-scoring tokens (e.g. $K=50$).
-- **Top-P (Nucleus Sampling)**: Dynamically include only the smallest set of tokens whose cumulative probability reaches $P$ (e.g. $P=0.9$).
+BPE iteratively finds the most frequent pair of consecutive symbols and replaces them with a single new symbol.
+
+```python
+corpus = ["l o w </w>", "l o w e r </w>", "n e w e s t </w>", "w i d e s t </w>"]
+pairs = Counter()
+for word in corpus:
+    tokens = word.split()
+    for i in range(len(tokens) - 1):
+        pairs[(tokens[i], tokens[i+1])] += 1
+
+most_common_pair, count = pairs.most_common(1)[0]
+assert count >= 2
+assert isinstance(most_common_pair, tuple)
+print(f"Most frequent consecutive token pair: {most_common_pair} (frequency: {count})")
+```
+
+---
+
+## 2. Causal Autoregressive Masking
+
+Causal masking zeros out (or sets to $-\infty$) attention weights to future token positions to ensure generative autoregression.
+
+```python
+seq_len = 3
+causal_mask = [[1 if col <= row else 0 for col in range(seq_len)] for row in range(seq_len)]
+
+assert causal_mask[0] == [1, 0, 0], "Token 0 can only attend to Token 0"
+assert causal_mask[1] == [1, 1, 0], "Token 1 can attend to Token 0 and 1"
+assert causal_mask[2] == [1, 1, 1], "Token 2 can attend to all previous tokens"
+print(f"Causal lower-triangular mask generated: {causal_mask}")
+```
+
+---
+
+## 3. Greedy Token Generation Loop
+
+At each decoding step, take $\text{argmax}$ over vocabulary logits and append the predicted token id to context.
+
+```python
+vocab = {0: "<pad>", 1: "The", 2: "cat", 3: "sat"}
+logits_step1 = [0.1, 0.8, 0.05, 0.05]
+next_token_id = logits_step1.index(max(logits_step1))
+
+assert next_token_id == 1
+assert vocab[next_token_id] == "The"
+print(f"Greedy decode selected: token {next_token_id} ('{vocab[next_token_id]}')")
+```
+
+---

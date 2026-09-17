@@ -1,53 +1,70 @@
-# 🐣 Interactive Foundations Playground: FlashAttention-3 & Hopper/Blackwell Features
+# 🐣 Interactive Foundations Playground: FlashAttention-3 & Hopper/Blackwell
 
-> *"Ampere (A100) forced CPU-like threads to do manual labor copying memory. Hopper (H100) introduced hardware conveyor belts (TMA) and 128-thread super-units (WGMMA), letting memory move asynchronously without wasting a single compute cycle."*
-
+> *"FlashAttention-3 uses asynchronous Tensor Memory Accelerator (TMA) hardware to overlap compute and memory transfers."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. Tensor Memory Accelerator (TMA): The Conveyor Belt
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-On an A100 GPU:
-- Threads had to load data from Global Memory into registers, and then store it into Shared Memory.
-- Every load instruction tied up valuable thread registers and ALU cycles!
+```bash
+python 00_try_it_yourself.py
+```
 
-On Hopper (H100) & Blackwell (B200):
-- **TMA** is a dedicated 2D/3D hardware copy engine.
-- A thread issues **one single TMA instruction descriptor**: *"TMA, copy a $64 \times 128$ tile from tensor $X$ into shared memory."*
-- The thread goes back to doing matrix math! TMA copies the entire multi-dimensional tile into SRAM in the background with **0 register overhead**!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Asynchronous Barriers (`mbarrier`)
+## 0. Everything this page needs
 
-How do compute threads know when TMA has finished copying?
-In CUDA, `__syncthreads()` halts all threads until everyone arrives.
-Hopper uses hardware **Transaction Barriers (`mbarrier`)**:
-```cpp
-// Initialize barrier for 8192 expected bytes
-mbarrier.init(&bar, num_threads, 8192);
-// Issue TMA transfer
-tma_load(sram_ptr, global_ptr, &bar);
-// Compute threads wait asynchronously
-mbarrier.wait(&bar, phase);
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
 ```
 
 ---
 
-## 3. Warp Group Matrix Multiply & Accumulate (WGMMA)
+## 1. Tensor Memory Accelerator (TMA) Asynchronous Copy
 
-On Ampere, Tensor Core instructions operate on a single Warp (32 threads).
-On Hopper, **WGMMA** merges **4 Warps (128 threads)** into a single coordinated unit!
-- WGMMA reads matrix operands directly from **Shared Memory** without loading them into registers first!
-- Freeing registers allows each thread to hold much larger matrix accumulators.
+TMA hardware moves multidimensional tensor tiles directly from HBM to Shared Memory bypassing SM register files entirely.
+
+```python
+tile_shape = (64, 64)
+bytes_per_elem = 2
+tile_bytes = tile_shape[0] * tile_shape[1] * bytes_per_elem
+
+assert tile_bytes == 8192
+assert tile_bytes == 8 * 1024
+print(f"TMA copied 8 KB tile ({tile_shape}) asynchronously into shared memory.")
+```
 
 ---
 
-## 4. Ping-Pong Double Buffering
+## 2. FP8 Low-Precision Dynamic Range Scaling
 
-FlashAttention-3 achieves ~75% of H100 hardware theoretical peak using **Ping-Pong scheduling**:
-- **Warpgroup 0**: Executes WGMMA on Tile $k$.
-- **Warpgroup 1**: Issues TMA loads and barrier waits for Tile $k+1$.
-- In the next phase, they swap roles! The memory latency is **100% hidden behind compute**.
+FP8 formats (E4M3 and E5M2) double throughput and halve memory footprint compared to 16-bit precision.
+
+```python
+fp16_bits = 16
+fp8_bits = 8
+bandwidth_multiplier = fp16_bits / fp8_bits
+
+assert bandwidth_multiplier == 2.0
+print(f"FP8 doubles memory bandwidth efficiency by {bandwidth_multiplier:.0f}x.")
+```
+
+---
+
+## 3. Warp-Group Matrix Multiply-Accumulate (WGMMA)
+
+Hopper's WGMMA synchronizes 4 warps (128 threads) together into a collective matrix multiply execution unit.
+
+```python
+threads_per_warpgroup = 4 * 32
+assert threads_per_warpgroup == 128
+print(f"WGMMA synchronizes {threads_per_warpgroup} threads as a single warp-group.")
+```
+
+---

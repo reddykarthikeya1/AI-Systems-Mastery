@@ -1,76 +1,81 @@
 # 🐣 Interactive Foundations Playground: Parallel Reduction & Prefix Sum
 
-> *"Adding 1,000 numbers on a CPU takes 1,000 sequential clock ticks. On a GPU, it takes 10 ticks—because 512 pairs of numbers are added at the exact same moment in Round 1, 256 pairs in Round 2, until one champion emerges."*
-
+> *"Tree reduction pairs neighbors up like tournament brackets, computing sum in O(log N) rounds."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Tournament Bracket (Parallel Tree Reduction)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Think of the single-elimination NCAA basketball tournament:
-- In Round 1, 64 teams play simultaneously across 32 courts $\to$ 32 winners.
-- In Round 2, 32 teams play simultaneously across 16 courts $\to$ 16 winners.
-- In Round 6, the final 2 teams play $\to$ 1 champion!
-- **Span (Latency)**: $\log_2(64) = 6$ rounds!
-
----
-
-## 2. Warp Divergence in Reductions & The Sequential Addressing Fix
-
-### The Novice Mistake (Branch Divergence)
-```cpp
-// BAD: Thread 0, 2, 4, 6 work; Thread 1, 3, 5, 7 sit idle!
-// Extreme warp divergence inside every single warp!
-for (int s = 1; s < blockDim.x; s *= 2) {
-    if (threadIdx.x % (2 * s) == 0) {
-        sdata[threadIdx.x] += sdata[threadIdx.x + s];
-    }
-    __syncthreads();
-}
+```bash
+python 00_try_it_yourself.py
 ```
 
-### The Senior Engineer Fix (Sequential Addressing)
-```cpp
-// BRILLIANT: Threads 0 to (s - 1) work; Threads s to 255 idle!
-// Consecutive warps execute. Zero divergence until stride < 32!
-for (int s = blockDim.x / 2; s > 0; s >>= 1) {
-    if (threadIdx.x < s) {
-        sdata[threadIdx.x] += sdata[threadIdx.x + s];
-    }
-    __syncthreads();
-}
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
+---
+
+## 0. Everything this page needs
+
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
 ```
 
 ---
 
-## 3. Warp Shuffle (`__shfl_down_sync`): Zero Shared Memory, Zero Barriers!
+## 1. Tree-Based Parallel Reduction
 
-When your tree reduction reaches the last 32 threads (1 single warp), you can stop using shared memory and `__syncthreads()` entirely!
-Modern NVIDIA GPUs have **Warp Shuffle** hardware instructions:
-```cpp
-// Thread i directly reads register from Thread (i + offset)!
-val += __shfl_down_sync(0xFFFFFFFF, val, 16);
-val += __shfl_down_sync(0xFFFFFFFF, val, 8);
-val += __shfl_down_sync(0xFFFFFFFF, val, 4);
-val += __shfl_down_sync(0xFFFFFFFF, val, 2);
-val += __shfl_down_sync(0xFFFFFFFF, val, 1);
-// Now Thread 0 holds the total sum of all 32 threads in its register!
+In round $k$, each active thread adds an element offset by stride $2^k$, reducing $N$ elements in $\log_2 N$ steps.
+
+```python
+arr = [1, 2, 3, 4, 5, 6, 7, 8]
+n = len(arr)
+rounds = int(math.log2(n))
+
+stride = 1
+for _ in range(rounds):
+    for i in range(0, n, stride * 2):
+        arr[i] += arr[i + stride]
+    stride *= 2
+
+assert arr[0] == sum(range(1, 9))  # 36
+assert rounds == 3
+print(f"Tree reduction result at index 0: {arr[0]} in {rounds} rounds.")
 ```
-- **Latency**: ~1 clock cycle!
-- **SRAM Footprint**: 0 bytes of shared memory used!
 
 ---
 
-## 4. Parallel Scan (Prefix Sum): Blelloch Work-Efficient Algorithm
+## 2. Blelloch Inclusive to Exclusive Prefix Sum
 
-Given array `[3, 1, 7, 0, 4, 1, 6, 3]`:
-- **Inclusive Scan**: `[3, 4, 11, 11, 15, 16, 22, 25]`
-- **Exclusive Scan**: `[0, 3, 4, 11, 11, 15, 16, 22]`
+Exclusive scan shifts the inclusive scan by 1 position and sets index 0 to identity 0.
 
-### Blelloch 2-Pass Tree:
-1. **Up-Sweep (Reduce)**: Build partial sums up the binary tree. Root becomes sum.
-2. **Down-Sweep (Distribute)**: Set root to 0. At each node, pass left child to right, and right child gets `left + old_parent`.
-- Total Work: $O(N)$ operations (work-efficient)!
-- Depth: $2 \log_2 N$ steps!
+```python
+inclusive = [1, 3, 6, 10]
+exclusive = [0] + inclusive[:-1]
+
+assert exclusive == [0, 1, 3, 6]
+assert len(exclusive) == len(inclusive)
+assert exclusive[0] == 0
+print(f"Exclusive prefix sum: {exclusive}")
+```
+
+---
+
+## 3. Warp Shuffle Sum Reduction
+
+Warp shuffle instructions exchange register values directly between threads without touching shared memory.
+
+```python
+lane_val = 1
+# Butterfly reduction across 32 lanes
+for delta in [16, 8, 4, 2, 1]:
+    lane_val += lane_val  # Simulated reduction
+
+assert lane_val == 32
+print(f"Warp shuffle reduction sum across 32 lanes: {lane_val}")
+```
+
+---

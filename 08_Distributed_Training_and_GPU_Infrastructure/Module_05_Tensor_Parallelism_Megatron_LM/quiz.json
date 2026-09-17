@@ -1,96 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '1. Mathematical Formulation of Megatron-LM' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Formulation of Megatron-LM.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Mathematical Formulation of Megatron-LM' in Tensor Parallelism Megatron LM.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '2. Self-Attention Tensor Parallelism' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Self-Attention Tensor Parallelism.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Self-Attention Tensor Parallelism' in Tensor Parallelism Megatron LM.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '3. Megatron Sequence Parallelism (SP)' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Megatron Sequence Parallelism (SP).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. Megatron Sequence Parallelism (SP)' in Tensor Parallelism Megatron LM.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
     "tier": "Diagnose",
     "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -120,7 +30,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 5,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top 5 Production Failure Modes in Tensor Parallelism'\"",
     "category": "Diagnose: Failure Analysis",
@@ -150,7 +60,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 6,
+    "id": 3,
     "tier": "Diagnose",
     "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -180,7 +90,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 7,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,7 +120,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 8,
+    "id": 5,
     "tier": "Diagnose",
     "question": "When operating Tensor Parallelism Megatron LM workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -240,7 +150,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 9,
+    "id": 6,
     "tier": "Diagnose",
     "question": "When operating Tensor Parallelism Megatron LM workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -268,5 +178,65 @@
     ],
     "explanation": "Root Cause Analysis: A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Tensor Parallelism Megatron LM, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for tensor parallelism megatron lm.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in tensor parallelism megatron lm depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Tensor Parallelism Megatron LM, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for tensor parallelism megatron lm.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in tensor parallelism megatron lm depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

@@ -58,202 +58,241 @@ When iterating over an array, the CPU pre-fetches a **64-byte cache line** conta
 
 ## 2. Canonical LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Two Sum ([LeetCode 1](https://leetcode.com/problems/two-sum/)) — Easy
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Pairwise Nested Search
-Iterate through every pair $(i, j)$ where $i \neq j$ and check if $nums[i] + nums[j] == target$.
-```python
-def two_sum_brute(nums: list[int], target: int) -> list[int]:
-    n = len(nums)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-    return []
-```
-- **Time Complexity**: $O(N^2)$ — $\\frac{N(N-1)}{2}$ comparisons. Hits TLE on large arrays ($N \ge 10^5$).
-- **Space Complexity**: $O(1)$ — No extra memory allocated.
+### Problem 1: Binary Search ([LeetCode #704](https://leetcode.com/problems/binary-search/)) — Easy
 
-#### Optimized: One-Pass Hash Map
-Store each visited value and its index. For each element $x$, check if $(target - x)$ exists in the hash map.
+> **Pattern**: `Two Pointers / Divide and Conquer` | **Target Time**: $O(\log N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
+
+You must write an algorithm with $O(\log n)$ runtime complexity.
+
+### Constraints
+- $1 \le 	ext{nums.length} \le 10^4$
+- $-10^4 < 	ext{nums}[i], 	ext{target} < 10^4$
+- All integers in `nums` are unique.
+- `nums` is sorted in ascending order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Standard binary search with two pointers (left and right). At each step, compute mid to halve the search interval, achieving logarithmic $O(\log N)$ time and $O(1)$ auxiliary space.
+
 ```python
-def two_sum_optimal(nums: list[int], target: int) -> list[int]:
-    seen: dict[int, int] = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []
+class Solution:
+    def search(self, nums: list[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return -1
 ```
-- **Time Complexity**: $O(N)$ — Single pass; $O(1)$ average hash table lookup.
-- **Space Complexity**: $O(N)$ — Stores up to $N$ entries in the hash table.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Majority Element ([LeetCode 169](https://leetcode.com/problems/majority-element/)) — Easy
+### Problem 2: Search in Rotated Sorted Array ([LeetCode #33](https://leetcode.com/problems/search-in-rotated-sorted-array/)) — Medium
 
-#### Brute Force: Frequency Hash Map
-Count frequencies of each element and return the one where $count > \\lfloor N/2 \\rfloor$.
-```python
-def majority_element_brute(nums: list[int]) -> int:
-    counts: dict[int, int] = {}
-    for x in nums:
-        counts[x] = counts.get(x, 0) + 1
-        if counts[x] > len(nums) // 2:
-            return x
-    return -1
-```
-- **Time**: $O(N)$, **Space**: $O(N)$ auxiliary memory.
+> **Pattern**: `Modified Binary Search` | **Target Time**: $O(\log N)$ | **Target Space**: $O(1)
 
-#### Optimized: Boyer-Moore Voting Algorithm ($O(1)$ Space)
-Maintain a `candidate` and a `count`. If `count == 0`, assign new candidate. Increment when equal, decrement otherwise.
+#### Problem Specification
+There is an integer array `nums` sorted in ascending order (with distinct values). Prior to being passed to your function, `nums` is possibly rotated at an unknown pivot index.
+
+Given the array `nums` after the possible rotation and an integer `target`, return the index of `target` if it is in `nums`, or `-1` if it is not in `nums`.
+
+You must write an algorithm with $O(\log n)$ runtime complexity.
+
+#### Algorithmic Invariants & Optimal Derivation
+At least one half of the rotated array is always strictly sorted. We identify which half is sorted by comparing nums[left] with nums[mid], then check if target lies within that sorted range.
+
 ```python
-def majority_element_optimal(nums: list[int]) -> int:
-    candidate = nums[0]
-    count = 0
-    for num in nums:
-        if count == 0:
-            candidate = num
-        count += (1 if num == candidate else -1)
-    return candidate
+class Solution:
+    def search(self, nums: list[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return mid
+            if nums[left] <= nums[mid]:
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+        return -1
 ```
-- **Time Complexity**: $O(N)$ — Exactly 1 linear pass.
-- **Space Complexity**: $O(1)$ — Only two scalar variables.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Missing Number ([LeetCode 268](https://leetcode.com/problems/missing-number/)) — Easy
+### Problem 3: Find Minimum in Rotated Sorted Array ([LeetCode #153](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)) — Medium
 
-#### Brute Force: Hash Set Lookup
-```python
-def missing_number_brute(nums: list[int]) -> int:
-    seen = set(nums)
-    for i in range(len(nums) + 1):
-        if i not in seen:
-            return i
-    return -1
-```
-- **Time**: $O(N)$, **Space**: $O(N)$.
+> **Pattern**: `Inflection Point Binary Search` | **Target Time**: $O(\log N)$ | **Target Space**: $O(1)
 
-#### Optimized: XOR Bit Manipulation ($O(1)$ Space)
-Exploit $X \\oplus X = 0$ and $X \\oplus 0 = X$. XOR all numbers in $[0, N]$ and all numbers in `nums`.
+#### Problem Specification
+Suppose an array of length `n` sorted in ascending order is rotated between 1 and `n` times.
+Given the sorted rotated array `nums` of unique elements, return the minimum element of this array.
+
+You must write an algorithm that runs in $O(\log n)$ time.
+
+#### Algorithmic Invariants & Optimal Derivation
+Compare nums[mid] to nums[right]. If nums[mid] > nums[right], the minimum must be in the right subarray (excluding mid). Otherwise, it is in the left subarray including mid.
+
 ```python
-def missing_number_optimal(nums: list[int]) -> int:
-    missing = len(nums)
-    for i, num in enumerate(nums):
-        missing ^= i ^ num
-    return missing
+class Solution:
+    def findMin(self, nums: list[int]) -> int:
+        left, right = 0, len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            else:
+                right = mid
+        return nums[left]
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$. No integer overflow hazard.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Single Number ([LeetCode 136](https://leetcode.com/problems/single-number/)) — Easy
+### Problem 4: Search a 2D Matrix ([LeetCode #74](https://leetcode.com/problems/search-a-2d-matrix/)) — Medium
 
-#### Brute Force: Frequency Hash Map
-- **Time**: $O(N)$, **Space**: $O(N)$ auxiliary storage.
+> **Pattern**: `2D Flattened Binary Search` | **Target Time**: $O(\log(M 	imes N))$ | **Target Space**: $O(1)
 
-#### Optimized: XOR Cumulative Fold
+#### Problem Specification
+You are given an `m x n` integer matrix `matrix` with the following two properties:
+1. Each row is sorted in non-decreasing order.
+2. The first integer of each row is greater than the last integer of the previous row.
+
+Given an integer `target`, return `true` if `target` is in `matrix` or `false` otherwise.
+You must write a solution in $O(\log(m \cdot n))$ time.
+
+#### Algorithmic Invariants & Optimal Derivation
+Treat the M x N matrix as a single flattened 1D array of length M*N. Any 1D index `idx` maps directly to 2D coordinates via row = idx // N and col = idx % N.
+
 ```python
-def single_number_optimal(nums: list[int]) -> int:
-    res = 0
-    for x in nums:
-        res ^= x
-    return res
-```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
-
----
-
-### Problem 5: Power of Two ([LeetCode 231](https://leetcode.com/problems/power-of-two/)) — Easy
-
-#### Brute Force: Iterative Division
-Repeatedly divide by 2 while $n > 1$.
-```python
-def is_power_of_two_brute(n: int) -> bool:
-    if n <= 0:
+class Solution:
+    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
+        if not matrix or not matrix[0]:
+            return False
+        m, n = len(matrix), len(matrix[0])
+        left, right = 0, m * n - 1
+        while left <= right:
+            mid = (left + right) // 2
+            val = matrix[mid // n][mid % n]
+            if val == target:
+                return True
+            elif val < target:
+                left = mid + 1
+            else:
+                right = mid - 1
         return False
-    while n % 2 == 0:
-        n //= 2
-    return n == 1
 ```
-- **Time Complexity**: $O(\\log N)$.
 
-#### Optimized: Bitwise Invariant ($O(1)$ Time)
-A positive power of two has exactly one set bit in binary (e.g. $8 = 1000_2$, $7 = 0111_2$). Hence $n \\ \\& \\ (n - 1) == 0$.
-```python
-def is_power_of_two_optimal(n: int) -> bool:
-    return n > 0 and (n & (n - 1)) == 0
-```
-- **Time Complexity**: $O(1)$ — Single CPU machine instruction.
-- **Space Complexity**: $O(1)$.
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Number of 1 Bits ([LeetCode 191](https://leetcode.com/problems/number-of-1-bits/)) — Easy
+### Problem 5: First Bad Version ([LeetCode #278](https://leetcode.com/problems/first-bad-version/)) — Easy
 
-#### Brute Force: Check All 32 Bits
-```python
-def hamming_weight_brute(n: int) -> int:
-    count = 0
-    for _ in range(32):
-        count += (n & 1)
-        n >>= 1
-    return count
-```
-- **Time**: $O(32) = O(1)$ fixed loop iterations.
+> **Pattern**: `Lower Bound Predicate Binary Search` | **Target Time**: $O(\log N)$ | **Target Space**: $O(1)
 
-#### Optimized: Brian Kernighan's Algorithm
-$n \\ \\& \\ (n - 1)$ clears the least significant set bit in $O(1)$ steps. Iterates only as many times as there are 1-bits.
+#### Problem Specification
+Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API `isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version with minimum API calls.
+
+#### Algorithmic Invariants & Optimal Derivation
+Binary search on monotonic predicate: if `isBadVersion(mid)` is true, the first bad version is at or to the left of `mid` (right = mid). Otherwise it is strictly to the right (left = mid + 1).
+
 ```python
-def hamming_weight_optimal(n: int) -> int:
-    count = 0
-    while n:
-        n &= (n - 1)
-        count += 1
-    return count
+class Solution:
+    def firstBadVersion(self, n: int, isBadVersion) -> int:
+        left, right = 1, n
+        while left < right:
+            mid = (left + right) // 2
+            if isBadVersion(mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left
 ```
-- **Time Complexity**: $O(k)$ where $k$ is the number of set bits ($k \le 32$).
-- **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 7: Counting Bits ([LeetCode 338](https://leetcode.com/problems/counting-bits/)) — Easy
+### Problem 6: Koko Eating Bananas ([LeetCode #875](https://leetcode.com/problems/koko-eating-bananas/)) — Medium
 
-#### Brute Force: Count per Number
-Call bit count for each number from $0$ to $N$.
-- **Time Complexity**: $O(N \\log N)$.
+> **Pattern**: `Binary Search on Answer Space` | **Target Time**: $O(N \log(\max(P)))$ | **Target Space**: $O(1)
 
-#### Optimized: Bit Shift Dynamic Programming
-$dp[i] = dp[i >> 1] + (i \\ \\& \\ 1)$.
+#### Problem Specification
+Koko loves to eat bananas. There are `n` piles of bananas, the `i-th` pile has `piles[i]` bananas. The guards will come back in `h` hours.
+
+Koko can decide her bananas-per-hour eating speed of `k`. Each hour, she chooses some pile and eats `k` bananas from it. If the pile has less than `k` bananas, she eats all of them and will not eat any more bananas during this hour.
+
+Return the minimum integer `k` such that she can eat all the bananas within `h` hours.
+
+#### Algorithmic Invariants & Optimal Derivation
+Search space is the speed k from 1 to max(piles). The feasibility function `sum(ceil(p/k)) <= h` is monotonic: if speed k works, all speeds > k also work. We use binary search to locate the minimum feasible speed.
+
 ```python
-def count_bits_optimal(n: int) -> list[int]:
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        dp[i] = dp[i >> 1] + (i & 1)
-    return dp
+class Solution:
+    def minEatingSpeed(self, piles: list[int], h: int) -> int:
+        import math
+        left, right = 1, max(piles)
+        ans = right
+        while left <= right:
+            mid = (left + right) // 2
+            hours = sum(math.ceil(p / mid) for p in piles)
+            if hours <= h:
+                ans = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        return ans
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(N)$ for output array.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 8: Reverse Bits ([LeetCode 190](https://leetcode.com/problems/reverse-bits/)) — Easy
-
-#### Optimized: Bit Reversal Masking
-```python
-def reverse_bits_optimal(n: int) -> int:
-    res = 0
-    for i in range(32):
-        bit = (n >> i) & 1
-        res |= (bit << (31 - i))
-    return res
-```
-- **Time Complexity**: $O(1)$ — Exactly 32 operations.
-- **Space Complexity**: $O(1)$.
-
----
 
 ## 3. Asymptotic Cheat Sheet
 

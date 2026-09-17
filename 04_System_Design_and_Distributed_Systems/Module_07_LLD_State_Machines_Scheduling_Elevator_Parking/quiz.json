@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In LLD State Machines Scheduling Elevator Parking, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in LLD State Machines Scheduling Elevator Parking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In LLD State Machines Scheduling Elevator Parking, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in LLD State Machines Scheduling Elevator Parking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In LLD State Machines Scheduling Elevator Parking, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in LLD State Machines Scheduling Elevator Parking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In LLD State Machines Scheduling Elevator Parking, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in LLD State Machines Scheduling Elevator Parking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
     "tier": "Apply",
     "question": "Given the implementation in `test_elevator_system.py`, what is the exact evaluated result of:\n\n```python\nassigned.car_id\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +30,7 @@
     "lesson_ref": "test_elevator_system.py"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_elevator_system.py`, what is the exact evaluated result of:\n\n```python\ncar.current_floor\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +60,7 @@
     "lesson_ref": "test_elevator_system.py"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_elevator_system.py`, what is the exact evaluated result of:\n\n```python\ncar.direction\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +90,7 @@
     "lesson_ref": "test_elevator_system.py"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_elevator_system.py`, what is the exact evaluated result of:\n\n```python\ncar.door_state\n```",
     "category": "Apply: Code Execution",
@@ -240,7 +120,7 @@
     "lesson_ref": "test_elevator_system.py"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "During triage in LLD State Machines Scheduling Elevator Parking, an engineer observes:\n\"System fault during operation: Elevator Starvation Under Upward Continuous Hall Calls\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",
@@ -268,5 +148,95 @@
     ],
     "explanation": "Root Cause: The scheduler continued in the UP direction indefinitely as long as any UP request arrived, starving waiting DOWN passengers. ---\n\nFix Resolution:\n---",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In LLD State Machines Scheduling Elevator Parking, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for lld state machines scheduling elevator parking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in lld state machines scheduling elevator parking depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In LLD State Machines Scheduling Elevator Parking, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for lld state machines scheduling elevator parking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in lld state machines scheduling elevator parking depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In LLD State Machines Scheduling Elevator Parking, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for lld state machines scheduling elevator parking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in lld state machines scheduling elevator parking depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

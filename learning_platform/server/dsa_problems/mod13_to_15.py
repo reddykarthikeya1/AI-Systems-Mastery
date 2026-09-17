@@ -43,7 +43,8 @@ The solution set must not contain duplicate subsets. Return the solution in any 
         ],
         "hidden_testcases": [
             {"input": {"nums": [9, 10]}, "expected": [[], [9], [10], [9, 10]]},
-            {"input": {"nums": []}, "expected": [[]]}
+            {"input": {"nums": []}, "expected": [[]]},
+            {"input": {"nums": [1, 2]}, "expected": [[1, 2], [1], [2], []]}
         ],
         "explanation": "Binary decision tree: for each element at index i, branch into two decisions: include nums[i] in the current subset, or omit it."
     },
@@ -136,7 +137,7 @@ The same number may be chosen from candidates an unlimited number of times.""",
         "pattern": "2D Grid DFS Backtracking with In-Place Visited Mask",
         "time_complexity": "O(M \times N \times 3^L)",
         "space_complexity": "O(L)",
-        "description": """Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid.
+        "description": """Given an `m x n` grid of characters `board` and a string `word`, return `True` if `word` exists in the grid.
 The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.""",
         "starter_code": """class Solution:
     def exist(self, board: list[list[str]], word: str) -> bool:
@@ -190,7 +191,8 @@ The word can be constructed from letters of sequentially adjacent cells, where a
         ],
         "hidden_testcases": [
             {"input": {"board": [["a"]], "word": "a"}, "expected": True},
-            {"input": {"board": [["a", "b"], ["c", "d"]], "word": "abcd"}, "expected": False}
+            {"input": {"board": [["a", "b"], ["c", "d"]], "word": "abcd"}, "expected": False},
+            {"input": {"board": [["a"]], "word": "b"}, "expected": False}
         ],
         "explanation": "DFS explore 4 directions. Temporarily mutate board cell to '#' to mark visited, and restore original character during backtracking unwind."
     },
@@ -233,7 +235,9 @@ The word can be constructed from letters of sequentially adjacent cells, where a
         ],
         "hidden_testcases": [
             {"input": {"s": "ab"}, "expected": [["a", "b"]]},
-            {"input": {"s": "racecar"}, "expected": [["r","a","c","e","c","a","r"],["r","a","cec","a","r"],["r","aceca","r"],["racecar"]]}
+            {"input": {"s": "racecar"}, "expected": [["r", "a", "c", "e", "c", "a", "r"], ["r", "a", "cec", "a", "r"], ["r", "aceca", "r"], ["racecar"]]},
+            {"input": {"s": "bb"}, "expected": [["b", "b"], ["bb"]]},
+            {"input": {"s": "efe"}, "expected": [["e", "f", "e"], ["efe"]]}
         ],
         "explanation": "Iterate potential right partition endpoints `j`. If substring `s[i:j+1]` is a palindrome, choose it and recurse on remainder `j+1`."
     },
@@ -310,8 +314,8 @@ Given an integer `n`, return all distinct solutions to the n-queens puzzle. You 
 Implement the `Trie` class:
 - `Trie()` Initializes the trie object.
 - `void insert(String word)` Inserts the string `word` into the trie.
-- `boolean search(String word)` Returns `true` if the string `word` is in the trie, and `false` otherwise.
-- `boolean startsWith(String prefix)` Returns `true` if there is a previously inserted string that has the prefix `prefix`.""",
+- `boolean search(String word)` Returns `True` if the string `word` is in the trie, and `False` otherwise.
+- `boolean startsWith(String prefix)` Returns `True` if there is a previously inserted string that has the prefix `prefix`.""",
         "starter_code": """class Trie:
     def __init__(self):
         pass
@@ -892,8 +896,8 @@ class LFUCache:
         "description": """Design your implementation of the circular queue. The circular queue is a linear data structure in which the operations are performed based on FIFO principle, and the last position is connected back to the first position to make a circle.
 Implement the `MyCircularQueue` class:
 - `MyCircularQueue(k)` Initializes the object with the size of the queue to be `k`.
-- `boolean enQueue(int value)` Inserts an element into the circular queue. Return true if the operation is successful.
-- `boolean deQueue()` Deletes an element from the circular queue. Return true if the operation is successful.
+- `boolean enQueue(int value)` Inserts an element into the circular queue. Return True if the operation is successful.
+- `boolean deQueue()` Deletes an element from the circular queue. Return True if the operation is successful.
 - `int Front()` Gets the front item from the queue. If the queue is empty, return -1.
 - `int Rear()` Gets the last item from the queue. If the queue is empty, return -1.
 - `boolean isEmpty()` Checks whether the circular queue is empty or not.
@@ -1165,8 +1169,8 @@ Implement the `MyHashMap` class:
         "target_class": "RandomizedSet",
         "description": """Implement the `RandomizedSet` class:
 - `RandomizedSet()` Initializes the RandomizedSet object.
-- `bool insert(int val)` Inserts an item `val` into the set if not present. Returns `true` if item was not present, `false` otherwise.
-- `bool remove(int val)` Removes an item `val` from the set if present. Returns `true` if item was present, `false` otherwise.
+- `bool insert(int val)` Inserts an item `val` into the set if not present. Returns `True` if item was not present, `False` otherwise.
+- `bool remove(int val)` Removes an item `val` from the set if present. Returns `True` if item was present, `False` otherwise.
 - `int getRandom()` Returns a random element from the current set of elements (guaranteed that each element has same probability).
 Each function must work in $O(1)$ average time complexity.""",
         "starter_code": """class RandomizedSet:

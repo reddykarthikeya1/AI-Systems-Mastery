@@ -1,39 +1,56 @@
-"""Module 06: Interactive Foundations Interactive Error Handling Playground.
+"""Beginner playground for Module 06 - Error Handling, Logging & Robustness.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-def safe_divide():
-    print("\n--- Crash-Proof Division Calculator ---")
-    while True:
-        raw_a = input("Enter numerator (or 'q' to quit): ").strip()
-        if raw_a.lower() == 'q':
-            break
-        raw_b = input("Enter denominator: ").strip()
+import logging
 
-        try:
-            val_a = float(raw_a)
-            val_b = float(raw_b)
-            ans = val_a / val_b
-        except ValueError:
-            print("[X] Error: Both inputs must be valid numbers!")
-        except ZeroDivisionError:
-            print("[X] Error: Mathematical division by zero is impossible!")
-        else:
-            print(f"[OK] Success: {val_a} / {val_b} = {ans:.4f}")
-        finally:
-            print("--- Calculation attempt recorded ---")
+# -------------------------------------------- 1. Custom Exception Hierarchies
+class DomainError(Exception):
+    pass
 
-def main():
-    print("=" * 60)
-    print("  MODULE 06: INTERACTIVE ERROR HANDLING PLAYGROUND [SEC]")
-    print("=" * 60)
-    safe_divide()
-    print("\nGreat job! Proceed to Module 07.")
+class ValidationFailure(DomainError):
+    pass
 
-if __name__ == "__main__":
+def validate_age(age):
+    if age < 0:
+        raise ValidationFailure("Age cannot be negative")
+    return True
+
+assert validate_age(20) is True
+try:
+    validate_age(-5)
+except ValidationFailure as exc:
+    assert isinstance(exc, DomainError)
+    print(f"Caught expected domain error: {exc}")
+
+# -------------------------------------------- 2. Exception Chaining with 'from'
+def parse_config(value):
     try:
-        main()
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended. Happy coding!")
+        return int(value)
+    except ValueError as err:
+        raise DomainError("Configuration integer required") from err
+
+try:
+    parse_config("invalid")
+except DomainError as err:
+    assert isinstance(err.__cause__, ValueError)
+    print(f"Exception chained from root cause: {type(err.__cause__).__name__}")
+
+# -------------------------------------------- 3. Configuring Standard Logging
+logger = logging.getLogger("module06_test")
+logger.setLevel(logging.INFO)
+assert logger.level == logging.INFO
+assert logger.isEnabledFor(logging.INFO)
+assert not logger.isEnabledFor(logging.DEBUG)
+print("Logger configured with level INFO.")
+
+print()
+print("All checks passed.")

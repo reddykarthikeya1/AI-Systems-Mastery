@@ -1,66 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In PagedAttention Architecture vLLM, what core system invariant does '1. Systems Architecture of PagedAttention' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Systems Architecture of PagedAttention.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Systems Architecture of PagedAttention' in PagedAttention Architecture vLLM.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In PagedAttention Architecture vLLM, what core system invariant does '2. Copy-on-Write (CoW) Mechanics' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Copy-on-Write (CoW) Mechanics.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Copy-on-Write (CoW) Mechanics' in PagedAttention Architecture vLLM.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nmanager.physical_blocks[parent_block].ref_count\n```",
     "category": "Apply: Code Execution",
@@ -90,7 +30,7 @@
     "lesson_ref": "test_paged_attention_sim.py"
   },
   {
-    "id": 4,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(manager.free_blocks)\n```",
     "category": "Apply: Code Execution",
@@ -120,7 +60,7 @@
     "lesson_ref": "test_paged_attention_sim.py"
   },
   {
-    "id": 5,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(manager.block_tables[\"req_1\"])\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +90,7 @@
     "lesson_ref": "test_paged_attention_sim.py"
   },
   {
-    "id": 6,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nmanager.physical_blocks[parent_block].ref_count\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +120,7 @@
     "lesson_ref": "test_paged_attention_sim.py"
   },
   {
-    "id": 7,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,7 +150,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 8,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in PagedAttention'\"",
     "category": "Diagnose: Failure Analysis",
@@ -240,7 +180,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 9,
+    "id": 7,
     "tier": "Diagnose",
     "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -270,7 +210,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 10,
+    "id": 8,
     "tier": "Diagnose",
     "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",

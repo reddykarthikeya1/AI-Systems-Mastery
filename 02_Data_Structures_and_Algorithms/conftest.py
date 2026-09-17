@@ -93,6 +93,26 @@ else:
     # run would sometimes verify the stubs and sometimes the solutions. Only
     # ``solutions`` goes on the path; the stubs are reachable only in learner
     # mode, via the MetaPathFinder above.
+    from importlib.abc import MetaPathFinder
+    from importlib.util import spec_from_file_location
+
+    class _RootSolutionFinder(MetaPathFinder):
+        def __init__(self, root: Path) -> None:
+            self.sol_dirs = [
+                p for p in root.rglob("*")
+                if p.is_dir() and p.name in {"solutions", "project_solution"}
+                and "starter" not in p.parts
+            ]
+
+        def find_spec(self, fullname: str, path=None, target=None):
+            parts = fullname.split(".")
+            for sdir in self.sol_dirs:
+                candidate = sdir.joinpath(*parts).with_suffix(".py")
+                if candidate.is_file():
+                    return spec_from_file_location(fullname, str(candidate))
+            return None
+
+    sys.meta_path.insert(0, _RootSolutionFinder(root_dir))
     for p in root_dir.rglob("*"):
         if (
             p.is_dir()

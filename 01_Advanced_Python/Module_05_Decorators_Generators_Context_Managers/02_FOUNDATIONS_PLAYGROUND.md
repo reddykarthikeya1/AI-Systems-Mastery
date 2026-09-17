@@ -1,102 +1,100 @@
 # 🐣 Interactive Foundations Playground: Decorators, Generators & Context Managers
 
-> *"A decorator is like wrapping a birthday gift: the gift inside stays the same, but the wrapping adds festive flair!"*
-
+> *"Decorators wrap execution, generators stream values, and context managers guarantee cleanup."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Module 05! Let's explore three of Python's most expressive features in plain English.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. What is a Decorator? (The Gift Wrap Model)
-
-A decorator is just a function that takes another function, wraps it with some extra behavior (like logging, timing, or access checks), and returns the enhanced function.
-
-```python
-def my_logger(func):
-    def wrapper():
-        print("[Before] Function is starting...")
-        func()
-        print("[After] Function finished!")
-    return wrapper
-
-# Use the @ syntax to gift-wrap say_hello:
-@my_logger
-def say_hello():
-    print("Hello, world!")
-
-say_hello()
-```
-
-### Output:
-```text
-📢 [Before] Function is starting...
-Hello, world!
-✅ [After] Function finished!
-```
-
----
-
-## 2. What is a Generator? (`yield` is a Pause Button)
-
-A normal function returns everything at once and terminates. A **generator** produces values **one at a time on demand** using the `yield` keyword:
-
-```python
-def countdown(start):
-    print("Starting countdown engine...")
-    while start > 0:
-        yield start  # PAUSES and yields 'start' to the caller!
-        start -= 1
-
-# When looped over, it wakes up, runs to the next yield, and pauses again:
-for num in countdown(3):
-    print(f"Count: {num}")
-```
-
-### Why use Generators?
-If you generate 10,000,000 numbers in a list, your computer runs out of RAM. A generator generates numbers one-by-one as needed, using virtually **0 MB of RAM**!
-
----
-
-## 3. Context Managers (`with` blocks)
-
-Ever worry about forgetting to close a file or release a lock? The `with` statement guarantees cleanup:
-
-```python
-# The with block opens the file, lets you read it, and automatically closes it:
-with open("notes.txt", "w") as f:
-    f.write("Remember to buy milk!")
-# File is automatically 100% closed here, even if code crashes!
-```
-
----
-
-## 4. Run the Interactive Playground
 ```bash
 python 03_try_it_yourself.py
 ```
-Test an interactive timer decorator and a live countdown generator!
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 5. Beginner Quick-Check Drills
+## 0. Everything this page needs
 
-### Drill 1: Generator Keyword
-Which keyword pauses a function and yields a value instead of terminating?
-<details><summary><b>Show Answer</b></summary>
-<b><code>yield</code></b>
-</details>
+Nothing here is installed. These all ship with Python.
 
----
-
-### Drill 2: Applying a Decorator
-What symbol is placed before the decorator name directly above a function?
 ```python
-___my_decorator
-def my_function():
-    pass
+from contextlib import contextmanager
+import functools
 ```
-<details><summary><b>Show Answer</b></summary>
-<b><code>@</code></b> (e.g., <code>@my_decorator</code>)
-</details>\n
+
+---
+
+## 1. Function Decorators Preserving Metadata
+
+`functools.wraps` ensures wrapped functions retain their original name and docstring.
+
+```python
+call_log = []
+def trace(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        call_log.append(func.__name__)
+        return func(*args, **kwargs)
+    return wrapper
+
+@trace
+def greet(name):
+    """Greeting function docstring."""
+    return f"Hello, {name}!"
+
+res = greet("Pythonista")
+assert res == "Hello, Pythonista!"
+assert greet.__name__ == "greet"
+assert call_log == ["greet"]
+print(f"Decorated function executed: {res}")
+```
+
+---
+
+## 2. Stateful Generators with Yield
+
+Generators pause execution state and resume upon `next()`, providing constant memory streams.
+
+```python
+def fibonacci(limit):
+    a, b = 0, 1
+    count = 0
+    while count < limit:
+        yield a
+        a, b = b, a + b
+        count += 1
+
+fibs = list(fibonacci(7))
+assert fibs == [0, 1, 1, 2, 3, 5, 8]
+assert len(fibs) == 7
+print(f"Generated first 7 Fibonacci numbers: {fibs}")
+```
+
+---
+
+## 3. Deterministic Resource Management
+
+Context managers guarantee resource cleanup even if exceptions occur during execution.
+
+```python
+cleanup_done = False
+@contextmanager
+def temporary_resource():
+    global cleanup_done
+    try:
+        yield "resource_handle"
+    finally:
+        cleanup_done = True
+
+with temporary_resource() as handle:
+    assert handle == "resource_handle"
+    assert not cleanup_done
+
+assert cleanup_done
+print("Context manager cleanup executed deterministically.")
+```
+
+---

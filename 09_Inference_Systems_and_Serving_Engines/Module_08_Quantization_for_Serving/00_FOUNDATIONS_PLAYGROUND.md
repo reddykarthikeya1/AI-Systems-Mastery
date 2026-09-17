@@ -1,31 +1,78 @@
-# Module 08: Beginner Playground - Model Quantization for Serving
+# 🐣 Interactive Foundations Playground: Quantization for Serving (AWQ & SmoothQuant)
 
+> *"SmoothQuant migrates outlier difficulty from activations to weights where it can be precomputed."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Model Quantization**!
-A 70 Billion parameter model in FP16 takes **140 Gigabytes of VRAM**.
-Can we shrink that model down to **35 Gigabytes** and run it on a single GPU without losing its intelligence?
+**Brand new to this topic? Start here, not with the README.**
 
-Yes! Welcome to **FP8, INT8, and INT4 Quantization**!
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
----
+```bash
+python 00_try_it_yourself.py
+```
 
-## 1. The Suitcase Vacuum Bag Analogy
-
-- **FP16 (16 bits per number)**: Packing wool sweaters unfolded in a giant suitcase. Takes 140 GB.
-- **INT8 / FP8 (8 bits per number)**: Vacuum-sealing the sweaters. 50% smaller! Takes 70 GB.
-- **INT4 (4 bits per number)**: Compressing everything down to minimal socks and shirts. 75% smaller! Takes 35 GB!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. The Trap: Activation Outliers!
+## 0. Everything this page needs
 
-If you simply round every floating-point number to the nearest integer:
-Most numbers in AI models are small (e.g. $0.05, -0.12, 0.08$).
-Suddenly, in one channel, there is a giant number: **$128.5$**!
-If your scale factor must fit $128.5$ into an 8-bit integer, all the small numbers ($0.05$) get rounded to **ZERO**! The model completely breaks!
+Nothing here is installed. These all ship with Python.
 
-### The Modern Solutions:
-1. **AWQ (Activation-aware Weight Quantization)**: Identifies the 1% most critical weights (by looking at which weights multiply with large activation outliers) and keeps them in full precision, quantizing the remaining 99%!
-2. **SmoothQuant**: Mathematically multiplies activations by a smoothing factor $S$ and divides weights by $S$, balancing the numbers so both round cleanly!
+```python
+import math
+```
+
+---
+
+## 1. Activation Outlier Channel Dilemma
+
+LLM activations exhibit systematic outlier channels with values 100x larger than normal, which break standard INT8 quantization.
+
+```python
+channel_act = [0.2, 0.1, 85.0, 0.3]
+max_outlier = max(channel_act)
+median_act = sorted(channel_act)[1]
+ratio = max_outlier / median_act
+
+assert ratio > 100.0
+assert ratio == 425.0
+print(f"Activation outlier channel ratio: {ratio:.0f}x baseline magnitude.")
+```
+
+---
+
+## 2. SmoothQuant Mathematical Equivalence
+
+Scaling activations by $s^{-1}$ and weights by $s$ maintains mathematical equivalence $Y = (X \text{diag}(s)^{-1}) (\text{diag}(s) W)$ while smoothing outliers.
+
+```python
+x = 10.0
+w = 0.2
+s = 2.0
+
+x_smooth = x / s   # 5.0
+w_smooth = w * s   # 0.4
+
+assert x * w == 2.0
+assert x_smooth * w_smooth == 2.0
+print(f"SmoothQuant identity verified: {x}*{w} == {x_smooth}*{w_smooth}")
+```
+
+---
+
+## 3. Weight-Only (W4A16) Memory Footprint Halving
+
+INT4 weights reduce GPU memory by 50% compared to INT8 and 75% compared to FP16, doubling serving concurrency.
+
+```python
+fp16_gb = 14.0
+int4_gb = fp16_gb * (4 / 16)
+
+assert int4_gb == 3.5
+assert fp16_gb / int4_gb == 4.0
+print(f"W4A16 shrinks model from {fp16_gb} GB down to {int4_gb} GB.")
+```
+
+---

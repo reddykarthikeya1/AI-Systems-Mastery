@@ -1,74 +1,75 @@
-# Interactive Foundations Playground: CPython Internals, Bytecode & Memory
+# 🐣 Interactive Foundations Playground: Python Internals: Bytecode & Memory
 
-> *"Python compiles your English text into bytecode instructions that a virtual machine executes."*
-
+> *"Understanding CPython bytecode and garbage collection unlocks extreme performance tuning."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 12 Python Internals Bytecode Memory** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-Before executing Python code, the CPython compiler translates text into bytecode instructions. You can disassemble any function using `dis.dis()` and track memory addresses and reference counts using `id()` and `sys.getrefcount()`.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-import dis
-import sys
-
-def calculate(x):
-    return x * 2 + 1
-
-# Peek inside the compiled bytecode:
-dis.dis(calculate)
-
-# Check memory address:
-data = [10, 20]
-print("Memory Address:", hex(id(data)))
-print("Active References:", sys.getrefcount(data))
-```
-
-### Line-by-Line Breakdown:
-- `dis.dis()`: Disassembles a Python function or code block into assembly-like bytecode instructions.
-- `LOAD_FAST`: Pushes a local variable onto CPython's evaluation stack.
-- `BINARY_OP`: Pops operands, computes the operation, and pushes the result.
-- `id()`: Returns the actual memory address integer of an object in RAM.
-- `sys.getrefcount()`: Returns the number of active references pointing to this memory location.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-Why does `sys.getrefcount(x)` return 2 when you only created one variable?
-
-<details><summary><b>Show Answer</b></summary>
-
-The function call itself receives `x` as a parameter, temporarily incrementing the reference count by 1!
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-Where are precompiled bytecode files stored on your machine?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-In `__pycache__/` subdirectories as `.pyc` files.
-</details>
+```python
+import dis
+import gc
+import sys
+```
+
+---
+
+## 1. Disassembling Bytecode Opcodes
+
+The `dis` module compiles Python functions into readable CPython virtual machine instructions.
+
+```python
+def add(a, b):
+    return a + b
+
+instructions = list(dis.get_instructions(add))
+opnames = [instr.opname for instr in instructions]
+assert any("LOAD_FAST" in name for name in opnames)
+assert any("BINARY_OP" in name or "BINARY_ADD" in name for name in opnames)
+assert "RETURN_VALUE" in opnames
+print(f"CPython bytecode instructions for add(): {opnames}")
+```
+
+---
+
+## 2. Object Memory Overhead with sys.getsizeof
+
+Every Python object incurs memory overhead for reference counts and type pointers.
+
+```python
+size_empty_int = sys.getsizeof(0)
+size_large_int = sys.getsizeof(2**64)
+assert size_empty_int >= 24
+assert size_large_int > size_empty_int
+print(f"Memory size of 0: {size_empty_int} bytes, large int: {size_large_int} bytes")
+```
+
+---
+
+## 3. Garbage Collector Cycle Tracking
+
+CPython uses reference counting supplemented by a generational cyclic garbage collector.
+
+```python
+gc_enabled = gc.isenabled()
+assert gc_enabled is True
+thresholds = gc.get_threshold()
+assert len(thresholds) == 3
+print(f"GC active with generational thresholds: {thresholds}")
+```
 
 ---

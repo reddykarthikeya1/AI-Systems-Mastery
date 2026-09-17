@@ -1,38 +1,56 @@
+"""Beginner playground for Module 24 - Data Engineering: Polars & Playwright Patterns.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 24: Columnar In-Memory Mini Query Engine
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
+# -------------------------------------------- 1. Columnar Table In-Memory Layout
+table = {
+    "user_id": [101, 102, 103, 104],
+    "amount": [25.0, 150.0, 75.5, 200.0],
+    "status": ["completed", "pending", "completed", "completed"]
+}
 
-class MiniDataFrame:
-    def __init__(self, data):
-        self.data = data
+# Vectorized filter: status == 'completed'
+completed_indices = [i for i, s in enumerate(table["status"]) if s == "completed"]
+completed_sum = sum(table["amount"][i] for i in completed_indices)
 
-    def filter_gt(self, column, threshold):
-        indices = [i for i, val in enumerate(self.data[column]) if val > threshold]
-        return {col: [self.data[col][i] for i in indices] for col in self.data}
+assert completed_indices == [0, 2, 3]
+assert completed_sum == 300.5
+assert len(completed_indices) == 3
+print(f"Columnar filter returned completed sum: ${completed_sum}")
 
+# -------------------------------------------- 2. Chunked Batch Processing
+def chunk_stream(iterable, chunk_size):
+    chunk = []
+    for item in iterable:
+        chunk.append(item)
+        if len(chunk) == chunk_size:
+            yield chunk
+            chunk = []
+    if chunk:
+        yield chunk
 
-def main():
-    print("=" * 60)
-    print("  MODULE 24: COLUMNAR DATA ENGINE PLAYGROUND [*]")
-    print("=" * 60)
+batches = list(chunk_stream(range(10), 3))
+assert len(batches) == 4
+assert batches[0] == [0, 1, 2]
+assert batches[-1] == [9]
+print(f"Stream split into {len(batches)} batches of size <= 3.")
 
-    dataset = {
-        "product": ["Monitor", "Mouse", "Keyboard", "Laptop"],
-        "price": [250.0, 25.0, 75.0, 1200.0],
-        "inventory": [12, 150, 45, 8],
-    }
+# -------------------------------------------- 3. Schema Projection and Selection
+def project_columns(table, columns):
+    return {col: table[col] for col in columns if col in table}
 
-    df = MiniDataFrame(dataset)
-    print("Filtering items with price > $50.00:")
-    filtered = df.filter_gt("price", 50.0)
+proj = project_columns(table, ["user_id", "amount"])
+assert set(proj.keys()) == {"user_id", "amount"}
+assert len(proj["user_id"]) == 4
+print(f"Projected schema columns: {list(proj.keys())}")
 
-    for i in range(len(filtered["product"])):
-        print(f"  {filtered['product'][i]}: ${filtered['price'][i]:.2f} (Stock: {filtered['inventory'][i]})")
-
-    print("\n[OK] Columnar filter executed cleanly!")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

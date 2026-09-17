@@ -682,13 +682,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   // Detect availability of specialized features
   const hasProject = Boolean(module.has_starter || module.has_solution || allLessons.some((l) => l.type === 'project'));
-  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || allLessons.some((l) => l.type === 'quiz') || true);
+  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || allLessons.some((l) => l.type === 'quiz'));
   const hasDebugLab = Boolean(module.has_debug_lab);
   const hasDsaArena = Boolean(
     courseTitle.toLowerCase().includes('data structure') ||
     courseTitle.toLowerCase().includes('dsa') ||
     module.folder_path.toLowerCase().includes('02_data_structures') ||
-    allLessons.some((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode'))
+    allLessons.some((l) => l.type === 'challenge' || l.title.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('leetcode') || l.file_path.toLowerCase().includes('problems/'))
   );
 
   const getLessonBadge = (type: string) => {

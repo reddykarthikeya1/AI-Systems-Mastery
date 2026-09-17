@@ -1,58 +1,80 @@
 # 🐣 Interactive Foundations Playground: Logic for Precise Reasoning
 
-> *"Logic is the code that runs inside mathematical proofs and decision tree classifiers."*
-
+> *"Boolean logic is the switchboard of computation: every complex decision breaks down to AND, OR, NOT, and implication."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. Implication: The "If-Then" Trap ($P \implies Q$)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-In machine learning, we make logical statements constantly:
-> **"If an image contains a cat ($P$), then it contains whiskers ($Q$)."**
-
-Let's test your intuition on the 4 forms of this statement:
-
-| Form | Symbolic | English Statement | Is it True? |
-| :--- | :---: | :--- | :---: |
-| **Original** | $P \implies Q$ | If it's a cat, it has whiskers. | **True** |
-| **Converse** | $Q \implies P$ | If it has whiskers, it must be a cat. | **FALSE!** (Otters have whiskers!) |
-| **Inverse** | $\neg P \implies \neg Q$ | If it's not a cat, it has no whiskers. | **FALSE!** (Dogs have whiskers!) |
-| **Contrapositive** | $\neg Q \implies \neg P$ | If it has NO whiskers, it CANNOT be a cat. | **TRUE!** |
-
-### The Golden Rule of Proofs:
-$$P \implies Q \quad \equiv \quad \neg Q \implies \neg P$$
-An implication is **always mathematically identical to its contrapositive**.
-If your theorem is hard to prove forward, prove its contrapositive instead!
-
----
-
-## 2. Quantifiers: The Difference Between Training and Overfitting
-
-In Machine Learning research papers, you see two Greek-style symbols everywhere:
-
-1. **$\forall$ (For All / Universal)**: "Upside-down A"
-   - Example: $\forall x \in \mathcal{D}, \quad \mathcal{L}(x; \theta) \le \epsilon$
-   - Meaning: "The loss is tiny for **every single data point** in the dataset." (Overfitting / Memorization!)
-
-2. **$\exists$ (There Exists / Existential)**: "Backwards E"
-   - Example: $\exists x^* \in \mathcal{D}, \quad \hat{y}(x^*) \neq y(x^*)$
-   - Meaning: "There exists at least **one** point where the model makes an error."
-
-### Negating Quantifiers (De Morgan's Duality for Logic):
-To disprove "All swans are white" ($\forall s, White(s)$), you do NOT need to paint all swans black. You only need to find **one** black swan ($\exists s, \neg White(s)$)!
-$$\neg (\forall x, P(x)) \quad \equiv \quad \exists x, \neg P(x)$$
-
----
-
-## 3. Decision Trees as Pure Propositional Logic
-
-Every decision tree in scikit-learn or XGBoost is literally a chain of logical conjunctions:
+```bash
+python 03_try_it_yourself.py
 ```
-IF (income > 50k) AND (credit_score > 700) AND NOT (has_defaulted):
-    PREDICT: "Approve Loan"
-ELSE:
-    PREDICT: "Deny Loan"
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
+---
+
+## 0. Everything this page needs
+
+Nothing here is installed. These all ship with Python.
+
+```python
+
 ```
-Understanding logic guarantees you write bug-free classification rules and invariant assertions!
+
+---
+
+## 1. Boolean Truth Tables and Operators
+
+Conjunction (AND), disjunction (OR), and negation (NOT) define discrete decision boundaries in rule-based classifiers.
+
+```python
+def logical_and(p, q): return p and q
+def logical_or(p, q): return p or q
+def logical_not(p): return not p
+
+assert logical_and(True, False) is False
+assert logical_or(True, False) is True
+assert logical_not(False) is True
+print("Basic boolean operations verified.")
+```
+
+---
+
+## 2. Material Implication (P implies Q)
+
+In formal logic, $P \implies Q$ is logically equivalent to $\neg P \lor Q$. It is only false when a true premise leads to a false conclusion.
+
+```python
+def implies(p, q):
+    return (not p) or q
+
+assert implies(True, True) is True
+assert implies(True, False) is False
+assert implies(False, True) is True, "Vacuous truth"
+assert implies(False, False) is True
+print("Material implication truth table verified.")
+```
+
+---
+
+## 3. De Morgan's Laws Verification
+
+De Morgan's laws state that $\neg(P \land Q) \iff (\neg P \lor \neg Q)$ and $\neg(P \lor Q) \iff (\neg P \land \neg Q)$.
+
+```python
+for p in [True, False]:
+    for q in [True, False]:
+        lhs1 = not (p and q)
+        rhs1 = (not p) or (not q)
+        assert lhs1 == rhs1, "De Morgan Law 1 failed"
+        lhs2 = not (p or q)
+        rhs2 = (not p) and (not q)
+        assert lhs2 == rhs2, "De Morgan Law 2 failed"
+
+print("De Morgan's laws verified across all input valuations.")
+```
+
+---

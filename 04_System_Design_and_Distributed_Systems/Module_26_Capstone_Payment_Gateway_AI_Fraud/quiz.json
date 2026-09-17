@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Capstone Payment Gateway AI Fraud, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Capstone Payment Gateway AI Fraud.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Capstone Payment Gateway AI Fraud, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Capstone Payment Gateway AI Fraud.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Capstone Payment Gateway AI Fraud, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Capstone Payment Gateway AI Fraud.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Capstone Payment Gateway AI Fraud, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Capstone Payment Gateway AI Fraud.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
     "tier": "Apply",
     "question": "Given the implementation in `test_payment_gateway_platform.py`, what is the exact evaluated result of:\n\n```python\nres[\"reason\"]\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +30,7 @@
     "lesson_ref": "test_payment_gateway_platform.py"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_payment_gateway_platform.py`, what is the exact evaluated result of:\n\n```python\ndecision_fraud\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +60,7 @@
     "lesson_ref": "test_payment_gateway_platform.py"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_payment_gateway_platform.py`, what is the exact evaluated result of:\n\n```python\nres[\"amount_cents\"]\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +90,7 @@
     "lesson_ref": "test_payment_gateway_platform.py"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_payment_gateway_platform.py`, what is the exact evaluated result of:\n\n```python\nres2[\"tx_id\"]\n```",
     "category": "Apply: Code Execution",
@@ -240,7 +120,7 @@
     "lesson_ref": "test_payment_gateway_platform.py"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "During triage in Capstone Payment Gateway AI Fraud, an engineer observes:\n\"System fault during operation: Accounting Discrepancy from Unbalanced Double-Entry Ledger Posting\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",
@@ -268,5 +148,95 @@
     ],
     "explanation": "Root Cause: Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---\n\nFix Resolution:\n---",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In Capstone Payment Gateway AI Fraud, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for capstone payment gateway ai fraud.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in capstone payment gateway ai fraud depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Capstone Payment Gateway AI Fraud, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for capstone payment gateway ai fraud.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in capstone payment gateway ai fraud depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Capstone Payment Gateway AI Fraud, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for capstone payment gateway ai fraud.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in capstone payment gateway ai fraud depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

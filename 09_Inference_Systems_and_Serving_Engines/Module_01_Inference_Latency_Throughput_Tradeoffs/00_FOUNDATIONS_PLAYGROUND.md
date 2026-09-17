@@ -1,58 +1,82 @@
-# Module 01: Beginner Playground - Inference Latency & Throughput Trade-offs
+# 🐣 Interactive Foundations Playground: Inference Latency vs Throughput Tradeoffs
 
+> *"TTFT is how quickly the waiter brings your appetizer; TPOT is how fast they serve the rest of the courses."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **LLM Inference Systems**!
-Training a model happens once, but **inference happens billions of times a day**.
-Serving Large Language Models is fundamentally different from serving traditional web APIs or standard convolutional networks.
+**Brand new to this topic? Start here, not with the README.**
 
-Let's understand why LLMs behave so strangely during generation!
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
----
-
-## 1. The Restaurant Waiting Analogy: TTFT vs. TPOT
-
-When you visit a restaurant:
-1. **Time-to-First-Token (TTFT)**: The time between placing your order and the waiter bringing you warm bread.
-   - If this takes 10 seconds, you get impatient and think the kitchen is broken.
-   - In AI: This is the **Prefill Phase** where the model processes your entire prompt.
-2. **Time-Per-Output-Token (TPOT)**: The pace at which subsequent courses arrive.
-   - If courses arrive at a steady, enjoyable pace, the experience is great.
-   - In AI: This is the **Decode Phase** where the model generates words one by one. Humans read at $\approx 5$ words per second. If TPOT is $\le 25\text{ ms}$ ($40$ tokens/sec), the text streams faster than you can read!
-
----
-
-## 2. The Two Faces of LLM Serving
-
-An LLM request consists of two completely different computational worlds:
-
+```bash
+python 00_try_it_yourself.py
 ```
-+-------------------------------------------------------------------------------+
-| PHASE 1: PREFILL (Prompt Processing)                                          |
-| - All prompt tokens processed AT ONCE                                         |
-| - Matrix-Matrix Multiplications (GEMM)                                        |
-| - COMPUTE-BOUND: Saturates GPU Tensor Cores (TFLOPs)                          |
-+-------------------------------------------------------------------------------+
-                                      |
-                                      v
-+-------------------------------------------------------------------------------+
-| PHASE 2: DECODE (Token Generation)                                            |
-| - One token generated AT A TIME                                               |
-| - Matrix-Vector Multiplications (GEMV)                                        |
-| - MEMORY-BANDWIDTH BOUND: GPU sits idle waiting for memory transfer (TB/s)   |
-+-------------------------------------------------------------------------------+
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
+---
+
+## 0. Everything this page needs
+
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
 ```
 
 ---
 
-## 3. Why GPUs Run at < 1% Efficiency During Decoding
+## 1. Time to First Token (TTFT) vs Time Per Output Token (TPOT)
 
-When generating a single token for a 70B parameter model:
-- The GPU must load **all 140 Gigabytes of model weights** from HBM (High Bandwidth Memory) into the processor cores just to generate **ONE single token**!
-- On an NVIDIA H100 with $3.35 \text{ TB/s}$ memory bandwidth:
-  $$\text{Min Time to Stream Weights} = \frac{140 \text{ GB}}{3,350 \text{ GB/s}} \approx 41.8 \text{ ms}$$
-  $$\text{Max Generation Speed} \approx \frac{1}{0.0418} \approx 24 \text{ tokens/second}$$
-- Notice that this speed limit has **nothing to do with the 989 TFLOPs tensor cores**! The compute units are literally sitting idle 99% of the time, waiting for weights to travel over the memory bus.
+Total response latency equals TTFT (prefill phase processing prompt tokens) plus TPOT times generated tokens (decode phase).
 
-To fix this, we must **batch requests together** so that loading 140 GB serves 32 or 64 tokens at once!
+```python
+prompt_tokens = 500
+gen_tokens = 100
+prefill_rate = 2000.0  # tokens/sec
+decode_rate = 50.0     # tokens/sec (per token TPOT = 20ms)
+
+ttft_sec = prompt_tokens / prefill_rate   # 0.25s
+tpot_sec = 1.0 / decode_rate             # 0.02s
+total_latency_sec = ttft_sec + gen_tokens * tpot_sec
+
+assert ttft_sec == 0.25
+assert tpot_sec == 0.02
+assert total_latency_sec == 2.25
+print(f"TTFT: {ttft_sec*1000:.0f} ms, TPOT: {tpot_sec*1000:.0f} ms, Total Latency: {total_latency_sec:.2f} s")
+```
+
+---
+
+## 2. Prefill (Compute-Bound) vs Decode (Memory-Bound)
+
+Prefill processes all prompt tokens in parallel with high arithmetic intensity; decode processes one token per step, limited by memory bandwidth.
+
+```python
+model_weights_gb = 14.0  # 7B model in FP16
+hbm_bw_gb_s = 2000.0     # H100 HBM3 bandwidth
+min_decode_step_sec = model_weights_gb / hbm_bw_gb_s  # 7 ms per token
+
+max_single_stream_tps = 1.0 / min_decode_step_sec
+assert round(max_single_stream_tps, 1) == 142.9
+assert min_decode_step_sec == 0.007
+print(f"Single-stream decode upper bound: {max_single_stream_tps:.1f} tokens/s (step: {min_decode_step_sec*1000:.1f} ms)")
+```
+
+---
+
+## 3. Batching Throughput Multiplication
+
+Batching amortizes the cost of reading model weights across multiple concurrent requests, multiplying system throughput.
+
+```python
+batch_size = 16
+tokens_per_step = batch_size
+batch_throughput_tps = tokens_per_step / min_decode_step_sec
+
+assert batch_throughput_tps > max_single_stream_tps
+assert round(batch_throughput_tps) == 2286
+print(f"Batching {batch_size} streams increases throughput to {batch_throughput_tps:.0f} tokens/s.")
+```
+
+---

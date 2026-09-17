@@ -1,75 +1,44 @@
-"""Module 03: Interactive Foundations Interactive Collections Playground.
+"""Beginner playground for Module 03 - Data Structures & Collections.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-def todo_list_demo():
-    todos = ["Review Python basics", "Drink water"]
-    while True:
-        print("\n--- Current To-Do List ---")
-        for i, item in enumerate(todos, start=1):
-            print(f"  {i}. {item}")
+from collections import Counter, defaultdict, deque
 
-        print("\nOptions: [1] Add task, [2] Complete/Remove task, [3] Back")
-        cmd = input("Select option: ").strip()
-        if cmd == "1":
-            new_task = input("Enter new task: ").strip()
-            if new_task:
-                todos.append(new_task)
-                print(f"Added: '{new_task}'")
-        elif cmd == "2":
-            try:
-                idx = int(input("Enter task number to remove: "))
-                if 1 <= idx <= len(todos):
-                    removed = todos.pop(idx - 1)
-                    print(f"Completed & removed: '{removed}'")
-                else:
-                    print("Invalid task number!")
-            except ValueError:
-                print("Please enter a number.")
-        elif cmd == "3":
-            break
+# -------------------------------------------- 1. Double-Ended Queues for O(1) Push and Pop
+d = deque([1, 2, 3], maxlen=3)
+d.append(4)
+assert list(d) == [2, 3, 4]
+d.appendleft(10)
+assert list(d) == [10, 2, 3]
+assert len(d) == 3
+print(f"Deque bounded buffer maintained state: {list(d)}")
 
-def user_directory_demo():
-    directory = {
-        "alex": {"role": "Frontend Engineer", "location": "London"},
-        "sam": {"role": "Backend Engineer", "location": "New York"},
-        "jordan": {"role": "DevOps Architect", "location": "Tokyo"}
-    }
-    while True:
-        print("\n--- User Directory Lookup ---")
-        name = input("Enter username to search (or 'q' to back): ").strip().lower()
-        if name == "q":
-            break
-        user = directory.get(name)
-        if user:
-            print(f"User: {name.capitalize()}")
-            print(f"  Role:     {user['role']}")
-            print(f"  Location: {user['location']}")
-        else:
-            print(f"User '{name}' not found! Available: {list(directory.keys())}")
+# -------------------------------------------- 2. Frequency Counting with Counter
+text = "banana"
+counts = Counter(text)
+assert counts["a"] == 3
+assert counts["b"] == 1
+assert counts.most_common(1)[0] == ("a", 3)
+print(f"Most frequent character: {counts.most_common(1)}")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 03: INTERACTIVE COLLECTIONS PLAYGROUND [PKG]")
-    print("=" * 60)
-    while True:
-        print("\nChoose an activity:")
-        print("1. Manage an Interactive To-Do List (Lists)")
-        print("2. Search User Profiles (Dictionaries)")
-        print("3. Exit")
-        choice = input("Enter 1, 2, or 3: ").strip()
-        if choice == "1":
-            todo_list_demo()
-        elif choice == "2":
-            user_directory_demo()
-        elif choice == "3":
-            print("Great work! Proceed to Module 04.")
-            break
+# -------------------------------------------- 3. Defaultdict Dynamic Grouping
+groups = defaultdict(list)
+pairs = [("odd", 1), ("even", 2), ("odd", 3), ("even", 4)]
+for k, v in pairs:
+    groups[k].append(v)
 
-if __name__ == "__main__":
-    try:
-        main()
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended. Happy coding!")
+assert groups["odd"] == [1, 3]
+assert groups["even"] == [2, 4]
+assert len(groups) == 2
+print(f"Defaultdict accumulated categories: {dict(groups)}")
+
+print()
+print("All checks passed.")

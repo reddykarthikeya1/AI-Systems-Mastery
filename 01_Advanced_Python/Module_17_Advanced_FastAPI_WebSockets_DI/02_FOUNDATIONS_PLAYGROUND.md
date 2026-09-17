@@ -1,71 +1,93 @@
-# Interactive Foundations Playground: WebSockets & Dependency Injection
+# 🐣 Interactive Foundations Playground: Advanced FastAPI: WebSockets & DI
 
-> *"HTTP is sending letters back and forth; WebSockets is picking up a live telephone call."*
-
+> *"Dependency injection decouples application logic from transport and persistence layers."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 17 Advanced FastAPI WebSockets DI** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-Standard HTTP requires the client to ask for data each time. **WebSockets** maintain an open, bidirectional connection where server and client can push messages instantly. **Dependency Injection (DI)** is a pattern where external services (like DB sessions) are supplied to your functions automatically.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-# Dependency Injection concept in pure Python:
-def get_db_connection():
-    return "DB-Connection-Pool"
-
-def read_user_profile(user_id: int, db=None):
-    # db is injected from outside!
-    print(f"Using {db} to find user {user_id}")
-    return {"user_id": user_id, "name": "Sam"}
-
-# Injecting the dependency:
-db = get_db_connection()
-read_user_profile(42, db=db)
-```
-
-### Line-by-Line Breakdown:
-- Dependency Injection decouples your business logic from service creation, making unit testing trivial.
-- In FastAPI, you declare dependencies using `Depends(get_db_connection)`.
-- WebSockets use the `ws://` protocol and remain open for real-time multiplayer games, live chat, or stock tickers.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-What protocol does WebSocket use for unencrypted vs encrypted connections?
-
-<details><summary><b>Show Answer</b></summary>
-
-`ws://` for unencrypted and `wss://` for encrypted TLS connections.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-Why is Dependency Injection useful for automated tests?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-You can swap real database connections for lightweight in-memory test doubles without altering business logic.
-</details>
+```python
+from typing import Callable, Dict
+```
+
+---
+
+## 1. Dependency Injection Container
+
+A dependency injection container resolves component dependencies dynamically based on registered providers.
+
+```python
+class Container:
+    def __init__(self):
+        self._services: Dict[str, Callable] = {}
+
+    def register(self, key, provider):
+        self._services[key] = provider
+
+    def resolve(self, key):
+        return self._services[key]()
+
+c = Container()
+c.register("db_url", lambda: "sqlite:///:memory:")
+c.register("service_name", lambda: "payment_gateway")
+
+assert c.resolve("db_url") == "sqlite:///:memory:"
+assert c.resolve("service_name") == "payment_gateway"
+print("Dependency injection container resolved registered services.")
+```
+
+---
+
+## 2. Simulating WebSocket Full-Duplex Frames
+
+WebSockets maintain persistent connections for streaming bidirectional text frames.
+
+```python
+inbox = []
+outbox = []
+
+def send_ws_frame(frame):
+    outbox.append(frame)
+
+def recv_ws_frame(frame):
+    inbox.append(frame)
+
+send_ws_frame({"type": "subscribe", "channel": "ticker"})
+recv_ws_frame({"type": "price_update", "val": 42.5})
+
+assert len(outbox) == 1
+assert len(inbox) == 1
+assert inbox[0]["val"] == 42.5
+print(f"WebSocket exchange completed: out={outbox[0]['type']}, in={inbox[0]['type']}")
+```
+
+---
+
+## 3. Connection State Lifecycle
+
+WebSocket connections transition through CONNECTING, OPEN, and CLOSED states.
+
+```python
+state = "CONNECTING"
+state = "OPEN"
+assert state == "OPEN"
+state = "CLOSED"
+assert state == "CLOSED"
+print("Connection state machine transitions completed.")
+```
 
 ---

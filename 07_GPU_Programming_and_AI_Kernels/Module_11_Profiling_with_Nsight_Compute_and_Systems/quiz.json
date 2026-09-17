@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '1. The Two-Phase Profiling Methodology' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. The Two-Phase Profiling Methodology.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. The Two-Phase Profiling Methodology' in Profiling with Nsight Compute and Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '2. Deciphering Nsight Compute (NCU) Speed of Light (SOL)' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Deciphering Nsight Compute (NCU) Speed of Light (SOL).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Deciphering Nsight Compute (NCU) Speed of Light (SOL)' in Profiling with Nsight Compute and Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '3. The 4 Critical Warp Stall Reasons in NCU' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. The 4 Critical Warp Stall Reasons in NCU.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. The 4 Critical Warp Stall Reasons in NCU' in Profiling with Nsight Compute and Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '4. Module Study Progression' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 4. Module Study Progression.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '4. Module Study Progression' in Profiling with Nsight Compute and Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
     "tier": "Apply",
     "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(speedup, rel=1e-2)\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +30,7 @@
     "lesson_ref": "test_ncu_nsys_profiler_sim.py"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\ndiag[\"primary_stall_reason\"]\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +60,7 @@
     "lesson_ref": "test_ncu_nsys_profiler_sim.py"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(diag[\"memory_sol_pct\"], rel=1e-3)\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +90,7 @@
     "lesson_ref": "test_ncu_nsys_profiler_sim.py"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\ndiag[\"dominant_regime\"]\n```",
     "category": "Apply: Code Execution",
@@ -240,7 +120,7 @@
     "lesson_ref": "test_ncu_nsys_profiler_sim.py"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
     "category": "Diagnose: Failure Analysis",
@@ -270,7 +150,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 10,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -300,7 +180,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 11,
+    "id": 7,
     "tier": "Diagnose",
     "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -330,7 +210,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 12,
+    "id": 8,
     "tier": "Diagnose",
     "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",

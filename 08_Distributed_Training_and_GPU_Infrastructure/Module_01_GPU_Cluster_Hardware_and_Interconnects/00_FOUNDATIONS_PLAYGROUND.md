@@ -1,71 +1,71 @@
 # 🐣 Interactive Foundations Playground: GPU Cluster Hardware & Interconnects
 
-> *"A single GPU is a racecar; a 10,000-GPU cluster is a transcontinental highway system. If the highway has narrow single-lane bridges (slow inter-node cables), your fleet of supercars will spend all day idling in traffic."*
-
+> *"Inside a node GPUs talk over lightning-fast NVLink; across nodes they speak over InfiniBand networks."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## GPU Cluster Interconnect Topology (NVLink vs InfiniBand)
-
-```mermaid
-flowchart TD
-    subgraph Node1["DGX H100 Server Node 1"]
-        GPU1_0["GPU 0"] <-->|NVLink 900 GB/s| NVSwitch1["NVSwitch Fabric"]
-        GPU1_1["GPU 1"] <-->|NVLink 900 GB/s| NVSwitch1
-        NIC1["ConnectX-7 NIC<br/>(400 Gb/s RoCE/IB)"]
-    end
-
-    subgraph Node2["DGX H100 Server Node 2"]
-        GPU2_0["GPU 0"] <-->|NVLink 900 GB/s| NVSwitch2["NVSwitch Fabric"]
-        GPU2_1["GPU 1"] <-->|NVLink 900 GB/s| NVSwitch2
-        NIC2["ConnectX-7 NIC<br/>(400 Gb/s RoCE/IB)"]
-    end
-
-    subgraph Spine["InfiniBand Quantum-2 Leaf-Spine Switch Fabric (3.2 Tb/s)"]
-        Leaf1["Leaf Switch 1"]
-        Leaf2["Leaf Switch 2"]
-    end
-
-    NIC1 <--> Leaf1
-    NIC2 <--> Leaf2
-    Leaf1 <--> Leaf2
+```bash
+python 00_try_it_yourself.py
 ```
 
-## 1. Intra-Node vs Inter-Node: The Two Highway Speeds
-
-In a modern AI training cluster (like Meta's 24,000 H100 cluster):
-- **Inside a Single Server Node (8 GPUs)**:
-  - Connected via **NVLink & NVSwitch**.
-  - **Bandwidth**: **900 Gigabytes per second** bidirectional per GPU!
-  - **Latency**: **~100 nanoseconds**.
-  - GPUs talk to each other almost as fast as talking to their own internal memory!
-- **Between Different Server Nodes (Across the Datacenter)**:
-  - Connected via **InfiniBand (NDR 400 Gbps = 50 GB/s)** or **RoCE v2 Ethernet**.
-  - **Bandwidth**: **50 GB/s** (nearly **$18\times$ slower** than NVLink!).
-  - **Latency**: **~1.5 to 2 microseconds** ($15\times$ slower!).
-
-> **The Principal Rule of Distributed Systems**: Keep high-frequency communication (Tensor Parallelism) inside the node over NVLink; push low-frequency communication (Data Parallelism / Pipeline Parallelism) across nodes over InfiniBand!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Rail-Optimized Cluster Fabrics
+## 0. Everything this page needs
 
-Why do elite AI clusters use **Rail-Optimized** network topologies?
-- In an 8-GPU node, each GPU is paired with its own dedicated **Network Interface Card (NIC / HCA)**:
-  - GPU 0 connects to NIC 0 $\to$ Rail 0 Switch.
-  - GPU 1 connects to NIC 1 $\to$ Rail 1 Switch.
-  - ... GPU 7 connects to NIC 7 $\to$ Rail 7 Switch.
-- When GPU 0 in Node A talks to GPU 0 in Node B, they communicate over a **dedicated, uncontended network rail (Rail 0)**!
-- Result: Zero traffic collisions between different GPU ranks!
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
 
 ---
 
-## 3. Bisection Bandwidth & Oversubscription
+## 1. Intra-Node NVLink vs Inter-Node Network
 
-If you cut a datacenter network in half:
-- **Bisection Bandwidth**: The total data transfer capacity between the two halves.
-- **1:1 Non-Blocking Fabric**: Full bisection bandwidth. Any server can talk to any other server at full line rate without slowing down others.
-- **2:1 Oversubscribed Fabric**: Two servers share one uplink. If everyone talks at once, bandwidth drops by 50%! Foundation model training requires strictly **1:1 non-blocking** networks.
+NVLink offers 900 GB/s bidirectional bandwidth per GPU; 400 Gbps InfiniBand delivers ~50 GB/s cross-node.
+
+```python
+nvlink_bw_gb_s = 900.0
+ib_400g_gb_s = 50.0  # 400 Gbps = 50 GB/s
+bandwidth_ratio = nvlink_bw_gb_s / ib_400g_gb_s
+
+assert bandwidth_ratio == 18.0
+print(f"NVLink is {bandwidth_ratio:.0f}x faster than 400 Gbps cross-node InfiniBand.")
+```
+
+---
+
+## 2. PCIe vs NVLink Bus Saturation
+
+PCIe Gen 5 provides 64 GB/s per x16 slot; NVLink eliminates host PCIe CPU bounce buffers.
+
+```python
+pcie_gen5_bw = 64.0
+assert nvlink_bw_gb_s > pcie_gen5_bw
+assert nvlink_bw_gb_s / pcie_gen5_bw > 10.0
+print("NVLink provides over 10x headroom over standard PCIe Gen 5.")
+```
+
+---
+
+## 3. Cluster Topology Bisection Bandwidth
+
+In a fat-tree non-blocking spine-leaf network, bisection bandwidth equals the sum of all spine uplink capacities.
+
+```python
+num_leaf_switches = 8
+uplinks_per_leaf = 4
+uplink_bw_gb_s = 50.0
+bisection_bw = (num_leaf_switches * uplinks_per_leaf * uplink_bw_gb_s) / 2
+
+assert bisection_bw == 800.0
+print(f"Cluster non-blocking bisection bandwidth: {bisection_bw} GB/s")
+```
+
+---

@@ -1,7 +1,8 @@
 import React from 'react';
 import { 
   ShieldCheck, ShieldAlert, CheckCircle2, XCircle, ArrowRight, 
-  Award, Play, Bug, CheckSquare, Sparkles, BookOpen, RotateCcw 
+  Award, Play, Bug, CheckSquare, Sparkles, BookOpen, RotateCcw,
+  Clock, Hammer
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ModuleItem, MasteryGateStatus } from '../types';
@@ -36,15 +37,23 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
   onNextModule,
   onBackToSyllabus,
 }) => {
-  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || module.lessons.some((l) => l.type === 'quiz') || true);
+  const hasQuiz = Boolean((module.quiz_question_count ?? 0) > 0 || module.lessons.some((l) => l.type === 'quiz'));
   const hasLab = Boolean(module.has_debug_lab || module.lessons.some((l) => l.type === 'troubleshooting'));
+  const hasProject = Boolean(module.has_starter || module.has_solution || module.lessons.some((l) => l.type === 'project'));
 
   const lessonsDone = completedLessonsCount >= Math.max(1, totalLessonsCount);
   const quizDone = hasQuiz ? Boolean(quizScore?.passed || gateStatus?.quizPassed) : true;
   const labDone = hasLab ? Boolean(gateStatus?.labPassed) : true;
+  const projectDone = hasProject ? Boolean(gateStatus?.projectPassed) : true;
 
-  const allMet = lessonsDone && quizDone && labDone;
+  const allMet = lessonsDone && quizDone && labDone && projectDone;
   const isCleared = Boolean(gateStatus?.cleared);
+
+  const isSrsDue = Boolean(
+    isCleared &&
+    gateStatus?.cleared_at &&
+    Date.now() - gateStatus.cleared_at > 30 * 24 * 60 * 60 * 1000
+  );
 
   const handleClaimMastery = () => {
     soundService.playFanfare();
@@ -124,6 +133,24 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Spaced Repetition Due Banner */}
+      {isSrsDue && (
+        <div className="p-4 rounded-2xl border border-purple-500/30 bg-purple-950/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-purple-300">
+            <Clock className="w-5 h-5 text-purple-400 shrink-0" />
+            <p className="text-xs sm:text-sm">
+              <strong className="font-semibold">Spaced Repetition Review Due:</strong> This module was mastered over 30 days ago. Refresh your conceptual understanding with a quick review to reinforce retention.
+            </p>
+          </div>
+          <button
+            onClick={onLaunchQuiz}
+            className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white whitespace-nowrap transition shadow shrink-0"
+          >
+            Review Assessment
+          </button>
+        </div>
+      )}
 
       {/* Checklist Cards */}
       <div className="space-y-4">
@@ -264,6 +291,59 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
                   }`} onClick={onLaunchLab} >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>{labDone ? 'Review Bug Lab' : 'Launch Bug Lab'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 4. Guided Hands-On Project */}
+        {hasProject && (
+          <div className={`p-6 rounded-2xl border transition-all ${
+            projectDone ? 'bg-zinc-900/40 border-emerald-500/30' : 'bg-zinc-900/60 border-zinc-800'
+          }`}>
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className={`p-3 rounded-xl ${
+                  projectDone ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400'
+                }`}>
+                  <Hammer className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-zinc-100">
+                      Guided Project & Pytest Suite
+                    </h3>
+                    {projectDone ? (
+                      <span className="px-2 py-0.5 rounded text-xs font-mono bg-emerald-500/20 text-emerald-400">
+                        Suite Green
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded text-xs font-mono bg-amber-500/20 text-amber-400">
+                        Pending Tests
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-400 mt-0.5">
+                    Implement the project module starter and pass all test assertions.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition ${
+                    projectDone
+                      ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+                      : 'bg-purple-600 hover:bg-purple-500 text-white shadow-md'
+                  }`}
+                  onClick={() => {
+                    const projLesson = module.lessons.find(l => l.type === 'project');
+                    if (projLesson) onLaunchLesson(projLesson.id);
+                  }}
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>{projectDone ? 'Review Project' : 'Launch Project IDE'}</span>
                 </button>
               </div>
             </div>

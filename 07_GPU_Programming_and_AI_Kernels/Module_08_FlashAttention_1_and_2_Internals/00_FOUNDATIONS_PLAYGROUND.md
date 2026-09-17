@@ -1,46 +1,84 @@
 # 🐣 Interactive Foundations Playground: FlashAttention-1 & 2 Internals
 
-> *"Standard attention is an IO disaster: it writes an enormous $N \times N$ matrix to GPU memory only to read it right back. FlashAttention tiles $Q, K, V$ into fast SRAM and uses running online softmax to compute the exact same result with $O(N)$ memory and up to $4\times$ speedup."*
-
+> *"FlashAttention tiles attention into small SRAM blocks, computing softmax on-the-fly without saving the N x N attention matrix."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The $O(N^2)$ VRAM Crisis
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Standard Multi-Head Attention computes:
-$$S = \frac{Q K^T}{\sqrt{d_k}} \in \mathbb{R}^{N \times N}$$
-$$P = \text{softmax}(S) \in \mathbb{R}^{N \times N}$$
-$$O = P V \in \mathbb{R}^{N \times d_k}$$
+```bash
+python 00_try_it_yourself.py
+```
 
-If sequence length $N = 64{,}000$:
-- The matrix $S$ has $64{,}000^2 \approx 4.1 \text{ billion elements}$.
-- In FP16 ($2 \text{ bytes}$), storing $S$ takes **8.2 GB per attention head**!
-- With 32 heads, that's **262 Gigabytes of VRAM for one single layer**! Immediate CUDA Out-Of-Memory!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Tri Dao's Secret: IO-Aware SRAM Tiling
+## 0. Everything this page needs
 
-Your GPU has ~100-228 KB of ultra-fast **SRAM (Shared Memory)** per SM.
-FlashAttention breaks matrices into small blocks that fit perfectly in SRAM:
-1. Divide $Q$ into blocks of size $B_r \times d$ (e.g. $64 \times 128$).
-2. Divide $K$ and $V$ into blocks of size $B_c \times d$ (e.g. $64 \times 128$).
-3. Load block $Q_i$ into SRAM.
-4. Loop through $K_j, V_j$:
-   - Compute block attention scores: $S_{ij} = Q_i K_j^T / \sqrt{d}$.
-   - Update running maximum $m_i$ and running normalizer $l_i$.
-   - Accumulate output block $O_i$ in fast registers!
-5. Write $O_i$ back to HBM **once**!
+Nothing here is installed. These all ship with Python.
 
-**The Result**: The massive $N \times N$ matrix is **never materialized in HBM**!
-Memory complexity drops from $O(N^2)$ to $O(N)$!
+```python
+import math
+```
 
 ---
 
-## 3. FlashAttention-2: Faster, Simpler, More Parallel
+## 1. Quadratic N^2 Attention Memory Bottleneck
 
-What did FlashAttention-2 improve over FlashAttention-1?
-1. **Parallelize Over Sequence Length**: Instead of launching blocks over Batch and Heads, FA-2 splits the outer loop over sequence length blocks $B_r$, utilizing all 132 SMs even with small batch sizes!
-2. **Postpone Rescaling**: In FA-1, $O_i$ was rescaled on every inner iteration. FA-2 maintains unnormalized accumulators and performs a single division by $l_i$ at the end of the block loop, saving thousands of FLOPs!
+Standard attention materializes $S = Q K^T \in \mathbb{R}^{N \times N}$, which exhausts GPU HBM memory on long sequences.
+
+```python
+seq_len = 4096
+bytes_per_elem = 2  # FP16
+attn_matrix_mb = (seq_len**2 * bytes_per_elem) / (1024 * 1024)
+
+assert attn_matrix_mb == 32.0  # 32 MB per head
+assert seq_len**2 == 16_777_216
+print(f"Attention matrix size for N={seq_len}: {attn_matrix_mb} MB per attention head.")
+```
+
+---
+
+## 2. Online Softmax Rescaling Invariant
+
+Online softmax updates running maximum $m$ and normalization sum $d$ chunk-by-chunk without storing the entire sequence.
+
+```python
+chunk1 = [1.0, 2.0]
+chunk2 = [3.0, 1.0]
+
+m1 = max(chunk1)  # 2.0
+d1 = sum(math.exp(x - m1) for x in chunk1)
+
+m2 = max(m1, max(chunk2))  # 3.0
+d2 = d1 * math.exp(m1 - m2) + sum(math.exp(x - m2) for x in chunk2)
+
+full = chunk1 + chunk2
+m_true = max(full)
+d_true = sum(math.exp(x - m_true) for x in full)
+
+assert m2 == m_true
+assert abs(d2 - d_true) < 1e-6
+print(f"Online softmax normalization matches global sum: {d2:.4f} == {d_true:.4f}")
+```
+
+---
+
+## 3. FlashAttention IO Complexity O(N^2 d^2 / M)
+
+By tiling Q, K, V into SRAM of size $M$, FlashAttention cuts HBM read/writes from $O(N^2)$ down to $O(N^2 / M)$.
+
+```python
+N, d, M = 4096, 64, 100_000
+naive_hbm_io = N**2
+flash_hbm_io = (N**2 * d) / M
+
+assert flash_hbm_io < naive_hbm_io
+assert flash_hbm_io > 0
+print(f"HBM memory IO reduced from {naive_hbm_io:,} down to {int(flash_hbm_io):,} units.")
+```
+
+---

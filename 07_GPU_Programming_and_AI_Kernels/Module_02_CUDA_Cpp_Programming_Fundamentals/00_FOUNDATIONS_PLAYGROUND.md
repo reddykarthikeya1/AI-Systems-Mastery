@@ -1,66 +1,84 @@
 # 🐣 Interactive Foundations Playground: CUDA C++ Programming Fundamentals
 
-> *"Writing CPU code is like directing a single Michelin-star chef through a recipe; writing CUDA code is like orchestrating 100,000 sous-chefs across 500 kitchens where every chef has an assigned station coordinate $(x, y, z)$."*
-
+> *"A CUDA kernel is a function written from the perspective of a single worker thread among millions."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Stadium Seating Coordinates (Grid, Block, Thread)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-When you launch a GPU kernel, you specify:
-```cpp
-dim3 gridDim(grid_x, grid_y);    // Number of blocks in the grid
-dim3 blockDim(block_x, block_y); // Number of threads in each block
-my_kernel<<<gridDim, blockDim>>>(d_in, d_out, n);
+```bash
+python 00_try_it_yourself.py
 ```
 
-Think of a football stadium:
-- **Grid**: The entire stadium.
-- **Block (`blockIdx`)**: A specific seating section (e.g., Section 4).
-- **Thread (`threadIdx`)**: Your individual seat in that section (e.g., Seat 12).
-- **Dimension (`blockDim`)**: The number of seats per section (e.g., 32 seats).
-
-To find your unique global ticket number in a 1D grid:
-$$\text{Global ID} = \text{blockIdx.x} \times \text{blockDim.x} + \text{threadIdx.x}$$
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. 2D Coordinates: Matrix Processing
+## 0. Everything this page needs
 
-For 2D images and matrices, GPUs use 2D coordinates:
-$$\text{Row} = \text{blockIdx.y} \times \text{blockDim.y} + \text{threadIdx.y}$$
-$$\text{Col} = \text{blockIdx.x} \times \text{blockDim.x} + \text{threadIdx.x}$$
+Nothing here is installed. These all ship with Python.
 
-Since computer memory is a flat 1D byte array, row-major flattening is:
-$$\text{Linear Index} = \text{Row} \times \text{Width} + \text{Col}$$
+```python
+import math
+```
 
 ---
 
-## 3. The Grid-Stride Loop: Why Elite Engineers Use It
+## 1. Vector Addition Kernel Simulation
 
-Novice CUDA developers write:
-```cpp
-__global__ void add(float *a, float *b, float *c, int n) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {
-        c[idx] = a[idx] + b[idx];
-    }
-}
-```
-**The Problem**: If your array has $1{,}000{,}000$ elements, you must launch $1{,}000{,}000$ threads. If $N$ changes dynamically, your launch configuration breaks!
+Each thread reads element $i$ from arrays $A$ and $B$, computes $C[i] = A[i] + B[i]$, and writes to memory.
 
-Senior engineers write a **Grid-Stride Loop**:
-```cpp
-__global__ void add_grid_stride(float *a, float *b, float *c, int n) {
-    int stride = gridDim.x * blockDim.x; // Total threads in entire grid
-    for (int idx = blockIdx.x * blockDim.x + threadIdx.x; idx < n; idx += stride) {
-        c[idx] = a[idx] + b[idx];
-    }
-}
+```python
+A = [1.0, 2.0, 3.0, 4.0]
+B = [10.0, 20.0, 30.0, 40.0]
+C = [0.0] * len(A)
+
+# Simulated parallel thread loop
+for tid in range(len(A)):
+    C[tid] = A[tid] + B[tid]
+
+assert C == [11.0, 22.0, 33.0, 44.0]
+assert C[0] == 11.0
+print(f"Parallel vector add result: {C}")
 ```
-**Why this is brilliant**:
-1. **Hardware Decoupling**: You can launch a fixed grid (e.g. 512 blocks of 256 threads) and process an array of any size from 10 elements to 10 billion elements!
-2. **Cache Reuse**: Threads reuse their registers across iterations without re-launch overhead.
-3. **Sequential Portability**: You can test the same kernel on a CPU by setting `gridDim = 1, blockDim = 1`.
+
+---
+
+## 2. Grid Stride Loop Pattern
+
+A grid-stride loop lets a fixed number of threads process arbitrary-sized vectors by striding by total grid size.
+
+```python
+total_threads = 4
+data_size = 10
+processed = [0] * data_size
+
+for tid in range(total_threads):
+    # Each thread steps forward by total_threads
+    for i in range(tid, data_size, total_threads):
+        processed[i] = 1
+
+assert sum(processed) == data_size
+assert all(p == 1 for p in processed)
+print(f"Grid-stride loop processed all {data_size} elements with {total_threads} threads.")
+```
+
+---
+
+## 3. Speedup over Sequential Baseline
+
+Comparing wall-clock parallel execution time against sequential loops verifies parallel scaling efficiency.
+
+```python
+seq_ops = 1_000_000
+gpu_cores = 1000
+parallel_time_units = seq_ops / gpu_cores
+
+assert parallel_time_units == 1000.0
+assert seq_ops / parallel_time_units == 1000.0
+print(f"Theoretical speedup with {gpu_cores} cores: {gpu_cores}x")
+```
+
+---

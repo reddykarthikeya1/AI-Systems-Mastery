@@ -1,90 +1,88 @@
-# 🐣 Interactive Foundations Playground: Error Handling & Logging
+# 🐣 Interactive Foundations Playground: Error Handling, Logging & Robustness
 
-> *"Professional code doesn't magically avoid errors; it plans for them and recovers gracefully."*
-
+> *"Defensive programming makes failure modes explicit and trackable."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Module 06! Let's learn how to catch crashes before they terminate your application.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. The `try ... except` Shield
-
-When dangerous code might fail (like dividing by user input or opening a missing file), wrap it in a `try` block:
-
-```python
-try:
-    number = int(input("Enter a whole number: "))
-    result = 100 / number
-    print(f"100 divided by {number} is {result}")
-except ZeroDivisionError:
-    print("Oops! You cannot divide by zero.")
-except ValueError:
- print("Invalid input! That was not a whole number.")
-```
-
----
-
-## 2. Adding `else` and `finally`
-
-```python
-try:
-    f = open("data.txt", "r")
-except FileNotFoundError:
-    print("File not found! Starting with empty data.")
-else:
-    # Runs ONLY if no error occurred in try:
-    print("File read successfully!")
-finally:
-    # Runs ALWAYS, no matter what happens (even after crashes):
-    print("Cleanup step complete.")
-```
-
----
-
-## 3. Basic Logging in 30 Seconds
-
-Instead of scattering temporary `print()` statements everywhere, use Python's professional `logging` module:
-
-```python
-import logging
-
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-
-logging.info("Application initialized.")
-logging.warning("Disk space running low (15% left).")
-logging.error("Database connection refused!")
-```
-
----
-
-## 4. Run the Interactive Playground
 ```bash
 python 03_try_it_yourself.py
 ```
-Test a crash-proof input validator and see structured logging in the console!
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 5. Beginner Quick-Check Drills
+## 0. Everything this page needs
 
-### Drill 1: Catch-All Exception
-What is the base exception class that catches almost all standard Python errors?
+Nothing here is installed. These all ship with Python.
+
 ```python
-try:
-    something_risky()
-except ___ as e:
-    print(f"Caught error: {e}")
+import logging
 ```
-<details><summary><b>Show Answer</b></summary>
-<b><code>Exception</code></b>
-</details>
 
 ---
 
-### Drill 2: Mandatory Cleanup
-Which block in a `try-except` structure runs unconditionally whether an error occurs or not?
-<details><summary><b>Show Answer</b></summary>
-<b><code>finally</code></b>
-</details>\n
+## 1. Custom Exception Hierarchies
+
+Domain-specific exceptions enable precise error handling and categorization.
+
+```python
+class DomainError(Exception):
+    pass
+
+class ValidationFailure(DomainError):
+    pass
+
+def validate_age(age):
+    if age < 0:
+        raise ValidationFailure("Age cannot be negative")
+    return True
+
+assert validate_age(20) is True
+try:
+    validate_age(-5)
+except ValidationFailure as exc:
+    assert isinstance(exc, DomainError)
+    print(f"Caught expected domain error: {exc}")
+```
+
+---
+
+## 2. Exception Chaining with 'from'
+
+Explicit exception chaining preserves the root cause in the `__cause__` attribute.
+
+```python
+def parse_config(value):
+    try:
+        return int(value)
+    except ValueError as err:
+        raise DomainError("Configuration integer required") from err
+
+try:
+    parse_config("invalid")
+except DomainError as err:
+    assert isinstance(err.__cause__, ValueError)
+    print(f"Exception chained from root cause: {type(err.__cause__).__name__}")
+```
+
+---
+
+## 3. Configuring Standard Logging
+
+The standard logging module allows setting log thresholds and custom formatters.
+
+```python
+logger = logging.getLogger("module06_test")
+logger.setLevel(logging.INFO)
+assert logger.level == logging.INFO
+assert logger.isEnabledFor(logging.INFO)
+assert not logger.isEnabledFor(logging.DEBUG)
+print("Logger configured with level INFO.")
+```
+
+---

@@ -1,80 +1,88 @@
-# Beginner Playground: Structured Tool Execution & Validation
+# 🐣 Interactive Foundations Playground: Tool Execution & Constrained Generation
 
+> *"Tool calling gives LLMs hands: validating JSON schemas ensures the LLM does not try to pass a square peg into a round hole."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Tool Execution! LLMs generate raw text, but real-world systems require strictly validated function calls with typed parameters.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
+## 0. Everything this page needs
 
-## Plan-and-Solve Hierarchical Agent Architecture
-
-```mermaid
-flowchart TD
-    Goal["Complex User Objective"] --> Planner["Planner Agent (Strategic Decomposition)"]
-    Planner --> DAG["Execution DAG: [Subtask 1, Subtask 2, Subtask 3]"]
-    DAG --> Worker1["Worker Agent: Execute Subtask 1"]
-    DAG --> Worker2["Worker Agent: Execute Subtask 2 (Blocked on 1)"]
-    Worker1 --> Synthesizer["Synthesizer Agent: Aggregate Evidence & Final Output"]
-    Worker2 --> Synthesizer
-```
-
-## 1. The Core Mental Model: From Prompt to Type-Checked Call
-
-```
- [ Python Function ]  --(Introspect Type Hints)--> [ JSON Schema ]
-                                                          |
-                                                          v
-                                                  [ Injected in Prompt ]
-                                                          |
-                                                          v
- [ Python Tool Dispatch ] <-- (Pydantic Validate) <-- [ LLM JSON Output ]
-```
-
-1. **Schema Introspection**: Automatically extract parameters, types, defaults, and docstrings into OpenAI/Anthropic tool schemas.
-2. **Type Coercion & Validation**: Verify that the arguments provided by the LLM match expected types (e.g. converting `"42"` to `42`, ensuring required keys exist).
-3. **Sandboxed Execution**: Enforce timeouts and catch exceptions to prevent agent crashes.
-
----
-
-## 2. Interactive Pure-Python Experiment: Zero-Dependency Tool Dispatcher
+Nothing here is installed. These all ship with Python.
 
 ```python
-import inspect
-from typing import get_type_hints
-
-def get_stock_price(symbol: str, exchange: str = "NASDAQ") -> str:
-    """Fetch the current stock price of a company.
-    :param symbol: Ticker symbol (e.g. AAPL, NVDA)
-    :param exchange: Target stock exchange
-    """
-    return f"Stock {symbol} on {exchange} is currently $145.50"
-
-def introspect_tool(fn):
-    sig = inspect.signature(fn)
-    hints = get_type_hints(fn)
-    doc = inspect.getdoc(fn) or ""
-
-    properties = {}
-    required = []
-    for name, param in sig.parameters.items():
-        p_type = hints.get(name, str).__name__
-        json_type = "integer" if p_type == "int" else ("number" if p_type == "float" else "string")
-        properties[name] = {"type": json_type}
-        if param.default == inspect.Parameter.empty:
-            required.append(name)
-
-    return {
-        "name": fn.__name__,
-        "description": doc.split("\n")[0],
-        "parameters": {
-            "type": "object",
-            "properties": properties,
-            "required": required
-        }
-    }
-
-schema = introspect_tool(get_stock_price)
-print("Generated Tool Schema:\n", schema)
+import json
 ```
+
+---
+
+## 1. JSON Schema Parameter Validation
+
+Validating extracted function arguments against declared required parameters and expected types.
+
+```python
+tool_schema = {
+    "name": "send_email",
+    "required": ["recipient", "subject"],
+    "properties": {"recipient": str, "subject": str, "body": str}
+}
+
+def validate_call(args, schema):
+    for req in schema["required"]:
+        if req not in args:
+            return False, f"Missing required parameter: {req}"
+        if not isinstance(args[req], schema["properties"][req]):
+            return False, f"Invalid type for {req}"
+    return True, "Valid"
+
+ok, msg = validate_call({"recipient": "alice@example.com", "subject": "Hi"}, tool_schema)
+bad, _ = validate_call({"recipient": "alice@example.com"}, tool_schema)
+
+assert ok is True
+assert bad is False
+print(f"Tool validation: success={ok}, missing parameter detected={not bad}")
+```
+
+---
+
+## 2. Safe Tool Dispatcher Map
+
+Mapping string tool names to concrete Python callable functions with safe exception boundaries.
+
+```python
+def add(a, b): return a + b
+def multiply(a, b): return a * b
+tools = {"add": add, "multiply": multiply}
+
+res1 = tools["add"](10, 5)
+res2 = tools["multiply"](10, 5)
+
+assert res1 == 15
+assert res2 == 50
+print(f"Dispatched tool executions: add -> {res1}, multiply -> {res2}")
+```
+
+---
+
+## 3. Graceful Error Feedback Injection
+
+When a tool execution fails, inject the error message as an observation so the agent can self-correct.
+
+```python
+tool_error = "ZeroDivisionError: division by zero"
+feedback_prompt = f"Tool failed with error: {tool_error}. Please correct arguments and retry."
+assert "ZeroDivisionError" in feedback_prompt
+print(f"Self-correction feedback prepared: {feedback_prompt}")
+```
+
+---

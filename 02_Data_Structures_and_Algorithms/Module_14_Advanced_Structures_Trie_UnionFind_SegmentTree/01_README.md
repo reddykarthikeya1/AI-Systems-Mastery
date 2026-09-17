@@ -17,13 +17,28 @@ With both optimizations applied:
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Implement Trie (Prefix Tree) ([LeetCode 208](https://leetcode.com/problems/implement-trie-prefix-tree/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: N-ary Tree with Character Hash Map
+### Problem 1: Implement Trie (Prefix Tree) ([LeetCode #208](https://leetcode.com/problems/implement-trie-prefix-tree/)) — Medium
+
+> **Pattern**: `Prefix Tree / Multi-Way Branching` | **Target Time**: $O(L) per operation$ | **Target Space**: $O(N \cdot L)
+
+#### Problem Specification
+A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings.
+Implement the `Trie` class:
+- `Trie()` Initializes the trie object.
+- `void insert(String word)` Inserts the string `word` into the trie.
+- `boolean search(String word)` Returns `true` if the string `word` is in the trie, and `false` otherwise.
+- `boolean startsWith(String prefix)` Returns `true` if there is a previously inserted string that has the prefix `prefix`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Each node maintains a children dictionary and an `is_end` boolean. Traversal follows string characters step by step in $O(L)$ where $L$ is string length.
+
 ```python
 class TrieNode:
     def __init__(self):
-        self.children: dict[str, TrieNode] = {}
+        self.children = {}
         self.is_end = False
 
 class Trie:
@@ -54,73 +69,267 @@ class Trie:
             curr = curr.children[c]
         return True
 ```
-- **Time Complexity**: $O(L)$ for all operations, where $L$ is word length.
-- **Space Complexity**: $O(\\Sigma \\times L \\times N)$ where $\\Sigma$ is alphabet size.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Design Add and Search Words Data Structure ([LeetCode 211](https://leetcode.com/problems/design-add-and-search-words-data-structure/)) — Medium
+### Problem 2: Design Add and Search Words Data Structure ([LeetCode #211](https://leetcode.com/problems/design-add-and-search-words-data-structure/)) — Medium
 
-#### Optimized: Trie with Backtracking Wildcard Search
-When encountering `'.'`: iterate over all existing children at current node and recursively search suffix.
-- **Time Complexity**: $O(L)$ for exact words, $O(26^L)$ worst-case for all dots.
-- **Space Complexity**: $O(L)$ stack depth.
+> **Pattern**: `Trie with Wildcard DFS Search` | **Target Time**: $O(L) insert, O(26^L) worst search$ | **Target Space**: $O(N \cdot L)
 
----
+#### Problem Specification
+Design a data structure that supports adding new words and finding if a string matches any previously added string with '.' representing any single letter.
 
-### Problem 3: Word Search II ([LeetCode 212](https://leetcode.com/problems/word-search-ii/)) — Hard
+#### Algorithmic Invariants & Optimal Derivation
+Store words in a trie dictionary. For '.', branch DFS across all child nodes in the current layer.
 
-#### Brute Force: Word Search I for each Word
-Takes $O(W \\times R \\times C \\times 4^L)$ — Severe TLE.
-
-#### Optimized: Prefix Trie + Grid Backtracking Pruning
-Insert all target words into a Trie. Walk the grid once; only continue recursive DFS if the current grid path exists as a prefix in the Trie.
-- **Time Complexity**: $O(R \\times C \\times 4^L)$ where $L$ is max word length.
-- **Space Complexity**: $O(\\sum \\text{length of words})$.
-
----
-
-### Problem 4: Redundant Connection ([LeetCode 684](https://leetcode.com/problems/redundant-connection/)) — Medium
-
-#### Optimized: Disjoint Set Union (DSU) Cycle Detection
-Iterate through edges. For edge $(u, v)$, if `find(u) == find(v)`, adding this edge creates a cycle (it is redundant!). Otherwise, `union(u, v)`.
 ```python
-def find_redundant_connection(edges: list[list[int]]) -> list[int]:
-    parent = list(range(len(edges) + 1))
-    
-    def find(x: int) -> int:
-        if parent[x] != x:
-            parent[x] = find(parent[x])
-        return parent[x]
-        
-    for u, v in edges:
-        root_u, root_v = find(u), find(v)
-        if root_u == root_v:
-            return [u, v]
-        parent[root_u] = root_v
-        
-    return []
+class WordDictionary:
+    def __init__(self):
+        self.root = {}
+
+    def addWord(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr:
+                curr[c] = {}
+            curr = curr[c]
+        curr['#'] = True
+
+    def search(self, word: str) -> bool:
+        def dfs(idx, node):
+            curr = node
+            for i in range(idx, len(word)):
+                c = word[i]
+                if c == '.':
+                    for child in curr.values():
+                        if isinstance(child, dict) and dfs(i + 1, child):
+                            return True
+                    return False
+                else:
+                    if c not in curr:
+                        return False
+                    curr = curr[c]
+            return '#' in curr
+        return dfs(0, self.root)
 ```
-- **Time Complexity**: $O(N \\alpha(N)) \\approx O(N)$ near-linear time.
-- **Space Complexity**: $O(N)$ parent array.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Number of Provinces ([LeetCode 547](https://leetcode.com/problems/number-of-provinces/)) — Medium
+### Problem 3: Number of Provinces ([LeetCode #547](https://leetcode.com/problems/number-of-provinces/)) — Medium
 
-#### Optimized: DSU Component Counting
-Initialize $V$ components. For each connected pair `isConnected[i][j] == 1`, perform `union(i, j)`. Each successful union decrements component count by 1.
-- **Time Complexity**: $O(N^2 \\alpha(N))$, **Space Complexity**: $O(N)$.
+> **Pattern**: `Union-Find / Disjoint Set Union (DSU)` | **Target Time**: $O(N^2 \cdot lpha(N))$ | **Target Space**: $O(N)
+
+#### Problem Specification
+There are `n` cities. Some of them are connected, while some are not. If city `a` is connected directly with city `b`, and city `b` is connected directly with city `c`, then city `a` is connected indirectly with city `c`.
+A province is a group of directly or indirectly connected cities.
+Given an `n x n` matrix `isConnected` where `isConnected[i][j] = 1` if the `i-th` city and the `j-th` city are directly connected, return the total number of provinces.
+
+#### Algorithmic Invariants & Optimal Derivation
+Initialize n disjoint components. For every connection `isConnected[i][j] == 1`, union the two components and decrement total component count.
+
+```python
+class Solution:
+    def findCircleNum(self, isConnected: list[list[int]]) -> int:
+        n = len(isConnected)
+        parent = list(range(n))
+        rank = [1] * n
+        components = n
+
+        def find(p):
+            while p != parent[p]:
+                parent[p] = parent[parent[p]]
+                p = parent[p]
+            return p
+
+        def union(p1, p2):
+            nonlocal components
+            r1, r2 = find(p1), find(p2)
+            if r1 == r2:
+                return
+            if rank[r1] > rank[r2]:
+                parent[r2] = r1
+            elif rank[r2] > rank[r1]:
+                parent[r1] = r2
+            else:
+                parent[r2] = r1
+                rank[r1] += 1
+            components -= 1
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                if isConnected[i][j] == 1:
+                    union(i, j)
+        return components
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Accounts Merge ([LeetCode 721](https://leetcode.com/problems/accounts-merge/)) — Medium
+### Problem 4: Redundant Connection ([LeetCode #684](https://leetcode.com/problems/redundant-connection/)) — Medium
 
-#### Optimized: Email-to-Index DSU Union
-Map each unique email to an ID and union all emails belonging to the same account. Group emails by parent root.
-- **Time Complexity**: $O(N \\times K \\log(N \\times K))$, **Space Complexity**: $O(N \\times K)$.
+> **Pattern**: `Union-Find Cycle Detection` | **Target Time**: $O(N \cdot lpha(N))$ | **Target Space**: $O(N)
+
+#### Problem Specification
+In this problem, a tree is an undirected graph that is connected and has no cycles.
+You are given a graph that started as a tree with `n` nodes labeled from 1 to `n`, with one additional edge added. The added edge has two different vertices chosen from 1 to `n`, and was not an edge that already existed.
+Return an edge that can be removed so that the resulting graph is a tree of `n` nodes.
+
+#### Algorithmic Invariants & Optimal Derivation
+For each edge $(u, v)$, find their roots. If `find(u) == find(v)`, adding $(u, v)$ completes a cycle, meaning this is the redundant edge.
+
+```python
+class Solution:
+    def findRedundantConnection(self, edges: list[list[int]]) -> list[int]:
+        n = len(edges)
+        parent = list(range(n + 1))
+
+        def find(p):
+            while p != parent[p]:
+                parent[p] = parent[parent[p]]
+                p = parent[p]
+            return p
+
+        for u, v in edges:
+            ru, rv = find(u), find(v)
+            if ru == rv:
+                return [u, v]
+            parent[ru] = rv
+        return []
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
+### Problem 5: Word Search II ([LeetCode #212](https://leetcode.com/problems/word-search-ii/)) — Hard
+
+> **Pattern**: `Trie + Grid Backtracking Pruning` | **Target Time**: $O(M 	imes N 	imes 4^L)$ | **Target Space**: $O(\sum L)
+
+#### Problem Specification
+Given an `m x n` `board` of characters and a list of strings `words`, return all words on the board.
+Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.
+
+#### Algorithmic Invariants & Optimal Derivation
+Store all target words in a Trie. Traverse the grid with DFS, advancing along corresponding Trie branches and immediately pruning branches when characters deviate.
+
+```python
+class Solution:
+    def findWords(self, board: list[list[str]], words: list[str]) -> list[str]:
+        # Build Trie
+        trie = {}
+        for w in words:
+            curr = trie
+            for c in w:
+                if c not in curr:
+                    curr[c] = {}
+                curr = curr[c]
+            curr['#'] = w
+
+        rows, cols = len(board), len(board[0])
+        res = []
+
+        def dfs(r, c, parent_node):
+            ch = board[r][c]
+            curr_node = parent_node[ch]
+
+            if '#' in curr_node:
+                res.append(curr_node['#'])
+                del curr_node['#']  # avoid duplicates
+
+            board[r][c] = '$'
+            for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and board[nr][nc] in curr_node:
+                    dfs(nr, nc, curr_node)
+            board[r][c] = ch
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] in trie:
+                    dfs(r, c, trie)
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Range Sum Query - Mutable ([LeetCode #307](https://leetcode.com/problems/range-sum-query-mutable/)) — Medium
+
+> **Pattern**: `Binary Indexed Tree (BIT) / Segment Tree` | **Target Time**: $O(\log N) update and query$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an integer array `nums`, handle two types of queries:
+1. Update the value of an element in `nums`.
+2. Calculate the sum of the elements of `nums` between indices `left` and `right` inclusive.
+Both operations must run in $O(\log n)$ time.
+
+#### Algorithmic Invariants & Optimal Derivation
+A Fenwick tree (Binary Indexed Tree) supports point updates and prefix sum queries in $O(\log N)$ using bit manipulation `idx & (-idx)`.
+
+```python
+class NumArray:
+    def __init__(self, nums: list[int]):
+        self.n = len(nums)
+        self.nums = nums[:]
+        self.bit = [0] * (self.n + 1)
+        for i, val in enumerate(nums):
+            self._add(i + 1, val)
+
+    def _add(self, idx, delta):
+        while idx <= self.n:
+            self.bit[idx] += delta
+            idx += idx & (-idx)
+
+    def _prefix_sum(self, idx):
+        total = 0
+        while idx > 0:
+            total += self.bit[idx]
+            idx -= idx & (-idx)
+        return total
+
+    def update(self, index: int, val: int) -> None:
+        delta = val - self.nums[index]
+        self.nums[index] = val
+        self._add(index + 1, delta)
+
+    def sumRange(self, left: int, right: int) -> int:
+        return self._prefix_sum(right + 1) - self._prefix_sum(left)
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
 
 ## 3. Hands-On Project & Test Suite
 

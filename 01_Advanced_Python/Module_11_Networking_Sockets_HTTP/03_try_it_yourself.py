@@ -1,45 +1,51 @@
+"""Beginner playground for Module 11 - Networking: Sockets & HTTP Protocols.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 11: In-Process Echo Socket Demo
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
-import socket
-import threading
-import time
+from urllib.parse import parse_qs, urlparse
 
+# -------------------------------------------- 1. URL Parsing and Query Extraction
+url = "https://api.example.com:8080/v1/query?service=search&page=2"
+parsed = urlparse(url)
+assert parsed.scheme == "https"
+assert parsed.netloc == "api.example.com:8080"
+assert parsed.path == "/v1/query"
+params = parse_qs(parsed.query)
+assert params["service"] == ["search"]
+assert params["page"] == ["2"]
+print(f"Parsed URL scheme: {parsed.scheme}, endpoint: {parsed.path}")
 
-def echo_server(port):
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(("127.0.0.1", port))
-    server.listen(1)
-    conn, _ = server.accept()
-    data = conn.recv(1024)
-    conn.sendall(b"ECHO: " + data)
-    conn.close()
-    server.close()
+# -------------------------------------------- 2. Simulating HTTP Request / Response Wire Protocol
+raw_http = (
+    b"HTTP/1.1 200 OK\r\n"
+    b"Content-Type: application/json\r\n"
+    b"Content-Length: 17\r\n"
+    b"\r\n"
+    b"{\"status\":\"ready\"}"
+)
+lines = raw_http.split(b"\r\n")
+status_line = lines[0].decode()
+headers = dict(line.decode().split(": ") for line in lines[1:3])
+body = lines[4].decode()
 
+assert "200 OK" in status_line
+assert headers["Content-Type"] == "application/json"
+assert body == '{"status":"ready"}'
+print("HTTP wire protocol frame parsed successfully.")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 11: SOCKET NETWORKING PLAYGROUND [*]")
-    print("=" * 60)
-    port = 54321
+# -------------------------------------------- 3. Header Normalization and Status Codes
+normalized_headers = {k.lower(): v for k, v in [("X-Request-Id", "req-123"), ("Content-Type", "text/plain")]}
+assert normalized_headers["x-request-id"] == "req-123"
+assert "content-type" in normalized_headers
+print(f"Normalized headers: {normalized_headers}")
 
-    t = threading.Thread(target=echo_server, args=(port,), daemon=True)
-    t.start()
-    time.sleep(0.2)
-
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(("127.0.0.1", port))
-    msg = "Hello Socket Server!"
-    print(f"  [Client] Sending: '{msg}'")
-    client.sendall(msg.encode("utf-8"))
-
-    reply = client.recv(1024).decode("utf-8")
-    print(f"  [Client] Received: '{reply}'")
-    client.close()
-    print("\n[OK] TCP client-server round-trip successful!")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

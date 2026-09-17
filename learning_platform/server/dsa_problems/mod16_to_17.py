@@ -137,7 +137,8 @@ Given a string `s`, return the longest happy prefix of `s`. Return an empty stri
         ],
         "hidden_testcases": [
             {"input": {"s": "a"}, "expected": ""},
-            {"input": {"s": "bba"}, "expected": ""}
+            {"input": {"s": "bba"}, "expected": ""},
+            {"input": {"s": "leetcode"}, "expected": ""}
         ],
         "explanation": "The length of the longest proper prefix that is also a suffix for string s is given directly by the final entry of the KMP LPS array `lps[-1]`."
     },
@@ -288,7 +289,7 @@ Given a string `s`, return the longest happy prefix of `s`. Return an empty stri
         "time_complexity": "O(V + E)",
         "space_complexity": "O(V)",
         "description": """There is an undirected graph with `n` nodes, where each node is numbered between `0` and `n - 1`. You are given a 2D array `graph`, where `graph[u]` is an array of nodes that node `u` is adjacent to.
-Return `true` if and only if it is bipartite.
+Return `True` if and only if it is bipartite.
 A graph is bipartite if the nodes can be partitioned into two independent sets A and B such that every edge connects a node in set A and a node in set B.""",
         "starter_code": """class Solution:
     def isBipartite(self, graph: list[list[int]]) -> bool:
@@ -333,7 +334,7 @@ class Solution:
         "time_complexity": "O(V + E)",
         "space_complexity": "O(V + E)",
         "description": """We want to split a group of `n` people (labeled from 1 to `n`) into two groups of any size. Each person may dislike some other people.
-Given the integer `n` and the array `dislikes` where `dislikes[i] = [ai, bi]`, return `true` if it is possible to split everyone into two groups in this way.""",
+Given the integer `n` and the array `dislikes` where `dislikes[i] = [ai, bi]`, return `True` if it is possible to split everyone into two groups in this way.""",
         "starter_code": """class Solution:
     def possibleBipartition(self, n: int, dislikes: list[list[int]]) -> bool:
         pass

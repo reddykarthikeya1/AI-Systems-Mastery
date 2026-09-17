@@ -1,36 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In ColBERTv2 and Late Interaction, what core system invariant does '1. Mathematical Formulation of Late Interaction' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Formulation of Late Interaction.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Mathematical Formulation of Late Interaction' in ColBERTv2 and Late Interaction.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
     "tier": "Diagnose",
     "question": "In ColBERTv2 and Late Interaction, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -60,7 +30,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 3,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In ColBERTv2 and Late Interaction, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -90,7 +60,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 4,
+    "id": 3,
     "tier": "Diagnose",
     "question": "In ColBERTv2 and Late Interaction, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in ColBERT Serving'\"",
     "category": "Diagnose: Failure Analysis",
@@ -120,7 +90,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 5,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In ColBERTv2 and Late Interaction, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -150,97 +120,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 6,
-    "tier": "Diagnose",
-    "question": "When operating ColBERTv2 and Late Interaction workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 7,
-    "tier": "Diagnose",
-    "question": "When operating ColBERTv2 and Late Interaction workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Vector search returns top hits, but LLM receives empty context strings.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Query with metadata filter {\"category\": \"legal\"} returns only 1 result, even though 10,000 legal documents exist in the database.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Hybrid search returns duplicated documents with divergent ranks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: Vector search returns top hits, but LLM receives empty context strings.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 8,
-    "tier": "Diagnose",
-    "question": "When operating ColBERTv2 and Late Interaction workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "When operating ColBERTv2 and Late Interaction workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -268,5 +148,95 @@
     ],
     "explanation": "Root Cause Analysis: Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In 06 ColBERTv2 and Late Interaction, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 06 colbertv2 and late interaction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 06 colbertv2 and late interaction.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In 06 ColBERTv2 and Late Interaction, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 06 colbertv2 and late interaction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 06 colbertv2 and late interaction.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In 06 ColBERTv2 and Late Interaction, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 06 colbertv2 and late interaction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 06 colbertv2 and late interaction.",
+    "lesson_ref": "01_README.md"
   }
 ]

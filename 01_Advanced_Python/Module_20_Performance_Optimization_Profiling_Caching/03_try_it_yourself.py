@@ -1,47 +1,49 @@
+"""Beginner playground for Module 20 - Performance Optimization: Profiling & Caching.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 20: Performance Benchmark - Cached vs Uncached
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
 import functools
 import time
 
-
-def slow_fib(n):
-    if n < 2:
-        return n
-    return slow_fib(n - 1) + slow_fib(n - 2)
-
-
+# -------------------------------------------- 1. LRU Caching with functools.lru_cache
+call_count = 0
 @functools.lru_cache(maxsize=128)
-def fast_fib(n):
-    if n < 2:
-        return n
-    return fast_fib(n - 1) + fast_fib(n - 2)
+def expensive_calculation(n):
+    global call_count
+    call_count += 1
+    return n * n
 
+res1 = expensive_calculation(10)
+res2 = expensive_calculation(10)
+assert res1 == 100
+assert res2 == 100
+assert call_count == 1
+assert expensive_calculation.cache_info().hits == 1
+print(f"LRU cache hit: computation executed {call_count} time(s).")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 20: CACHING & PERFORMANCE PLAYGROUND [*]")
-    print("=" * 60)
+# -------------------------------------------- 2. Microbenchmarking Code Sections
+t0 = time.perf_counter()
+total = sum(i for i in range(10_000))
+elapsed = time.perf_counter() - t0
+assert total == 49995000
+assert elapsed >= 0
+print(f"Summed 10,000 numbers in {elapsed*1000:.4f} ms.")
 
-    N = 30
-    print(f"\n1. Computing Fibonacci({N}) WITHOUT caching:")
-    t0 = time.time()
-    ans1 = slow_fib(N)
-    elapsed_slow = time.time() - t0
-    print(f"  Result: {ans1} (Time: {elapsed_slow:.4f}s)")
+# -------------------------------------------- 3. String Concatenation Optimization
+parts = [f"item_{i}" for i in range(100)]
+joined = ",".join(parts)
+assert len(joined.split(",")) == 100
+assert joined.startswith("item_0")
+assert joined.endswith("item_99")
+print(f"Joined {len(parts)} tokens cleanly with O(N) memory allocation.")
 
-    print(f"\n2. Computing Fibonacci({N}) WITH @lru_cache:")
-    t0 = time.time()
-    ans2 = fast_fib(N)
-    elapsed_fast = time.time() - t0
-    print(f"  Result: {ans2} (Time: {elapsed_fast:.6f}s)")
-
-    if elapsed_fast > 0:
-        speedup = elapsed_slow / max(elapsed_fast, 1e-9)
-        print(f"\n[OK] Speedup factor: {speedup:,.1f}x faster with caching!")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

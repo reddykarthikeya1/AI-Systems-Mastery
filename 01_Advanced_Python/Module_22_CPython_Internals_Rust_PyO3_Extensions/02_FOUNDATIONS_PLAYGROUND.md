@@ -1,70 +1,80 @@
-# Interactive Foundations Playground: C Extensions, FFI & Native Interop
+# 🐣 Interactive Foundations Playground: CPython Internals & Extensions
 
-> *"Python gives you developer velocity; C and Rust give you raw hardware speed."*
-
+> *"Working with raw memory buffers and structs bridges Python to native C performance."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 22 CPython Internals Rust PyO3 Extensions** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-Python can call compiled machine code written in C, C++, or Rust using Foreign Function Interfaces (FFI). Python's standard library `ctypes` allows calling native C shared libraries directly without any external compiler!
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-import ctypes
-
-# Access C standard library math functions:
-# On Windows: msvcrt; On Linux/macOS: libc
-try:
-    libc = ctypes.CDLL("msvcrt")  # Windows C runtime
-except OSError:
-    libc = ctypes.CDLL("libc.so.6")  # Linux C runtime
-
-print("Native C puts call:")
-libc.puts(b"Hello from raw C runtime via Python ctypes!")
-```
-
-### Line-by-Line Breakdown:
-- `ctypes.CDLL(...)`: Loads a compiled dynamic shared library (`.dll`, `.so`, or `.dylib`) into Python's process.
-- Native functions expect C data types (like `c_int`, `c_char_p`, or raw `b"bytes"`).
-- **PyO3:** The modern Rust framework that lets you write blazingly fast compiled extensions for Python with zero memory unsafety.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-What is an FFI?
-
-<details><summary><b>Show Answer</b></summary>
-
-Foreign Function Interface: a mechanism by which a program in one language can call routines in another language.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-Why are PyO3 and Rust increasingly preferred over raw C extensions?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-Rust provides memory safety, preventing segmentation faults and memory leaks common in C.
-</details>
+```python
+import struct
+```
+
+---
+
+## 1. Binary Struct Packing and Unpacking
+
+`struct` packs Python values into binary representations matching C struct layouts.
+
+```python
+# Pack: int32, float32, char[4]
+fmt = "=if4s"
+packed = struct.pack(fmt, 42, 3.14, b"TEST")
+assert len(packed) == 12
+
+i_val, f_val, s_val = struct.unpack(fmt, packed)
+assert i_val == 42
+assert abs(f_val - 3.14) < 1e-4
+assert s_val == b"TEST"
+print(f"Binary struct packed to {len(packed)} bytes and unpacked accurately.")
+```
+
+---
+
+## 2. Zero-Copy Memoryviews on Byte Arrays
+
+`memoryview` slices large binary buffers without copying bytes into new allocations.
+
+```python
+data = bytearray(b"0123456789ABCDEF")
+view = memoryview(data)
+slice_view = view[4:8]
+assert slice_view.tobytes() == b"4567"
+
+# Modify through view:
+slice_view[0] = ord("X")
+assert data[4:8] == b"X567"
+print(f"Zero-copy in-place buffer mutation verified: {bytes(data[:8])}")
+```
+
+---
+
+## 3. Little-Endian vs Big-Endian Integer Representation
+
+Packing formats support explicit byte ordering to ensure portability across network protocols.
+
+```python
+val = 0x12345678
+le = struct.pack("<I", val)
+be = struct.pack(">I", val)
+assert le != be
+assert le == bytes([0x78, 0x56, 0x34, 0x12])
+assert be == bytes([0x12, 0x34, 0x56, 0x78])
+print("Endianness byte ordering validated.")
+```
 
 ---

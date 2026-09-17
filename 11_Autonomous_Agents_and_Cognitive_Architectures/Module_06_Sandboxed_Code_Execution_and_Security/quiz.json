@@ -1,156 +1,66 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Sandboxed Code Execution and Security, what core system invariant does '1. Threat Modeling: The Autonomous Agent Attack Surface' establish?",
-    "category": "Recall: Architecture",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Threat Modeling: The Autonomous Agent Attack Surface.",
+        "text": "0",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "1",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '1. Threat Modeling: The Autonomous Agent Attack Surface' in Sandboxed Code Execution and Security.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
+    "lesson_ref": "test_sandboxed_executor.py"
   },
   {
     "id": 2,
-    "tier": "Recall",
-    "question": "In Sandboxed Code Execution and Security, what core system invariant does '2. Sandboxing Architectures Compared' establish?",
-    "category": "Recall: Architecture",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Sandboxing Architectures Compared.",
+        "text": "0",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "1",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '2. Sandboxing Architectures Compared' in Sandboxed Code Execution and Security.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
+    "lesson_ref": "test_sandboxed_executor.py"
   },
   {
     "id": 3,
-    "tier": "Recall",
-    "question": "In Sandboxed Code Execution and Security, what core system invariant does '3. AST Static Validation + Subprocess Boundary' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. AST Static Validation + Subprocess Boundary.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. AST Static Validation + Subprocess Boundary' in Sandboxed Code Execution and Security.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Apply",
-    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
-    "category": "Apply: Code Execution",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "0",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "1",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "0",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "1",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
-    "lesson_ref": "test_sandboxed_executor.py"
-  },
-  {
-    "id": 5,
-    "tier": "Apply",
-    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
-    "category": "Apply: Code Execution",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "0",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "1",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "0",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "1",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
-    "lesson_ref": "test_sandboxed_executor.py"
-  },
-  {
-    "id": 6,
     "tier": "Apply",
     "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nlen(res.security_violations)\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +90,7 @@
     "lesson_ref": "test_sandboxed_executor.py"
   },
   {
-    "id": 7,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'AST Bypass via String Obfuscation'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,7 +120,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 8,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -240,7 +150,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 9,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -270,7 +180,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 10,
+    "id": 7,
     "tier": "Diagnose",
     "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -298,5 +208,35 @@
     ],
     "explanation": "Diagnostic Analysis: Ban getattr, setattr, and private attribute access (node.attr.startswith('')).\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Sandboxed Code Execution and Security, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for sandboxed code execution and security.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in sandboxed code execution and security depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

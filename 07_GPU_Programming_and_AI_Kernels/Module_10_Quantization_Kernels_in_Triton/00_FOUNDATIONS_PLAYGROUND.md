@@ -1,57 +1,82 @@
-# 🐣 Interactive Foundations Playground: Quantization Kernels (FP8 & INT4)
+# 🐣 Interactive Foundations Playground: Quantization Kernels in Triton
 
-> *"A 70B parameter model in FP16 weighs 140 Gigabytes and demands $30,000 server GPUs. Quantizing weights to 4-bit shrinks the entire model to 35 Gigabytes, letting it run on a single workstation without losing its intelligence."*
-
+> *"Quantization kernels pack four 8-bit integers into a single 32-bit GPU register."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
 ---
 
-## 1. Bitwise Packing: Squeezing 2 Numbers into 1 Byte
+## 0. Everything this page needs
 
-An integer from 0 to 15 (or -8 to +7) fits into **4 bits (a nibble)**.
-Because computer memory cannot address individual bits, we pack **two 4-bit numbers** into a single 8-bit `uint8` byte:
+Nothing here is installed. These all ship with Python.
+
 ```python
-# Packing:
-packed_byte = (val1 & 0x0F) | ((val2 & 0x0F) << 4)
-
-# Unpacking:
-val1 = packed_byte & 0x0F
-val2 = (packed_byte >> 4) & 0x0F
+import math
 ```
 
 ---
 
-## 2. Dequantization On-the-Fly in Registers
+## 1. Packing INT8 into UINT32 Registers
 
-**The Rookie Blunder**: Unpacking INT4 weights into an FP16 matrix in GPU memory before doing matrix multiplication.
-- Result: You still transfer 140 GB across the slow memory bus! You saved disk space but gained zero speedup!
+Bitwise shifting packs four 8-bit quantized values into one 32-bit register: $(v_3 \ll 24) | (v_2 \ll 16) | (v_1 \ll 8) | v_0$.
 
-**The Kernel Engineer Solution**:
-- Keep weights packed as INT4 in slow Global Memory (HBM).
-- In the inner loop of your matrix multiply kernel, load 1 byte from HBM into a thread register.
-- Unpack into 2 registers, multiply by scale $s$, add zero-point $z$:
-  $$w_{fp} = (w_{int4} - z) \times s$$
-- Feed directly into Tensor Cores!
-- **Memory Bandwidth Reduction**: $4\times$ less HBM traffic!
+```python
+q0, q1, q2, q3 = 10, 20, 30, 40
+packed = (q3 << 24) | (q2 << 16) | (q1 << 8) | q0
 
----
+u0 = packed & 0xFF
+u1 = (packed >> 8) & 0xFF
+u2 = (packed >> 16) & 0xFF
+u3 = (packed >> 24) & 0xFF
 
-## 3. FP8 (E4M3 vs E5M2)
-
-Hopper & Blackwell GPUs support native **FP8 (8-bit floating point)**:
-1. **E4M3** (1 sign, 4 exponent, 3 mantissa bits):
-   - Higher precision, narrower range (max $\approx 448$).
-   - Standard for neural network weights and forward activations.
-2. **E5M2** (1 sign, 5 exponent, 2 mantissa bits):
-   - Same dynamic range as FP16 (max $\approx 57{,}344$), lower precision.
-   - Standard for backward pass gradients where dynamic range is wide.
+assert (u0, u1, u2, u3) == (10, 20, 30, 40)
+assert packed > 0
+print(f"Packed 4 int8 values into uint32: {hex(packed)} -> unpacked: {(u0, u1, u2, u3)}")
+```
 
 ---
 
-## 4. Activation-Aware Weight Quantization (AWQ)
+## 2. Block-Wise Quantization Scaling
 
-Research shows not all weights are equal:
-- $\approx 0.1\%$ to $1\%$ of channels contain salient outlier activations that dictate model intelligence.
-- If you quantize those outliers uniformly, perplexity explodes!
-- **AWQ (Lin et al.)**: Protects salient channels by multiplying weight channels by per-channel scales, keeping quantization error minimal without mixed-precision overhead!
+Quantizing along block chunks of 128 elements isolates outliers to small sub-blocks, preserving model accuracy.
+
+```python
+block = [0.1, -0.4, 0.9, -1.2]
+scale = max(abs(x) for x in block) / 127.0
+
+quantized = [int(round(x / scale)) for x in block]
+assert max(abs(q) for q in quantized) == 127
+assert abs(scale - 1.2 / 127.0) < 1e-6
+print(f"Block scale: {scale:.5f}, Quantized codes: {quantized}")
+```
+
+---
+
+## 3. Fused Dequantize-GEMV in Triton
+
+Dequantizing weights directly in SRAM during matrix-vector multiply eliminates writing unquantized weights back to DRAM.
+
+```python
+int8_w = [10, -20, 30]
+scale = 0.05
+act = [1.0, 2.0, 3.0]
+
+dot_res = sum((w * scale) * a for w, a in zip(int8_w, act))
+expected = (10 * 0.05 * 1.0) + (-20 * 0.05 * 2.0) + (30 * 0.05 * 3.0)
+
+assert abs(dot_res - expected) < 1e-6
+assert abs(dot_res - 3.0) < 1e-6
+print(f"Fused Dequantize-GEMV dot product result: {dot_res}")
+```
+
+---

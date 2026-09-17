@@ -7,8 +7,11 @@ import os
 sys.path.append("./src")
 
 def load_config():
-    with open("config.toml", "r") as f:
-        return f.read()
+    try:
+        with open("config.toml", "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        return "[Default Config: config.toml missing in working dir]"
 
 def parse_priority(priority_arg: str) -> int:
     # and treating negative priority as valid
@@ -16,13 +19,11 @@ def parse_priority(priority_arg: str) -> int:
 
 def main():
     print("Initializing Task Manager CLI...")
-    if len(sys.argv) < 2:
-        print("Usage: python broken_cli.py <priority_level>")
-        sys.exit(1)
+    priority_arg = sys.argv[1] if len(sys.argv) > 1 else "10"
         
     cfg = load_config()
     print(f"Loaded config: {cfg}")
-    prio = parse_priority(sys.argv[1])
+    prio = parse_priority(priority_arg)
     print(f"Task scheduled with priority: {prio}")
 
 if __name__ == "__main__":

@@ -1,45 +1,74 @@
-# 🐣 Interactive Foundations Playground: SVD, Low-Rank & Quadratic Forms
+# 🐣 Interactive Foundations Playground: Low-Rank Structure and Quadratic Forms
 
-> *"Singular Value Decomposition (SVD) is the master key of linear algebra: any matrix, square or rectangular, fat or tall, can be factored into a rotation, a scaling, and another rotation."*
-
+> *"Low-rank approximation compresses giant matrices into compact factorized representations without losing dominant patterns."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. What is SVD? (The 3-Step Dance)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Every matrix $A$ transforms space. SVD proves that **any** transformation can be decomposed into:
-$$A = U \Sigma V^T$$
+```bash
+python 03_try_it_yourself.py
+```
 
-1. **$V^T$ (First Rotation)**: Rotate the input coordinate axes to align with the primary directions of the data.
-2. **$\Sigma$ (Axis Scaling)**: Stretch or shrink along those axes by factors called **singular values** ($\sigma_1 \ge \sigma_2 \ge \dots \ge 0$).
-3. **$U$ (Second Rotation)**: Rotate into the output coordinate space.
-
----
-
-## 2. Low-Rank Compression: The Eckart-Young Magic
-
-Suppose you have a $1000 \times 1000$ weight matrix in a neural network (1,000,000 numbers).
-- Often, the top 10 singular values hold **98% of the total energy**!
-- By keeping only the top $r=10$ components, we approximate:
-$$A \approx A_r = \sum_{i=1}^{r} \sigma_i u_i v_i^T$$
-- Storing $A_r$ as $U_r \Sigma_r$ and $V_r^T$ takes only $1000 \times 10 + 10 \times 1000 = 20,000$ numbers — a **50x compression**!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 3. What is LoRA? (Low-Rank Adaptation in Modern LLMs)
+## 0. Everything this page needs
 
-When fine-tuning a 70-billion parameter Large Language Model, updating all weights $\Delta W$ is computationally impossible.
-- Instead of learning a full $\Delta W \in \mathbb{R}^{d \times k}$, **LoRA** factorizes:
-$$\Delta W = B \times A$$
-where $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$ with rank $r \ll d$.
-- During inference, the model output is $y = W_0 x + \Delta W x = W_0 x + B(Ax)$. Zero latency overhead!
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
 
 ---
 
-## 4. Quadratic Forms: Bowls vs Saddles
+## 1. Outer Product Rank-1 Matrix Construction
 
-An expression like $q(x) = x^T A x$ is called a **quadratic form**.
-- If $x^T A x > 0$ for all non-zero $x$, $A$ is **Positive Definite**. Geometrically, it forms a bowl facing upwards with a unique global minimum.
-- If some directions curve up and others curve down, it is **Indefinite** — creating a **saddle point** where naive optimizers can get trapped.
+Multiplying column vector $u$ by row vector $v^T$ forms a rank-1 matrix where every column is a scalar multiple of $u$.
+
+```python
+u = [1.0, 2.0, 3.0]
+v = [4.0, 5.0]
+
+M = [[u[i] * v[j] for j in range(len(v))] for i in range(len(u))]
+assert len(M) == 3 and len(M[0]) == 2
+assert M[0] == [4.0, 5.0]
+assert M[1] == [8.0, 10.0]  # Exactly 2 * row 0
+print(f"Rank-1 matrix outer product row 0: {M[0]}, row 1: {M[1]}")
+```
+
+---
+
+## 2. Evaluating a Quadratic Form x^T A x
+
+A quadratic form $x^T A x = \sum_i \sum_j A_{ij} x_i x_j$ computes an energy or loss curvature scalar.
+
+```python
+A = [[2.0, 0.0],
+     [0.0, 3.0]]
+x = [2.0, 1.0]
+
+val = sum(x[i] * A[i][j] * x[j] for i in range(2) for j in range(2))
+assert val == 2.0 * (2.0**2) + 3.0 * (1.0**2)
+assert val == 11.0
+print(f"Quadratic form value for x=[2, 1]: {val}")
+```
+
+---
+
+## 3. Positive Definiteness Verification
+
+A symmetric matrix is positive definite if $x^T A x > 0$ for all non-zero vectors $x$, ensuring convex loss functions with unique minima.
+
+```python
+test_vectors = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0], [-2.0, 3.0]]
+is_pd = all(sum(v[i] * A[i][j] * v[j] for i in range(2) for j in range(2)) > 0 for v in test_vectors)
+assert is_pd is True
+print("Matrix A confirmed positive-definite across test vectors.")
+```
+
+---

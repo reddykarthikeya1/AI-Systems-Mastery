@@ -1,77 +1,84 @@
-# Beginner Playground: LLM Evaluation Science & RAG Triad
+# 🐣 Interactive Foundations Playground: LLM Evaluation Science & Metrics
 
+> *"If you cannot measure model performance quantitatively, you are flying an aircraft blind in a storm."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to LLM Evaluation! In traditional software engineering, a function either returns `True` or `False`. With LLMs, outputs are probabilistic, open-ended, and subtly nuanced.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Core Mental Model: The RAG Triad
+## 0. Everything this page needs
 
-When evaluating a Retrieval-Augmented Generation (RAG) system, three core questions determine end-to-end quality:
-
-```
-                  [ User Query ]
-                  /            \
-  (Context Relevance)       (Answer Relevance)
-                /                \
-               v                  v
-     [ Retrieved Context ] ---> [ Generated Answer ]
-                \                /
-                 (Faithfulness / Groundedness)
-```
-
-1. **Context Relevance (Precision)**: Is the retrieved context focused on the user query without irrelevant noise?
-2. **Faithfulness (Groundedness)**: Can every claim in the generated answer be directly inferred from the retrieved context (Zero Hallucination)?
-3. **Answer Relevance**: Does the generated answer directly answer what the user asked?
-
----
-
-## 2. Interactive Pure-Python Experiment: Token F1 & Faithfulness Verifier
+Nothing here is installed. These all ship with Python.
 
 ```python
-import re
-from typing import Set
-
-def tokenize(text: str) -> Set[str]:
-    return set(re.findall(r"\w+", text.lower()))
-
-def token_f1_score(prediction: str, ground_truth: str) -> float:
-    pred_tokens = tokenize(prediction)
-    truth_tokens = tokenize(ground_truth)
-
-    if not pred_tokens or not truth_tokens:
-        return 0.0
-
-    common = pred_tokens.intersection(truth_tokens)
-    if not common:
-        return 0.0
-
-    precision = len(common) / len(pred_tokens)
-    recall = len(common) / len(truth_tokens)
-    f1 = 2 * (precision * recall) / (precision + recall)
-    return f1
-
-def check_groundedness(claims: list[str], context: str) -> float:
-    """Calculates percentage of claims supported by the context."""
-    context_tokens = tokenize(context)
-    supported = 0
-    for claim in claims:
-        claim_tokens = tokenize(claim)
-        # If over 60% of unique claim keywords are in context, consider grounded
-        overlap = claim_tokens.intersection(context_tokens)
-        if len(overlap) / len(claim_tokens) >= 0.6:
-            supported += 1
-    return supported / len(claims) if claims else 1.0
-
-ctx = "NVIDIA H100 SXM5 GPU features 80GB of HBM3 memory and 3.35 TB/s bandwidth."
-claims = [
-    "H100 has 80GB HBM3 memory",
-    "Bandwidth is 3.35 TB/s",
-    "It consumes 200 Watts" # Hallucinated claim
-]
-
-print(f"Token F1 Score: {token_f1_score('80GB HBM3 memory', ctx):.2f}")
-print(f"Faithfulness Score: {check_groundedness(claims, ctx):.2f}")
+import math
 ```
+
+---
+
+## 1. Exact Match (EM) Binary Metric
+
+Exact Match scores 1.0 if normalized prediction text matches normalized reference text character-for-character, else 0.0.
+
+```python
+def exact_match(pred, ref):
+    return 1.0 if pred.strip().lower() == ref.strip().lower() else 0.0
+
+assert exact_match("Paris", "paris") == 1.0
+assert exact_match("Paris.", "paris") == 0.0
+assert exact_match("Rome", "Paris") == 0.0
+print("Exact match evaluation metric confirmed.")
+```
+
+---
+
+## 2. ROUGE-L Longest Common Subsequence Metric
+
+ROUGE-L measures sentence-level structure by computing longest common subsequence overlap between prediction and reference.
+
+```python
+def lcs_len(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            dp[i][j] = 1 + dp[i-1][j-1] if s1[i-1] == s2[j-1] else max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]
+
+pred_tokens = ["the", "quick", "brown", "fox"]
+ref_tokens = ["the", "fast", "brown", "fox"]
+lcs = lcs_len(pred_tokens, ref_tokens)
+rouge_l_recall = lcs / len(ref_tokens)
+
+assert lcs == 3  # "the", "brown", "fox"
+assert rouge_l_recall == 0.75
+print(f"ROUGE-L Recall: {rouge_l_recall:.2%}")
+```
+
+---
+
+## 3. Token Perplexity from Cross-Entropy Loss
+
+Perplexity computes geometric branching factor: $\text{PPL} = \exp\left(\frac{1}{N} \sum -\log P(w_i)\right)$.
+
+```python
+neg_log_probs = [0.5, 0.8, 0.2, 1.1]
+mean_loss = sum(neg_log_probs) / len(neg_log_probs)
+ppl = math.exp(mean_loss)
+
+assert abs(mean_loss - 0.65) < 1e-6
+assert ppl > 1.0
+print(f"Evaluation Perplexity: {ppl:.2f} (from mean loss {mean_loss:.2f})")
+```
+
+---

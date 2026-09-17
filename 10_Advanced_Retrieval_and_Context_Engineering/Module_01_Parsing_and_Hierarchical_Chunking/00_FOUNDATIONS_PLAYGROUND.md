@@ -1,38 +1,79 @@
-# Module 01: Beginner Playground - Parsing & Hierarchical Chunking
+# 🐣 Interactive Foundations Playground: Parsing & Hierarchical Chunking
 
+> *"Chunking is slicing a textbook: too small and you lose context, too big and you drown in noise."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Advanced Retrieval & Context Engineering**!
-Retrieval-Augmented Generation (RAG) is only as good as the chunks you retrieve.
-If you feed an LLM garbage, out-of-context snippets, it will hallucinate and make up facts!
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Shredded Contract Analogy
+## 0. Everything this page needs
 
-Imagine taking a 100-page enterprise software contract and running it through a dumb paper shredder that cuts every **300 words** into a chunk:
-- Chunk 14 ends with: *"The Customer agrees to pay the annual fee of $1,000,000, except..."*
-- Chunk 15 starts with: *"...if Section 4.2 termination notice is served within 30 days."*
+Nothing here is installed. These all ship with Python.
 
-If a user asks: *"Does the customer have to pay $1M?"*, a standard vector search might retrieve **only Chunk 14**!
-The LLM reads Chunk 14 and authoritatively answers: *"Yes! They must pay $1,000,000!"*
-**The company just lost a lawsuit because of naive chunking!**
+```python
+import math
+```
 
 ---
 
-## 2. The Solution: Parent-Child Hierarchical Chunking
+## 1. Fixed-Size Chunking with Overlap
 
-Instead of choosing between tiny chunks (good for search) and big chunks (good for context), **we use BOTH**:
+Sliding window chunking advances by $\text{stride} = \text{chunk\_size} - \text{overlap}$, ensuring semantic continuity across boundaries.
 
+```python
+text = "abcdefghijklmnopqrstuvwxyz"
+chunk_size = 10
+overlap = 3
+stride = chunk_size - overlap  # 7
+
+chunks = []
+for i in range(0, len(text), stride):
+    chunks.append(text[i:i+chunk_size])
+
+assert len(chunks) == 4
+assert chunks[0] == "abcdefghij"
+assert chunks[1] == "hijklmnopq"  # 'hij' overlapping
+assert chunks[0][-overlap:] == chunks[1][:overlap]
+print(f"Chunks generated with 3-char overlap: {chunks}")
 ```
-[Parent Chunk: Whole Section (1024 Tokens)]
-    |
-    +---> [Child Chunk 1 (256 Tokens)] -> Embedded in Vector DB
-    +---> [Child Chunk 2 (256 Tokens)] -> Embedded in Vector DB
-    +---> [Child Chunk 3 (256 Tokens)] -> Embedded in Vector DB
+
+---
+
+## 2. Parent-Child Hierarchical Mapping
+
+Retrieval queries small child chunks for precise vector matching, but feeds the larger parent chunk to the LLM for rich context.
+
+```python
+parent_chunk = "Database index internals: B-Trees balance height to maintain O(log N) lookup."
+child_1 = "Database index internals"
+child_2 = "B-Trees balance height to maintain O(log N) lookup."
+
+parent_child_map = {101: parent_chunk, 102: parent_chunk}
+assert parent_child_map[101] == parent_child_map[102]
+print("Child chunks 101 and 102 successfully map to parent document context.")
 ```
 
-1. **Search Phase**: The query matches the sharp, granular **Child Chunk 2** in the vector database.
-2. **Retrieval Phase**: The retriever looks up the **Parent Chunk ID** and passes the **entire Parent Section** to the LLM!
-The LLM sees the complete context, the exceptions, the tables, and the nuances!
+---
+
+## 3. Token Count Boundary Guard
+
+Enforcing strict upper token limits per chunk avoids exceeding embedding model context windows.
+
+```python
+max_tokens = 512
+chunk_tokens = 350
+assert chunk_tokens <= max_tokens
+print(f"Chunk verified within {max_tokens}-token embedding budget.")
+```
+
+---

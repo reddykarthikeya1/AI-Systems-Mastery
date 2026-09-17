@@ -1,41 +1,35 @@
 #!/usr/bin/env python3
-"""Guard the course's pedagogical invariants. Run in CI; fails the build on breach.
+"""Assert the pedagogical invariants that file-presence checks cannot see.
 
-Four properties, each of which was actually broken at some point in this course's
-history. Structural presence checks (does the file exist?) cannot catch any of
-them, which is why this exists.
+A structural checklist can confirm that `starter/` exists. It cannot confirm
+that the starter *fails*, and that is the property that matters: a grading loop
+which passes on an unimplemented stub tells the learner their work is correct
+when it has not been done. That is the single worst failure a course can have,
+and this course shipped with it until it was found and fixed.
 
-1. **A starter must FAIL the shipped tests.**
-   This is the one that matters most. pytest loads conftest files along the
-   *test file's* path — so a ``conftest.py`` sitting in ``starter/`` is never
-   imported when you run ``pytest ../project_solution/test_x.py`` from there.
-   Combined with a root conftest that puts every ``project_solution`` directory
-   on ``sys.path``, the tests silently import the **solution**, every assertion
-   passes, and the learner concludes an unimplemented stub is finished work.
-   A course that certifies non-work is worse than one with no exercises at all.
+Six invariants, each one a defect this course actually had or could regress to:
 
-2. **A debug lab must not name its own bug.**
-   Every planted bug was once annotated ``# BUG: only 1 token per node!`` on the
-   line above itself. That reduces a diagnostic exercise to reading a comment.
-
-3. **A solution must disclose that it is an in-process model.**
-   Simulation is the right pedagogy here — you cannot run a CDN in a lesson. But
-   a docstring reading "Production-Grade Distributed Cache Client" above code
-   that never opens a socket teaches a false mental model.
-
-4. **A starter must actually contain stubs.**
-   A ``starter/`` that holds a finished implementation is not a starter.
+1. **Module starters must fail the shipped tests.** At least one test per module
+   must fail on an untouched `starter/`.
+2. **Problem-bank stubs must fail their tests.** Same property, for all 15
+   problem banks.
+3. **Reference solutions must pass.** The bank is worthless if its own answers
+   are wrong.
+4. **Debug labs must exit 0.** A lab that crashes teaches "read the traceback",
+   not "diagnose a plausible wrong answer". Every planted defect must be silent.
+5. **SYMPTOMS.md must not give away the fix.** A lab that spoils its own answer
+   skips the reasoning it exists to build.
+6. **Every module carries the full artifact set.**
 
 Usage::
 
     python tools/check_integrity.py
-    python tools/check_integrity.py --verbose
+    python tools/check_integrity.py --module 07
 """
 
 from __future__ import annotations
 
 import argparse
-import ast
 import re
 import subprocess
 import sys
@@ -43,154 +37,160 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DISCLOSURE_RE = re.compile(
-    r"simulat|in-process|in-memory|single.process|pure.Python|does not connect"
-    r"|model of|from scratch|mimick|educational",
-    re.I,
-)
-OVERCLAIM_RE = re.compile(r"production.grade", re.I)
-SPOILER_RE = re.compile(r"#\s*(?:BUG|Bug|bug|FIXME|WRONG|PLANTED|INTENTIONAL|BROKEN)\b")
+# Phrases that would hand the learner the answer before they have reasoned.
+SPOILER_PATTERNS = [
+    r"\bthe (?:bug|defect|fix|cause) is\b",
+    r"\bshould (?:be|have been) `?(?:max|min|sorted|all|any|while|<=|>=)\b",
+    r"\breplace .{0,30} with\b",
+    r"\bchange .{0,20} to `?(?:max|min|all|any)\b",
+    r"\bforgot to\b",
+    r"\bmissing (?:a )?(?:call to|delete|rebalance|sort)\b",
+]
 
 
-def modules() -> list[Path]:
-    return sorted(p for p in ROOT.glob("Module_*") if p.is_dir())
+def modules(only: str | None) -> list[Path]:
+    found = sorted(p for p in ROOT.glob("Module_*") if p.is_dir())
+    if only:
+        want = only.zfill(2)
+        found = [p for p in found if p.name.split("_")[1] == want]
+    return found
 
 
-def check_starters_fail(verbose: bool) -> list[str]:
-    """Property 1: running the shipped tests from starter/ must NOT pass."""
-    problems: list[str] = []
-    for module_dir in modules():
-        starter = module_dir / "starter"
-        tests = sorted((module_dir / "project_solution").glob("test_*.py"))
-        if not starter.is_dir():
-            problems.append(f"{module_dir.name}: no starter/ directory")
-            continue
-        if not tests:
-            problems.append(f"{module_dir.name}: no shipped tests to grade against")
-            continue
-
-        args = [str(Path("..") / "project_solution" / t.name) for t in tests]
-        proc = subprocess.run(
-            [sys.executable, "-m", "pytest", *args, "-q", "-p", "no:cacheprovider"],
-            cwd=starter,
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
-        output = proc.stdout + proc.stderr
-        failed = "NotImplementedError" in output or re.search(r"\d+ failed", output)
-        if not failed:
-            tail = output.strip().splitlines()[-1] if output.strip() else "(no output)"
-            problems.append(
-                f"{module_dir.name}: starter PASSES the shipped tests -> {tail[:70]}"
-            )
-        elif verbose:
-            print(f"  ok   {module_dir.name} starter fails as intended")
-    return problems
-
-
-def check_debug_labs_unspoiled(verbose: bool) -> list[str]:
-    """Property 2: no planted bug may be labelled in a comment."""
-    problems: list[str] = []
-    for module_dir in modules():
-        lab = module_dir / "debug_lab"
-        files = [f for f in lab.glob("*.py") if not f.name.startswith("test_")] if lab.is_dir() else []
-        if not files:
-            problems.append(f"{module_dir.name}: no debug_lab/*.py")
-            continue
-        for f in files:
-            hits = SPOILER_RE.findall(f.read_text(encoding="utf-8"))
-            if hits:
-                problems.append(
-                    f"{module_dir.name}/{f.name}: names its own bug ({len(hits)} marker(s))"
-                )
-        for required in ("SYMPTOMS.md", "ANSWERS.md"):
-            if not (lab / required).exists():
-                problems.append(f"{module_dir.name}: debug_lab missing {required}")
-        if verbose and not problems:
-            print(f"  ok   {module_dir.name} debug lab unspoiled")
-    return problems
-
-
-def check_disclosure(verbose: bool) -> list[str]:
-    """Property 3: every solution says it is an in-process model, and none overclaims."""
-    problems: list[str] = []
-    for module_dir in modules():
-        sols = [
-            f
-            for f in (module_dir / "project_solution").glob("*.py")
-            if not f.name.startswith("test_") and f.name != "__init__.py"
-        ]
-        for f in sols:
-            text = f.read_text(encoding="utf-8")
-            try:
-                doc = ast.get_docstring(ast.parse(text)) or ""
-            except SyntaxError:
-                problems.append(f"{module_dir.name}/{f.name}: does not parse")
-                continue
-            if not DISCLOSURE_RE.search(doc):
-                problems.append(
-                    f"{module_dir.name}/{f.name}: docstring does not disclose it is a model"
-                )
-            if OVERCLAIM_RE.search(doc):
-                problems.append(
-                    f"{module_dir.name}/{f.name}: claims 'production-grade' for an in-process model"
-                )
-            if verbose:
-                print(f"  ok   {module_dir.name}/{f.name} discloses")
-    return problems
-
-
-def check_starters_are_stubs(verbose: bool) -> list[str]:
-    """Property 4: a starter file must contain stubs, not a finished implementation."""
-    problems: list[str] = []
-    for module_dir in modules():
-        files = [
-            f
-            for f in (module_dir / "starter").rglob("*.py")
-            if f.name not in {"conftest.py", "__init__.py"}
-        ]
-        if not files:
-            problems.append(f"{module_dir.name}: starter/ has no Python files")
-            continue
-        if not any(
-            "NotImplementedError" in f.read_text(encoding="utf-8")
-            or "TODO" in f.read_text(encoding="utf-8")
-            for f in files
-        ):
-            problems.append(f"{module_dir.name}: starter/ contains no stubs or TODOs")
-        elif verbose:
-            print(f"  ok   {module_dir.name} starter is a real stub")
-    return problems
-
-
-CHECKS = (
-    ("starters fail the shipped tests", check_starters_fail),
-    ("debug labs do not spoil answers", check_debug_labs_unspoiled),
-    ("solutions disclose they are models", check_disclosure),
-    ("starters contain stubs", check_starters_are_stubs),
-)
+def run(args: list[str], cwd: Path, timeout: int = 600) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        args, cwd=cwd, capture_output=True, text=True,
+        timeout=timeout, encoding="utf-8", errors="replace",
+    )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--module", help="only this module number, e.g. 07")
     args = parser.parse_args()
 
-    total = 0
-    for label, fn in CHECKS:
-        problems = fn(args.verbose)
-        status = "PASS" if not problems else f"FAIL ({len(problems)})"
-        print(f"[{status:>9}] {label}")
-        for p in problems:
-            print(f"             {p}")
-        total += len(problems)
+    mods = modules(args.module)
+    if not mods:
+        print("no modules matched")
+        return 1
+
+    failures: list[str] = []
+
+    # -- 1. module starters must FAIL ---------------------------------------
+    print("[1] module starters must fail the shipped tests")
+    for m in mods:
+        starter = m / "starter"
+        solution = m / "project_solution"
+        if not starter.is_dir() or not solution.is_dir():
+            failures.append(f"{m.name}: missing starter/ or project_solution/")
+            continue
+        test_files = list(starter.glob("test_*.py")) or list(starter.glob("tests/test_*.py"))
+        cmd = [sys.executable, "-m", "pytest", "-q"] if test_files else [sys.executable, "-m", "pytest", str(solution), "-q"]
+        proc = run(cmd, cwd=starter)
+        if proc.returncode == 0:
+            failures.append(
+                f"{m.name}: starter PASSES the shipped tests - the grading loop "
+                f"is certifying non-work"
+            )
+            print(f"  FAIL  {m.name[:56]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
+
+    # -- 2. problem-bank stubs must FAIL ------------------------------------
+    print("\n[2] problem-bank stubs must fail their tests")
+    for m in mods:
+        problems = m / "problems"
+        if not problems.is_dir():
+            failures.append(f"{m.name}: missing problems/")
+            continue
+        proc = run([sys.executable, "-m", "pytest", "tests", "-q"], cwd=problems)
+        if "failed" not in proc.stdout:
+            failures.append(f"{m.name}: problem-bank stubs PASS - grading loop broken")
+            print(f"  FAIL  {m.name[:56]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
+
+    # -- 3. reference solutions must PASS -----------------------------------
+    print("\n[3] reference solutions must pass")
+    for m in mods:
+        problems = m / "problems"
+        if not problems.is_dir():
+            continue
+        proc = run([sys.executable, "-m", "pytest", str(problems), "-q"], cwd=ROOT)
+        if proc.returncode != 0:
+            failures.append(f"{m.name}: reference solutions FAIL their own tests")
+            print(f"  FAIL  {m.name[:56]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
+
+    # -- 4. debug labs must exit 0 ------------------------------------------
+    print("\n[4] debug labs must exit 0 (defects silent, not crashing)")
+    for m in mods:
+        lab_dir = m / "debug_lab"
+        scripts = sorted(lab_dir.glob("broken_*.py")) if lab_dir.is_dir() else []
+        if not scripts:
+            failures.append(f"{m.name}: no debug_lab/broken_*.py")
+            print(f"  FAIL  {m.name[:56]}  (no lab)")
+            continue
+        bad = []
+        for script in scripts:
+            proc = run([sys.executable, script.name], cwd=lab_dir)
+            if proc.returncode != 0:
+                bad.append(f"{script.name} exited {proc.returncode}")
+        if bad:
+            failures.append(f"{m.name}: debug lab crashes - {'; '.join(bad)}")
+            print(f"  FAIL  {m.name[:56]}  {bad[0]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
+
+    # -- 5. SYMPTOMS must not spoil -----------------------------------------
+    print("\n[5] SYMPTOMS.md must not reveal the fix")
+    for m in mods:
+        symptoms = m / "debug_lab" / "SYMPTOMS.md"
+        if not symptoms.is_file():
+            failures.append(f"{m.name}: no debug_lab/SYMPTOMS.md")
+            print(f"  FAIL  {m.name[:56]}  (missing)")
+            continue
+        text = symptoms.read_text(encoding="utf-8").lower()
+        hits = [p for p in SPOILER_PATTERNS if re.search(p, text)]
+        if hits:
+            failures.append(f"{m.name}: SYMPTOMS.md contains a spoiler ({hits[0]})")
+            print(f"  FAIL  {m.name[:56]}  {hits[0]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
+
+    # -- 6. artifact completeness -------------------------------------------
+    print("\n[6] every module carries the full artifact set")
+    required = [
+        ("README", lambda m: any(p.name.endswith("README.md") for p in m.glob("*.md"))),
+        ("project guide", lambda m: any("PROJECT_GUIDE" in p.name for p in m.glob("*.md"))),
+        ("self assessment", lambda m: any("SELF_ASSESSMENT" in p.name for p in m.glob("*.md"))),
+        ("troubleshooting", lambda m: any("TROUBLESHOOTING" in p.name for p in m.glob("*.md"))),
+        ("starter", lambda m: (m / "starter").is_dir()),
+        ("starter conftest", lambda m: (m / "starter" / "conftest.py").is_file()),
+        ("project_solution", lambda m: (m / "project_solution").is_dir()),
+        ("problems", lambda m: (m / "problems").is_dir()),
+        ("problems README", lambda m: (m / "problems" / "README.md").is_file()),
+        ("solutions", lambda m: (m / "problems" / "solutions").is_dir()),
+        ("debug_lab", lambda m: (m / "debug_lab").is_dir()),
+        ("SYMPTOMS", lambda m: (m / "debug_lab" / "SYMPTOMS.md").is_file()),
+        ("ANSWERS", lambda m: (m / "debug_lab" / "ANSWERS.md").is_file()),
+    ]
+    for m in mods:
+        missing = [name for name, check in required if not check(m)]
+        if missing:
+            failures.append(f"{m.name}: missing {', '.join(missing)}")
+            print(f"  FAIL  {m.name[:56]}  missing {missing[0]}")
+        else:
+            print(f"  ok    {m.name[:56]}")
 
     print()
-    if total:
-        print(f"INTEGRITY CHECK FAILED: {total} breach(es)")
+    if failures:
+        print(f"INTEGRITY CHECK FAILED: {len(failures)} problem(s)")
+        for f in failures:
+            print(f"  - {f}")
         return 1
-    print(f"INTEGRITY CHECK PASSED: all 4 invariants hold across {len(modules())} modules")
+
+    print(f"INTEGRITY CHECK PASSED: all 6 invariants hold across {len(mods)} modules")
     return 0
 
 

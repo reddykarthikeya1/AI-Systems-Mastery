@@ -1,60 +1,53 @@
-"""Module 08: Interactive Foundations Interactive Testing Playground.
+"""Beginner playground for Module 08 - Testing & Quality Assurance.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-def multiply(a, b):
-    """Function under test."""
-    return a * b
+import unittest
 
-def is_even(n):
-    """Function under test."""
-    return n % 2 == 0
+# -------------------------------------------- 1. TestCase Structure and Assertions
+class MathTest(unittest.TestCase):
+    def test_arithmetic(self):
+        self.assertEqual(2 + 2, 4)
+        self.assertTrue(10 > 5)
+        self.assertIn("py", "python")
 
-def run_test(test_name, test_func):
-    try:
-        test_func()
-        print(f"  [OK] PASS: {test_name}")
-        return True
-    except AssertionError as e:
-        print(f"  [X] FAIL: {test_name} -> {e}")
-        return False
+suite = unittest.TestLoader().loadTestsFromTestCase(MathTest)
+result = unittest.TestResult()
+suite.run(result)
+assert result.wasSuccessful()
+assert result.testsRun == 1
+print(f"Executed test suite: {result.testsRun} test passed successfully.")
 
-def test_multiply_positive():
-    assert multiply(3, 4) == 12, "3 * 4 should be 12"
+# -------------------------------------------- 2. Verifying Exception Raising
+def divide(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Cannot divide by zero")
+    return a / b
 
-def test_multiply_zero():
-    assert multiply(5, 0) == 0, "Any number * 0 should be 0"
+case = unittest.TestCase()
+with case.assertRaises(ZeroDivisionError):
+    divide(10, 0)
+assert divide(10, 2) == 5.0
+print("Assertion verified ZeroDivisionError raised correctly.")
 
-def test_is_even_true():
-    assert is_even(4) is True, "4 should be even"
+# -------------------------------------------- 3. Subtest Isolation
+cases = [(2, True), (3, False), (4, True), (5, False)]
+passed_subtests = 0
+for num, expected in cases:
+    is_even = (num % 2 == 0)
+    assert is_even == expected
+    passed_subtests += 1
 
-def test_is_even_false():
-    assert is_even(7) is False, "7 should not be even"
+assert passed_subtests == 4
+print(f"Validated {passed_subtests} parameterized subtest scenarios.")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 08: INTERACTIVE MINI TEST RUNNER [TEST]")
-    print("=" * 60)
-    print("Running test suite:\n")
-
-    tests = [
-        ("test_multiply_positive", test_multiply_positive),
-        ("test_multiply_zero", test_multiply_zero),
-        ("test_is_even_true", test_is_even_true),
-        ("test_is_even_false", test_is_even_false),
-    ]
-
-    passed = 0
-    for name, fn in tests:
-        if run_test(name, fn):
-            passed += 1
-
-    print("-" * 60)
-    print(f"Test Results: {passed}/{len(tests)} passed (100% GREEN)!")
-    print("You now understand the core mechanics of automated testing.")
-    print("=" * 60)
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

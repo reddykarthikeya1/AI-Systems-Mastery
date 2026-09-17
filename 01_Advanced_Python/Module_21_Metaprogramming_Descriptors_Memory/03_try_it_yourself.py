@@ -1,46 +1,76 @@
+"""Beginner playground for Module 21 - Metaprogramming & Descriptors.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 21: Descriptor Validator & Slots Demo
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
-
-
-class ValidatedAge:
-    def __set_name__(self, owner, name):
+# -------------------------------------------- 1. Custom Descriptor Protocol (__get__ and __set__)
+class NonNegative:
+    def __init__(self, name):
         self.name = name
 
     def __get__(self, instance, owner):
+        if instance is None:
+            return self
         return instance.__dict__.get(self.name, 0)
 
     def __set__(self, instance, value):
-        if not isinstance(value, int) or value < 0:
-            raise ValueError(f"{self.name} must be a non-negative integer!")
+        if value < 0:
+            raise ValueError(f"{self.name} cannot be negative")
         instance.__dict__[self.name] = value
 
+class Account:
+    balance = NonNegative("balance")
 
-class User:
-    age = ValidatedAge()
+acc = Account()
+acc.balance = 500
+assert acc.balance == 500
+try:
+    acc.balance = -50
+except ValueError:
+    pass
+assert acc.balance == 500
+print(f"Descriptor verified non-negative balance constraint: {acc.balance}")
 
-    def __init__(self, age):
-        self.age = age
+# -------------------------------------------- 2. Subclass Registration with __init_subclass__
+registry = {}
+class PluginBase:
+    def __init_subclass__(cls, plugin_name=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if plugin_name:
+            registry[plugin_name] = cls
 
+class AudioPlugin(PluginBase, plugin_name="audio"):
+    pass
 
-def main():
-    print("=" * 60)
-    print("  MODULE 21: DESCRIPTORS & SLOTS PLAYGROUND [*]")
-    print("=" * 60)
+class VideoPlugin(PluginBase, plugin_name="video"):
+    pass
 
-    u = User(25)
-    print(f"Created User with age: {u.age}")
+assert "audio" in registry
+assert "video" in registry
+assert registry["audio"] is AudioPlugin
+print(f"Registered plugins via __init_subclass__: {list(registry.keys())}")
 
-    print("\nTesting descriptor boundary enforcement:")
-    try:
-        u.age = -5
-    except ValueError as e:
-        print(f"  [OK] Caught illegal value: {e}")
+# -------------------------------------------- 3. Dynamic Attribute Lookup with __getattr__
+class DynamicProxy:
+    def __init__(self, data):
+        self._data = data
 
-    print("\n[OK] Descriptors guard class attribute access seamlessly!")
+    def __getattr__(self, name):
+        if name in self._data:
+            return self._data[name]
+        raise AttributeError(f"No attribute {name}")
 
+proxy = DynamicProxy({"version": "2.4", "status": "active"})
+assert proxy.version == "2.4"
+assert proxy.status == "active"
+print("Dynamic proxy resolved missing attributes from wrapped dictionary.")
 
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

@@ -1,5 +1,9 @@
-#!/usr/bin/env python3
-"""Broken Capstone Integration demonstrating cross-subsystem payload mismatch."""
+import sys
+from pathlib import Path
+
+mod_dir = Path(__file__).resolve().parent.parent
+if str(mod_dir) not in sys.path:
+    sys.path.insert(0, str(mod_dir))
 
 from capstone_platform.tasks import CapstoneTaskBroker
 

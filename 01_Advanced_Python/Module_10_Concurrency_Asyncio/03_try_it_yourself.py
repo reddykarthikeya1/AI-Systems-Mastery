@@ -1,37 +1,51 @@
+"""Beginner playground for Module 10 - Concurrency: Asyncio & Event Loops.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 10: Interactive AsyncIO Concurrency Demo
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
 import asyncio
-import time
 
+# -------------------------------------------- 1. Asynchronous Coroutines & Event Loop
+async def fetch_value(val):
+    return val * 10
 
-async def download_file(filename, wait_seconds):
-    print(f"  [+] Downloading {filename} ({wait_seconds}s)...")
-    await asyncio.sleep(wait_seconds)
-    print(f"  [OK] Saved {filename}!")
-    return f"{filename} (OK)"
+val = asyncio.run(fetch_value(5))
+assert val == 50
+print(f"Async coroutine returned: {val}")
 
+# -------------------------------------------- 2. Concurrent Gathering with asyncio.gather
+async def step(n):
+    await asyncio.sleep(0.001)
+    return n * 2
 
-async def async_main():
-    print("=" * 60)
-    print("  MODULE 10: ASYNCIO EVENT LOOP PLAYGROUND [*]")
-    print("=" * 60)
-    start = time.time()
+async def run_all():
+    return await asyncio.gather(step(1), step(2), step(3))
 
-    print("\nLaunching 3 concurrent downloads on 1 single thread:")
-    results = await asyncio.gather(
-        download_file("file_1.zip", 0.6),
-        download_file("file_2.zip", 0.4),
-        download_file("file_3.zip", 0.5),
-    )
+res = asyncio.run(run_all())
+assert res == [2, 4, 6]
+assert len(res) == 3
+print(f"Gathered concurrent results: {res}")
 
-    elapsed = time.time() - start
-    print(f"\nAll downloads completed in {elapsed:.2f}s!")
-    print("If run sequentially, it would have taken 1.50s.")
-    print("Results:", results)
+# -------------------------------------------- 3. Asynchronous Queues
+async def queue_demo():
+    q = asyncio.Queue()
+    await q.put("event_A")
+    await q.put("event_B")
+    first = await q.get()
+    second = await q.get()
+    return first, second
 
+a, b = asyncio.run(queue_demo())
+assert a == "event_A"
+assert b == "event_B"
+print(f"Async queue processed: {a}, {b}")
 
-if __name__ == "__main__":
-    asyncio.run(async_main())
+print()
+print("All checks passed.")

@@ -1,42 +1,78 @@
-# 🐣 Interactive Foundations Playground: Orthogonality & Projections
+# 🐣 Interactive Foundations Playground: Orthogonality and Projections
 
-> *"Orthogonal is just the mathematician's fancy word for perpendicular ($90^\\circ$). Projection is simply casting a shadow."*
-
+> *"Projection is dropping a perpendicular shadow onto a subspace: the shortest distance to approximation."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. Casting Shadows: Vector Projection
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Imagine the sun is directly overhead:
-- Vector $a$ is a stick planted in the ground along the X-axis.
-- Vector $b$ is a leaning telephone pole.
-- The shadow that $b$ casts onto the ground along $a$ is the **Projection of $b$ onto $a$**!
-
-```
-         ^ b (Pole)
-        /|
-       / | (Dotted line = Perpendicular drop)
-      /  |
-     +---+-----> a (Ground)
-       p (Shadow = Projection)
+```bash
+python 03_try_it_yourself.py
 ```
 
-### The Formula:
-$$\\text{proj}_a(b) = \\frac{a \\cdot b}{\\|a\\|^2} a$$
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Why Projections Solve Machine Learning: Least Squares Regression!
+## 0. Everything this page needs
 
-When you fit a line $y = mx + c$ to noisy data points, no single line hits every point.
-In linear algebra:
-$$A x = b \quad \text{(Has NO exact solution!)}$$
-Because vector $b$ lives outside the column space of $A$!
-So what does a machine learning engineer do?
-> **We project $b$ onto the subspace where $A$ can actually reach!**
+Nothing here is installed. These all ship with Python.
 
-The closest possible prediction $\\hat{b}$ is the perpendicular shadow of $b$ onto the column space:
-$$A^T A x = A^T b \implies x^* = (A^T A)^{-1} A^T b$$
-This is the **Normal Equation of Linear Regression**!
+```python
+import math
+```
+
+---
+
+## 1. Orthogonal Vector Zero Dot Product
+
+Two non-zero vectors are perpendicular if and only if their inner product is identically zero.
+
+```python
+u = [1.0, 2.0, 3.0]
+v = [2.0, -1.0, 0.0]
+
+dot_prod = sum(a * b for a, b in zip(u, v))
+assert dot_prod == 0.0, "1*2 + 2*(-1) + 3*0 = 0"
+print(f"Vectors u and v are orthogonal: dot product = {dot_prod}")
+```
+
+---
+
+## 2. Vector Projection onto a Line
+
+The projection of vector $y$ onto vector $x$ is $\text{proj}_x(y) = \frac{y \cdot x}{x \cdot x} x$.
+
+```python
+x = [1.0, 0.0]
+y = [3.0, 4.0]
+
+scalar_comp = sum(a * b for a, b in zip(y, x)) / sum(a * a for a in x)
+proj = [scalar_comp * a for a in x]
+
+assert proj == [3.0, 0.0]
+residual = [y[i] - proj[i] for i in range(2)]
+assert residual == [0.0, 4.0]
+assert sum(a * b for a, b in zip(proj, residual)) == 0.0, "Projection and residual must be orthogonal"
+print(f"Projection of (3, 4) onto x-axis: {proj}, residual shadow: {residual}")
+```
+
+---
+
+## 3. Pythagorean Theorem for Orthogonal Decompositions
+
+For any projection, $\|y\|^2 = \|\text{proj}(y)\|^2 + \|y - \text{proj}(y)\|^2$.
+
+```python
+norm_y_sq = sum(a**2 for a in y)
+norm_proj_sq = sum(a**2 for a in proj)
+norm_res_sq = sum(a**2 for a in residual)
+
+assert abs(norm_y_sq - (norm_proj_sq + norm_res_sq)) < 1e-6
+assert norm_y_sq == 25.0  # 3^2 + 4^2 = 25
+print(f"Pythagorean theorem satisfied: {norm_y_sq} == {norm_proj_sq} + {norm_res_sq}")
+```
+
+---

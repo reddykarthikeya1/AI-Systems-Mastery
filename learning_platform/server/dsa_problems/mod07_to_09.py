@@ -101,7 +101,8 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"stones": [2, 2]}, "expected": 0},
-            {"input": {"stones": [9, 3, 2, 10]}, "expected": 0}
+            {"input": {"stones": [9, 3, 2, 10]}, "expected": 0},
+            {"input": {"stones": [1, 3]}, "expected": 2}
         ],
         "explanation": "Simulate max-heap by negating values in Python's heapq. Repeatedly pop the two largest stones and push the difference back if non-zero."
     },
@@ -180,7 +181,8 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"tasks": ["A"], "n": 2}, "expected": 1},
-            {"input": {"tasks": ["A", "B", "C"], "n": 2}, "expected": 3}
+            {"input": {"tasks": ["A", "B", "C"], "n": 2}, "expected": 3},
+            {"input": {"tasks": ["A"], "n": 0}, "expected": 1}
         ],
         "explanation": "The bottleneck is dictated by the task(s) with the maximum frequency $M$. There are $M - 1$ frame blocks of size $n+1$, plus the final row of size $K$ (where $K$ is the number of tasks sharing max frequency)."
     },
@@ -362,7 +364,8 @@ An island is surrounded by water and is formed by connecting adjacent lands hori
         "hidden_testcases": [
             {"input": {"grid": [["1"]]}, "expected": 1},
             {"input": {"grid": [["0"]]}, "expected": 0},
-            {"input": {"grid": [["1","0"],["0","1"]]}, "expected": 2}
+            {"input": {"grid": [["1", "0"], ["0", "1"]]}, "expected": 2},
+            {"input": {"grid": [["1", "1"], ["1", "1"]]}, "expected": 1}
         ],
         "explanation": "Iterate through each cell. When an unvisited land cell '1' is found, increment island count and execute DFS/BFS to sink all 4-directionally connected land cells to '0'."
     },
@@ -417,7 +420,9 @@ The area of an island is the number of cells with a value `1` in the island. Ret
         ],
         "hidden_testcases": [
             {"input": {"grid": [[1, 1], [1, 1]]}, "expected": 4},
-            {"input": {"grid": [[1]]}, "expected": 1}
+            {"input": {"grid": [[1]]}, "expected": 1},
+            {"input": {"grid": [[0]]}, "expected": 0},
+            {"input": {"grid": [[0, 1], [1, 1]]}, "expected": 3}
         ],
         "explanation": "DFS returns 1 + sum of areas of neighbors, while sinking visited cells to 0 to prevent re-traversal."
     },
@@ -509,7 +514,8 @@ Water can flow from a cell to an adjacent cell if the adjacent cell's height is 
             {"input": {"heights": [[1]]}, "expected": [[0, 0]]}
         ],
         "hidden_testcases": [
-            {"input": {"heights": [[2, 1], [1, 2]]}, "expected": [[0, 0], [0, 1], [1, 0], [1, 1]]}
+            {"input": {"heights": [[2, 1], [1, 2]]}, "expected": [[0, 0], [0, 1], [1, 0], [1, 1]]},
+            {"input": {"heights": [[1, 2], [2, 1]]}, "expected": [[1, 0], [0, 1]]}
         ],
         "explanation": "Reverse problem: Start from Pacific edges and Atlantic edges, flowing 'uphill' (next height >= current height). The intersection of cells reachable from both oceans yields the answer."
     },
@@ -523,7 +529,7 @@ Water can flow from a cell to an adjacent cell if the adjacent cell's height is 
         "space_complexity": "O(V + E)",
         "description": """There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]` indicates that you must take course `bi` first if you want to take course `ai`.
 
-Return `true` if you can finish all courses. Otherwise, return `false`.""",
+Return `True` if you can finish all courses. Otherwise, return `False`.""",
         "starter_code": """class Solution:
     def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
         pass
@@ -832,7 +838,8 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"heights": [[3]]}, "expected": 0},
-            {"input": {"heights": [[1, 10, 6, 7, 9, 10, 4, 9, 9, 8, 4]]}, "expected": 9}
+            {"input": {"heights": [[1, 10, 6, 7, 9, 10, 4, 9, 9, 8, 4]]}, "expected": 9},
+            {"input": {"heights": [[1]]}, "expected": 0}
         ],
         "explanation": "Modify Dijkstra's distance update rule from addition to minimax: $\text{new\_effort} = \max(\text{effort}, |h_{curr} - h_{next}|)$."
     },
@@ -888,7 +895,8 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"grid": [[3]]}, "expected": 3},
-            {"input": {"grid": [[10, 12], [4, 5]]}, "expected": 10}
+            {"input": {"grid": [[10, 12], [4, 5]]}, "expected": 10},
+            {"input": {"grid": [[0]]}, "expected": 0}
         ],
         "explanation": "Dijkstra using max elevation on path: `max(current_t, grid[nr][nc])`. The first time the destination is popped from the priority queue, its time is guaranteed to be minimal."
     },

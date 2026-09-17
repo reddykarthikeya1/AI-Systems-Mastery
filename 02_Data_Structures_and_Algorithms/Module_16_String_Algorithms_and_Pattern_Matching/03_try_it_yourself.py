@@ -1,73 +1,68 @@
-"""Module 16: watch the prefix table being built, one character at a time.
+"""Beginner playground for Module 16 - String Algorithms & Pattern Matching.
 
     python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
 from __future__ import annotations
 
+import math
 
-def prefix_table_verbose(pattern: str) -> list[int]:
+# -------------------------------------------- 1. KMP Prefix Function (Pi Array)
+def compute_pi(pattern: str) -> list[int]:
     pi = [0] * len(pattern)
-    k = 0
-    print(f"  building the table for {pattern!r}")
+    j = 0
     for i in range(1, len(pattern)):
-        while k > 0 and pattern[i] != pattern[k]:
-            print(f"    i={i} {pattern[i]!r} != {pattern[k]!r}: "
-                  f"fall back from k={k} to k={pi[k - 1]}")
-            k = pi[k - 1]
-        if pattern[i] == pattern[k]:
-            k += 1
-            print(f"    i={i} {pattern[i]!r} extends the match: k={k}")
-        pi[i] = k
+        while j > 0 and pattern[i] != pattern[j]:
+            j = pi[j - 1]
+        if pattern[i] == pattern[j]:
+            j += 1
+        pi[i] = j
     return pi
 
+pi_table = compute_pi("aabaabaaa")
+assert pi_table[0] == 0
+assert pi_table[1] == 1, "'aa' prefix 'a'"
+assert pi_table[4] == 2, "'aabaa' prefix 'aa'"
+print(f"KMP Pi table for 'aabaabaaa': {pi_table}")
 
-def search_verbose(text: str, pattern: str) -> list[int]:
-    pi = prefix_table_verbose(pattern)
-    print(f"  table: {pi}")
-    found, k = [], 0
-    for i, character in enumerate(text):
-        while k > 0 and character != pattern[k]:
-            k = pi[k - 1]
-        if character == pattern[k]:
-            k += 1
-        if k == len(pattern):
-            found.append(i - len(pattern) + 1)
-            k = pi[k - 1]
-    return found
+# -------------------------------------------- 2. KMP Linear-Time Substring Search
+def kmp_search(text: str, pattern: str) -> list[int]:
+    pi = compute_pi(pattern)
+    matches = []
+    j = 0
+    for i in range(len(text)):
+        while j > 0 and text[i] != pattern[j]:
+            j = pi[j - 1]
+        if text[i] == pattern[j]:
+            j += 1
+        if j == len(pattern):
+            matches.append(i - j + 1)
+            j = pi[j - 1]
+    return matches
 
+hits = kmp_search("sadbutsad", "sad")
+assert hits == [0, 6]
+assert kmp_search("leetcode", "leeto") == []
+print(f"KMP matches found at indices: {hits}")
 
-def main() -> None:
-    print("=" * 62)
-    print("DEMO 1: the prefix table")
-    print("=" * 62)
-    assert prefix_table_verbose("ababaca") == [0, 0, 1, 2, 3, 0, 1]
+# -------------------------------------------- 3. Rabin-Karp Rolling Hash Matching
+def rolling_hash(s, base=256, mod=1000000007):
+    h = 0
+    for ch in s:
+        h = (h * base + ord(ch)) % mod
+    return h
 
-    print()
-    print("=" * 62)
-    print("DEMO 2: overlapping matches")
-    print("=" * 62)
-    result = search_verbose("aaaa", "aa")
-    print(f"  'aa' in 'aaaa' -> {result}")
-    assert result == [0, 1, 2], "matches overlap - most people predict 2"
+h1 = rolling_hash("apple")
+h2 = rolling_hash("apple")
+h3 = rolling_hash("apply")
+assert h1 == h2
+assert h1 != h3
+print(f"Rolling hash values: 'apple'={h1}, 'apply'={h3}")
 
-    print()
-    print("=" * 62)
-    print("DEMO 3: a hash match is not a match")
-    print("=" * 62)
-    mod = 101
-    pairs = [(a, b) for a in ("abc", "xyz", "hij") for b in ("qrs", "tuv", "lmn")]
-    for a, b in pairs:
-        ha = sum(ord(c) * 257 ** (2 - i) for i, c in enumerate(a)) % mod
-        hb = sum(ord(c) * 257 ** (2 - i) for i, c in enumerate(b)) % mod
-        if ha == hb:
-            print(f"  {a!r} and {b!r} both hash to {ha} - and are not equal")
-            break
-    else:
-        print("  no collision in this small sample; widen it and you will find one")
-
-    print()
-    print("All demos complete.")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

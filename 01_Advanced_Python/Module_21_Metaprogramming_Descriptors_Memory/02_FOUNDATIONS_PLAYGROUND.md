@@ -1,74 +1,110 @@
-# Interactive Foundations Playground: Descriptors, Metaprogramming & Slots
+# 🐣 Interactive Foundations Playground: Metaprogramming & Descriptors
 
-> *"A descriptor is an attribute with a brain of its own."*
-
+> *"Descriptors manage attribute access behind the scenes, powering properties, methods, and ORMs."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 21 Metaprogramming Descriptors Memory** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-Descriptors give you complete control over what happens when an attribute is accessed or set using `__get__` and `__set__`. Using `__slots__` strips the default `__dict__` from class instances, saving massive RAM.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-class PositiveNumber:
-    def __set_name__(self, owner, name):
-        self.name = name
-
-    def __get__(self, instance, owner):
-        return instance.__dict__.get(self.name, 0)
-
-    def __set__(self, instance, value):
-        if value <= 0:
-            raise ValueError(f"{self.name} must be positive!")
-        instance.__dict__[self.name] = value
-
-class Product:
-    price = PositiveNumber()  # Controlled by descriptor!
-```
-
-### Line-by-Line Breakdown:
-- `__set_name__`: Automatically learns the variable name (`'price'`) when the class is defined.
-- `__get__`: Called whenever someone reads `obj.price`.
-- `__set__`: Called whenever someone assigns `obj.price = 50`.
-- `__slots__ = ('name', 'price')`: Eliminates instance dictionary bloat for million-object collections.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-What methods make a class a descriptor?
-
-<details><summary><b>Show Answer</b></summary>
-
-Implementing `__get__`, `__set__`, or `__delete__`.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-Why does `__slots__` reduce memory usage?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-It prevents Python from creating a dynamic `__dict__` hash table for every single instance.
-</details>
+```python
+
+```
+
+---
+
+## 1. Custom Descriptor Protocol (__get__ and __set__)
+
+The descriptor protocol intercepts attribute lookup, assignment, and deletion.
+
+```python
+class NonNegative:
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return instance.__dict__.get(self.name, 0)
+
+    def __set__(self, instance, value):
+        if value < 0:
+            raise ValueError(f"{self.name} cannot be negative")
+        instance.__dict__[self.name] = value
+
+class Account:
+    balance = NonNegative("balance")
+
+acc = Account()
+acc.balance = 500
+assert acc.balance == 500
+try:
+    acc.balance = -50
+except ValueError:
+    pass
+assert acc.balance == 500
+print(f"Descriptor verified non-negative balance constraint: {acc.balance}")
+```
+
+---
+
+## 2. Subclass Registration with __init_subclass__
+
+`__init_subclass__` provides a clean hook to register plugin classes without full metaclass boilerplate.
+
+```python
+registry = {}
+class PluginBase:
+    def __init_subclass__(cls, plugin_name=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if plugin_name:
+            registry[plugin_name] = cls
+
+class AudioPlugin(PluginBase, plugin_name="audio"):
+    pass
+
+class VideoPlugin(PluginBase, plugin_name="video"):
+    pass
+
+assert "audio" in registry
+assert "video" in registry
+assert registry["audio"] is AudioPlugin
+print(f"Registered plugins via __init_subclass__: {list(registry.keys())}")
+```
+
+---
+
+## 3. Dynamic Attribute Lookup with __getattr__
+
+`__getattr__` intercepts lookups for attributes that are not found in the instance dictionary.
+
+```python
+class DynamicProxy:
+    def __init__(self, data):
+        self._data = data
+
+    def __getattr__(self, name):
+        if name in self._data:
+            return self._data[name]
+        raise AttributeError(f"No attribute {name}")
+
+proxy = DynamicProxy({"version": "2.4", "status": "active"})
+assert proxy.version == "2.4"
+assert proxy.status == "active"
+print("Dynamic proxy resolved missing attributes from wrapped dictionary.")
+```
 
 ---

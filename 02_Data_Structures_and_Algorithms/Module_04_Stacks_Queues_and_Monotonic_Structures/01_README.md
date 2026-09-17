@@ -44,179 +44,250 @@ Every element is pushed once and popped at most once $\\implies$ Total operation
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Valid Parentheses ([LeetCode 20](https://leetcode.com/problems/valid-parentheses/)) — Easy
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Repeated String Replacement
-Repeatedly replace `"()"`, `"{}"`, `"[]"` with `""` until length stops decreasing.
-- **Time Complexity**: $O(N^2)$ — String reallocation on every reduction.
+### Problem 1: Valid Parentheses ([LeetCode #20](https://leetcode.com/problems/valid-parentheses/)) — Easy
 
-#### Optimized: LIFO Stack Matching
+> **Pattern**: `LIFO Stack Matching` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
+
+An input string is valid if:
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+3. Every close bracket has a corresponding open bracket of the same type.
+
+#### Algorithmic Invariants & Optimal Derivation
+Push open brackets onto a LIFO stack. When a closing bracket is encountered, pop the top of the stack and check for type matching. At the end, verify stack is empty.
+
 ```python
-def is_valid_parentheses(s: str) -> bool:
-    stack = []
-    mapping = {')': '(', '}': '{', ']': '['}
-    for char in s:
-        if char in mapping:
-            if not stack or stack[-1] != mapping[char]:
-                return False
-            stack.pop()
-        else:
-            stack.append(char)
-    return len(stack) == 0
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        mapping = {")": "(", "}": "{", "]": "["}
+        for char in s:
+            if char in mapping:
+                top = stack.pop() if stack else '#'
+                if mapping[char] != top:
+                    return False
+            else:
+                stack.append(char)
+        return not stack
 ```
-- **Time Complexity**: $O(N)$ — Single scan.
-- **Space Complexity**: $O(N)$ worst-case stack storage.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Min Stack ([LeetCode 155](https://leetcode.com/problems/min-stack/)) — Medium
+### Problem 2: Min Stack ([LeetCode #155](https://leetcode.com/problems/min-stack/)) — Medium
 
-#### Optimized: Parallel Min Tracking ($O(1)$ All Operations)
-Maintain a primary stack and an auxiliary min stack tracking current minimum at every depth.
+> **Pattern**: `Dual Stack / Paired Minimum` | **Target Time**: $O(1) all ops$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Design a stack that supports `push`, `pop`, `top`, and retrieving the minimum element in constant time $O(1)$.
+
+Implement the `MinStack` class:
+- `MinStack()` initializes the stack object.
+- `void push(int val)` pushes the element `val` onto the stack.
+- `void pop()` removes the element on the top of the stack.
+- `int top()` gets the top element of the stack.
+- `int getMin()` retrieves the minimum element in the stack.
+
+#### Algorithmic Invariants & Optimal Derivation
+Maintain an auxiliary min_stack tracking current minimums. When pushing val <= min_stack[-1], push to min_stack. When popping equal value, pop from min_stack.
+
 ```python
 class MinStack:
     def __init__(self):
-        self.stack: list[int] = []
-        self.min_stack: list[int] = []
+        self.stack = []
+        self.min_stack = []
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        current_min = val if not self.min_stack else min(val, self.min_stack[-1])
-        self.min_stack.append(current_min)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
 
     def pop(self) -> None:
-        self.stack.pop()
-        self.min_stack.pop()
+        if self.stack:
+            val = self.stack.pop()
+            if self.min_stack and val == self.min_stack[-1]:
+                self.min_stack.pop()
 
     def top(self) -> int:
-        return self.stack[-1]
+        return self.stack[-1] if self.stack else None
 
     def getMin(self) -> int:
-        return self.min_stack[-1]
+        return self.min_stack[-1] if self.min_stack else None
 ```
-- **Time Complexity**: $O(1)$ for `push`, `pop`, `top`, and `getMin`.
-- **Space Complexity**: $O(N)$ storage.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Daily Temperatures ([LeetCode 739](https://leetcode.com/problems/daily-temperatures/)) — Medium
+### Problem 3: Daily Temperatures ([LeetCode #739](https://leetcode.com/problems/daily-temperatures/)) — Medium
 
-#### Brute Force: Forward Scan
-For each day $i$, scan days $j > i$ until $temperatures[j] > temperatures[i]$.
-- **Time Complexity**: $O(N^2)$ — Hits TLE when temperatures are monotonically decreasing.
+> **Pattern**: `Monotonic Decreasing Stack` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
-#### Optimized: Monotonic Decreasing Stack
-Stack stores pairs `(temperature, index)`. When an incoming temperature exceeds stack top, pop and calculate span `i - prev_idx`.
+#### Problem Specification
+Given an array of integers `temperatures` represents the daily temperatures, return an array `answer` such that `answer[i]` is the number of days you have to wait after the `i-th` day to get a warmer temperature. If there is no future day for which this is possible, keep `answer[i] == 0` instead.
+
+#### Algorithmic Invariants & Optimal Derivation
+Use a monotonic stack storing indices of days. As soon as a warmer temperature appears, pop smaller previous temperatures and compute distance $i - 	ext{prev\_idx}$.
+
 ```python
-def daily_temperatures(temperatures: list[int]) -> list[int]:
-    res = [0] * len(temperatures)
-    stack: list[int] = []  # Stores indices
-    
-    for i, temp in enumerate(temperatures):
-        while stack and temperatures[stack[-1]] < temp:
-            prev_idx = stack.pop()
-            res[prev_idx] = i - prev_idx
-        stack.append(i)
-        
-    return res
+class Solution:
+    def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
+        n = len(temperatures)
+        ans = [0] * n
+        stack = []  # indices of monotonic decreasing temps
+        for i, t in enumerate(temperatures):
+            while stack and t > temperatures[stack[-1]]:
+                prev_idx = stack.pop()
+                ans[prev_idx] = i - prev_idx
+            stack.append(i)
+        return ans
 ```
-- **Time Complexity**: $O(N)$ — Each index pushed and popped at most once.
-- **Space Complexity**: $O(N)$ stack memory.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Evaluate Reverse Polish Notation ([LeetCode 150](https://leetcode.com/problems/evaluate-reverse-polish-notation/)) — Medium
+### Problem 4: Evaluate Reverse Polish Notation ([LeetCode #150](https://leetcode.com/problems/evaluate-reverse-polish-notation/)) — Medium
 
-#### Optimized: Operand Stack
-Push numbers; on encountering an operator, pop two operands, apply operator, and push result. Note integer division towards zero in Python: `int(a / b)`.
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(N)$.
+> **Pattern**: `Postfix Stack Evaluation` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
----
+#### Problem Specification
+You are given an array of strings `tokens` that represents an arithmetic expression in Reverse Polish Notation.
 
-### Problem 5: Car Fleet ([LeetCode 853](https://leetcode.com/problems/car-fleet/)) — Medium
+Evaluate the expression. Return an integer that represents the value of the expression.
+Division between two integers always truncates toward zero.
 
-#### Optimized: Sort by Position + Monotonic Time Stack
-Sort cars by descending starting position. Calculate time to reach target: $(target - pos) / speed$. If current car takes less or equal time than car ahead, it joins that fleet.
-- **Time Complexity**: $O(N \\log N)$ for sorting.
-- **Space Complexity**: $O(N)$ stack memory.
+#### Algorithmic Invariants & Optimal Derivation
+Iterate tokens. Push numbers onto stack. When an operator is met, pop operand b then operand a, perform operation $a 	ext{ op } b$, and push result back.
 
----
-
-### Problem 6: Largest Rectangle in Histogram ([LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/)) — Hard
-
-#### Brute Force: All Pairs Scan
-For every bar, expand left and right to find boundaries where height $\\ge$ current bar.
-- **Time Complexity**: $O(N^2)$ — TLE.
-
-#### Optimized: Monotonic Increasing Stack
-Maintain monotonically increasing heights. When a shorter bar appears, pop from stack and calculate area where popped bar is the minimum height.
 ```python
-def largest_rectangle_area(heights: list[int]) -> int:
-    stack: list[tuple[int, int]] = []  # (index, height)
-    max_area = 0
-    
-    for i, h in enumerate(heights):
-        start = i
-        while stack and stack[-1][1] > h:
-            idx, height = stack.pop()
-            max_area = max(max_area, height * (i - idx))
-            start = idx
-        stack.append((start, h))
-        
-    for idx, height in stack:
-        max_area = max(max_area, height * (len(heights) - idx))
-        
-    return max_area
+class Solution:
+    def evalRPN(self, tokens: list[str]) -> int:
+        stack = []
+        for t in tokens:
+            if t not in {"+", "-", "*", "/"}:
+                stack.append(int(t))
+            else:
+                b = stack.pop()
+                a = stack.pop()
+                if t == "+":
+                    stack.append(a + b)
+                elif t == "-":
+                    stack.append(a - b)
+                elif t == "*":
+                    stack.append(a * b)
+                elif t == "/":
+                    stack.append(int(a / b))
+        return stack[0]
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 7: Sliding Window Maximum ([LeetCode 239](https://leetcode.com/problems/sliding-window-maximum/)) — Hard
+### Problem 5: Implement Queue using Stacks ([LeetCode #232](https://leetcode.com/problems/implement-queue-using-stacks/)) — Easy
 
-#### Brute Force: Window Rescan
-Compute `max(nums[i:i+k])` for all $N - K + 1$ windows.
-- **Time Complexity**: $O(N \\times K)$ — Hits TLE for $N = 10^5, K = 5 \\times 10^4$.
+> **Pattern**: `Dual Stack In/Out FIFO Simulation` | **Target Time**: $Amortized O(1) all ops$ | **Target Space**: $O(N)
 
-#### Optimized: Monotonic Decreasing Deque ($O(N)$ Time)
-Maintain indices in a deque whose values are strictly decreasing. Front of deque is always the maximum for the current window.
+#### Problem Specification
+Implement a first in first out (FIFO) queue using only two stacks. The implemented queue should support all the functions of a normal queue (`push`, `peek`, `pop`, and `empty`).
+
+#### Algorithmic Invariants & Optimal Derivation
+Use `in_stack` to accept pushes and `out_stack` for pop/peek. When `out_stack` is empty, dump elements from `in_stack` to invert order. Each item is moved at most twice, yielding amortized $O(1)$ per operation.
+
 ```python
-from collections import deque
+class MyQueue:
+    def __init__(self):
+        self.in_stack = []
+        self.out_stack = []
 
-def max_sliding_window(nums: list[int], k: int) -> list[int]:
-    q: deque[int] = deque()  # stores indices
-    res: list[int] = []
-    
-    for i in range(len(nums)):
-        # Evict indices outside current window
-        if q and q[0] < i - k + 1:
-            q.popleft()
-            
-        # Maintain decreasing invariant
-        while q and nums[q[-1]] < nums[i]:
-            q.pop()
-            
-        q.append(i)
-        
-        if i >= k - 1:
-            res.append(nums[q[0]])
-            
-    return res
+    def push(self, x: int) -> None:
+        self.in_stack.append(x)
+
+    def _transfer(self):
+        if not self.out_stack:
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+
+    def pop(self) -> int:
+        self._transfer()
+        return self.out_stack.pop()
+
+    def peek(self) -> int:
+        self._transfer()
+        return self.out_stack[-1]
+
+    def empty(self) -> bool:
+        return not self.in_stack and not self.out_stack
 ```
-- **Time Complexity**: $O(N)$ — Each index enters and exits deque at most once.
-- **Space Complexity**: $O(K)$ deque space.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 8: Implement Queue using Stacks ([LeetCode 232](https://leetcode.com/problems/implement-queue-using-stacks/)) — Easy
+### Problem 6: Largest Rectangle in Histogram ([LeetCode #84](https://leetcode.com/problems/largest-rectangle-in-histogram/)) — Hard
 
-#### Optimized: Two Stacks (Amortized $O(1)$)
-`stack_in` receives `push`. `stack_out` serves `pop`/`peek`. Only when `stack_out` is empty do we transfer all elements from `stack_in` to `stack_out` (reversing their order to FIFO).
-- **Time Complexity**: $O(1)$ amortized per operation.
-- **Space Complexity**: $O(N)$.
+> **Pattern**: `Monotonic Increasing Stack` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an array of integers `heights` representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+#### Algorithmic Invariants & Optimal Derivation
+Maintain a monotonic increasing stack of (start_index, height). When a shorter bar is encountered, pop taller bars and calculate rectangle area with popped height extending from its start_index to current index.
+
+```python
+class Solution:
+    def largestRectangleArea(self, heights: list[int]) -> int:
+        stack = []  # pairs (index, height)
+        max_area = 0
+        for i, h in enumerate(heights):
+            start = i
+            while stack and stack[-1][1] > h:
+                idx, prev_h = stack.pop()
+                max_area = max(max_area, prev_h * (i - idx))
+                start = idx
+            stack.append((start, h))
+        n = len(heights)
+        for idx, h in stack:
+            max_area = max(max_area, h * (n - idx))
+        return max_area
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
 
 ## 3. Hands-On Project & Test Suite
 

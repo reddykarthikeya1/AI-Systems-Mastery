@@ -7,6 +7,7 @@ Copyright (c) Karthikeya Reddy. All rights reserved.
 
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -145,6 +146,12 @@ class DsaRunRequest(BaseModel):
     problem_id: str
     code: str
     submit: bool = False
+
+
+class ProblemRunRequest(BaseModel):
+    module_path: str
+    problem_filename: str
+    code: str
 
 
 class SaveFilePayload(BaseModel):
@@ -666,12 +673,143 @@ def run_interactive_code(req: RunCodeRequest):
 # -----------------------------------------------------------------------------
 @app.get("/api/dsa-problems")
 def get_dsa_problems_endpoint(module: Optional[str] = None):
-    """Returns curated LeetCode problems for DSA course modules."""
+    """Returns curated LeetCode problems for DSA course modules, or on-disk problems for other modules."""
     try:
         from dsa_problems import get_dsa_problems
-        return get_dsa_problems(module)
+        res = get_dsa_problems(module)
+        if res.get("problems"):
+            return res
+    except Exception:
+        pass
+
+    if module:
+        safe_mod = (BASE_DIR / module).resolve()
+        if safe_mod.is_relative_to(BASE_DIR) and (safe_mod / "problems").is_dir():
+            prob_data = get_module_problems_endpoint(module)
+            if prob_data.get("problems"):
+                mapped = []
+                for p in prob_data["problems"]:
+                    mapped.append({
+                        "id": f"{module}:{p['filename']}",
+                        "title": p["title"],
+                        "difficulty": "Medium",
+                        "category": safe_mod.name.replace("_", " "),
+                        "description": p["description"] or f"Implement {p['title']} according to module invariants.",
+                        "starter_code": p["starter_code"],
+                        "solution_code": p["code"],
+                        "tags": ["Practice Bank", safe_mod.name],
+                        "test_cases": [],
+                    })
+                return {"problems": mapped, "module": module}
+
+    return {"problems": []}
+
+
+@app.get("/api/problems")
+def get_module_problems_endpoint(module_path: str = Query(..., description="Module relative folder path")):
+    """Serves on-disk problem bank files (problems/p*.py) and problems/README.md."""
+    safe_mod = (BASE_DIR / module_path).resolve()
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    problems_dir = safe_mod / "problems"
+    if not problems_dir.is_dir():
+        return {"has_problems": False, "problems": [], "readme": None}
+
+    readme_file = problems_dir / "README.md"
+    readme_content = readme_file.read_text(encoding="utf-8", errors="replace") if readme_file.is_file() else None
+
+    user_ws = BASE_DIR / ".user_workspaces" / module_path / "problems"
+
+    problems = []
+    for f in sorted(problems_dir.glob("p*.py")):
+        if not f.is_file():
+            continue
+        user_file = user_ws / f.name
+        code = user_file.read_text(encoding="utf-8", errors="replace") if user_file.is_file() else f.read_text(encoding="utf-8", errors="replace")
+        starter_code = f.read_text(encoding="utf-8", errors="replace")
+
+        docstring = ""
+        try:
+            tree = ast.parse(starter_code)
+            docstring = ast.get_docstring(tree) or ""
+        except Exception:
+            pass
+
+        title = f.stem.replace("_", " ").title()
+        problems.append({
+            "id": f.stem,
+            "filename": f.name,
+            "title": title,
+            "description": docstring,
+            "code": code,
+            "starter_code": starter_code,
+            "has_tests": (problems_dir / "tests").is_dir(),
+        })
+
+    return {
+        "has_problems": len(problems) > 0,
+        "module_path": module_path,
+        "readme": readme_content,
+        "problems": problems,
+    }
+
+
+@app.post("/api/run-problem-test")
+def run_problem_test_endpoint(req: ProblemRunRequest):
+    """Executes pytest tests on the learner's problem solution."""
+    safe_mod = (BASE_DIR / req.module_path).resolve()
+    if not safe_mod.is_relative_to(BASE_DIR) or not safe_mod.is_dir():
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    problems_dir = safe_mod / "problems"
+    if not problems_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Problems directory not found")
+
+    user_ws = BASE_DIR / ".user_workspaces" / req.module_path / "problems"
+    user_ws.mkdir(parents=True, exist_ok=True)
+    (user_ws / req.problem_filename).write_text(req.code, encoding="utf-8")
+
+    target_problem = problems_dir / req.problem_filename
+    backup = target_problem.read_text(encoding="utf-8") if target_problem.exists() else None
+    try:
+        target_problem.write_text(req.code, encoding="utf-8")
+        cmd = [sys.executable, "-m", "pytest", "tests", "-v", "--tb=short"]
+        t0 = time.perf_counter()
+        proc = subprocess.run(
+            cmd,
+            cwd=str(problems_dir),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        duration = round((time.perf_counter() - t0) * 1000, 2)
+        return {
+            "status": "passed" if proc.returncode == 0 else "failed",
+            "exit_code": proc.returncode,
+            "stdout": proc.stdout,
+            "stderr": proc.stderr,
+            "duration_ms": duration,
+        }
+    except subprocess.TimeoutExpired:
+        return {
+            "status": "timeout",
+            "exit_code": -1,
+            "stdout": "",
+            "stderr": "Execution timed out after 30 seconds.",
+            "duration_ms": 30000.0,
+        }
     except Exception as exc:
-        return {"error": str(exc), "problems": []}
+        return {
+            "status": "error",
+            "exit_code": -1,
+            "stdout": "",
+            "stderr": str(exc),
+            "duration_ms": 0.0,
+        }
+    finally:
+        if backup is not None:
+            target_problem.write_text(backup, encoding="utf-8")
 
 
 @app.post("/api/run-dsa-test")

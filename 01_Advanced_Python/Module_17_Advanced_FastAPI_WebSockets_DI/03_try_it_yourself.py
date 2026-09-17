@@ -1,44 +1,61 @@
-"""
-Module 17: Interactive WebSocket Event Broadcaster Simulator
-Run: python try_it_yourself.py
-"""
+"""Beginner playground for Module 17 - Advanced FastAPI: WebSockets & DI.
 
+    python 03_try_it_yourself.py
 
-class MockWebSocketRoom:
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
+"""
+from __future__ import annotations
+
+from typing import Callable, Dict
+
+# -------------------------------------------- 1. Dependency Injection Container
+class Container:
     def __init__(self):
-        self.active_clients = set()
+        self._services: Dict[str, Callable] = {}
 
-    def connect(self, client_name):
-        self.active_clients.add(client_name)
-        print(f"  [+] {client_name} connected to WebSocket room.")
+    def register(self, key, provider):
+        self._services[key] = provider
 
-    def disconnect(self, client_name):
-        self.active_clients.discard(client_name)
-        print(f"  [-] {client_name} disconnected.")
+    def resolve(self, key):
+        return self._services[key]()
 
-    def broadcast(self, sender, message):
-        print(f"\n[Broadcast from {sender}]: '{message}'")
-        for client in self.active_clients:
-            if client != sender:
-                print(f"    --> Delivered to {client}")
+c = Container()
+c.register("db_url", lambda: "sqlite:///:memory:")
+c.register("service_name", lambda: "payment_gateway")
 
+assert c.resolve("db_url") == "sqlite:///:memory:"
+assert c.resolve("service_name") == "payment_gateway"
+print("Dependency injection container resolved registered services.")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 17: WEBSOCKET BROADCASTER PLAYGROUND [*]")
-    print("=" * 60)
+# -------------------------------------------- 2. Simulating WebSocket Full-Duplex Frames
+inbox = []
+outbox = []
 
-    room = MockWebSocketRoom()
-    room.connect("Alice")
-    room.connect("Bob")
-    room.connect("Charlie")
+def send_ws_frame(frame):
+    outbox.append(frame)
 
-    room.broadcast("Alice", "Hello everyone in the live room!")
-    room.disconnect("Bob")
-    room.broadcast("Charlie", "Did Bob just leave?")
+def recv_ws_frame(frame):
+    inbox.append(frame)
 
-    print("\n[OK] Real-time duplex message dispatching simulated!")
+send_ws_frame({"type": "subscribe", "channel": "ticker"})
+recv_ws_frame({"type": "price_update", "val": 42.5})
 
+assert len(outbox) == 1
+assert len(inbox) == 1
+assert inbox[0]["val"] == 42.5
+print(f"WebSocket exchange completed: out={outbox[0]['type']}, in={inbox[0]['type']}")
 
-if __name__ == "__main__":
-    main()
+# -------------------------------------------- 3. Connection State Lifecycle
+state = "CONNECTING"
+state = "OPEN"
+assert state == "OPEN"
+state = "CLOSED"
+assert state == "CLOSED"
+print("Connection state machine transitions completed.")
+
+print()
+print("All checks passed.")

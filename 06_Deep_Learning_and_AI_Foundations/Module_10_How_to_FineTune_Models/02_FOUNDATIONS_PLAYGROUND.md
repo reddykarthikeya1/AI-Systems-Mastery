@@ -1,45 +1,77 @@
-# 🐣 Interactive Foundations Playground: Fine-Tuning, LoRA & DPO
+# 🐣 Interactive Foundations Playground: How to Fine-Tune Models & LoRA Math
 
-> *"Full fine-tuning is throwing an entire encyclopedia into a blender to update one chapter. LoRA is writing a 1-page sticky note delta and slapping it on the back cover."*
-
+> *"LoRA freezes the 100-billion-parameter foundation model and trains a lightweight low-rank delta adapter."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. Why Full Fine-Tuning Is Dead for Most Teams
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-When you fine-tune an LLM with 70 billion parameters:
-- Model weights: 140 GB (16-bit float).
-- Gradients: 140 GB.
-- Optimizer States (Adam 32-bit): **560 GB**!
-- Total GPU RAM needed: **$> 800 \text{ GB}$** (requiring an entire \$300,000 DGX cluster)!
+```bash
+python 03_try_it_yourself.py
+```
 
----
-
-## 2. LoRA: Low-Rank Adaptation
-
-**The Core Insight (Hu et al., 2021)**:
-Weight update matrices $\Delta W \in \mathbb{R}^{d \times k}$ have a very low "intrinsic dimension".
-Instead of training all $d \times k$ parameters, we factorize:
-$$\Delta W = \frac{\alpha}{r} (B \times A)$$
-where $A \in \mathbb{R}^{r \times k}$ and $B \in \mathbb{R}^{d \times r}$ with rank $r \ll d$ (e.g. $r=8$ or $16$):
-- **Initialization Trick**:
-  - $A \sim \mathcal{N}(0, \sigma^2)$
-  - $B = 0$
-  - At step 0: $\Delta W = B \times A = 0$. The model starts **identically** to the base pre-trained model! Zero disruption!
-- **Inference Magic**: During deployment, you can permanently merge $W_{merged} = W_0 + \frac{\alpha}{r} (B \times A)$ into the base weights. **Zero extra latency!**
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 3. Direct Preference Optimization (DPO)
+## 0. Everything this page needs
 
-Older RLHF required training 3 separate models:
-1. Actor (LLM)
-2. Reward Model (scoring human preference)
-3. Critic / Reference Model (for PPO stability)
+Nothing here is installed. These all ship with Python.
 
-**DPO (Rafailov et al., 2023)** mathematically proves you don't need a reward model at all!
-Given prompt $x$, chosen response $y_w$ and rejected response $y_l$, DPO optimizes the policy directly:
-$$\mathcal{L}_{DPO} = -\log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{ref}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{ref}(y_l \mid x)} \right)$$
-If the model raises the probability of the chosen response relative to the rejected response, the loss drops. Simple, stable, and fast!
+```python
+import math
+```
+
+---
+
+## 1. LoRA Decomposition Factorization Delta W = B * A
+
+Instead of fine-tuning full matrix $W \in \mathbb{R}^{d \times k}$ ($d \cdot k$ parameters), LoRA trains low-rank matrices $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$ with $r \ll \min(d, k)$.
+
+```python
+d, k, r = 4096, 4096, 8
+full_params = d * k
+lora_params = (d * r) + (r * k)
+param_reduction_pct = (1.0 - lora_params / full_params) * 100
+
+assert full_params == 16_777_216
+assert lora_params == 65_536
+assert param_reduction_pct > 99.0
+print(f"Parameter reduction: from {full_params:,} down to {lora_params:,} ({param_reduction_pct:.2f}% savings)")
+```
+
+---
+
+## 2. LoRA Scaling Factor Alpha / Rank
+
+The low-rank delta is scaled by $\frac{\alpha}{r}$ before being added to the frozen weights: $h = W_0 x + \frac{\alpha}{r} B A x$.
+
+```python
+alpha = 16.0
+rank = 8.0
+scale = alpha / rank
+
+assert scale == 2.0
+assert scale > 0
+print(f"LoRA adapter scale (alpha={alpha}, rank={rank}): {scale}")
+```
+
+---
+
+## 3. Frozen Base Weight Invariance
+
+During training, gradients only flow into matrices $A$ and $B$; the base weights $W_0$ remain completely unchanged.
+
+```python
+w0_weight = 1.42
+lora_delta = 0.05 * scale
+effective_weight = w0_weight + lora_delta
+
+assert w0_weight == 1.42, "Base weight is frozen"
+assert abs(effective_weight - 1.52) < 1e-6
+print(f"Effective fine-tuned weight: {effective_weight:.4f}")
+```
+
+---

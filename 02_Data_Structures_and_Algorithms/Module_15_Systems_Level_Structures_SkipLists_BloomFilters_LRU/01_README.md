@@ -40,95 +40,387 @@ flowchart LR
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: LRU Cache ([LeetCode 146](https://leetcode.com/problems/lru-cache/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Array with Timestamps
-Store entries in an array with `timestamp`. On eviction, scan all $N$ elements to find minimum timestamp.
-- **Time Complexity**: $O(N)$ for `put`/`get` — Severe TLE.
+### Problem 1: LRU Cache ([LeetCode #146](https://leetcode.com/problems/lru-cache/)) — Medium
 
-#### Optimized: Hash Map + Sentinel Doubly Linked List ($O(1)$ All Operations)
-Hash map maps `key -> DNode`. Doubly linked list maintains access order:
-- Head dummy $\\to$ Most Recently Used
-- Tail dummy $\\gets$ Least Recently Used
+> **Pattern**: `Hash Map + Doubly Linked List` | **Target Time**: $O(1) all ops$ | **Target Space**: $O(C)
+
+#### Problem Specification
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+Implement the `LRUCache` class:
+- `LRUCache(int capacity)` Initialize the LRU cache with positive size `capacity`.
+- `int get(int key)` Return the value of the `key` if the key exists, otherwise return `-1`.
+- `void put(int key, int value)` Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity, evict the least recently used key.
+Both functions must run in $O(1)$ average time complexity.
+
+#### Algorithmic Invariants & Optimal Derivation
+Combine a Hash Map (for $O(1)$ lookups) with a Doubly Linked List (for $O(1)$ node splicing and reordering upon read/write).
+
 ```python
 class DNode:
-    def __init__(self, key: int = 0, val: int = 0):
-        self.key, self.val = key, val
-        self.prev = self.next = None
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
 
 class LRUCache:
     def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache: dict[int, DNode] = {}
-        self.head, self.tail = DNode(), DNode()
-        self.head.next, self.tail.prev = self.tail, self.head
+        self.cap = capacity
+        self.cache = {}  # key -> node
+        self.head = DNode()
+        self.tail = DNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
 
-    def _remove(self, node: DNode) -> None:
-        p, n = node.prev, node.next
-        p.next, n.prev = n, p
+    def _remove(self, node):
+        prev, nxt = node.prev, node.next
+        prev.next = nxt
+        nxt.prev = prev
 
-    def _add_front(self, node: DNode) -> None:
-        first = self.head.next
-        node.prev, node.next = self.head, first
-        self.head.next = first.prev = node
+    def _insert(self, node):
+        prev, nxt = self.tail.prev, self.tail
+        prev.next = node
+        nxt.prev = node
+        node.prev = prev
+        node.next = nxt
 
     def get(self, key: int) -> int:
-        if key not in self.cache:
-            return -1
-        node = self.cache[key]
-        self._remove(node)
-        self._add_front(node)
-        return node.val
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._insert(node)
+            return node.val
+        return -1
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            node = self.cache[key]
-            node.val = value
-            self._remove(node)
-            self._add_front(node)
-            return
-        if len(self.cache) >= self.capacity:
-            lru = self.tail.prev
+            self._remove(self.cache[key])
+        node = DNode(key, value)
+        self.cache[key] = node
+        self._insert(node)
+        if len(self.cache) > self.cap:
+            lru = self.head.next
             self._remove(lru)
             del self.cache[lru.key]
-        new_node = DNode(key, value)
-        self.cache[key] = new_node
-        self._add_front(new_node)
 ```
-- **Time Complexity**: $O(1)$ strict worst-case for both `get` and `put`.
-- **Space Complexity**: $O(\\text{capacity})$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: LFU Cache ([LeetCode 460](https://leetcode.com/problems/lfu-cache/)) — Hard
+### Problem 2: LFU Cache ([LeetCode #460](https://leetcode.com/problems/lfu-cache/)) — Hard
 
-#### Optimized: Dual Hash Maps + Frequency DLLs ($O(1)$ Time)
-Maintain:
-1. `key_to_node`: Maps `key -> (val, freq)`.
-2. `freq_to_dll`: Maps `freq -> DoublyLinkedList of keys`.
-3. `min_freq`: Scalar tracking lowest active frequency.
-- **Time Complexity**: $O(1)$ for both `get` and `put`.
-- **Space Complexity**: $O(\\text{capacity})$.
+> **Pattern**: `Frequency Hash Map of Doubly Linked Lists` | **Target Time**: $O(1) all ops$ | **Target Space**: $O(C)
+
+#### Problem Specification
+Design and implement a data structure for a Least Frequently Used (LFU) cache.
+When the cache reaches its capacity, it should invalidate and remove the least frequently used key before inserting a new item. For this problem, when there is a tie (i.e., two or more keys with the same frequency), the least recently used key would be invalidated.
+
+#### Algorithmic Invariants & Optimal Derivation
+Maintain `freq_keys` mapping each frequency count to an `OrderedDict` (LRU chain). Track `min_freq` to evict the lowest frequency and LRU element in $O(1)$.
+
+```python
+from collections import defaultdict, OrderedDict
+
+class LFUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.min_freq = 0
+        self.key_val = {}
+        self.key_freq = {}
+        self.freq_keys = defaultdict(OrderedDict)
+
+    def _update_freq(self, key):
+        freq = self.key_freq[key]
+        del self.freq_keys[freq][key]
+        if not self.freq_keys[freq]:
+            del self.freq_keys[freq]
+            if self.min_freq == freq:
+                self.min_freq += 1
+        self.key_freq[key] = freq + 1
+        self.freq_keys[freq + 1][key] = None
+
+    def get(self, key: int) -> int:
+        if key not in self.key_val:
+            return -1
+        self._update_freq(key)
+        return self.key_val[key]
+
+    def put(self, key: int, value: int) -> None:
+        if self.cap <= 0:
+            return
+        if key in self.key_val:
+            self.key_val[key] = value
+            self._update_freq(key)
+            return
+        if len(self.key_val) >= self.cap:
+            evict_key, _ = self.freq_keys[self.min_freq].popitem(last=False)
+            del self.key_val[evict_key]
+            del self.key_freq[evict_key]
+        self.key_val[key] = value
+        self.key_freq[key] = 1
+        self.freq_keys[1][key] = None
+        self.min_freq = 1
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: All O`one Data Structure ([LeetCode 432](https://leetcode.com/problems/all-oone-data-structure/)) — Hard
+### Problem 3: Design Circular Queue ([LeetCode #622](https://leetcode.com/problems/design-circular-queue/)) — Medium
 
-#### Optimized: Doubly Linked List of Count Buckets
-Each DLL node represents a `count` frequency and contains a set of keys with that frequency. When key count increments, move key to adjacent bucket `count + 1`.
-- `getMaxKey`: Returns key from tail bucket in $O(1)$.
-- `getMinKey`: Returns key from head bucket in $O(1)$.
-- **Time Complexity**: $O(1)$ all operations, **Space Complexity**: $O(N)$.
+> **Pattern**: `Ring Buffer with Modulo Indexing` | **Target Time**: $O(1) all ops$ | **Target Space**: $O(K)
+
+#### Problem Specification
+Design your implementation of the circular queue. The circular queue is a linear data structure in which the operations are performed based on FIFO principle, and the last position is connected back to the first position to make a circle.
+Implement the `MyCircularQueue` class:
+- `MyCircularQueue(k)` Initializes the object with the size of the queue to be `k`.
+- `boolean enQueue(int value)` Inserts an element into the circular queue. Return true if the operation is successful.
+- `boolean deQueue()` Deletes an element from the circular queue. Return true if the operation is successful.
+- `int Front()` Gets the front item from the queue. If the queue is empty, return -1.
+- `int Rear()` Gets the last item from the queue. If the queue is empty, return -1.
+- `boolean isEmpty()` Checks whether the circular queue is empty or not.
+- `boolean isFull()` Checks whether the circular queue is full or not.
+
+#### Algorithmic Invariants & Optimal Derivation
+Store values in a fixed-size buffer of length K. Calculate logical tail as `(head + count) % K`. All operations are strictly $O(1)$.
+
+```python
+class MyCircularQueue:
+    def __init__(self, k: int):
+        self.k = k
+        self.queue = [0] * k
+        self.head = 0
+        self.count = 0
+
+    def enQueue(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        tail = (self.head + self.count) % self.k
+        self.queue[tail] = value
+        self.count += 1
+        return True
+
+    def deQueue(self) -> bool:
+        if self.isEmpty():
+            return False
+        self.head = (self.head + 1) % self.k
+        self.count -= 1
+        return True
+
+    def Front(self) -> int:
+        return -1 if self.isEmpty() else self.queue[self.head]
+
+    def Rear(self) -> int:
+        if self.isEmpty():
+            return -1
+        tail = (self.head + self.count - 1) % self.k
+        return self.queue[tail]
+
+    def isEmpty(self) -> bool:
+        return self.count == 0
+
+    def isFull(self) -> bool:
+        return self.count == self.k
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Design In-Memory File System ([LeetCode 588](https://leetcode.com/problems/design-in-memory-file-system/)) — Hard
+### Problem 4: Design Twitter ([LeetCode #355](https://leetcode.com/problems/design-twitter/)) — Medium
 
-#### Optimized: Directory Trie Node Tree
-Each node represents a directory or file. Path splitting `/a/b/c` traverses Trie in $O(L)$.
-- **Time Complexity**: $O(L)$ where $L$ is path depth, **Space Complexity**: $O(\\text{total paths and files})$.
+> **Pattern**: `K-Way Merge Heap + Hash Sets` | **Target Time**: $O(K \log F) news feed$ | **Target Space**: $O(U + T)
+
+#### Problem Specification
+Design a simplified version of Twitter where users can post tweets, follow/unfollow another user, and see the 10 most recent tweets in the user's news feed.
+Implement the `Twitter` class:
+- `Twitter()` Initializes your twitter object.
+- `void postTweet(int userId, int tweetId)` Composes a new tweet with ID `tweetId` by the user `userId`.
+- `List<Integer> getNewsFeed(int userId)` Retrieves the 10 most recent tweet IDs in the user's news feed.
+- `void follow(int followerId, int followeeId)` The user `followerId` started following the user `followeeId`.
+- `void unfollow(int followerId, int followeeId)` The user `followerId` started unfollowing the user `followeeId`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Model feed aggregation as a K-way merge of sorted lists: use a max-heap keyed by timestamp across all followed users to pull the 10 newest tweets in $O(10 \log K)$.
+
+```python
+import heapq
+from collections import defaultdict
+
+class Twitter:
+    def __init__(self):
+        self.timestamp = 0
+        self.tweets = defaultdict(list)    # userId -> [(timestamp, tweetId)]
+        self.following = defaultdict(set) # userId -> set of followeeIds
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.timestamp += 1
+        self.tweets[userId].append((self.timestamp, tweetId))
+
+    def getNewsFeed(self, userId: int) -> list[int]:
+        min_heap = []
+        followees = set(self.following[userId])
+        followees.add(userId)
+
+        for followee in followees:
+            if followee in self.tweets and self.tweets[followee]:
+                idx = len(self.tweets[followee]) - 1
+                t, tw_id = self.tweets[followee][idx]
+                min_heap.append((-t, tw_id, followee, idx - 1))
+
+        heapq.heapify(min_heap)
+        res = []
+        while min_heap and len(res) < 10:
+            neg_t, tw_id, followee, next_idx = heapq.heappop(min_heap)
+            res.append(tw_id)
+            if next_idx >= 0:
+                t, next_tw_id = self.tweets[followee][next_idx]
+                heapq.heappush(min_heap, (-t, next_tw_id, followee, next_idx - 1))
+        return res
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        if followerId != followeeId:
+            self.following[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        self.following[followerId].discard(followeeId)
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
+### Problem 5: Design HashMap ([LeetCode #706](https://leetcode.com/problems/design-hashmap/)) — Easy
+
+> **Pattern**: `Separate Chaining Hash Table` | **Target Time**: $O(1) average all ops$ | **Target Space**: $O(K + N)
+
+#### Problem Specification
+Design a HashMap without using any built-in hash table libraries.
+Implement the `MyHashMap` class:
+- `MyHashMap()` initializes the object with an empty map.
+- `void put(int key, int value)` inserts a (key, value) pair into the HashMap. If the key already exists in the map, update the corresponding value.
+- `int get(int key)` returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.
+- `void remove(key)` removes the key and its corresponding value if the map contains the mapping for the key.
+
+#### Algorithmic Invariants & Optimal Derivation
+Use a fixed array of buckets (e.g. 1000) and modulo hashing $h = 	ext{key} \% 1000$. Resolve collisions via separate chaining using lists.
+
+```python
+class MyHashMap:
+    def __init__(self):
+        self.size = 1000
+        self.table = [[] for _ in range(self.size)]
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        idx = self._hash(key)
+        bucket = self.table[idx]
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                bucket[i] = (key, value)
+                return
+        bucket.append((key, value))
+
+    def get(self, key: int) -> int:
+        idx = self._hash(key)
+        bucket = self.table[idx]
+        for k, v in bucket:
+            if k == key:
+                return v
+        return -1
+
+    def remove(self, key: int) -> None:
+        idx = self._hash(key)
+        bucket = self.table[idx]
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                del bucket[i]
+                return
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Insert Delete GetRandom O(1) ([LeetCode #380](https://leetcode.com/problems/insert-delete-getrandom-o1/)) — Medium
+
+> **Pattern**: `Hash Map + Dynamic Array Swap` | **Target Time**: $O(1) all ops$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Implement the `RandomizedSet` class:
+- `RandomizedSet()` Initializes the RandomizedSet object.
+- `bool insert(int val)` Inserts an item `val` into the set if not present. Returns `true` if item was not present, `false` otherwise.
+- `bool remove(int val)` Removes an item `val` from the set if present. Returns `true` if item was present, `false` otherwise.
+- `int getRandom()` Returns a random element from the current set of elements (guaranteed that each element has same probability).
+Each function must work in $O(1)$ average time complexity.
+
+#### Algorithmic Invariants & Optimal Derivation
+To remove in $O(1)$ from an array: swap the target element with the last element in the array, update the hash map index, and call `pop()` on the last position.
+
+```python
+import random
+
+class RandomizedSet:
+    def __init__(self):
+        self.indices = {}
+        self.elements = []
+
+    def insert(self, val: int) -> bool:
+        if val in self.indices:
+            return False
+        self.indices[val] = len(self.elements)
+        self.elements.append(val)
+        return True
+
+    def remove(self, val: int) -> bool:
+        if val not in self.indices:
+            return False
+        idx = self.indices[val]
+        last = self.elements[-1]
+        self.elements[idx] = last
+        self.indices[last] = idx
+        self.elements.pop()
+        del self.indices[val]
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.elements)
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
 
 ## 3. Hands-On Project & Test Suite
 

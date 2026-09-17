@@ -1,77 +1,76 @@
-# Beginner Playground: Multi-Agent Swarms & Handoffs
+# 🐣 Interactive Foundations Playground: Multi-Agent Collaboration Topologies
 
+> *"Multi-agent systems divide labor: a supervisor breaks down the goal and delegates tasks to specialists."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Multi-Agent Collaboration! When tasks become complex, a single agent gets overwhelmed with tool bloat and conflicting instructions. Instead, we compose networks of specialized agents.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
+## 0. Everything this page needs
 
-## Multi-Agent Consensus Debate Protocol
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant Prop as Proposer Agent
-    participant Opp as Opponent Agent
-    participant Mod as Moderator Agent (Judge)
-
-    Prop->>Opp: Present Hypothesis & Justification
-    Opp->>Prop: Rebuttal: Highlight Counter-Examples & Failure Scenarios
-    Prop->>Opp: Defend with Empirical Benchmarks & Refined Claim
-    Opp->>Mod: Submit Remaining Open Discrepancies
-    Prop->>Mod: Submit Convergence Points
-    Mod->>Mod: Synthesize Consensus Compromise
-    Mod-->>Prop: Final Decision Report
-```
-
-## 1. The Core Mental Model: Swarm Handoffs
-
-In the **OpenAI Swarm** pattern, agents collaborate not via heavy message brokers, but through lightweight **Handoffs**:
-- An agent can return another `Agent` object as its tool output!
-- When Agent A returns `transfer_to_billing()`, the execution loop immediately switches the active agent to the Billing Agent, transferring the conversation context.
-
-```
- [ User ] ---> [ Triage Agent ]
-                     |
-         (transfer_to_tech_support)
-                     |
-                     v
-           [ Technical Support Agent ] ---> (Resolves issue)
-```
-
----
-
-## 2. Interactive Pure-Python Experiment: Zero-Dependency Agent Swarm
+Nothing here is installed. These all ship with Python.
 
 ```python
-from typing import Dict, Any, Callable
-
-class Agent:
-    def __init__(self, name: str, instructions: str, tools: Dict[str, Callable] = None):
-        self.name = name
-        self.instructions = instructions
-        self.tools = tools or {}
-
-def run_swarm(initial_agent: Agent, user_message: str):
-    active = initial_agent
-    print(f"[*] Starting Swarm with Active Agent: {active.name}")
-    print(f"User: {user_message}\n")
-
-    # Simple triage logic
-    if "refund" in user_message.lower():
-        print(f"[{active.name}] Transferring to Billing Agent...")
-        active = billing_agent
-    else:
-        print(f"[{active.name}] Handling directly...")
-
-    response = f"Hello from {active.name}! Handling your request: '{user_message}'"
-    print(f"Response: {response}")
-    return active, response
-
-triage_agent = Agent(name="Triage Agent", instructions="Route user requests to specialists.")
-billing_agent = Agent(name="Billing Agent", instructions="Handle refund and invoice inquiries.")
-
-run_swarm(triage_agent, "I need a refund for invoice #9821")
+import math
 ```
+
+---
+
+## 1. Supervisor Router Delegation
+
+A supervisor inspects user requests and delegates sub-tasks to specialized worker agents (Researcher, Coder, Reviewer).
+
+```python
+def supervisor_route(task):
+    if "code" in task.lower() or "bug" in task.lower():
+        return "coder_agent"
+    elif "search" in task.lower() or "who" in task.lower():
+        return "researcher_agent"
+    return "general_agent"
+
+assert supervisor_route("Fix the bug in main.py") == "coder_agent"
+assert supervisor_route("Who won the 2024 Nobel prize?") == "researcher_agent"
+print("Supervisor successfully routed specialized tasks to domain agents.")
+```
+
+---
+
+## 2. Majority Vote Consensus Protocol
+
+For critical decisions, querying 3 independent agents and taking the majority vote eliminates individual agent hallucinations.
+
+```python
+from collections import Counter
+votes = ["approve", "approve", "reject"]
+counts = Counter(votes)
+winner, win_count = counts.most_common(1)[0]
+
+assert winner == "approve"
+assert win_count == 2
+print(f"Consensus achieved: '{winner}' with {win_count}/3 votes.")
+```
+
+---
+
+## 3. Hand-Off Protocol Context Forwarding
+
+When transferring control between agents, summarize prior accomplishments to keep communication lean.
+
+```python
+hand_off = {"from": "researcher", "to": "writer", "summary": "Found 3 key sources."}
+assert hand_off["to"] == "writer"
+assert len(hand_off["summary"]) > 0
+print(f"Hand-off verified from {hand_off['from']} to {hand_off['to']}.")
+```
+
+---

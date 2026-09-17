@@ -1,50 +1,68 @@
-"""Module 05: Interactive Foundations Interactive Decorators & Generators Playground.
+"""Beginner playground for Module 05 - Decorators, Generators & Context Managers.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-import time
+from contextlib import contextmanager
+import functools
 
-
-def timing_decorator(func):
-    """A simple decorator measuring how long a function takes."""
+# -------------------------------------------- 1. Function Decorators Preserving Metadata
+call_log = []
+def trace(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        t0 = time.perf_counter()
-        result = func(*args, **kwargs)
-        elapsed = time.perf_counter() - t0
-        print(f"[TIME]  [{func.__name__}] finished in {elapsed * 1000:.3f} ms")
-        return result
+        call_log.append(func.__name__)
+        return func(*args, **kwargs)
     return wrapper
 
-@timing_decorator
-def calculate_sum(n):
-    return sum(range(n))
+@trace
+def greet(name):
+    """Greeting function docstring."""
+    return f"Hello, {name}!"
 
-def number_stream(max_val):
-    """Generator yielding numbers one by one."""
-    curr = 1
-    while curr <= max_val:
-        yield curr
-        curr += 1
+res = greet("Pythonista")
+assert res == "Hello, Pythonista!"
+assert greet.__name__ == "greet"
+assert call_log == ["greet"]
+print(f"Decorated function executed: {res}")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 05: DECORATORS & GENERATORS PLAYGROUND [TIME]")
-    print("=" * 60)
+# -------------------------------------------- 2. Stateful Generators with Yield
+def fibonacci(limit):
+    a, b = 0, 1
+    count = 0
+    while count < limit:
+        yield a
+        a, b = b, a + b
+        count += 1
 
-    print("\n1. Testing @timing_decorator on sum calculation:")
-    ans = calculate_sum(500_000)
-    print(f"Sum of first 500,000 numbers: {ans:,}")
+fibs = list(fibonacci(7))
+assert fibs == [0, 1, 1, 2, 3, 5, 8]
+assert len(fibs) == 7
+print(f"Generated first 7 Fibonacci numbers: {fibs}")
 
-    print("\n2. Testing number_stream() Generator (One at a time):")
-    stream = number_stream(5)
-    for val in stream:
-        print(f"  Received next value from generator: {val}")
-        time.sleep(0.15)
+# -------------------------------------------- 3. Deterministic Resource Management
+cleanup_done = False
+@contextmanager
+def temporary_resource():
+    global cleanup_done
+    try:
+        yield "resource_handle"
+    finally:
+        cleanup_done = True
 
-    print("\nNotice how the generator produced values lazily on demand!")
-    print("Proceed to Module 06.")
+with temporary_resource() as handle:
+    assert handle == "resource_handle"
+    assert not cleanup_done
 
-if __name__ == "__main__":
-    main()
+assert cleanup_done
+print("Context manager cleanup executed deterministically.")
+
+print()
+print("All checks passed.")

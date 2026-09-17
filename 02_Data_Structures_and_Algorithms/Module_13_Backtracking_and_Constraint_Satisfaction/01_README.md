@@ -49,97 +49,253 @@ def backtrack(candidate):
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Subsets ([LeetCode 78](https://leetcode.com/problems/subsets/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: Backtracking Choose / Don't Choose
+### Problem 1: Subsets ([LeetCode #78](https://leetcode.com/problems/subsets/)) — Medium
+
+> **Pattern**: `Power Set Generation / Backtracking` | **Target Time**: $O(N \cdot 2^N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an integer array `nums` of unique elements, return all possible subsets (the power set).
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Binary decision tree: for each element at index i, branch into two decisions: include nums[i] in the current subset, or omit it.
+
 ```python
-def subsets(nums: list[int]) -> list[list[int]]:
-    res = []
-    subset = []
-    
-    def dfs(i: int):
-        if i >= len(nums):
-            res.append(list(subset))
-            return
-        # Include nums[i]
-        subset.append(nums[i])
-        dfs(i + 1)
-        # Exclude nums[i]
-        subset.pop()
-        dfs(i + 1)
-        
-    dfs(0)
-    return res
+class Solution:
+    def subsets(self, nums: list[int]) -> list[list[int]]:
+        res = []
+        subset = []
+        def dfs(i):
+            if i >= len(nums):
+                res.append(subset.copy())
+                return
+            # decision to include nums[i]
+            subset.append(nums[i])
+            dfs(i + 1)
+            # decision NOT to include nums[i]
+            subset.pop()
+            dfs(i + 1)
+        dfs(0)
+        return res
 ```
-- **Time Complexity**: $O(N \\times 2^N)$, **Space Complexity**: $O(N)$ recursion depth.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Combination Sum ([LeetCode 39](https://leetcode.com/problems/combination-sum/)) — Medium
+### Problem 2: Combination Sum ([LeetCode #39](https://leetcode.com/problems/combination-sum/)) — Medium
 
-#### Optimized: Unbounded Candidates with Forwarding Index
-Candidates can be chosen unlimited times, but avoid permutation duplicates by passing current candidate index $i$.
-- **Time Complexity**: $O(2^{target/min\\_val})$, **Space Complexity**: $O(target/min\\_val)$.
+> **Pattern**: `Backtracking with Unbounded Choice` | **Target Time**: $O(2^{T/M})$ | **Target Space**: $O(T/M)
 
----
+#### Problem Specification
+Given an array of distinct integers `candidates` and a target integer `target`, return a list of all unique combinations of candidates where the chosen numbers sum to `target`. You may return the combinations in any order.
 
-### Problem 3: Permutations ([LeetCode 46](https://leetcode.com/problems/permutations/)) — Medium
+The same number may be chosen from candidates an unlimited number of times.
 
-#### Optimized: In-Place Swapping
-Swap elements within the array and backtrack to avoid auxiliary `visited` sets.
-- **Time Complexity**: $O(N \\times N!)$, **Space Complexity**: $O(N)$.
+#### Algorithmic Invariants & Optimal Derivation
+At index i, choose to either reuse candidate[i] by adding to current sum and recurring with same i, or skip candidate[i] permanently by advancing to i+1.
 
----
-
-### Problem 4: Word Search ([LeetCode 79](https://leetcode.com/problems/word-search/)) — Medium
-
-#### Optimized: In-Place Board Mutation DFS
-Temporarily replace cell with `'#'` during exploration, restoring character upon return.
 ```python
-def exist(board: list[list[str]], word: str) -> bool:
-    rows, cols = len(board), len(board[0])
-    
-    def dfs(r: int, c: int, i: int) -> bool:
-        if i == len(word):
-            return True
-        if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[i]:
-            return False
-            
-        temp = board[r][c]
-        board[r][c] = "#"  # Mark visited in-place
-        
-        found = (dfs(r + 1, c, i + 1) or dfs(r - 1, c, i + 1) or
-                 dfs(r, c + 1, i + 1) or dfs(r, c - 1, i + 1))
-                 
-        board[r][c] = temp  # Backtrack!
-        return found
-        
-    for r in range(rows):
-        for c in range(cols):
-            if dfs(r, c, 0):
+class Solution:
+    def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
+        res = []
+        def dfs(i, cur, total):
+            if total == target:
+                res.append(cur.copy())
+                return
+            if i >= len(candidates) or total > target:
+                return
+            cur.append(candidates[i])
+            dfs(i, cur, total + candidates[i])
+            cur.pop()
+            dfs(i + 1, cur, total)
+        dfs(0, [], 0)
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 3: Permutations ([LeetCode #46](https://leetcode.com/problems/permutations/)) — Medium
+
+> **Pattern**: `Backtracking / Full Ordering Search` | **Target Time**: $O(N \cdot N!)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an array `nums` of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Recursively isolate the first element, permute remaining elements, and append the isolated element to each generated permutation.
+
+```python
+class Solution:
+    def permute(self, nums: list[int]) -> list[list[int]]:
+        res = []
+        if len(nums) == 1:
+            return [nums.copy()]
+        for i in range(len(nums)):
+            n = nums.pop(0)
+            perms = self.permute(nums)
+            for p in perms:
+                p.append(n)
+            res.extend(perms)
+            nums.append(n)
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 4: Word Search ([LeetCode #79](https://leetcode.com/problems/word-search/)) — Medium
+
+> **Pattern**: `2D Grid DFS Backtracking with In-Place Visited Mask` | **Target Time**: $O(M 	imes N 	imes 3^L)$ | **Target Space**: $O(L)
+
+#### Problem Specification
+Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid.
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+#### Algorithmic Invariants & Optimal Derivation
+DFS explore 4 directions. Temporarily mutate board cell to '#' to mark visited, and restore original character during backtracking unwind.
+
+```python
+class Solution:
+    def exist(self, board: list[list[str]], word: str) -> bool:
+        rows, cols = len(board), len(board[0])
+        def dfs(r, c, i):
+            if i == len(word):
                 return True
-    return False
+            if r < 0 or c < 0 or r >= rows or c >= cols or board[r][c] != word[i]:
+                return False
+            temp = board[r][c]
+            board[r][c] = '#'
+            found = (dfs(r + 1, c, i + 1) or
+                     dfs(r - 1, c, i + 1) or
+                     dfs(r, c + 1, i + 1) or
+                     dfs(r, c - 1, i + 1))
+            board[r][c] = temp
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if dfs(r, c, 0):
+                    return True
+        return False
 ```
-- **Time Complexity**: $O(N \\times M \\times 4^L)$ where $L$ is word length.
-- **Space Complexity**: $O(L)$ recursion call stack.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: N-Queens ([LeetCode 51](https://leetcode.com/problems/n-queens/)) — Hard
+### Problem 5: Palindrome Partitioning ([LeetCode #131](https://leetcode.com/problems/palindrome-partitioning/)) — Medium
 
-#### Optimized: Column & Diagonal Hash Set Tracking ($O(N!)$ Time)
-Diagonals are tracked via $(r - c)$ and $(r + c)$ mathematical invariants in $O(1)$.
-- **Time Complexity**: $O(N!)$, **Space Complexity**: $O(N)$.
+> **Pattern**: `Backtracking Partition with Palindrome Check` | **Target Time**: $O(N \cdot 2^N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given a string `s`, partition `s` such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of `s`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Iterate potential right partition endpoints `j`. If substring `s[i:j+1]` is a palindrome, choose it and recurse on remainder `j+1`.
+
+```python
+class Solution:
+    def partition(self, s: str) -> list[list[str]]:
+        res = []
+        part = []
+        def is_pali(sub):
+            return sub == sub[::-1]
+        def dfs(i):
+            if i >= len(s):
+                res.append(part.copy())
+                return
+            for j in range(i, len(s)):
+                sub = s[i:j + 1]
+                if is_pali(sub):
+                    part.append(sub)
+                    dfs(j + 1)
+                    part.pop()
+        dfs(0)
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Sudoku Solver ([LeetCode 37](https://leetcode.com/problems/sudoku-solver/)) — Hard
+### Problem 6: N-Queens ([LeetCode #51](https://leetcode.com/problems/n-queens/)) — Hard
 
-#### Optimized: Exact Constraint Backtracking
-Scan 9x9 board for empty cell `'.'`. Attempt numbers `'1'` through `'9'`. Validate row, column, and 3x3 block in $O(1)$.
-- **Time Complexity**: $O(9^{empty\\_cells})$, **Space Complexity**: $O(1)$ board stack.
+> **Pattern**: `Diagonal / Anti-Diagonal Constraint Backtracking` | **Target Time**: $O(N!)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+The n-queens puzzle is the problem of placing `n` queens on an `n x n` chessboard such that no two queens attack each other.
+Given an integer `n`, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Queens attack along columns ($c$), positive diagonals ($r + c = 	ext{const}$), and negative diagonals ($r - c = 	ext{const}$). Track blocked sets and place queens row by row.
+
+```python
+class Solution:
+    def solveNQueens(self, n: int) -> list[list[str]]:
+        cols = set()
+        pos_diag = set()  # (r + c)
+        neg_diag = set()  # (r - c)
+        res = []
+        board = [["."] * n for _ in range(n)]
+
+        def backtrack(r):
+            if r == n:
+                res.append(["".join(row) for row in board])
+                return
+            for c in range(n):
+                if c in cols or (r + c) in pos_diag or (r - c) in neg_diag:
+                    continue
+                cols.add(c)
+                pos_diag.add(r + c)
+                neg_diag.add(r - c)
+                board[r][c] = "Q"
+
+                backtrack(r + 1)
+
+                cols.remove(c)
+                pos_diag.remove(r + c)
+                neg_diag.remove(r - c)
+                board[r][c] = "."
+
+        backtrack(0)
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
 
 ## 3. Hands-On Project & Test Suite
 

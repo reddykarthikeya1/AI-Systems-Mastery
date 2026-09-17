@@ -35,164 +35,220 @@ flowchart LR
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Climbing Stairs ([LeetCode 70](https://leetcode.com/problems/climbing-stairs/)) — Easy
+This section walks through the **7 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Pure Recursion
-$T(N) = T(N-1) + T(N-2)$.
-- **Time Complexity**: $O(2^N)$ — Exponential call tree. TLE on $N \ge 40$.
+### Problem 1: Climbing Stairs ([LeetCode #70](https://leetcode.com/problems/climbing-stairs/)) — Easy
 
-#### Optimized: Space-Optimized Fibonacci ($O(N)$ Time, $O(1)$ Space)
+> **Pattern**: `Fibonacci DP / State Compression` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are climbing a staircase. It takes `n` steps to reach the top. Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?
+
+#### Algorithmic Invariants & Optimal Derivation
+Recurrence relation $dp[i] = dp[i-1] + dp[i-2]$ with base cases $dp[1]=1, dp[2]=2$. Compute using two rolling variables in $O(N)$ time and $O(1)$ auxiliary space.
+
 ```python
-def climb_stairs(n: int) -> int:
-    one, two = 1, 1
-    for _ in range(n - 1):
-        one, two = one + two, one
-    return one
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+        a, b = 1, 2
+        for _ in range(3, n + 1):
+            a, b = b, a + b
+        return b
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: House Robber ([LeetCode 198](https://leetcode.com/problems/house-robber/)) — Medium
+### Problem 2: Min Cost Climbing Stairs ([LeetCode #746](https://leetcode.com/problems/min-cost-climbing-stairs/)) — Easy
 
-#### Optimized: 2-Variable Bottom-Up DP
-$dp[i] = \\max(dp[i-1], dp[i-2] + nums[i])$.
+> **Pattern**: `1D Backward/Forward Transition` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given an integer array `cost` where `cost[i]` is the cost of `i-th` step on a staircase. Once you pay the cost, you can either climb one or two steps.
+You can either start from step 0, or step 1. Return the minimum cost to reach the top floor.
+
+#### Algorithmic Invariants & Optimal Derivation
+Backward recurrence: $dp[i] = 	ext{cost}[i] + \min(dp[i+1], dp[i+2])$. Answer is $\min(dp[0], dp[1])$.
+
 ```python
-def rob(nums: list[int]) -> int:
-    rob1, rob2 = 0, 0
-    for n in nums:
-        new_rob = max(rob2, rob1 + n)
-        rob1 = rob2
-        rob2 = new_rob
-    return rob2
+class Solution:
+    def minCostClimbingStairs(self, cost: list[int]) -> int:
+        a, b = 0, 0
+        for c in reversed(cost):
+            a, b = c + min(a, b), a
+        return min(a, b)
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: House Robber II ([LeetCode 213](https://leetcode.com/problems/house-robber-ii/)) — Medium
+### Problem 3: House Robber ([LeetCode #198](https://leetcode.com/problems/house-robber/)) — Medium
 
-#### Optimized: Two Linear Passes on Circular Neighborhood
-Since houses are in a circle, house $0$ and house $N-1$ are adjacent. Take $\\max(\\text{rob}(nums[1:]), \\text{rob}(nums[:-1]))$.
+> **Pattern**: `Non-Adjacent Decision DP` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. Adjacent houses have security systems connected and will automatically contact the police if two adjacent houses were broken into on the same night.
+Given an integer array `nums` representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+
+#### Algorithmic Invariants & Optimal Derivation
+At house i, choose either rob current house + max profit from two houses prior ($rob1 + n$), or skip current house and keep profit from previous house ($rob2$).
+
 ```python
-def rob_circle(nums: list[int]) -> int:
-    if len(nums) == 1:
-        return nums[0]
-    return max(rob(nums[1:]), rob(nums[:-1]))
+class Solution:
+    def rob(self, nums: list[int]) -> int:
+        rob1, rob2 = 0, 0
+        for n in nums:
+            rob1, rob2 = rob2, max(rob1 + n, rob2)
+        return rob2
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Longest Palindromic Substring ([LeetCode 5](https://leetcode.com/problems/longest-palindromic-substring/)) — Medium
+### Problem 4: Coin Change ([LeetCode #322](https://leetcode.com/problems/coin-change/)) — Medium
 
-#### Brute Force: Check All Substrings
-$O(N^2)$ substrings, each checked in $O(N)$ time $\\implies O(N^3)$.
+> **Pattern**: `Unbounded Knapsack / Bottom-Up DP` | **Target Time**: $O(A 	imes C)$ | **Target Space**: $O(A)
 
-#### Optimized: Expand Around Center ($O(N^2)$ Time, $O(1)$ Space)
-Expand from all $2N - 1$ centers (odd and even length palindromes).
+#### Problem Specification
+You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.
+You may assume that you have an infinite number of each kind of coin.
+
+#### Algorithmic Invariants & Optimal Derivation
+Define $dp[a]$ as the minimum coins needed for amount $a$. For each coin $c$, $dp[a] = \min(dp[a], 1 + dp[a - c])$. Initialize $dp[0] = 0$.
+
 ```python
-def longest_palindrome(s: str) -> str:
-    res = ""
-    def expand(l: int, r: int) -> str:
-        while l >= 0 and r < len(s) and s[l] == s[r]:
-            l -= 1
-            r += 1
-        return s[l + 1:r]
-        
-    for i in range(len(s)):
-        p1 = expand(i, i)       # Odd
-        p2 = expand(i, i + 1)   # Even
-        res = max(res, p1, p2, key=len)
-    return res
+class Solution:
+    def coinChange(self, coins: list[int], amount: int) -> int:
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        for a in range(1, amount + 1):
+            for c in coins:
+                if a - c >= 0:
+                    dp[a] = min(dp[a], 1 + dp[a - c])
+        return dp[amount] if dp[amount] != float('inf') else -1
 ```
-- **Time Complexity**: $O(N^2)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Decode Ways ([LeetCode 91](https://leetcode.com/problems/decode-ways/)) — Medium
+### Problem 5: Longest Increasing Subsequence ([LeetCode #300](https://leetcode.com/problems/longest-increasing-subsequence/)) — Medium
 
-#### Optimized: 1D Dynamic Programming
-$dp[i]$ counts decodings of $s[:i]$. Check single digit validity ($1-9$) and two digit validity ($10-26$).
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$ (maintaining 2 variables).
+> **Pattern**: `Patience Sorting / Binary Search DP` | **Target Time**: $O(N \log N)$ | **Target Space**: $O(N)
 
----
+#### Problem Specification
+Given an integer array `nums`, return the length of the longest strictly increasing subsequence.
 
-### Problem 6: Coin Change ([LeetCode 322](https://leetcode.com/problems/coin-change/)) — Medium
+#### Algorithmic Invariants & Optimal Derivation
+Maintain array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length $i+1$. Using `bisect_left` guarantees $O(N \log N)$ time.
 
-#### Brute Force: Recursive Exploration
-- **Time Complexity**: $O(C^{\\text{amount}})$ where $C$ is number of coin denominations.
-
-#### Optimized: Bottom-Up Tabulation ($O(\\text{amount} \\times C)$)
-```python
-def coin_change(coins: list[int], amount: int) -> int:
-    dp = [float("inf")] * (amount + 1)
-    dp[0] = 0
-    for a in range(1, amount + 1):
-        for c in coins:
-            if a - c >= 0:
-                dp[a] = min(dp[a], 1 + dp[a - c])
-    return int(dp[amount]) if dp[amount] != float("inf") else -1
-```
-- **Time Complexity**: $O(\\text{amount} \\times C)$.
-- **Space Complexity**: $O(\\text{amount})$.
-
----
-
-### Problem 7: Maximum Product Subarray ([LeetCode 152](https://leetcode.com/problems/maximum-product-subarray/)) — Medium
-
-#### Optimized: Tracking Min and Max Simultaneously
-A negative number flips the minimum product into the maximum product.
-```python
-def max_product(nums: list[int]) -> int:
-    res = max(nums)
-    cur_min, cur_max = 1, 1
-    for n in nums:
-        if n == 0:
-            cur_min, cur_max = 1, 1
-            continue
-        tmp = cur_max * n
-        cur_max = max(n * cur_max, n * cur_min, n)
-        cur_min = min(tmp, n * cur_min, n)
-        res = max(res, cur_max)
-    return res
-```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
-
----
-
-### Problem 8: Word Break ([LeetCode 139](https://leetcode.com/problems/word-break/)) — Medium
-
-#### Optimized: DP Boolean Array
-$dp[i] = \\text{True}$ if any $dp[j] == \\text{True}$ and $s[j:i] \\in word\\_dict$.
-- **Time Complexity**: $O(N \\times L)$ where $L$ is max word length.
-- **Space Complexity**: $O(N)$.
-
----
-
-### Problem 9: Longest Increasing Subsequence ([LeetCode 300](https://leetcode.com/problems/longest-increasing-subsequence/)) — Medium
-
-#### Brute Force: $O(N^2)$ Tabulation
-$dp[i] = 1 + \\max(\\{dp[j] \\mid j < i, nums[j] < nums[i]\\})$.
-
-#### Optimized: Patience Sorting with Binary Search ($O(N \\log N)$ Time)
-Maintain an array `tails` where `tails[i]` stores the smallest tail of an increasing subsequence of length $i+1$. Use `bisect_left` to update in $O(\\log N)$.
 ```python
 import bisect
 
-def length_of_lis(nums: list[int]) -> int:
-    tails = []
-    for x in nums:
-        idx = bisect.bisect_left(tails, x)
-        if idx == len(tails):
-            tails.append(x)
-        else:
-            tails[idx] = x
-    return len(tails)
+class Solution:
+    def lengthOfLIS(self, nums: list[int]) -> int:
+        tails = []
+        for x in nums:
+            idx = bisect.bisect_left(tails, x)
+            if idx == len(tails):
+                tails.append(x)
+            else:
+                tails[idx] = x
+        return len(tails)
 ```
-- **Time Complexity**: $O(N \\log N)$, **Space Complexity**: $O(N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
+### Problem 6: Word Break ([LeetCode #139](https://leetcode.com/problems/word-break/)) — Medium
+
+> **Pattern**: `String Prefix Segmentation DP` | **Target Time**: $O(N^2)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words. Note that the same word in the dictionary may be reused multiple times.
+
+#### Algorithmic Invariants & Optimal Derivation
+$dp[i]$ is True if prefix $s[0\dots i]$ can be formed. Check all split points $j < i$: if $dp[j]$ is True and substring $s[j\dots i]$ is in dictionary, then $dp[i] = 	ext{True}$.
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: list[str]) -> bool:
+        words = set(wordDict)
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+        for i in range(1, len(s) + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in words:
+                    dp[i] = True
+                    break
+        return dp[len(s)]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 7: Maximum Subarray ([LeetCode #53](https://leetcode.com/problems/maximum-subarray/)) — Medium
+
+> **Pattern**: `Kadane's Dynamic Programming` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given an integer array `nums`, find the subarray with the largest sum, and return its sum.
+
+#### Algorithmic Invariants & Optimal Derivation
+Kadane's algorithm: at each element, decide whether to start a new subarray or extend the existing one: $curr = \max(x, curr + x)$.
+
+```python
+class Solution:
+    def maxSubArray(self, nums: list[int]) -> int:
+        max_sum = nums[0]
+        curr_sum = 0
+        for x in nums:
+            curr_sum = max(x, curr_sum + x)
+            max_sum = max(max_sum, curr_sum)
+        return max_sum
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
 
 ## 3. Hands-On Project & Test Suite
 

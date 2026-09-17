@@ -1,71 +1,68 @@
-"""Module 04: Interactive Foundations Interactive OOP Playground.
+"""Beginner playground for Module 04 - Deep Object-Oriented Programming.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-class BankAccount:
-    """A simple, clean bank account class."""
-    def __init__(self, owner: str, initial_balance: float = 0.0):
-        self.owner = owner
-        self.balance = initial_balance
-        self.history = [f"Account opened with ${initial_balance:.2f}"]
+from dataclasses import dataclass
 
-    def deposit(self, amount: float) -> str:
-        if amount <= 0:
-            return "[X] Deposit must be greater than zero."
-        self.balance += amount
-        self.history.append(f"Deposited ${amount:.2f}")
-        return f"[OK] Deposited ${amount:.2f}. New Balance: ${self.balance:.2f}"
+# -------------------------------------------- 1. Custom Operator Overloading via Dunder Methods
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-    def withdraw(self, amount: float) -> str:
-        if amount <= 0:
-            return "[X] Withdrawal must be greater than zero."
-        if amount > self.balance:
-            return f"[X] Insufficient funds! Current balance is only ${self.balance:.2f}."
-        self.balance -= amount
-        self.history.append(f"Withdrew ${amount:.2f}")
-        return f"[OK] Withdrew ${amount:.2f}. New Balance: ${self.balance:.2f}"
+    def __add__(self, other):
+        return Vector2D(self.x + other.x, self.y + other.y)
 
-def main():
-    print("=" * 60)
-    print("  MODULE 04: INTERACTIVE OOP BANK ACCOUNT SIMULATOR [BANK]")
-    print("=" * 60)
+    def __eq__(self, other):
+        return (self.x, self.y) == (other.x, other.y)
 
-    name = input("Enter account holder name: ").strip() or "Taylor"
-    account = BankAccount(name, 100.0)
-    print(f"Created BankAccount for {account.owner} with $100.00 initial balance.")
+v1 = Vector2D(1, 2)
+v2 = Vector2D(3, 4)
+v3 = v1 + v2
+assert v3 == Vector2D(4, 6)
+assert (v3.x, v3.y) == (4, 6)
+print(f"Vector addition: ({v1.x},{v1.y}) + ({v2.x},{v2.y}) = ({v3.x},{v3.y})")
 
-    while True:
-        print(f"\nCurrent Balance: ${account.balance:.2f}")
-        print("1. Deposit Money")
-        print("2. Withdraw Money")
-        print("3. View Transaction History")
-        print("4. Exit")
-        cmd = input("Select action (1-4): ").strip()
+# -------------------------------------------- 2. Encapsulation with Properties
+class Temperature:
+    def __init__(self, celsius):
+        self._celsius = celsius
 
-        if cmd == "1":
-            try:
-                amt = float(input("Deposit amount: $"))
-                print(account.deposit(amt))
-            except ValueError:
-                print("Invalid number!")
-        elif cmd == "2":
-            try:
-                amt = float(input("Withdrawal amount: $"))
-                print(account.withdraw(amt))
-            except ValueError:
-                print("Invalid number!")
-        elif cmd == "3":
-            print("\n--- Statement History ---")
-            for entry in account.history:
-                print(f"  * {entry}")
-        elif cmd == "4":
-            print("Great job learning OOP! Proceed to Module 05.")
-            break
+    @property
+    def celsius(self):
+        return self._celsius
 
-if __name__ == "__main__":
-    try:
-        main()
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended. Happy coding!")
+    @celsius.setter
+    def celsius(self, val):
+        if val < -273.15:
+            raise ValueError("Below absolute zero!")
+        self._celsius = val
+
+t = Temperature(25)
+assert t.celsius == 25
+t.celsius = 30
+assert t.celsius == 30
+print(f"Validated property updated to: {t.celsius} C")
+
+# -------------------------------------------- 3. Dataclasses for Clean Value Objects
+@dataclass(frozen=True)
+class Point:
+    x: float
+    y: float
+
+p1 = Point(1.5, 2.5)
+p2 = Point(1.5, 2.5)
+assert p1 == p2
+assert hash(p1) == hash(p2)
+print(f"Immutable dataclass point created: {p1}")
+
+print()
+print("All checks passed.")

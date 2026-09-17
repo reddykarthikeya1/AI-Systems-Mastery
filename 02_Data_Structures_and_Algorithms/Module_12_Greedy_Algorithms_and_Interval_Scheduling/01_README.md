@@ -37,102 +37,206 @@ A problem can be solved by greedy if:
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Jump Game ([LeetCode 55](https://leetcode.com/problems/jump-game/)) — Medium
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Recursive Backtracking
-- **Time Complexity**: $O(2^N)$ — TLE.
+### Problem 1: Jump Game ([LeetCode #55](https://leetcode.com/problems/jump-game/)) — Medium
 
-#### Optimized: Greedy Reachable Index ($O(N)$ Time, $O(1)$ Space)
-Maintain `max_reach`. If current index $i > max\\_reach$, return False.
+> **Pattern**: `Furthest Reachable Index Greedy` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given an integer array `nums`. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+Return `true` if you can reach the last index, or `false` otherwise.
+
+#### Algorithmic Invariants & Optimal Derivation
+Track the maximum index reachable so far `max_reach`. If the current index `i` ever exceeds `max_reach`, we are stuck and cannot proceed.
+
 ```python
-def can_jump(nums: list[int]) -> bool:
-    max_reach = 0
-    for i, jump in enumerate(nums):
-        if i > max_reach:
-            return False
-        max_reach = max(max_reach, i + jump)
-    return True
+class Solution:
+    def canJump(self, nums: list[int]) -> bool:
+        max_reach = 0
+        for i, jump in enumerate(nums):
+            if i > max_reach:
+                return False
+            max_reach = max(max_reach, i + jump)
+        return True
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Jump Game II ([LeetCode 45](https://leetcode.com/problems/jump-game-ii/)) — Medium
+### Problem 2: Jump Game II ([LeetCode #45](https://leetcode.com/problems/jump-game-ii/)) — Medium
 
-#### Optimized: BFS-Style Greedy Window Boundaries ($O(N)$ Time)
-Expand window $[left, right]$ where each window corresponds to $+1$ jump.
+> **Pattern**: `BFS Window Greedy Steps` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given a 0-indexed array of integers `nums` of length `n`. You are initially positioned at `nums[0]`.
+Each element `nums[i]` represents the maximum length of a forward jump from index `i`.
+Return the minimum number of jumps to reach `nums[n - 1]`. You may assume you can always reach the last index.
+
+#### Algorithmic Invariants & Optimal Derivation
+Treat each jump as a BFS layer. When current pointer reaches `cur_end`, increment jump count and update `cur_end = cur_farthest` in $O(N)$.
+
 ```python
-def jump(nums: list[int]) -> int:
-    jumps = 0
-    l = r = 0
-    while r < len(nums) - 1:
-        farthest = 0
-        for i in range(l, r + 1):
-            farthest = max(farthest, i + nums[i])
-        l = r + 1
-        r = farthest
-        jumps += 1
-    return jumps
+class Solution:
+    def jump(self, nums: list[int]) -> int:
+        jumps = 0
+        cur_end = 0
+        cur_farthest = 0
+        for i in range(len(nums) - 1):
+            cur_farthest = max(cur_farthest, i + nums[i])
+            if i == cur_end:
+                jumps += 1
+                cur_end = cur_farthest
+        return jumps
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Gas Station ([LeetCode 134](https://leetcode.com/problems/gas-station/)) — Medium
+### Problem 3: Gas Station ([LeetCode #134](https://leetcode.com/problems/gas-station/)) — Medium
 
-#### Optimized: Single-Pass Balance Invariant ($O(N)$ Time, $O(1)$ Space)
-If total gas $\\ge$ total cost, a solution is guaranteed to exist. If running tank drops below 0 at station $i$, start must be $\\ge i + 1$.
+> **Pattern**: `Deficit Accumulation and Reset` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+There are `n` gas stations along a circular route, where the amount of gas at the `i-th` station is `gas[i]`.
+You have a car with an unlimited gas tank and it costs `cost[i]` of gas to travel from the `i-th` station to its next `(i + 1)-th` station.
+Return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return `-1`.
+
+#### Algorithmic Invariants & Optimal Derivation
+If total gas >= total cost, a valid starting index is guaranteed to exist. If `curr_tank` drops below zero starting at `start`, no station between `start` and `i` could have been the valid start, so reset `start = i + 1`.
+
 ```python
-def can_complete_circuit(gas: list[int], cost: list[int]) -> int:
-    if sum(gas) < sum(cost):
-        return -1
-    total_tank = 0
-    start = 0
-    for i in range(len(gas)):
-        total_tank += gas[i] - cost[i]
-        if total_tank < 0:
-            total_tank = 0
-            start = i + 1
-    return start
+class Solution:
+    def canCompleteCircuit(self, gas: list[int], cost: list[int]) -> int:
+        if sum(gas) < sum(cost):
+            return -1
+        total_tank = 0
+        curr_tank = 0
+        start = 0
+        for i in range(len(gas)):
+            curr_tank += gas[i] - cost[i]
+            if curr_tank < 0:
+                start = i + 1
+                curr_tank = 0
+        return start
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Merge Intervals ([LeetCode 56](https://leetcode.com/problems/merge-intervals/)) — Medium
+### Problem 4: Merge Intervals ([LeetCode #56](https://leetcode.com/problems/merge-intervals/)) — Medium
 
-#### Optimized: Sort by Start Time + Linear Merge
+> **Pattern**: `Sort by Start Time + Linear Merge` | **Target Time**: $O(N \log N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+#### Algorithmic Invariants & Optimal Derivation
+Sort intervals by start coordinate. If the current interval overlaps with the last interval in `merged` ($start \le end_{prev}$), extend $end_{prev} = \max(end_{prev}, end_{curr})$.
+
 ```python
-def merge(intervals: list[list[int]]) -> list[list[int]]:
-    intervals.sort(key=lambda x: x[0])
-    merged = [intervals[0]]
-    for start, end in intervals[1:]:
-        last_end = merged[-1][1]
-        if start <= last_end:
-            merged[-1][1] = max(last_end, end)
-        else:
-            merged.append([start, end])
-    return merged
+class Solution:
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
+        intervals.sort(key=lambda x: x[0])
+        merged = []
+        for interval in intervals:
+            if not merged or merged[-1][1] < interval[0]:
+                merged.append(interval)
+            else:
+                merged[-1][1] = max(merged[-1][1], interval[1])
+        return merged
 ```
-- **Time Complexity**: $O(N \\log N)$, **Space Complexity**: $O(N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Non-overlapping Intervals ([LeetCode 435](https://leetcode.com/problems/non-overlapping-intervals/)) — Medium
+### Problem 5: Non-overlapping Intervals ([LeetCode #435](https://leetcode.com/problems/non-overlapping-intervals/)) — Medium
 
-#### Optimized: Sort by End Time (Earliest Deadline First)
-To maximize non-overlapping intervals, always keep the interval that finishes earliest (leaving maximum room for future intervals).
-- **Time Complexity**: $O(N \\log N)$, **Space Complexity**: $O(1)$.
+> **Pattern**: `Earliest Deadline First Greedy` | **Target Time**: $O(N \log N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given an array of intervals `intervals` where `intervals[i] = [starti, endi]`, return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+
+#### Algorithmic Invariants & Optimal Derivation
+Interval Scheduling Theorem: sorting by earliest end time greedily maximizes the number of mutually compatible intervals. Any interval starting before `prev_end` is removed.
+
+```python
+class Solution:
+    def eraseOverlapIntervals(self, intervals: list[list[int]]) -> int:
+        intervals.sort(key=lambda x: x[1])
+        count = 0
+        prev_end = -float('inf')
+        for start, end in intervals:
+            if start >= prev_end:
+                prev_end = end
+            else:
+                count += 1
+        return count
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Meeting Rooms II ([LeetCode 253](https://leetcode.com/problems/meeting-rooms-ii/)) — Medium
+### Problem 6: Partition Labels ([LeetCode #763](https://leetcode.com/problems/partition-labels/)) — Medium
 
-#### Optimized: Min-Heap of Ongoing Meeting End Times
-Sort meetings by start time. Push end times into min-heap. If earliest ending meeting ends before current starts, reuse room (`heappop`).
-- **Time Complexity**: $O(N \\log N)$, **Space Complexity**: $O(N)$.
+> **Pattern**: `Last Occurrence Greedy Partition` | **Target Time**: $O(N)$ | **Target Space**: $O(1) (26 letters)
+
+#### Problem Specification
+You are given a string `s`. We want to partition the string into as many parts as possible so that each letter appears in at most one part.
+Return a list of integers representing the size of these parts.
+
+#### Algorithmic Invariants & Optimal Derivation
+Precompute the last occurrence index of each character. Scan through `s` expanding the partition boundary `end = max(end, last[c])`. When `i == end`, finalize partition.
+
+```python
+class Solution:
+    def partitionLabels(self, s: str) -> list[int]:
+        last = {c: i for i, c in enumerate(s)}
+        res = []
+        anchor = 0
+        end = 0
+        for i, c in enumerate(s):
+            end = max(end, last[c])
+            if i == end:
+                res.append(i - anchor + 1)
+                anchor = i + 1
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
 
 ## 3. Hands-On Project & Test Suite
 

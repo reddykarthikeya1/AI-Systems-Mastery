@@ -152,513 +152,262 @@ Swap elements in-place to achieve O(1) auxiliary space (e.g. reverse, matrix tra
 
 ## 5. The Master LeetCode Problem Suite (Brute Force vs. Optimized)
 
----
+This section walks through the **7 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-### Problem 1: Two Sum ([LeetCode 1](https://leetcode.com/problems/two-sum/)) — Easy
+### Problem 1: Two Sum ([LeetCode #1](https://leetcode.com/problems/two-sum/)) — Easy
 
-> **Problem Statement**: Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`. Each input has exactly one solution, and you cannot use the same element twice.
+> **Pattern**: `Hash Map Complement` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
-#### 1. Intuition & Mental Model
-We are looking for pairs $(a, b)$ such that $a + b = \text{target}$. For any element $x$, the required value is $\text{complement} = \text{target} - x$. The question is how fast we can check if the complement exists.
+#### Problem Specification
+Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.
 
-#### 2. Brute Force Approach
-Compare every possible pair of elements with two nested loops.
+You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.
 
-```python
-def two_sum_brute(nums: list[int], target: int) -> list[int]:
-    n = len(nums)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-    return []
-```
-- **Time Complexity**: $O(N^2)$ — Tests $N(N-1)/2$ pairs.
-- **Space Complexity**: $O(1)$ — No auxiliary data structures.
-- **Why It Fails**: For $N = 10^5$, $N^2 = 10^{10}$ operations, exceeding the 1-second execution limit (~$10^8$ ops) and triggering **Time Limit Exceeded (TLE)**.
-
-#### 3. Optimized Approach (One-Pass Hash Map)
-As we traverse the array, maintain a hash table mapping `value -> index`. For each number, query if `target - num` already exists in the map.
+#### Algorithmic Invariants & Optimal Derivation
+Iterate through nums while storing seen numbers and their indices in a hash map. For each number, check if `target - num` already exists in the table in $O(1)$ amortized time.
 
 ```python
-def two_sum_optimal(nums: list[int], target: int) -> list[int]:
-    seen: dict[int, int] = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []
+class Solution:
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        seen = {}
+        for i, num in enumerate(nums):
+            comp = target - num
+            if comp in seen:
+                return [seen[comp], i]
+            seen[num] = i
+        return []
 ```
-- **Time Complexity**: $O(N)$ — Single pass; hash map lookups and insertions are $O(1)$ on average.
-- **Space Complexity**: $O(N)$ — Stores up to $N$ elements in the hash map.
-- **Key Takeaway**: Trade space for time. Convert a search query from $O(N)$ to $O(1)$ using a hash table.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Best Time to Buy and Sell Stock ([LeetCode 121](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)) — Easy
+### Problem 2: Best Time to Buy and Sell Stock ([LeetCode #121](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)) — Easy
 
-> **Problem Statement**: You are given an array `prices` where `prices[i]` is the price of a given stock on the $i$-th day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit.
+> **Pattern**: `Prefix Minimum / One-Pass Greedy` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
 
-#### 1. Brute Force Approach
-Test every pair $(i, j)$ where $j > i$ and find the maximum difference `prices[j] - prices[i]`.
+#### Problem Specification
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `i-th` day.
 
-```python
-def max_profit_brute(prices: list[int]) -> int:
-    max_prof = 0
-    for i in range(len(prices)):
-        for j in range(i + 1, len(prices)):
-            max_prof = max(max_prof, prices[j] - prices[i])
-    return max_prof
-```
-- **Time Complexity**: $O(N^2)$ — Quadratic pair evaluation.
-- **Space Complexity**: $O(1)$.
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit. If no profit can be achieved, return `0`.
 
-#### 2. Optimized Approach (Single-Pass Running Minimum)
-To maximize profit when selling on day $i$, we must have bought at the minimum price seen on days $0$ through $i-1$. Track `min_price` dynamically.
+#### Algorithmic Invariants & Optimal Derivation
+Maintain the running minimum price seen so far. At each day, calculate profit if sold today (current_price - min_price) and update max_profit.
 
 ```python
-def max_profit_optimal(prices: list[int]) -> int:
-    min_price = float('inf')
-    max_prof = 0
-    for price in prices:
-        if price < min_price:
-            min_price = price
-        elif price - min_price > max_prof:
-            max_prof = price - min_price
-    return max_prof
+class Solution:
+    def maxProfit(self, prices: list[int]) -> int:
+        min_price = float('inf')
+        max_profit = 0
+        for p in prices:
+            if p < min_price:
+                min_price = p
+            elif p - min_price > max_profit:
+                max_profit = p - min_price
+        return max_profit
 ```
-- **Time Complexity**: $O(N)$ — Single pass through the prices array.
-- **Space Complexity**: $O(1)$ — Only two scalar variables.
-- **Key Takeaway**: Maintain a rolling invariant (running minimum prefix).
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Contains Duplicate ([LeetCode 217](https://leetcode.com/problems/contains-duplicate/)) — Easy
+### Problem 3: 3Sum ([LeetCode #15](https://leetcode.com/problems/3sum/)) — Medium
 
-> **Problem Statement**: Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.
+> **Pattern**: `Sorting + Two Pointers` | **Target Time**: $O(N^2)$ | **Target Space**: $O(1)
 
-#### 1. Brute Force Approach
-Compare every pair in $O(N^2)$ time, or sort the array in $O(N \log N)$ time and scan adjacent elements.
+#### Problem Specification
+Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
 
-#### 2. Optimized Approach (Hash Set)
-```python
-def contains_duplicate_optimal(nums: list[int]) -> bool:
-    seen: set[int] = set()
-    for num in nums:
-        if num in seen:
-            return True
-        seen.add(num)
-    return False
-```
-- **Time Complexity**: $O(N)$ — Early exit on first duplicate.
-- **Space Complexity**: $O(N)$ — Stores unique elements in a hash set.
+Notice that the solution set must not contain duplicate triplets.
 
----
-
-### Problem 4: Product of Array Except Self ([LeetCode 238](https://leetcode.com/problems/product-of-array-except-self/)) — Medium
-
-> **Problem Statement**: Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all elements of `nums` except `nums[i]`. You must write an algorithm that runs in $O(N)$ time and without using the division operation.
-
-#### 1. Intuition & Mental Model
-For any index $i$, the total product excluding `nums[i]` is:
-
-$$\text{answer}[i] = \prod_{j < i} \text{nums}[j] \times \prod_{j > i} \text{nums}[j] = \text{prefix\_product}[i] \times \text{suffix\_product}[i]$$
-
-#### 2. Brute Force Approach
-For each index $i$, run a loop over all other $j \ne i$ multiplying values.
-- **Time Complexity**: $O(N^2)$.
-- **Space Complexity**: $O(1)$ auxiliary.
-
-#### 3. Optimized Approach ($O(N)$ Time, $O(1)$ Extra Space)
-Compute prefix products directly into the result array, then sweep backwards with a running suffix accumulator.
+#### Algorithmic Invariants & Optimal Derivation
+Sort array first ($O(N \log N)$). Iterate through each candidate first element, skipping duplicates. Use two pointers inward on the remainder of the array to find pairs summing to $-nums[i]$.
 
 ```python
-def product_except_self(nums: list[int]) -> list[int]:
-    n = len(nums)
-    res = [1] * n
-    
-    # Pass 1: res[i] contains product of elements to the left of i
-    prefix = 1
-    for i in range(n):
-        res[i] = prefix
-        prefix *= nums[i]
-        
-    # Pass 2: Multiply by running product of elements to the right of i
-    suffix = 1
-    for i in range(n - 1, -1, -1):
-        res[i] *= suffix
-        suffix *= nums[i]
-        
-    return res
-```
-- **Time Complexity**: $O(N)$ — Two sequential linear passes.
-- **Space Complexity**: $O(1)$ — The output array does not count as extra space per problem specifications.
-- **Key Takeaway**: Prefix and suffix product decomposition eliminates division entirely.
-
----
-
-### Problem 5: Maximum Subarray ([LeetCode 53](https://leetcode.com/problems/maximum-subarray/)) — Medium
-
-> **Problem Statement**: Given an integer array `nums`, find the subarray with the largest sum, and return its sum.
-
-#### 1. Intuition (Kadane's Algorithm)
-At any element `nums[i]`, we decide whether to add `nums[i]` to our current running subarray, or discard the previous subarray and start fresh at `nums[i]`. If our previous running sum is negative, it can only drag down future sums.
-
-$$S[i] = \max(\text{nums}[i], S[i-1] + \text{nums}[i])$$
-
-#### 2. Brute Force Approach
-Test all subarrays $[i, j]$:
-
-```python
-def max_sub_array_brute(nums: list[int]) -> int:
-    max_sum = float('-inf')
-    n = len(nums)
-    for i in range(n):
-        curr_sum = 0
-        for j in range(i, n):
-            curr_sum += nums[j]
-            max_sum = max(max_sum, curr_sum)
-    return max_sum
-```
-- **Time Complexity**: $O(N^2)$.
-- **Space Complexity**: $O(1)$.
-
-#### 3. Optimized Approach (Kadane's Algorithm in $O(N)$)
-```python
-def max_sub_array_optimal(nums: list[int]) -> int:
-    current_sum = nums[0]
-    max_sum = nums[0]
-    
-    for x in nums[1:]:
-        # Either extend the existing subarray or start a new one from x
-        current_sum = max(x, current_sum + x)
-        max_sum = max(max_sum, current_sum)
-        
-    return max_sum
-```
-- **Time Complexity**: $O(N)$ — Single pass over array.
-- **Space Complexity**: $O(1)$ — Only two scalar variables.
-- **Key Takeaway**: Local optimal choice leads to global maximum for contiguous subarrays.
-
----
-
-### Problem 6: Two Sum II - Input Array Is Sorted ([LeetCode 167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)) — Medium
-
-> **Problem Statement**: Given a 1-indexed sorted array of integers `numbers`, find two numbers such that they add up to a specific `target` number. Must use $O(1)$ extra memory.
-
-#### 1. Intuition & Two Pointers Proof
-Place pointer `left = 0` and pointer `right = N - 1`.
-- If `numbers[left] + numbers[right] == target`: Found!
-- If `sum < target`: Because the array is sorted, increasing `left` is the *only* move that can increase the sum.
-- If `sum > target`: Decreasing `right` is the *only* move that can decrease the sum.
-This guarantees that no valid pair is ever skipped.
-
-```python
-def two_sum_sorted(numbers: list[int], target: int) -> list[int]:
-    left, right = 0, len(numbers) - 1
-    while left < right:
-        curr = numbers[left] + numbers[right]
-        if curr == target:
-            return [left + 1, right + 1] # 1-indexed
-        elif curr < target:
-            left += 1
-        else:
-            right -= 1
-    return []
-```
-- **Time Complexity**: $O(N)$ — Each step shrinks search space by 1.
-- **Space Complexity**: $O(1)$ — No auxiliary memory.
-
----
-
-### Problem 7: 3Sum ([LeetCode 15](https://leetcode.com/problems/3sum/)) — Medium
-
-> **Problem Statement**: Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that $i \ne j, i \ne k, j \ne k$, and `nums[i] + nums[j] + nums[k] == 0`. The solution set must not contain duplicate triplets.
-
-#### 1. Brute Force Approach
-Three nested loops testing all triplets: $O(N^3)$ time + hash set to filter duplicates. TLEs instantly.
-
-#### 2. Optimized Approach (Sort + Two Pointers)
-Sort the array first in $O(N \log N)$. For each element `nums[i]`, solve the Two Sum II problem for `target = -nums[i]` using two pointers on the remainder of the array. Skip identical elements to prevent duplicate triplets.
-
-```python
-def three_sum(nums: list[int]) -> list[list[int]]:
-    nums.sort()
-    res = []
-    n = len(nums)
-    
-    for i in range(n - 2):
-        # Optimization: If the smallest number > 0, three positives cannot sum to 0
-        if nums[i] > 0:
-            break
-        # Skip duplicate first elements
-        if i > 0 and nums[i] == nums[i - 1]:
-            continue
-            
-        left, right = i + 1, n - 1
-        while left < right:
-            total = nums[i] + nums[left] + nums[right]
-            if total < 0:
-                left += 1
-            elif total > 0:
-                right -= 1
-            else:
-                res.append([nums[i], nums[left], nums[right]])
-                # Skip duplicate second and third elements
-                while left < right and nums[left] == nums[left + 1]:
+class Solution:
+    def threeSum(self, nums: list[int]) -> list[list[int]]:
+        nums.sort()
+        res = []
+        n = len(nums)
+        for i in range(n - 2):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            left, right = i + 1, n - 1
+            while left < right:
+                total = nums[i] + nums[left] + nums[right]
+                if total < 0:
                     left += 1
-                while left < right and nums[right] == nums[right - 1]:
+                elif total > 0:
                     right -= 1
+                else:
+                    res.append([nums[i], nums[left], nums[right]])
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+        return res
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 4: Container With Most Water ([LeetCode #11](https://leetcode.com/problems/container-with-most-water/)) — Medium
+
+> **Pattern**: `Two Pointers Squeeze` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given an integer array `height` of length `n`. There are `n` vertical lines drawn such that the two endpoints of the `i-th` line are `(i, 0)` and `(i, height[i])`.
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.
+
+#### Algorithmic Invariants & Optimal Derivation
+Start pointers at both ends to maximize width. The water volume is bounded by the shorter line: $	ext{area} = \min(h[l], h[r]) 	imes (r - l)$. Advancing the shorter line is the only way to potentially find a larger area.
+
+```python
+class Solution:
+    def maxArea(self, height: list[int]) -> int:
+        left, right = 0, len(height) - 1
+        max_water = 0
+        while left < right:
+            h = min(height[left], height[right])
+            max_water = max(max_water, h * (right - left))
+            if height[left] < height[right]:
                 left += 1
+            else:
                 right -= 1
-                
-    return res
+        return max_water
 ```
-- **Time Complexity**: $O(N^2)$ — Sorting is $O(N \log N)$; outer loop runs $N$ times, each executing an $O(N)$ two-pointer sweep.
-- **Space Complexity**: $O(1)$ or $O(N)$ depending on sorting implementation.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 8: Container With Most Water ([LeetCode 11](https://leetcode.com/problems/container-with-most-water/)) — Medium
+### Problem 5: Product of Array Except Self ([LeetCode #238](https://leetcode.com/problems/product-of-array-except-self/)) — Medium
 
-> **Problem Statement**: Given an integer array `height` of length $n$, there are $n$ vertical lines drawn. Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.
+> **Pattern**: `Prefix & Suffix Accumulation` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
 
-#### 1. Intuition & Greedy Two Pointers
-The water volume bounded by lines $L$ and $R$ is:
+#### Problem Specification
+Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
 
-$$\text{Area} = (R - L) \times \min(\text{height}[L], \text{height}[R])$$
+You must write an algorithm that runs in $O(n)$ time and without using the division operation.
 
-To maximize area, start at the maximum possible width (`left = 0, right = n - 1`). The height of the container is bottlenecked by the **shorter line**. Moving the taller line inward can only decrease width without any chance of increasing the bottleneck height. Therefore, the **only move that could potentially yield a larger area is advancing the shorter line**.
+#### Algorithmic Invariants & Optimal Derivation
+For any index i, the product except nums[i] equals (prefix product up to i-1) * (suffix product from i+1 to n-1). Pass forwards to build prefix, then backwards with a running suffix variable.
 
 ```python
-def max_area(height: list[int]) -> int:
-    left, right = 0, len(height) - 1
-    max_water = 0
-    
-    while left < right:
-        width = right - left
-        h = min(height[left], height[right])
-        max_water = max(max_water, width * h)
-        
-        # Advance the pointer pointing to the shorter line
-        if height[left] < height[right]:
-            left += 1
-        else:
-            right -= 1
-            
-    return max_water
+class Solution:
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        n = len(nums)
+        res = [1] * n
+        prefix = 1
+        for i in range(n):
+            res[i] = prefix
+            prefix *= nums[i]
+        suffix = 1
+        for i in range(n - 1, -1, -1):
+            res[i] *= suffix
+            suffix *= nums[i]
+        return res
 ```
-- **Time Complexity**: $O(N)$ — Pointers meet in at most $N$ iterations.
-- **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 9: Trapping Rain Water ([LeetCode 42](https://leetcode.com/problems/trapping-rain-water/)) — Hard
+### Problem 6: Longest Substring Without Repeating Characters ([LeetCode #3](https://leetcode.com/problems/longest-substring-without-repeating-characters/)) — Medium
 
-> **Problem Statement**: Given $n$ non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+> **Pattern**: `Sliding Window with Hash Map` | **Target Time**: $O(N)$ | **Target Space**: $O(\min(N, \Sigma))
 
-#### 1. Intuition
-Water trapped above bar $i$ is determined by the minimum of the highest wall to its left and the highest wall to its right, minus its own height:
+#### Problem Specification
+Given a string `s`, find the length of the longest substring without repeating characters.
 
-$$\text{Water}[i] = \max(0, \min(\text{left\_max}[i], \text{right\_max}[i]) - \text{height}[i])$$
-
-#### 2. Intermediate Approach (Prefix Max & Suffix Max Arrays)
-Precompute `left_max` and `right_max` arrays in $O(N)$ time and $O(N)$ space.
-
-#### 3. Optimal Approach (Two Pointers in $O(1)$ Space)
-Maintain `left_max` and `right_max`. Whichever side has the smaller bound bottlenecks the water level, allowing us to compute trapped water on that side immediately and advance that pointer.
+#### Algorithmic Invariants & Optimal Derivation
+Sliding window [left, right]. Store the last seen index of each character. When a duplicate is encountered inside the current window, shift `left` directly to last_index + 1.
 
 ```python
-def trap_water(height: list[int]) -> int:
-    if not height:
-        return 0
-        
-    left, right = 0, len(height) - 1
-    left_max, right_max = height[left], height[right]
-    water = 0
-    
-    while left < right:
-        if left_max < right_max:
-            left += 1
-            left_max = max(left_max, height[left])
-            water += left_max - height[left]
-        else:
-            right -= 1
-            right_max = max(right_max, height[right])
-            water += right_max - height[right]
-            
-    return water
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_idx = {}
+        left = 0
+        max_len = 0
+        for right, ch in enumerate(s):
+            if ch in char_idx and char_idx[ch] >= left:
+                left = char_idx[ch] + 1
+            char_idx[ch] = right
+            max_len = max(max_len, right - left + 1)
+        return max_len
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(1)$ — Zero auxiliary arrays.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 10: Longest Substring Without Repeating Characters ([LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/)) — Medium
+### Problem 7: Trapping Rain Water ([LeetCode #42](https://leetcode.com/problems/trapping-rain-water/)) — Hard
 
-> **Problem Statement**: Given a string `s`, find the length of the longest substring without duplicate characters.
+> **Pattern**: `Two Pointers / Prefix Maximum` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
 
-#### 1. Intuition & Dynamic Sliding Window
-Maintain a sliding window $[L, R]$. As $R$ expands, if `s[R]` was previously seen inside our current window (at index `prev_idx >= L`), jump $L$ directly to `prev_idx + 1` to restore the unique characters invariant in $O(1)$ operations.
+#### Problem Specification
+Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.
+
+#### Algorithmic Invariants & Optimal Derivation
+Water trapped at index i is determined by $\min(	ext{left\_max}, 	ext{right\_max}) - 	ext{height}[i]$. By advancing whichever boundary has the smaller max, we guarantee the water height at that position is strictly dictated by that boundary.
 
 ```python
-def length_of_longest_substring(s: str) -> int:
-    last_seen: dict[str, int] = {}
-    left = 0
-    max_len = 0
-    
-    for right, char in enumerate(s):
-        if char in last_seen and last_seen[char] >= left:
-            left = last_seen[char] + 1
-            
-        last_seen[char] = right
-        max_len = max(max_len, right - left + 1)
-        
-    return max_len
+class Solution:
+    def trap(self, height: list[int]) -> int:
+        if not height:
+            return 0
+        left, right = 0, len(height) - 1
+        left_max, right_max = height[left], height[right]
+        water = 0
+        while left < right:
+            if left_max < right_max:
+                left += 1
+                left_max = max(left_max, height[left])
+                water += left_max - height[left]
+            else:
+                right -= 1
+                right_max = max(right_max, height[right])
+                water += right_max - height[right]
+        return water
 ```
-- **Time Complexity**: $O(N)$ — Right pointer sweeps once from $0$ to $N-1$.
-- **Space Complexity**: $O(\min(N, \Sigma))$ — Hash map of size at most the alphabet size $\Sigma$ (e.g. 128 for ASCII).
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 11: Minimum Window Substring ([LeetCode 76](https://leetcode.com/problems/minimum-window-substring/)) — Hard
-
-> **Problem Statement**: Given two strings `s` and `t`, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such substring, return `""`.
-
-#### 1. Intuition
-Use a variable sliding window with two frequency maps: `target_counts` and `window_counts`. Track `have` (number of unique characters meeting target count) vs. `need` (total distinct characters in `t`).
-1. Expand `right` until `have == need`.
-2. Once valid, record window length and shrink `left` as much as possible while maintaining `have == need`.
-3. Repeat until end of string.
-
-```python
-from collections import Counter
-
-def min_window(s: str, t: str) -> str:
-    if not t or not s:
-        return ""
-        
-    target_counts = Counter(t)
-    window_counts: dict[str, int] = {}
-    
-    have, need = 0, len(target_counts)
-    res_len = float('inf')
-    res_indices = (-1, -1)
-    
-    left = 0
-    for right, char in enumerate(s):
-        window_counts[char] = window_counts.get(char, 0) + 1
-        if char in target_counts and window_counts[char] == target_counts[char]:
-            have += 1
-            
-        while have == need:
-            # Update best window
-            window_len = right - left + 1
-            if window_len < res_len:
-                res_len = window_len
-                res_indices = (left, right)
-                
-            # Pop left character from window
-            left_char = s[left]
-            window_counts[left_char] -= 1
-            if left_char in target_counts and window_counts[left_char] < target_counts[left_char]:
-                have -= 1
-            left += 1
-            
-    l, r = res_indices
-    return s[l : r + 1] if res_len != float('inf') else ""
-```
-- **Time Complexity**: $O(|S| + |T|)$ — Each character in $S$ is visited at most twice (once by $R$, once by $L$).
-- **Space Complexity**: $O(|S| + |T|)$ — Frequency hash maps.
-
----
-
-### Problem 12: Subarray Sum Equals K ([LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/)) — Medium
-
-> **Problem Statement**: Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.
-
-#### 1. Intuition & Prefix Sum Identity
-A subarray sum from $i$ to $j$ is given by:
-
-$$\text{Sum}(i, j) = \text{PrefixSum}[j] - \text{PrefixSum}[i - 1]$$
-
-Setting $\text{Sum}(i, j) = k$ yields:
-
-$$\text{PrefixSum}[i - 1] = \text{PrefixSum}[j] - k$$
-
-As we iterate, maintain a hash map of `prefix_sum -> frequency`. For each running prefix sum $P$, add `map[P - k]` to our total count!
-
-```python
-def subarray_sum(nums: list[int], k: int) -> int:
-    prefix_counts = {0: 1} # Base case: empty prefix has sum 0
-    current_sum = 0
-    total_count = 0
-    
-    for num in nums:
-        current_sum += num
-        # How many prefixes have sum (current_sum - k)?
-        total_count += prefix_counts.get(current_sum - k, 0)
-        prefix_counts[current_sum] = prefix_counts.get(current_sum, 0) + 1
-        
-    return total_count
-```
-- **Time Complexity**: $O(N)$ — Single linear pass.
-- **Space Complexity**: $O(N)$ — Prefix sum frequency hash map.
-- **Crucial Distinction**: Sliding window does NOT work on this problem when negative numbers are present because the sum is not monotonic! Prefix sum with hash map works for all integers.
-
----
-
-### Problem 13: Merge Intervals ([LeetCode 56](https://leetcode.com/problems/merge-intervals/)) — Medium
-
-> **Problem Statement**: Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
-
-```python
-def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
-    intervals.sort(key=lambda x: x[0])
-    merged: list[list[int]] = []
-    
-    for interval in intervals:
-        if not merged or merged[-1][1] < interval[0]:
-            # No overlap, append directly
-            merged.append(interval)
-        else:
-            # Overlap exists, expand end boundary of previous interval
-            merged[-1][1] = max(merged[-1][1], interval[1])
-            
-    return merged
-```
-- **Time Complexity**: $O(N \log N)$ — Dominated by interval start time sorting.
-- **Space Complexity**: $O(N)$ — Output list.
-
----
-
-### Problem 14: Rotate Image ([LeetCode 48](https://leetcode.com/problems/rotate-image/)) — Medium
-
-> **Problem Statement**: You are given an $n \times n$ 2D matrix representing an image, rotate the image by 90 degrees (clockwise) **in-place** (without allocating another 2D matrix).
-
-#### 1. In-Place Transposition Geometric Decomposition
-A 90-degree clockwise rotation is mathematically equivalent to two simple in-place operations:
-1. **Transpose the matrix** (reflect along main diagonal: swap `matrix[i][j]` with `matrix[j][i]`).
-2. **Reverse each row** (reflect horizontally: reverse row `matrix[i]`).
-
-```python
-def rotate_matrix(matrix: list[list[int]]) -> None:
-    n = len(matrix)
-    
-    # Step 1: Transpose matrix in-place
-    for i in range(n):
-        for j in range(i + 1, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-            
-    # Step 2: Reverse each row in-place
-    for i in range(n):
-        matrix[i].reverse()
-```
-- **Time Complexity**: $O(N^2)$ — Visits each cell twice.
-- **Space Complexity**: $O(1)$ — Modifies matrix strictly in-place.
-
----
 
 ## 6. Learning Path & Deliverables
 

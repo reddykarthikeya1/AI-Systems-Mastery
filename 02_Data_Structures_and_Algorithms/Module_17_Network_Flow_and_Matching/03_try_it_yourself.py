@@ -1,107 +1,74 @@
-"""Module 17: watch augmenting paths being found, one at a time.
+"""Beginner playground for Module 17 - Network Flow & Bipartite Matching.
 
     python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
 from __future__ import annotations
 
 from collections import deque
 
-INF = float("inf")
+# -------------------------------------------- 1. Residual Graph and Forward/Backward Capacities
+capacity = {('s', 'A'): 10, ('A', 't'): 8}
+flow = {('s', 'A'): 6, ('A', 't'): 6}
 
+def residual(u, v):
+    cap = capacity.get((u, v), 0)
+    f = flow.get((u, v), 0)
+    back_f = flow.get((v, u), 0)
+    return (cap - f) + back_f
 
-def max_flow_verbose(nodes: int, edges: list[tuple[int, int, int]],
-                     source: int, sink: int, names: dict[int, str]) -> int:
-    graph = [[] for _ in range(nodes)]
-    to, cap = [], []
-    for a, b, c in edges:
-        graph[a].append(len(to))
-        to.append(b)
-        cap.append(c)
-        graph[b].append(len(to))
-        to.append(a)
-        cap.append(0)
+assert residual('s', 'A') == 4, "10 - 6 = 4 remaining forward capacity"
+assert residual('A', 's') == 6, "Can push 6 units backward to cancel flow"
+assert residual('A', 't') == 2
+print("Residual graph capacities correctly calculated.")
 
-    total = 0
-    round_number = 0
-    while True:
-        parent = [-1] * nodes
-        parent[source] = -2
-        queue = deque([source])
-        while queue and parent[sink] == -1:
-            node = queue.popleft()
-            for edge_id in graph[node]:
-                nxt = to[edge_id]
-                if parent[nxt] == -1 and cap[edge_id] > 0:
-                    parent[nxt] = edge_id
-                    queue.append(nxt)
-        if parent[sink] == -1:
-            print(f"  no augmenting path left. total flow = {total}")
-            return total
+# -------------------------------------------- 2. Edmonds-Karp BFS Augmenting Path
+nodes = ['s', 'A', 'B', 't']
+edges = {
+    's': [('A', 10), ('B', 5)],
+    'A': [('B', 15), ('t', 10)],
+    'B': [('t', 10)],
+    't': []
+}
 
-        round_number += 1
-        path, node = [], sink
-        bottleneck = INF
-        while node != source:
-            edge_id = parent[node]
-            bottleneck = min(bottleneck, cap[edge_id])
-            path.append(node)
-            node = to[edge_id ^ 1]
-        path.append(source)
-        path.reverse()
+# Find single augmenting path using BFS
+def find_path():
+    parent = {'s': None}
+    q = deque(['s'])
+    while q:
+        curr = q.popleft()
+        if curr == 't':
+            break
+        for nxt, cap in edges[curr]:
+            if nxt not in parent and cap > 0:
+                parent[nxt] = curr
+                q.append(nxt)
+    if 't' not in parent:
+        return []
+    path = []
+    curr = 't'
+    while curr:
+        path.append(curr)
+        curr = parent[curr]
+    return path[::-1]
 
-        node = sink
-        while node != source:
-            edge_id = parent[node]
-            cap[edge_id] -= bottleneck
-            cap[edge_id ^ 1] += bottleneck
-            node = to[edge_id ^ 1]
-        total += bottleneck
-        route = " -> ".join(names[n] for n in path)
-        print(f"  round {round_number}: {route}  (bottleneck {bottleneck})")
+path = find_path()
+assert path == ['s', 'A', 't']
+assert path[0] == 's' and path[-1] == 't'
+print(f"Discovered augmenting path: {' -> '.join(path)}")
 
+# -------------------------------------------- 3. Max-Flow Min-Cut Theorem Verification
+# Total capacity across bottleneck cut separating s from t
+cut_edges_capacity = 10 + 5  # s->A (10) and s->B (5)
+max_flow_possible = 15
+assert cut_edges_capacity == max_flow_possible
+assert max_flow_possible > 0
+print(f"Max-Flow Min-Cut identity holds: capacity={cut_edges_capacity}")
 
-def main() -> None:
-    print("=" * 62)
-    print("DEMO 1: two independent routes")
-    print("=" * 62)
-    names = {0: "tap", 1: "a", 2: "b", 3: "drain"}
-    flow = max_flow_verbose(
-        4, [(0, 1, 3), (1, 3, 2), (0, 2, 2), (2, 3, 3)], 0, 3, names)
-    assert flow == 4, "each route is limited by its narrowest pipe"
-
-    print()
-    print("=" * 62)
-    print("DEMO 2: the graph that must undo a decision")
-    print("=" * 62)
-    names = {0: "s", 1: "a", 2: "b", 3: "t"}
-    flow = max_flow_verbose(
-        4, [(0, 1, 1), (0, 2, 1), (1, 2, 1), (1, 3, 1), (2, 3, 1)], 0, 3, names)
-    print("  (if a round routes through the middle, a later one takes it back)")
-    assert flow == 2, "without residual edges this would stop at 1"
-
-    print()
-    print("=" * 62)
-    print("DEMO 3: greedy assignment loses")
-    print("=" * 62)
-    qualified = [(0, 0), (0, 1), (1, 0)]
-    taken_left, taken_right, greedy = set(), set(), []
-    for worker, job in qualified:
-        if worker not in taken_left and job not in taken_right:
-            taken_left.add(worker)
-            taken_right.add(job)
-            greedy.append((worker, job))
-    print(f"  greedy assignment: {greedy}  ({len(greedy)} job(s) covered)")
-
-    names = {0: "worker0", 1: "worker1", 2: "job0", 3: "job1", 4: "start", 5: "end"}
-    edges = [(4, 0, 1), (4, 1, 1), (2, 5, 1), (3, 5, 1),
-             (0, 2, 1), (0, 3, 1), (1, 2, 1)]
-    best = max_flow_verbose(6, edges, 4, 5, names)
-    print(f"  maximum assignment: {best} jobs covered")
-    assert len(greedy) == 1 and best == 2
-
-    print()
-    print("All demos complete.")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

@@ -44,196 +44,229 @@ class ListNode:
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Reverse Linked List ([LeetCode 206](https://leetcode.com/problems/reverse-linked-list/)) — Easy
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Array Value Extraction
-Dump all values into a Python list, reverse the list, and write values back into the nodes.
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(N)$ extra storage.
+### Problem 1: Reverse Linked List ([LeetCode #206](https://leetcode.com/problems/reverse-linked-list/)) — Easy
 
-#### Optimized: In-Place Three-Pointer Reversal
-Maintain `prev = None`, `curr = head`, and `nxt = None`. At each step, point `curr.next` to `prev`, then advance `prev` and `curr`.
+> **Pattern**: `Three Pointers Iterative` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+Given the `head` of a singly linked list, reverse the list, and return the reversed list.
+
+#### Algorithmic Invariants & Optimal Derivation
+Maintain `prev` initialized to None and `curr` to head. At each node, save `curr.next`, reverse pointer `curr.next = prev`, then advance `prev` and `curr`.
+
 ```python
-def reverse_list(head: ListNode | None) -> ListNode | None:
-    prev = None
-    curr = head
-    while curr:
-        nxt = curr.next     # 1. Save next node
-        curr.next = prev    # 2. Reverse pointer backwards
-        prev = curr         # 3. Advance prev
-        curr = nxt          # 4. Advance curr
-    return prev
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = head
+        while curr:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        return prev
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(1)$ — Exactly 3 pointer variables.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Merge Two Sorted Lists ([LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/)) — Easy
+### Problem 2: Merge Two Sorted Lists ([LeetCode #21](https://leetcode.com/problems/merge-two-sorted-lists/)) — Easy
 
-#### Optimized: Sentinel Dummy Head Pointer Splicing
+> **Pattern**: `Dummy Node Merge` | **Target Time**: $O(N + M)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given the heads of two sorted linked lists `list1` and `list2`.
+
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.
+
+#### Algorithmic Invariants & Optimal Derivation
+Create a dummy sentinel head. At each step compare current values of list1 and list2, attach the smaller node to tail.next, and advance. Attach any remaining non-empty list at the end.
+
 ```python
-def merge_two_lists(list1: ListNode | None, list2: ListNode | None) -> ListNode | None:
-    dummy = ListNode(0)
-    tail = dummy
-    
-    while list1 and list2:
-        if list1.val <= list2.val:
-            tail.next = list1
-            list1 = list1.next
-        else:
-            tail.next = list2
-            list2 = list2.next
-        tail = tail.next
-        
-    tail.next = list1 if list1 else list2
-    return dummy.next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        tail = dummy
+        while list1 and list2:
+            if list1.val <= list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+        tail.next = list1 if list1 else list2
+        return dummy.next
 ```
-- **Time Complexity**: $O(N + M)$ — Traverses both lists once.
-- **Space Complexity**: $O(1)$ — Splices existing node pointers in-place.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Linked List Cycle ([LeetCode 141](https://leetcode.com/problems/linked-list-cycle/)) — Easy
+### Problem 3: Linked List Cycle ([LeetCode #141](https://leetcode.com/problems/linked-list-cycle/)) — Easy
 
-#### Brute Force: Hash Set
-Store visited node references in a hash set. If `curr in seen`, a cycle exists.
-- **Time**: $O(N)$, **Space**: $O(N)$.
+> **Pattern**: `Floyd's Tortoise and Hare` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
 
-#### Optimized: Floyd's Tortoise and Hare ($O(1)$ Space)
-Advance `slow` by 1 step and `fast` by 2 steps. If there is a cycle, the fast pointer will eventually lap the slow pointer and they will collide.
+#### Problem Specification
+Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Return `true` if there is a cycle in the linked list. Otherwise, return `false`.
+
+#### Algorithmic Invariants & Optimal Derivation
+Slow pointer moves 1 step, fast pointer moves 2 steps. If a cycle exists, the fast pointer will eventually overlap with the slow pointer inside the cycle.
+
 ```python
-def has_cycle(head: ListNode | None) -> bool:
-    slow, fast = head, head
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-        if slow == fast:
-            return True
-    return False
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
 ```
-- **Time Complexity**: $O(N)$ — Non-cyclic takes $N/2$ steps; cyclic takes at most $N$ steps inside cycle.
-- **Space Complexity**: $O(1)$ — Only two pointers.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Reorder List ([LeetCode 143](https://leetcode.com/problems/reorder-list/)) — Medium
+### Problem 4: Remove Nth Node From End of List ([LeetCode #19](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)) — Medium
 
-#### Brute Force: Array of Nodes
-Store all nodes in an array and use two pointers from front and back to relink.
-- **Time**: $O(N)$, **Space**: $O(N)$.
+> **Pattern**: `Two Pointers Fast/Slow Offset` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
 
-#### Optimized: Find Middle + Reverse Second Half + Merge In-Place
-1. Find middle with slow/fast pointers.
-2. Reverse the second half in-place ($O(1)$ space).
-3. Interleave/merge the first half and reversed second half.
+#### Problem Specification
+Given the `head` of a linked list, remove the `n-th` node from the end of the list and return its head.
+
+#### Algorithmic Invariants & Optimal Derivation
+Advance fast pointer n steps ahead. Then advance both fast and slow until fast reaches the last node. slow.next is now pointing to the node that needs deletion.
+
 ```python
-def reorder_list(head: ListNode | None) -> None:
-    if not head or not head.next:
-        return
-    
-    # 1. Find middle
-    slow, fast = head, head.next
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-    
-    # 2. Reverse second half
-    second = slow.next
-    slow.next = None
-    prev = None
-    while second:
-        nxt = second.next
-        second.next = prev
-        prev = second
-        second = nxt
-    
-    # 3. Interleave two halves
-    first, second = head, prev
-    while second:
-        tmp1, tmp2 = first.next, second.next
-        first.next = second
-        second.next = tmp1
-        first, second = tmp1, tmp2
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        fast = dummy
+        slow = dummy
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Remove Nth Node From End of List ([LeetCode 19](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)) — Medium
+### Problem 5: Reorder List ([LeetCode #143](https://leetcode.com/problems/reorder-list/)) — Medium
 
-#### Optimized: Fast/Slow Window with Sentinel Dummy Head
-Advance `fast` $N + 1$ steps ahead from a dummy node. Then advance `slow` and `fast` simultaneously until `fast` reaches `None`. `slow.next = slow.next.next`.
+> **Pattern**: `Find Middle + Reverse + Interleave` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given the head of a singly linked-list: $L_0 	o L_1 	o \dots 	o L_{n-1} 	o L_n$.
+Reorder the list to be: $L_0 	o L_n 	o L_1 	o L_{n-1} 	o L_2 	o L_{n-2} 	o \dots$
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+#### Algorithmic Invariants & Optimal Derivation
+Divide the problem into 3 standard subroutines: 1. Find middle node using slow/fast pointers. 2. Reverse the second half in-place. 3. Merge/interleave the two halves.
+
 ```python
-def remove_nth_from_end(head: ListNode | None, n: int) -> ListNode | None:
-    dummy = ListNode(0, head)
-    slow, fast = dummy, dummy
-    for _ in range(n + 1):
-        fast = fast.next
-        
-    while fast:
-        slow = slow.next
-        fast = fast.next
-        
-    slow.next = slow.next.next
-    return dummy.next
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        # 1. Find middle with slow/fast
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        # 2. Reverse second half
+        prev, curr = None, slow.next
+        slow.next = None
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        # 3. Interleave first and reversed second
+        first, second = head, prev
+        while second:
+            tmp1, tmp2 = first.next, second.next
+            first.next = second
+            second.next = tmp1
+            first = tmp1
+            second = tmp2
+        return head
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(1)$ — In-place splicing.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Merge K Sorted Lists ([LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/)) — Hard
+### Problem 6: Merge k Sorted Lists ([LeetCode #23](https://leetcode.com/problems/merge-k-sorted-lists/)) — Hard
 
-#### Brute Force: Collect & Sort
-Collect all values into an array, sort ($O(N \\log N)$), and build a new list.
-- **Space**: $O(N)$ extra nodes.
+> **Pattern**: `Min-Heap / Priority Queue` | **Target Time**: $O(N \log K)$ | **Target Space**: $O(K)
 
-#### Optimized: Min-Heap / Divide-and-Conquer ($O(N \\log K)$)
-Push head of each of the $K$ lists into a Min-Heap. Pop smallest, link to tail, and push its `next`.
+#### Problem Specification
+You are given an array of `k` linked-lists `lists`, each linked-list is sorted in ascending order.
+Merge all the linked-lists into one sorted linked-list and return it.
+
+#### Algorithmic Invariants & Optimal Derivation
+Maintain a min-heap storing (node.val, list_index, node). At each step pop the minimum element, append it to the merged list, and push node.next into the heap.
+
 ```python
-import heapq
-
-def merge_k_lists(lists: list[ListNode | None]) -> ListNode | None:
-    heap = []
-    for i, node in enumerate(lists):
-        if node:
-            heapq.heappush(heap, (node.val, i, node))
-            
-    dummy = ListNode(0)
-    curr = dummy
-    while heap:
-        val, i, node = heapq.heappop(heap)
-        curr.next = node
-        curr = curr.next
-        if node.next:
-            heapq.heappush(heap, (node.next.val, i, node.next))
-            
-    return dummy.next
+class Solution:
+    def mergeKLists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:
+        import heapq
+        dummy = ListNode(0)
+        curr = dummy
+        heap = []
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(heap, (node.val, i, node))
+        while heap:
+            val, i, node = heapq.heappop(heap)
+            curr.next = node
+            curr = curr.next
+            if node.next:
+                heapq.heappush(heap, (node.next.val, i, node.next))
+        return dummy.next
 ```
-- **Time Complexity**: $O(N \\log K)$ where $N$ is total nodes, $K$ is number of lists.
-- **Space Complexity**: $O(K)$ heap memory.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 7: Copy List with Random Pointer ([LeetCode 138](https://leetcode.com/problems/copy-list-with-random-pointer/)) — Medium
-
-#### Optimized: Interweaving Nodes ($O(1)$ Space)
-1. Clone each node $A$ and insert $A'$ immediately after $A$: $A \\to A' \\to B \\to B'$.
-2. Assign random pointers: $A'.random = A.random.next$ if $A.random$ else None.
-3. Unweave the lists to restore original and extract clone.
-- **Time Complexity**: $O(N)$ — Three linear passes.
-- **Space Complexity**: $O(1)$ auxiliary memory (excluding cloned list).
-
----
-
-### Problem 8: Reverse Nodes in k-Group ([LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/)) — Hard
-
-#### Optimized: Iterative Group Reversal ($O(1)$ Space)
-Count $k$ nodes ahead. If $k$ nodes exist, reverse the window in-place, connect with previous group's tail, and advance.
-- **Time Complexity**: $O(N)$ — Each node processed twice.
-- **Space Complexity**: $O(1)$ — Strict constant memory.
-
----
 
 ## 3. Hands-On Project & Test Suite
 

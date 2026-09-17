@@ -1,96 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Agent Memory Systems, what core system invariant does '1. Theoretical Foundations: Cognitive Architectures & Memory Types' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations: Cognitive Architectures & Memory Types.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Theoretical Foundations: Cognitive Architectures & Memory Types' in Agent Memory Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Agent Memory Systems, what core system invariant does '2. Episodic Retrieval Formulation (Park et al., 2023)' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Episodic Retrieval Formulation (Park et al., 2023).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Episodic Retrieval Formulation (Park et al., 2023)' in Agent Memory Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Agent Memory Systems, what core system invariant does '3. Reflection & Memory Consolidation' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Reflection & Memory Consolidation.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. Reflection & Memory Consolidation' in Agent Memory Systems.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
     "category": "Apply: Code Execution",
@@ -120,7 +30,7 @@
     "lesson_ref": "test_agent_memory_manager.py"
   },
   {
-    "id": 5,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nmemory_manager.semantic_store[\"user_domain\"]\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +60,7 @@
     "lesson_ref": "test_agent_memory_manager.py"
   },
   {
-    "id": 6,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nmemory_manager.working_memory[0][\"content\"]\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +90,7 @@
     "lesson_ref": "test_agent_memory_manager.py"
   },
   {
-    "id": 7,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nlen(memory_manager.working_memory)\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +120,7 @@
     "lesson_ref": "test_agent_memory_manager.py"
   },
   {
-    "id": 8,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -240,7 +150,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 9,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -270,7 +180,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 10,
+    "id": 7,
     "tier": "Diagnose",
     "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -300,7 +210,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 11,
+    "id": 8,
     "tier": "Diagnose",
     "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Recency Decay Overwhelming High-Value Historic Memories'\"",
     "category": "Diagnose: Failure Analysis",

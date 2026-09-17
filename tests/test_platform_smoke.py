@@ -133,6 +133,37 @@ class TestPlatformSmoke(unittest.TestCase):
         self.assertTrue(data.get("has_debug_lab"))
         self.assertGreater(len(data.get("files", [])), 0)
 
+    def test_10_problems_discovery(self):
+        """Verify /api/problems returns on-disk problem files and stubs."""
+        resp = self.client.get("/api/problems?module_path=02_Data_Structures_and_Algorithms/Module_01_Complexity_Analysis_and_Memory_Layout")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertIn("has_problems", data)
+        self.assertTrue(data["has_problems"])
+        self.assertGreater(len(data.get("problems", [])), 0)
+        p1 = data["problems"][0]
+        self.assertIn("id", p1)
+        self.assertIn("title", p1)
+        self.assertIn("starter_code", p1)
+
+    def test_11_run_problem_test(self):
+        """Verify /api/run-problem-test executes pytest against problem code."""
+        mod_path = "02_Data_Structures_and_Algorithms/Module_01_Complexity_Analysis_and_Memory_Layout"
+        resp = self.client.get(f"/api/problems?module_path={mod_path}")
+        self.assertEqual(resp.status_code, 200)
+        prob = resp.json()["problems"][0]
+        payload = {
+            "module_path": mod_path,
+            "problem_filename": prob["filename"],
+            "code": prob["starter_code"],
+        }
+        resp_run = self.client.post("/api/run-problem-test", json=payload)
+        self.assertEqual(resp_run.status_code, 200)
+        res = resp_run.json()
+        self.assertIn("status", res)
+        self.assertIn("exit_code", res)
+        self.assertIn("stdout", res)
+
 
 if __name__ == "__main__":
     unittest.main()

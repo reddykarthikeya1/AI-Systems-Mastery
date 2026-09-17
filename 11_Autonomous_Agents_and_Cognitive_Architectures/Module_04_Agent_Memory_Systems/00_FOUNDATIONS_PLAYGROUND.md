@@ -1,68 +1,78 @@
-# Beginner Playground: Multi-Tiered Agent Memory Systems
+# 🐣 Interactive Foundations Playground: Agent Memory Systems
 
+> *"Short-term memory is a scratchpad on your desk; long-term memory is a filing cabinet in the archive."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Agent Memory Systems! An agent without memory treats every turn like the beginning of time. Real-world agents require cognitive memory inspired by human neuroscience.
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Core Mental Model: Human-Inspired Memory Hierarchy
+## 0. Everything this page needs
 
-```
- +---------------------------------------------------------+
- | Working Memory (Short-Term Buffer)                      |
- | -> Current conversation messages within active context  |
- +---------------------------------------------------------+
-                             |
-                   (Consolidation Threshold)
-                             v
- +---------------------------------------------------------+
- | Episodic Memory (Long-Term Vector Log)                  |
- | -> Past interactions indexed by Recency + Importance    |
- +---------------------------------------------------------+
-                             |
-                   (Reflection & Extraction)
-                             v
- +---------------------------------------------------------+
- | Semantic Memory (Entity & Fact Knowledge Store)         |
- | -> "User prefers concise answers", "User works in Python"|
- +---------------------------------------------------------+
-```
-
----
-
-## 2. Interactive Pure-Python Experiment: Stanford Generative Agents Memory Scoring
-
-In the landmark Stanford *Generative Agents* paper (Park et al., 2023), episodic memory retrieval score is calculated as:
-$$\text{Score} = \alpha \cdot \text{Recency} + \beta \cdot \text{Importance} + \gamma \cdot \text{Relevance}$$
-
-Run this pure Python script:
+Nothing here is installed. These all ship with Python.
 
 ```python
-import math
-import time
-
-def calculate_retrieval_score(
-    hours_ago: float,
-    importance: float,     # 1 to 10
-    relevance_sim: float,  # 0.0 to 1.0 cosine similarity
-    decay_rate: float = 0.99
-) -> float:
-    # Recency exponential decay: decay_rate ^ hours_ago
-    recency = math.pow(decay_rate, hours_ago)
-    norm_importance = importance / 10.0
-
-    # Weighted combination
-    score = 0.3 * recency + 0.3 * norm_importance + 0.4 * relevance_sim
-    return score
-
-# Memory 1: Recent but trivial greeting
-m1 = calculate_retrieval_score(hours_ago=0.1, importance=2, relevance_sim=0.1)
-
-# Memory 2: Old but critical architectural rule
-m2 = calculate_retrieval_score(hours_ago=48, importance=10, relevance_sim=0.9)
-
-print(f"Memory 1 (Recent trivial) Score: {m1:.4f}")
-print(f"Memory 2 (Old critical relevant) Score: {m2:.4f}")
+from collections import deque
 ```
+
+---
+
+## 1. Sliding Window Buffer Truncation
+
+A bounded FIFO buffer keeps the most recent $K$ conversation turns while preventing context overflow.
+
+```python
+buffer = deque(maxlen=3)
+buffer.append("turn 1: Hello")
+buffer.append("turn 2: How can I help?")
+buffer.append("turn 3: Check my order")
+buffer.append("turn 4: Order #1234 is shipped")
+
+assert len(buffer) == 3
+assert "turn 1" not in buffer, "Oldest turn evicted"
+assert buffer[0] == "turn 2: How can I help?"
+print(f"Current working memory window: {list(buffer)}")
+```
+
+---
+
+## 2. Episodic Fact Extraction and Storage
+
+Extracting key user facts and storing them in a persistent dictionary across sessions.
+
+```python
+user_profile = {}
+fact = ("preferred_language", "Python")
+user_profile[fact[0]] = fact[1]
+
+assert user_profile["preferred_language"] == "Python"
+assert len(user_profile) == 1
+print(f"Persisted episodic memory: {user_profile}")
+```
+
+---
+
+## 3. Context Injection Assembly
+
+Assembling long-term profile facts and short-term dialogue into the final prompt payload.
+
+```python
+profile_context = f"User preference: language={user_profile['preferred_language']}"
+dialogue_context = "\n".join(buffer)
+full_prompt = f"{profile_context}\n---\n{dialogue_context}"
+
+assert "Python" in full_prompt
+assert "turn 4" in full_prompt
+print(f"Prompt assembled with hybrid memory ({len(full_prompt)} chars).")
+```
+
+---

@@ -1,126 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '1. Physical Node Architecture vs Array Cache Locality' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Physical Node Architecture vs Array Cache Locality.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Physical Node Architecture vs Array Cache Locality' in Linked Lists and Pointer Manipulation.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Linked Lists and Pointer Manipulation.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Linked Lists and Pointer Manipulation.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Linked Lists and Pointer Manipulation.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 5,
     "tier": "Apply",
     "question": "Given the implementation in `test_doubly_linked_list_engine.py`, what is the exact evaluated result of:\n\n```python\ndll.pop_front()\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +30,7 @@
     "lesson_ref": "test_doubly_linked_list_engine.py"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_doubly_linked_list_engine.py`, what is the exact evaluated result of:\n\n```python\ndll.to_list()\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +60,7 @@
     "lesson_ref": "test_doubly_linked_list_engine.py"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_m03_problems.py`, what is the exact evaluated result of:\n\n```python\nm is not None and m.val\n```",
     "category": "Apply: Code Execution",
@@ -210,7 +90,7 @@
     "lesson_ref": "test_m03_problems.py"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_m03_problems.py`, what is the exact evaluated result of:\n\n```python\nto_list(reverse_list(from_list(big)))\n```",
     "category": "Apply: Code Execution",
@@ -240,7 +120,7 @@
     "lesson_ref": "test_m03_problems.py"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Reversal returns a one-element list\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",
@@ -270,7 +150,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 10,
+    "id": 6,
     "tier": "Diagnose",
     "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Cycle detection never detects a cycle\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",
@@ -300,7 +180,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 11,
+    "id": 7,
     "tier": "Diagnose",
     "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",
@@ -330,7 +210,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 12,
+    "id": 8,
     "tier": "Diagnose",
     "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 The middle of an even-length list is off by one\".\nWhat is the verified root cause?",
     "category": "Diagnose: Bug Triage",

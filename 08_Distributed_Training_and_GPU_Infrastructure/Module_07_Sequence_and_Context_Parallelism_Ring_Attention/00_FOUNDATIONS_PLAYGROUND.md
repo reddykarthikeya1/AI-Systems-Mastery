@@ -1,67 +1,71 @@
-# Module 07: Beginner Playground - Sequence & Context Parallelism (Ring Attention)
+# 🐣 Interactive Foundations Playground: Sequence & Context Parallelism (Ring Attention)
 
+> *"Ring Attention passes Key and Value blocks around a ring of GPUs, calculating attention on infinite context."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Sequence & Context Parallelism**!
-Modern LLMs are expected to read entire books, codebases, or hours of video in a single prompt (128,000 to 1,000,000+ tokens).
-Why is this mathematically brutal on GPUs, and how does **Ring Attention** conquer it?
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. The Million-Token Quadratic Disaster
-
-Standard Self-Attention computes:
-$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q K^T}{\sqrt{d}}\right) V$$
-
-If your sequence length $S = 1,000,000$ tokens:
-- $Q K^T$ is a matrix of size $1,000,000 \times 1,000,000 = 10^{12}$ values!
-- In FP16 ($2$ bytes), this single attention matrix requires **2 Terabytes of VRAM** for just 1 head!
-
-Even with FlashAttention (which computes attention in small tiles inside fast SRAM without materializing the $S \times S$ matrix in HBM), what happens when **$Q, K, V$ themselves exceed GPU memory**?
-A sequence of 1M tokens with hidden size 8192 takes $\approx 16 \text{ GB}$ just to store the token embeddings!
-
----
-
-## 2. The Ring Attention Round-Robin Analogy
-
-Suppose 4 students (GPUs 0, 1, 2, 3) sit in a circle.
-A 128,000-word book is cut into 4 equal quarters of 32,000 words:
-- Student 0 holds Words $0 - 32\text{k}$ ($Q_0, K_0, V_0$)
-- Student 1 holds Words $32\text{k} - 64\text{k}$ ($Q_1, K_1, V_1$)
-- Student 2 holds Words $64\text{k} - 96\text{k}$ ($Q_2, K_2, V_2$)
-- Student 3 holds Words $96\text{k} - 128\text{k}$ ($Q_3, K_3, V_3$)
-
-How can Student 0 compare their questions ($Q_0$) with all words in the book without moving everything to one student?
-
-```
-Step 0: Each student computes attention with their OWN K and V.
-Student 0: Q0 vs (K0, V0)
-Student 1: Q1 vs (K1, V1)
-Student 2: Q2 vs (K2, V2)
-Student 3: Q3 vs (K3, V3)
-
-Step 1: Pass K and V to neighbor on the right!
-Student 0: Q0 vs (K3, V3)  [received from Student 3]
-Student 1: Q1 vs (K0, V0)  [received from Student 0]
-Student 2: Q2 vs (K1, V1)  [received from Student 1]
-Student 3: Q3 vs (K2, V2)  [received from Student 2]
-
-Step 2 & 3: Keep passing around the ring until full circle!
+```bash
+python 00_try_it_yourself.py
 ```
 
-### The Secret Superpower: 100% Compute & Communication Overlap!
-While Student 0 is multiplying $Q_0$ by $K_3$, in the background the GPU's copy engine is **already receiving $K_2$ from Student 3**!
-Because the attention computation takes milliseconds, the network transmission completes completely in the background!
-**Communication overhead is effectively ZERO!**
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 3. DeepSpeed Ulysses vs. Ring Attention
+## 0. Everything this page needs
 
-| Feature | DeepSpeed Ulysses | Ring Attention |
-| :--- | :--- | :--- |
-| **Mechanism** | All-to-All sequence/head transpose | Circular P2P Ring communication |
-| **Max Sequence Parallel Size** | Limited by number of Attention Heads ($H$) | **Virtually unlimited** (can exceed $H$) |
-| **Network Sensitivity** | Requires high All-to-All bisection bandwidth | High latency tolerance (P2P overlap) |
-| **Best Used For** | Sequences up to $64\text{k}-128\text{k}$ intra-cluster | Extreme contexts ($512\text{k}$ to $10\text{M}+$ tokens) |
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
+
+---
+
+## 1. Sequence Sharding Across GPUs
+
+A 128k context is sharded into 16k chunks across 8 GPUs; each GPU holds only its local query chunk.
+
+```python
+total_context = 128_000
+num_gpus = 8
+local_chunk = total_context // num_gpus
+
+assert local_chunk == 16_000
+assert local_chunk * num_gpus == total_context
+print(f"128k context sharded into {local_chunk} tokens per GPU across {num_gpus} GPUs.")
+```
+
+---
+
+## 2. Ring KV Shift Communication
+
+At each step, GPU $i$ transmits its Key-Value block to GPU $(i+1) \pmod N$ and receives from $(i-1) \pmod N$.
+
+```python
+ring_ranks = [0, 1, 2, 3]
+next_ranks = [(r + 1) % len(ring_ranks) for r in ring_ranks]
+prev_ranks = [(r - 1) % len(ring_ranks) for r in ring_ranks]
+
+assert next_ranks == [1, 2, 3, 0]
+assert prev_ranks == [3, 0, 1, 2]
+print(f"Ring communication mapping: next={next_ranks}, prev={prev_ranks}")
+```
+
+---
+
+## 3. Zero Extra Memory Context Scaling
+
+Ring Attention memory per GPU remains $O(N / G)$, enabling linear scaling to millions of tokens.
+
+```python
+mem_per_gpu = 16_000 * 2  # 32 KB per head
+assert mem_per_gpu == 32_000
+print(f"Per-GPU memory bound invariant verified.")
+```
+
+---

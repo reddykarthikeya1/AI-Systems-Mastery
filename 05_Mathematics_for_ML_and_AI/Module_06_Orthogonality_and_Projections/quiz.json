@@ -2,126 +2,6 @@
   {
     "id": 1,
     "tier": "Recall",
-    "question": "In Orthogonality and Projections, what core system invariant does 'Why this module exists' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Why this module exists' in Orthogonality and Projections.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Orthogonality and Projections, what core system invariant does 'What you will be able to do' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'What you will be able to do' in Orthogonality and Projections.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Orthogonality and Projections, what core system invariant does 'Lessons' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Lessons' in Orthogonality and Projections.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Orthogonality and Projections, what core system invariant does 'Module project' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Module project.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Module project' in Orthogonality and Projections.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 5,
-    "tier": "Recall",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'The Dot Product and What It Measures'?",
     "category": "Architecture: The Dot Product and What It Me",
     "options": [
@@ -150,7 +30,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Norms: L1, L2 and Beyond'?",
     "category": "Architecture: Norms: L1, L2 and Beyond",
@@ -180,7 +60,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Recall",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Angles, Cosine Similarity and Correlation'?",
     "category": "Architecture: Angles, Cosine Similarity and ",
@@ -210,7 +90,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Orthogonal and Orthonormal Vectors'?",
     "category": "Architecture: Orthogonal and Orthonormal Vec",
@@ -240,7 +120,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Recall",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Orthogonal Complements'?",
     "category": "Architecture: Orthogonal Complements",
@@ -270,7 +150,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 10,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Projection Onto a Line'?",
     "category": "Architecture: Projection Onto a Line",
@@ -298,5 +178,65 @@
     ],
     "explanation": "Core invariant analysis covered in lesson: Projection Onto a Line.",
     "lesson_ref": "README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for orthogonality and projections.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in orthogonality and projections depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for orthogonality and projections.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in orthogonality and projections depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

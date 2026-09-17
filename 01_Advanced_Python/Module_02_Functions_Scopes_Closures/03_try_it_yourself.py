@@ -1,54 +1,52 @@
-"""Module 02: Interactive Foundations Interactive Functions Playground.
+"""Beginner playground for Module 02 - Functions, Scopes & Closures.
 
-Run this script directly in your terminal:
-    python try_it_yourself.py
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
+from __future__ import annotations
 
-def create_tip_calculator(tax_rate=0.08):
-    """Demonstrates a closure: remembers tax_rate."""
-    def calculate(bill_amount, tip_percent=15):
-        tax = bill_amount * tax_rate
-        tip = bill_amount * (tip_percent / 100)
-        total = bill_amount + tax + tip
-        return {
-            "subtotal": bill_amount,
-            "tax": round(tax, 2),
-            "tip": round(tip, 2),
-            "total": round(total, 2)
-        }
-    return calculate
+import functools
 
-def main():
-    print("=" * 60)
-    print("  MODULE 02: INTERACTIVE FUNCTIONS & CLOSURES PLAYGROUND   ")
-    print("=" * 60)
+# -------------------------------------------- 1. Lexical Scoping and the LEGB Rule
+x = "global"
+def outer():
+    x = "enclosing"
+    def inner():
+        return x
+    return inner()
 
-    calc = create_tip_calculator(tax_rate=0.08)
+assert outer() == "enclosing"
+assert x == "global"
+print(f"LEGB resolution: outer returned '{outer()}'")
 
-    while True:
-        try:
-            print("\nCalculate a restaurant bill:")
-            raw = input("Enter bill amount in dollars (or 'q' to quit): ").strip()
-            if raw.lower() == 'q':
-                print("Proceed to Module 03!")
-                break
+# -------------------------------------------- 2. State Retention in Closures
+def make_counter(start=0):
+    count = start
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
 
-            amount = float(raw)
-            tip_str = input("Enter tip percentage (default 15): ").strip()
-            tip = float(tip_str) if tip_str else 15.0
+c = make_counter(10)
+assert c() == 11
+assert c() == 12
+assert c() == 13
+print("Closure state persisted across function invocations.")
 
-            summary = calc(amount, tip)
-            print("-" * 40)
-            print(f"Subtotal:  ${summary['subtotal']:.2f}")
-            print(f"Tax (8%):   ${summary['tax']:.2f}")
-            print(f"Tip ({tip}%): ${summary['tip']:.2f}")
-            print(f"TOTAL:     ${summary['total']:.2f}")
-            print("-" * 40)
-        except ValueError:
-            print("Please enter valid numbers!")
+# -------------------------------------------- 3. Partial Application with functools
+def power(base, exponent):
+    return base ** exponent
 
-if __name__ == "__main__":
-    try:
-        main()
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended. Happy coding!")
+square = functools.partial(power, exponent=2)
+assert square(5) == 25
+assert square(9) == 81
+print("Partial function frozen exponent=2 successfully.")
+
+print()
+print("All checks passed.")

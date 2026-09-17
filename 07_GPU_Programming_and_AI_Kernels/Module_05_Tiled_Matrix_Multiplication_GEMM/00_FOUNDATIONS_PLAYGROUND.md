@@ -1,48 +1,78 @@
 # 🐣 Interactive Foundations Playground: Tiled Matrix Multiplication (GEMM)
 
-> *"In naive matrix multiplication, computing a $4096 \times 4096$ matrix reads 68 billion numbers from slow DRAM. Tiling loads small square blocks into fast shared memory, letting threads reuse each number 32 times—turning a slow crawl into blistering speed."*
-
+> *"Tiling chops a massive matrix multiply into bite-sized tiles that fit entirely inside high-speed SRAM."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Naive GEMM Memory Bottleneck
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-To compute $C = A \times B$ for $N \times N$ matrices:
-$$C_{ij} = \sum_{k=0}^{N-1} A_{ik} B_{kj}$$
-- **Total Math**: $2 N^3$ FLOPs (1 multiply + 1 add per element).
-- **Total Global Memory Loads**: Each of the $N^2$ elements of $C$ reads $N$ elements from $A$ and $N$ elements from $B$ $\to 2 N^3$ loads!
-- **Arithmetic Intensity**:
-  $$I_{naive} = \frac{2 N^3 \text{ FLOPs}}{2 N^3 \times 4 \text{ Bytes}} = 0.25 \text{ FLOPs/Byte}$$
-On an NVIDIA A100 (which needs $I \ge 30$ to saturate compute), naive GEMM achieves **less than 1% of the GPU's potential**!
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. Shared Memory Tiling ($B \times B$)
+## 0. Everything this page needs
 
-Instead of reading from global memory for every multiply-add:
-1. Divide matrix $A$ and $B$ into square tiles of size $B \times B$ (e.g., $32 \times 32$).
-2. In Phase 0: All threads in a thread block collaborate to load Tile 0 of $A$ and Tile 0 of $B$ into **Shared Memory (SRAM)**:
-   ```cpp
-   __shared__ float sA[TILE_SIZE][TILE_SIZE];
-   __shared__ float sB[TILE_SIZE][TILE_SIZE];
-   sA[ty][tx] = A[row * K + (phase * TILE_SIZE + tx)];
-   sB[ty][tx] = B[(phase * TILE_SIZE + ty) * N + col];
-   __syncthreads(); // Wait until entire tile is loaded!
-   ```
-3. Multiply the tiles in ultra-fast SRAM.
-4. Advance to Phase 1: Load next tile, accumulate partial sums!
-5. **Memory Traffic Reduction**: Global memory loads drop by a factor of $B$!
-   $$I_{tiled} = \frac{B}{4} \text{ FLOPs/Byte} \quad \implies \text{For } B=32, \; I = 8.0 \text{ FLOPs/Byte (32x improvement!)}$$
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
 
 ---
 
-## 3. Register Micro-Tiling & Double Buffering
+## 1. Naive O(N^3) Matrix Multiplication
 
-Elite GPU engineers (Cutlass / cuBLAS) take this two steps further:
-1. **Register Micro-Tiling**: Each thread computes a small $m_m \times n_n$ matrix (e.g. $8 \times 8$) in its own private registers. This reuses shared memory loads an additional $8\times$!
-2. **Double Buffering (Ping-Pong Pipelining)**:
-   - Buffer 0: Calculating math on registers/SRAM for step $k$.
-   - Buffer 1: Simultaneously issuing asynchronous DRAM loads for step $k+1$.
-   The math completely hides the memory transfer latency!
+Computing $C = A \times B$ takes $2N^3$ floating-point operations.
+
+```python
+A = [[1, 2], [3, 4]]
+B = [[5, 6], [7, 8]]
+C = [[sum(A[i][k] * B[k][j] for k in range(2)) for j in range(2)] for i in range(2)]
+
+assert C[0][0] == 1*5 + 2*7  # 19
+assert C[0][1] == 1*6 + 2*8  # 22
+assert C[1][0] == 3*5 + 4*7  # 43
+assert C[1][1] == 3*6 + 4*8  # 50
+print(f"GEMM result matrix C: {C}")
+```
+
+---
+
+## 2. Arithmetic Intensity and Operational FLOP/Byte
+
+Arithmetic intensity is $\frac{\text{FLOPs}}{\text{Bytes transferred}}$. High intensity makes kernels compute-bound.
+
+```python
+N = 1024
+flops = 2 * (N**3)
+bytes_transferred = 3 * (N**2) * 4  # 3 matrices of float32
+intensity = flops / bytes_transferred
+
+assert intensity > 100.0
+assert intensity == (2 * N) / (3 * 4)
+print(f"Arithmetic intensity for {N}x{N} GEMM: {intensity:.2f} FLOP/byte")
+```
+
+---
+
+## 3. Tiled Shared Memory Reuse Factor
+
+With tile size $B$, each element loaded from DRAM is reused $B$ times in shared memory, reducing DRAM bandwidth pressure by $B$.
+
+```python
+tile_size = 16
+dram_traffic_naive = 2 * (N**3) * 4
+dram_traffic_tiled = dram_traffic_naive / tile_size
+
+assert dram_traffic_tiled < dram_traffic_naive
+assert dram_traffic_naive / dram_traffic_tiled == 16
+print(f"DRAM bandwidth reduction factor with tile size {tile_size}: {tile_size}x")
+```
+
+---

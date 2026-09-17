@@ -1,66 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Production Guardrails Architecture, what core system invariant does '1. Architectural Foundations: Multi-Layered Guardrails' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Multi-Layered Guardrails.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Architectural Foundations: Multi-Layered Guardrails' in Production Guardrails Architecture.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Production Guardrails Architecture, what core system invariant does '2. PII Detection & Pseudonymization' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. PII Detection & Pseudonymization.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. PII Detection & Pseudonymization' in Production Guardrails Architecture.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nentities[0].entity_type\n```",
     "category": "Apply: Code Execution",
@@ -90,7 +30,7 @@
     "lesson_ref": "test_neural_ner_pii_scanner.py"
   },
   {
-    "id": 4,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nentities[0].text\n```",
     "category": "Apply: Code Execution",
@@ -120,7 +60,7 @@
     "lesson_ref": "test_neural_ner_pii_scanner.py"
   },
   {
-    "id": 5,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nlen(entities)\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +90,7 @@
     "lesson_ref": "test_neural_ner_pii_scanner.py"
   },
   {
-    "id": 6,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Credit Card Luhn Algorithm False Positives'\"",
     "category": "Diagnose: Failure Analysis",
@@ -180,7 +120,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 7,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,7 +150,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 8,
+    "id": 6,
     "tier": "Diagnose",
     "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -240,7 +180,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 9,
+    "id": 7,
     "tier": "Diagnose",
     "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -268,5 +208,35 @@
     ],
     "explanation": "Diagnostic Analysis: 16-digit product serial numbers are masked as credit cards.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Production Guardrails Architecture, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for production guardrails architecture.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in production guardrails architecture depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

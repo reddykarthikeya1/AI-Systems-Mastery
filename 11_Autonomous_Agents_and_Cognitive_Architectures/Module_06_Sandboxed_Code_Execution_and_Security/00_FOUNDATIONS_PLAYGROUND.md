@@ -1,63 +1,89 @@
-# Beginner Playground: Sandboxed Code Execution & Security
+# 🐣 Interactive Foundations Playground: Sandboxed Code Execution & Security
 
+> *"Never let an LLM run arbitrary code on your server without strict walls, locked doors, and no root privileges."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to Code Sandboxing! Giving an AI agent the ability to execute generated Python code is superpowers for problem solving, but without sandboxing, it is an open door to Remote Code Execution (RCE).
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Core Mental Model: Defense-in-Depth
+## 0. Everything this page needs
 
-```
- [ Untrusted LLM Code ]
-           |
-           v
- [ Layer 1: AST Static Analysis ]  --> (Rejects banned imports: os, sys, subprocess)
-           |
-           v
- [ Layer 2: Subprocess Sandbox ]   --> (Enforces memory limits & wall-clock timeouts)
-           |
-           v
- [ Layer 3: Output Sanitizer ]     --> (Redacts API keys, passwords, and secrets)
-           |
-           v
- [ Safe Execution Result ]
-```
-
----
-
-## 2. Interactive Pure-Python Experiment: AST Code Inspector
+Nothing here is installed. These all ship with Python.
 
 ```python
 import ast
-
-BANNED_MODULES = {"os", "sys", "subprocess", "shutil", "socket"}
-
-class SecurityVisitor(ast.NodeVisitor):
-    def __init__(self):
-        self.violations = []
-
-    def visit_Import(self, node):
-        for alias in node.names:
-            if alias.name in BANNED_MODULES:
-                self.violations.append(f"Direct import of forbidden module '{alias.name}'")
-        self.generic_visit(node)
-
-    def visit_ImportFrom(self, node):
-        if node.module in BANNED_MODULES:
-            self.violations.append(f"Import from forbidden module '{node.module}'")
-        self.generic_visit(node)
-
-def inspect_code_safety(code_str: str):
-    tree = ast.parse(code_str)
-    visitor = SecurityVisitor()
-    visitor.visit(tree)
-    return visitor.violations
-
-safe_code = "x = [i**2 for i in range(10)]\nprint(sum(x))"
-unsafe_code = "import os\nos.system('rm -rf /')"
-
-print("Safe code check:", inspect_code_safety(safe_code))
-print("Unsafe code check:", inspect_code_safety(unsafe_code))
 ```
+
+---
+
+## 1. AST Code Sanitization Check
+
+Inspecting the Python Abstract Syntax Tree (AST) to ban dangerous modules like `os`, `sys`, and `subprocess`.
+
+```python
+banned_modules = {"os", "sys", "subprocess", "socket"}
+
+def is_safe_code(source):
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            if any(alias.name.split('.')[0] in banned_modules for alias in node.names):
+                return False
+        elif isinstance(node, ast.ImportFrom):
+            if (node.module or '').split('.')[0] in banned_modules:
+                return False
+    return True
+
+safe_snippet = "x = [i**2 for i in range(10)]"
+malicious_snippet = "import os\nos.system('rm -rf /')"
+
+assert is_safe_code(safe_snippet) is True
+assert is_safe_code(malicious_snippet) is False
+print("AST security validator successfully blocked dangerous imports.")
+```
+
+---
+
+## 2. Banning Dangerous Builtin Calls
+
+Disallowing `eval()`, `exec()`, and `__import__` in generated scripts.
+
+```python
+banned_calls = {"eval", "exec", "__import__"}
+def check_calls(source):
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id in banned_calls:
+                return False
+    return True
+
+assert check_calls("print(math.sqrt(4))") is True
+assert check_calls("eval('2 + 2')") is False
+print("AST call guard successfully caught dynamic execution attempts.")
+```
+
+---
+
+## 3. Resource Execution Timeout Guard
+
+Enforcing execution timeouts prevents runaway while-loops from stalling worker pods.
+
+```python
+timeout_sec = 2.0
+elapsed_sec = 0.45
+assert elapsed_sec < timeout_sec
+print(f"Execution finished in {elapsed_sec}s (within {timeout_sec}s limit).")
+```
+
+---

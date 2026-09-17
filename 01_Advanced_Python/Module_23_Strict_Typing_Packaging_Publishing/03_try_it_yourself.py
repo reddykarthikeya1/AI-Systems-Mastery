@@ -1,33 +1,59 @@
+"""Beginner playground for Module 23 - Strict Typing & Packaging.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 23: Type Hint & pyproject.toml Validator
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
+from typing import Protocol, runtime_checkable
 
+# -------------------------------------------- 1. Structural Subtyping with Protocol
+@runtime_checkable
+class Renderable(Protocol):
+    def render(self) -> str: ...
 
-def find_user_id(names: list[str], target: str) -> int | None:
-    try:
-        return names.index(target)
-    except ValueError:
-        return None
+class MarkdownReport:
+    def render(self) -> str:
+        return "# Report Content"
 
+class RawText:
+    pass
 
-def main():
-    print("=" * 60)
-    print("  MODULE 23: STRICT TYPING PLAYGROUND [*]")
-    print("=" * 60)
+rep = MarkdownReport()
+assert isinstance(rep, Renderable)
+assert not isinstance(RawText(), Renderable)
+assert rep.render() == "# Report Content"
+print("Structural typing protocol verified at runtime.")
 
-    roster = ["Alice", "Bob", "Charlie"]
-    print(f"Roster: {roster}")
+# -------------------------------------------- 2. Type Narrowing with TypeGuard / isinstance
+def process_item(item):
+    if isinstance(item, int):
+        return item * 2
+    elif isinstance(item, str):
+        return item.upper()
+    return None
 
-    print("\nTesting typed lookup:")
-    for name in ["Bob", "Eve"]:
-        idx = find_user_id(roster, name)
-        status = f"Found at index {idx}" if idx is not None else "Not found (None)"
-        print(f"  Lookup '{name}': {status}")
+assert process_item(10) == 20
+assert process_item("abc") == "ABC"
+assert process_item([1, 2]) is None
+print("Runtime type narrowing dispatched correctly.")
 
-    print("\n[OK] Type hints validate clean contracts!")
+# -------------------------------------------- 3. Generic Type Variable Parameterization
+from typing import TypeVar, List
+T = TypeVar("T")
 
+def first_element(items: List[T]) -> T:
+    assert len(items) > 0
+    return items[0]
 
-if __name__ == "__main__":
-    main()
+assert first_element([10, 20, 30]) == 10
+assert first_element(["x", "y", "z"]) == "x"
+print("Generic first_element preserved element values.")
+
+print()
+print("All checks passed.")

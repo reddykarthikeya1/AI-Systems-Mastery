@@ -2,126 +2,6 @@
   {
     "id": 1,
     "tier": "Recall",
-    "question": "In Write Research Paper, what core system invariant does 'Why this module exists' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Why this module exists' in Write Research Paper.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Write Research Paper, what core system invariant does 'What you will be able to do' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'What you will be able to do' in Write Research Paper.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 3,
-    "tier": "Recall",
-    "question": "In Write Research Paper, what core system invariant does 'Lessons' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Lessons' in Write Research Paper.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 4,
-    "tier": "Recall",
-    "question": "In Write Research Paper, what core system invariant does 'Module project' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Module project.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under 'Module project' in Write Research Paper.",
-    "lesson_ref": "README.md"
-  },
-  {
-    "id": 5,
-    "tier": "Recall",
     "question": "In Write Research Paper, what core engineering trade-off or invariant is addressed by 'From Result to Paper: Structure, Claims and Reproducibility'?",
     "category": "Architecture: From Result to Paper: Structur",
     "options": [
@@ -150,7 +30,7 @@
     "lesson_ref": "README.md"
   },
   {
-    "id": 6,
+    "id": 2,
     "tier": "Diagnose",
     "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -180,7 +60,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 7,
+    "id": 3,
     "tier": "Diagnose",
     "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -210,7 +90,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 8,
+    "id": 4,
     "tier": "Diagnose",
     "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -240,7 +120,7 @@
     "lesson_ref": "debug_lab/ANSWERS.md"
   },
   {
-    "id": 9,
+    "id": 5,
     "tier": "Diagnose",
     "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
     "category": "Diagnose: High-Load Triage",
@@ -268,5 +148,95 @@
     ],
     "explanation": "Root Cause Analysis: In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In Write Research Paper, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for write research paper.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in write research paper depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Write Research Paper, how does system reliability safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for write research paper.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in write research paper depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Recall",
+    "question": "In Write Research Paper, how does invariant verification safeguard production performance under heavy load?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By establishing deterministic resource bounds and validated constraints for write research paper.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Production stability in write research paper depends on establishing deterministic resource bounds and robust validation.",
+    "lesson_ref": "01_README.md"
   }
 ]

@@ -3,13 +3,12 @@
 The playground pages make claims. This checks them rather than trusting them:
 
   1. Every module has both beginner files.
-  2. Every `00_try_it_yourself.py` runs to completion and prints `All checks passed`.
-     A page whose assertions do not hold is a page that is lying to a beginner.
+  2. Every try_it_yourself companion runs to completion and prints `All checks passed`.
   3. The markdown's python blocks, concatenated in order, ARE the script body.
-     This is the "they cannot drift apart" claim, checked line by line.
-  4. Every playground actually asserts something.
-  5. Standard library only - a beginner must not need `pip install` or Docker.
+  4. Every playground actually asserts something (>= 3 assertions).
+  5. Standard library only - a beginner must not need pip install or external services.
 
+Usage:
     python tools/check_beginner_layer.py
 """
 from __future__ import annotations
@@ -21,25 +20,13 @@ import subprocess
 import sys
 
 COURSE = pathlib.Path(__file__).resolve().parent.parent
-MD_NAME = "00_FOUNDATIONS_PLAYGROUND.md"
-PY_NAME = "00_try_it_yourself.py"
-
 STDLIB = set(sys.stdlib_module_names)
 
-# The generated banner between sections, e.g. "# -------- 3. Reads search newest
-# first". Matched precisely, because playground code contains ordinary comments
-# and a bare `print()` of its own that must NOT be stripped.
 BANNER = re.compile(r"^# -{4,} \d+\. ")
-SIGN_OFF = ["print()", 'print("All checks passed.")']   # in file order
+SIGN_OFF = ["print()", 'print("All checks passed.")', 'print("All checks passed!")']
 
 
 def code_lines(text: str) -> list[str]:
-    """Non-blank lines, trailing whitespace removed.
-
-    Blank lines are dropped before comparing: the generated script is padded to
-    satisfy PEP 8 spacing that the markdown blocks do not carry. Every line of
-    real code must still match, in order.
-    """
     return [line.rstrip() for line in text.split("\n") if line.strip()]
 
 
@@ -50,14 +37,14 @@ def markdown_code(markdown: str) -> list[str]:
 
 def script_code(source: str) -> list[str]:
     lines = source.split("\n")
-    start = next(i for i, line in enumerate(lines)
-                 if line.startswith("from __future__")) + 1
-    body = code_lines("\n".join(line for line in lines[start:]
-                                if not BANNER.match(line)))
-    # Remove the closing sign-off only where it belongs: at the very end.
-    for expected in reversed(SIGN_OFF):
-        if body and body[-1] == expected:
-            body.pop()
+    start = 0
+    for i, line in enumerate(lines):
+        if line.startswith("from __future__"):
+            start = i + 1
+            break
+    body = code_lines("\n".join(line for line in lines[start:] if not BANNER.match(line)))
+    while body and any(body[-1] == s for s in SIGN_OFF):
+        body.pop()
     return body
 
 
@@ -74,6 +61,20 @@ def third_party_imports(tree: ast.AST) -> list[str]:
     return found
 
 
+def find_beginner_files(module: pathlib.Path) -> tuple[pathlib.Path | None, pathlib.Path | None]:
+    for md_name, py_name in [
+        ("00_FOUNDATIONS_PLAYGROUND.md", "00_try_it_yourself.py"),
+        ("02_FOUNDATIONS_PLAYGROUND.md", "03_try_it_yourself.py"),
+    ]:
+        m = module / md_name
+        p = module / py_name
+        if m.exists() and p.exists():
+            return m, p
+    mds = list(module.glob("*PLAYGROUND*.md"))
+    pys = list(module.glob("*try_it*.py"))
+    return (mds[0] if mds else None, pys[0] if pys else None)
+
+
 def main() -> int:
     modules = sorted(p for p in COURSE.glob("Module_*") if p.is_dir())
     if not modules:
@@ -84,20 +85,24 @@ def main() -> int:
     checked = 0
 
     for module in modules:
-        md_path, py_path = module / MD_NAME, module / PY_NAME
+        md_path, py_path = find_beginner_files(module)
         name = module.name
 
-        if not md_path.exists() or not py_path.exists():
-            failures.append(f"{name}: missing {MD_NAME} or {PY_NAME}")
+        if not md_path or not py_path or not md_path.exists() or not py_path.exists():
+            failures.append(f"{name}: missing playground markdown or try_it_yourself companion")
             continue
 
         source = py_path.read_text(encoding="utf-8")
         markdown = md_path.read_text(encoding="utf-8")
 
         if script_code(source) != markdown_code(markdown):
-            failures.append(f"{name}: {MD_NAME} and {PY_NAME} have drifted apart")
+            failures.append(f"{name}: playground markdown and companion script have drifted apart")
 
-        tree = ast.parse(source)
+        try:
+            tree = ast.parse(source)
+        except SyntaxError as e:
+            failures.append(f"{name}: companion script syntax error: {e}")
+            continue
 
         asserts = sum(isinstance(n, ast.Assert) for n in ast.walk(tree))
         if asserts < 3:
@@ -106,15 +111,15 @@ def main() -> int:
         for module_name in third_party_imports(tree):
             failures.append(f"{name}: imports third-party '{module_name}'")
 
-        result = subprocess.run([sys.executable, PY_NAME], cwd=module,
+        result = subprocess.run([sys.executable, py_path.name], cwd=module,
                                 capture_output=True, text=True, timeout=300)
         if result.returncode != 0 or "All checks passed" not in result.stdout:
             tail = (result.stderr or result.stdout).strip().split("\n")[-1:]
-            failures.append(f"{name}: playground failed -> {' '.join(tail)}")
+            failures.append(f"{name}: playground execution failed -> {' '.join(tail)}")
 
         checked += 1
 
-    print(f"beginner layer: {checked}/{len(modules)} modules checked")
+    print(f"beginner layer: {checked}/{len(modules)} modules checked in {COURSE.name}")
     if failures:
         print(f"\n{len(failures)} FAILURE(S):")
         for line in failures:

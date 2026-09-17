@@ -1,46 +1,80 @@
-# 🐣 Interactive Foundations Playground: Collective Communications (NCCL)
+# 🐣 Interactive Foundations Playground: NCCL Collective Communication Primitives
 
-> *"If 8 people in a room each have a piece of a puzzle, they don't all yell across the table at once. They pass pieces in an orderly circle (Ring AllReduce). In just 2 laps around the circle, everyone holds the complete solved puzzle."*
-
+> *"Collectives are coordinated dance moves for GPUs: AllReduce, AllGather, and ReduceScatter."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The Ring AllReduce Algorithm
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-How do thousands of GPUs sum their gradients during training without a central bottleneck?
-**Ring AllReduce** arranges $N$ GPUs in a logical ring ($0 \to 1 \to 2 \to \dots \to N-1 \to 0$).
-It splits the tensor of size $S$ into $N$ equal chunks:
+```bash
+python 00_try_it_yourself.py
+```
 
-### Phase 1: Scatter-Reduce ($N-1$ steps)
-- Step 1: GPU $i$ sends Chunk $i$ to GPU $i+1$, and receives Chunk $i-1$ from GPU $i-1$, adding it to its local buffer.
-- After $N-1$ steps: Each GPU holds the **fully reduced sum of 1 chunk**!
-- Data transferred per GPU: $\frac{N-1}{N} \times S$ bytes.
-
-### Phase 2: AllGather ($N-1$ steps)
-- Step 1: GPU $i$ sends its fully reduced chunk around the ring.
-- After $N-1$ steps: All $N$ GPUs hold the **fully reduced sum of ALL chunks**!
-- Data transferred per GPU: $\frac{N-1}{N} \times S$ bytes.
-
-### The Magic Bound: Total Data Transferred
-$$\text{Total Bytes Transferred per GPU} = 2 \times \left(\frac{N-1}{N}\right) \times S$$
-
-Notice what this means:
-- For 8 GPUs: $2 \times \frac{7}{8} \times S = 1.75 S$.
-- For 1,000 GPUs: $2 \times \frac{999}{1000} \times S \approx 2 S$.
-- **The volume of data each GPU sends NEVER exceeds $2 S$**, no matter how large the cluster grows!
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. The $\alpha$-$\beta$ Communication Cost Model
+## 0. Everything this page needs
 
-Every network transmission has two costs:
-1. **Latency ($\alpha$)**: Time to establish connection, packet headers, handshake.
-2. **Bandwidth Penalty ($\beta$)**: Time to transfer the payload bytes ($\beta = 1 / \text{Bandwidth}$).
+Nothing here is installed. These all ship with Python.
 
-$$\text{Time} = \alpha \times (\text{Steps}) + \beta \times (\text{Bytes Transferred})$$
-For Ring AllReduce:
-$$T_{\text{Ring}} = 2 (N-1) \alpha + 2 \left(\frac{N-1}{N}\right) S \beta$$
-- For small tensors ($S < 100 \text{ KB}$): Latency $\alpha$ dominates.
-- For large tensors ($S > 10 \text{ MB}$): Bandwidth $\beta$ dominates.
+```python
+import math
+```
+
+---
+
+## 1. AllReduce via ReduceScatter + AllGather
+
+Ring-AllReduce breaks down into two phases: ReduceScatter (sum chunks) followed by AllGather (replicate sums).
+
+```python
+data_per_gpu = [1.0, 2.0, 3.0]  # GPU 0
+num_gpus = 4
+total_data_size = 100  # MB
+volume_transferred = 2 * ((num_gpus - 1) / num_gpus) * total_data_size
+
+assert volume_transferred == 2 * (3 / 4) * 100  # 150 MB
+assert volume_transferred < 2 * total_data_size
+print(f"Total data sent per GPU in 4-GPU Ring-AllReduce: {volume_transferred} MB")
+```
+
+---
+
+## 2. Broadcast Primitive Invariant
+
+Broadcast copies a buffer from rank 0 to all other ranks in the communication group.
+
+```python
+ranks = [0, 1, 2, 3]
+root_val = 42
+cluster_state = [root_val if r == 0 else 0 for r in ranks]
+
+# Broadcast from rank 0
+for r in range(len(cluster_state)):
+    cluster_state[r] = cluster_state[0]
+
+assert all(val == 42 for val in cluster_state)
+assert len(cluster_state) == 4
+print(f"Broadcast replicated value 42 across all ranks: {cluster_state}")
+```
+
+---
+
+## 3. Reduce-Scatter Chunk Partitioning
+
+Each rank receives the reduced sum of its assigned rank slice: rank $i$ holds the global sum of chunk $i$.
+
+```python
+gpu_tensors = [[1, 10], [2, 20], [3, 30]]  # 3 GPUs, 2 elements each
+chunk_0_sum = sum(t[0] for t in gpu_tensors)
+chunk_1_sum = sum(t[1] for t in gpu_tensors)
+
+assert chunk_0_sum == 6
+assert chunk_1_sum == 60
+print(f"Reduce-Scatter outputs: chunk 0 -> {chunk_0_sum}, chunk 1 -> {chunk_1_sum}")
+```
+
+---

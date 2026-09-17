@@ -1,109 +1,56 @@
-"""Module 02: Interactive Foundations Interactive CLI Sandbox.
+"""Beginner playground for Module 02 - Dynamic Arrays & Amortized Doubling.
 
-Run this script directly in your terminal to see algorithms visualised live:
     python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
 from __future__ import annotations
 
+import sys
 
-def demo_two_pointers():
-    print("\n" + "=" * 60)
-    print("DEMO 1: Two Pointers Walking Towards Each Other")
-    print("Target Sum = 10 in sorted array: [1, 2, 4, 6, 8, 9]")
-    print("=" * 60)
+# -------------------------------------------- 1. Geometric Growth and Total Element Copies
+def simulate_growth(n):
+    capacity = 1
+    total_copies = 0
+    for i in range(1, n + 1):
+        if i > capacity:
+            total_copies += (i - 1)
+            capacity *= 2
+    return total_copies, capacity
 
-    nums = [1, 2, 4, 6, 8, 9]
-    target = 10
-    left, right = 0, len(nums) - 1
-    step = 1
+copies, cap = simulate_growth(1000)
+assert cap == 1024, "Smallest power of 2 >= 1000"
+assert copies < 2 * 1000, "Amortized doubling copies must be < 2N"
+print(f"Appended 1000 items: final capacity={cap}, total copies={copies}")
 
-    while left < right:
-        curr = nums[left] + nums[right]
-        # Visual representation
-        display = []
-        for i, val in enumerate(nums):
-            if i == left and i == right:
-                display.append(f"[{val}]*LR*")
-            elif i == left:
-                display.append(f"[{val}]*L*")
-            elif i == right:
-                display.append(f"[{val}]*R*")
-            else:
-                display.append(f" {val}  ")
-        print(f"\nStep {step}:")
-        print("  Array:  " + " ".join(display))
-        print(f"  Left={nums[left]} (idx {left}), "
-              f"Right={nums[right]} (idx {right}) -> Sum = {curr}")
+# -------------------------------------------- 2. Two-Pointer In-Place Array Reversal
+arr = [1, 2, 3, 4, 5]
+left, right = 0, len(arr) - 1
+while left < right:
+    arr[left], arr[right] = arr[right], arr[left]
+    left += 1
+    right -= 1
 
-        if curr == target:
-            print(f"  --> MATCH FOUND! {nums[left]} + {nums[right]} = {target}")
-            return
-        elif curr < target:
-            print(f"  --> Sum {curr} < {target}. Left pointer advances RIGHT.")
-            left += 1
-        else:
-            print(f"  --> Sum {curr} > {target}. Right pointer advances LEFT.")
-            right -= 1
-        step += 1
+assert arr == [5, 4, 3, 2, 1]
+assert arr[0] == 5 and arr[-1] == 1
+print(f"Reversed array in-place: {arr}")
 
+# -------------------------------------------- 3. Prefix Sums for O(1) Range Queries
+data = [2, 4, 6, 8, 10]
+prefix = [0] * (len(data) + 1)
+for i, x in enumerate(data):
+    prefix[i + 1] = prefix[i] + x
 
-def demo_sliding_window():
-    print("\n" + "=" * 60)
-    print("DEMO 2: Sliding Window of Size K=3")
-    print("Array: [2, 1, 5, 1, 3, 2]")
-    print("=" * 60)
+def query(l, r):
+    return prefix[r + 1] - prefix[l]
 
-    nums = [2, 1, 5, 1, 3, 2]
-    k = 3
-    window_sum = sum(nums[:k])
-    max_sum = window_sum
+assert query(1, 3) == 18, "4 + 6 + 8 = 18"
+assert query(0, 4) == 30, "Sum of all elements"
+print(f"Prefix table: {prefix}, Query(1, 3) = {query(1, 3)}")
 
-    print(f"\nInitial Window [0..{k-1}]: {nums[:k]} -> Sum = {window_sum}")
-
-    for i in range(k, len(nums)):
-        leaving = nums[i - k]
-        entering = nums[i]
-        window_sum = window_sum - leaving + entering
-        max_sum = max(max_sum, window_sum)
-
-        # Visual string
-        win_str = []
-        for idx, val in enumerate(nums):
-            if i - k + 1 <= idx <= i:
-                win_str.append(f"|{val}|")
-            else:
-                win_str.append(f" {val} ")
-        window = " ".join(win_str)
-        print(f"Slide -> Drop {leaving}, Add {entering} | "
-              f"Window {window} | Sum = {window_sum}")
-
-    print(f"\nMaximum Window Sum Found: {max_sum}")
-
-
-def demo_prefix_sum():
-    print("\n" + "=" * 60)
-    print("DEMO 3: Piggy Bank (Prefix Sum) Instant Range Queries")
-    print("Daily Deposits: [2, 3, 1, 4, 5]")
-    print("=" * 60)
-
-    nums = [2, 3, 1, 4, 5]
-    prefix = [0] * (len(nums) + 1)
-    for i, x in enumerate(nums):
-        prefix[i + 1] = prefix[i] + x
-
-    print(f"Prefix Sums Array: {prefix}")
-    print("Query: Total money deposited between Day 2 (idx 1, value 3) and Day 4 (idx 3, value 4):")
-    total = prefix[4] - prefix[1]
-    print(f"Calculation: prefix[4] - prefix[1] = {prefix[4]} - {prefix[1]} = {total}")
-
-
-def main():
-    print("\n=== Welcome to the Interactive Foundations DSA Interactive Sandbox! ===")
-    demo_two_pointers()
-    demo_sliding_window()
-    demo_prefix_sum()
-    print("\n=== All interactive simulations completed successfully! ===")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")

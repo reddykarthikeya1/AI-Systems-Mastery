@@ -28,14 +28,19 @@ class ListNode:
         self.val = val
         self.next = next
 
-def list_to_linkedlist(arr):
+def list_to_linkedlist(arr, pos=-1):
     if not arr:
         return None
     dummy = ListNode(0)
     curr = dummy
+    nodes = []
     for x in arr:
-        curr.next = ListNode(x)
+        node = ListNode(x)
+        nodes.append(node)
+        curr.next = node
         curr = curr.next
+    if pos is not None and 0 <= pos < len(nodes):
+        curr.next = nodes[pos]
     return dummy.next
 
 def linkedlist_to_list(head):
@@ -182,9 +187,12 @@ for idx, tc in enumerate(testcases):
         else:
             if isinstance(inp, dict):
                 converted_inp = {}
+                cycle_pos = inp.get("pos", -1) if "pos" in inp else -1
                 for k, v in inp.items():
-                    if k in ("head", "list1", "list2") and isinstance(v, list):
-                        converted_inp[k] = list_to_linkedlist(v)
+                    if k == "pos":
+                        continue
+                    elif k in ("head", "list1", "list2") and isinstance(v, list):
+                        converted_inp[k] = list_to_linkedlist(v, pos=cycle_pos if k == "head" else -1)
                     elif k == "lists" and isinstance(v, list):
                         converted_inp[k] = [list_to_linkedlist(sub) if isinstance(sub, list) else sub for sub in v]
                     elif k in ("root", "root1", "root2") and isinstance(v, list):

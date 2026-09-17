@@ -36,190 +36,202 @@ In standard linear probing, clusters grow rapidly (primary clustering), leading 
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Contains Duplicate ([LeetCode 217](https://leetcode.com/problems/contains-duplicate/)) — Easy
+This section walks through the **6 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Brute Force: Pairwise Comparison
-- **Time Complexity**: $O(N^2)$ — TLE.
+### Problem 1: Contains Duplicate ([LeetCode #217](https://leetcode.com/problems/contains-duplicate/)) — Easy
 
-#### Optimized: Hash Set
+> **Pattern**: `Hash Set Membership` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.
+
+#### Algorithmic Invariants & Optimal Derivation
+Iterate through elements adding to a hash set. If an element is already in the set, a duplicate is found in $O(1)$ amortized time.
+
 ```python
-def contains_duplicate(nums: list[int]) -> bool:
-    seen = set()
-    for x in nums:
-        if x in seen:
-            return True
-        seen.add(x)
-    return False
-```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(N)$.
-
----
-
-### Problem 2: Valid Anagram ([LeetCode 242](https://leetcode.com/problems/valid-anagram/)) — Easy
-
-#### Brute Force: String Sorting
-`sorted(s) == sorted(t)`.
-- **Time Complexity**: $O(N \\log N)$.
-
-#### Optimized: Frequency Count Array ($O(1)$ Auxiliary Space)
-Since inputs are lowercase English letters, maintain a 26-element integer array.
-```python
-def is_anagram(s: str, t: str) -> bool:
-    if len(s) != len(t):
+class Solution:
+    def containsDuplicate(self, nums: list[int]) -> bool:
+        seen = set()
+        for x in nums:
+            if x in seen:
+                return True
+            seen.add(x)
         return False
-    counts = [0] * 26
-    for c1, c2 in zip(s, t):
-        counts[ord(c1) - ord('a')] += 1
-        counts[ord(c2) - ord('a')] -= 1
-    return all(x == 0 for x in counts)
 ```
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$ fixed 26 integers.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 3: Group Anagrams ([LeetCode 49](https://leetcode.com/problems/group-anagrams/)) — Medium
+### Problem 2: Valid Anagram ([LeetCode #242](https://leetcode.com/problems/valid-anagram/)) — Easy
 
-#### Optimized: Character Count Tuple as Hash Key
-Map each string to a 26-tuple frequency signature `(1, 0, 0, ..., 1)` which is hashable and serves as dictionary key.
+> **Pattern**: `Character Frequency Counting` | **Target Time**: $O(N)$ | **Target Space**: $O(1) (bounded alphabet)
+
+#### Problem Specification
+Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
+
+An Anagram is a word formed by rearranging the letters of a different word, typically using all the original letters exactly once.
+
+#### Algorithmic Invariants & Optimal Derivation
+Compare character frequency counts. If lengths differ, immediately return False. Otherwise tally frequencies and verify equality in $O(N)$ time.
+
 ```python
-from collections import defaultdict
-
-def group_anagrams(strs: list[str]) -> list[list[str]]:
-    groups = defaultdict(list)
-    for s in strs:
-        count = [0] * 26
-        for c in s:
-            count[ord(c) - ord('a')] += 1
-        groups[tuple(count)].append(s)
-    return list(groups.values())
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        from collections import Counter
+        return Counter(s) == Counter(t)
 ```
-- **Time Complexity**: $O(N \\times K)$ where $N$ is number of strings, $K$ is max length.
-- **Space Complexity**: $O(N \\times K)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 4: Top K Frequent Elements ([LeetCode 347](https://leetcode.com/problems/top-k-frequent-elements/)) — Medium
+### Problem 3: Group Anagrams ([LeetCode #49](https://leetcode.com/problems/group-anagrams/)) — Medium
 
-#### Brute Force: Sort All Frequencies
-Count frequencies and sort: $O(N \\log N)$.
+> **Pattern**: `Canonical Tuple / Sorted Key Grouping` | **Target Time**: $O(N \cdot K \log K)$ | **Target Space**: $O(N \cdot K)
 
-#### Optimized: Bucket Sort ($O(N)$ Linear Time)
-An array of buckets where index is frequency (max frequency is $N$). Collect top $K$ from the highest bucket downwards.
+#### Problem Specification
+Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Map each word to its canonical form (the sorted characters). Words with the exact same canonical string belong to the same anagram group.
+
 ```python
-def top_k_frequent(nums: list[int], k: int) -> list[int]:
-    counts: dict[int, int] = {}
-    for n in nums:
-        counts[n] = counts.get(n, 0) + 1
-        
-    buckets: list[list[int]] = [[] for _ in range(len(nums) + 1)]
-    for num, freq in counts.items():
-        buckets[freq].append(num)
-        
-    res = []
-    for i in range(len(buckets) - 1, 0, -1):
-        for num in buckets[i]:
-            res.append(num)
-            if len(res) == k:
-                return res
-    return res
+class Solution:
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        from collections import defaultdict
+        groups = defaultdict(list)
+        for s in strs:
+            key = "".join(sorted(s))
+            groups[key].append(s)
+        return list(groups.values())
 ```
-- **Time Complexity**: $O(N)$ — Fully linear; avoids $O(N \\log N)$ sorting.
-- **Space Complexity**: $O(N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 5: Product of Array Except Self ([LeetCode 238](https://leetcode.com/problems/product-of-array-except-self/)) — Medium
+### Problem 4: Top K Frequent Elements ([LeetCode #347](https://leetcode.com/problems/top-k-frequent-elements/)) — Medium
 
-#### Brute Force: Nested Loops ($O(N^2)$) or Division Operator
-Division operator is prohibited by problem constraints (and fails when elements are zero).
+> **Pattern**: `Frequency Hash Map + Bucket Sort` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
-#### Optimized: Two Passes (Prefix and Suffix Accumulation)
+#### Problem Specification
+Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.
+
+#### Algorithmic Invariants & Optimal Derivation
+Tally counts with a hash map, then use Bucket Sort where index represents frequency (0 to N). Traverse buckets from highest frequency downwards to collect k elements in $O(N)$ linear time.
+
 ```python
-def product_except_self(nums: list[int]) -> list[int]:
-    n = len(nums)
-    res = [1] * n
-    
-    # 1. Left prefix product
-    prefix = 1
-    for i in range(n):
-        res[i] = prefix
-        prefix *= nums[i]
-        
-    # 2. Right suffix product
-    suffix = 1
-    for i in range(n - 1, -1, -1):
-        res[i] *= suffix
-        suffix *= nums[i]
-        
-    return res
+class Solution:
+    def topKFrequent(self, nums: list[int], k: int) -> list[int]:
+        from collections import Counter
+        count = Counter(nums)
+        buckets = [[] for _ in range(len(nums) + 1)]
+        for val, freq in count.items():
+            buckets[freq].append(val)
+        res = []
+        for freq in range(len(buckets) - 1, 0, -1):
+            for val in buckets[freq]:
+                res.append(val)
+                if len(res) == k:
+                    return res
+        return res
 ```
-- **Time Complexity**: $O(N)$ — Exactly 2 passes.
-- **Space Complexity**: $O(1)$ auxiliary space (output array does not count).
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Valid Sudoku ([LeetCode 36](https://leetcode.com/problems/valid-sudoku/)) — Medium
+### Problem 5: Longest Consecutive Sequence ([LeetCode #128](https://leetcode.com/problems/longest-consecutive-sequence/)) — Medium
 
-#### Optimized: Single-Pass Hash Set Validation
-Each cell $(r, c)$ with value $val$ produces 3 check tokens: `(r, val)`, `(val, c)`, and `(r // 3, c // 3, val)`.
-- **Time Complexity**: $O(9^2) = O(1)$ fixed grid operations.
-- **Space Complexity**: $O(1)$ fixed size sets.
+> **Pattern**: `Hash Set Intelligent Expansion` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
----
+#### Problem Specification
+Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
 
-### Problem 7: Longest Consecutive Sequence ([LeetCode 128](https://leetcode.com/problems/longest-consecutive-sequence/)) — Medium
+You must write an algorithm that runs in $O(n)$ time.
 
-#### Brute Force: Sort First
-- **Time Complexity**: $O(N \\log N)$.
+#### Algorithmic Invariants & Optimal Derivation
+Store numbers in a hash set. Only begin counting sequence length from numbers that are the start of a streak (i.e., `num - 1` is not in set). Each number is visited at most twice, guaranteeing $O(N)$ time.
 
-#### Optimized: Hash Set Start-of-Sequence Verification ($O(N)$ Time)
-Insert all into a hash set. Only attempt to expand a streak from $x$ if $(x - 1)$ is NOT in the set (i.e. $x$ is the true start of a streak).
 ```python
-def longest_consecutive(nums: list[int]) -> int:
-    num_set = set(nums)
-    longest = 0
-    
-    for x in num_set:
-        if (x - 1) not in num_set:  # Start of sequence
-            curr = x
-            streak = 1
-            while (curr + 1) in num_set:
-                curr += 1
-                streak += 1
-            longest = max(longest, streak)
-            
-    return longest
+class Solution:
+    def longestConsecutive(self, nums: list[int]) -> int:
+        num_set = set(nums)
+        longest = 0
+        for num in num_set:
+            if num - 1 not in num_set:
+                curr = num
+                curr_len = 1
+                while curr + 1 in num_set:
+                    curr += 1
+                    curr_len += 1
+                longest = max(longest, curr_len)
+        return longest
 ```
-- **Time Complexity**: $O(N)$ — Each number is visited at most twice.
-- **Space Complexity**: $O(N)$ for hash set.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 8: Subarray Sum Equals K ([LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/)) — Medium
+### Problem 6: Subarray Sum Equals K ([LeetCode #560](https://leetcode.com/problems/subarray-sum-equals-k/)) — Medium
 
-#### Brute Force: All Subarrays Sum
-- **Time Complexity**: $O(N^2)$ — TLE.
+> **Pattern**: `Prefix Sum Hash Map` | **Target Time**: $O(N)$ | **Target Space**: $O(N)
 
-#### Optimized: Prefix Sum Frequency Hash Map
-If $prefix[j] - prefix[i] = k$, then the subarray between $i$ and $j$ sums to $k$. Maintain a hash map of prefix sum frequencies.
+#### Problem Specification
+Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+#### Algorithmic Invariants & Optimal Derivation
+Subarray sum $(i \dots j) = 	ext{prefix}[j] - 	ext{prefix}[i-1] = k$. Thus $	ext{prefix}[i-1] = 	ext{prefix}[j] - k$. As we accumulate running prefix sum, add occurrences of `prefix_sum - k` to count in $O(N)$.
+
 ```python
-def subarray_sum(nums: list[int], k: int) -> int:
-    counts = {0: 1}
-    curr_sum = 0
-    ans = 0
-    
-    for x in nums:
-        curr_sum += x
-        diff = curr_sum - k
-        ans += counts.get(diff, 0)
-        counts[curr_sum] = counts.get(curr_sum, 0) + 1
-        
-    return ans
+class Solution:
+    def subarraySum(self, nums: list[int], k: int) -> int:
+        from collections import defaultdict
+        prefix_count = defaultdict(int)
+        prefix_count[0] = 1
+        curr_sum = 0
+        count = 0
+        for x in nums:
+            curr_sum += x
+            count += prefix_count[curr_sum - k]
+            prefix_count[curr_sum] += 1
+        return count
 ```
-- **Time Complexity**: $O(N)$ — Single pass.
-- **Space Complexity**: $O(N)$ hash table storage.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
 
 ## 3. Hands-On Project & Test Suite
 

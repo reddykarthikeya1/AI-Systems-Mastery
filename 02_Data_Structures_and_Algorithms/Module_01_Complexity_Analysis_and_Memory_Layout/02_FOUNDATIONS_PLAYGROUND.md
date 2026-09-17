@@ -1,45 +1,78 @@
-# 🐣 Interactive Foundations Playground: Complexity & Bit Manipulation
+# 🐣 Interactive Foundations Playground: Complexity Analysis & Bit Manipulation
 
 > *"Bits are just 32 tiny light switches inside your computer. On (1) or Off (0)."*
 
-
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
 ---
 
-## 1. What is Big-O in Plain English?
+## 0. Everything this page needs
 
-Imagine sending a 10 GB file:
-- **Case A: Upload via Internet**. Takes 1 hour for 10 GB. Takes 10 hours for 100 GB. -> **$O(N)$ Linear Time**.
-- **Case B: Mail a USB thumb drive**. Takes 24 hours to deliver 10 GB. Takes 24 hours to deliver 1,000 GB! -> **$O(1)$ Constant Time**.
-
-For small files, internet is faster. For massive files, postal mail wins! That is Big-O: how time grows as $N$ gets huge.
-
----
-
-## 2. Bit Tricks Every Programmer Must Know
+Nothing here is installed. These all ship with Python.
 
 ```python
-# Check if number is Odd or Even (Check the last light switch!)
-num = 7
-if num & 1:
-    print("Odd number!")
-else:
-    print("Even number!")
-
-# Multiply by 2 instantly using Left Shift (<<)
-print(5 << 1)  # Output: 10
-
-# Divide by 2 instantly using Right Shift (>>)
-print(10 >> 1) # Output: 5
+import math
 ```
 
 ---
 
-## 3. The Magic XOR Trick: The Cancelling Pair
+## 1. Bitwise Parity and Power of Two Invariant
+
+Checking if a number is odd or even takes a single bit check on the lowest bit ($n \ \& \ 1$). A power of two in binary has exactly one bit set; subtracting 1 flips all lower bits, so $n \ \& \ (n - 1) == 0$.
+
 ```python
-# XOR-ing the same number twice makes it vanish!
-print(5 ^ 5)       # 0
-print(0 ^ 42)      # 42
-print(7 ^ 99 ^ 7)  # 99! (7 cancelled itself out!)
+val = 16
+is_even = (val & 1) == 0
+assert is_even is True, "16 must be even"
+
+is_power_of_two = (val > 0) and ((val & (val - 1)) == 0)
+assert is_power_of_two is True, "16 is 2^4"
+assert ((15 & 14) == 0) is False, "15 is not a power of two"
+print(f"val={val}: is_even={is_even}, is_power_of_two={is_power_of_two}")
 ```
+
+---
+
+## 2. Fast Multiplication and Division via Bit Shifts
+
+Left shift (`<<`) doubles an integer in 1 clock cycle. Right shift (`>>`) halves an integer discarding fractions.
+
+```python
+base = 7
+doubled = base << 1
+halved = base >> 1
+assert doubled == 14
+assert halved == 3
+assert (1 << 10) == 1024, "2^10 must equal 1024"
+print(f"base={base}: doubled={doubled}, halved={halved}, 2^10={1 << 10}")
+```
+
+---
+
+## 3. The Self-Cancelling XOR Invariant
+
+For any integer $x$, $x \oplus x = 0$ and $x \oplus 0 = x$. XOR is commutative and associative, so duplicate pairs cancel completely leaving only the lone unique item.
+
+```python
+nums = [4, 1, 2, 1, 2]
+unique = 0
+for x in nums:
+    unique ^= x
+
+assert unique == 4, "4 is the only unpaired number"
+assert (99 ^ 99) == 0
+assert (0 ^ 42) == 42
+print(f"Array {nums} isolated unique element: {unique}")
+```
+
+---

@@ -1,133 +1,100 @@
-# Beginner Playground: String Matching
+# 🐣 Interactive Foundations Playground: String Algorithms & Pattern Matching
 
-> *"Finding a word in a book. You do not start from page 1 again every time a
-> sentence turns out to be the wrong one - you remember what you have read."*
-
+> *"KMP is reading a book and never reading the same letter twice when searching for a phrase."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. The slow way, and why it is slow
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-To find `cat` in `concatenate`, line the word up at position 0, compare, slide
-right by one, compare again. That works, and for short text it is fine.
-
-The waste shows up when the pattern repeats itself:
-
-```python
-text = "aaaaaaaaab"
-pattern = "aaaab"
-
-comparisons = 0
-for start in range(len(text) - len(pattern) + 1):
-    for i, character in enumerate(pattern):
-        comparisons += 1
-        if text[start + i] != character:
-            break
-print("character comparisons:", comparisons)   # 26 for a 10-character text
+```bash
+python 03_try_it_yourself.py
 ```
 
-At every offset it compares four `a`s, fails on the `b`, and then throws away
-everything it just learned.
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. The idea: remember what you matched
+## 0. Everything this page needs
 
-If you matched `abab` and then failed, you do not have to start over. `ab` at the
-end of what you matched is also the *start* of the pattern - so two characters
-are still good.
-
-The table that records this is the whole of KMP:
+Nothing here is installed. These all ship with Python.
 
 ```python
-def prefix_table(pattern):
+import math
+```
+
+---
+
+## 1. KMP Prefix Function (Pi Array)
+
+The prefix table $\pi[i]$ stores the length of the longest proper prefix that is also a suffix of `pattern[0..i]`, preventing backward backtracking.
+
+```python
+def compute_pi(pattern: str) -> list[int]:
     pi = [0] * len(pattern)
-    k = 0
+    j = 0
     for i in range(1, len(pattern)):
-        while k > 0 and pattern[i] != pattern[k]:
-            k = pi[k - 1]
-        if pattern[i] == pattern[k]:
-            k += 1
-        pi[i] = k
+        while j > 0 and pattern[i] != pattern[j]:
+            j = pi[j - 1]
+        if pattern[i] == pattern[j]:
+            j += 1
+        pi[i] = j
     return pi
 
-print(prefix_table("ababaca"))     # [0, 0, 1, 2, 3, 0, 1]
+pi_table = compute_pi("aabaabaaa")
+assert pi_table[0] == 0
+assert pi_table[1] == 1, "'aa' prefix 'a'"
+assert pi_table[4] == 2, "'aabaa' prefix 'aa'"
+print(f"KMP Pi table for 'aabaabaaa': {pi_table}")
 ```
-
-Read entry 4: the value 3 says *"the first 3 characters of the pattern are also
-the last 3 of what you have matched so far"*. So a failure there costs you
-nothing - you keep going with 3 already matched.
 
 ---
 
-## 3. A hash you can slide
+## 2. KMP Linear-Time Substring Search
 
-A different trick. Turn each window of text into a number, and update that number
-in one step as the window slides - no need to re-read the characters:
+When a mismatch occurs, instead of restarting at text index $i+1$, KMP shifts the pattern according to the precomputed $\pi$ table in $O(N + M)$ total time.
 
 ```python
-text, width = "abcde", 3
-base, mod = 257, 1_000_003
+def kmp_search(text: str, pattern: str) -> list[int]:
+    pi = compute_pi(pattern)
+    matches = []
+    j = 0
+    for i in range(len(text)):
+        while j > 0 and text[i] != pattern[j]:
+            j = pi[j - 1]
+        if text[i] == pattern[j]:
+            j += 1
+        if j == len(pattern):
+            matches.append(i - j + 1)
+            j = pi[j - 1]
+    return matches
 
-value = 0
-for character in text[:width]:
-    value = (value * base + ord(character)) % mod
-print("hash of 'abc':", value)
-
-high = pow(base, width - 1, mod)
-value = (value - ord("a") * high) % mod      # drop the 'a'
-value = (value * base + ord("d")) % mod      # add the 'd'
-print("hash of 'bcd':", value)
+hits = kmp_search("sadbutsad", "sad")
+assert hits == [0, 6]
+assert kmp_search("leetcode", "leeto") == []
+print(f"KMP matches found at indices: {hits}")
 ```
-
-**The catch, and it matters:** two different strings can produce the same number.
-So when the hashes match you must still compare the actual characters. A hash
-match means *"worth checking"*, never *"found it"*.
 
 ---
 
-## 4. Many words at once
+## 3. Rabin-Karp Rolling Hash Matching
 
-Searching for 500 banned words by running one search 500 times reads the text
-500 times. Aho-Corasick reads it once.
-
-It builds a tree of all the words, plus shortcuts that say "if this letter fails,
-here is the longest partial word you are still inside". That is the same idea as
-the table in section 2, generalised to a whole dictionary.
-
-The bit people get wrong: when the machine finishes `she`, the text also ends
-with `he` - and `he` might be on the list too. Both have to be reported.
+Updating a polynomial rolling hash as a sliding window shifts takes $O(1)$ time, checking equality only on hash collisions.
 
 ```python
-words = ["he", "she", "hers"]
-text = "ushers"
-for word in words:
-    found = [i for i in range(len(text) - len(word) + 1)
-             if text[i:i + len(word)] == word]
-    print(f"{word:>5}: {found}")
+def rolling_hash(s, base=256, mod=1000000007):
+    h = 0
+    for ch in s:
+        h = (h * base + ord(ch)) % mod
+    return h
+
+h1 = rolling_hash("apple")
+h2 = rolling_hash("apple")
+h3 = rolling_hash("apply")
+assert h1 == h2
+assert h1 != h3
+print(f"Rolling hash values: 'apple'={h1}, 'apply'={h3}")
 ```
 
-Run it. `he` really is in there, hiding inside both of the others.
-
 ---
-
-## 5. Predict before you run
-
-`find_all("aaaa", "aa")` - how many matches? Write your answer down, then run
-[`03_try_it_yourself.py`](03_try_it_yourself.py).
-
-Most people say 2. The answer is 3, because matches are allowed to overlap.
-Which answer *you* want is a decision you have to make on purpose.
-
----
-
-## Where this shows up for real
-
-`grep`, your editor's find-in-files, every spam filter, every intrusion detection
-rule set, and DNA sequence alignment. When a log-scanning job that was fine in
-testing takes six hours in production, it is usually this - a quadratic scan meeting
-repetitive data.
-
-**Next:** [`01_README.md`](01_README.md) for the mechanisms in full.

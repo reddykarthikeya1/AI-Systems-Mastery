@@ -35,92 +35,253 @@ You never need an $M \\times N$ matrix. Keep only two rows (`prev` and `curr`), 
 
 ## 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)
 
-### Problem 1: Unique Paths ([LeetCode 62](https://leetcode.com/problems/unique-paths/)) — Medium
+This section walks through the **7 canonical LeetCode challenges** curated for this module.
+Each problem is analyzed from brute force intuition to the optimal invariant-driven solution, along with the critical edge cases to guard against in production.
 
-#### Optimized: Rolling 1D Array DP ($O(M \\times N)$ Time, $O(N)$ Space)
-$dp[c] = dp[c] + dp[c - 1]$.
+### Problem 1: Unique Paths ([LeetCode #62](https://leetcode.com/problems/unique-paths/)) — Medium
+
+> **Pattern**: `2D Grid Dynamic Programming` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(N)
+
+#### Problem Specification
+There is a robot on an `m x n` grid. The robot is initially located at the top-left corner `(0, 0)` and tries to move to the bottom-right corner `(m - 1, n - 1)`. The robot can only move either down or right at any point in time.
+
+Given two integers `m` and `n`, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+
+#### Algorithmic Invariants & Optimal Derivation
+$dp[r][c] = dp[r+1][c] + dp[r][c+1]$. Compress into a single 1D row of length N to optimize space to $O(N)$.
+
 ```python
-def unique_paths(m: int, n: int) -> int:
-    row = [1] * n
-    for _ in range(m - 1):
-        new_row = [1] * n
-        for j in range(1, n):
-            new_row[j] = new_row[j - 1] + row[j]
-        row = new_row
-    return row[-1]
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        row = [1] * n
+        for _ in range(m - 1):
+            new_row = [1] * n
+            for j in range(n - 2, -1, -1):
+                new_row[j] = new_row[j + 1] + row[j]
+            row = new_row
+        return row[0]
 ```
-- **Time Complexity**: $O(M \\times N)$, **Space Complexity**: $O(N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 2: Longest Common Subsequence ([LeetCode 1143](https://leetcode.com/problems/longest-common-subsequence/)) — Medium
+### Problem 2: Minimum Path Sum ([LeetCode #64](https://leetcode.com/problems/minimum-path-sum/)) — Medium
 
-#### Optimized: 2D State Tabulation
-If $text1[i] == text2[j]$, $dp[i][j] = 1 + dp[i-1][j-1]$; else $\\max(dp[i-1][j], dp[i][j-1])$.
-- **Time Complexity**: $O(M \\times N)$, **Space Complexity**: $O(\\min(M, N))$ with rolling rows.
+> **Pattern**: `2D Grid Cost Minimization` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(1) in-place
 
----
+#### Problem Specification
+Given a `m x n` `grid` filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path. You can only move either down or right at any point in time.
 
-### Problem 3: Best Time to Buy and Sell Stock with Cooldown ([LeetCode 309](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)) — Medium
+#### Algorithmic Invariants & Optimal Derivation
+At cell $(r, c)$, minimum path sum is $	ext{grid}[r][c] + \min(dp[r-1][c], dp[r][c-1])$. We can accumulate directly into the matrix in-place.
 
-#### Optimized: 3-State Machine DP ($O(N)$ Time, $O(1)$ Space)
-States: `held`, `sold`, `reset`.
-- `held = max(held, reset - price)`
-- `reset = max(reset, sold)`
-- `sold = held + price`
-- **Time Complexity**: $O(N)$, **Space Complexity**: $O(1)$.
-
----
-
-### Problem 4: Target Sum ([LeetCode 494](https://leetcode.com/problems/target-sum/)) — Medium
-
-#### Optimized: 0/1 Subset Sum Reduction
-Partition `nums` into positive set $P$ and negative set $N$: $\\sum(P) = \\frac{\\text{target} + \\sum(nums)}{2}$. Solved via 1D array knapsack counting.
-- **Time Complexity**: $O(N \\times S)$, **Space Complexity**: $O(S)$ where $S = \\sum(nums)$.
-
----
-
-### Problem 5: Edit Distance ([LeetCode 72](https://leetcode.com/problems/edit-distance/)) — Medium
-
-#### Optimized: Wagner-Fischer 2D DP Table
-Transitions:
-- Match: $dp[i][j] = dp[i-1][j-1]$
-- Insert, Delete, Replace: $1 + \\min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])$
 ```python
-def min_distance(word1: str, word2: str) -> int:
-    m, n = len(word1), len(word2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
-    for i in range(m + 1): dp[i][0] = i
-    for j in range(n + 1): dp[0][j] = j
-    
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if word1[i - 1] == word2[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1]
-            else:
-                dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
-    return dp[m][n]
+class Solution:
+    def minPathSum(self, grid: list[list[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        for r in range(m):
+            for c in range(n):
+                if r == 0 and c == 0:
+                    continue
+                elif r == 0:
+                    grid[r][c] += grid[r][c - 1]
+                elif c == 0:
+                    grid[r][c] += grid[r - 1][c]
+                else:
+                    grid[r][c] += min(grid[r - 1][c], grid[r][c - 1])
+        return grid[-1][-1]
 ```
-- **Time Complexity**: $O(M \\times N)$, **Space Complexity**: $O(M \\times N)$.
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 6: Burst Balloons ([LeetCode 312](https://leetcode.com/problems/burst-balloons/)) — Hard
+### Problem 3: Longest Common Subsequence ([LeetCode #1143](https://leetcode.com/problems/longest-common-subsequence/)) — Medium
 
-#### Optimized: Interval DP (Choose Last Balloon to Pop)
-Instead of picking which balloon to burst first (which breaks subproblem independence), pick which balloon $k$ to burst **last** in range $[i, j]$.
-$dp[i][j] = \\max_{k=i}^j(dp[i][k-1] + dp[k+1][j] + nums[i-1] \\times nums[k] \\times nums[j+1])$.
-- **Time Complexity**: $O(N^3)$, **Space Complexity**: $O(N^2)$.
+> **Pattern**: `2D String Matching DP` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+Given two strings `text1` and `text2`, return the length of their longest common subsequence. If there is no common subsequence, return `0`.
+
+A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+
+#### Algorithmic Invariants & Optimal Derivation
+If characters match, $dp[i][j] = 1 + dp[i-1][j-1]$. If they don't, take $\max(dp[i-1][j], dp[i][j-1])$.
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        m, n = len(text1), len(text2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if text1[i - 1] == text2[j - 1]:
+                    dp[i][j] = 1 + dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        return dp[m][n]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
 
-### Problem 7: Regular Expression Matching ([LeetCode 10](https://leetcode.com/problems/regular-expression-matching/)) — Hard
+### Problem 4: Best Time to Buy and Sell Stock with Cooldown ([LeetCode #309](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)) — Medium
 
-#### Optimized: 2D Boolean DP Grid
-Handling `'*'` allows zero occurrences ($dp[i][j-2]$) or matching one or more characters if preceding character matches current string character ($dp[i-1][j]$).
-- **Time Complexity**: $O(M \\times N)$, **Space Complexity**: $O(M \\times N)$.
+> **Pattern**: `State Machine Dynamic Programming` | **Target Time**: $O(N)$ | **Target Space**: $O(1)
+
+#### Problem Specification
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `i-th` day. Find the maximum profit you can achieve.
+After you sell your stock, you cannot buy stock on the next day (i.e., 1 day cooldown). Note: You may not engage in multiple transactions simultaneously.
+
+#### Algorithmic Invariants & Optimal Derivation
+Model three distinct states: `held` (own a share), `sold` (just sold today), and `reset` (ready to buy after cooldown). Transitions run in $O(N)$ with $O(1)$ space.
+
+```python
+class Solution:
+    def maxProfit(self, prices: list[int]) -> int:
+        sold, held, reset = 0, -float('inf'), 0
+        for p in prices:
+            prev_sold = sold
+            sold = held + p
+            held = max(held, reset - p)
+            reset = max(reset, prev_sold)
+        return max(sold, reset)
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
 
 ---
+
+### Problem 5: Coin Change II ([LeetCode #518](https://leetcode.com/problems/coin-change-ii/)) — Medium
+
+> **Pattern**: `Unbounded Knapsack Combination Counting` | **Target Time**: $O(A 	imes C)$ | **Target Space**: $O(A)
+
+#### Problem Specification
+You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
+Return the number of combinations that make up that amount. If that amount of money cannot be made up by any combination of the coins, return 0.
+You may assume that you have an infinite number of each kind of coin.
+
+#### Algorithmic Invariants & Optimal Derivation
+Outer loop iterates through each coin, inner loop increments amount. By placing the coin loop on the outside, we count unordered combinations rather than permutations.
+
+```python
+class Solution:
+    def change(self, amount: int, coins: list[int]) -> int:
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+        for c in coins:
+            for a in range(c, amount + 1):
+                dp[a] += dp[a - c]
+        return dp[amount]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 6: Edit Distance ([LeetCode #72](https://leetcode.com/problems/edit-distance/)) — Hard
+
+> **Pattern**: `Levenshtein Matrix Dynamic Programming` | **Target Time**: $O(M 	imes N)$ | **Target Space**: $O(M 	imes N)
+
+#### Problem Specification
+Given two strings `word1` and `word2`, return the minimum number of operations required to convert `word1` to `word2`.
+You have the following three operations permitted on a word:
+1. Insert a character
+2. Delete a character
+3. Replace a character
+
+#### Algorithmic Invariants & Optimal Derivation
+Classic Levenshtein distance table where cell $(i, j)$ represents min operations to convert prefix $w1[0\dots i]$ to $w2[0\dots j]$.
+
+```python
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m + 1):
+            dp[i][0] = i
+        for j in range(n + 1):
+            dp[0][j] = j
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = 1 + min(
+                        dp[i - 1][j],    # delete
+                        dp[i][j - 1],    # insert
+                        dp[i - 1][j - 1] # replace
+                    )
+        return dp[m][n]
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
+### Problem 7: Partition Equal Subset Sum ([LeetCode #416](https://leetcode.com/problems/partition-equal-subset-sum/)) — Medium
+
+> **Pattern**: `0/1 Knapsack Boolean Reachability` | **Target Time**: $O(N 	imes 	ext{target})$ | **Target Space**: $O(	ext{target})
+
+#### Problem Specification
+Given an integer array `nums`, return `true` if you can partition the array into two subsets such that the sum of the elements in both subsets is equal or `false` otherwise.
+
+#### Algorithmic Invariants & Optimal Derivation
+If total sum is odd, partition is impossible. Otherwise target is $	ext{sum} / 2$. This maps to 0/1 Knapsack: can a subset sum exactly to target?
+
+```python
+class Solution:
+    def canPartition(self, nums: list[int]) -> bool:
+        total = sum(nums)
+        if total % 2 != 0:
+            return False
+        target = total // 2
+        dp = set([0])
+        for x in nums:
+            next_dp = set(dp)
+            for s in dp:
+                if s + x == target:
+                    return True
+                if s + x < target:
+                    next_dp.add(s + x)
+            dp = next_dp
+        return target in dp
+```
+
+#### Critical Production Edge Cases to Guard:
+- **Boundary Limits**: Empty inputs, single-element collections, and minimum constraint sizes.
+- **Extremes & Negative Values**: Negative indices, zero values, and maximum integer magnitude constraints.
+- **Duplicates & Uniform Sequences**: All identical values, alternating keys, or repeated entries.
+- **Structural Invariants**: Target at boundary indices (index `0` or `N-1`), missing targets, or cycles.
+
+---
+
 
 ## 3. Hands-On Project & Test Suite
 

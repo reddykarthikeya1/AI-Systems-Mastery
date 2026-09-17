@@ -1,72 +1,83 @@
-# Interactive Foundations Playground: Networking, Sockets & HTTP
+# 🐣 Interactive Foundations Playground: Networking: Sockets & HTTP Protocols
 
-> *"A socket is a phone call between two computers; HTTP is the language they speak."*
-
+> *"Network protocols serialize application intents into byte streams across transport layers."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to the **Module 11 Networking Sockets HTTP** Playground! Here we demystify advanced concepts into bite-sized, runnable mental models.
+**Brand new to this topic? Start here, not with the README.**
 
----
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-## 1. Core Concept in 30 Seconds
-
-Computers communicate across networks using **Sockets**. A Server opens a socket and listens on a port; a Client connects to that IP and port. HTTP is a text-based protocol built on top of TCP sockets.
-
----
-
-## 2. Micro-Code Example (3-5 Lines)
-
-```python
-import socket
-
-# Create a TCP IPv4 socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Connect to a host on port 80 (HTTP)
-s.connect(("example.com", 80))
-# Send raw HTTP request bytes
-req = "GET / HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n"
-s.sendall(req.encode("utf-8"))
-response = s.recv(512)
-print(response.decode("utf-8", errors="ignore")[:100])
-s.close()
-```
-
-### Line-by-Line Breakdown:
-- `socket.AF_INET`: Specifies IPv4 addressing.
-- `socket.SOCK_STREAM`: Specifies TCP (reliable, ordered stream of bytes).
-- `.encode('utf-8')`: Converts text to raw bytes before transmitting over the network.
-- `\r\n\r\n`: The standard HTTP blank line signaling that request headers are complete.
-
----
-
-## 3. Run the Interactive Playground
-
-Execute the standalone, zero-dependency sandbox in your terminal:
 ```bash
 python 03_try_it_yourself.py
 ```
 
----
-
-## 4. Beginner Quick-Check Drills
-
-### Drill 1: Quick Check
-Why must you use `.encode()` before sending data through a socket?
-
-<details><summary><b>Show Answer</b></summary>
-
-Physical networks only transmit binary bytes, not Python string objects.
-</details>
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-### Drill 2: Quick Check
-What is the difference between TCP and UDP?
+## 0. Everything this page needs
 
-<details><summary><b>Show Answer</b></summary>
+Nothing here is installed. These all ship with Python.
 
-TCP guarantees reliable, ordered packet delivery with handshakes; UDP sends packets without connection guarantees for lower latency (e.g. video streaming).
-</details>
+```python
+from urllib.parse import parse_qs, urlparse
+```
+
+---
+
+## 1. URL Parsing and Query Extraction
+
+`urllib.parse` decomposes URI strings into scheme, host, path, and parameters.
+
+```python
+url = "https://api.example.com:8080/v1/query?service=search&page=2"
+parsed = urlparse(url)
+assert parsed.scheme == "https"
+assert parsed.netloc == "api.example.com:8080"
+assert parsed.path == "/v1/query"
+params = parse_qs(parsed.query)
+assert params["service"] == ["search"]
+assert params["page"] == ["2"]
+print(f"Parsed URL scheme: {parsed.scheme}, endpoint: {parsed.path}")
+```
+
+---
+
+## 2. Simulating HTTP Request / Response Wire Protocol
+
+HTTP/1.1 messages consist of status lines, key-value headers, and optional body bytes.
+
+```python
+raw_http = (
+    b"HTTP/1.1 200 OK\r\n"
+    b"Content-Type: application/json\r\n"
+    b"Content-Length: 17\r\n"
+    b"\r\n"
+    b"{\"status\":\"ready\"}"
+)
+lines = raw_http.split(b"\r\n")
+status_line = lines[0].decode()
+headers = dict(line.decode().split(": ") for line in lines[1:3])
+body = lines[4].decode()
+
+assert "200 OK" in status_line
+assert headers["Content-Type"] == "application/json"
+assert body == '{"status":"ready"}'
+print("HTTP wire protocol frame parsed successfully.")
+```
+
+---
+
+## 3. Header Normalization and Status Codes
+
+HTTP headers are case-insensitive and map cleanly into dictionary Lookups.
+
+```python
+normalized_headers = {k.lower(): v for k, v in [("X-Request-Id", "req-123"), ("Content-Type", "text/plain")]}
+assert normalized_headers["x-request-id"] == "req-123"
+assert "content-type" in normalized_headers
+print(f"Normalized headers: {normalized_headers}")
+```
 
 ---

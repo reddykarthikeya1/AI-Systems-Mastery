@@ -1,28 +1,81 @@
-# 🐣 Interactive Foundations Playground: Transformers, Self-Attention & RoPE
+# 🐣 Interactive Foundations Playground: Transformers & Self-Attention
 
-> *"Attention is a smart filing cabinet: You present a Query (what you are searching for), compare it to Keys (folder labels), and pull out the weighted sum of Values (the contents)."*
-
+> *"Self-attention lets every word in a sentence look at every other word and decide how much to pay attention."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
+**Brand new to this topic? Start here, not with the README.**
+
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 03_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
+
 ---
 
-## 1. The Attention Formula: Step-by-Step
+## 0. Everything this page needs
 
-$$\text{Attention}(Q, K, V) = \text{Softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right) V$$
+Nothing here is installed. These all ship with Python.
 
-1. **$Q K^T$ (Similarity Score)**: Measures how relevant each token is to every other token.
-2. **$\frac{1}{\sqrt{d_k}}$ (Scaling Factor)**: If $d_k = 64$, variance of the dot product is 64! Large numbers push Softmax into saturated flat zones where gradients vanish. Dividing by $\sqrt{64} = 8$ keeps gradients healthy!
-3. **Causal Mask (For Generative Models)**: In GPT, token 3 cannot look at token 4. We mask future positions with $-\infty$ so their Softmax probability becomes $0.0$.
-4. **Weighted Values**: Multiply Softmax weights by $V$ to synthesize the contextual representation.
+```python
+import math
+```
 
 ---
 
-## 2. Rotary Position Embeddings (RoPE)
+## 1. Scaled Dot-Product Attention Scores
 
-How do modern LLMs (LLaMA-3, Mistral, Gemma) know word order?
-- Older models **added** position vectors: $x + p_i$.
-- **RoPE (Su et al., 2021)** rotates query and key vectors in 2D pairs by angle $m \theta_i$:
-$$R_{\Theta, m}^d x$$
-- When calculating $Q_m \cdot K_n$, the dot product simplifies to an expression that depends **only on relative distance $(m - n)$**!
-- This gives models the superpower to extrapolate to longer context lengths!
+Query-Key dot product divided by $\sqrt{d_k}$ measures token relevance while preventing gradient vanishing in softmax.
+
+```python
+q = [1.0, 0.0]
+k1 = [1.0, 0.0]  # Identical direction
+k2 = [0.0, 1.0]  # Orthogonal direction
+d_k = 2.0
+scale = math.sqrt(d_k)
+
+score1 = sum(a * b for a, b in zip(q, k1)) / scale
+score2 = sum(a * b for a, b in zip(q, k2)) / scale
+
+assert score1 > score2
+assert abs(score1 - 1.0 / math.sqrt(2.0)) < 1e-6
+assert score2 == 0.0
+print(f"Attention scores: match={score1:.4f}, orthogonal={score2:.4f}")
+```
+
+---
+
+## 2. Attention Weights via Softmax
+
+Softmax converts raw attention logits into normalized attention weights that sum to 1.0.
+
+```python
+scores = [score1, score2]
+exp_s = [math.exp(s) for s in scores]
+weights = [e / sum(exp_s) for e in exp_s]
+
+assert abs(sum(weights) - 1.0) < 1e-6
+assert weights[0] > weights[1]
+print(f"Attention weights distribution: {[round(w, 4) for w in weights]}")
+```
+
+---
+
+## 3. Weighted Value Context Aggregation
+
+The final contextual token representation is the weighted sum of all Value vectors: $\sum w_i V_i$.
+
+```python
+v1 = [10.0, 20.0]
+v2 = [1.0, 2.0]
+
+context = [weights[0] * v1[i] + weights[1] * v2[i] for i in range(2)]
+assert len(context) == 2
+assert context[0] > 1.0
+print(f"Aggregated context embedding: {[round(c, 2) for c in context]}")
+```
+
+---

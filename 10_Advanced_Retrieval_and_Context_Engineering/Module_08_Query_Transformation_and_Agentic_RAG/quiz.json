@@ -1,36 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Query Transformation and Agentic RAG, what core system invariant does '1. Architectural Foundations of Query Translation' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations of Query Translation.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Architectural Foundations of Query Translation' in Query Transformation and Agentic RAG.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_query_transformation.py`, what is the exact evaluated result of:\n\n```python\nlen(sub_queries)\n```",
     "category": "Apply: Code Execution",
@@ -60,7 +30,7 @@
     "lesson_ref": "test_query_transformation.py"
   },
   {
-    "id": 3,
+    "id": 2,
     "tier": "Diagnose",
     "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Agentic RAG'\"",
     "category": "Diagnose: Failure Analysis",
@@ -90,7 +60,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 4,
+    "id": 3,
     "tier": "Diagnose",
     "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
     "category": "Diagnose: Failure Analysis",
@@ -120,7 +90,7 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 5,
+    "id": 4,
     "tier": "Diagnose",
     "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
     "category": "Diagnose: Failure Analysis",
@@ -150,123 +120,123 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
-    "id": 6,
-    "tier": "Diagnose",
-    "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
-    "category": "Diagnose: Failure Analysis",
+    "id": 5,
+    "tier": "Recall",
+    "question": "In 08 Query Transformation and Agentic RAG, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 08 query transformation and agentic rag.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
         "is_correct": false
       }
     ],
-    "explanation": "Diagnostic Analysis: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.\n",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 08 query transformation and agentic rag.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In 08 Query Transformation and Agentic RAG, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 08 query transformation and agentic rag.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 08 query transformation and agentic rag.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 7,
-    "tier": "Diagnose",
-    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
+    "tier": "Recall",
+    "question": "In 08 Query Transformation and Agentic RAG, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
     "options": [
       {
         "id": "opt_corr",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 08 query transformation and agentic rag.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
         "is_correct": false
       }
     ],
-    "explanation": "Root Cause Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 08 query transformation and agentic rag.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 8,
-    "tier": "Diagnose",
-    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
+    "tier": "Recall",
+    "question": "In 08 Query Transformation and Agentic RAG, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Vector search returns top hits, but LLM receives empty context strings.",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 08 query transformation and agentic rag.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
         "is_correct": false
       }
     ],
-    "explanation": "Root Cause Analysis: Vector search returns top hits, but LLM receives empty context strings.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
-  },
-  {
-    "id": 9,
-    "tier": "Diagnose",
-    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
-    "category": "Diagnose: High-Load Triage",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Root Cause Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 08 query transformation and agentic rag.",
+    "lesson_ref": "01_README.md"
   }
 ]

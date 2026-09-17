@@ -49,7 +49,15 @@ You must write an algorithm with $O(\log n)$ runtime complexity.
             {"input": {"nums": [5], "target": -5}, "expected": -1},
             {"input": {"nums": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "target": 1}, "expected": 0},
             {"input": {"nums": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "target": 10}, "expected": 9},
-            {"input": {"nums": [-100, -50, 0, 50, 100], "target": -50}, "expected": 1}
+            {"input": {"nums": [-100, -50, 0, 50, 100], "target": -50}, "expected": 1},
+            {"input": {"nums": [1], "target": 1}, "expected": 0},
+            {"input": {"nums": [1], "target": 2}, "expected": -1},
+            {"input": {"nums": [1, 3], "target": 1}, "expected": 0},
+            {"input": {"nums": [1, 3], "target": 3}, "expected": 1},
+            {"input": {"nums": [1, 3], "target": 0}, "expected": -1},
+            {"input": {"nums": [1, 3], "target": 4}, "expected": -1},
+            {"input": {"nums": [-5, -2, 0, 4, 8, 12, 19], "target": 19}, "expected": 6},
+            {"input": {"nums": [-5, -2, 0, 4, 8, 12, 19], "target": -5}, "expected": 0}
         ],
         "explanation": "Standard binary search with two pointers (left and right). At each step, compute mid to halve the search interval, achieving logarithmic $O(\log N)$ time and $O(1)$ auxiliary space."
     },
@@ -98,7 +106,8 @@ You must write an algorithm with $O(\log n)$ runtime complexity.""",
             {"input": {"nums": [1], "target": 1}, "expected": 0},
             {"input": {"nums": [3, 1], "target": 1}, "expected": 1},
             {"input": {"nums": [5, 1, 3], "target": 5}, "expected": 0},
-            {"input": {"nums": [4, 5, 6, 7, 8, 1, 2, 3], "target": 8}, "expected": 4}
+            {"input": {"nums": [4, 5, 6, 7, 8, 1, 2, 3], "target": 8}, "expected": 4},
+            {"input": {"nums": [3, 1], "target": 3}, "expected": 0}
         ],
         "explanation": "At least one half of the rotated array is always strictly sorted. We identify which half is sorted by comparing nums[left] with nums[mid], then check if target lies within that sorted range."
     },
@@ -137,7 +146,8 @@ You must write an algorithm that runs in $O(\log n)$ time.""",
             {"input": {"nums": [11, 13, 15, 17]}, "expected": 11},
             {"input": {"nums": [2, 1]}, "expected": 1},
             {"input": {"nums": [1]}, "expected": 1},
-            {"input": {"nums": [3, 1, 2]}, "expected": 1}
+            {"input": {"nums": [3, 1, 2]}, "expected": 1},
+            {"input": {"nums": [1, 2]}, "expected": 1}
         ],
         "explanation": "Compare nums[mid] to nums[right]. If nums[mid] > nums[right], the minimum must be in the right subarray (excluding mid). Otherwise, it is in the left subarray including mid."
     },
@@ -153,7 +163,7 @@ You must write an algorithm that runs in $O(\log n)$ time.""",
 1. Each row is sorted in non-decreasing order.
 2. The first integer of each row is greater than the last integer of the previous row.
 
-Given an integer `target`, return `true` if `target` is in `matrix` or `false` otherwise.
+Given an integer `target`, return `True` if `target` is in `matrix` or `False` otherwise.
 You must write a solution in $O(\log(m \cdot n))$ time.""",
         "starter_code": """class Solution:
     def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
@@ -184,7 +194,11 @@ You must write a solution in $O(\log(m \cdot n))$ time.""",
             {"input": {"matrix": [[1]], "target": 1}, "expected": True},
             {"input": {"matrix": [[1]], "target": 2}, "expected": False},
             {"input": {"matrix": [[1, 3]], "target": 3}, "expected": True},
-            {"input": {"matrix": [[1, 4, 7, 11], [12, 13, 14, 15], [16, 17, 18, 19]], "target": 19}, "expected": True}
+            {"input": {"matrix": [[1, 4, 7, 11], [12, 13, 14, 15], [16, 17, 18, 19]], "target": 19}, "expected": True},
+            {"input": {"matrix": [[1]], "target": 0}, "expected": False},
+            {"input": {"matrix": [[1], [3]], "target": 1}, "expected": True},
+            {"input": {"matrix": [[1], [3]], "target": 2}, "expected": False},
+            {"input": {"matrix": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], "target": 60}, "expected": True}
         ],
         "explanation": "Treat the M x N matrix as a single flattened 1D array of length M*N. Any 1D index `idx` maps directly to 2D coordinates via row = idx // N and col = idx % N."
     },
@@ -223,7 +237,7 @@ You are given an API `isBadVersion(version)` which returns whether `version` is 
             {"input": {"n": 1000, "first_bad": 1}, "expected": 1},
             {"input": {"n": 10000, "first_bad": 9999}, "expected": 9999}
         ],
-        "explanation": "Binary search on monotonic predicate: if `isBadVersion(mid)` is true, the first bad version is at or to the left of `mid` (right = mid). Otherwise it is strictly to the right (left = mid + 1)."
+        "explanation": "Binary search on monotonic predicate: if `isBadVersion(mid)` is True, the first bad version is at or to the left of `mid` (right = mid). Otherwise it is strictly to the right (left = mid + 1)."
     },
     {
         "id": "lc_875_koko_eating_bananas",
@@ -265,7 +279,9 @@ Return the minimum integer `k` such that she can eat all the bananas within `h` 
         "hidden_testcases": [
             {"input": {"piles": [312884470], "h": 312884469}, "expected": 2},
             {"input": {"piles": [1, 1, 1, 1], "h": 4}, "expected": 1},
-            {"input": {"piles": [1000000000], "h": 2}, "expected": 500000000}
+            {"input": {"piles": [1000000000], "h": 2}, "expected": 500000000},
+            {"input": {"piles": [312884470], "h": 312884470}, "expected": 1},
+            {"input": {"piles": [1], "h": 1}, "expected": 1}
         ],
         "explanation": "Search space is the speed k from 1 to max(piles). The feasibility function `sum(ceil(p/k)) <= h` is monotonic: if speed k works, all speeds > k also work. We use binary search to locate the minimum feasible speed."
     },
@@ -396,7 +412,10 @@ Notice that the solution set must not contain duplicate triplets.""",
         ],
         "hidden_testcases": [
             {"input": {"nums": [-2, 0, 1, 1, 2]}, "expected": [[-2, 0, 2], [-2, 1, 1]]},
-            {"input": {"nums": [-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6]}, "expected": [[-4, -2, 6], [-4, 0, 4], [-4, 1, 3], [-4, 2, 2], [-2, -2, 4], [-2, 0, 2]]}
+            {"input": {"nums": [-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6]}, "expected": [[-4, -2, 6], [-4, 0, 4], [-4, 1, 3], [-4, 2, 2], [-2, -2, 4], [-2, 0, 2]]},
+            {"input": {"nums": [0, 0, 0, 0]}, "expected": [[0, 0, 0]]},
+            {"input": {"nums": [-1, 0, 1, 0]}, "expected": [[-1, 0, 1]]},
+            {"input": {"nums": [-1, -1, 2]}, "expected": [[-1, -1, 2]]}
         ],
         "explanation": "Sort array first ($O(N \log N)$). Iterate through each candidate first element, skipping duplicates. Use two pointers inward on the remainder of the array to find pairs summing to $-nums[i]$."
     },
@@ -513,7 +532,10 @@ You must write an algorithm that runs in $O(n)$ time and without using the divis
             {"input": {"s": ""}, "expected": 0},
             {"input": {"s": " "}, "expected": 1},
             {"input": {"s": "dvdf"}, "expected": 3},
-            {"input": {"s": "tmmzuxt"}, "expected": 5}
+            {"input": {"s": "tmmzuxt"}, "expected": 5},
+            {"input": {"s": "au"}, "expected": 2},
+            {"input": {"s": "abba"}, "expected": 2},
+            {"input": {"s": "abcdefghijklmnopqrstuvwxyz"}, "expected": 26}
         ],
         "explanation": "Sliding window [left, right]. Store the last seen index of each character. When a duplicate is encountered inside the current window, shift `left` directly to last_index + 1."
     },
@@ -556,7 +578,10 @@ You must write an algorithm that runs in $O(n)$ time and without using the divis
             {"input": {"height": []}, "expected": 0},
             {"input": {"height": [3]}, "expected": 0},
             {"input": {"height": [5, 4, 1, 2]}, "expected": 1},
-            {"input": {"height": [2, 0, 2]}, "expected": 2}
+            {"input": {"height": [2, 0, 2]}, "expected": 2},
+            {"input": {"height": [1]}, "expected": 0},
+            {"input": {"height": [1, 2]}, "expected": 0},
+            {"input": {"height": [3, 0, 0, 2, 0, 4]}, "expected": 10}
         ],
         "explanation": "Water trapped at index i is determined by $\min(\text{left\_max}, \text{right\_max}) - \text{height}[i]$. By advancing whichever boundary has the smaller max, we guarantee the water height at that position is strictly dictated by that boundary."
     },
@@ -600,7 +625,8 @@ class Solution:
         ],
         "hidden_testcases": [
             {"input": {"head": [1]}, "expected": [1]},
-            {"input": {"head": [10, 20, 30, 40]}, "expected": [40, 30, 20, 10]}
+            {"input": {"head": [10, 20, 30, 40]}, "expected": [40, 30, 20, 10]},
+            {"input": {"head": [9, 8, 7]}, "expected": [7, 8, 9]}
         ],
         "explanation": "Maintain `prev` initialized to None and `curr` to head. At each node, save `curr.next`, reverse pointer `curr.next = prev`, then advance `prev` and `curr`."
     },
@@ -641,7 +667,10 @@ Merge the two lists into one sorted list. The list should be made by splicing to
         ],
         "hidden_testcases": [
             {"input": {"list1": [5], "list2": [1, 2, 3, 4]}, "expected": [1, 2, 3, 4, 5]},
-            {"input": {"list1": [2], "list2": [1]}, "expected": [1, 2]}
+            {"input": {"list1": [2], "list2": [1]}, "expected": [1, 2]},
+            {"input": {"list1": [1], "list2": []}, "expected": [1]},
+            {"input": {"list1": [1, 3, 5], "list2": [2, 4, 6]}, "expected": [1, 2, 3, 4, 5, 6]},
+            {"input": {"list1": [1, 1, 1], "list2": [2, 2, 2]}, "expected": [1, 1, 1, 2, 2, 2]}
         ],
         "explanation": "Create a dummy sentinel head. At each step compare current values of list1 and list2, attach the smaller node to tail.next, and advance. Attach any remaining non-empty list at the end."
     },
@@ -655,7 +684,7 @@ Merge the two lists into one sorted list. The list should be made by splicing to
         "space_complexity": "O(1)",
         "description": """Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
 
-There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Return `true` if there is a cycle in the linked list. Otherwise, return `false`.""",
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Return `True` if there is a cycle in the linked list. Otherwise, return `False`.""",
         "starter_code": """class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         pass
@@ -676,7 +705,12 @@ There is a cycle in a linked list if there is some node in the list that can be 
         ],
         "hidden_testcases": [
             {"input": {"head": []}, "expected": False},
-            {"input": {"head": [1]}, "expected": False}
+            {"input": {"head": [1]}, "expected": False},
+            {"input": {"head": [], "pos": -1}, "expected": False},
+            {"input": {"head": [1], "pos": -1}, "expected": False},
+            {"input": {"head": [1], "pos": 0}, "expected": True},
+            {"input": {"head": [1, 2], "pos": 0}, "expected": True},
+            {"input": {"head": [3, 2, 0, -4], "pos": 1}, "expected": True}
         ],
         "explanation": "Slow pointer moves 1 step, fast pointer moves 2 steps. If a cycle exists, the fast pointer will eventually overlap with the slow pointer inside the cycle."
     },
@@ -713,7 +747,8 @@ There is a cycle in a linked list if there is some node in the list that can be 
         ],
         "hidden_testcases": [
             {"input": {"head": [1, 2], "n": 2}, "expected": [2]},
-            {"input": {"head": [1, 2, 3], "n": 3}, "expected": [2, 3]}
+            {"input": {"head": [1, 2, 3], "n": 3}, "expected": [2, 3]},
+            {"input": {"head": [1, 2, 3, 4, 5], "n": 5}, "expected": [2, 3, 4, 5]}
         ],
         "explanation": "Advance fast pointer n steps ahead. Then advance both fast and slow until fast reaches the last node. slow.next is now pointing to the node that needs deletion."
     },
@@ -808,7 +843,8 @@ Merge all the linked-lists into one sorted linked-list and return it.""",
         ],
         "hidden_testcases": [
             {"input": {"lists": [[-1, 1], [-2, 2], [-3, 3]]}, "expected": [-3, -2, -1, 1, 2, 3]},
-            {"input": {"lists": [[1], [0]]}, "expected": [0, 1]}
+            {"input": {"lists": [[1], [0]]}, "expected": [0, 1]},
+            {"input": {"lists": [[], [1]]}, "expected": [1]}
         ],
         "explanation": "Maintain a min-heap storing (node.val, list_index, node). At each step pop the minimum element, append it to the merged list, and push node.next into the heap."
     }

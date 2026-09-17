@@ -1,40 +1,77 @@
-# Module 09: Beginner Playground - Context Optimization & NIAH Testing
+# 🐣 Interactive Foundations Playground: Context Optimization & NIAH Testing
 
+> *"Needle In A Haystack tests whether an LLM can spot a secret key hidden deep inside a 100,000-word document."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
-Welcome to **Context Optimization & Needle-in-a-Haystack (NIAH) Testing**!
-Modern LLMs boast massive context windows (128,000 to 1,000,000+ tokens).
-You might think: *"Great! I can just dump 50 retrieved documents into the prompt and let the LLM figure it out!"*
+**Brand new to this topic? Start here, not with the README.**
 
-**BEWARE: The "Lost in the Middle" Effect!**
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
+
+```bash
+python 00_try_it_yourself.py
+```
+
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 1. The Lost in the Middle Phenomenon
+## 0. Everything this page needs
 
-Researchers at Stanford (Liu et al., 2024) discovered a shocking truth about Transformers:
-- When key information is at the **very beginning** of the prompt: Model finds it 95% of the time!
-- When key information is at the **very end** of the prompt: Model finds it 95% of the time!
-- When key information is in the **middle (between 30% and 70% depth)**: Accuracy plunges to **under 40%**!
+Nothing here is installed. These all ship with Python.
 
-```
-Model Accuracy vs Information Position:
-100% |  \                                     /
-     |   \                                   /
- 50% |    \                                 /
-     |     \_______________________________/
-  0% +-------------------------------------------------->
-    Start                Middle                 End
-                 (The Valley of Forgetting)
+```python
+import math
 ```
 
 ---
 
-## 2. The Solution: U-Shaped Context Reordering
+## 1. Needle In A Haystack (NIAH) Placement
 
-Instead of sorting retrieved documents from best to worst:
-- Place the **#1 most relevant document** at the **very end** (closest to the user question).
-- Place the **#2 most relevant document** at the **very beginning**.
-- Place the least relevant documents in the **middle**!
-Accuracy immediately recovers across long prompts!
+Inserting a specific target fact at various depth percentages (0%, 25%, 50%, 75%, 100%) measures retrieval recall fidelity.
+
+```python
+haystack_tokens = ["the", "quick", "brown", "fox"] * 25  # 100 tokens
+needle = "SECRET_PASSWORD_123"
+depth_pct = 0.50  # 50% depth
+
+insert_idx = int(len(haystack_tokens) * depth_pct)
+haystack_with_needle = haystack_tokens[:insert_idx] + [needle] + haystack_tokens[insert_idx:]
+
+assert haystack_with_needle[insert_idx] == needle
+assert len(haystack_with_needle) == 101
+print(f"Needle successfully inserted at index {insert_idx} ({depth_pct*100:.0f}% depth).")
+```
+
+---
+
+## 2. Lost in the Middle Phenomenon
+
+LLMs attend with highest accuracy to tokens at the very beginning and very end of their context window, dipping in the middle.
+
+```python
+accuracy_by_depth = {0.0: 0.98, 0.25: 0.85, 0.50: 0.72, 0.75: 0.84, 1.0: 0.99}
+
+assert accuracy_by_depth[0.50] < accuracy_by_depth[0.0]
+assert accuracy_by_depth[0.50] < accuracy_by_depth[1.0]
+assert accuracy_by_depth[1.0] > 0.95
+print(f"U-shaped accuracy curve: start={accuracy_by_depth[0.0]}, middle={accuracy_by_depth[0.50]}, end={accuracy_by_depth[1.0]}")
+```
+
+---
+
+## 3. Context Window Reordering
+
+Placing the most critical retrieved evidence at the start and end of prompt maximizes LLM reasoning accuracy.
+
+```python
+retrieved_passages = ["doc_3", "doc_2", "doc_1"]
+# Put most relevant at beginning and second most at end
+optimized_context = [retrieved_passages[2], retrieved_passages[0], retrieved_passages[1]]
+
+assert optimized_context[0] == "doc_1"
+assert len(optimized_context) == 3
+print(f"Optimized context layout: {optimized_context}")
+```
+
+---

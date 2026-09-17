@@ -1,36 +1,79 @@
-# 🐣 Interactive Foundations Playground: Joint Distributions & Covariance
+# 🐣 Interactive Foundations Playground: Joint Distributions and Covariance
 
-> *"Covariance is the tilt of the data ellipse. Mahalanobis distance is the ruler that bends and stretches along that tilt so you measure true statistical surprise instead of naive Euclidean distance."*
-
+> *"Covariance measures whether two random variables dance in lockstep or step on each other's toes."*
 
 > 💡 **Try It in the Live Runner:** You can run and modify any snippet in this playground directly in your browser! Click the **`▶ Run`** button in the header of any code block to test it instantly on the side, or toggle **`Live Runner`** in the top navigation bar to experiment with Python, PowerShell, and CLI commands while reading.
 
----
+**Brand new to this topic? Start here, not with the README.**
 
-## 1. What is Covariance? (Do Two Variables Dance Together?)
+Everything on this page is plain Python from the standard library. No Docker, no server, no `pip install`, no account to sign up for. You can read it in ten minutes and run it in one:
 
-Suppose you measure two features: $X$ (Height) and $Y$ (Shoe Size).
-- **Positive Covariance**: Tall people tend to have bigger shoes. When $X > \mu_X$, $Y > \mu_Y$.
-- **Negative Covariance**: As outside temperature rises, winter jacket sales fall.
-- **Zero Covariance**: Your height and the number of letters in your last name have no linear link.
+```bash
+python 03_try_it_yourself.py
+```
 
-The **Covariance Matrix** $\Sigma$ organizes all pairwise covariances:
-$$\Sigma = \begin{bmatrix} \text{Var}(X) & \text{Cov}(X, Y) \\ \text{Cov}(Y, X) & \text{Var}(Y) \end{bmatrix}$$
+That script is this page, in order, with the assertions left in. If it prints `All checks passed`, every claim below just proved itself on your machine.
 
 ---
 
-## 2. The 2D Gaussian Ellipse
+## 0. Everything this page needs
 
-A 2D Multivariate Normal distribution looks like an elliptical hill:
-- If $X$ and $Y$ are uncorrelated, the ellipse is oriented straight along the horizontal and vertical axes.
-- If $X$ and $Y$ are correlated, the ellipse **tilts diagonally**!
+Nothing here is installed. These all ship with Python.
+
+```python
+import math
+```
 
 ---
 
-## 3. Mahalanobis Distance: Measuring in Standard Deviations
+## 1. Expected Value (Mean) Calculation
 
-Suppose someone is 200 cm tall and wears size 46 shoes:
-- Under ordinary Euclidean distance from the average human $(170 \text{ cm}, 42)$, they look like an extreme outlier.
-- But under **Mahalanobis Distance**:
-$$D_M(x) = \sqrt{(x - \mu)^T \Sigma^{-1} (x - \mu)}$$
-because height and shoe size naturally co-vary along that diagonal axis, their Mahalanobis distance is modest! They are a completely normal tall person, not an alien!
+The expected value $E[X] = \sum x_i p_i$ is the probability-weighted center of mass of the distribution.
+
+```python
+outcomes = [1, 2, 3, 4, 5, 6]
+probs = [1/6] * 6
+
+expected_value = sum(x * p for x, p in zip(outcomes, probs))
+assert abs(expected_value - 3.5) < 1e-6
+print(f"Expected value of fair 6-sided die: {expected_value}")
+```
+
+---
+
+## 2. Variance and Standard Deviation
+
+Variance measures dispersion around the mean: $\text{Var}(X) = E[(X - \mu)^2]$.
+
+```python
+data = [10.0, 12.0, 23.0, 23.0, 16.0, 23.0, 21.0, 16.0]
+mean = sum(data) / len(data)
+variance = sum((x - mean)**2 for x in data) / len(data)
+std_dev = math.sqrt(variance)
+
+assert abs(mean - 18.0) < 1e-6
+assert variance > 0.0
+assert std_dev == math.sqrt(variance)
+print(f"Dataset mean: {mean}, variance: {variance:.2f}, std dev: {std_dev:.2f}")
+```
+
+---
+
+## 3. Sample Covariance and Positive Correlation
+
+Positive covariance indicates that above-average values of $X$ coincide with above-average values of $Y$.
+
+```python
+xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+ys = [2.0, 4.0, 6.0, 8.0, 10.0]  # y = 2x, perfect correlation
+
+mean_x = sum(xs) / len(xs)
+mean_y = sum(ys) / len(ys)
+cov = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys)) / len(xs)
+
+assert cov > 0.0, "Positive covariance"
+assert cov == 4.0
+print(f"Covariance between x and 2x: {cov}")
+```
+
+---

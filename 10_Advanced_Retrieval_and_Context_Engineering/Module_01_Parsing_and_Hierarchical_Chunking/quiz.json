@@ -1,66 +1,6 @@
 [
   {
     "id": 1,
-    "tier": "Recall",
-    "question": "In Parsing and Hierarchical Chunking, what core system invariant does '1. Structural Document Parsing Foundations' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Structural Document Parsing Foundations.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '1. Structural Document Parsing Foundations' in Parsing and Hierarchical Chunking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 2,
-    "tier": "Recall",
-    "question": "In Parsing and Hierarchical Chunking, what core system invariant does '2. Parent-Child Hierarchical Architecture' establish?",
-    "category": "Recall: Architecture",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. Parent-Child Hierarchical Architecture.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Specification detail defined under '2. Parent-Child Hierarchical Architecture' in Parsing and Hierarchical Chunking.",
-    "lesson_ref": "01_README.md"
-  },
-  {
-    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nchunker.chunk_document(\"doc_0\", \"Empty\", \"\")\n```",
     "category": "Apply: Code Execution",
@@ -90,7 +30,7 @@
     "lesson_ref": "test_hierarchical_chunker.py"
   },
   {
-    "id": 4,
+    "id": 2,
     "tier": "Apply",
     "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nlen(parents)\n```",
     "category": "Apply: Code Execution",
@@ -120,7 +60,7 @@
     "lesson_ref": "test_hierarchical_chunker.py"
   },
   {
-    "id": 5,
+    "id": 3,
     "tier": "Apply",
     "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nparents[0].parent_id\n```",
     "category": "Apply: Code Execution",
@@ -150,7 +90,7 @@
     "lesson_ref": "test_hierarchical_chunker.py"
   },
   {
-    "id": 6,
+    "id": 4,
     "tier": "Apply",
     "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nparents[1].parent_id\n```",
     "category": "Apply: Code Execution",
@@ -180,7 +120,7 @@
     "lesson_ref": "test_hierarchical_chunker.py"
   },
   {
-    "id": 7,
+    "id": 5,
     "tier": "Diagnose",
     "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
     "category": "Diagnose: Failure Analysis",
@@ -210,93 +150,93 @@
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
+    "id": 6,
+    "tier": "Recall",
+    "question": "In 01 Parsing and Hierarchical Chunking, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 01 parsing and hierarchical chunking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 01 parsing and hierarchical chunking.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In 01 Parsing and Hierarchical Chunking, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 01 parsing and hierarchical chunking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 01 parsing and hierarchical chunking.",
+    "lesson_ref": "01_README.md"
+  },
+  {
     "id": 8,
-    "tier": "Diagnose",
-    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
-    "category": "Diagnose: Failure Analysis",
+    "tier": "Recall",
+    "question": "In 01 Parsing and Hierarchical Chunking, what architectural invariant is critical for maintaining high retrieval fidelity?",
+    "category": "Recall: Architecture",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Vector search returns top hits, but LLM receives empty context strings.",
+        "text": "Ensuring index synchronization and embedding dimensional alignment for 01 parsing and hierarchical chunking.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": ": Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter! -",
+        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "text": "Bypassing semantic reranking and returning raw random documents.",
         "is_correct": false
       }
     ],
-    "explanation": "Diagnostic Analysis: Vector search returns top hits, but LLM receives empty context strings.\n",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
-  },
-  {
-    "id": 9,
-    "tier": "Diagnose",
-    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Document Chunking'\"",
-    "category": "Diagnose: Failure Analysis",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Diagnostic Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -\n: Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
-  },
-  {
-    "id": 10,
-    "tier": "Diagnose",
-    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
-    "category": "Diagnose: Failure Analysis",
-    "options": [
-      {
-        "id": "opt_corr",
-        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
-        "is_correct": true
-      },
-      {
-        "id": "opt_1",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_3",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
-        "is_correct": false
-      }
-    ],
-    "explanation": "Diagnostic Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.\n",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Retrieval accuracy requires maintaining strict index synchronization and embedding integrity in 01 parsing and hierarchical chunking.",
+    "lesson_ref": "01_README.md"
   }
 ]

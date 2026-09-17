@@ -2,121 +2,121 @@
   {
     "id": 1,
     "tier": "Recall",
-    "question": "In String Algorithms and Pattern Matching, what core system invariant does 'Learning path' establish?",
-    "category": "Recall: Architecture",
+    "question": "What is the primary optimization in the Knuth-Morris-Pratt (KMP) string matching algorithm?",
+    "category": "Recall: Algorithms",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in Learning path.",
+        "text": "It uses the prefix function (pi table) to avoid backtracking the text pointer upon a mismatch.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "It constructs a suffix automaton in O(N^2) time to match all substrings.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "It hashes substrings using rolling polynomial hashes with modulo 2^64.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "It reverses the pattern and scans backwards using Boyer-Moore bad character heuristics.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under 'Learning path' in String Algorithms and Pattern Matching.",
+    "explanation": "KMP precomputes the longest proper prefix that is also a suffix, shifting the pattern without re-examining matched characters in the text.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
     "tier": "Recall",
-    "question": "In String Algorithms and Pattern Matching, what core system invariant does '1. Why the naive scan is wasteful' establish?",
-    "category": "Recall: Architecture",
+    "question": "In the Rabin-Karp algorithm, what technique allows rolling hash computation in O(1) amortized time?",
+    "category": "Recall: Hashing",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 1. Why the naive scan is wasteful.",
+        "text": "Subtracting the leading character weight and adding the trailing character using modular arithmetic.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "Re-hashing the entire window using MD5 or SHA256 cryptographic hashes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "Pre-building an auxiliary suffix tree over the pattern alphabet.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "Storing all rolling windows in a secondary min-heap.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '1. Why the naive scan is wasteful' in String Algorithms and Pattern Matching.",
+    "explanation": "Rabin-Karp uses rolling polynomial hash H_next = (H_prev - c_old * B^(m-1)) * B + c_new (mod P) in O(1) time.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
     "tier": "Recall",
-    "question": "In String Algorithms and Pattern Matching, what core system invariant does '2. KMP: the prefix function' establish?",
-    "category": "Recall: Architecture",
+    "question": "What invariant does the Z-algorithm maintain across iterations?",
+    "category": "Recall: Algorithms",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 2. KMP: the prefix function.",
+        "text": "The rightmost matching segment [l, r] that matches a prefix of the string.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "The minimum spanning tree over character transition frequencies.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "The count of distinct palindromic substrings centered at index i.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "A queue of failure states for multi-pattern matching.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '2. KMP: the prefix function' in String Algorithms and Pattern Matching.",
+    "explanation": "The Z-algorithm maintains the Z-box [l, r] where s[l..r] matches s[0..r-l], allowing O(1) reuse for interior indices.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 4,
     "tier": "Recall",
-    "question": "In String Algorithms and Pattern Matching, what core system invariant does '3. Z-algorithm: the same information, differently shaped' establish?",
-    "category": "Recall: Architecture",
+    "question": "Which data structure provides O(N) multi-pattern keyword matching across a stream of text?",
+    "category": "Recall: Data Structures",
     "options": [
       {
         "id": "opt_corr",
-        "text": "Enforces foundational invariants and design constraints specified in 3. Z-algorithm: the same information, differently shaped.",
+        "text": "Aho-Corasick automaton with failure and dictionary links.",
         "is_correct": true
       },
       {
         "id": "opt_1",
-        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "text": "Binary search tree over dictionary words.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "text": "Segment tree with range minimum query.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "text": "Disjoint set union (DSU) forest.",
         "is_correct": false
       }
     ],
-    "explanation": "Specification detail defined under '3. Z-algorithm: the same information, differently shaped' in String Algorithms and Pattern Matching.",
+    "explanation": "Aho-Corasick constructs a trie augmented with BFS failure transitions to locate all keyword occurrences in linear time.",
     "lesson_ref": "01_README.md"
   },
   {

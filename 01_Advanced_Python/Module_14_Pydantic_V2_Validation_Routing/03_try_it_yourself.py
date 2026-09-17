@@ -1,46 +1,55 @@
+"""Beginner playground for Module 14 - Pydantic & Data Validation.
+
+    python 03_try_it_yourself.py
+
+Standard library only. Every block here also appears in 02_FOUNDATIONS_PLAYGROUND.md;
+both files are generated from one source, so they cannot drift apart.
+
+Read the printed output alongside the markdown page. The `assert` lines are the
+interesting part: each one is a claim the page makes, checked as it runs.
 """
-Module 14: Interactive Data Schema & Validation Sandbox
-Run: python try_it_yourself.py
-"""
+from __future__ import annotations
 
+from typing import get_type_hints
 
-class SimpleValidator:
-    def __init__(self, username, age_raw):
-        self.errors = []
-        self.username = str(username).strip()
-        if len(self.username) < 3:
-            self.errors.append("Username must be at least 3 characters.")
+# -------------------------------------------- 1. Introspecting Type Annotations
+class UserSchema:
+    name: str
+    age: int
+    active: bool
 
-        try:
-            self.age = int(age_raw)
-            if self.age < 0 or self.age > 120:
-                self.errors.append("Age must be between 0 and 120.")
-        except (ValueError, TypeError):
-            self.errors.append("Age must be a valid integer.")
+hints = get_type_hints(UserSchema)
+assert hints["name"] is str
+assert hints["age"] is int
+assert hints["active"] is bool
+print(f"Extracted type hints: {hints}")
 
-    def is_valid(self):
-        return len(self.errors) == 0
+# -------------------------------------------- 2. Runtime Type Coercion and Validation
+def validate_payload(data, schema):
+    hints = get_type_hints(schema)
+    validated = {}
+    for key, expected_type in hints.items():
+        if key not in data:
+            raise ValueError(f"Missing field {key}")
+        raw = data[key]
+        validated[key] = expected_type(raw)
+    return validated
 
+data = {"name": "Charlie", "age": "28", "active": 1}
+res = validate_payload(data, UserSchema)
+assert res["age"] == 28
+assert isinstance(res["age"], int)
+assert res["name"] == "Charlie"
+print(f"Validated and coerced payload: {res}")
 
-def main():
-    print("=" * 60)
-    print("  MODULE 14: PYDANTIC-STYLE VALIDATION PLAYGROUND [*]")
-    print("=" * 60)
+# -------------------------------------------- 3. Field Constraint Checking
+def check_age_bounds(age):
+    assert 0 <= age <= 120, "Age out of bounds"
+    return True
 
-    test_cases = [
-        ("alice", "28"),
-        ("bob", "invalid_age"),
-        ("x", "45"),
-        ("charlie", "-10"),
-    ]
+assert check_age_bounds(25) is True
+assert check_age_bounds(0) is True
+print("Age boundary constraints verified.")
 
-    for user, age in test_cases:
-        v = SimpleValidator(user, age)
-        status = "[OK] Valid" if v.is_valid() else f"[X] Error: {v.errors}"
-        print(f"  Input: user='{user}', age='{age}' --> {status}")
-
-    print("\n[OK] Validation logic demonstrated cleanly!")
-
-
-if __name__ == "__main__":
-    main()
+print()
+print("All checks passed.")
