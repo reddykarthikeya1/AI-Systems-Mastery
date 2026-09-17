@@ -1,5 +1,23 @@
 # Module 09: Distributed Checkpointing (DCP) & Elastic Failure Recovery
 
+
+## Activation Checkpointing Memory Savings
+
+```mermaid
+flowchart LR
+    subgraph Standard["Standard Training (Stores all intermediate activations)"]
+        F1["Forward Layer 1"] -->|Store a1| F2["Forward Layer 2"] -->|Store a2| F3["Forward Layer 3"]
+        F3 -->|Compute Grad| B3["Backward Layer 3"] --> B2["Backward Layer 2"] --> B1["Backward Layer 1"]
+        MemStd["Memory: O(N_layers) activations retained in VRAM"]
+    end
+
+    subgraph Checkpointed["Activation Checkpointing (Recompute on demand)"]
+        CF1["Forward Layer 1"] -->|Discard a1| CF2["Forward Layer 2"] -->|Discard a2| CF3["Forward Layer 3"]
+        CF3 -->|Recompute Layer 2| CB2["Backward Layer 2"] -->|Recompute Layer 1| CB1["Backward Layer 1"]
+        MemChk["Memory: O(sqrt(N_layers)) VRAM footprint -> 70% Memory Saved!"]
+    end
+```
+
 ## 1. Systems Architecture of PyTorch DCP
 
 PyTorch Distributed Checkpoint (`torch.distributed.checkpoint` / DCP) decouples the logical global state dict from the physical distributed storage layout.

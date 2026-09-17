@@ -7,6 +7,25 @@ Welcome to Multi-Agent Collaboration! When tasks become complex, a single agent 
 
 ---
 
+
+## Multi-Agent Consensus Debate Protocol
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Prop as Proposer Agent
+    participant Opp as Opponent Agent
+    participant Mod as Moderator Agent (Judge)
+
+    Prop->>Opp: Present Hypothesis & Justification
+    Opp->>Prop: Rebuttal: Highlight Counter-Examples & Failure Scenarios
+    Prop->>Opp: Defend with Empirical Benchmarks & Refined Claim
+    Opp->>Mod: Submit Remaining Open Discrepancies
+    Prop->>Mod: Submit Convergence Points
+    Mod->>Mod: Synthesize Consensus Compromise
+    Mod-->>Prop: Final Decision Report
+```
+
 ## 1. The Core Mental Model: Swarm Handoffs
 
 In the **OpenAI Swarm** pattern, agents collaborate not via heavy message brokers, but through lightweight **Handoffs**:

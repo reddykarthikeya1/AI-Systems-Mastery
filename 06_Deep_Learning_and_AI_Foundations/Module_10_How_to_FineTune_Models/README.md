@@ -5,6 +5,32 @@
 
 ---
 
+
+## Rotary Position Embedding (RoPE) 2D Subspace Rotation
+
+```mermaid
+flowchart LR
+    subgraph Vector["Embedding Vector x (Dimension d)"]
+        P1["Pair (x_0, x_1)"]
+        P2["Pair (x_2, x_3)"]
+        PK["Pair (x_{d-2}, x_{d-1})"]
+    end
+
+    subgraph Rotation["Orthogonal 2D Givens Rotations (Token Index m)"]
+        R1["Rotate by m * θ₀"]
+        R2["Rotate by m * θ₁"]
+        RK["Rotate by m * θ_{d/2-1}"]
+    end
+
+    P1 --> R1
+    P2 --> R2
+    PK --> RK
+
+    subgraph Prop["Inner Product Property"]
+        IP["<R_m x, R_n y> = <x, R_{n-m} y> -> Pure Relative Distance!"]
+    end
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

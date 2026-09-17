@@ -5,6 +5,23 @@
 
 ---
 
+
+## Modern Pre-LN Transformer Decoder Block
+
+```mermaid
+flowchart TD
+    X["Input Tokens X"] --> LN1["RMSNorm / LayerNorm"]
+    X --> Add1["Residual Add ⊕"]
+    LN1 --> MHA["Multi-Head Attention / RoPE"]
+    MHA --> Add1
+
+    Add1 --> LN2["RMSNorm / LayerNorm"]
+    Add1 --> Add2["Residual Add ⊕"]
+    LN2 --> MLP["SwiGLU / MLP Feed-Forward (d_model -> 4*d_model -> d_model)"]
+    MLP --> Add2
+    Add2 --> Out["Block Output X_out"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

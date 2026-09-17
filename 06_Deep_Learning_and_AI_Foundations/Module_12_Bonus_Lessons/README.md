@@ -5,6 +5,26 @@
 
 ---
 
+
+## Chinchilla Compute-Optimal Scaling Frontier
+
+```mermaid
+flowchart TD
+    Compute["Fixed FLOP Compute Budget C ≈ 6 N D"]
+    Compute --> Opt["Compute-Optimal Allocation (Hoffmann et al.)"]
+    Opt --> N["Scale Parameters N ∝ C^0.5"]
+    Opt --> D["Scale Training Tokens D ∝ C^0.5"]
+    Opt --> Ratio["Golden Ratio: ~20 Tokens per Model Parameter"]
+
+    subgraph PreChinchilla["Legacy Oversized Models (Under-trained)"]
+        GPT3["GPT-3: 175B parameters on 300B tokens (1.7 tokens/param - sub-optimal)"]
+    end
+
+    subgraph Modern["Modern Compute-Optimal Models"]
+        LLaMA["LLaMA 3: 8B parameters on 15T tokens (Over-trained for serving inference efficiency)"]
+    end
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

@@ -1,5 +1,33 @@
 # Module 03: PagedAttention Architecture (vLLM)
 
+
+## PagedAttention Virtual Memory Block Table (vLLM)
+
+```mermaid
+flowchart LR
+    subgraph Logical["Logical KV Cache (Contiguous per Request)"]
+        L0["Block 0 (Tokens 0-15)"]
+        L1["Block 1 (Tokens 16-31)"]
+        L2["Block 2 (Tokens 32-47)"]
+    end
+
+    subgraph Table["Block Table (Page Table)"]
+        BT0["Logical 0 -> Physical 7"]
+        BT1["Logical 1 -> Physical 3"]
+        BT2["Logical 2 -> Physical 12"]
+    end
+
+    subgraph Physical["Physical GPU DRAM Pages (Non-Contiguous)"]
+        P3["Physical Block 3"]
+        P7["Physical Block 7"]
+        P12["Physical Block 12"]
+    end
+
+    L0 --> BT0 --> P7
+    L1 --> BT1 --> P3
+    L2 --> BT2 --> P12
+```
+
 ## 1. Systems Architecture of PagedAttention
 
 PagedAttention (Kwon et al., SOSP 2023) partitions the KV cache into fixed-size physical blocks that are mapped dynamically to logical token sequences via per-sequence block tables.

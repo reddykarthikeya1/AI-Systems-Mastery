@@ -5,6 +5,27 @@
 
 ---
 
+
+## Multi-Layer Perceptron Forward & Backward Propagation
+
+```mermaid
+flowchart LR
+    subgraph Forward["Forward Inference Path"]
+        X["Input Vector x"] -->|"Linear: z1 = W1 x + b1"| Z1["Pre-activation z1"]
+        Z1 -->|"Activation: a1 = ReLU(z1)"| A1["Activation a1"]
+        A1 -->|"Linear: z2 = W2 a1 + b2"| Z2["Pre-activation z2"]
+        Z2 -->|"Softmax: y_hat = σ(z2)"| Y["Predicted Probability y_hat"]
+        Y -->|"Cross-Entropy"| L["Loss L(y, y_hat)"]
+    end
+
+    subgraph Backward["Backward Reverse-Mode Autograd Tape"]
+        dL_dZ2["∂L/∂z2 = y_hat - y"] --> dL_dW2["∂L/∂W2 = (∂L/∂z2) a1^T"]
+        dL_dZ2 --> dL_dA1["∂L/∂a1 = W2^T (∂L/∂z2)"]
+        dL_dA1 --> dL_dZ1["∂L/∂z1 = (∂L/∂a1) ⊙ ReLU'(z1)"]
+        dL_dZ1 --> dL_dW1["∂L/∂W1 = (∂L/∂z1) x^T"]
+    end
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

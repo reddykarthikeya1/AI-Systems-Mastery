@@ -5,6 +5,22 @@
 
 ---
 
+
+## Scaled Dot-Product Attention Pipeline
+
+```mermaid
+flowchart TD
+    Q["Query Matrix Q<br/>(B, H, S_q, D)"] --> MatMul1["Batch MatMul: Q × K^T"]
+    K["Key Matrix K<br/>(B, H, S_k, D)"] --> MatMul1
+    MatMul1 --> Scale["Scale by 1 / sqrt(D)"]
+    Scale --> Mask["Apply Causal Mask (Lower Triangular)"]
+    Mask --> Softmax["Softmax along last dimension"]
+    Softmax --> AttnWeights["Attention Probabilities P<br/>(B, H, S_q, S_k)"]
+    AttnWeights --> MatMul2["Batch MatMul: P × V"]
+    V["Value Matrix V<br/>(B, H, S_k, D)"] --> MatMul2
+    MatMul2 --> Out["Context Output O<br/>(B, H, S_q, D)"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

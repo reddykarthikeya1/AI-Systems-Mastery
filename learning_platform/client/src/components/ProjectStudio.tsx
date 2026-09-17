@@ -290,7 +290,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
   return (
     <div className="space-y-4 w-full">
       {/* Studio Master Toolbar */}
-      <div className="rounded-2xl p-4 sm:p-5 bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 shadow-md flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 transition-all">
+      <div className="rounded-2xl p-4 sm:p-5 bg-surface border border-border/80 shadow-md flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 transition-all">
         <div className="flex items-center gap-3 min-w-0">
           <div className="p-2.5 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800/60 shrink-0">
             <Code2 className="w-5 h-5" />
@@ -304,7 +304,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                 {moduleFolderPath}
               </span>
             </div>
-            <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-0.5 truncate">
+            <h2 className="text-base sm:text-lg font-bold text-fg mt-0.5 truncate">
               {moduleTitle}
             </h2>
           </div>
@@ -313,90 +313,76 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         {/* View Mode & Primary Action Controls */}
         <div className="flex items-center gap-2.5 flex-wrap self-stretch xl:self-auto justify-between xl:justify-end">
           {/* View Mode Toggle: Split | Focus Editor | Focus Spec */}
-          <div className="flex items-center rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 border border-zinc-200 dark:border-zinc-800">
-            <button
-              onClick={() => setViewMode('split')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+          <div className="flex items-center rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 border border-border">
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 viewMode === 'split'
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs'
+                  ? 'bg-white dark:bg-zinc-800 text-fg shadow-xs'
                   : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-              title="Dual-pane split view"
-            >
+              }`} onClick={() => setViewMode('split')}
+              
+              title="Dual-pane split view" >
               <Split className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Split</span>
             </button>
 
-            <button
-              onClick={() => setViewMode('editor')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 viewMode === 'editor'
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs'
+                  ? 'bg-white dark:bg-zinc-800 text-fg shadow-xs'
                   : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-              title="Full-width code editor focus"
-            >
+              }`} onClick={() => setViewMode('editor')}
+              
+              title="Full-width code editor focus" >
               <Maximize2 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Code Focused</span>
             </button>
 
-            <button
-              onClick={() => setViewMode('spec')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                 viewMode === 'spec'
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs'
+                  ? 'bg-white dark:bg-zinc-800 text-fg shadow-xs'
                   : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-              title="Full-width specification reading focus"
-            >
+              }`} onClick={() => setViewMode('spec')}
+              
+              title="Full-width specification reading focus" >
               <BookOpen className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Spec Only</span>
             </button>
           </div>
 
           {/* Save Workspace */}
-          <button
-            onClick={handleSaveWorkspace}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5" onClick={handleSaveWorkspace}
             disabled={saving}
-            className="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5"
-            title="Persist changes to local workspace"
-          >
+            
+            title="Persist changes to local workspace" >
             {savedSuccess ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Save className="w-3.5 h-3.5" />}
             <span>{savedSuccess ? 'Saved' : 'Save'}</span>
           </button>
 
           {/* Format Code */}
-          <button
-            onClick={handleFormatCode}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300" onClick={handleFormatCode}
             disabled={isFormatting || activeFile?.read_only}
-            className="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300"
-            title="Format Python code with Ruff / PEP8"
-          >
+            
+            title="Format Python code with Ruff / PEP8" >
             <Sparkles className={`w-3.5 h-3.5 text-amber-500 ${isFormatting ? 'animate-spin' : ''}`} />
             <span>{formatSuccess ? 'Formatted!' : 'Format'}</span>
           </button>
 
           {/* Reset Starter */}
-          <button
-            onClick={handleResetStarter}
-            className="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900"
-            title="Reset current file to starter template"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-300 dark:border-zinc-700 bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900" onClick={handleResetStarter}
+            
+            title="Reset current file to starter template" >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Reset</span>
           </button>
 
           {/* Run Pytest Harness */}
-          <button
-            onClick={handleRunTests}
-            disabled={isRunningTests}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all ${
               isRunningTests
                 ? 'bg-zinc-400 text-white cursor-not-allowed'
                 : 'bg-emerald-600 hover:bg-emerald-500 text-white active:scale-95 ring-2 ring-emerald-500/20'
-            }`}
-            title="Execute test suite (Ctrl + Enter)"
-          >
+            }`} onClick={handleRunTests}
+            disabled={isRunningTests}
+            
+            title="Execute test suite (Ctrl + Enter)" >
             <Play className={`w-3.5 h-3.5 ${isRunningTests ? 'animate-spin' : 'fill-current'}`} />
             <span>{isRunningTests ? 'Testing...' : 'Run Tests (Ctrl+Enter)'}</span>
           </button>
@@ -413,7 +399,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         {(viewMode === 'split' || viewMode === 'spec') && (
           <div className={`${viewMode === 'split' ? 'xl:col-span-5' : 'w-full'} space-y-4`}>
             {/* Milestone Checklist Card */}
-            <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-sm space-y-3.5">
+            <div className="rounded-2xl bg-surface border border-border/80 p-5 shadow-sm space-y-3.5">
               <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-3">
                 <div className="flex items-center gap-2">
                   <CheckSquare className="w-4 h-4 text-purple-500" />
@@ -440,7 +426,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   className={`flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer ${
                     milestones.m1
                       ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60'
-                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800/80 hover:bg-zinc-100/60'
+                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-border/80 hover:bg-zinc-100/60'
                   }`}
                 >
                   <input
@@ -450,8 +436,8 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                     className="mt-0.5 rounded border-zinc-300 text-emerald-600 focus:ring-0"
                   />
                   <div className="text-xs">
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">Tier 1: Functional MVP</span>
-                    <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+                    <span className="font-bold text-fg">Tier 1: Functional MVP</span>
+                    <p className="text-fg-muted mt-0.5 leading-relaxed">
                       Core data structures, interfaces, and primary functionality implemented.
                     </p>
                   </div>
@@ -462,7 +448,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   className={`flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer ${
                     milestones.m2
                       ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60'
-                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800/80 hover:bg-zinc-100/60'
+                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-border/80 hover:bg-zinc-100/60'
                   }`}
                 >
                   <input
@@ -472,8 +458,8 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                     className="mt-0.5 rounded border-zinc-300 text-emerald-600 focus:ring-0"
                   />
                   <div className="text-xs">
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">Tier 2: Robustness & Failure Modes</span>
-                    <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+                    <span className="font-bold text-fg">Tier 2: Robustness & Failure Modes</span>
+                    <p className="text-fg-muted mt-0.5 leading-relaxed">
                       Input boundary checks, graceful exception handling, and concurrent guards.
                     </p>
                   </div>
@@ -484,7 +470,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   className={`flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer ${
                     milestones.m3
                       ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60'
-                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800/80 hover:bg-zinc-100/60'
+                      : 'bg-zinc-50/60 dark:bg-zinc-900/40 border-border/80 hover:bg-zinc-100/60'
                   }`}
                 >
                   <input
@@ -494,8 +480,8 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                     className="mt-0.5 rounded border-zinc-300 text-emerald-600 focus:ring-0"
                   />
                   <div className="text-xs">
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">Tier 3: Production Scale & Benchmarks</span>
-                    <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+                    <span className="font-bold text-fg">Tier 3: Production Scale & Benchmarks</span>
+                    <p className="text-fg-muted mt-0.5 leading-relaxed">
                       Zero memory leaks, optimal cache efficiency, and 100% automated pytest suite passing.
                     </p>
                   </div>
@@ -504,7 +490,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
             </div>
 
             {/* Guide Specification Reader with full KaTeX Math */}
-            <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-6 sm:p-7 shadow-sm max-h-[720px] overflow-y-auto">
+            <div className="rounded-2xl bg-surface border border-border/80 p-6 sm:p-7 shadow-sm max-h-[720px] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-3 mb-5">
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500">
                   Architectural Specification
@@ -525,21 +511,18 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         {(viewMode === 'split' || viewMode === 'editor') && (
           <div className={`${viewMode === 'split' ? 'xl:col-span-7' : 'w-full'} space-y-4`}>
             {/* Editor Container */}
-            <div className="rounded-2xl bg-[#0D1117] border border-zinc-800 shadow-xl overflow-hidden flex flex-col">
+            <div className="rounded-2xl bg-bg border border-zinc-800 shadow-xl overflow-hidden flex flex-col">
               {/* File Tabs & Controls Header */}
-              <div className="flex items-center justify-between px-3 py-2 bg-[#161B22] border-b border-zinc-800 overflow-x-auto gap-2 select-none">
+              <div className="flex items-center justify-between px-3 py-2 bg-surface-raised border-b border-zinc-800 overflow-x-auto gap-2 select-none">
                 {/* File Tabs */}
                 <div className="flex items-center gap-1 min-w-0">
                   {files.map((file, idx) => (
-                    <button
-                      key={file.filename}
-                      onClick={() => setActiveFileIndex(idx)}
-                      className={`px-3 py-1.5 text-xs rounded-lg font-mono flex items-center gap-2 transition-all shrink-0 ${
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs rounded-lg font-mono flex items-center gap-2 transition-all shrink-0 ${
                         idx === activeFileIndex
-                          ? 'bg-[#0D1117] text-white border border-zinc-700 shadow-sm font-semibold'
+                          ? 'bg-bg text-white border border-zinc-700 shadow-sm font-semibold'
                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
-                      }`}
-                    >
+                      }`} key={file.filename}
+                      onClick={() => setActiveFileIndex(idx)} >
                       <FileCode className="w-3.5 h-3.5 text-blue-400" />
                       <span>{file.filename}</span>
                       {file.is_modified && (
@@ -558,34 +541,26 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                 <div className="flex items-center gap-2 shrink-0">
                   {/* Font Size Toggle */}
                   <div className="flex items-center bg-zinc-900 rounded-lg p-0.5 border border-zinc-800 text-xs font-mono text-zinc-400">
-                    <button
-                      onClick={() => setFontSize('sm')}
-                      className={`px-1.5 py-0.5 rounded ${fontSize === 'sm' ? 'bg-zinc-800 text-zinc-200' : ''}`}
-                    >
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-1.5 py-0.5 rounded ${fontSize === 'sm' ? 'bg-zinc-800 text-zinc-200' : ''}`} onClick={() => setFontSize('sm')} >
                       sm
                     </button>
-                    <button
-                      onClick={() => setFontSize('base')}
-                      className={`px-1.5 py-0.5 rounded ${fontSize === 'base' ? 'bg-zinc-800 text-zinc-200' : ''}`}
-                    >
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-1.5 py-0.5 rounded ${fontSize === 'base' ? 'bg-zinc-800 text-zinc-200' : ''}`} onClick={() => setFontSize('base')} >
                       md
                     </button>
                   </div>
 
                   {/* Solution Diff Toggle */}
                   {activeFile?.solution_content && (
-                    <button
-                      onClick={() => {
-                        setShowSolutionDiff(!showSolutionDiff);
-                        setActiveTerminalTab('diff');
-                      }}
-                      className={`px-2.5 py-1 text-xs rounded-lg border font-mono flex items-center gap-1.5 transition-all ${
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 text-xs rounded-lg border font-mono flex items-center gap-1.5 transition-all ${
                         showSolutionDiff
                           ? 'bg-amber-500/10 text-amber-400 border-amber-500/40'
                           : 'bg-zinc-800/80 text-zinc-400 border-zinc-700 hover:text-zinc-200'
-                      }`}
-                      title="Compare your code with the reference implementation"
-                    >
+                      }`} onClick={() => {
+                        setShowSolutionDiff(!showSolutionDiff);
+                        setActiveTerminalTab('diff');
+                      }}
+                      
+                      title="Compare your code with the reference implementation" >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Reference Diff</span>
                     </button>
@@ -602,7 +577,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   onKeyDown={handleKeyDown}
                   readOnly={activeFile?.read_only}
                   spellCheck={false}
-                  className={`w-full min-h-[560px] p-5 font-mono bg-[#0D1117] text-zinc-100 focus:outline-none focus:ring-0 resize-y leading-relaxed selection:bg-blue-600/60 ${
+                  className={`w-full min-h-[560px] p-5 font-mono bg-bg text-zinc-100 focus:outline-none focus:ring-0 resize-y leading-relaxed selection:bg-blue-600/60 ${
                     fontSize === 'sm' ? 'text-xs' : 'text-sm'
                   }`}
                   placeholder="# Write your implementation here..."
@@ -610,7 +585,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
               </div>
 
               {/* Editor Footer Status Bar */}
-              <div className="flex items-center justify-between px-4 py-2 bg-[#161B22] border-t border-zinc-800 text-xs font-mono text-zinc-400 select-none">
+              <div className="flex items-center justify-between px-4 py-2 bg-surface-raised border-t border-zinc-800 text-xs font-mono text-zinc-400 select-none">
                 <div className="flex items-center gap-3">
                   <span>Lines: {activeFile?.content.split('\n').length || 0}</span>
                   <span>Chars: {activeFile?.content.length || 0}</span>
@@ -629,18 +604,15 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
             </div>
 
             {/* Test Runner & Reference Diff Output Panel */}
-            <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm overflow-hidden">
+            <div className="rounded-2xl bg-surface border border-border/80 shadow-sm overflow-hidden">
               {/* Panel Header Tabs */}
-              <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200/80 dark:border-zinc-800">
+              <div className="flex items-center justify-between px-4 py-2.5 bg-surface/60 border-b border-border">
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setActiveTerminalTab('tests')}
-                    className={`px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+                  <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                       activeTerminalTab === 'tests'
                         ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold'
                         : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-                    }`}
-                  >
+                    }`} onClick={() => setActiveTerminalTab('tests')} >
                     <Terminal className="w-3.5 h-3.5" />
                     <span>Test Results</span>
                     {testResult && (
@@ -649,14 +621,11 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   </button>
 
                   {activeFile?.solution_content && showSolutionDiff && (
-                    <button
-                      onClick={() => setActiveTerminalTab('diff')}
-                      className={`px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
                         activeTerminalTab === 'diff'
                           ? 'bg-amber-600 text-white font-semibold'
                           : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-                      }`}
-                    >
+                      }`} onClick={() => setActiveTerminalTab('diff')} >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Reference Solution Diff</span>
                     </button>

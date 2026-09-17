@@ -105,20 +105,14 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
                   <Sparkles className="w-4 h-4" /> MASTERED
                 </span>
                 {onNextModule && (
-                  <button
-                    onClick={onNextModule}
-                    className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-lg transition active:scale-95"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-lg transition active:scale-95" onClick={onNextModule} >
                     <span>Next Module</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 )}
               </div>
             ) : allMet ? (
-              <button
-                onClick={handleClaimMastery}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl text-sm font-bold bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95 hover:shadow-blue-500/20"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full sm:w-auto px-6 py-3.5 rounded-2xl text-sm font-bold bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95 hover:shadow-blue-500/20" onClick={handleClaimMastery} >
                 <Award className="w-5 h-5" />
                 <span>Claim Module Mastery 🛡️</span>
               </button>
@@ -174,10 +168,7 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
                 {completedLessonsCount} of {totalLessonsCount} lessons
               </span>
               {!lessonsDone && module.lessons.length > 0 && (
-                <button
-                  onClick={() => onLaunchLesson(module.lessons[0].id)}
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition"
-                >
+                <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition" onClick={() => onLaunchLesson(module.lessons[0].id)} >
                   Resume Reading
                 </button>
               )}
@@ -219,14 +210,11 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
               </div>
 
               <div>
-                <button
-                  onClick={onLaunchQuiz}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition ${
+                <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition ${
                     quizDone
                       ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
                       : 'bg-amber-600 hover:bg-amber-500 text-white shadow-md'
-                  }`}
-                >
+                  }`} onClick={onLaunchQuiz} >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>{quizDone ? 'Retake Assessment' : 'Launch Assessment'}</span>
                 </button>
@@ -269,14 +257,11 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
               </div>
 
               <div>
-                <button
-                  onClick={onLaunchLab}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition ${
+                <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition ${
                     labDone
                       ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
                       : 'bg-rose-600 hover:bg-rose-500 text-white shadow-md'
-                  }`}
-                >
+                  }`} onClick={onLaunchLab} >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>{labDone ? 'Review Bug Lab' : 'Launch Bug Lab'}</span>
                 </button>
@@ -288,18 +273,12 @@ export const MasteryGateView: React.FC<MasteryGateViewProps> = ({
 
       {/* Navigation Footer */}
       <div className="flex items-center justify-between pt-6 border-t border-zinc-800">
-        <button
-          onClick={onBackToSyllabus}
-          className="px-4 py-2 rounded-xl border border-zinc-700 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition"
-        >
+        <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl border border-zinc-700 text-xs font-medium text-zinc-300 hover:bg-zinc-800 transition" onClick={onBackToSyllabus} >
           ← Return to Syllabus
         </button>
 
         {isCleared && onNextModule && (
-          <button
-            onClick={onNextModule}
-            className="px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-2 shadow transition"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-2 shadow transition" onClick={onNextModule} >
             <span>Advance to Next Module</span>
             <ArrowRight className="w-4 h-4" />
           </button>

@@ -5,6 +5,24 @@
 
 ---
 
+
+## Normalization Dimension Comparison
+
+```mermaid
+flowchart TD
+    subgraph BN["Batch Norm (BN)"]
+        BNDesc["Normalizes across Batch dimension (N)<br/>Preserves Channels & Spatial tokens independently"]
+    end
+
+    subgraph LN["Layer Norm (LN)"]
+        LNDesc["Normalizes across Channels & Spatial dimensions (C, L)<br/>Independent per batch element"]
+    end
+
+    subgraph RMS["RMSNorm (Modern LLMs)"]
+        RMSDesc["No mean centering: scale = x / sqrt(mean(x²) + ε)<br/>Saves 30% reduction overhead vs LayerNorm"]
+    end
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

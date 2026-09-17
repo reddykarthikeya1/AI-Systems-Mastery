@@ -6,6 +6,28 @@ Modern production engines (Redis, Cassandra, RocksDB, Linux Page Cache) rely on 
 
 ---
 
+
+## Skip List Multi-Level Index Towers
+
+```mermaid
+flowchart LR
+    subgraph L3["Level 3 (Express Lane - P=1/8)"]
+        H3["Head"] --> N3_1["Node 1"] --> N3_7["Node 7"] --> NIL3["NIL"]
+    end
+
+    subgraph L2["Level 2 (Fast Lane - P=1/4)"]
+        H2["Head"] --> N2_1["Node 1"] --> N2_3["Node 3"] --> N2_7["Node 7"] --> NIL2["NIL"]
+    end
+
+    subgraph L1["Level 1 (Intermediate - P=1/2)"]
+        H1["Head"] --> N1_1["Node 1"] --> N1_3["Node 3"] --> N1_5["Node 5"] --> N1_7["Node 7"] --> NIL1["NIL"]
+    end
+
+    subgraph L0["Level 0 (Base Linked List - All Elements)"]
+        H0["Head"] --> N0_1["1"] --> N0_2["2"] --> N0_3["3"] --> N0_4["4"] --> N0_5["5"] --> N0_6["6"] --> N0_7["7"] --> NIL0["NIL"]
+    end
+```
+
 ## 1. Storage Systems Mapping
 
 | Data Structure | Real-World System | Why It Is Chosen |

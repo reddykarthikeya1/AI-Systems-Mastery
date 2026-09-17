@@ -4,6 +4,28 @@
 
 ---
 
+
+## CUDA Host-to-Device Asynchronous Execution Pipeline
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Host as CPU Host (Thread 0)
+    participant Stream as CUDA Stream 1 (PCIe/SM)
+    participant DevMem as GPU Global Memory (HBM)
+    participant SM as GPU SM Execution Core
+
+    Host->>Stream: cudaMemcpyAsync(d_A, h_A, H2D)
+    Stream->>DevMem: DMA Transfer via PCIe Gen5 (64 GB/s)
+    Host->>Stream: kernel<<<grid, block, 0, stream>>>(d_A, d_B, d_C)
+    Note over Host: Host CPU continues execution asynchronously!
+    Stream->>SM: Dispatch Thread Blocks to SM Warp Schedulers
+    SM->>DevMem: Read d_A, d_B, Write d_C
+    Host->>Stream: cudaMemcpyAsync(h_C, d_C, D2H)
+    Stream->>Host: DMA Transfer result to Host Pinned Memory
+    Host->>Stream: cudaStreamSynchronize(stream)
+```
+
 ## 1. The 3D Execution Hierarchy
 
 CUDA structures parallel execution into a three-level hierarchy:

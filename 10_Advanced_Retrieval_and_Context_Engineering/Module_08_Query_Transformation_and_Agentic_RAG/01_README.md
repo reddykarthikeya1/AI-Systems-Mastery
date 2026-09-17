@@ -1,5 +1,16 @@
 # Module 08: Query Transformation & Agentic RAG
 
+
+## ColBERT Late Interaction Token Similarity Matrix
+
+```mermaid
+flowchart TD
+    Q_Tokens["Query Tokens: [q0, q1, ..., qn]"] --> Mat["Late Interaction Similarity Matrix (Cosine Sim)"]
+    D_Tokens["Document Tokens: [d0, d1, ..., dm]"] --> Mat
+    Mat --> MaxSim["MaxSim Operator: For each query token, take max similarity across all doc tokens"]
+    MaxSim --> Sum["Sum MaxSim scores -> Final Document Relevance Score"]
+```
+
 ## 1. Architectural Foundations of Query Translation
 
 Raw user inputs often suffer from semantic underspecification, multi-hop dependencies, and vocabulary mismatch.

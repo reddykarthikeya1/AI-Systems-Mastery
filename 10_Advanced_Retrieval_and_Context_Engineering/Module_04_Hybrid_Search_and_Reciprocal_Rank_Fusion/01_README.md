@@ -1,5 +1,25 @@
 # Module 04: Hybrid Search & Reciprocal Rank Fusion (RRF)
 
+
+## HNSW Hierarchical Multi-Layer Skip-Graph Search
+
+```mermaid
+flowchart TD
+    subgraph Layer2["Layer 2 (Express Coarse Jump)"]
+        L2_Start(("Entry")) --> L2_Next(("Node B"))
+    end
+
+    subgraph Layer1["Layer 1 (Intermediate Proximity)"]
+        L1_B(("Node B")) --> L1_C(("Node C")) --> L1_D(("Node D"))
+    end
+
+    subgraph Layer0["Layer 0 (Dense Nearest Neighbors)"]
+        L0_D(("Node D")) --> L0_Target(("Nearest Neighbor Match!"))
+    end
+
+    Layer2 -->|Greedy Local Minimum| Layer1 -->|Greedy Local Minimum| Layer0
+```
+
 ## 1. Theoretical Foundations of Multi-Channel Information Retrieval
 
 Dense semantic retrieval (bi-encoder embeddings) and sparse lexical retrieval (BM25 / SPLADE) exhibit complementary failure modes:

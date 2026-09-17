@@ -112,12 +112,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         role="dialog"
         aria-modal="true"
         aria-label="Curriculum Command Palette"
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col max-h-[550px]"
+        className="w-full max-w-2xl rounded-2xl bg-surface border border-border shadow-2xl overflow-hidden flex flex-col max-h-[550px]"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
       >
         {/* Search Input Bar */}
-        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
+        <div className="p-4 border-b border-border flex items-center gap-3">
           <Search className="w-5 h-5 text-zinc-400 shrink-0" />
           <input
             ref={inputRef}
@@ -125,10 +125,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search all 12 courses, modules, algorithms, kernels... (e.g. FlashAttention, Raft, Triton)"
-            className="flex-1 bg-transparent text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-fg placeholder:text-zinc-400 focus:outline-none"
           />
           {query && (
-            <button onClick={() => setQuery('')} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200" onClick={() => setQuery('')} >
               <X className="w-4 h-4" />
             </button>
           )}
@@ -144,26 +144,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               Quick Actions
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <button
-                onClick={() => { onClose(); onOpenLiveRunner?.(); }}
-                className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2.5 rounded-xl border border-border hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition" onClick={() => { onClose(); onOpenLiveRunner?.(); }} >
                 <Terminal className="w-4 h-4 text-emerald-500" />
                 <span className="font-medium text-zinc-700 dark:text-zinc-300">Open Live Code Runner</span>
               </button>
 
-              <button
-                onClick={() => { onClose(); onOpenStats?.(); }}
-                className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2.5 rounded-xl border border-border hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition" onClick={() => { onClose(); onOpenStats?.(); }} >
                 <Flame className="w-4 h-4 text-amber-500" />
                 <span className="font-medium text-zinc-700 dark:text-zinc-300">View Study Streak & Stats</span>
               </button>
 
-              <button
-                onClick={() => { onToggleTheme(); }}
-                className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition col-span-2"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2.5 rounded-xl border border-border hover:bg-white dark:hover:bg-zinc-800 text-left flex items-center gap-2.5 transition col-span-2" onClick={() => { onToggleTheme(); }} >
                 {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
                 <span className="font-medium text-zinc-700 dark:text-zinc-300">
                   Switch to {theme === 'dark' ? 'Light' : 'Dark'} Mode
@@ -221,7 +212,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                      <div className="text-xs text-fg-muted truncate">
                         {item.subtitle}
                       </div>
                     </div>
@@ -234,7 +225,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-2 bg-zinc-50 dark:bg-[#0D1117] border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+        <div className="px-4 py-2 bg-surface border-t border-border flex items-center justify-between text-xs font-mono text-zinc-400">
           <span>Navigate with ↑ ↓ and Enter</span>
           <span>AI Systems Mastery Command Palette</span>
         </div>

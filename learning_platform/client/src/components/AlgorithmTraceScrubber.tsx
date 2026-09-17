@@ -177,28 +177,28 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
       case 'swapped':
         return 'border-rose-500 bg-rose-500/20 text-rose-400 font-bold scale-105 ring-2 ring-rose-500/40';
       default:
-        return 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300';
+        return 'border-border bg-surface/60 text-zinc-700 dark:text-zinc-300';
     }
   };
 
   return (
     <div
-      className={`rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0c0e14] overflow-hidden shadow-sm my-6 ${className}`}
+      className={`rounded-2xl border border-border bg-zinc-50 dark:bg-bg overflow-hidden shadow-sm my-6 ${className}`}
     >
       {/* Header bar */}
-      <div className="px-5 py-3.5 border-b border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3 bg-white/50 dark:bg-zinc-900/40">
+      <div className="px-5 py-3.5 border-b border-border flex flex-wrap items-center justify-between gap-3 bg-white/50 dark:bg-zinc-900/40">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-500 border border-sky-500/20">
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-xs font-bold font-mono text-zinc-900 dark:text-zinc-100 uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold font-mono text-fg uppercase tracking-wider flex items-center gap-2">
               <span>{trace.algorithm}</span>
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 font-normal">
                 Trace Scrubber
               </span>
             </h4>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-2 text-[11px] font-mono text-fg-muted">
               <span>Time: {trace.timeComplexity}</span>
               <span>•</span>
               <span>Space: {trace.spaceComplexity}</span>
@@ -221,15 +221,12 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
               { label: '1x', ms: 900 },
               { label: '2x', ms: 450 },
             ].map((spd) => (
-              <button
-                key={spd.label}
-                onClick={() => setPlaybackSpeed(spd.ms)}
-                className={`px-2 py-0.5 rounded text-xs transition-colors ${
+              <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded text-xs transition-colors ${
                   playbackSpeed === spd.ms
                     ? 'bg-sky-500/20 text-sky-600 dark:text-sky-400 font-bold border border-sky-500/30'
                     : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
-                }`}
-              >
+                }`} key={spd.label}
+                onClick={() => setPlaybackSpeed(spd.ms)} >
                 {spd.label}
               </button>
             ))}
@@ -243,7 +240,7 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
         <div className="p-3.5 rounded-xl bg-sky-500/10 dark:bg-sky-950/20 border border-sky-500/20 flex items-start gap-3">
           <Sparkles className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 leading-relaxed">
+            <p className="text-xs font-semibold text-fg leading-relaxed">
               {currentFrame?.description}
             </p>
             {currentFrame?.invariants && (
@@ -303,7 +300,7 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
 
         {/* Variables Inspector */}
         {currentFrame?.variables && Object.keys(currentFrame.variables).length > 0 && (
-          <div className="rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 p-3.5 space-y-2">
+          <div className="rounded-xl border border-border bg-surface/40 p-3.5 space-y-2">
             <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
               <Sliders className="w-3.5 h-3.5" /> Internal Loop Variables
             </div>
@@ -313,7 +310,7 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
                   key={key}
                   className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-mono flex items-center gap-1.5"
                 >
-                  <span className="text-zinc-500 dark:text-zinc-400">{key}:</span>
+                  <span className="text-fg-muted">{key}:</span>
                   <span className="font-bold text-sky-600 dark:text-sky-400">
                     {String(val)}
                   </span>
@@ -341,45 +338,36 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
       </div>
 
       {/* Control Toolbar */}
-      <div className="px-5 py-3 border-t border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 flex items-center justify-between">
+      <div className="px-5 py-3 border-t border-border bg-white/60 dark:bg-zinc-900/50 flex items-center justify-between">
         {/* Reset button */}
-        <button
-          onClick={handleReset}
-          className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-xs font-mono"
-          title="Reset to Step 1"
-        >
+        <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-xs font-mono" onClick={handleReset}
+          
+          title="Reset to Step 1" >
           <RotateCcw className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Reset</span>
         </button>
 
         {/* Playback Controls */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => goToStep(0)}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors" onClick={() => goToStep(0)}
             disabled={currentStepIdx === 0}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
-            title="First Step"
-          >
+            
+            title="First Step" >
             <SkipBack className="w-4 h-4" />
           </button>
 
-          <button
-            onClick={handlePrev}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors" onClick={handlePrev}
             disabled={currentStepIdx === 0}
-            className="p-2 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
-            title="Previous Step"
-          >
+            
+            title="Previous Step" >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className={`px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${
               isPlaying
                 ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/20'
                 : 'bg-sky-500 hover:bg-sky-600 text-white shadow-sky-500/20'
-            }`}
-          >
+            }`} onClick={() => setIsPlaying(!isPlaying)} >
             {isPlaying ? (
               <>
                 <Pause className="w-4 h-4 fill-current" /> Pause
@@ -391,21 +379,17 @@ export const AlgorithmTraceScrubber: React.FC<AlgorithmTraceScrubberProps> = ({
             )}
           </button>
 
-          <button
-            onClick={handleNext}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors" onClick={handleNext}
             disabled={currentStepIdx === totalSteps - 1}
-            className="p-2 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
-            title="Next Step"
-          >
+            
+            title="Next Step" >
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          <button
-            onClick={() => goToStep(totalSteps - 1)}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors" onClick={() => goToStep(totalSteps - 1)}
             disabled={currentStepIdx === totalSteps - 1}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
-            title="Last Step"
-          >
+            
+            title="Last Step" >
             <SkipForward className="w-4 h-4" />
           </button>
         </div>

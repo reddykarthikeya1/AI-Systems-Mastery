@@ -1,5 +1,27 @@
 # Module 03: Standardized Benchmark Harnesses
 
+
+## LLM-as-a-Judge Pairwise Arena & Position Bias Calibration
+
+```mermaid
+flowchart TD
+    Prompt["Benchmark Prompt"] --> M1["Model A Response"]
+    Prompt --> M2["Model B Response"]
+
+    subgraph Round1["Evaluation Round 1: [Model A, Model B]"]
+        Judge1["Judge LLM: Select Winner (Round 1)"]
+    end
+
+    subgraph Round2["Evaluation Round 2: [Model B, Model A] (Position Swap!)"]
+        Judge2["Judge LLM: Select Winner (Round 2)"]
+    end
+
+    M1 & M2 --> Round1
+    M1 & M2 --> Round2
+
+    Round1 & Round2 --> Calibrate["Bias Filter: Only award win if choice is consistent across both positions!"]
+```
+
 ## 1. Landmark AI Benchmarks & Evaluation Paradigms
 
 Standardized benchmarks form the bedrock of AI capabilities evaluation:

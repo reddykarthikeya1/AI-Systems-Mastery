@@ -4,6 +4,31 @@
 
 ---
 
+
+## Tensor Core MMA Matrix Multiply Instruction
+
+```mermaid
+flowchart LR
+    subgraph Inputs["Warp Input Fragments"]
+        FragA["Fragment A<br/>16 x 16 (FP16 / BF16)"]
+        FragB["Fragment B<br/>16 x 16 (FP16 / BF16)"]
+        FragC["Accumulator C<br/>16 x 16 (FP32)"]
+    end
+
+    subgraph TensorCore["4th-Gen Tensor Core Unit"]
+        MMA["D = A × B + C in Single Instruction Cycle"]
+    end
+
+    subgraph Output["Result Fragment"]
+        FragD["Fragment D<br/>16 x 16 (FP32 / FP16)"]
+    end
+
+    FragA --> MMA
+    FragB --> MMA
+    FragC --> MMA
+    MMA --> FragD
+```
+
 ## 1. The Memory Wall in Modern Transformer Architectures
 
 In a 70B parameter LLM inference pass, matrix multiplications (GEMMs) are typically compute-bound.

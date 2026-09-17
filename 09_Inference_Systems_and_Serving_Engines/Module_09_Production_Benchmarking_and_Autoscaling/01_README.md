@@ -1,5 +1,26 @@
 # Module 09: Production Benchmarking, SLA Budgeting & Autoscaling
 
+
+## Distributed Multi-GPU Tensor Parallel Inference Serving
+
+```mermaid
+flowchart TD
+    Prompt["Input Token ID"] --> Broadcast["Broadcast to All Serving GPUs"]
+    
+    subgraph GPUs["Tensor Parallel Rank Slices"]
+        GPU0["GPU 0: Compute Q0, K0, V0, Attention, W1_0, W2_0"]
+        GPU1["GPU 1: Compute Q1, K1, V1, Attention, W1_1, W2_1"]
+    end
+
+    Broadcast --> GPU0
+    Broadcast --> GPU1
+
+    GPU0 --> AllReduce["NCCL AllReduce Sum Output"]
+    GPU1 --> AllReduce
+
+    AllReduce --> Sample["Logits Sampling -> Next Token"]
+```
+
 ## 1. Statistical Telemetry & Performance Benchmarking
 
 Enterprise LLM serving systems evaluate performance using continuous statistical profiling across concurrent synthetic traffic generators (e.g. Locust, vLLM Benchmark Suite).

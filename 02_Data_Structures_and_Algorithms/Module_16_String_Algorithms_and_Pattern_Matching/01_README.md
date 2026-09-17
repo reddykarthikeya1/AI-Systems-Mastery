@@ -16,6 +16,24 @@ noticing something the naive scan throws away.
 | Rabin-Karp | `O(n + m)` expected | a hash you can update in `O(1)` per shift |
 | Aho-Corasick | `O(n + total + hits)` | many patterns sharing prefixes |
 
+
+## KMP String Matching Failure Automaton (Prefix Table Pi)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> S0: Match 'A'
+    S0 --> S1: Match 'B'
+    S1 --> S2: Match 'A'
+    S2 --> S3: Match 'B'
+    S3 --> S4: Match 'C'
+    S4 --> [*]: Pattern Found!
+
+    S1 --> S0: Mismatch -> Fallback pi[1]=0
+    S2 --> S0: Mismatch -> Fallback pi[2]=1
+    S3 --> S1: Mismatch -> Fallback pi[3]=2
+```
+
 ## Learning path
 
 | Step | File | What you do |

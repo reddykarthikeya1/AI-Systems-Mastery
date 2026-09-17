@@ -5,6 +5,17 @@
 
 ---
 
+
+## Statistical Estimation: MLE vs MAP
+
+```mermaid
+flowchart TD
+    Likelihood["Likelihood Function L(θ) = ∏ p(xᵢ | θ)"] --> LogLike["Log-Likelihood ℓ(θ) = Σ log p(xᵢ | θ)"]
+    LogLike --> MLE["MLE: θ̂_MLE = argmax ℓ(θ)<br/>(Pure data fit, no prior)"]
+
+    Prior["Prior Distribution p(θ)"] --> MAP["MAP: θ̂_MAP = argmax [ℓ(θ) + log p(θ)]<br/>(Equivalent to Regularized Empirical Risk!)"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

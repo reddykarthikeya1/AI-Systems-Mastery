@@ -7,6 +7,30 @@ Welcome to the foundational playground for Autonomous Agents! Here you will mast
 
 ---
 
+
+## ReAct Agent Cognitive Loop Architecture
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant User as User Request
+    participant Agent as ReAct Core Agent
+    participant LLM as Reasoning Engine
+    participant Tool as External Tools / Environment
+
+    User->>Agent: "Find GPU memory bandwidth of H100 and calculate roofline"
+    Agent->>LLM: Generate Thought & Action Plan
+    LLM-->>Agent: Thought: Need exact H100 memory bandwidth specs.<br/>Action: search_specs(query='H100 SXM5 memory bandwidth')
+    Agent->>Tool: Execute search_specs(...)
+    Tool-->>Agent: Observation: "H100 SXM5 features 3.35 TB/s HBM3 bandwidth"
+    Agent->>LLM: Pass Observation & Request Next Step
+    LLM-->>Agent: Thought: Now compute roofline intensity threshold.<br/>Action: python_calc(flops=989e12, bw=3.35e12)
+    Agent->>Tool: Execute python_calc(...)
+    Tool-->>Agent: Observation: "295.22 FLOPs/byte"
+    Agent->>LLM: Synthesize Final Answer
+    LLM-->>User: "H100 bandwidth is 3.35 TB/s, requiring 295 FLOPs/byte for compute ceiling."
+```
+
 ## 1. The Core Mental Model: The ReAct Loop
 
 A standard LLM is a single-turn completion engine:

@@ -5,6 +5,17 @@
 
 ---
 
+
+## Bayesian Reasoning & Belief Update Engine
+
+```mermaid
+flowchart LR
+    Prior["Prior Belief P(θ)<br/>(Initial Confidence)"] --> Likelihood["Likelihood P(D | θ)<br/>(Evidence from Observed Data)"]
+    Likelihood --> Bayes["Bayes' Theorem:<br/>P(θ | D) = P(D | θ) P(θ) / P(D)"]
+    Bayes --> Posterior["Posterior Belief P(θ | D)<br/>(Updated Knowledge)"]
+    Posterior --> Predictive["Posterior Predictive Distribution"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

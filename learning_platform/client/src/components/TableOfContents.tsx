@@ -91,7 +91,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   if (headings.length < 2) return null;
 
   return (
-    <div className="rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
+    <div className="rounded-xl bg-surface border border-border/80 p-4 shadow-sm space-y-3 sticky top-20">
       {/* Top Meta Bar */}
       <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
         <div className="flex items-center gap-1.5 text-zinc-500 text-xs font-mono">
@@ -100,15 +100,13 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
         </div>
 
         {onToggleBookmark && (
-          <button
-            onClick={onToggleBookmark}
-            className={`p-1 rounded-md text-xs transition flex items-center gap-1 ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1 rounded-md text-xs transition flex items-center gap-1 ${
               isBookmarked
                 ? 'text-amber-500 bg-amber-500/10'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'
-            }`}
-            title={isBookmarked ? 'Remove Bookmark' : 'Bookmark this lesson'}
-          >
+            }`} onClick={onToggleBookmark}
+            
+            title={isBookmarked ? 'Remove Bookmark' : 'Bookmark this lesson'} >
             <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
             <span className="text-xs font-mono">{isBookmarked ? 'Saved' : 'Save'}</span>
           </button>
@@ -124,18 +122,16 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
           {headings.map((h, i) => {
             const isActive = activeHeadingId === h.text;
             return (
-              <button
-                key={i}
-                onClick={() => scrollToHeading(h.text)}
-                className={`w-full text-left py-1.5 px-2.5 rounded-lg text-xs leading-relaxed transition break-words block ${
+              <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left py-1.5 px-2.5 rounded-lg text-xs leading-relaxed transition break-words block ${
                   isActive
                     ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 font-semibold border-l-2 border-blue-500 shadow-sm'
                     : h.level === 3 
                     ? 'pl-4 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200' 
                     : 'font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-400'
-                } hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50`}
-                title={h.text}
-              >
+                } hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50`} key={i}
+                onClick={() => scrollToHeading(h.text)}
+                
+                title={h.text} >
                 {h.text}
               </button>
             );

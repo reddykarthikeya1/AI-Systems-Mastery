@@ -249,7 +249,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         try {
           const { svg } = await mermaid.render(renderId, rawCode.trim());
           const wrapper = document.createElement('div');
-          wrapper.className = 'my-6 p-4 rounded-2xl bg-zinc-50 dark:bg-[#0D1117] border border-zinc-200/80 dark:border-zinc-800/80 flex justify-center items-center overflow-x-auto shadow-sm transition-all';
+          wrapper.className = 'my-6 p-4 rounded-2xl bg-surface border border-border/80 flex justify-center items-center overflow-x-auto shadow-sm transition-all';
           wrapper.innerHTML = svg;
           (preEl as any).dataset.mermaidRendered = 'true';
           preEl.replaceWith(wrapper);
@@ -488,7 +488,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         }
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 text-xs font-mono text-zinc-400 select-none';
+        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-surface-raised border-b border-zinc-800 text-xs font-mono text-zinc-400 select-none';
 
         const label = document.createElement('span');
         label.className = 'font-semibold text-zinc-300';
@@ -515,10 +515,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         copyBtn.onclick = () => {
           navigator.clipboard.writeText(codeText);
           copyBtn.innerText = '✓ Copied';
-          copyBtn.style.color = '#34D399';
+          copyBtn.classList.add('text-emerald-400');
           setTimeout(() => {
             copyBtn.innerText = 'Copy';
-            copyBtn.style.color = '';
+            copyBtn.classList.remove('text-emerald-400');
           }, 2000);
         };
 
@@ -532,7 +532,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         pre.style.borderTopRightRadius = '0';
 
         const wrapper = document.createElement('div');
-        wrapper.className = 'my-5 rounded-xl border border-zinc-300 dark:border-zinc-800 overflow-hidden shadow-sm bg-[#0D1117]';
+        wrapper.className = 'my-5 rounded-xl border border-zinc-300 dark:border-zinc-800 overflow-hidden shadow-sm bg-bg';
 
         pre.parentNode?.insertBefore(wrapper, pre);
         wrapper.appendChild(header);
@@ -743,15 +743,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       />
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-1.5 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2 overflow-x-auto">
-        <button
-          onClick={() => setActiveTab('theory')}
-          className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+      <div className="flex items-center gap-1.5 border-b border-border/80 pb-2 overflow-x-auto">
+        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
             activeTab === 'theory'
               ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-sm'
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-          }`}
-        >
+          }`} onClick={() => setActiveTab('theory')} >
           {currentLesson.type === 'code' || currentLesson.type === 'powershell' ? (
             <Code2 className="w-3.5 h-3.5" />
           ) : currentLesson.type === 'notebook' ? (
@@ -763,14 +760,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </button>
 
         {hasProject && (
-          <button
-            onClick={() => setActiveTab('project')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'project'
                 ? 'bg-purple-600 text-white shadow-sm font-bold'
                 : 'text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('project')} >
             <Hammer className="w-3.5 h-3.5" /> In-Browser Project Studio
             <span className="text-xs px-1 py-0.5 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
               IDE
@@ -779,14 +773,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         )}
 
         {hasDsaArena && (
-          <button
-            onClick={() => setActiveTab('arena')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'arena'
                 ? 'bg-amber-600 text-white shadow-sm font-bold'
                 : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('arena')} >
             <Brain className="w-3.5 h-3.5 text-amber-300" /> LeetCode Arena
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold">
               Sandbox
@@ -795,14 +786,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         )}
 
         {hasQuiz && (
-          <button
-            onClick={() => setActiveTab('quiz')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'quiz'
                 ? 'bg-amber-600 text-white shadow-sm'
                 : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('quiz')} >
             <CheckSquare className="w-3.5 h-3.5" /> Interactive Assessment (MCQ)
             {savedQuizScore?.passed && (
               <span className="text-xs px-1 py-0.5 rounded bg-emerald-500 text-white font-mono">
@@ -813,14 +801,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         )}
 
         {hasDebugLab && (
-          <button
-            onClick={() => setActiveTab('debug')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'debug'
                 ? 'bg-rose-600 text-white shadow-sm'
                 : 'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('debug')} >
             <Bug className="w-3.5 h-3.5" /> Bug Hunter Lab
             <span className="text-xs px-1 py-0.5 rounded bg-rose-200 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 font-mono">
               Drill
@@ -828,25 +813,19 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </button>
         )}
 
-        <button
-          onClick={() => setActiveTab('test')}
-          className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
             activeTab === 'test'
               ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-sm'
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-          }`}
-        >
+          }`} onClick={() => setActiveTab('test')} >
           <TermIcon className="w-3.5 h-3.5" /> Pytest & Execution Console
         </button>
 
-        <button
-          onClick={() => setActiveTab('notes')}
-          className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
             activeTab === 'notes'
               ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-sm'
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
-          }`}
-        >
+          }`} onClick={() => setActiveTab('notes')} >
           <FileText className="w-3.5 h-3.5" /> Personal Notes
           {noteText.trim().length > 0 && (
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
@@ -855,14 +834,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
         {/* Storage & SQL Sandbox Tab */}
         {(isStorageCourse || activeTab === 'sql') && (
-          <button
-            onClick={() => setActiveTab('sql')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'sql'
                 ? 'bg-emerald-600 text-white shadow-sm font-bold'
                 : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('sql')} >
             <Database className="w-3.5 h-3.5" /> Storage & SQL Sandbox
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">
               B-Tree
@@ -872,14 +848,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
         {/* Distributed Architecture Canvas Tab */}
         {(isDistributedCourse || activeTab === 'arch') && (
-          <button
-            onClick={() => setActiveTab('arch')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'arch'
                 ? 'bg-indigo-600 text-white shadow-sm font-bold'
                 : 'text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30'
-            }`}
-          >
+            }`} onClick={() => setActiveTab('arch')} >
             <Layers className="w-3.5 h-3.5" /> Architecture Canvas
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">
               Mermaid
@@ -1049,7 +1022,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
           {/* Right Rail: Page-Aware Interactive Runner OR Sticky Quick-Reach TOC */}
           {isScratchpadOpen ? (
-            <aside aria-label="Interactive multi-runtime code runner" className="w-96 2xl:w-[480px] shrink-0 sticky top-20 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xl">
+            <aside aria-label="Interactive multi-runtime code runner" className="w-96 2xl:w-[480px] shrink-0 sticky top-20 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-border/80 shadow-2xl">
               <SideCodeRunner
                 initialCode={scratchpadCode}
                 initialMode={scratchpadMode}
@@ -1076,12 +1049,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
       )}
       {showBackToTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-8 right-8 z-30 p-3 rounded-full bg-zinc-900/90 dark:bg-zinc-100/90 text-white dark:text-zinc-900 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-700/50 dark:border-zinc-300/50"
+        <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 fixed bottom-8 right-8 z-30 p-3 rounded-full bg-zinc-900/90 dark:bg-zinc-100/90 text-white dark:text-zinc-900 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-700/50 dark:border-zinc-300/50" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          
           title="Back to top"
-          aria-label="Back to top"
-        >
+          aria-label="Back to top" >
           <ArrowUp className="w-4 h-4" />
         </button>
       )}

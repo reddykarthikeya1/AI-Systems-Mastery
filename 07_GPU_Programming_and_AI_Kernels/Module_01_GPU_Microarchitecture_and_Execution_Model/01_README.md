@@ -4,6 +4,36 @@
 
 ---
 
+
+## GPU Hardware Execution Hierarchy
+
+```mermaid
+flowchart TD
+    subgraph Device["NVIDIA GPU (e.g. H100 SXM5)"]
+        HBM["High-Bandwidth Memory (HBM3, 3.35 TB/s, 80 GB)"]
+        L2["Shared L2 Cache (50 MB)"]
+        
+        subgraph SM1["Streaming Multiprocessor 0 (SM)"]
+            WarpSched1["4x Warp Schedulers"]
+            RegFile1["64K x 32-bit Register File"]
+            SRAM1["228 KB Shared Memory / L1 Data Cache"]
+            TensorCores1["4x 4th-Gen Tensor Cores"]
+            CUDACores1["128x FP32 CUDA Cores"]
+        end
+
+        subgraph SM2["Streaming Multiprocessor 131 (SM)"]
+            WarpSched2["4x Warp Schedulers"]
+            RegFile2["Register File"]
+            SRAM2["Shared Memory / L1"]
+            TensorCores2["Tensor Cores"]
+        end
+    end
+
+    HBM <--> L2
+    L2 <--> SM1
+    L2 <--> SM2
+```
+
 ## 1. Physical Hardware Microarchitecture of an SM
 
 Modern NVIDIA GPUs (Ampere A100, Hopper H100, Blackwell B200) are arrays of independent hardware processors called **Streaming Multiprocessors (SMs)** connected via a high-bandwidth crossbar network to a shared Level 2 (L2) Cache and High Bandwidth Memory (HBM3e).

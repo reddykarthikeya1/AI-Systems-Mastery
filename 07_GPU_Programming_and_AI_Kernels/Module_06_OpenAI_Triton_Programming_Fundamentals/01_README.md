@@ -4,6 +4,31 @@
 
 ---
 
+
+## Shared Memory Matrix Tiling Workflow
+
+```mermaid
+flowchart TD
+    subgraph GlobalMem["Global Memory (DRAM / HBM)"]
+        MatA["Matrix A (M x K)"]
+        MatB["Matrix B (K x N)"]
+    end
+
+    subgraph SharedMem["Shared Memory Tile Buffers (SRAM, 15 TB/s)"]
+        TileA["Tile As[BM][BK] (e.g. 128 x 16)"]
+        TileB["Tile Bs[BK][BN] (e.g. 16 x 128)"]
+    end
+
+    subgraph Regs["Warp Register File (RF, 30+ TB/s)"]
+        Compute["Accumulate Partial Dot Products in Registers (C_sub)"]
+    end
+
+    MatA -->|Collaborative Load 128-bit LDG.128| TileA
+    MatB -->|Collaborative Load 128-bit LDG.128| TileB
+    TileA -->|LDS to Registers| Compute
+    TileB -->|LDS to Registers| Compute
+```
+
 ## 1. The Block-Level Programming Paradigm
 
 CUDA operates at the **scalar thread level**: the developer writes code for 1 thread and manually orchestrates warps, memory coalescing, and shared memory allocations.

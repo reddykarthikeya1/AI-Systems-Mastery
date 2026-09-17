@@ -1,5 +1,24 @@
 # Module 05: Tensor Parallelism (Megatron-LM) & Sequence Parallelism
 
+
+## FSDP (Fully Sharded Data Parallel) Execution Cycle
+
+```mermaid
+flowchart TD
+    subgraph Forward["Forward Pass"]
+        F1["AllGather Sharded Params for Layer i"] --> F2["Compute Forward Activations"]
+        F2 --> F3["Discard Unsharded Params (Keep only local shard)"]
+    end
+
+    subgraph Backward["Backward Pass"]
+        B1["AllGather Sharded Params for Layer i"] --> B2["Compute Backward Gradients"]
+        B2 --> B3["ReduceScatter Gradients across Ranks"]
+        B3 --> B4["Discard Unsharded Params & Accumulate Local Grad Shard"]
+    end
+
+    Forward --> Backward
+```
+
 ## 1. Mathematical Formulation of Megatron-LM
 
 Tensor Parallelism splits individual weight tensors across multiple processing units to compute large matrix multiplications cooperatively.

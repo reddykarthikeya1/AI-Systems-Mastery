@@ -4,6 +4,19 @@
 
 ---
 
+
+## Triton Compiler Pipeline: Python AST to PTX
+
+```mermaid
+flowchart LR
+    Python["@triton.jit Python Kernel<br/>(Block-Level Tensors)"] --> AST["Triton AST"]
+    AST --> TTIR["Triton-IR (TTIR)<br/>Block Dialect"]
+    TTIR --> TTGIR["TritonGPU-IR (TTGIR)<br/>Warp & Layout Layout Dialect"]
+    TTGIR --> LLVM["LLVM-IR Code Generation"]
+    LLVM --> PTX["NVIDIA PTX Assembly"]
+    PTX --> Cubin["SASS Machine Binary (cubin)"]
+```
+
 ## 1. Hardware Architectural Leap: Ampere vs Hopper vs Blackwell
 
 Modern LLM scaling reached a point where traditional SM-driven memory copies became the primary bottleneck.

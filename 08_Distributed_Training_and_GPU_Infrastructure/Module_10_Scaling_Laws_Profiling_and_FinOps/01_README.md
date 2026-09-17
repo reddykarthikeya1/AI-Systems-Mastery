@@ -1,5 +1,17 @@
 # Module 10: Scaling Laws, Profiling & FinOps
 
+
+## Resilient Distributed Fault Tolerance Architecture
+
+```mermaid
+flowchart TD
+    Health["Node Heartbeat Monitor (etcd / Slurm)"] --> Detect["Worker Node 3 Failure Detected!"]
+    Detect --> Evict["Evict Faulty Node from Hostfile"]
+    Evict --> Checkpoint["Load Last Valid Distributed Checkpoint (S3 / Ceph)"]
+    Checkpoint --> Reroute["Reconfigure NCCL Ring Topology & World Size"]
+    Reroute --> Resume["Resume Training without Job Termination"]
+```
+
 ## 1. Mathematical Derivation of Transformer Training FLOPs
 
 Let $\Phi$ denote total non-embedding parameters, $b$ denote global batch size, $s$ denote sequence length, $L$ denote layer count, and $h$ denote hidden dimension.

@@ -1,5 +1,16 @@
 # Module 09: Context Optimization & Needle-in-a-Haystack (NIAH) Testing
 
+
+## Attention-Based Context Pruning & Compression
+
+```mermaid
+flowchart LR
+    LongCtx["Long Retrieved Context (32K tokens)"] --> Scorer["Small LLM / Perplexity Scorer"]
+    Scorer --> Mask["Filter Low-Information Spans & Duplicate Chunks"]
+    Mask --> CompressedCtx["Dense Context (8K tokens, 100% Salient Information)"]
+    CompressedCtx --> MainLLM["Target LLM Generation (4x Faster, Lower Token Cost)"]
+```
+
 ## 1. Context Distribution & Attention Sinks
 
 Attention analysis across decoder Transformers reveals asymmetric attention weight concentration at the sequence extremes:

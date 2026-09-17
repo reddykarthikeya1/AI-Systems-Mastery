@@ -6,6 +6,23 @@ Weighted graph algorithms solve latency routing in distributed systems and netwo
 
 ---
 
+
+## Dijkstra Shortest Path Relaxation Frontier
+
+```mermaid
+flowchart LR
+    S(("Start S<br/>dist: 0")) -->|wt: 4| A(("Node A<br/>dist: 4"))
+    S -->|wt: 2| B(("Node B<br/>dist: 2"))
+    B -->|wt: 1| A
+    B -->|wt: 5| C(("Node C<br/>dist: 7"))
+    A -->|wt: 2| C
+    C -->|wt: 3| T(("Target T<br/>dist: 8"))
+
+    subgraph Relax["Relaxation Invariant"]
+        R["if dist[u] + wt(u, v) < dist[v]:<br/>dist[v] = dist[u] + wt(u, v)<br/>pq.push((dist[v], v))"]
+    end
+```
+
 ## 1. Algorithmic Tradeoffs for Shortest Paths
 
 | Algorithm | Edge Weights | Time Complexity | Cycle Handling |

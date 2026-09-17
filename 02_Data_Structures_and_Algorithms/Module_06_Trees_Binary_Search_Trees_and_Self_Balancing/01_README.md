@@ -6,6 +6,41 @@ Trees model hierarchical data and form the index engines of databases (B-Trees) 
 
 ---
 
+
+## AVL Tree Double Rotation (Left-Right Case)
+
+```mermaid
+flowchart TD
+    subgraph Before["Before Rotation (Imbalance at Node 50, BF = +2)"]
+        N50["50 (BF=+2)"] --> N20["20 (BF=-1)"]
+        N50 --> N60["60"]
+        N20 --> N10["10"]
+        N20 --> N30["30 (Right Child)"]
+        N30 --> N25["25"]
+        N30 --> N35["35"]
+    end
+
+    subgraph Step1["Step 1: Left Rotate at Child 20"]
+        S50["50"] --> S30["30"]
+        S30 --> S20["20"]
+        S30 --> S35["35"]
+        S20 --> S10["10"]
+        S20 --> S25["25"]
+    end
+
+    subgraph Step2["Step 2: Right Rotate at Root 50 (Balanced)"]
+        R30["30 (BF=0)"]
+        R30 --> R20["20 (BF=0)"]
+        R30 --> R50["50 (BF=0)"]
+        R20 --> R10["10"]
+        R20 --> R25["25"]
+        R50 --> R35["35"]
+        R50 --> R60["60"]
+    end
+
+    Before -->|Left Rotate (Child)| Step1 -->|Right Rotate (Root)| Step2
+```
+
 ## 1. Binary Tree Node Representation
 
 ```python

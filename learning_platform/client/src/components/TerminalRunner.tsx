@@ -18,9 +18,9 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
   hasDemo,
 }) => {
   return (
-    <div className="rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-[#0D1117] text-zinc-100 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+    <div className="rounded-xl border border-border bg-bg text-zinc-100 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
       {/* Terminal Title Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#090D14] border-b border-zinc-800/80">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-bg border-b border-zinc-800/80">
         <div className="flex items-center gap-3">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-zinc-600/70" />
@@ -34,27 +34,21 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
 
         <div className="flex items-center gap-2">
           {hasDemo && onRunDemo && (
-            <button
-              onClick={onRunDemo}
-              disabled={isRunning}
-              className="text-xs font-mono px-3 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 disabled:opacity-50 transition-colors flex items-center gap-1.5 border border-zinc-700/60"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs font-mono px-3 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 disabled:opacity-50 transition-colors flex items-center gap-1.5 border border-zinc-700/60" onClick={onRunDemo}
+              disabled={isRunning} >
               {isRunning ? <RotateCw className="w-3 h-3 animate-spin" /> : '▶'} Quickstart Demo
             </button>
           )}
 
-          <button
-            onClick={onRunTest}
-            disabled={isRunning}
-            className="text-xs font-mono px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs font-mono px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5" onClick={onRunTest}
+            disabled={isRunning} >
             {isRunning ? <RotateCw className="w-3 h-3 animate-spin" /> : '▶'} Run Pytest
           </button>
         </div>
       </div>
 
       {/* Terminal Output Body */}
-      <div className="p-4 font-mono text-xs overflow-x-auto max-h-96 min-h-[160px] bg-[#0D1117] text-zinc-300">
+      <div className="p-4 font-mono text-xs overflow-x-auto max-h-96 min-h-[160px] bg-bg text-zinc-300">
         {isRunning ? (
           <div className="flex items-center gap-2 text-zinc-400 py-8 justify-center">
             <RotateCw className="w-4 h-4 animate-spin text-blue-500" />

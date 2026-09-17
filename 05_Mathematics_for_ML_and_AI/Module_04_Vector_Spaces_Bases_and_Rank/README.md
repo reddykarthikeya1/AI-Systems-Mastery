@@ -5,6 +5,27 @@
 
 ---
 
+
+## Fundamental Subspaces & Rank-Nullity Theorem
+
+```mermaid
+flowchart TD
+    subgraph Rn["Domain Space ℝⁿ"]
+        Row["Row Space Row(A)<br/>Dimension: r"]
+        Null["Null Space Null(A)<br/>Dimension: n - r"]
+        Row ---|Orthogonal Complement ⟂| Null
+    end
+
+    subgraph Rm["Codomain Space ℝᵐ"]
+        Col["Column Space Col(A)<br/>Dimension: r"]
+        LeftNull["Left Null Space Null(Aᵀ)<br/>Dimension: m - r"]
+        Col ---|Orthogonal Complement ⟂| LeftNull
+    end
+
+    Row -->|Bijective Mapping via A| Col
+    Null -->|Maps to Zero Vector 0| LeftNull
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

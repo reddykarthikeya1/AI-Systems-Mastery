@@ -1,5 +1,24 @@
 # Module 02: LLM as a Judge Calibration and Bias
 
+
+## The RAG Triad Evaluation Architecture
+
+```mermaid
+flowchart TD
+    Q["User Query"] --> C["Retrieved Context Chunks"]
+    C --> A["Generated Response Answer"]
+
+    subgraph Triad["The 3 Pillars of RAG Quality"]
+        Metric1["1. Context Relevance: Does Context answer the Query?"]
+        Metric2["2. Groundedness: Is Answer strictly faithful to Context?"]
+        Metric3["3. Answer Relevance: Does Answer directly address the Query?"]
+    end
+
+    Q -.-> Metric1 .- C
+    C -.-> Metric2 .- A
+    Q -.-> Metric3 .- A
+```
+
 ## 1. Theoretical Foundations: Systematic Biases in LLM Judges
 
 LLM-as-a-Judge (Zheng et al., 2023 - MT-Bench & Chatbot Arena) is the industry standard for evaluating open-ended conversation. However, research reveals four dominant systematic biases:

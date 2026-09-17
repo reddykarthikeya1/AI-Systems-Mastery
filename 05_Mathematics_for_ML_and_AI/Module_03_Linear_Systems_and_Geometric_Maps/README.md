@@ -5,6 +5,26 @@
 
 ---
 
+
+## Linear Transformation & Column Space Mapping: Ax = b
+
+```mermaid
+flowchart LR
+    subgraph Domain["Input Domain ℝⁿ (Coordinates x)"]
+        x["Vector x = [x₁, x₂, ..., xₙ]ᵀ"]
+    end
+
+    subgraph Map["Linear Map Matrix A (m × n)"]
+        Col["Linear Combination of Columns:<br/>Ax = x₁ a₁ + x₂ a₂ + ... + xₙ aₙ"]
+    end
+
+    subgraph Codomain["Codomain ℝᵐ (Output Space)"]
+        b["Vector b ∈ Col(A)"]
+    end
+
+    x --> Col --> b
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

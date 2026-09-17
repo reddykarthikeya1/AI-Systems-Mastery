@@ -1,5 +1,23 @@
 # Module 08: 3D Parallelism Integration & Orchestration
 
+
+## 3D Parallelism Architectural Orthogonality
+
+```mermaid
+flowchart TD
+    subgraph Cube["3D Parallelism Grid (e.g. 64 GPUs)"]
+        TP["Tensor Parallelism (TP = 8)<br/>Intra-Node NVLink"]
+        PP["Pipeline Parallelism (PP = 4)<br/>Inter-Node InfiniBand Layers"]
+        DP["Data Parallelism (DP = 2)<br/>Cross-Cluster Replicas"]
+    end
+
+    subgraph Total["Total World Size = TP × PP × DP = 8 × 4 × 2 = 64 GPUs"]
+        Desc["Enables training 100B+ parameter models across hundreds of nodes"]
+    end
+
+    Cube --> Total
+```
+
 ## 1. Mathematical Architecture of 3D Parallel Grids
 
 In large-scale distributed training (e.g., Megatron-Turing NLG 530B, Llama-3 405B), individual models exceed the memory and compute capacity of single devices and single nodes.

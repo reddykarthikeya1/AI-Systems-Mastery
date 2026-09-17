@@ -1,5 +1,23 @@
 # Module 02: Contextual Retrieval Architecture
 
+
+## Contextual Retrieval: Prepending Global Context
+
+```mermaid
+flowchart TD
+    subgraph Problem["Isolated Chunk Context Loss"]
+        RawChunk["Chunk: 'The company grew revenue by 12% in Q3.'<br/>(Which company? Which year?)"]
+    end
+
+    subgraph Solution["Contextual Retrieval (Anthropic Pattern)"]
+        LLM["Prompt Claude: Generate 50-word context summary using entire document"]
+        Context["Context: 'In Apple Inc 2023 10-K filing financial results section...'"]
+        Enriched["Enriched Chunk = Context + Raw Chunk"]
+    end
+
+    RawChunk --> LLM --> Context --> Enriched
+```
+
 ## 1. Algorithmic Principles of Contextual Retrieval
 
 Contextual Retrieval (Anthropic, 2024) solves the semantic isolation defect inherent in localized text chunking.

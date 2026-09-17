@@ -8,6 +8,26 @@ Welcome to **Module 08**. In this module, you will dive deep into **PL/SQL (Proc
 
 ---
 
+
+## Two-Phase Locking (2PL) Concurrency Protocol
+
+```mermaid
+flowchart LR
+    subgraph Phase1["Growing Phase"]
+        L1["Acquire Shared Lock S(A)"] --> L2["Acquire Exclusive Lock X(B)"]
+    end
+
+    subgraph Peak["Lock Point (All Locks Held)"]
+        LP["Transaction Mutates Records"]
+    end
+
+    subgraph Phase2["Shrinking Phase"]
+        R1["Release Lock X(B)"] --> R2["Release Lock S(A) (No new locks can ever be acquired!)"]
+    end
+
+    Phase1 --> Peak --> Phase2
+```
+
 ## 🏎️ 1. The Dual-Engine Context Switch & Bulk Processing
 
 One of the most dangerous performance traps in Oracle is the **Engine Context Switch**:
@@ -151,4 +171,3 @@ Accelerate your mastery using the structured pedagogical artifacts in this modul
 3. 🛠️ **[Troubleshooting Guide](06_TROUBLESHOOTING_AND_EDGE_CASES.md)**: Real production error signatures & fixes.
 4. 🧠 **[Self-Assessment Quiz](05_SELF_ASSESSMENT_AND_CHALLENGES.md)**: 10 diagnostic questions + coding challenges.
 5. 🔬 **[Debug Lab](debug_lab/)**: Forensic debugging exercise diagnosing real production bugs.
-

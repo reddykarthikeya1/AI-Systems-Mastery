@@ -30,7 +30,7 @@ export const ScriptViewer: React.FC<ScriptViewerProps> = ({
   return (
     <div className="rounded-2xl bg-surface border border-border overflow-hidden shadow-sm space-y-0">
       {/* Script Header Bar */}
-      <div className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/70 dark:bg-[#161B22]">
+      <div className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/70 dark:bg-surface-raised">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
             <Code2 className="w-5 h-5" />
@@ -53,20 +53,16 @@ export const ScriptViewer: React.FC<ScriptViewerProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleCopy}
-            className="px-3 py-1.5 rounded-xl border border-border text-xs font-mono flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-fg-muted"
-            aria-label="Copy script content"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-xl border border-border text-xs font-mono flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-fg-muted" onClick={handleCopy}
+            
+            aria-label="Copy script content" >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
 
-          <button
-            onClick={() => onOpenInRunner(content, runnerMode)}
-            className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all"
-            aria-label="Run in Live Runner"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all" onClick={() => onOpenInRunner(content, runnerMode)}
+            
+            aria-label="Run in Live Runner" >
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>Run in Live Runner</span>
           </button>
@@ -74,7 +70,7 @@ export const ScriptViewer: React.FC<ScriptViewerProps> = ({
       </div>
 
       {/* Code Body */}
-      <div className="p-6 bg-[#0D1117] overflow-x-auto">
+      <div className="p-6 bg-bg overflow-x-auto">
         <pre className="font-mono text-xs sm:text-sm text-zinc-200 leading-relaxed whitespace-pre-wrap">
           {content}
         </pre>

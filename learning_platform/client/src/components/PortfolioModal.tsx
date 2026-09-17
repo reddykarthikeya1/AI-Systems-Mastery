@@ -81,35 +81,32 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="portfolio-modal-title"
-        className="flex flex-col w-full max-w-4xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:p-0 print:border-none print:shadow-none"
+        className="flex flex-col w-full max-w-4xl max-h-[90vh] bg-surface border border-border rounded-2xl shadow-2xl overflow-hidden print:m-0 print:p-0 print:border-none print:shadow-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/70 print:hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface/70 print:hidden">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">
               🎓
             </div>
             <div>
-              <h2 id="portfolio-modal-title" className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h2 id="portfolio-modal-title" className="text-base font-semibold text-fg flex items-center gap-2">
                 Engineering Portfolio & Academic Transcript
                 <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono">
                   Verified Local Progress
                 </span>
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-fg-muted">
                 Official record of lessons mastered, test suites passed, and systems architectures built.
               </p>
             </div>
           </div>
-          <button
-            onClick={() => {
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors" onClick={() => {
               soundService.playClick();
               onClose();
             }}
-            aria-label="Close transcript modal"
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-          >
+            aria-label="Close transcript modal" >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -124,7 +121,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
               <span className="text-xs font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold">
                 Student Engineering Record
               </span>
-              <h1 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+              <h1 className="text-xl md:text-2xl font-bold text-fg mt-1">
                 Systems & AI Engineering Mastery
               </h1>
               <p className="text-xs md:text-sm text-zinc-600 dark:text-zinc-400 mt-1">
@@ -156,14 +153,14 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
 
           {/* Courses Progress Table */}
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-fg mb-3 flex items-center justify-between">
               <span>Curriculum Breakdown ({courses.length} Courses)</span>
               <span className="text-xs font-normal text-zinc-500">100% Offline Verified</span>
             </h3>
 
-            <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <div className="border border-border rounded-xl overflow-hidden">
               <table className="w-full text-left text-xs">
-                <thead className="bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 font-medium">
+                <thead className="bg-surface text-zinc-600 dark:text-zinc-400 border-b border-border font-medium">
                   <tr>
                     <th className="px-4 py-3">#</th>
                     <th className="px-4 py-3">Course Title</th>
@@ -176,7 +173,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
                   {courses.map((c) => (
                     <tr key={c.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/40">
                       <td className="px-4 py-3 font-semibold text-zinc-400">{c.course_num.toString().padStart(2, '0')}</td>
-                      <td className="px-4 py-3 font-sans font-medium text-zinc-900 dark:text-zinc-100">
+                      <td className="px-4 py-3 font-sans font-medium text-fg">
                         {c.title}
                       </td>
                       <td className="px-4 py-3 font-sans text-zinc-600 dark:text-zinc-400">
@@ -194,35 +191,26 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
           </div>
 
           {/* Footer note & copyright */}
-          <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="pt-4 border-t border-border text-xs text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>© Karthikeya Reddy. All rights reserved.</span>
             <span>Issued by AI & Systems Engineering Platform</span>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-zinc-50 dark:bg-zinc-900/90 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between print:hidden">
-          <button
-            onClick={() => {
+        <div className="px-6 py-4 bg-surface/90 border-t border-border flex items-center justify-between print:hidden">
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors" onClick={() => {
               soundService.playClick();
               onClose();
-            }}
-            className="px-4 py-2 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-          >
+            }} >
             Close
           </button>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleCopyMarkdown}
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 shadow-sm transition-all"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 shadow-sm transition-all" onClick={handleCopyMarkdown} >
               {copied ? '✓ Copied Markdown' : '📋 Copy Markdown Transcript'}
             </button>
-            <button
-              onClick={handlePrint}
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow transition-all"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow transition-all" onClick={handlePrint} >
               🖨️ Print / Save PDF
             </button>
           </div>

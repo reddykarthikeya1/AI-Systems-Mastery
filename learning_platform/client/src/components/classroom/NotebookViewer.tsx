@@ -45,10 +45,7 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
           </div>
         </div>
 
-        <button
-          onClick={handleRunAll}
-          className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-500 text-white flex items-center gap-2 shadow-sm transition-all"
-        >
+        <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-500 text-white flex items-center gap-2 shadow-sm transition-all" onClick={handleRunAll} >
           <Play className="w-3.5 h-3.5 fill-current" />
           <span>Run All Cells</span>
         </button>
@@ -64,13 +61,10 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
                 dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(cell.source) }}
               />
             ) : (
-              <div className="rounded-xl border border-zinc-800 bg-[#0D1117] overflow-hidden">
-                <div className="flex items-center justify-between px-3 py-1.5 bg-[#161B22] border-b border-zinc-800 text-xs font-mono text-zinc-400">
+              <div className="rounded-xl border border-zinc-800 bg-bg overflow-hidden">
+                <div className="flex items-center justify-between px-3 py-1.5 bg-surface-raised border-b border-zinc-800 text-xs font-mono text-zinc-400">
                   <span>Python Cell [{cIdx + 1}]</span>
-                  <button
-                    onClick={() => onRunCode(cell.source)}
-                    className="px-2 py-0.5 rounded hover:bg-emerald-950/60 text-emerald-400 flex items-center gap-1 border border-emerald-500/30"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded hover:bg-emerald-950/60 text-emerald-400 flex items-center gap-1 border border-emerald-500/30" onClick={() => onRunCode(cell.source)} >
                     <Play className="w-3 h-3 fill-current" />
                     <span>Run Cell</span>
                   </button>

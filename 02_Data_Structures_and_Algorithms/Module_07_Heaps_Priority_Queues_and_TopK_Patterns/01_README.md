@@ -6,6 +6,32 @@ Binary Heaps provide guaranteed $O(1)$ minimum/maximum lookup and $O(\\log N)$ i
 
 ---
 
+
+## Binary Min-Heap Array Mapping & Sift-Down Invariant
+
+```mermaid
+flowchart TD
+    subgraph Tree["Heap Tree Representation"]
+        H1["1 (idx 0)"]
+        H1 --> H3["3 (idx 1)"]
+        H1 --> H2["2 (idx 2)"]
+        H3 --> H6["6 (idx 3)"]
+        H3 --> H5["5 (idx 4)"]
+        H2 --> H8["8 (idx 5)"]
+        H2 --> H4["4 (idx 6)"]
+    end
+
+    subgraph Array["Contiguous Array Storage Layout"]
+        A0["[0]: 1"] --- A1["[1]: 3"] --- A2["[2]: 2"] --- A3["[3]: 6"] --- A4["[4]: 5"] --- A5["[5]: 8"] --- A6["[6]: 4"]
+    end
+
+    subgraph Formulas["Index Math Formulas"]
+        F1["Parent(i) = (i - 1) // 2"]
+        F2["LeftChild(i) = 2*i + 1"]
+        F3["RightChild(i) = 2*i + 2"]
+    end
+```
+
 ## 1. The $O(N)$ Bottom-Up Heapify Proof
 
 Building a heap by inserting $N$ elements one by one takes $O(N \\log N)$.

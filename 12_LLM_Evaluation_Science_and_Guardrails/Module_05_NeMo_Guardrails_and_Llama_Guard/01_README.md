@@ -1,5 +1,20 @@
 # Module 05: NeMo Guardrails and Llama Guard
 
+
+## Production Real-Time Guardrail Defense Layers
+
+```mermaid
+flowchart TD
+    In["User HTTP Request"] --> L1["Layer 1: Regex & PII Redactor"]
+    L1 --> L2["Layer 2: Fast Vector Embedding Safety Classifier (Llama-Guard)"]
+    L2 -->|Safe| Model["Target LLM Inference"]
+    L2 -->|Violation Detected| Block["403 Forbidden Blocked"]
+
+    Model --> L3["Layer 3: Hallucination & Faithfulness NLI Verifier"]
+    L3 -->|Faithful| Out["HTTP 200 Return Verified Response"]
+    L3 -->|Unfaithful| Redact["Replace with Safe Grounded Fallback"]
+```
+
 ## 1. Architectural Foundations: Programmable Safety State Machines
 
 ### 1.1 NVIDIA NeMo Guardrails & Colang

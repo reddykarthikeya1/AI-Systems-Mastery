@@ -4,6 +4,17 @@
 
 ---
 
+
+## Propositional Logic & Deduction Inference Engine
+
+```mermaid
+flowchart LR
+    P["Hypothesis P (Premise)"] --> Imp["Implication P ⟹ Q"]
+    Imp --> Eq["Material Equivalence: ¬P ∨ Q"]
+    Eq --> Contra["Contrapositive Law: ¬Q ⟹ ¬P (Logically Identical)"]
+    Contra --> Proof["Proof by Contradiction: P ∧ ¬Q ⟹ ⊥ (False)"]
+```
+
 ## Why this module exists
 
 Papers state results as implications with quantifiers, and most

@@ -258,35 +258,32 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
         role="dialog"
         aria-modal="true"
         aria-labelledby="srs-modal-title"
-        className="flex flex-col w-full max-w-3xl max-h-[90vh] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden"
+        className="flex flex-col w-full max-w-3xl max-h-[90vh] bg-surface border border-border rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface/60">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base">
               🗂️
             </div>
             <div>
-              <h2 id="srs-modal-title" className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h2 id="srs-modal-title" className="text-base font-semibold text-fg flex items-center gap-2">
                 Systems Engineering Spaced Repetition (SRS)
                 <span className="px-2 py-0.5 text-xs rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono">
                   SM-2 Algorithm
                 </span>
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-fg-muted">
                 Lock in database internals, consensus protocols, algorithmic patterns, and low-level concurrency.
               </p>
             </div>
           </div>
-          <button
-            onClick={() => {
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors" onClick={() => {
               soundService.playClick();
               onClose();
             }}
-            aria-label="Close spaced repetition modal"
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-          >
+            aria-label="Close spaced repetition modal" >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -294,22 +291,19 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex items-center gap-2 px-6 py-2.5 bg-zinc-100/50 dark:bg-zinc-900/40 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto text-xs">
+        <div className="flex items-center gap-2 px-6 py-2.5 bg-zinc-100/50 dark:bg-zinc-900/40 border-b border-border overflow-x-auto text-xs">
           {categories.map((cat) => (
-            <button
-              key={cat}
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap ${
+                selectedCategory === cat
+                  ? 'bg-amber-500 text-zinc-950 font-semibold shadow-sm'
+                  : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
+              }`} key={cat}
               onClick={() => {
                 soundService.playClick();
                 setSelectedCategory(cat);
                 setCurrentIndex(0);
                 setFlipped(false);
-              }}
-              className={`px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap ${
-                selectedCategory === cat
-                  ? 'bg-amber-500 text-zinc-950 font-semibold shadow-sm'
-                  : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700'
-              }`}
-            >
+              }} >
               {cat}
             </button>
           ))}
@@ -340,7 +334,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
                 {!flipped ? (
                   <div className="mt-4">
                     <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">Question</span>
-                    <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100 leading-snug">
+                    <p className="mt-2 text-lg font-semibold text-fg leading-snug">
                       {currentCard.question}
                     </p>
                     <div className="mt-12 text-center text-xs text-zinc-400 group-hover:text-amber-500 transition-colors flex items-center justify-center gap-1">
@@ -362,7 +356,7 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
                 )}
               </div>
 
-              <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 text-xs text-zinc-400 flex items-center justify-between">
+              <div className="pt-4 border-t border-border/80 text-xs text-zinc-400 flex items-center justify-between">
                 <span>Card ID: {currentCard.id}</span>
                 <span>{flipped ? 'Click to flip back' : 'Flip to inspect'}</span>
               </div>
@@ -371,18 +365,12 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
         </div>
 
         {/* Rating and Navigation Controls */}
-        <div className="px-6 py-4 bg-zinc-50 dark:bg-zinc-900/90 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="px-6 py-4 bg-surface/90 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrev}
-              className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors" onClick={handlePrev} >
               ← Previous
             </button>
-            <button
-              onClick={handleNext}
-              className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors" onClick={handleNext} >
               Next →
             </button>
           </div>
@@ -390,36 +378,21 @@ export const FlashcardsModal: React.FC<FlashcardsModalProps> = ({ isOpen, onClos
           {flipped ? (
             <div className="flex items-center gap-2">
               <span className="text-xs text-zinc-400 mr-1">SM-2 Rating:</span>
-              <button
-                onClick={() => handleRate(1)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border border-rose-500/30 transition-all"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border border-rose-500/30 transition-all" onClick={() => handleRate(1)} >
                 Again (1)
               </button>
-              <button
-                onClick={() => handleRate(2)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-orange-500/15 text-orange-600 dark:text-orange-400 hover:bg-orange-500/25 border border-orange-500/30 transition-all"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-semibold rounded-lg bg-orange-500/15 text-orange-600 dark:text-orange-400 hover:bg-orange-500/25 border border-orange-500/30 transition-all" onClick={() => handleRate(2)} >
                 Hard (2)
               </button>
-              <button
-                onClick={() => handleRate(3)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition-all"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition-all" onClick={() => handleRate(3)} >
                 Good (3)
               </button>
-              <button
-                onClick={() => handleRate(5)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30 transition-all shadow-sm"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30 transition-all shadow-sm" onClick={() => handleRate(5)} >
                 Easy (5)
               </button>
             </div>
           ) : (
-            <button
-              onClick={handleFlip}
-              className="px-5 py-2 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow transition-all"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow transition-all" onClick={handleFlip} >
               Reveal Answer (Space)
             </button>
           )}

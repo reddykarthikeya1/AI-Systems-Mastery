@@ -8,6 +8,25 @@ Welcome to **Module 04** of the Database Systems Specialist Curriculum. In this 
 
 ---
 
+
+## B+ Tree Leaf Page Split & Parent Key Promotion
+
+```mermaid
+flowchart TD
+    subgraph Before["Overflowing Leaf Page (Capacity = 4 keys)"]
+        L["[10, 20, 30, 40, 50 (Overflow!)]"]
+    end
+
+    subgraph Split["50% Split & Invariant Maintenance"]
+        L1["Left Leaf: [10, 20]"]
+        L2["Right Leaf: [30, 40, 50]"]
+        Promote["Promote Key 30 to Parent Index Node"]
+        L1 -->|Doubly-Linked Sibling Pointer| L2
+    end
+
+    Before --> Split
+```
+
 ## 🏛️ 1. PostgreSQL Process & Memory Architecture
 
 Unlike multi-threaded database engines like MySQL or modern NoSQL stores, PostgreSQL is built upon a robust, unix-native **process-based architecture**.
@@ -196,4 +215,3 @@ Accelerate your mastery using the structured pedagogical artifacts in this modul
 3. 🛠️ **[Troubleshooting Guide](06_TROUBLESHOOTING_AND_EDGE_CASES.md)**: Real production error signatures & fixes.
 4. 🧠 **[Self-Assessment Quiz](05_SELF_ASSESSMENT_AND_CHALLENGES.md)**: 10 diagnostic questions + coding challenges.
 5. 🔬 **[Debug Lab](debug_lab/)**: Forensic debugging exercise diagnosing real production bugs.
-

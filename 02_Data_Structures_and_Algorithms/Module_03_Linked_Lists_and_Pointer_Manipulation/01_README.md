@@ -6,6 +6,25 @@ Unlike arrays, linked lists allocate memory in discontinuous chunks on the heap.
 
 ---
 
+
+## Linked List Pointer Mutation: In-Place Reversal Workflow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Prev as prev Pointer (None)
+    participant Curr as curr Pointer (Node 1)
+    participant Next as next_temp (Node 2)
+    Note over Curr,Next: Step 1: Save next pointer to prevent orphan loss
+    Curr->>Next: next_temp = curr.next
+    Note over Prev,Curr: Step 2: Invert link direction backward
+    Curr->>Prev: curr.next = prev
+    Note over Prev,Curr: Step 3: Advance prev pointer forward
+    Prev->>Curr: prev = curr
+    Note over Curr,Next: Step 4: Advance curr pointer forward
+    Curr->>Next: curr = next_temp
+```
+
 ## 1. Physical Node Architecture vs Array Cache Locality
 
 ```

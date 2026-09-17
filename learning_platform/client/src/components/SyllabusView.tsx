@@ -88,15 +88,12 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   return (
     <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-8 space-y-8">
       {/* Navigation Header */}
-      <button
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
-      >
+      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors" onClick={onBack} >
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Catalog
       </button>
 
       {/* Course Banner */}
-      <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 p-8 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
+      <div className="rounded-xl bg-surface border border-border/80 p-8 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-zinc-700">
             Track {course.course_num.toString().padStart(2, '0')}
@@ -126,7 +123,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
           <div className="p-3.5 rounded-lg bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/70 dark:border-zinc-800">
             <div className="text-xs font-mono text-zinc-400 uppercase">Track Completion</div>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">{overallPercentage}%</span>
+              <span className="text-base font-bold text-fg">{overallPercentage}%</span>
               <span className="text-xs font-mono text-zinc-500">{completedCourseLessons}/{totalLessons} Lessons</span>
             </div>
             <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full mt-2 overflow-hidden">
@@ -142,7 +139,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
               <Hammer className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalProjects} Studios</div>
+              <div className="text-sm font-bold text-fg">{totalProjects} Studios</div>
               <div className="text-xs text-zinc-500">In-Browser IDE Builds</div>
             </div>
           </div>
@@ -152,7 +149,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
               <CheckSquare className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalQuizzes} Assessments</div>
+              <div className="text-sm font-bold text-fg">{totalQuizzes} Assessments</div>
               <div className="text-xs text-zinc-500">Staff Interview MCQs</div>
             </div>
           </div>
@@ -162,7 +159,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
               <Bug className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{totalDebugLabs} Bug Labs</div>
+              <div className="text-sm font-bold text-fg">{totalDebugLabs} Bug Labs</div>
               <div className="text-xs text-zinc-500">Planted Defect Triages</div>
             </div>
           </div>
@@ -178,10 +175,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
         {course.quickstart_script && onRunCourseDemo && (
           <div className="pt-2">
-            <button
-              onClick={onRunCourseDemo}
-              className="px-4 py-2 rounded-lg text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-colors flex items-center gap-2 shadow-sm"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-2 rounded-lg text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-colors flex items-center gap-2 shadow-sm" onClick={onRunCourseDemo} >
               <Terminal className="w-3.5 h-3.5" /> Run Interactive Track Benchmark
             </button>
           </div>
@@ -225,7 +219,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             return (
               <div
                 key={mod.id}
-                className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden transition-all hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
+                className="rounded-xl bg-surface border border-border/80 overflow-hidden transition-all hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
               >
                 {/* Module Header Card */}
                 <div className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/70 bg-gradient-to-r from-transparent via-transparent to-zinc-50/50 dark:to-zinc-950/30">
@@ -275,7 +269,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       )}
                     </div>
 
-                    <h3 className="font-semibold text-base sm:text-lg text-zinc-900 dark:text-zinc-100">
+                    <h3 className="font-semibold text-base sm:text-lg text-fg">
                       {mod.title}
                     </h3>
 
@@ -295,69 +289,56 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                   {/* Module Direct Action Launchers */}
                   <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
                     {modHasProject && (projectLesson || firstLesson) && (
-                      <button
-                        onClick={() => onSelectLesson((projectLesson || firstLesson).file_path, (projectLesson || firstLesson).id, 'project')}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-colors flex items-center gap-1.5"
-                        title="Jump straight into Guided Project Studio"
-                      >
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson((projectLesson || firstLesson).file_path, (projectLesson || firstLesson).id, 'project')}
+                        
+                        title="Jump straight into Guided Project Studio" >
                         <Hammer className="w-3 h-3" />
                         <span>Studio</span>
                       </button>
                     )}
 
                     {modHasQuiz && firstLesson && (
-                      <button
-                        onClick={() => onSelectLesson((quizLesson || firstLesson).file_path, (quizLesson || firstLesson).id, 'quiz')}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors flex items-center gap-1.5"
-                        title="Take Graded MCQ Assessment"
-                      >
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson((quizLesson || firstLesson).file_path, (quizLesson || firstLesson).id, 'quiz')}
+                        
+                        title="Take Graded MCQ Assessment" >
                         <CheckSquare className="w-3 h-3" />
                         <span>Quiz</span>
                       </button>
                     )}
 
                     {modHasDebug && firstLesson && (
-                      <button
-                        onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id, 'debug')}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5"
-                        title="Diagnose planted production defect in Bug Hunter Lab"
-                      >
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id, 'debug')}
+                        
+                        title="Diagnose planted production defect in Bug Hunter Lab" >
                         <Bug className="w-3.5 h-3.5 text-rose-500" />
                         <span>Bug Lab</span>
                       </button>
                     )}
 
                     {modHasLeetcode && (leetcodeLesson || firstLesson) && (
-                      <button
-                        onClick={() => onSelectLesson((leetcodeLesson || firstLesson).file_path, (leetcodeLesson || firstLesson).id, 'arena')}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm"
-                        title="Solve LeetCode problems with hidden testcases"
-                      >
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm" onClick={() => onSelectLesson((leetcodeLesson || firstLesson).file_path, (leetcodeLesson || firstLesson).id, 'arena')}
+                        
+                        title="Solve LeetCode problems with hidden testcases" >
                         <Brain className="w-3.5 h-3.5" />
                         <span>Arena</span>
                       </button>
                     )}
 
                     {onOpenMasteryGate && (
-                      <button
-                        onClick={() => onOpenMasteryGate(mod)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
+                      <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
                           Boolean(progress.mastery_gates?.[mod.id]?.cleared || progress.completed_modules?.includes(mod.id))
                             ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
                             : 'border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-                        }`}
-                        title="View Module Mastery Gate Requirements"
-                      >
+                        }`} onClick={() => onOpenMasteryGate(mod)}
+                        
+                        title="View Module Mastery Gate Requirements" >
                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Gate</span>
                       </button>
                     )}
 
                     {firstLesson && (
-                      <button
-                        onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id)}
-                        className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-1.5 shadow-sm"
-                      >
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-1.5 shadow-sm" onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id)} >
                         <Play className="w-3 h-3 fill-current" />
                         <span>{completedCount > 0 ? 'Continue' : 'Open Module'}</span>
                       </button>

@@ -1,5 +1,17 @@
 # Module 01: Parsing & Hierarchical Chunking
 
+
+## Document Parsing & Hierarchical Chunking Pipeline
+
+```mermaid
+flowchart TD
+    Doc["Raw PDF / Markdown Document"] --> AST["Structure-Aware AST Parser"]
+    AST --> Sections["Section & Header Hierarchy"]
+    Sections --> Chunks["Semantic Chunks (500 tokens) with 50-token Overlap"]
+    Chunks --> Meta["Enrich Metadata (Headers, Parent Section, Doc Title)"]
+    Meta --> Embed["Embedder Model -> Vector Embeddings"]
+```
+
 ## 1. Structural Document Parsing Foundations
 
 Real-world enterprise documents (PDFs, DOCX, Markdown, HTML) are non-linear hierarchical data structures containing titles, headings, bullet lists, code blocks, and multi-column tables.

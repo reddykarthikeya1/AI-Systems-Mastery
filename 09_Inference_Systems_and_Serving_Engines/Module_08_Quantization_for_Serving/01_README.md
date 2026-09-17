@@ -1,5 +1,22 @@
 # Module 08: Model Quantization for Serving (FP8, INT4, AWQ & Marlin)
 
+
+## Radix Tree Prefix Cache Sharing Architecture
+
+```mermaid
+flowchart TD
+    Root["Root Node (Empty)"] --> SysPrompt["System Prompt: 'You are an expert systems engineer...' (500 tokens)"]
+    
+    SysPrompt --> UserA["User Request A: 'Explain Raft...' (Node A)"]
+    SysPrompt --> UserB["User Request B: 'Explain Paxos...' (Node B)"]
+
+    subgraph CacheHit["Prefix Cache Hit Invariant"]
+        Hit["System Prompt KV cache reused directly without recomputation!"]
+    end
+
+    SysPrompt --- CacheHit
+```
+
 ## 1. Mathematical Principles of Uniform Quantization
 
 Uniform quantization maps a continuous real-valued tensor $X \in \mathbb{R}$ to a discrete grid of $b$-bit integers $\mathbb{Z}$:

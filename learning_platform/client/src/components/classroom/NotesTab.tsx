@@ -35,10 +35,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
               ✓ Saved to study profile
             </span>
           )}
-          <button
-            onClick={onSaveNote}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition-colors"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition-colors" onClick={onSaveNote} >
             <Save className="w-3.5 h-3.5" /> Save Notes
           </button>
         </div>
@@ -48,7 +45,7 @@ export const NotesTab: React.FC<NotesTabProps> = ({
         value={noteText}
         onChange={(e) => onChangeNoteText(e.target.value)}
         placeholder="Write key takeaways, performance equations, and interview questions here..."
-        className="w-full h-80 p-4 font-mono text-xs rounded-xl border border-border bg-zinc-50 dark:bg-zinc-900/50 text-fg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y leading-relaxed"
+        className="w-full h-80 p-4 font-mono text-xs rounded-xl border border-border bg-surface/50 text-fg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y leading-relaxed"
       />
     </div>
   );

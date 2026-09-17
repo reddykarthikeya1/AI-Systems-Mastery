@@ -3,10 +3,10 @@ import { ShieldCheck, Terminal, Award } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="mt-20 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 py-10 transition-colors text-zinc-500 text-xs">
+    <footer className="mt-20 border-t border-border/80 bg-white dark:bg-zinc-950 py-10 transition-colors text-zinc-500 text-xs">
       <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-2 font-semibold text-zinc-900 dark:text-zinc-100">
+          <div className="flex items-center justify-center md:justify-start gap-2 font-semibold text-fg">
             <span>AI Systems Mastery</span>
             <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
               Open Curriculum

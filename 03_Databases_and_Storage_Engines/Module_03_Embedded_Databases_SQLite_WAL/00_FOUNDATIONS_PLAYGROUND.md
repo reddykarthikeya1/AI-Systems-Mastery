@@ -20,6 +20,18 @@ That script is this page, in order, with the assertions left in. If it prints
 
 ---
 
+
+## Buffer Pool Manager & CLOCK Replacement Algorithm
+
+```mermaid
+flowchart LR
+    Req["Page Request (page_id)"] --> Hash["Page Hash Table (page_id -> frame_id)"]
+    Hash -->|Hit| Frame["Return In-Memory Buffer Pool Frame (Increment Pin Count)"]
+    Hash -->|Miss| Evict["CLOCK Replacement Policy (Search usage_bit == 0)"]
+    Evict --> Flush["If Dirty Page: Write to Disk (Fsync)"]
+    Flush --> Load["DMA Read Page from Disk into Free Frame"]
+```
+
 ## 0. Everything this page needs
 
 Nothing here is installed. These all ship with Python.

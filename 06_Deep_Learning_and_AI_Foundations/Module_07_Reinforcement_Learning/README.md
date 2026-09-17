@@ -5,6 +5,24 @@
 
 ---
 
+
+## LSTM Recurrent Cell State Gating
+
+```mermaid
+flowchart LR
+    X_t["Input x_t"] --> Forget["Forget Gate: f_t = σ(W_f [h_{t-1}, x_t] + b_f)"]
+    X_t --> Input["Input Gate: i_t = σ(W_i [h_{t-1}, x_t] + b_i)"]
+    X_t --> Cand["Candidate: C~_t = tanh(W_c [h_{t-1}, x_t] + b_c)"]
+    X_t --> Output["Output Gate: o_t = σ(W_o [h_{t-1}, x_t] + b_o)"]
+
+    Forget --> Cell["Cell State: C_t = f_t ⊙ C_{t-1} + i_t ⊙ C~_t"]
+    Input --> Cell
+    Cand --> Cell
+
+    Cell --> Hidden["Hidden State: h_t = o_t ⊙ tanh(C_t)"]
+    Output --> Hidden
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

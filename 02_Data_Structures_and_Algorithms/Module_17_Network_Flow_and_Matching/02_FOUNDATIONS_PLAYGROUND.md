@@ -8,6 +8,24 @@
 
 ---
 
+
+## Dinic Network Flow: Level Graph & Augmenting Path
+
+```mermaid
+flowchart LR
+    S(("Source S<br/>[Layer 0]")) -->|cap: 10, flow: 10| U(("Node U<br/>[Layer 1]"))
+    S -->|cap: 10, flow: 4| V(("Node V<br/>[Layer 1]"))
+    U -->|cap: 4, flow: 4| W(("Node W<br/>[Layer 2]"))
+    U -->|cap: 8, flow: 6| X(("Node X<br/>[Layer 2]"))
+    V -->|cap: 9, flow: 4| X
+    W -->|cap: 10, flow: 4| T(("Sink T<br/>[Layer 3]"))
+    X -->|cap: 10, flow: 10| T
+
+    subgraph Invariant["Dinic Layered Invariant"]
+        I["1. BFS builds Level Graph where level[v] = level[u] + 1<br/>2. DFS pushes blocking flow only along forward edges<br/>3. Repeat until Sink is unreachable in BFS"]
+    end
+```
+
 ## 1. The setup
 
 A graph where every edge has a **capacity** - the most that can pass along it.

@@ -7,6 +7,20 @@ Welcome to State Graphs! Modern enterprise agent frameworks like **LangGraph** d
 
 ---
 
+
+## Agent Tool Calling & Schema Validation Engine
+
+```mermaid
+flowchart TD
+    User["User Query"] --> LLM["LLM Function Calling Protocol"]
+    LLM --> JSON["Structured JSON Tool Call: { name, arguments }"]
+    JSON --> Validate["JSON Schema Validation (Pydantic / TypeGuard)"]
+    Validate -->|Invalid Arguments| Reflect["Reflection Loop: Feed Schema Error back to LLM"]
+    Validate -->|Valid| Exec["Execute Sandbox Tool Function"]
+    Exec --> Result["Return Observation { stdout, exitCode }"]
+    Result --> LLM
+```
+
 ## 1. The Core Mental Model: Pregel State Machines
 
 A state machine graph consists of:

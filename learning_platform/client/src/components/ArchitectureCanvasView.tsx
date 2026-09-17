@@ -182,17 +182,11 @@ export const ArchitectureCanvasView: React.FC<ArchitectureCanvasViewProps> = ({ 
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleCopyCode}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors" onClick={handleCopyCode} >
             {copied ? '✓ Copied' : 'Copy Mermaid Code'}
           </button>
           {onClose && (
-            <button
-              onClick={onClose}
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors" onClick={onClose} >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -205,15 +199,12 @@ export const ArchitectureCanvasView: React.FC<ArchitectureCanvasViewProps> = ({ 
       <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100/50 dark:bg-zinc-900/40 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto text-xs">
         <span className="text-zinc-400 font-medium whitespace-nowrap">Architectures:</span>
         {BLUEPRINTS.map((bp) => (
-          <button
-            key={bp.id}
-            onClick={() => handleSelectBlueprint(bp)}
-            className={`px-2.5 py-1 rounded-md border whitespace-nowrap transition-colors shadow-sm ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 rounded-md border whitespace-nowrap transition-colors shadow-sm ${
               selectedBlueprint === bp.id
                 ? 'bg-indigo-600 text-white border-indigo-600 font-medium'
                 : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700'
-            }`}
-          >
+            }`} key={bp.id}
+            onClick={() => handleSelectBlueprint(bp)} >
             {bp.name}
           </button>
         ))}

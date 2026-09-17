@@ -4,6 +4,30 @@
 
 ---
 
+
+## Global Memory Coalescing vs Strided Serialization
+
+```mermaid
+flowchart TD
+    subgraph Coalesced["Coalesced Access (Consecutive Threads -> Consecutive Addresses)"]
+        T0["Thread 0 -> Addr 0"]
+        T1["Thread 1 -> Addr 4"]
+        T2["Thread 2 -> Addr 8"]
+        T31["Thread 31 -> Addr 124"]
+        CoalescedBurst["Single 128-Byte Memory Transaction (100% Bus Utilization!)"]
+        T0 --- T1 --- T2 --- T31 --> CoalescedBurst
+    end
+
+    subgraph Uncoalesced["Strided Access (Stride = 32 Words)"]
+        U0["Thread 0 -> Addr 0"]
+        U1["Thread 1 -> Addr 128"]
+        U2["Thread 2 -> Addr 256"]
+        U31["Thread 31 -> Addr 3968"]
+        UncoalescedBursts["32 Separate 32-Byte Transactions (96.8% Bandwidth Wasted!)"]
+        U0 --- U1 --- U2 --- U31 --> UncoalescedBursts
+    end
+```
+
 ## 1. Global Memory Coalescing Rules
 
 NVIDIA GPU memory controllers do not read individual 4-byte floating-point numbers.

@@ -304,7 +304,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
   if (loading) {
     return (
-      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-12 text-center space-y-3">
+      <div className="rounded-2xl bg-surface border border-border/80 p-12 text-center space-y-3">
         <div className="w-8 h-8 mx-auto border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
         <p className="text-xs font-mono text-zinc-500">Loading structured module assessment & distractor bank...</p>
       </div>
@@ -313,11 +313,11 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
   if (questions.length === 0) {
     return (
-      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 text-center space-y-4">
+      <div className="rounded-2xl bg-surface border border-border/80 p-8 text-center space-y-4">
         <div className="w-12 h-12 mx-auto rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
           <HelpCircle className="w-6 h-6" />
         </div>
-        <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">No Assessment Questions Found</h3>
+        <h3 className="text-base font-bold text-fg">No Assessment Questions Found</h3>
         <p className="text-xs text-zinc-500 max-w-md mx-auto">
           This lesson does not currently have interactive quiz questions configured.
         </p>
@@ -336,7 +336,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
             </span>
             <span className="text-xs font-mono text-zinc-400">{moduleTitle}</span>
           </div>
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-lg font-bold text-fg">
             {lessonTitle}
           </h2>
           <div className="flex items-center gap-3 pt-1 flex-wrap">
@@ -371,10 +371,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
           )}
 
           {isSubmitted && (
-            <button
-              onClick={handleRetake}
-              className="px-3.5 py-2 rounded-xl text-xs font-medium border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 shadow-sm"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-2 rounded-xl text-xs font-medium border border-border bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 shadow-sm" onClick={handleRetake} >
               <RotateCcw className="w-3.5 h-3.5" /> Retake
             </button>
           )}
@@ -389,10 +386,10 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-xs font-bold text-fg">
                 Active Recall Loop: {autoCapturedCount} Missed Concept{autoCapturedCount > 1 ? 's' : ''} Saved
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-fg-muted">
                 These questions have been automatically added to your SuperMemo SM-2 deck for scheduled spaced review.
               </p>
             </div>
@@ -414,12 +411,12 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
           return (
             <div
               key={q.id}
-              className={`rounded-2xl bg-white dark:bg-[#111622] border transition-all p-6 space-y-4 shadow-sm ${
+              className={`rounded-2xl bg-surface border transition-all p-6 space-y-4 shadow-sm ${
                 isChecked
                   ? isCorrect
                     ? 'border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10'
                     : 'border-rose-500/40 bg-rose-50/20 dark:bg-rose-950/10'
-                  : 'border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700'
+                  : 'border-border/80 hover:border-zinc-300 dark:hover:border-zinc-700'
               }`}
             >
               {/* Question Header */}
@@ -441,12 +438,12 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                       </span>
                     )}
                     {q.category && (
-                      <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                      <span className="text-xs font-mono text-fg-muted">
                         {q.category}
                       </span>
                     )}
                   </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-relaxed pt-1">
+                  <h3 className="text-sm sm:text-base font-semibold text-fg leading-relaxed pt-1">
                     {q.question}
                   </h3>
                 </div>
@@ -473,7 +470,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                   const isThisCorrect = optIdx === q.correctIndex;
                   const letter = String.fromCharCode(65 + optIdx);
 
-                  let optClass = 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200';
+                  let optClass = 'border-border bg-zinc-50/70 dark:bg-zinc-900/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200';
 
                   if (isChecked) {
                     if (isThisCorrect) {
@@ -488,12 +485,9 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                   }
 
                   return (
-                    <button
-                      key={optIdx}
+                    <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-3 transition-all ${optClass}`} key={optIdx}
                       disabled={isSubmitted}
-                      onClick={() => handleSelectOption(q.id, optIdx)}
-                      className={`w-full text-left p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-3 transition-all ${optClass}`}
-                    >
+                      onClick={() => handleSelectOption(q.id, optIdx)} >
                       <span className={`w-6 h-6 rounded-lg flex items-center justify-center font-mono text-xs font-bold shrink-0 mt-0.5 border ${
                         isChecked && isThisCorrect
                           ? 'bg-emerald-500 text-white border-emerald-600'
@@ -514,10 +508,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
               {/* Instant Check Button (Before Submit) */}
               {!isSubmitted && !checkedQuestions[q.id] && isAnswered && (
                 <div className="pt-2 flex justify-end">
-                  <button
-                    onClick={() => handleCheckQuestion(q.id)}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-600 dark:text-zinc-300 flex items-center gap-1.5"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-600 dark:text-zinc-300 flex items-center gap-1.5" onClick={() => handleCheckQuestion(q.id)} >
                     Check Answer
                   </button>
                 </div>
@@ -525,7 +516,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
               {/* Detailed Explanation Drawer */}
               {isChecked && (
-                <div className="pt-3 border-t border-zinc-200/60 dark:border-zinc-800/60 space-y-2 text-xs">
+                <div className="pt-3 border-t border-border space-y-2 text-xs">
                   <div className="flex items-center gap-1.5 font-bold font-mono text-zinc-700 dark:text-zinc-300">
                     <FileText className="w-3.5 h-3.5 text-blue-500" />
                     <span>Technical Explanation & Rationale:</span>
@@ -547,7 +538,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
       {/* Bottom Submit Dock */}
       {!isSubmitted && (
-        <div className="sticky bottom-4 z-20 rounded-2xl bg-white/95 dark:bg-[#111622]/95 backdrop-blur-md p-4 border border-zinc-200/90 dark:border-zinc-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="sticky bottom-4 z-20 rounded-2xl bg-surface/95 backdrop-blur-md p-4 border border-zinc-200/90 dark:border-zinc-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-zinc-500">
               Answered {answeredCount} of {questions.length} questions
@@ -560,11 +551,8 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
             </div>
           </div>
 
-          <button
-            disabled={!isAllAnswered}
-            onClick={handleSubmitQuiz}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:pointer-events-none text-white transition-all shadow-md flex items-center justify-center gap-2"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:pointer-events-none text-white transition-all shadow-md flex items-center justify-center gap-2" disabled={!isAllAnswered}
+            onClick={handleSubmitQuiz} >
             <span>Submit Assessment & Grade</span>
             <ArrowRight className="w-4 h-4" />
           </button>

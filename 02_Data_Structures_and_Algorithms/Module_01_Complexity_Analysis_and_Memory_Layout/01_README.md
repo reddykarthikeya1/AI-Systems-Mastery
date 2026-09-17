@@ -6,6 +6,38 @@ Understanding algorithmic efficiency requires looking beneath high-level abstrac
 
 ---
 
+
+## Memory Hierarchy & Cache Locality Architecture
+
+```mermaid
+flowchart TD
+    subgraph CPU["CPU Die"]
+        subgraph Core["CPU Execution Core"]
+            Reg["Registers<br/>(~1 KB, 0.5 ns)"]
+        end
+        L1["L1 Data Cache<br/>(32 KB, 1.0 ns, 4 cycles)<br/>64-Byte Line"]
+        L2["L2 Cache<br/>(512 KB, 3.5 ns, 14 cycles)<br/>64-Byte Line"]
+    end
+    L3["L3 Shared Cache<br/>(32 MB, 12 ns, 50 cycles)<br/>64-Byte Line"]
+    DRAM["Main Memory (DRAM)<br/>(64 GB, 60-100 ns, 200+ cycles)"]
+    SSD["NVMe SSD Storage<br/>(2 TB, 10-50 µs, 50,000+ cycles)"]
+
+    Reg <-->|Register Spill/Fill| L1
+    L1 <-->|Cache Hit / Miss Line Fill| L2
+    L2 <-->|Cross-Core Bus Snooping| L3
+    L3 <-->|DDR5 Bus Transaction (64B)| DRAM
+    DRAM <-->|PCIe Gen5 DMA Page Fault (4KB)| SSD
+
+    classDef fast fill:#059669,stroke:#047857,color:#fff;
+    classDef mid fill:#0284c7,stroke:#0369a1,color:#fff;
+    classDef slow fill:#d97706,stroke:#b45309,color:#fff;
+    classDef disc fill:#dc2626,stroke:#b91c1c,color:#fff;
+    class Reg,L1 fast;
+    class L2,L3 mid;
+    class DRAM slow;
+    class SSD disc;
+```
+
 ## 1. Hardware Reality: CPU Caches vs RAM
 
 ```

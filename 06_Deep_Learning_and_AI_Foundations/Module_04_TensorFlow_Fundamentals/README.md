@@ -5,6 +5,23 @@
 
 ---
 
+
+## Autograd Reverse-Mode Computational Graph
+
+```mermaid
+flowchart BT
+    x["Leaf Tensor: x<br/>requires_grad=True"] -->|MulBackward| mul1["v1 = x * y"]
+    y["Leaf Tensor: y<br/>requires_grad=True"] -->|MulBackward| mul1
+    mul1 -->|SinBackward| sin1["v2 = sin(v1)"]
+    sin1 -->|AddBackward| out["Loss = v2 + x"]
+    x -->|AddBackward| out
+
+    classDef leaf fill:#0284c7,stroke:#0369a1,color:#fff;
+    classDef op fill:#6366f1,stroke:#4f46e5,color:#fff;
+    class x,y leaf;
+    class mul1,sin1,out op;
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

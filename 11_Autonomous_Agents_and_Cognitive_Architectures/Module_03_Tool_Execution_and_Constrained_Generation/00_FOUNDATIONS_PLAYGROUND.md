@@ -7,6 +7,19 @@ Welcome to Tool Execution! LLMs generate raw text, but real-world systems requir
 
 ---
 
+
+## Plan-and-Solve Hierarchical Agent Architecture
+
+```mermaid
+flowchart TD
+    Goal["Complex User Objective"] --> Planner["Planner Agent (Strategic Decomposition)"]
+    Planner --> DAG["Execution DAG: [Subtask 1, Subtask 2, Subtask 3]"]
+    DAG --> Worker1["Worker Agent: Execute Subtask 1"]
+    DAG --> Worker2["Worker Agent: Execute Subtask 2 (Blocked on 1)"]
+    Worker1 --> Synthesizer["Synthesizer Agent: Aggregate Evidence & Final Output"]
+    Worker2 --> Synthesizer
+```
+
 ## 1. The Core Mental Model: From Prompt to Type-Checked Call
 
 ```

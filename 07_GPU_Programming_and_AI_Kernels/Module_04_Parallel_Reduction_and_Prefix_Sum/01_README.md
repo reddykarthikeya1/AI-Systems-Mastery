@@ -4,6 +4,26 @@
 
 ---
 
+
+## Shared Memory 32-Bank Conflict Mechanics
+
+```mermaid
+flowchart LR
+    subgraph ConflictFree["Conflict-Free Stride-1 Access"]
+        Th0["Thread 0"] --> B0["Bank 0"]
+        Th1["Thread 1"] --> B1["Bank 1"]
+        Th2["Thread 2"] --> B2["Bank 2"]
+        Th31["Thread 31"] --> B31["Bank 31"]
+        CF_Note["1 Cycle: All 32 words serviced simultaneously!"]
+    end
+
+    subgraph TwoWay["2-Way Bank Conflict (Stride = 2 or 32)"]
+        C0["Thread 0"] --> Bank0["Bank 0 (Port 0)"]
+        C16["Thread 16"] -.->|Serialized Wait!| Bank0
+        Conflict_Note["2 Serial Cycles: Thread 16 stalled behind Thread 0!"]
+    end
+```
+
 ## 1. Tree-Based Parallel Reduction
 
 Computing the sum, maximum, or norm of an array of $N$ numbers is a fundamental building block of Softmax, LayerNorm, and Loss computations.

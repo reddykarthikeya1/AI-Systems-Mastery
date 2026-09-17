@@ -5,6 +5,26 @@
 
 ---
 
+
+## Spectral Thinking: Eigenvector Invariance (Av = λv)
+
+```mermaid
+flowchart TD
+    subgraph Arbitrary["Arbitrary Vector x"]
+        x["x (Rotates and Scales under A)"]
+    end
+
+    subgraph Eigen["Eigenvector v"]
+        v["Eigenvector v (Direction is Invariant!)"] --> Scale["Scaled purely by Scalar λ:<br/>A v = λ v"]
+    end
+
+    subgraph Eigendecomp["Matrix Diagonalization"]
+        Diag["A = Q Λ Q⁻¹ = Σ λᵢ qᵢ qᵢᵀ"]
+    end
+
+    Scale --> Diag
+```
+
 ## Why this module exists
 
 <!-- GENERATED_ALGORITHM_DIAGRAM: EIGENVECTOR_SVG START -->

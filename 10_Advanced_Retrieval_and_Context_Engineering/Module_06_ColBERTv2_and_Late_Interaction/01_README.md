@@ -1,5 +1,16 @@
 # Module 06: ColBERTv2 & Late Interaction
 
+
+## Two-Stage Retrieval & Cross-Encoder Reranker
+
+```mermaid
+flowchart LR
+    Q["User Query"] --> Fast["Stage 1: Bi-Encoder Vector Search<br/>Retrieve Top-100 in 5 ms"]
+    Fast --> Candidates["100 Candidate Chunks"]
+    Candidates --> Cross["Stage 2: Cross-Encoder Transformer<br/>Full Joint Attention [Query, Chunk]"]
+    Cross --> Top5["High-Precision Top-5 Chunks to LLM Context"]
+```
+
 ## 1. Mathematical Formulation of Late Interaction
 
 ColBERT (Khattab & Zaharia, SIGIR 2020) decouples query token encoding from document token encoding while preserving fine-grained token-level cross interactions through the **MaxSim** operator.

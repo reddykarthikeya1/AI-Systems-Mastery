@@ -22,6 +22,33 @@ interface CliEntry {
   durationSec: number;
 }
 
+/**
+ * Extracts expected output comments (# Expected Output: ...) from user code.
+ */
+export function extractExpectedOutputFromCode(code: string): string | null {
+  if (!code) return null;
+  const lines = code.split('\n');
+  let inExpected = false;
+  const outputLines: string[] = [];
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const match = trimmed.match(/^#\s*(?:Expected(?:\s+Output)?|Output):\s*(.*)/i);
+    if (match) {
+      inExpected = true;
+      if (match[1].trim()) outputLines.push(match[1].trim());
+      continue;
+    }
+    if (inExpected) {
+      if (trimmed.startsWith('#')) {
+        outputLines.push(trimmed.replace(/^#\s?/, ''));
+      } else {
+        break;
+      }
+    }
+  }
+  return outputLines.length > 0 ? outputLines.join('\n').trim() : null;
+}
+
 interface SideCodeRunnerProps {
   initialCode?: string;
   initialMode?: RunnerMode;
@@ -176,15 +203,9 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
 
   // Expected output detection from code comments (# Expected Output: ...)
   const expectedOutput = React.useMemo(() => {
-    const match = pythonCode.match(/#\s*(?:Expected(?:\s+Output)?|Output):\s*\n?([\s\S]*?)(?=\n[^\s#]|\n#\s*[A-Z]|\Z)/i);
-    if (!match) return null;
-    const cleaned = match[1]
-      .split('\n')
-      .map((l) => l.replace(/^#\s?/, ''))
-      .join('\n')
-      .trim();
-    return cleaned || null;
+    return extractExpectedOutputFromCode(pythonCode);
   }, [pythonCode]);
+
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cliTerminalEndRef = useRef<HTMLDivElement>(null);
@@ -363,12 +384,12 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
 
   return (
     <aside
-      className={`h-full flex flex-col border-l border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0B0F17] transition-all duration-200 shadow-2xl z-20 ${
+      className={`h-full flex flex-col border-l border-border bg-white dark:bg-bg transition-all duration-200 shadow-2xl z-20 ${
         widthMode === 'wide' ? 'w-[760px]' : 'w-[560px]'
       }`}
     >
       {/* Top Header Bar */}
-      <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#111622] space-y-2">
+      <div className="px-4 py-3 border-b border-border bg-surface space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className={`p-1.5 rounded-lg ${
@@ -377,7 +398,7 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
               <Terminal className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-fg flex items-center gap-1.5">
                 <span>{mode === 'python' ? 'Python Script Runner' : 'Interactive CLI Terminal'}</span>
               </h3>
               <div className="text-xs font-mono text-zinc-500 flex items-center gap-1 line-clamp-1" title={moduleFolderPath}>
@@ -391,23 +412,20 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
             {/* Snippets on This Page */}
             {pageSnippets.length > 0 && (
               <div className="relative">
-                <button
-                  onClick={() => { setShowSnippets(!showSnippets); setShowPresets(false); }}
-                  className="px-2 py-1 text-xs rounded-md bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition flex items-center gap-1 font-medium"
-                  title="Load code block from current lesson"
-                >
+                <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 text-xs rounded-md bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition flex items-center gap-1 font-medium" onClick={() => { setShowSnippets(!showSnippets); setShowPresets(false); }}
+                  
+                  title="Load code block from current lesson" >
                   <FileText className="w-3 h-3" />
                   <span>Snippets ({pageSnippets.length})</span>
                   <ChevronDown className="w-3 h-3" />
                 </button>
                 {showSnippets && (
-                  <div className="absolute right-0 top-full mt-1 w-80 max-h-72 overflow-y-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl py-1 z-30">
+                  <div className="absolute right-0 top-full mt-1 w-80 max-h-72 overflow-y-auto bg-surface border border-border rounded-xl shadow-xl py-1 z-30">
                     <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
                       Code Snippets in {lessonTitle}
                     </div>
                     {pageSnippets.map((s, idx) => (
-                      <button
-                        key={idx}
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition flex items-center justify-between gap-2" key={idx}
                         onClick={() => {
                           if (s.lang === 'BASH' || s.lang === 'SH') {
                             setMode('shell');
@@ -420,9 +438,7 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
                             setPythonCode(s.code);
                           }
                           setShowSnippets(false);
-                        }}
-                        className="w-full text-left px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition flex items-center justify-between gap-2"
-                      >
+                        }} >
                         <span className="truncate font-medium">{s.title}</span>
                         <span className="px-1.5 py-0.5 rounded text-xs font-mono bg-zinc-200/70 dark:bg-zinc-800 text-zinc-500">
                           {s.lang}
@@ -437,27 +453,22 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
             {/* Presets */}
             {mode === 'python' && (
               <div className="relative">
-                <button
-                  onClick={() => { setShowPresets(!showPresets); setShowSnippets(false); }}
-                  className="px-2 py-1 text-xs rounded-md bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition flex items-center gap-1"
-                  title="Load Python presets"
-                >
+                <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 text-xs rounded-md bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition flex items-center gap-1" onClick={() => { setShowPresets(!showPresets); setShowSnippets(false); }}
+                  
+                  title="Load Python presets" >
                   <span>Presets</span> <ChevronDown className="w-3 h-3" />
                 </button>
                 {showPresets && (
-                  <div className="absolute right-0 top-full mt-1 w-64 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl py-1 z-30">
+                  <div className="absolute right-0 top-full mt-1 w-64 bg-surface border border-border rounded-xl shadow-xl py-1 z-30">
                     <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
                       Python Presets
                     </div>
                     {PRESETS.python.map((p, idx) => (
-                      <button
-                        key={idx}
+                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition" key={idx}
                         onClick={() => {
                           setPythonCode(p.code);
                           setShowPresets(false);
-                        }}
-                        className="w-full text-left px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition"
-                      >
+                        }} >
                         {p.name}
                       </button>
                     ))}
@@ -467,20 +478,16 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
             )}
 
             {/* Width Toggle */}
-            <button
-              onClick={() => setWidthMode(widthMode === 'wide' ? 'standard' : 'wide')}
-              className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
-              title={widthMode === 'wide' ? 'Standard Width' : 'Expand Width'}
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" onClick={() => setWidthMode(widthMode === 'wide' ? 'standard' : 'wide')}
+              
+              title={widthMode === 'wide' ? 'Standard Width' : 'Expand Width'} >
               {widthMode === 'wide' ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </button>
 
             {/* Close */}
-            <button
-              onClick={onClose}
-              className="p-1.5 rounded-md text-zinc-500 hover:text-red-500 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
-              title="Close Runner"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-md text-zinc-500 hover:text-red-500 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" onClick={onClose}
+              
+              title="Close Runner" >
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -490,36 +497,27 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
         <div className="flex items-center gap-1.5 pt-1">
           <span className="text-xs font-mono text-zinc-400 mr-1 select-none">Runtime:</span>
           
-          <button
-            onClick={() => handleModeChange('python')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
               mode === 'python'
                 ? 'bg-emerald-600 text-white shadow-sm'
                 : 'bg-zinc-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-            }`}
-          >
+            }`} onClick={() => handleModeChange('python')} >
             <span>🐍 Python (Script + Results)</span>
           </button>
 
-          <button
-            onClick={() => handleModeChange('powershell')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
               mode === 'powershell'
                 ? 'bg-blue-600 text-white shadow-sm'
                 : 'bg-zinc-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-            }`}
-          >
+            }`} onClick={() => handleModeChange('powershell')} >
             <span>⚡ PowerShell CLI</span>
           </button>
 
-          <button
-            onClick={() => handleModeChange('shell')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
               mode === 'shell'
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'bg-zinc-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-            }`}
-          >
+            }`} onClick={() => handleModeChange('shell')} >
             <span>💻 Command Prompt / CMD</span>
           </button>
         </div>
@@ -530,7 +528,7 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
       {/* ========================================================================= */}
       {mode === 'python' ? (
         <div className="flex-1 flex flex-col min-h-0">
-          <div className="px-4 py-1.5 bg-zinc-100 dark:bg-[#161B22] border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-500">
+          <div className="px-4 py-1.5 bg-surface-raised border-b border-border flex items-center justify-between text-xs font-mono text-zinc-500">
             <span className="flex items-center gap-1.5">
               <span className="font-semibold text-emerald-500">&gt;&gt;&gt;</span>
               <span>Python Script Editor</span>
@@ -539,7 +537,7 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
           </div>
 
           {/* Python Code Textarea */}
-          <div className="relative flex-1 bg-[#0D1117] overflow-hidden min-h-[160px]">
+          <div className="relative flex-1 bg-bg overflow-hidden min-h-[160px]">
             <textarea
               ref={textareaRef}
               value={pythonCode}
@@ -547,37 +545,30 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
               onKeyDown={handlePythonKeyDown}
               spellCheck={false}
               placeholder="# Write Python code to execute against this module..."
-              className="w-full h-full p-4 font-mono text-xs text-[#E6EDF3] bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-emerald-500/30"
+              className="w-full h-full p-4 font-mono text-xs text-fg bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-emerald-500/30"
             />
           </div>
 
           {/* Action Toolbar */}
-          <div className="px-4 py-2.5 bg-zinc-50 dark:bg-[#111622] border-t border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+          <div className="px-4 py-2.5 bg-surface border-t border-b border-border flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleRunPython()}
-                disabled={isPythonRunning || !pythonCode.trim()}
-                className="px-4 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 shadow-sm transition active:scale-95 disabled:opacity-40"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 shadow-sm transition active:scale-95 disabled:opacity-40" onClick={() => handleRunPython()}
+                disabled={isPythonRunning || !pythonCode.trim()} >
                 <Play className={`w-3.5 h-3.5 ${isPythonRunning ? 'animate-spin' : 'fill-current'}`} />
                 <span>{isPythonRunning ? 'Running...' : 'Run Python'}</span>
               </button>
 
-              <button
-                onClick={handleFormatPython}
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition text-zinc-700 dark:text-zinc-300 flex items-center gap-1" onClick={handleFormatPython}
                 disabled={isFormatting || !pythonCode.trim()}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition text-zinc-700 dark:text-zinc-300 flex items-center gap-1"
-                title="Format Python code"
-              >
+                
+                title="Format Python code" >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 <span>Format</span>
               </button>
 
-              <button
-                onClick={() => setPythonCode('')}
-                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
-                title="Clear Script"
-              >
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" onClick={() => setPythonCode('')}
+                
+                title="Clear Script" >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -607,8 +598,8 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
           </div>
 
           {/* Dedicated Results Box */}
-          <div className="h-64 flex flex-col bg-[#0A0D12] text-zinc-300 font-mono text-xs border-t border-zinc-800">
-            <div className="flex items-center justify-between px-4 py-2 bg-[#161B22] border-b border-zinc-800 text-xs text-zinc-400">
+          <div className="h-64 flex flex-col bg-bg text-zinc-300 font-mono text-xs border-t border-zinc-800">
+            <div className="flex items-center justify-between px-4 py-2 bg-surface-raised border-b border-zinc-800 text-xs text-zinc-400">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-zinc-200 uppercase tracking-wider">
                   Python Results Box
@@ -622,21 +613,17 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
 
               <div className="flex items-center gap-1">
                 {pythonResult && (
-                  <button
-                    onClick={copyPythonOutput}
-                    className="hover:text-zinc-200 px-2 py-0.5 rounded hover:bg-zinc-800 transition text-xs flex items-center gap-1 text-zinc-400"
-                    title="Copy Result Output"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 hover:text-zinc-200 px-2 py-0.5 rounded hover:bg-zinc-800 transition text-xs flex items-center gap-1 text-zinc-400" onClick={copyPythonOutput}
+                    
+                    title="Copy Result Output" >
                     {copiedOutput ? <CheckCircle2 className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedOutput ? 'Copied' : 'Copy Output'}</span>
                   </button>
                 )}
                 {pythonResult && (
-                  <button
-                    onClick={() => setPythonResult(null)}
-                    className="hover:text-zinc-200 p-1 rounded hover:bg-zinc-800 transition text-zinc-400"
-                    title="Clear Results"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 hover:text-zinc-200 p-1 rounded hover:bg-zinc-800 transition text-zinc-400" onClick={() => setPythonResult(null)}
+                    
+                    title="Clear Results" >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 )}
@@ -712,33 +699,22 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
         /* ========================================================================= */
         /* MODE 2: CLI TERMINAL (Mimics real Windows PowerShell / CMD prompt)         */
         /* ========================================================================= */
-        <div className="flex-1 flex flex-col min-h-0 bg-[#0C1017] text-zinc-200 font-mono text-xs select-text">
+        <div className="flex-1 flex flex-col min-h-0 bg-bg text-zinc-200 font-mono text-xs select-text">
           {/* Quick Command Chips */}
-          <div className="px-4 py-2 bg-[#141A24] border-b border-zinc-800 flex items-center gap-2 overflow-x-auto text-xs">
+          <div className="px-4 py-2 bg-surface-raised border-b border-zinc-800 flex items-center gap-2 overflow-x-auto text-xs">
             <span className="text-zinc-500 text-xs shrink-0">Quick Cmds:</span>
-            <button
-              onClick={() => handleRunCliCommand('python -m pytest -v --tb=short')}
-              className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60" onClick={() => handleRunCliCommand('python -m pytest -v --tb=short')} >
               pytest -v
             </button>
-            <button
-              onClick={() => handleRunCliCommand('Get-ChildItem -Path . | Format-Table -AutoSize')}
-              className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60" onClick={() => handleRunCliCommand('Get-ChildItem -Path . | Format-Table -AutoSize')} >
               dir / ls
             </button>
-            <button
-              onClick={() => handleRunCliCommand('git status -s')}
-              className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded bg-zinc-800 hover:bg-blue-600 hover:text-white text-zinc-300 transition whitespace-nowrap border border-zinc-700/60" onClick={() => handleRunCliCommand('git status -s')} >
               git status
             </button>
-            <button
-              onClick={() => setCliEntries([])}
-              className="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition whitespace-nowrap ml-auto"
-              title="Clear terminal screen"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition whitespace-nowrap ml-auto" onClick={() => setCliEntries([])}
+              
+              title="Clear terminal screen" >
               cls
             </button>
           </div>
@@ -782,7 +758,7 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
           </div>
 
           {/* Active Terminal Prompt Input Line */}
-          <div className="p-3 bg-[#090D13] border-t border-zinc-800/80 flex items-center gap-2">
+          <div className="p-3 bg-bg border-t border-zinc-800/80 flex items-center gap-2">
             <span className="text-blue-400 font-bold shrink-0 select-none">
               {getCliPrompt()}
             </span>
@@ -797,12 +773,10 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
               className="flex-1 bg-transparent border-none text-zinc-100 focus:outline-none font-mono text-xs"
               autoFocus
             />
-            <button
-              onClick={() => handleRunCliCommand(cliInput)}
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-30 text-white transition shrink-0" onClick={() => handleRunCliCommand(cliInput)}
               disabled={isCliRunning || !cliInput.trim()}
-              className="p-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-30 text-white transition shrink-0"
-              title="Execute command"
-            >
+              
+              title="Execute command" >
               <CornerDownLeft className="w-3.5 h-3.5" />
             </button>
           </div>

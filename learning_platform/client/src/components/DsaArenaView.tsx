@@ -366,32 +366,29 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
   if (problems.length === 0) {
     return (
-      <div className="bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-12 shadow-sm space-y-4">
+      <div className="bg-surface border border-border rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-12 shadow-sm space-y-4">
         <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto border border-amber-500/20">
           <Code2 className="w-7 h-7 stroke-[1.5]" />
         </div>
         <div className="space-y-1.5">
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+          <h3 className="text-lg font-bold text-fg">
             Systems Focus: No Competitive DSA Problems in This Module
           </h3>
           <p className="text-xs text-zinc-500 leading-relaxed max-w-md mx-auto">
             This module focuses on systems architecture, production internals, and code inspection rather than competitive programming drills.
           </p>
         </div>
-        <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-400 text-left space-y-2">
+        <div className="p-4 rounded-xl bg-surface/60 border border-border text-xs text-zinc-600 dark:text-zinc-400 text-left space-y-2">
           <div className="font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
             <span>Recommended Next Steps:</span>
           </div>
-          <ul className="list-disc list-inside space-y-1 text-zinc-500 dark:text-zinc-400">
+          <ul className="list-disc list-inside space-y-1 text-fg-muted">
             <li>Explore <span className="font-mono text-blue-600 dark:text-blue-400">Track 02 (Data Structures & Algorithms)</span> for 105 curated competitive problems.</li>
             <li>Test implementation defects in this module's <span className="font-semibold text-rose-500">Bug Hunter Lab</span>.</li>
           </ul>
         </div>
         {onBackToLesson && (
-          <button
-            onClick={onBackToLesson}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition-all shadow-sm active:scale-95 inline-flex items-center gap-2"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition-all shadow-sm active:scale-95 inline-flex items-center gap-2" onClick={onBackToLesson} >
             <span>Return to Lesson Architecture</span>
           </button>
         )}
@@ -409,10 +406,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
         {/* Left Section: Back, Problem Selector, Navigation */}
         <div className="flex items-center gap-3 flex-wrap">
           {onBackToLesson && (
-            <button
-              onClick={onBackToLesson}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700/60"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700/60" onClick={onBackToLesson} >
               <ChevronLeft className="w-4 h-4" />
               Lesson
             </button>
@@ -436,23 +430,19 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
           {/* Prev/Next Buttons */}
           <div className="flex items-center gap-1">
-            <button
-              disabled={currentIndex === 0}
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 transition" disabled={currentIndex === 0}
               onClick={() => handleSelectProblem(currentIndex - 1)}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 transition"
-              title="Previous Problem"
-            >
+              
+              title="Previous Problem" >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span className="text-xs font-mono text-slate-400 px-1">
               {currentIndex + 1} / {problems.length}
             </span>
-            <button
-              disabled={currentIndex === problems.length - 1}
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 transition" disabled={currentIndex === problems.length - 1}
               onClick={() => handleSelectProblem(currentIndex + 1)}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 transition"
-              title="Next Problem"
-            >
+              
+              title="Next Problem" >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -470,74 +460,58 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
         <div className="flex items-center gap-2">
           {/* Font Size controls */}
           <div className="flex items-center bg-slate-950 rounded-lg border border-slate-800 p-0.5 text-xs font-mono text-slate-400">
-            <button
-              onClick={() => setFontSize('sm')}
-              className={`px-2 py-1 rounded ${fontSize === 'sm' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`}
-              title="Small text"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 rounded ${fontSize === 'sm' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`} onClick={() => setFontSize('sm')}
+              
+              title="Small text" >
               A-
             </button>
-            <button
-              onClick={() => setFontSize('md')}
-              className={`px-2 py-1 rounded ${fontSize === 'md' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`}
-              title="Normal text"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 rounded ${fontSize === 'md' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`} onClick={() => setFontSize('md')}
+              
+              title="Normal text" >
               A
             </button>
-            <button
-              onClick={() => setFontSize('lg')}
-              className={`px-2 py-1 rounded ${fontSize === 'lg' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`}
-              title="Large text"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 rounded ${fontSize === 'lg' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`} onClick={() => setFontSize('lg')}
+              
+              title="Large text" >
               A+
             </button>
           </div>
 
           {/* View Mode Buttons */}
           <div className="flex items-center bg-slate-950 rounded-lg border border-slate-800 p-0.5 text-xs font-medium text-slate-400">
-            <button
-              onClick={() => setViewMode('split')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'split' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`}
-              title="Split View"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'split' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`} onClick={() => setViewMode('split')}
+              
+              title="Split View" >
               <Columns className="w-3.5 h-3.5" />
               Split
             </button>
-            <button
-              onClick={() => setViewMode('code')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'code' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`}
-              title="Code Focused"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'code' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`} onClick={() => setViewMode('code')}
+              
+              title="Code Focused" >
               <Maximize2 className="w-3.5 h-3.5" />
               Code
             </button>
-            <button
-              onClick={() => setViewMode('spec')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'spec' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`}
-              title="Description Only"
-            >
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-2.5 py-1 rounded ${viewMode === 'spec' ? 'bg-amber-500/20 text-amber-400 font-semibold' : 'hover:text-slate-200'}`} onClick={() => setViewMode('spec')}
+              
+              title="Description Only" >
               <BookOpen className="w-3.5 h-3.5" />
               Spec
             </button>
           </div>
 
           {/* Format Code button */}
-          <button
-            onClick={handleFormatCode}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-slate-100 text-xs font-medium transition" onClick={handleFormatCode}
             disabled={isFormatting}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-slate-100 text-xs font-medium transition"
-            title="Format Python code with Ruff / PEP8"
-          >
+            
+            title="Format Python code with Ruff / PEP8" >
             <Sparkles className={`w-3.5 h-3.5 text-amber-400 ${isFormatting ? 'animate-spin' : ''}`} />
             <span>{formatSuccess ? 'Formatted!' : 'Format'}</span>
           </button>
 
           {/* Reset Code button */}
-          <button
-            onClick={handleResetCode}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition"
-            title="Reset code to original starter template"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition" onClick={handleResetCode}
+            
+            title="Reset code to original starter template" >
             <RotateCcw className="w-4 h-4" />
           </button>
         </div>
@@ -630,10 +604,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
                     <Sparkles className="w-4 h-4" />
                     Problem Mastered! Reference Solution Unlocked
                   </div>
-                  <button
-                    onClick={() => setShowSolutionModal(!showSolutionModal)}
-                    className="text-xs px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-lg font-semibold transition"
-                  >
+                  <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-lg font-semibold transition" onClick={() => setShowSolutionModal(!showSolutionModal)} >
                     {showSolutionModal ? 'Hide Solution' : 'View Solution'}
                   </button>
                 </div>
@@ -701,21 +672,15 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
               <div className="flex items-center gap-3">
                 {/* Run Code Button */}
-                <button
-                  disabled={isRunning || isSubmitting}
-                  onClick={handleRunCode}
-                  className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-xl transition border border-slate-700 shadow-sm"
-                >
+                <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-bold rounded-xl transition border border-slate-700 shadow-sm" disabled={isRunning || isSubmitting}
+                  onClick={handleRunCode} >
                   <Play className={`w-3.5 h-3.5 text-amber-400 ${isRunning ? 'animate-spin' : ''}`} />
                   {isRunning ? 'Running...' : 'Run Code'}
                 </button>
 
                 {/* Submit Solution Button */}
-                <button
-                  disabled={isRunning || isSubmitting}
-                  onClick={handleSubmitCode}
-                  className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-950/30"
-                >
+                <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-950/30" disabled={isRunning || isSubmitting}
+                  onClick={handleSubmitCode} >
                   <Send className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-bounce' : ''}`} />
                   {isSubmitting ? 'Evaluating Hidden Tests...' : 'Submit Solution'}
                 </button>
@@ -776,15 +741,12 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
                   <div className="flex flex-col flex-1 overflow-hidden">
                     <div className="flex items-center gap-1 px-4 py-2 bg-slate-950 border-b border-slate-800/80 overflow-x-auto">
                       {runResult.results.map((r, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setActiveCaseTab(idx)}
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-medium transition ${
+                        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-medium transition ${
                             activeCaseTab === idx
                               ? 'bg-slate-800 text-slate-100 border border-slate-700'
                               : 'text-slate-400 hover:text-slate-200'
-                          }`}
-                        >
+                          }`} key={idx}
+                          onClick={() => setActiveCaseTab(idx)} >
                           <span
                             className={`w-2 h-2 rounded-full ${r.passed ? 'bg-emerald-400' : 'bg-rose-500'}`}
                           />

@@ -5,6 +5,19 @@
 
 ---
 
+
+## Multivariable Calculus: Gradient & Hessian Curvature
+
+```mermaid
+flowchart TD
+    Loss["Multivariable Function f(x, y)"] --> Grad["Gradient ∇f = [∂f/∂x, ∂f/∂y]ᵀ<br/>(Steepest Ascent Vector)"]
+    Loss --> Hessian["Hessian Matrix H = [∂²f/∂x², ∂²f/∂x∂y; ∂²f/∂y∂x, ∂²f/∂y²]<br/>(Local Curvature Tensor)"]
+    
+    Hessian --> PosDef["H is Positive Definite (Eigenvalues > 0) ⟹ Local Minimum!"]
+    Hessian --> NegDef["H is Negative Definite (Eigenvalues < 0) ⟹ Local Maximum!"]
+    Hessian --> Indef["H has Mixed Signs ⟹ Saddle Point!"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

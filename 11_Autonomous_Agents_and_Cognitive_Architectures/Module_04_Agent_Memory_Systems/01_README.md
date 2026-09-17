@@ -1,5 +1,18 @@
 # Module 04: Agent Memory Systems
 
+
+## Dual-Loop Evaluator & Self-Correction Reflection
+
+```mermaid
+flowchart TD
+    Generator["Generator Agent: Draft Code / Solution"] --> Tester["Execution Sandbox: Run Assertion Suite"]
+    Tester -->|All Tests Pass| Complete["Success Verified!"]
+    Tester -->|AssertionError / Exception| Critic["Critic Agent: Analyze Traceback & Failure Root Cause"]
+    Critic --> Memory["Episodic Memory: Record Error Pattern"]
+    Critic --> Refine["Refinement Instructions -> Generator Agent (Loop 2)"]
+    Refine --> Generator
+```
+
 ## 1. Theoretical Foundations: Cognitive Architectures & Memory Types
 
 In autonomous agents, memory is not merely a single vector database or conversation history; it is a multi-tiered subsystem designed to balance working context constraints with long-term knowledge retention.

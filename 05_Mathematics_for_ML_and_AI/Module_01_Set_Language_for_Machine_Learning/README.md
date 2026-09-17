@@ -4,6 +4,25 @@
 
 ---
 
+
+## Set Theory & Sample Space Partitioning
+
+```mermaid
+flowchart TD
+    subgraph Universal["Universal Sample Space Ω"]
+        subgraph Subsets["Set Operations & Measure"]
+            A["Event Set A"]
+            B["Event Set B"]
+            Intersect["Intersection A ∩ B<br/>(Joint Occurrence)"]
+            Union["Union A ∪ B = A + B - (A ∩ B)"]
+            CompA["Complement Aᶜ = Ω \ A"]
+        end
+    end
+    A --- Intersect --- B
+    Intersect --> Union
+    Universal --> CompA
+```
+
 ## Why this module exists
 
 Every question about *which rows go where* is a question about sets,

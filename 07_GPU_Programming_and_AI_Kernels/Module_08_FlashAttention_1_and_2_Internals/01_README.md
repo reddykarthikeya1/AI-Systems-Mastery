@@ -4,6 +4,36 @@
 
 ---
 
+
+## FlashAttention Tiling & Online Softmax Algorithm
+
+```mermaid
+flowchart TD
+    subgraph HBM["High-Bandwidth Memory (HBM)"]
+        Q_hbm["Query Q"]
+        K_hbm["Key K"]
+        V_hbm["Value V"]
+        O_hbm["Output O"]
+    end
+
+    subgraph SRAM["Fast SRAM / Shared Memory (SM)"]
+        Q_tile["Q Block Tile (Br x d)"]
+        K_tile["K Block Tile (Bc x d)"]
+        V_tile["V Block Tile (Bc x d)"]
+        S_tile["Attention Logits: S = Q_tile × K_tile^T"]
+        OnlineSoftmax["Online Softmax Rescaling:<br/>m_new = max(m_prev, rowmax(S))<br/>P_tile = exp(S - m_new)<br/>l_new = exp(m_prev - m_new) * l_prev + rowsum(P_tile)"]
+        O_accum["O = (exp(m_prev - m_new) * O_prev + P_tile × V_tile) / l_new"]
+    end
+
+    Q_hbm --> Q_tile
+    K_hbm --> K_tile
+    V_hbm --> V_tile
+    Q_tile --> S_tile
+    K_tile --> S_tile
+    S_tile --> OnlineSoftmax --> O_accum
+    O_accum --> O_hbm
+```
+
 ## 1. The IO Complexity Problem of Standard Attention
 
 Standard Transformer Attention (Vaswani et al., 2017):

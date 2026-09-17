@@ -7,6 +7,47 @@
 
 ---
 
+
+## Interactive Algorithm Trace Scrubber
+
+```trace
+{
+  "title": "Min-Heap Sift-Down Invariant Scrubber",
+  "algorithm": "Binary Heap Sift-Down",
+  "timeComplexity": "O(log n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Root has invalid high value 50 after extracting min. Needs sift-down.",
+      "array": [50, 4, 7, 12, 15, 20, 30],
+      "pointers": { "parent": 0, "smallestChild": 1 },
+      "highlights": { "0": "pivot", "1": "active", "2": "comparing" },
+      "variables": { "parentVal": 50, "leftVal": 4, "rightVal": 7, "swapWith": 4 },
+      "invariants": "Left child 4 is smaller than right child 7 and parent 50 -> Swap parent with 4"
+    },
+    {
+      "step": 2,
+      "description": "Swapped 50 and 4. Current parent index is 1. Check children 12 and 15.",
+      "array": [4, 50, 7, 12, 15, 20, 30],
+      "pointers": { "parent": 1, "smallestChild": 3 },
+      "highlights": { "1": "pivot", "3": "active", "4": "comparing" },
+      "variables": { "parentVal": 50, "leftVal": 12, "rightVal": 15, "swapWith": 12 },
+      "invariants": "Child 12 is smaller than parent 50 -> Swap parent with 12"
+    },
+    {
+      "step": 3,
+      "description": "Swapped 50 and 12. Parent index 3 is now a leaf node. Heap property fully restored!",
+      "array": [4, 12, 7, 50, 15, 20, 30],
+      "pointers": { "parent": 3 },
+      "highlights": { "0": "sorted", "1": "sorted", "2": "sorted", "3": "sorted" },
+      "variables": { "parentVal": 50, "heapPropertyRestored": true },
+      "invariants": "Min-heap invariant holds: parent <= all children"
+    }
+  ]
+}
+```
+
 ## 1. How Python's `heapq` Works
 In Python, `heapq` turns any normal list into a Min-Heap:
 ```python

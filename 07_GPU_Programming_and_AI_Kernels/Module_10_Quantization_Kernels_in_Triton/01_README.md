@@ -4,6 +4,24 @@
 
 ---
 
+
+## Kernel Fusion: Eliminating Intermediate DRAM Roundtrips
+
+```mermaid
+flowchart TD
+    subgraph Unfused["Unfused PyTorch Pipeline (3 HBM Roundtrips)"]
+        Act["Activation X"] -->|Write HBM| K1["Kernel 1: BiasAdd"]
+        K1 -->|Read HBM / Write HBM| K2["Kernel 2: GeLU"]
+        K2 -->|Read HBM / Write HBM| K3["Kernel 3: LayerNorm"]
+        K3 -->|Write HBM| Out1["Final Output"]
+    end
+
+    subgraph Fused["Fused Kernel (1 Single HBM Load & Store)"]
+        FAct["Activation X"] -->|Single HBM Read| FusedOp["FusedBiasAddGeLULayerNorm<<<...>>><br/>(Passes values through GPU Registers & SRAM)"]
+        FusedOp -->|Single HBM Write| FOut["Final Output (3-4x Speedup!)"]
+    end
+```
+
 ## 1. The VRAM Capacity & Bandwidth Challenge
 
 Large Language Models (LLMs) are constrained by memory capacity and memory bandwidth:
@@ -99,4 +117,3 @@ For bare-metal CUDA C++ developers, NVIDIA provides **CUTLASS 3.x** and its core
 3. **Hands-on Project**: Follow [02_PROJECT_GUIDE.md](02_PROJECT_GUIDE.md).
 4. **Staff Interview Challenges**: Check [03_SELF_ASSESSMENT_AND_CHALLENGES.md](03_SELF_ASSESSMENT_AND_CHALLENGES.md).
 5. **Production Debugging**: Review [04_TROUBLESHOOTING_AND_EDGE_CASES.md](04_TROUBLESHOOTING_AND_EDGE_CASES.md).
-

@@ -4,6 +4,25 @@
 
 ---
 
+
+## GPU Roofline Model: Memory-Bound vs Compute-Bound Regimes
+
+```mermaid
+flowchart TD
+    subgraph Roofline["Roofline Model Graph"]
+        MemCeiling["Diagonal Bandwidth Ceiling: Performance = Intensity × Bandwidth (TB/s)"]
+        PeakCompute["Horizontal Compute Ceiling: Peak Tensor Core FLOP/s (e.g. 989 TFLOPs FP16)"]
+        Knee["Inflection Ridge Point: Intensity_crit = Peak_FLOPs / Peak_Bandwidth"]
+    end
+
+    subgraph Regimes["Kernel Operational Classification"]
+        MemBound["Low Intensity (< 150 FLOPs/byte):<br/>LayerNorm, Softmax, Elementwise Add<br/>Optimization: Kernel Fusion, SRAM Tiling"]
+        CompBound["High Intensity (> 150 FLOPs/byte):<br/>Large Batch GEMM, Conv2d<br/>Optimization: Tensor Cores, WMMA, ILP"]
+    end
+
+    Roofline --> Regimes
+```
+
 ## 1. The Two-Phase Profiling Methodology
 
 Professional GPU performance optimization follows a structured two-phase diagnostic workflow:

@@ -1,5 +1,26 @@
 # Module 06: Chunked Prefill & Disaggregated Prefill-Decode (PD) Architecture
 
+
+## Chunked Prefill & Decode Co-Scheduling
+
+```mermaid
+flowchart TD
+    subgraph RequestPool["Incoming Requests"]
+        LongPrefill["Long Context Prefill: 8192 Tokens"]
+        ActiveDecodes["16 Active Decode Requests"]
+    end
+
+    subgraph Chunking["Chunked Prefill Strategy"]
+        Chunk["Split 8192 Tokens into 512-Token Chunks"]
+    end
+
+    subgraph Batch["Balanced Iteration Batch"]
+        Iter["512 Prefill Tokens + 16 Decode Tokens = 528 Tokens<br/>Completely eliminates decode latency spikes!"]
+    end
+
+    RequestPool --> Chunking --> Batch
+```
+
 ## 1. The Problem: Inter-Token Latency (ITL) Degeneracy
 
 Autoregressive decode tokens must be served with low, predictable Inter-Token Latency (ITL $\le 25\text{ ms}$).

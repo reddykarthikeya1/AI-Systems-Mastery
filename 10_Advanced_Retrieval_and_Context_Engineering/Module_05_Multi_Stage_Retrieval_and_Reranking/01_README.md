@@ -1,5 +1,22 @@
 # Module 05: Multi-Stage Retrieval & Cross-Encoder Reranking
 
+
+## Hybrid Search Reciprocal Rank Fusion (RRF)
+
+```mermaid
+flowchart TD
+    Query["User Query"] --> Sparse["BM25 Lexical Keyword Search"]
+    Query --> Dense["Dense Semantic Vector Embeddings"]
+
+    Sparse --> TopSparse["Sparse Top-K Ranks"]
+    Dense --> TopDense["Dense Top-K Ranks"]
+
+    TopSparse --> RRF["Reciprocal Rank Fusion Formula:<br/>RRF_score(d) = Σ 1 / (k + rank_i(d)) (k=60)"]
+    TopDense --> RRF
+
+    RRF --> Merged["Fused Ranked Results (Best of Exact Match & Conceptual Match)"]
+```
+
 ## 1. Architecture of Two-Stage Search Pipelines
 
 To balance sub-50ms latency SLAs with high Normalized Discounted Cumulative Gain (NDCG@10), production RAG architectures employ a staged retrieval cascade.

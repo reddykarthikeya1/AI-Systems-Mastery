@@ -110,15 +110,12 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
         {items.map((item, idx) => {
           const isChecked = checkedIndices.includes(idx);
           return (
-            <button
-              key={idx}
-              onClick={() => toggleIndex(idx)}
-              className={`w-full text-left p-3 rounded-xl border text-xs leading-relaxed flex items-start gap-3 transition-all ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left p-3 rounded-xl border text-xs leading-relaxed flex items-start gap-3 transition-all ${
                 isChecked
                   ? 'bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900/40 text-fg'
                   : 'bg-surface border-border text-fg-muted hover:border-blue-300 dark:hover:border-blue-800'
-              }`}
-            >
+              }`} key={idx}
+              onClick={() => toggleIndex(idx)} >
               <div className="mt-0.5 shrink-0 text-blue-500">
                 {isChecked ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 text-zinc-400" />}
               </div>

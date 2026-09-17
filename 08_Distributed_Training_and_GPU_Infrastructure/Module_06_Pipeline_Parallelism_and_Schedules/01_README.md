@@ -1,5 +1,30 @@
 # Module 06: Pipeline Parallelism (PP) & Schedules
 
+
+## Megatron-LM Tensor Parallelism (MLP Block)
+
+```mermaid
+flowchart TD
+    X["Input Activations X"] --> Split["Broadcast to TP GPUs"]
+    
+    subgraph ColParallel["Column Parallel Linear (W1)"]
+        W1_0["W1_0 (Rank 0)"]
+        W1_1["W1_1 (Rank 1)"]
+    end
+
+    subgraph RowParallel["Row Parallel Linear (W2)"]
+        W2_0["W2_0 (Rank 0)"]
+        W2_1["W2_1 (Rank 1)"]
+    end
+
+    Split --> W1_0 --> W2_0
+    Split --> W1_1 --> W2_1
+
+    W2_0 --> AllReduce["AllReduce Sum: Y = W2_0(W1_0(X)) + W2_1(W1_1(X))"]
+    W2_1 --> AllReduce
+    AllReduce --> Out["Output Y"]
+```
+
 ## 1. Architectural Principles of Pipeline Parallelism
 
 Pipeline Parallelism partitions the sequential layers of a deep neural network across a linear chain of $p$ stages (devices).

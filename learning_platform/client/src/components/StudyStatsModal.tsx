@@ -70,7 +70,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="stats-modal-title"
-        className="w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-2xl rounded-2xl bg-surface border border-border shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -80,7 +80,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
               <Flame className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="stats-modal-title" className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+              <h2 id="stats-modal-title" className="text-base sm:text-lg font-bold text-fg">
                 Study Velocity & Learning Analytics
               </h2>
               <p className="text-xs text-zinc-500">
@@ -89,11 +89,8 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            aria-label="Close analytics modal"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition" onClick={onClose}
+            aria-label="Close analytics modal" >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -104,7 +101,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="flex items-center gap-1.5 text-amber-500 text-xs font-mono font-semibold uppercase">
               <Flame className="w-3.5 h-3.5" /> Streak
             </div>
-            <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
+            <div className="text-2xl font-bold font-mono text-fg">
               {streak} <span className="text-xs font-normal text-zinc-500">Days</span>
             </div>
             <div className="text-xs text-zinc-500 font-mono">Active consistency</div>
@@ -114,7 +111,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="flex items-center gap-1.5 text-blue-500 text-xs font-mono font-semibold uppercase">
               <CheckCircle2 className="w-3.5 h-3.5" /> Completed
             </div>
-            <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
+            <div className="text-2xl font-bold font-mono text-fg">
               {totalCompleted} <span className="text-xs font-normal text-zinc-500">/ {totalCurriculumLessons}</span>
             </div>
             <div className="text-xs text-zinc-500 font-mono">{curriculumPercentage}% of curriculum</div>
@@ -124,7 +121,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="flex items-center gap-1.5 text-emerald-500 text-xs font-mono font-semibold uppercase">
               <Clock className="w-3.5 h-3.5" /> Time
             </div>
-            <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
+            <div className="text-2xl font-bold font-mono text-fg">
               ~{hoursSpent} <span className="text-xs font-normal text-zinc-500">Hours</span>
             </div>
             <div className="text-xs text-zinc-500 font-mono">of 380 total hours</div>
@@ -134,7 +131,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             <div className="flex items-center gap-1.5 text-purple-500 text-xs font-mono font-semibold uppercase">
               <Award className="w-3.5 h-3.5" /> Quizzes
             </div>
-            <div className="text-2xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
+            <div className="text-2xl font-bold font-mono text-fg">
               {passedQuizzesCount} <span className="text-xs font-normal text-zinc-500">Passed</span>
             </div>
             <div className="text-xs text-zinc-500 font-mono">Mastery verified</div>
@@ -151,7 +148,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
             {tiers.map((t, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 space-y-2"
+                className="p-3.5 rounded-xl border border-border bg-zinc-50/50 dark:bg-zinc-900/40 space-y-2"
               >
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">{t.name}</span>
@@ -168,10 +165,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
         {/* Footer */}
         <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs text-zinc-500 font-mono flex items-center justify-between">
           <span>Synced locally to .study_progress.json</span>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-lg text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 transition"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-1.5 rounded-lg text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 transition" onClick={onClose} >
             Close
           </button>
         </div>

@@ -6,6 +6,26 @@ Stacks and Queues form the execution backbone of computer runtime systems (call 
 
 ---
 
+
+## Monotonic Decreasing Stack Invariant
+
+```mermaid
+flowchart TD
+    subgraph Input["Input Stream: [2, 1, 5, 6, 2, 3]"]
+        N1["2"] --> N2["1"] --> N3["5"] --> N4["6"]
+    end
+
+    subgraph StackOp["Stack Invariant: Elements strictly decrease top-to-bottom"]
+        direction TB
+        P1["Push 2: Stack=[2]"]
+        P2["Push 1: Stack=[2, 1] (1 < 2 OK)"]
+        P3["Arrive 5: Pop 1, Pop 2 (5 violates decreasing invariant!)<br/>Compute span/area for popped nodes<br/>Push 5: Stack=[5]"]
+        P1 --> P2 --> P3
+    end
+
+    Input --> StackOp
+```
+
 ## 1. Monotonic Stack Invariant Mechanics
 
 A monotonic stack maintains elements in strictly increasing or decreasing order:

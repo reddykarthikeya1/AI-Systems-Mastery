@@ -7,6 +7,19 @@ Welcome to Production Guardrails! Deploying LLMs to real users without guardrail
 
 ---
 
+
+## Automated Red-Teaming Adversarial Attack Pipeline
+
+```mermaid
+flowchart LR
+    Attacker["Red-Team Attacker LLM"] --> Mutator["Jailbreak Mutator (Base64, Roleplay, Multilingual, Suffix Injection)"]
+    Mutator --> Target["Target Production Model"]
+    Target --> Output["Model Output"]
+    Output --> SafetyJudge["Safety Classifier (Detect Policy Violation)"]
+    SafetyJudge -->|Jailbreak Succeeded| Log["Log Vulnerability Vector into Adversarial Dataset"]
+    SafetyJudge -->|Safely Refused| Attacker
+```
+
 ## 1. The Core Mental Model: Pre-Flight, In-Flight, and Post-Flight
 
 ```

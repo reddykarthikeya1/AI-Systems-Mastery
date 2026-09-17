@@ -8,6 +8,24 @@ Welcome to **Module 09**. In this module, you will master the enterprise-tier hi
 
 ---
 
+
+## MVCC Undo-Chain & Snapshot Visibility
+
+```mermaid
+flowchart LR
+    subgraph ActiveRecord["Active Record in Slotted Page"]
+        Cur["Row ID: 101<br/>xmin: 205 (Current Tx)<br/>val: 'Updated Value'"]
+    end
+
+    subgraph UndoLog["Undo Log Delta Chain"]
+        V2["Version Tx 190<br/>val: 'Previous Value'"]
+        V1["Version Tx 150<br/>val: 'Initial Value'"]
+    end
+
+    Cur -->|Rollback Pointer (roll_ptr)| V2
+    V2 -->|roll_ptr| V1
+```
+
 ## ⚡ 1. Oracle Real Application Clusters (RAC) & Cache Fusion
 
 Most distributed databases use a **Shared-Nothing** architecture (each server has its own private CPU, RAM, and Disk). Oracle RAC uses a **Shared-Everything (Shared-Disk)** architecture:

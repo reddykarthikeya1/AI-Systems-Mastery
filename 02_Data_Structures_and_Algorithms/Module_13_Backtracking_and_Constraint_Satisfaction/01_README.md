@@ -6,6 +6,30 @@ Backtracking explores deep search trees, pruning branches that fail constraints 
 
 ---
 
+
+## Backtracking State-Space Tree Pruning (4-Queens)
+
+```mermaid
+flowchart TD
+    R["Root (Empty Board)"]
+    R --> Q0["Row 0: Col 0"]
+    R --> Q1["Row 0: Col 1"]
+
+    Q0 --> Q00["Row 1: Col 0 (Pruned: Col Conflict)"]
+    Q0 --> Q01["Row 1: Col 1 (Pruned: Diag Conflict)"]
+    Q0 --> Q02["Row 1: Col 2 (Valid)"]
+    Q0 --> Q03["Row 1: Col 3 (Valid)"]
+
+    Q02 --> Q020["Row 2: Col 0 (Pruned: Col Conflict)"]
+    Q02 --> Q021["Row 2: Col 1 (Pruned: Diag Conflict)"]
+    Q02 --> Q02X["All Row 2 Choices Pruned -> BACKTRACK!"]
+
+    classDef pruned fill:#f87171,stroke:#dc2626,color:#fff;
+    classDef valid fill:#34d399,stroke:#059669,color:#fff;
+    class Q00,Q01,Q020,Q021,Q02X pruned;
+    class Q02,Q03 valid;
+```
+
 ## 1. The Canonical Backtracking Blueprint
 
 ```python

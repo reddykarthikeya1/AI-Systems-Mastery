@@ -5,6 +5,28 @@
 
 ---
 
+
+## PyTorch Tensor Memory Layout: Storage vs Strides
+
+```mermaid
+flowchart TD
+    subgraph Logical["Logical 2D Tensor Shape (3 x 4)"]
+        R0["Row 0: [a00, a01, a02, a03]"]
+        R1["Row 1: [a10, a11, a12, a13]"]
+        R2["Row 2: [a20, a21, a22, a23]"]
+    end
+
+    subgraph Physical["Flat 1D Storage Buffer (StorageOffset = 0, Strides = (4, 1))"]
+        S["[a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23]"]
+    end
+
+    subgraph Transposed["Transposed View (4 x 3): Zero Memory Copy! Strides = (1, 4)"]
+        T["Index Formula: offset = i * stride[0] + j * stride[1]"]
+    end
+
+    Logical --> Physical --> Transposed
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

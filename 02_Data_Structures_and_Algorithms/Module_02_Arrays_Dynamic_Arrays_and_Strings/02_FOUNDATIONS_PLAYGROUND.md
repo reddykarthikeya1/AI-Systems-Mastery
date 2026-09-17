@@ -9,6 +9,47 @@ Welcome! If you have never solved a LeetCode problem before or you find algorith
 
 ---
 
+
+## Interactive Algorithm Trace Scrubber
+
+```trace
+{
+  "title": "Two Pointers Search: Two Sum II",
+  "algorithm": "Two Pointers on Sorted Array",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(1)",
+  "frames": [
+    {
+      "step": 1,
+      "description": "Initialize left=0, right=5 on sorted array. Target sum is 18.",
+      "array": [2, 4, 7, 11, 14, 20],
+      "pointers": { "left": 0, "right": 5 },
+      "highlights": { "0": "active", "5": "active" },
+      "variables": { "left": 0, "right": 5, "currentSum": 22, "target": 18 },
+      "invariants": "Sum 2 + 20 = 22 > 18: Decrement right pointer to reduce sum"
+    },
+    {
+      "step": 2,
+      "description": "right moves to index 4. Sum is 2 + 14 = 16 < 18.",
+      "array": [2, 4, 7, 11, 14, 20],
+      "pointers": { "left": 0, "right": 4 },
+      "highlights": { "0": "active", "4": "active" },
+      "variables": { "left": 0, "right": 4, "currentSum": 16, "target": 18 },
+      "invariants": "Sum 16 < 18: Increment left pointer to increase sum"
+    },
+    {
+      "step": 3,
+      "description": "left moves to index 1. Sum is 4 + 14 = 18 === target! Match found.",
+      "array": [2, 4, 7, 11, 14, 20],
+      "pointers": { "left": 1, "right": 4 },
+      "highlights": { "1": "sorted", "4": "sorted" },
+      "variables": { "left": 1, "right": 4, "currentSum": 18, "target": 18, "found": true },
+      "invariants": "Target pair matched: return indices [1, 4] (1-indexed: [2, 5])"
+    }
+  ]
+}
+```
+
 ## 1. What Exactly is an Array?
 
 Imagine a row of 5 lockers in a school hallway:

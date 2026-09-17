@@ -57,16 +57,16 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   return (
     <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-10 space-y-10">
       {/* Editorial Overview Header */}
-      <div className="rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/90 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
+      <div className="rounded-xl bg-surface border border-border/90 p-8 sm:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/80 pb-6">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+            <span className="text-xs font-mono text-fg-muted uppercase tracking-wider">
               12 High-Performance Systems Tracks
             </span>
           </div>
 
-          <div className="text-xs font-mono text-zinc-500 dark:text-zinc-400 space-x-2">
+          <div className="text-xs font-mono text-fg-muted space-x-2">
             <span>{totalCurriculumWords > 0 ? `~${Math.round(totalCurriculumWords / 1000)}k WORDS` : '1,018k WORDS'}</span>
             <span className="text-zinc-300 dark:text-zinc-700">/</span>
             <span>{totalCurriculumLabs > 0 ? `${totalCurriculumLabs} BUG LABS` : '171 BUG LABS'}</span>
@@ -84,7 +84,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             From bare-metal CPython memory layout, cache-line B-Trees, and Raft consensus engines up to Triton FP8 kernels, Megatron 3D parallelism, vLLM PagedAttention, and multi-agent cognitive swarms.
           </p>
 
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-normal leading-relaxed pt-1">
+          <p className="text-xs sm:text-sm text-fg-muted font-normal leading-relaxed pt-1">
             <strong className="text-zinc-900 dark:text-zinc-200 font-semibold">Built for all types of learners:</strong> This curriculum is curated for everyone who is interested—from beginners taking their first steps with interactive playgrounds to senior practitioners and research engineers mastering complex distributed systems.
           </p>
         </div>
@@ -92,13 +92,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
         <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
             {currentCourse && (
-              <button
-                onClick={() => {
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 rounded-lg font-medium text-xs bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-2 shadow-sm" onClick={() => {
                   soundService.playClick();
                   onSelectCourse(currentCourse.id);
-                }}
-                className="px-5 py-2.5 rounded-lg font-medium text-xs bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-2 shadow-sm"
-              >
+                }} >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 Resume Curriculum ({currentCourse.title.split(' ')[0]})
               </button>
@@ -110,13 +107,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             </div>
 
             {onOpenFlashcards && (
-              <button
-                onClick={() => {
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/60 text-xs text-amber-700 dark:text-amber-300 font-medium hover:bg-amber-100 transition-colors" onClick={() => {
                   soundService.playClick();
                   onOpenFlashcards();
-                }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/60 text-xs text-amber-700 dark:text-amber-300 font-medium hover:bg-amber-100 transition-colors"
-              >
+                }} >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 <span>Flashcards (SRS)</span>
                 {dueCardsCount > 0 && (
@@ -128,13 +122,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             )}
 
             {onOpenPortfolio && (
-              <button
-                onClick={() => {
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/70 dark:border-indigo-800/60 text-xs text-indigo-700 dark:text-indigo-300 font-medium hover:bg-indigo-100 transition-colors" onClick={() => {
                   soundService.playClick();
                   onOpenPortfolio();
-                }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/70 dark:border-indigo-800/60 text-xs text-indigo-700 dark:text-indigo-300 font-medium hover:bg-indigo-100 transition-colors"
-              >
+                }} >
                 <Compass className="w-3.5 h-3.5 text-indigo-500" />
                 <span>Transcript</span>
               </button>
@@ -163,23 +154,20 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                   {dueCardsCount} Due Today
                 </span>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+              <h3 className="text-base sm:text-lg font-bold text-fg">
                 You have {dueCardsCount} flashcard{dueCardsCount > 1 ? 's' : ''} scheduled for review today
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-fg-muted">
                 Reinforce consensus protocols, storage engine internals, and recently missed quiz questions with active recall.
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => {
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 transition-all shadow-md flex items-center gap-2 active:scale-95" onClick={() => {
                 soundService.playClick();
                 onOpenFlashcards();
-              }}
-              className="px-5 py-2.5 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-zinc-950 transition-all shadow-md flex items-center gap-2 active:scale-95"
-            >
+              }} >
               <Sparkles className="w-4 h-4 fill-current" />
               <span>Start Daily Review ({dueCardsCount})</span>
             </button>
@@ -197,27 +185,24 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                 Jump Back In · Active Session
               </span>
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+            <h3 className="text-base sm:text-lg font-bold text-fg">
               {lastPos.lesson_title || 'Resume Active Lesson'}
             </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-fg-muted">
               Course: <span className="font-medium text-zinc-700 dark:text-zinc-300">{lastPos.course_title || lastPos.course_id}</span>
               {lastPos.module_title && ` • Module: ${lastPos.module_title}`}
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => {
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md flex items-center gap-2 active:scale-95" onClick={() => {
                 soundService.playSuccess();
                 if (onResumeLastPosition) {
                   onResumeLastPosition();
                 } else {
                   onSelectCourse(lastPos.course_id);
                 }
-              }}
-              className="px-5 py-2.5 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md flex items-center gap-2 active:scale-95"
-            >
+              }} >
               <Play className="w-4 h-4 fill-current" />
               Resume Where You Left Off
             </button>
@@ -228,22 +213,19 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
       {/* Filter Tabs */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider font-mono">
+          <h2 className="text-sm font-semibold text-fg uppercase tracking-wider font-mono">
             Curriculum Catalog <span className="text-zinc-400 font-normal">({filteredCourses.length})</span>
           </h2>
         </div>
 
         <div className="inline-flex flex-wrap gap-1 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200/70 dark:border-zinc-800">
           {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-md text-xs transition-colors font-medium ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-md text-xs transition-colors font-medium ${
                 selectedCategory === cat
-                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold'
+                  ? 'bg-surface text-fg shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-            >
+              }`} key={cat}
+              onClick={() => setSelectedCategory(cat)} >
               {cat}
             </button>
           ))}
@@ -257,7 +239,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             <div
               key={course.id}
               onClick={() => onSelectCourse(course.id)}
-              className="group cursor-pointer rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-400 dark:hover:border-zinc-700 p-6 transition-all flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
+              className="group cursor-pointer rounded-xl bg-surface border border-border/80 hover:border-zinc-400 dark:hover:border-zinc-700 p-6 transition-all flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
             >
               <div className="space-y-3.5">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -277,12 +259,12 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                       </span>
                     )}
                   </div>
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                  <span className="text-xs text-fg-muted font-medium">
                     {course.difficulty}
                   </span>
                 </div>
 
-                <h3 className="font-semibold text-base text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 transition-colors leading-snug">
+                <h3 className="font-semibold text-base text-fg group-hover:text-blue-600 transition-colors leading-snug">
                   {course.title}
                 </h3>
 

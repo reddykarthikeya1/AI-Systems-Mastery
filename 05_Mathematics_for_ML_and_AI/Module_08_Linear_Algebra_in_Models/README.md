@@ -5,6 +5,18 @@
 
 ---
 
+
+## Linear Algebra in Machine Learning: Normal Equations & Ridge
+
+```mermaid
+flowchart TD
+    Data["Design Matrix X (N × d), Target y (N × 1)"] --> Loss["Least Squares Loss: ||X w - y||²"]
+    Loss --> Grad["Gradient: ∇_w = 2 Xᵀ (X w - y) = 0"]
+    Grad --> NormalEq["Normal Equations: (Xᵀ X) w = Xᵀ y"]
+    NormalEq --> OLS["OLS Solution: w = (Xᵀ X)⁻¹ Xᵀ y"]
+    NormalEq --> Ridge["Ridge Regularization (L2):<br/>w_ridge = (Xᵀ X + λ I)⁻¹ Xᵀ y<br/>(Always invertible!)"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

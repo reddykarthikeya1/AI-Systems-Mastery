@@ -17,7 +17,7 @@ export const LessonSkeleton: React.FC = () => {
         <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-11/12" />
         <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-5/6" />
       </div>
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-zinc-100 dark:bg-zinc-900/60 p-5 space-y-2.5">
+      <div className="rounded-xl border border-border overflow-hidden bg-zinc-100 dark:bg-zinc-900/60 p-5 space-y-2.5">
         <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
         <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
         <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />

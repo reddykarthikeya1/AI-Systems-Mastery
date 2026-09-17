@@ -213,11 +213,9 @@ export const PrerequisiteMapModal: React.FC<PrerequisiteMapModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
-            aria-label="Close prerequisite roadmap"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition" onClick={onClose}
+            
+            aria-label="Close prerequisite roadmap" >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -338,10 +336,7 @@ export const PrerequisiteMapModal: React.FC<PrerequisiteMapModalProps> = ({
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>All courses verified with reproducible test suites and production debug labs.</span>
           </div>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-medium text-xs transition"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-medium text-xs transition" onClick={onClose} >
             Close
           </button>
         </div>

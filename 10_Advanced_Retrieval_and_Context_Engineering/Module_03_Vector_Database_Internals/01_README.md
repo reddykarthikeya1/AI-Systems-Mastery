@@ -1,5 +1,16 @@
 # Module 03: Vector Database Internals (HNSW & Product Quantization)
 
+
+## Vector Database Internals: IVF-PQ Compression
+
+```mermaid
+flowchart LR
+    Vector["High-Dim Vector (1536-d FP32 = 6144 bytes)"] --> IVF["1. Inverted File Index (IVF): Assign to Voronoi Centroid"]
+    IVF --> Subvectors["2. Split into M=16 Subvectors (96-d each)"]
+    Subvectors --> PQ["3. Product Quantization (PQ): Quantize to Codebook Centroid (1 byte)"]
+    PQ --> Compressed["Compressed Representation: 16 bytes (384x Space Reduction!)"]
+```
+
 ## 1. Algorithmic Architecture of HNSW
 
 Hierarchical Navigable Small World (HNSW; Malkov & Yashunin, IEEE TPAMI 2018) is the premier graph-based Approximate Nearest Neighbor (ANN) search index.

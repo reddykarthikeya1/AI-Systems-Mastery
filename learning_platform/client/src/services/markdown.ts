@@ -41,10 +41,10 @@ export function renderMarkdownWithMath(raw: string): string {
     }
   });
 
-  // 3. Render inline math: $...$ or \(...\)
-  protectedText = protectedText.replace(/\$([^$\n\r]+?)\$/g, (match, math) => {
+  // 3. Render inline math: $...$ (requiring non-whitespace immediately inside delimiters) or \(...\)
+  protectedText = protectedText.replace(/\$(?!\s)([^$\n\r]+?)(?<!\s)\$/g, (match, math) => {
     const trimmed = math.trim();
-    // Avoid false positives for prices or empty strings
+    // Avoid false positives for currency numbers or standalone numbers
     if (!trimmed || /^\d+(\.\d+)?$/.test(trimmed)) {
       return match;
     }
@@ -87,7 +87,16 @@ export function renderMarkdownWithMath(raw: string): string {
     }
   }
 
-  // 6. Annotate first occurrence of each technical glossary term with a tooltip
+  // 6. Annotate technical glossary terms with interactive tooltips
+  return annotateGlossaryTerms(html);
+}
+
+/**
+ * Annotates the first occurrence of technical terms with interactive tooltips.
+ * Preserves pre/code blocks and existing HTML tags.
+ */
+export function annotateGlossaryTerms(html: string): string {
+  if (!html) return '';
   try {
     const matchedTerms = new Set<string>();
 
@@ -111,7 +120,7 @@ export function renderMarkdownWithMath(raw: string): string {
               matchedTerms.add(key);
               segmentText = segmentText.replace(
                 termRegex,
-                `<span class="glossary-term cursor-help border-b border-dotted border-sky-500/80 text-sky-600 dark:text-sky-400 font-medium" title="${entry.term} (${entry.category}): ${entry.definition}">$1</span>`
+                `<span class="glossary-term cursor-help border-b border-dotted border-sky-500/80 text-sky-600 dark:text-sky-400 font-medium" data-definition="${entry.definition}" title="${entry.term} (${entry.category}): ${entry.definition}">$1</span>`
               );
               break;
             }
@@ -125,4 +134,5 @@ export function renderMarkdownWithMath(raw: string): string {
     return html;
   }
 }
+
 

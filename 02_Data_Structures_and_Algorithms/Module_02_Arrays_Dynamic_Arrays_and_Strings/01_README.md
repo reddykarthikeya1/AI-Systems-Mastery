@@ -6,6 +6,31 @@ Arrays and strings are the bedrock of all computer software. From OS kernel buff
 
 ---
 
+
+## Dynamic Array Geometric Doubling & Pointer Layout
+
+```mermaid
+flowchart LR
+    subgraph S1["Initial Capacity = 4"]
+        A1["[0]: 10"] --- A2["[1]: 20"] --- A3["[2]: 30"] --- A4["[3]: 40"]
+    end
+
+    subgraph S2["Reallocation: Capacity = 8 (2x Factor)"]
+        direction TB
+        Alloc["1. Allocate Contiguous Heap Chunk (8 slots)"]
+        Copy["2. Copy 4 elements to new memory buffer"]
+        Append["3. Write new item [4]: 50 in O(1)"]
+        Free["4. Free old memory block"]
+        Alloc --> Copy --> Append --> Free
+    end
+
+    subgraph S3["New Buffer State"]
+        B1["10"] --- B2["20"] --- B3["30"] --- B4["40"] --- B5["50"] --- B6["Free"] --- B7["Free"] --- B8["Free"]
+    end
+
+    S1 -->|Push 50 Triggers Doubling| S2 --> S3
+```
+
 ## Table of Contents
 1. [Physical Hardware Memory Layout & Cache Physics](#1-physical-hardware-memory-layout--cache-physics)
 2. [Dynamic Array Geometric Resizing & Amortization Proofs](#2-dynamic-array-geometric-resizing--amortization-proofs)

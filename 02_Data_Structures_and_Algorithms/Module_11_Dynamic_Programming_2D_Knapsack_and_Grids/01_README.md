@@ -6,6 +6,25 @@
 
 ---
 
+
+## 2D Dynamic Programming: 0/1 Knapsack Grid Transitions
+
+```mermaid
+flowchart TD
+    subgraph Grid["DP Table: dp[i][w] = Max Value using first i items with capacity w"]
+        Cell["dp[i][w]"]
+        Top["dp[i-1][w]<br/>(Option 1: Exclude item i)"]
+        TopLeft["dp[i-1][w - weight[i]] + value[i]<br/>(Option 2: Include item i)"]
+
+        Top -->|max| Cell
+        TopLeft -->|max| Cell
+    end
+
+    subgraph Invariant["Bellman Optimality Condition"]
+        B["dp[i][w] = max(dp[i-1][w], dp[i-1][w - wt[i]] + val[i]) if w >= wt[i] else dp[i-1][w]"]
+    end
+```
+
 ## 1. 2D DP Space Optimization Principle
 
 If a transition only depends on the previous row:

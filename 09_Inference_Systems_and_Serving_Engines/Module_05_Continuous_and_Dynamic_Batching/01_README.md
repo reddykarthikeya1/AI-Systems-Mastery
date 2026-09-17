@@ -1,5 +1,25 @@
 # Module 05: Continuous & Dynamic Iteration-Level Batching
 
+
+## Speculative Decoding Verification Pipeline
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Draft as Draft Small Model (e.g. 1B)
+    participant Target as Target LLM (e.g. 70B)
+    participant Verifier as Acceptance Logic
+
+    Draft->>Draft: Generate K=4 Candidate Tokens sequentially
+    Draft->>Target: Pass Prompt + [t1, t2, t3, t4]
+    Target->>Target: Single Forward Pass evaluates all 4 positions in parallel!
+    Target->>Verifier: Return Target Probabilities p(t)
+    Verifier->>Verifier: Accept t1 (p_target >= p_draft)
+    Verifier->>Verifier: Accept t2 (p_target >= p_draft)
+    Verifier->>Verifier: Reject t3! Sample corrective token t3'
+    Verifier->>Draft: 3 Tokens generated in 1 Target Forward Pass (2.5x Speedup!)
+```
+
 ## 1. Algorithmic Principles of Iteration-Level Scheduling
 
 Classical static batching operates at request granularity: a batch of $B$ requests enters execution concurrently and holds GPU resources until the longest request in the batch completes generation.

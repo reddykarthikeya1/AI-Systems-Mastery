@@ -5,6 +5,17 @@
 
 ---
 
+
+## Vector Subspace Orthogonality & Gradient Direction
+
+```mermaid
+flowchart TD
+    Loss["Scalar Loss Function L(w)"] --> Grad["Gradient Vector ∇L(w) = [∂L/∂w₁, ∂L/∂w₂, ..., ∂L/∂wₙ]"]
+    Grad --> Direction["Steepest Ascent Direction"]
+    Direction --> Step["Weight Update: w_{t+1} = w_t - η ∇L(w_t)"]
+    Step --> Minima["Local/Global Loss Minimization"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

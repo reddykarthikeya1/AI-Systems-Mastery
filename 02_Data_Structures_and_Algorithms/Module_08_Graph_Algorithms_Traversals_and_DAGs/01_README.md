@@ -6,6 +6,26 @@ Graphs represent networks, dependencies, and arbitrary relationships. In this mo
 
 ---
 
+
+## DAG Topological Sort & In-Degree Reduction (Kahn's Algorithm)
+
+```mermaid
+flowchart LR
+    A["Node A<br/>in-degree: 0"] --> B["Node B<br/>in-degree: 1"]
+    A --> C["Node C<br/>in-degree: 1"]
+    B --> D["Node D<br/>in-degree: 2"]
+    C --> D
+    D --> E["Node E<br/>in-degree: 1"]
+
+    subgraph Queue["Zero In-Degree Queue Progress"]
+        Q1["[A]"] -->|Pop A, decrement B & C| Q2["[B, C]"] -->|Pop B, C, decrement D| Q3["[D]"] -->|Pop D, decrement E| Q4["[E]"]
+    end
+
+    subgraph TopoOrder["Final Topological Ordering"]
+        O["A -> B -> C -> D -> E"]
+    end
+```
+
 ## 1. Graph Representations: Matrix vs Adjacency List
 
 | Feature | Adjacency Matrix ($V \\times V$) | Adjacency List |

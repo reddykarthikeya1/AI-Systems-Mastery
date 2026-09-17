@@ -1,5 +1,23 @@
 # Module 01: Inference Latency, Throughput & TTFT/TPOT Trade-offs
 
+
+## LLM Inference Latency Breakdown (Prefill vs Decode)
+
+```mermaid
+flowchart LR
+    subgraph TTFT["Time To First Token (Prefill Phase)"]
+        Prompt["Input Prompt: 2048 Tokens"] --> GEMM["Parallel Matrix Multiply (GEMM)"]
+        GEMM --> HighCompute["Compute-Bound (High Arithmetic Intensity)<br/>Tensor Cores 100% Saturated"]
+    end
+
+    subgraph TPOT["Time Per Output Token (Decode Phase)"]
+        TokenGen["Autoregressive Generation (1 Token at a time)"] --> GEMV["Matrix-Vector Multiply (GEMV)"]
+        GEMV --> LowCompute["Memory-Bound (Low Arithmetic Intensity)<br/>Bottlenecked by HBM Memory Bandwidth!"]
+    end
+
+    TTFT --> TPOT
+```
+
 ## 1. Architectural Foundations of LLM Inference
 
 Unlike classical deep learning inference where input tensors undergo a single static forward pass, autoregressive decoder Transformer inference is a sequential, state-dependent process.

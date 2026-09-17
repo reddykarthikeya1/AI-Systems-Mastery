@@ -1,5 +1,20 @@
 # Module 07: Speculative Decoding & Medusa Architectures
 
+
+## LLM Weight & Activation Quantization Formats
+
+```mermaid
+flowchart LR
+    FP16["FP16 / BF16<br/>(16 bits, Baseline)"] --> FP8["FP8 (E4M3 / E5M2)<br/>(8 bits, 2x Memory & Speed)"]
+    FP8 --> INT4["INT4 / AWQ / GPTQ<br/>(4 bits, 3.5x Memory Reduction)"]
+
+    subgraph Tradeoff["Accuracy vs Performance Frontier"]
+        Desc["AWQ preserves top 1% salient weight channels to maintain perplexity!"]
+    end
+
+    INT4 --> Tradeoff
+```
+
 ## 1. Mathematical Formulation of Speculative Decoding
 
 Speculative Decoding (Leviathan et al., ICML 2023; Chen et al., 2023) breaks the sequential autoregressive dependency by decoupling candidate token proposal from candidate token verification.

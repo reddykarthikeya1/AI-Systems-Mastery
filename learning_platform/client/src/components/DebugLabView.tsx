@@ -96,7 +96,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="rounded-xl p-5 bg-gradient-to-r from-rose-500/10 via-zinc-50 to-zinc-50 dark:from-rose-950/30 dark:via-[#111622] dark:to-[#111622] border border-rose-500/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="rounded-xl p-5 bg-gradient-to-r from-rose-500/10 via-zinc-50 to-zinc-50 dark:from-rose-950/30 dark:via-surface dark:to-surface border border-rose-500/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded text-xs font-mono font-semibold uppercase tracking-wider bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center gap-1">
@@ -106,7 +106,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
               {moduleTitle}
             </span>
           </div>
-          <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+          <h2 className="text-base sm:text-lg font-bold text-fg mt-1">
             Planted Production Defect & Triage Drill
           </h2>
           <p className="text-xs text-zinc-500 mt-0.5">
@@ -115,21 +115,16 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleReset}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5"
-            title="Reset to broken starter"
-          >
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5" onClick={handleReset}
+            
+            title="Reset to broken starter" >
             <RotateCcw className="w-3.5 h-3.5" /> Reset Broken Code
           </button>
 
-          <button
-            onClick={handleRunDiagnosis}
-            disabled={isRunning}
-            className={`px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition ${
+          <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition ${
               isRunning ? 'bg-zinc-400 text-white cursor-not-allowed' : 'bg-rose-600 hover:bg-rose-500 text-white active:scale-95'
-            }`}
-          >
+            }`} onClick={handleRunDiagnosis}
+            disabled={isRunning} >
             <Play className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin' : 'fill-current'}`} />
             <span>{isRunning ? 'Diagnosing...' : 'Test & Verify Patch'}</span>
           </button>
@@ -155,7 +150,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Symptoms Column (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="rounded-xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-sm space-y-3">
+          <div className="rounded-xl bg-surface border border-border/80 p-5 shadow-sm space-y-3">
             <div className="flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               <span className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
@@ -168,16 +163,13 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
           </div>
 
           {answers && (
-            <div className="rounded-xl bg-zinc-50 dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm">
-              <button
-                onClick={() => setShowSolution(!showSolution)}
-                className="text-xs font-semibold text-blue-500 hover:text-blue-400 flex items-center gap-1.5"
-              >
+            <div className="rounded-xl bg-surface border border-border/80 p-4 shadow-sm">
+              <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs font-semibold text-blue-500 hover:text-blue-400 flex items-center gap-1.5" onClick={() => setShowSolution(!showSolution)} >
                 <HelpCircle className="w-3.5 h-3.5" />
                 <span>{showSolution ? 'Hide Triage Guide' : 'Reveal Triage Guide & Root Cause'}</span>
               </button>
               {showSolution && (
-                <div className="mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-400 leading-relaxed whitespace-pre-wrap">
+                <div className="mt-3 pt-3 border-t border-border text-xs font-mono text-zinc-400 leading-relaxed whitespace-pre-wrap">
                   {answers}
                 </div>
               )}
@@ -187,32 +179,26 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
 
         {/* Editor Column (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-[#0D1117] shadow-xl">
-            <div className="px-4 py-2 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+          <div className="rounded-xl overflow-hidden border border-border bg-bg shadow-xl">
+            <div className="px-4 py-2 bg-surface-raised border-b border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
               <div className="flex items-center gap-3">
                 <span className="text-rose-400 font-semibold flex items-center gap-1.5">
                   <Bug className="w-3.5 h-3.5" /> Defect Patch Editor
                 </span>
                 <div className="flex items-center p-0.5 rounded-lg bg-zinc-800/90 border border-zinc-700/80">
-                  <button
-                    onClick={() => setViewMode('editor')}
-                    className={`px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
+                  <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
                       viewMode === 'editor'
                         ? 'bg-zinc-700 text-white font-semibold shadow-xs'
                         : 'text-zinc-400 hover:text-zinc-200'
-                    }`}
-                  >
+                    }`} onClick={() => setViewMode('editor')} >
                     <Code className="w-3 h-3" />
                     <span>Editor</span>
                   </button>
-                  <button
-                    onClick={() => setViewMode('diff')}
-                    className={`px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
+                  <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
                       viewMode === 'diff'
                         ? 'bg-zinc-700 text-white font-semibold shadow-xs'
                         : 'text-zinc-400 hover:text-zinc-200'
-                    }`}
-                  >
+                    }`} onClick={() => setViewMode('diff')} >
                     <GitCompare className="w-3 h-3" />
                     <span>Diff View</span>
                   </button>
@@ -227,13 +213,13 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 spellCheck={false}
-                className="w-full h-80 p-4 font-mono text-xs text-[#E6EDF3] bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-rose-500/30"
+                className="w-full h-80 p-4 font-mono text-xs text-fg bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-rose-500/30"
               />
             ) : (
-              <div className="p-4 bg-[#0D1117] h-80 overflow-y-auto font-mono text-xs space-y-4">
+              <div className="p-4 bg-bg h-80 overflow-y-auto font-mono text-xs space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Left: Original Broken Starter */}
-                  <div className="rounded-lg border border-zinc-800 bg-[#161B22]/60 p-3 space-y-2">
+                  <div className="rounded-lg border border-zinc-800 bg-surface-raised/60 p-3 space-y-2">
                     <div className="text-xs font-semibold text-rose-400 pb-1.5 border-b border-zinc-800 flex items-center justify-between">
                       <span>Planted Broken Code</span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">Base</span>
@@ -252,7 +238,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
                   </div>
 
                   {/* Right: Student's Working Patch */}
-                  <div className="rounded-lg border border-zinc-800 bg-[#161B22]/60 p-3 space-y-2">
+                  <div className="rounded-lg border border-zinc-800 bg-surface-raised/60 p-3 space-y-2">
                     <div className="text-xs font-semibold text-emerald-400 pb-1.5 border-b border-zinc-800 flex items-center justify-between">
                       <span>Your Working Patch</span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Patch</span>
@@ -275,8 +261,8 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
           </div>
 
           {/* Test Diagnosis Output Terminal */}
-          <div className="rounded-xl overflow-hidden border border-zinc-800 bg-[#0A0D12] text-xs font-mono">
-            <div className="px-3.5 py-1.5 bg-[#161B22] border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
+          <div className="rounded-xl overflow-hidden border border-zinc-800 bg-bg text-xs font-mono">
+            <div className="px-3.5 py-1.5 bg-surface-raised border-b border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
               <span className="font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-rose-400" />
                 <span>Diagnostics Terminal</span>

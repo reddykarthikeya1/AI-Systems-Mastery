@@ -39,8 +39,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-xl rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden">
-        <div className="flex items-center px-4 border-b border-zinc-200/80 dark:border-zinc-800">
+      <div className="w-full max-w-xl rounded-xl bg-surface border border-border shadow-xl overflow-hidden">
+        <div className="flex items-center px-4 border-b border-border">
           <Search className="w-4 h-4 text-zinc-400 mr-2.5" />
           <input
             type="text"
@@ -48,9 +48,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full py-3.5 text-xs bg-transparent outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400"
+            className="w-full py-3.5 text-xs bg-transparent outline-none text-fg placeholder:text-zinc-400"
           />
-          <button onClick={onClose} className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300" onClick={onClose} >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -70,7 +70,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-medium">
                     Track {c.course_num.toString().padStart(2, '0')}
                   </span>
-                  <h4 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 transition-colors">
+                  <h4 className="text-xs font-semibold text-fg group-hover:text-blue-600 transition-colors">
                     {c.title}
                   </h4>
                   <p className="text-xs text-zinc-500 line-clamp-1">{c.description}</p>

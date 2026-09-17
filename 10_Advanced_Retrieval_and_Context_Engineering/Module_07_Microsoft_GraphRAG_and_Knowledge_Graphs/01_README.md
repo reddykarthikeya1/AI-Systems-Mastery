@@ -1,5 +1,21 @@
 # Module 07: Microsoft GraphRAG & Knowledge Graphs
 
+
+## GraphRAG Knowledge Graph & Community Summarization
+
+```mermaid
+flowchart TD
+    Text["Corpus Text Chunks"] --> Extr["LLM Information Extraction"]
+    Extr --> KG["Knowledge Graph (Entities, Relations, Claims)"]
+    KG --> Leiden["Leiden Community Detection Algorithm"]
+    Leiden --> C1["Community 1 (Low-Level)"]
+    Leiden --> C2["Community 2 (High-Level Cluster)"]
+    C1 --> Sum1["Community Summary 1"]
+    C2 --> Sum2["Community Summary 2"]
+    Sum1 --> GlobalQA["Global Sensemaking Query Response"]
+    Sum2 --> GlobalQA
+```
+
 ## 1. Algorithmic Architecture of GraphRAG
 
 GraphRAG (Edge et al., Microsoft Research 2024) unifies Knowledge Graph extraction with hierarchical community detection to enable global dataset-wide summarization.

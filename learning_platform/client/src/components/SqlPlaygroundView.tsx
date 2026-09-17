@@ -89,21 +89,21 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-xl">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 border border-border rounded-xl overflow-hidden shadow-xl">
       {/* Header bar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex items-center justify-between px-4 py-3 bg-surface/80 border-b border-border">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">
             SQL
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
               Storage Engine & SQL Sandbox
               <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono">
                 SQLite In-Memory
               </span>
             </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-fg-muted">
               Query B-Tree page slots, WAL write logs, and analyze internal execution plans.
             </p>
           </div>
@@ -125,10 +125,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
           </select>
 
           {onClose && (
-            <button
-              onClick={onClose}
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors" onClick={onClose} >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -138,17 +135,14 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
       </div>
 
       {/* Preset Query Chips */}
-      <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100/50 dark:bg-zinc-900/40 border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto text-xs">
+      <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100/50 dark:bg-zinc-900/40 border-b border-border overflow-x-auto text-xs">
         <span className="text-zinc-400 font-medium whitespace-nowrap">Examples:</span>
         {PRESET_QUERIES[preset].map((p, idx) => (
-          <button
-            key={idx}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2.5 py-1 rounded-md bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap text-zinc-700 dark:text-zinc-300 transition-colors shadow-sm" key={idx}
             onClick={() => {
               soundService.playClick();
               setQuery(p.query);
-            }}
-            className="px-2.5 py-1 rounded-md bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 border border-zinc-200 dark:border-zinc-700 whitespace-nowrap text-zinc-700 dark:text-zinc-300 transition-colors shadow-sm"
-          >
+            }} >
             {p.name}
           </button>
         ))}
@@ -157,14 +151,11 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
       {/* Split View: Editor on Top, Results on Bottom */}
       <div className="flex-1 flex flex-col min-h-0">
         {/* Editor Area */}
-        <div className="flex flex-col border-b border-zinc-200 dark:border-zinc-800">
-          <div className="flex items-center justify-between px-4 py-1.5 bg-zinc-50/50 dark:bg-zinc-900/30 text-xs text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="flex flex-col border-b border-border">
+          <div className="flex items-center justify-between px-4 py-1.5 bg-zinc-50/50 dark:bg-zinc-900/30 text-xs text-zinc-500 border-b border-border">
             <span>SQL Query Editor (Press <kbd className="px-1 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-mono text-xs">Ctrl+Enter</kbd> to run)</span>
-            <button
-              onClick={handleExecute}
-              disabled={executing}
-              className="flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-medium text-xs shadow-sm transition-all disabled:opacity-50"
-            >
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-medium text-xs shadow-sm transition-all disabled:opacity-50" onClick={handleExecute}
+              disabled={executing} >
               {executing ? (
                 <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -192,7 +183,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
         {/* Results Area */}
         <div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-zinc-950 overflow-auto">
           {/* Query status header */}
-          <div className="flex items-center justify-between px-4 py-2 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 text-xs">
+          <div className="flex items-center justify-between px-4 py-2 bg-surface border-b border-border text-xs">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-zinc-700 dark:text-zinc-300">Execution Output</span>
               {result && (
@@ -219,9 +210,9 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
                 <strong>Error:</strong> {result.error}
               </div>
             ) : result?.columns && result.columns.length > 0 ? (
-              <div className="overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-lg">
+              <div className="overflow-x-auto border border-border rounded-lg">
                 <table className="w-full text-left text-xs font-mono">
-                  <thead className="bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-b border-zinc-200 dark:border-zinc-800">
+                  <thead className="bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-b border-border">
                     <tr>
                       {result.columns.map((col, cIdx) => (
                         <th key={cIdx} className="px-3 py-2 font-semibold">
@@ -251,7 +242,7 @@ export const SqlPlaygroundView: React.FC<SqlPlaygroundViewProps> = ({
 
             {/* Query plan section if present */}
             {result?.query_plan && result.query_plan.length > 0 && (
-              <div className="mt-4 p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+              <div className="mt-4 p-3 bg-surface border border-border rounded-lg">
                 <div className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
                   SQLite Query Execution Plan
                 </div>

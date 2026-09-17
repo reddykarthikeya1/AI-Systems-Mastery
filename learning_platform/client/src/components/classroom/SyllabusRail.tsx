@@ -38,16 +38,13 @@ export const SyllabusRail: React.FC<SyllabusRailProps> = ({
           const isDone = completedLessons.includes(l.id);
 
           return (
-            <button
-              key={l.id}
-              onClick={() => onSelectLesson(l.file_path, l.id)}
-              aria-label={`Lesson ${idx + 1}: ${l.title} ${isDone ? '(completed)' : ''}`}
-              className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
                 active
                   ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
                   : 'text-fg-muted hover:text-fg hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
-              }`}
-            >
+              }`} key={l.id}
+              onClick={() => onSelectLesson(l.file_path, l.id)}
+              aria-label={`Lesson ${idx + 1}: ${l.title} ${isDone ? '(completed)' : ''}`} >
               <span className="line-clamp-1 flex items-center gap-2">
                 <span className="font-mono text-xs text-fg-subtle">
                   {(idx + 1).toString().padStart(2, '0')}

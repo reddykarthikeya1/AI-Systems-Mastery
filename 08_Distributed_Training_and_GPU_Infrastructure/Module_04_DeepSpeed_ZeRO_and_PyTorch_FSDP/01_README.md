@@ -1,5 +1,32 @@
 # Module 04: DeepSpeed ZeRO & PyTorch Fully Sharded Data Parallel (FSDP)
 
+
+## ZeRO Memory Partitioning Hierarchy (Deepspeed)
+
+```mermaid
+flowchart TD
+    subgraph Baseline["Baseline DDP (Redundant Storage on All GPUs)"]
+        BaseP["Parameters Ψ (4x bytes)"]
+        BaseG["Gradients Ψ (4x bytes)"]
+        BaseO["Optimizer States (12x bytes: FP32 Master + Mom + Var)"]
+        BaseTotal["Total Static: 16x Model Size per GPU!"]
+    end
+
+    subgraph ZeRO1["ZeRO-1: Optimizer State Partitioning (P_os)"]
+        Z1["Partition 12x bytes across N GPUs -> 4x Memory Reduction!"]
+    end
+
+    subgraph ZeRO2["ZeRO-2: + Gradient Partitioning (P_g)"]
+        Z2["Partition Gradients + Optimizer States -> 8x Memory Reduction!"]
+    end
+
+    subgraph ZeRO3["ZeRO-3: + Parameter Partitioning (P_p)"]
+        Z3["Partition Parameters, Gradients, and Optimizer States across N GPUs -> Linear Memory Scaling with Zero Redundancy!"]
+    end
+
+    Baseline --> ZeRO1 --> ZeRO2 --> ZeRO3
+```
+
 ## 1. Architectural Motivation & Theoretical Foundations
 
 In standard Distributed Data Parallel (DDP), distributed scaling is achieved by replicating model parameters and optimizer states across all $N_d$ ranks, broadcasting input batches across ranks, and synchronizing gradients using an `All-Reduce` collective.

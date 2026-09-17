@@ -5,6 +5,16 @@
 
 ---
 
+
+## Orthogonal Projection onto Subspace W
+
+```mermaid
+flowchart TD
+    b["Vector b ∈ ℝⁿ"] --> Proj["Orthogonal Projection onto Col(A):<br/>p = A (Aᵀ A)⁻¹ Aᵀ b"]
+    b --> Error["Error Residual Vector:<br/>e = b - p"]
+    Error --> Ortho["Orthogonality Condition:<br/>Aᵀ e = Aᵀ (b - Ax̂) = 0<br/>Error is perpendicular to every column in A!"]
+```
+
 ## Why this module exists
 
 <!-- GENERATED_ALGORITHM_DIAGRAM: SUBSPACE_PROJECTION_SVG START -->

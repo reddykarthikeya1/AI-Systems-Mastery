@@ -5,6 +5,18 @@
 
 ---
 
+
+## 2D Convolution Receptive Field & Feature Map Pipeline
+
+```mermaid
+flowchart LR
+    Input["Input Image<br/>(C_in x H x W)"] -->|"Kernel W (C_out x C_in x K_h x K_w) + Stride + Padding"| Conv["Convolved Activations<br/>(C_out x H_out x W_out)"]
+    Conv --> BN["BatchNorm2d"]
+    BN --> Act["ReLU / SiLU"]
+    Act --> Pool["MaxPool2d / Strided Conv"]
+    Pool --> Next["Next Hierarchical Stage"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

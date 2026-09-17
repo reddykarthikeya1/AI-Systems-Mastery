@@ -4,6 +4,30 @@
 
 ---
 
+
+## Warp Shuffle Butterfly Reduction Topology
+
+```mermaid
+flowchart TD
+    subgraph S1["Step 1: __shfl_xor_sync(mask, val, 16)"]
+        T0_16["Threads [0..15] combine with Threads [16..31]"]
+    end
+    subgraph S2["Step 2: __shfl_xor_sync(mask, val, 8)"]
+        T0_8["Threads [0..7] combine with Threads [8..15]"]
+    end
+    subgraph S3["Step 3: __shfl_xor_sync(mask, val, 4)"]
+        T0_4["Threads [0..3] combine with Threads [4..7]"]
+    end
+    subgraph S4["Step 4: __shfl_xor_sync(mask, val, 2)"]
+        T0_2["Threads [0..1] combine with Threads [2..3]"]
+    end
+    subgraph S5["Step 5: __shfl_xor_sync(mask, val, 1)"]
+        T0_final["Thread 0 holds Full Warp Sum in exactly 5 clock cycles!"]
+    end
+
+    S1 --> S2 --> S3 --> S4 --> S5
+```
+
 ## 1. The Naive GEMM Memory Wall
 
 Computing matrix multiplication $C = A \times B$ for $M \times K$ and $K \times N$ matrices:

@@ -5,6 +5,16 @@
 
 ---
 
+
+## Singular Value Decomposition (SVD) Geometry: A = U Σ Vᵀ
+
+```mermaid
+flowchart LR
+    UnitCircle["Input Unit Sphere in ℝⁿ"] -->|"1. Rotate by Vᵀ (Orthogonal Map)"| Rot1["Rotated Basis in ℝⁿ"]
+    Rot1 -->|"2. Scale by Singular Values Σ (Dilation)"| Scaled["Hyper-ellipsoid in ℝᵐ (Radii σᵢ)"]
+    Scaled -->|"3. Rotate by U (Orthogonal Map)"| Final["Transformed Output Space Col(A)"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

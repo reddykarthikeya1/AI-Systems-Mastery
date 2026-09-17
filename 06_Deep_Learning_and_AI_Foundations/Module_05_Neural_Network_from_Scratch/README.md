@@ -5,6 +5,21 @@
 
 ---
 
+
+## Adaptive Optimizers: Adam Moment Correction
+
+```mermaid
+flowchart TD
+    Grad["Raw Gradient g_t = ∇_θ L(θ_t)"] --> M1["1st Moment (Mean):<br/>m_t = β₁ m_{t-1} + (1 - β₁) g_t"]
+    Grad --> M2["2nd Moment (Variance):<br/>v_t = β₂ v_{t-1} + (1 - β₂) g_t²"]
+
+    M1 --> Corr1["Bias Correction:<br/>m_hat = m_t / (1 - β₁^t)"]
+    M2 --> Corr2["Bias Correction:<br/>v_hat = v_t / (1 - β₂^t)"]
+
+    Corr1 --> Update["Weight Step:<br/>θ_{t+1} = θ_t - η · m_hat / (sqrt(v_hat) + ε)"]
+    Corr2 --> Update
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

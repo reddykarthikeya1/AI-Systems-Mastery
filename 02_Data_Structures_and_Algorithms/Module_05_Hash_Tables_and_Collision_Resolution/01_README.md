@@ -6,6 +6,25 @@ Hash tables map arbitrary keys to fixed table indices using hash functions. In t
 
 ---
 
+
+## Hash Collision Resolution: Separate Chaining vs Robin Hood Probing
+
+```mermaid
+flowchart TD
+    subgraph SC["Separate Chaining (Bucket Array + Linked Nodes)"]
+        B0["Bucket 0"] --> N0["(K0, V0)"]
+        B1["Bucket 1 (Collision)"] --> N1A["(K1, V1)"] --> N1B["(K4, V4)"]
+        B2["Bucket 2"] --> N2["(K2, V2)"]
+    end
+
+    subgraph RH["Robin Hood Open Addressing (Linear Probing with PSL)"]
+        R0["[0]: Key A (PSL = 0)"]
+        R1["[1]: Key B (PSL = 1)"]
+        R2["[2]: Key C (PSL = 2)"]
+        R3["Insert Key D (PSL = 3) > Key C (PSL = 2) -> SWAP & DISPLACE"]
+    end
+```
+
 ## 1. Collision Resolution: Robin Hood Hashing vs Standard Linear Probing
 
 In standard linear probing, clusters grow rapidly (primary clustering), leading to catastrophic lookup variance. **Robin Hood Hashing** solves this:

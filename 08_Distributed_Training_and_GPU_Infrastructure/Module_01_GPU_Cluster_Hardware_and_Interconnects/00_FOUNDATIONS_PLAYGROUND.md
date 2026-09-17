@@ -7,6 +7,33 @@
 
 ---
 
+
+## GPU Cluster Interconnect Topology (NVLink vs InfiniBand)
+
+```mermaid
+flowchart TD
+    subgraph Node1["DGX H100 Server Node 1"]
+        GPU1_0["GPU 0"] <-->|NVLink 900 GB/s| NVSwitch1["NVSwitch Fabric"]
+        GPU1_1["GPU 1"] <-->|NVLink 900 GB/s| NVSwitch1
+        NIC1["ConnectX-7 NIC<br/>(400 Gb/s RoCE/IB)"]
+    end
+
+    subgraph Node2["DGX H100 Server Node 2"]
+        GPU2_0["GPU 0"] <-->|NVLink 900 GB/s| NVSwitch2["NVSwitch Fabric"]
+        GPU2_1["GPU 1"] <-->|NVLink 900 GB/s| NVSwitch2
+        NIC2["ConnectX-7 NIC<br/>(400 Gb/s RoCE/IB)"]
+    end
+
+    subgraph Spine["InfiniBand Quantum-2 Leaf-Spine Switch Fabric (3.2 Tb/s)"]
+        Leaf1["Leaf Switch 1"]
+        Leaf2["Leaf Switch 2"]
+    end
+
+    NIC1 <--> Leaf1
+    NIC2 <--> Leaf2
+    Leaf1 <--> Leaf2
+```
+
 ## 1. Intra-Node vs Inter-Node: The Two Highway Speeds
 
 In a modern AI training cluster (like Meta's 24,000 H100 cluster):

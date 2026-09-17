@@ -4,6 +4,26 @@
 
 ---
 
+
+## PyTorch DDP Computation & Communication Overlap
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Fwd as Forward Pass
+    participant Bwd as Backward Pass (Grads)
+    participant Bucket as DDP Bucket (25MB)
+    participant NCCL as NCCL AllReduce Stream
+
+    Fwd->>Bwd: Layer N Loss Computed
+    Bwd->>Bucket: Layer N Gradients Computed -> Placed in Bucket
+    Bwd->>Bucket: Layer N-1 Gradients Computed -> Bucket Full!
+    Bucket->>NCCL: Trigger Async AllReduce Bucket 1
+    Note over Bwd,NCCL: NCCL AllReduces Bucket 1 WHILE Backward computes Layer N-2!
+    Bwd->>Bucket: Layer N-2 Gradients Computed -> Bucket 2
+    NCCL-->>Bwd: Bucket 1 AllReduce Complete!
+```
+
 ## 1. DDP System Architecture
 
 ```

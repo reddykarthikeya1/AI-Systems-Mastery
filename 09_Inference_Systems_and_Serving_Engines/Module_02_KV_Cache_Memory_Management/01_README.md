@@ -1,5 +1,23 @@
 # Module 02: KV-Cache Memory Management
 
+
+## Traditional Contiguous KV Cache Memory Fragmentation
+
+```mermaid
+flowchart TD
+    subgraph Prealloc["Static Pre-Allocation for Max Sequence Length (e.g. 4096)"]
+        Req1["Request 1: Length 120 -> 3976 Slots Wasted!"]
+        Req2["Request 2: Length 500 -> 3596 Slots Wasted!"]
+        Req3["Request 3: Length 80 -> 4016 Slots Wasted!"]
+    end
+
+    subgraph Problem["GPU Memory Waste"]
+        Waste["Over 60-80% of GPU VRAM wasted due to internal and external fragmentation!"]
+    end
+
+    Prealloc --> Problem
+```
+
 ## 1. Mathematical Anatomy of Attention Caching
 
 In autoregressive generation, self-attention requires key and value tensors for all prior tokens.

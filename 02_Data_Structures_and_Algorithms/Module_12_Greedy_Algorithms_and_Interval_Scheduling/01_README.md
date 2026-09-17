@@ -6,6 +6,27 @@ Greedy algorithms build a solution piece by piece, always choosing the next piec
 
 ---
 
+
+## Greedy Interval Scheduling: Earliest Finish Time Selection
+
+```mermaid
+gantt
+    title Interval Scheduling: Greedy Optimal Selection
+    dateFormat X
+    axisFormat %s
+
+    section Rejected
+    Task A (Ends 4) : 0, 4
+    Task C (Ends 7) : 3, 7
+    Task E (Ends 9) : 6, 9
+
+    section Selected (Optimal)
+    Job 1 (Ends 2) :crit, active, 0, 2
+    Job 2 (Ends 5) :crit, active, 2, 5
+    Job 3 (Ends 8) :crit, active, 5, 8
+    Job 4 (Ends 10) :crit, active, 8, 10
+```
+
 ## 1. When Does Greedy Work?
 
 A problem can be solved by greedy if:

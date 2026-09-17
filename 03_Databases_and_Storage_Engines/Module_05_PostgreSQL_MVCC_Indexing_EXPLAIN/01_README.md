@@ -8,6 +8,17 @@ Welcome to **Module 05**. In this module, you will unlock the core mechanics beh
 
 ---
 
+
+## LSM-Tree Write Path: MemTable, WAL & SSTables
+
+```mermaid
+flowchart TD
+    Write["Write Transaction PUT(key, val)"] --> WAL["1. Append-Only Write-Ahead Log (WAL) -> Sequential Disk IO"]
+    Write --> MemTable["2. In-Memory SkipList / Red-Black Tree (MemTable)"]
+    MemTable -->|MemTable Reaches Threshold (64MB)| Flush["3. Immutable MemTable Flushed as Level 0 SSTable"]
+    Flush --> SSTable["Disk SSTable File (Sorted Data + Index Block + Bloom Filter)"]
+```
+
 ## 🕒 1. Multi-Version Concurrency Control (MVCC) Internals
 
 In PostgreSQL, **readers never block writers, and writers never block readers**. This is achieved by storing multiple physical versions of each row (tuple) in the heap table simultaneously.

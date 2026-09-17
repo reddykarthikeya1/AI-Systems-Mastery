@@ -5,6 +5,17 @@
 
 ---
 
+
+## Covariance Matrix & Principal Components Ellipsoid
+
+```mermaid
+flowchart TD
+    Data["Zero-Mean Data Matrix X"] --> Cov["Sample Covariance Matrix:<br/>Σ = (1/N) Xᵀ X"]
+    Cov --> Spectral["Eigendecomposition: Σ = V Λ Vᵀ"]
+    Spectral --> PC1["1st Principal Component (v₁):<br/>Direction of Maximum Variance (λ₁)"]
+    Spectral --> PC2["2nd Principal Component (v₂ ⟂ v₁):<br/>Orthogonal Direction of 2nd Largest Variance (λ₂)"]
+```
+
 ## Why this module exists
 
 <!-- The one question this module answers that no other module does. Two or

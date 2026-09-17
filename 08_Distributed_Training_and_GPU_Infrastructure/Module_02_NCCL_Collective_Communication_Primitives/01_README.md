@@ -4,6 +4,32 @@
 
 ---
 
+
+## NCCL Ring AllReduce Step Progression
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant G0 as GPU 0
+    participant G1 as GPU 1
+    participant G2 as GPU 2
+    participant G3 as GPU 3
+
+    Note over G0,G3: Phase 1: Scatter-Reduce (N-1 = 3 ring steps)
+    G0->>G1: Send Chunk 0, Reduce locally
+    G1->>G2: Send Chunk 1, Reduce locally
+    G2->>G3: Send Chunk 2, Reduce locally
+    G3->>G0: Send Chunk 3, Reduce locally
+    Note over G0,G3: Each GPU now possesses exactly 1 fully reduced chunk!
+
+    Note over G0,G3: Phase 2: AllGather (N-1 = 3 ring steps)
+    G0->>G1: Send fully reduced Chunk 3
+    G1->>G2: Send fully reduced Chunk 0
+    G2->>G3: Send fully reduced Chunk 1
+    G3->>G0: Send fully reduced Chunk 2
+    Note over G0,G3: All GPUs now possess complete updated gradient buffer!
+```
+
 ## 1. Core Collective Communication Operations
 
 In distributed machine learning, communication between ranks is defined by standard collective primitives:

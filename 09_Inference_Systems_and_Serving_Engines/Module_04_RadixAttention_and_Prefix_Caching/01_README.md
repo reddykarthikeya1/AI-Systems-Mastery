@@ -1,5 +1,27 @@
 # Module 04: RadixAttention & Hierarchical Prefix Caching (SGLang)
 
+
+## Continuous (Iteration-Level) Batching vs Static Batching
+
+```mermaid
+gantt
+    title Serving Batch Scheduling: Continuous vs Static
+    dateFormat X
+    axisFormat %s
+
+    section Static Batching (Bubbles)
+    Req A (Tokens 1-4) :crit, 0, 4
+    Req B (Tokens 1-2) :active, 0, 2
+    Req B Wasted Idle :done, 2, 4
+    Req C (Blocked Waiting) :crit, 4, 8
+
+    section Continuous Batching (Orca)
+    Req A (Tokens 1-4) :active, 0, 4
+    Req B (Tokens 1-2) :active, 0, 2
+    Req C (Inserts at Step 2) :crit, 2, 6
+    Req D (Inserts at Step 4) :crit, 4, 7
+```
+
 ## 1. Systems Architecture of RadixAttention
 
 RadixAttention (Zheng et al., SGLang 2024) models the lifetime KV-cache state of an LLM serving engine as a Radix Tree (compact Trie) over token IDs.

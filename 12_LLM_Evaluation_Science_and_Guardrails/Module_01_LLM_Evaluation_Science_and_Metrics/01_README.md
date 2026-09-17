@@ -1,5 +1,24 @@
 # Module 01: LLM Evaluation Science and Metrics
 
+
+## Multi-Tiered LLM Evaluation & Guardrails Defense
+
+```mermaid
+flowchart TD
+    UserPrompt["Incoming User Prompt"] --> InputGuard["Input Guardrail (Llama-Guard / Semantic Filter)"]
+    InputGuard -->|Clean| Model["Target Model Generation"]
+    InputGuard -->|Injection / Attack Detected| Block["403 Forbidden Block Response"]
+
+    Model --> OutputGuard["Output Guardrail (Hallucination / PII Filter)"]
+    OutputGuard -->|Safe| Response["Safe Verified Response to User"]
+    OutputGuard -->|Violation| Redact["Fallback Safe Redacted Response"]
+
+    subgraph EvalHarness["Offline Evaluation Pipeline"]
+        Golden["Golden Dataset Evaluation"] --> LLMJudge["LLM-as-a-Judge Pairwise Scoring"]
+        LLMJudge --> Metric["Faithfulness, Precision, Toxicity Metrics"]
+    end
+```
+
 ## 1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment
 
 Evaluating natural language generation (NLG) spans three distinct algorithmic generations:

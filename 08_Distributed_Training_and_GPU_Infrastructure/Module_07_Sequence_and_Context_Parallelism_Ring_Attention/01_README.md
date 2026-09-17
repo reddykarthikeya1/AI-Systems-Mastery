@@ -1,5 +1,47 @@
 # Module 07: Sequence & Context Parallelism (Ring Attention & DeepSpeed Ulysses)
 
+
+## Pipeline Parallelism 1F1B Scheduling Schedule
+
+```mermaid
+gantt
+    title Pipeline 1F1B Execution Timeline (4 Stages)
+    dateFormat X
+    axisFormat %s
+
+    section Stage 0
+    F0 :active, 0, 1
+    F1 :active, 1, 2
+    F2 :active, 2, 3
+    F3 :active, 3, 4
+    B0 :crit, 4, 5
+    F4 :active, 5, 6
+    B1 :crit, 6, 7
+
+    section Stage 1
+    Idle :crit, 0, 1
+    F0 :active, 1, 2
+    F1 :active, 2, 3
+    F2 :active, 3, 4
+    F3 :active, 4, 5
+    B0 :crit, 5, 6
+    F4 :active, 6, 7
+
+    section Stage 2
+    Idle :crit, 0, 2
+    F0 :active, 2, 3
+    F1 :active, 3, 4
+    F2 :active, 4, 5
+    B0 :crit, 6, 7
+
+    section Stage 3
+    Idle :crit, 0, 3
+    F0 :active, 3, 4
+    F1 :active, 4, 5
+    B0 :crit, 5, 6
+    B1 :crit, 6, 7
+```
+
 ## 1. Algorithmic Foundation: Ring Attention
 
 Ring Attention (Liu et al., 2023) shards long sequences along the sequence dimension across $N_{\text{cp}}$ context-parallel devices, executing attention computation concurrently while circulating Key ($K$) and Value ($V$) blocks in a logical ring topology.

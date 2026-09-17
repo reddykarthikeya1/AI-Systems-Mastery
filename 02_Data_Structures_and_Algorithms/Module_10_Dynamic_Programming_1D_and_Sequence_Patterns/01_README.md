@@ -6,6 +6,24 @@ Dynamic Programming (DP) systematically avoids exponential redundant recalculati
 
 ---
 
+
+## 1D Dynamic Programming: Longest Increasing Subsequence DAG
+
+```mermaid
+flowchart LR
+    subgraph Array["Input Array"]
+        I0["[0]: 10"] --- I1["[1]: 9"] --- I2["[2]: 2"] --- I3["[3]: 5"] --- I4["[4]: 3"] --- I5["[5]: 7"] --- I6["[6]: 101"]
+    end
+
+    subgraph DP["Subproblem Transition Dependencies"]
+        D2["dp[2]=1 (val: 2)"] -->|2 < 5| D3["dp[3]=2 (val: 5)"]
+        D2 -->|2 < 3| D4["dp[4]=2 (val: 3)"]
+        D3 -->|5 < 7| D5["dp[5]=3 (val: 7)"]
+        D4 -->|3 < 7| D5
+        D5 -->|7 < 101| D6["dp[6]=4 (val: 101)"]
+    end
+```
+
 ## 1. The 4-Step DP Framework
 
 1. **State Definition**: What does $dp[i]$ represent mathematically?

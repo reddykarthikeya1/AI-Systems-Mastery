@@ -20,6 +20,24 @@ That script is this page, in order, with the assertions left in. If it prints
 
 ---
 
+
+## Slotted-Page Physical Storage Architecture
+
+```mermaid
+flowchart TD
+    subgraph Page["Physical 4KB / 8KB Database Page Frame"]
+        Header["Page Header (LSN, TxID, Slot Count, FreeSpace Pointer)"]
+        Slots["Slot Array (Line Pointers): [Slot 0: offset=3900, len=100] [Slot 1: offset=3750, len=150]"]
+        FreeSpace["Free Unallocated Space Gap (Shrinks from middle)"]
+        Tuple1["Tuple Record 1 (Variable-Length Data)"]
+        Tuple0["Tuple Record 0 (Variable-Length Data)"]
+    end
+
+    Header --> Slots
+    Slots --> FreeSpace
+    FreeSpace --> Tuple1 --> Tuple0
+```
+
 ## 0. Everything this page needs
 
 Nothing here is installed. These all ship with Python.

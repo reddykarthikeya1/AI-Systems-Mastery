@@ -487,7 +487,7 @@ export const App: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0B0F17] text-slate-900 dark:text-slate-100 transition-colors font-sans antialiased">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-bg text-slate-900 dark:text-slate-100 transition-colors font-sans antialiased">
       {/* Accessibility: Skip-to-content link */}
       <a 
         href="#main-content" 
