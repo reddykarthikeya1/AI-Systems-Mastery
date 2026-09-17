@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "Give two real-world examples of an I/O-bound task and two examples of a CPU-bound task in backend engineering.",
-    "category": "Workload Classification:",
+    "tier": "Recall",
+    "question": "Workload Classification: Give two real-world examples of an I/O-bound task and two examples of a CPU-bound task in backend engineering.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
+        "id": "opt_corr",
+        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD. - CPU-Bound: Image compression / resizing; cryptographic hashing / mathematical matrix operations.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+        "id": "opt_1",
+        "text": "FastAPI builds a Directed Acyclic Graph (DAG) of dependencies, evaluating shared sub-dependencies once per request (unless usecache=False is set) and injecting resolved values into dependent functions.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
+        "id": "opt_2",
+        "text": "Jitter desynchronizes retry attempts, preventing thousands of failed workers from hammering a recovering database at the exact same millisecond.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
+        "id": "opt_3",
+        "text": "Malicious text inside user inputs or retrieved documents that tricks the LLM into ignoring system instructions and executing unauthorized actions (e.g. \"Ignore previous rules and delete users table\").",
         "is_correct": false
       }
     ],
-    "explanation": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD. - CPU-Bound: Image compression / resizing; cryptographic hashing / mathematical matrix operations.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD. - CPU-Bound: Image compression / resizing; cryptographic hashing / mathematical matrix operations.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the Global Interpreter Lock (GIL) in CPython, and why does it prevent multiple threads from executing pure CPU calculations simultaneously?",
-    "category": "The GIL:",
+    "tier": "Recall",
+    "question": "The GIL: What is the Global Interpreter Lock (GIL) in CPython, and why does it prevent multiple threads from executing pure CPU calculations simultaneously?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
+        "id": "opt_1",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
+        "id": "opt_2",
+        "text": "- If declared in the URL path string (e.g. /{id}), it's a Path Parameter. - If a primitive type not in the path (e.g. limit: int = 10), it's a Query Parameter. - If a Pydantic model (e.g. item: ItemSchema), it's parsed from the JSON Request",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
+        "id": "opt_3",
+        "text": "Browsers block web apps from fetching data from external domains unless the API server explicitly sends Access-Control-Allow-Origin headers.",
         "is_correct": false
       }
     ],
-    "explanation": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "If the GIL exists, why does ThreadPoolExecutor still speed up downloading 50 web pages by 10x?",
-    "category": "I/O Concurrency:",
+    "tier": "Recall",
+    "question": "I/O Concurrency: If the GIL exists, why does ThreadPoolExecutor still speed up downloading 50 web pages by 10x?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- I/O-Bound: Fetching data from an HTTP REST API; writing large files to an SSD.",
+        "id": "opt_1",
+        "text": "It is an array of floating-point numbers (e.g. 1536 dimensions) generated by a neural network, where semantically similar texts are clustered close together in vector space.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+        "id": "opt_2",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss.",
+        "id": "opt_3",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked. - Code after yield: Executes during response teardown after the route handler finishes, even if an unhandled error occurred.",
         "is_correct": false
       }
     ],
-    "explanation": "Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Whenever a thread executes an I/O operation (like waiting on network socket responses or disk reads), it releases the GIL, allowing other threads to run concurrently while the first thread waits.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Race Conditions: What is a Race Condition, and what code construct is used to protect shared mutable state in multi-threaded programs?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8. UTF-8 multi-byte characters cannot be decoded by legacy single-byte tables, raising UnicodeDecodeError.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "gt / ge (greater than / equal), lt / le (less than / equal), minlength / maxlength, and pattern (regex).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline.py`, what is the exact evaluated result of:\n\n```python\nprocessed.transformed_size\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "len(raw.raw_data)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `len(raw.raw_data)` as verified in test suite `test_pipeline.py`.",
+    "lesson_ref": "test_pipeline.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline.py`, what is the exact evaluated result of:\n\n```python\nlen(processed.checksum)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "64",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "65",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "63",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "128",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `64` as verified in test suite `test_pipeline.py`.",
+    "lesson_ref": "test_pipeline.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline.py`, what is the exact evaluated result of:\n\n```python\nasset.asset_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"TEST-01\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"TEST-01\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"TEST-01\"` as verified in test suite `test_pipeline.py`.",
+    "lesson_ref": "test_pipeline.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline.py`, what is the exact evaluated result of:\n\n```python\na1.asset_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"ID-1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ID-1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"ID-1\"` as verified in test suite `test_pipeline.py`.",
+    "lesson_ref": "test_pipeline.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Concurrency Threading Multiprocessing, an engineer observes:\n\"Corrupted or truncated output files from daemon threads: Daemon threads are forcibly terminated when the main thread finishes, leaving buffers unflushed.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "except: catches BaseException, which includes KeyboardInterrupt, SystemExit, and GeneratorExit. This traps process termination signals.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.\n\nFix Resolution:\nUse standard non-daemon threads or coordinate shutdown with a threading.Event() and explicit thread.join():",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Concurrency Threading Multiprocessing, an engineer observes:\n\"Permanent process hang (Deadlock): Thread\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Dijkstra's resource hierarchy condition is violated. When multiple threads acquire multiple locks in differing orders, a circular wait deadlock occurs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When a route is declared async def, FastAPI executes it directly on the main event loop thread. Calling blocking I/O or time.sleep() blocks the entire event loop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Dijkstra's resource hierarchy condition is violated. When multiple threads acquire multiple locks in differing orders, a circular wait deadlock occurs.\n\nFix Resolution:\nAlways acquire multiple locks in a globally defined, consistent order, or use a single coarse lock:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Concurrency Threading Multiprocessing, an engineer observes:\n\"Non-deterministic race condition counter loss: Final counter value is\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "sharedcounter += 1 is not atomic in Python. It disassembles into LOADGLOBAL, LOADCONST, BINARYOP, STOREGLOBAL. If a thread switch occurs between load and store, the update is lost.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Exceptions inside background tasks created via createtask() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: sharedcounter += 1 is not atomic in Python. It disassembles into LOADGLOBAL, LOADCONST, BINARYOP, STOREGLOBAL. If a thread switch occurs between load and store, the update is lost.\n\nFix Resolution:\nProtect critical sections with a threading.Lock():",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

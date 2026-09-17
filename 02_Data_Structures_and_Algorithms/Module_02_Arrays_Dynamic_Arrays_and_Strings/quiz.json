@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'An element pairs with itself', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Arrays Dynamic Arrays and Strings, what core system invariant does '1. Physical Hardware Memory Layout & Cache Physics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2 x == target, x matches itself and the function returns the same index twice. The output is structurally valid \u2014 two indices, and",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Physical Hardware Memory Layout & Cache Physics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2 x == target, x matches itself and the function returns the same index twice. The output is structurally valid \u2014 two indices, and",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Physical Hardware Memory Layout & Cache Physics' in Arrays Dynamic Arrays and Strings.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'An all-negative window sums to zero', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Arrays Dynamic Arrays and Strings, what core system invariant does '2. Dynamic Array Geometric Resizing & Amortization Proofs' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has. This bug is invisible on any input containin",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Dynamic Array Geometric Resizing & Amortization Proofs.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has. This bug is invisible on any input containin",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Dynamic Array Geometric Resizing & Amortization Proofs' in Arrays Dynamic Arrays and Strings.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 02 Arrays Dynamic Arrays and Strings triage of defect 'Subarrays starting at index 0 are not counted', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Arrays Dynamic Arrays and Strings, what core system invariant does '3. CPython List & String Memory Internals (PEP 393)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the empty prefix, whose sum is 0 \u2014 so unless the map is seeded with {0: 1}, every such subarray is missed. The undercount is small and data-dependent: it",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. CPython List & String Memory Internals (PEP 393).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the empty prefix, whose sum is 0 \u2014 so unless the map is seeded with {0: 1}, every such subarray is missed. The undercount is small and data-dependent: it",
+    "explanation": "Specification detail defined under '3. CPython List & String Memory Internals (PEP 393)' in Arrays Dynamic Arrays and Strings.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Arrays Dynamic Arrays and Strings, what core system invariant does '4. The 4 Foundational Algorithmic Patterns' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. The 4 Foundational Algorithmic Patterns.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. The 4 Foundational Algorithmic Patterns' in Arrays Dynamic Arrays and Strings.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m02_problems.py`, what is the exact evaluated result of:\n\n```python\nmin_ship_capacity([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "15",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "16",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "14",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "30",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `15` as verified in test suite `test_m02_problems.py`.",
+    "lesson_ref": "test_m02_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dynamic_array_engine.py`, what is the exact evaluated result of:\n\n```python\narr.capacity\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "16",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "17",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "15",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "32",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `16` as verified in test suite `test_dynamic_array_engine.py`.",
+    "lesson_ref": "test_dynamic_array_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m02_problems.py`, what is the exact evaluated result of:\n\n```python\nlongest_k_distinct(big, 2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_m02_problems.py`.",
+    "lesson_ref": "test_m02_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m02_problems.py`, what is the exact evaluated result of:\n\n```python\nmax_window_sum(big, 1000)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "sum(range(99_000",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `sum(range(99_000` as verified in test suite `test_m02_problems.py`.",
+    "lesson_ref": "test_m02_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Arrays Dynamic Arrays and Strings, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 Subarrays starting at index 0 are not counted\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ">= shrinks the window as soon as it holds k distinct characters, but k distinct is exactly what the problem permits. The window is therefore capped at k - 1 distinct characters and every answer comes back short \u2014 for k=2 it reports 1 where ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Arrays Dynamic Arrays and Strings, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 An all-negative window sums to zero\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Returning False for an unrecognised class conflates two completely different statements:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Arrays Dynamic Arrays and Strings, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The search range admits capacities too small to carry the heaviest package. daysneeded does not reject those: for an oversized package it opens a new day and then loads it anyway, so the count it returns is achievable only by a ship that ca",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "isword is set on insert and then never read, so search and startswith are literally the same operation. Every prefix of every stored word is reported as a stored word.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The search range admits capacities too small to carry the heaviest package. daysneeded does not reject those: for an oversized package it opens a new day and then loads it anyway, so the count it returns is achievable only by a ship that cannot actually exist.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Arrays Dynamic Arrays and Strings, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 An element pairs with itself\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

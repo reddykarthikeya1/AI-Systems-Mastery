@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 01 Inference Latency Throughput Tradeoffs failure 'Top Production Failure Modes in Inference Serving', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Inference Latency Throughput Tradeoffs, what core system invariant does '1. Architectural Foundations of LLM Inference' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. - Fix: Wire HTTP disco",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations of LLM Inference.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": GPU utilization remains at 100%, but server throughput drops; client timeouts spike. - Root Cause: When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generati",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 Inference Latency Throughput Tradeoffs exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 Inference Latency Throughput Tradeoffs: : When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. - Fix: Wire HTTP disco. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Architectural Foundations of LLM Inference' in Inference Latency Throughput Tradeoffs.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Architectural Foundations of LLM Inference play in 01 Inference Latency Throughput Tradeoffs?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Inference Latency Throughput Tradeoffs, what core system invariant does '2. Computational Regimes: Prefill vs. Decode' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations of LLM Inference is essential for maintaining predictable invariants and high performance in 01 Inference Latency Throughput Tradeoffs.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Computational Regimes: Prefill vs. Decode.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations of LLM Inference is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations of LLM Inference in 01 Inference Latency Throughput Tradeoffs specifications.",
+    "explanation": "Specification detail defined under '2. Computational Regimes: Prefill vs. Decode' in Inference Latency Throughput Tradeoffs.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Computational Regimes: Prefill vs. Decode play in 01 Inference Latency Throughput Tradeoffs?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Inference Latency Throughput Tradeoffs, what core system invariant does '3. The Pareto Frontier: Throughput vs. Latency' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Computational Regimes: Prefill vs. Decode is essential for maintaining predictable invariants and high performance in 01 Inference Latency Throughput Tradeoffs.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. The Pareto Frontier: Throughput vs. Latency.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Computational Regimes: Prefill vs. Decode is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Computational Regimes: Prefill vs. Decode in 01 Inference Latency Throughput Tradeoffs specifications.",
+    "explanation": "Specification detail defined under '3. The Pareto Frontier: Throughput vs. Latency' in Inference Latency Throughput Tradeoffs.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Inference Latency Throughput Tradeoffs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Inference Latency Throughput Tradeoffs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Inference Latency Throughput Tradeoffs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: GPU utilization remains at 100%, but server throughput drops; client timeouts spike.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Inference Latency Throughput Tradeoffs, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Inference Serving'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -\n: Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Inference Latency Throughput Tradeoffs workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. -",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Inference Latency Throughput Tradeoffs workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

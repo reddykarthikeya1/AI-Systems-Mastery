@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What is the technical difference in responsibility between new and init when creating a new class instance?",
-    "category": "Object Lifecycle:",
+    "tier": "Recall",
+    "question": "Object Lifecycle: What is the technical difference in responsibility between new and init when creating a new class instance?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
+        "id": "opt_corr",
+        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance. - init(self) is the initializer: it accepts the newly allocated instance and configures its attributes.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
+        "id": "opt_1",
+        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
+        "id": "opt_2",
+        "text": "- async def: Runs directly on the main event loop. - def: Offloaded to an external thread pool (anyio.tothread) to safely execute synchronous blocking code without starving the event loop.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Properties maintain a clean, pythonic public API (account.",
+        "id": "opt_3",
+        "text": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
         "is_correct": false
       }
     ],
-    "explanation": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance. - init(self) is the initializer: it accepts the newly allocated instance and configures its attributes.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - new(cls) is the constructor: it allocates the raw memory and returns the newly created instance. - init(self) is the initializer: it accepts the newly allocated instance and configures its attributes.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "When should you use a @classmethod instead of a standard instance method or @staticmethod?",
-    "category": "Method Types:",
+    "tier": "Recall",
+    "question": "Method Types: When should you use a @classmethod instead of a standard instance method or @staticmethod?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
+        "id": "opt_corr",
+        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.g., Date.fromtimestamp(ts) or User.fromjson(raw)).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
+        "id": "opt_1",
+        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
+        "id": "opt_2",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Properties maintain a clean, pythonic public API (account.",
+        "id": "opt_3",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": false
       }
     ],
-    "explanation": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.g., Date.fromtimestamp(ts) or User.fromjson(raw)).",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.g., Date.fromtimestamp(ts) or User.fromjson(raw)).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "In Python, what does the double leading underscore (e.g. self.secretkey) actually do to the variable name?",
-    "category": "Encapsulation:",
+    "tier": "Recall",
+    "question": "Encapsulation: In Python, what does the double leading underscore (e.g. self.secretkey) actually do to the variable name?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.",
+        "id": "opt_corr",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance.",
+        "id": "opt_1",
+        "text": "Attempting to insert a duplicate idempotencykey raises a unique key violation, allowing the handler to return the previous successful result instead of charging again.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Use @classmethod when you need access to the class object itself (cls) rather than a specific instance\u2014most commonly to implement alternative factory constructors (e.",
+        "id": "opt_2",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Properties maintain a clean, pythonic public API (account.",
+        "id": "opt_3",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": false
       }
     ],
-    "explanation": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Property Protocol: Why are Python properties (@property) preferred over Java-style getvalue() and setvalue() methods?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Properties maintain a clean, pythonic public API (account.balance = 500) while allowing you to add validation, computations, and access logging under the hood without breaking backwards compatibility for callers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Because source code changes frequently while dependencies change rarely. Placing dependencies first allows Docker to reuse cached layers, cutting build times from minutes to seconds.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler) 5. CPython Virtual Machine (PVM / ceval.c) (Evaluation Loop)",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Properties maintain a clean, pythonic public API (account.balance = 500) while allowing you to add validation, computations, and access logging under the hood without breaking backwards compatibility for callers.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_banking_system.py`, what is the exact evaluated result of:\n\n```python\nstr(c1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"$100.00\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"$100.00\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"$100.00\"` as verified in test suite `test_banking_system.py`.",
+    "lesson_ref": "test_banking_system.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_banking_system.py`, what is the exact evaluated result of:\n\n```python\ntotal_usd\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Currency(1200.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `Currency(1200.0` as verified in test suite `test_banking_system.py`.",
+    "lesson_ref": "test_banking_system.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_banking_system.py`, what is the exact evaluated result of:\n\n```python\nacc_b.balance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Currency(500.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `Currency(500.0` as verified in test suite `test_banking_system.py`.",
+    "lesson_ref": "test_banking_system.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_banking_system.py`, what is the exact evaluated result of:\n\n```python\nacc_a.balance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Currency(700.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `Currency(700.0` as verified in test suite `test_banking_system.py`.",
+    "lesson_ref": "test_banking_system.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Deep OOP, an engineer observes:\n\"Shared transaction history across all customer accounts: Bob's account instance displays deposits made by Alice.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.\n\nFix Resolution:\nInitialize instance-specific attributes inside init:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Deep OOP, an engineer observes:\n\"Broken cooperative inheritance (MRO bypass): SecurityMixin.log is skipped because AuditMixin hardcodes BaseService.log(self, ...).\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Iterating through active WebSockets and awaiting sendtext() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "asyncio operates on cooperative multitasking. When time.sleep() is called, control is never yielded back to the event loop, freezing all other pending tasks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.\n\nFix Resolution:\nAlways use super().log(...):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Deep OOP, an engineer observes:\n\"TypeError when using custom object as dictionary key:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In Python 3, defining eq automatically sets hash = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, hash must be explicitly implemented.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In Python 3, defining eq automatically sets hash = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, hash must be explicitly implemented.\n\nFix Resolution:\nImplement hash using the immutable identifying fields:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "In 11 Joint Distributions and Covariance triage of defect 'none', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Joint Distributions and Covariance.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 2,
-    "question": "In 11 Joint Distributions and Covariance triage of defect 'population variance where the sample estimator was needed', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'What you will be able to do' in Joint Distributions and Covariance.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 3,
-    "question": "In 11 Joint Distributions and Covariance triage of defect 'dividing by the variances instead of the standard deviations', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Lessons' in Joint Distributions and Covariance.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Joint Distributions and Covariance.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Joint Distributions of Two Variables'?",
+    "category": "Architecture: Joint Distributions of Two Var",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Joint Distributions of Two Variables.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Joint Distributions of Two Variables.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Marginal Distributions'?",
+    "category": "Architecture: Marginal Distributions",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Marginal Distributions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Marginal Distributions.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Conditional Distributions'?",
+    "category": "Architecture: Conditional Distributions",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Conditional Distributions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Conditional Distributions.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Independence in Terms of Joints'?",
+    "category": "Architecture: Independence in Terms of Joint",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Independence in Terms of Joints.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Independence in Terms of Joints.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 9,
+    "tier": "Recall",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Joint, Marginal and Conditional Densities'?",
+    "category": "Architecture: Joint, Marginal and Conditiona",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Joint, Marginal and Conditional Densities.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Joint, Marginal and Conditional Densities.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Joint Distributions and Covariance, what core engineering trade-off or invariant is addressed by 'Covariance'?",
+    "category": "Architecture: Covariance",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Covariance.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Covariance.",
+    "lesson_ref": "README.md"
   }
 ]

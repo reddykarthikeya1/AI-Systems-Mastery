@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 08 Graph Algorithms Traversals and DAGs triage of defect 'Diagonally touching cells are merged into one island', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Graph Algorithms Traversals and DAGs, what core system invariant does '1. Graph Representations: Matrix vs Adjacency List' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only. The count is always a plausible small integer and is correct on any grid whose ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Graph Representations: Matrix vs Adjacency List.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only. The count is always a plausible small integer and is correct on any grid whose ",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Graph Representations: Matrix vs Adjacency List' in Graph Algorithms Traversals and DAGs.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 08 Graph Algorithms Traversals and DAGs triage of defect 'A valid DAG is reported as cyclic', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Graph Algorithms Traversals and DAGs, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to do. The di",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to do. The di",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Graph Algorithms Traversals and DAGs.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 08 Graph Algorithms Traversals and DAGs triage of defect 'A cyclic graph still returns an ordering', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Graph Algorithms Traversals and DAGs, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away. Callers receive a shorter list that is a perfectly",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away. Callers receive a shorter list that is a perfectly",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Graph Algorithms Traversals and DAGs.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Graph Algorithms Traversals and DAGs, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Graph Algorithms Traversals and DAGs.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m08_problems.py`, what is the exact evaluated result of:\n\n```python\ncount_components(3, [(0, 1), (1, 2), (2, 0)])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_m08_problems.py`.",
+    "lesson_ref": "test_m08_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m08_problems.py`, what is the exact evaluated result of:\n\n```python\nnum_islands(big)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_m08_problems.py`.",
+    "lesson_ref": "test_m08_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m08_problems.py`, what is the exact evaluated result of:\n\n```python\ntopological_order(4, [(0, 1), (0, 2), (1, 3), (2, 3)])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[0, 1, 2, 3]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[0, 1, 2, 3]` as verified in test suite `test_m08_problems.py`.",
+    "lesson_ref": "test_m08_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m08_problems.py`, what is the exact evaluated result of:\n\n```python\nword_ladder(\"a\", \"c\", [\"a\", \"b\", \"c\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_m08_problems.py`.",
+    "lesson_ref": "test_m08_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Graph Algorithms Traversals and DAGs, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Graph Algorithms Traversals and DAGs, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Diagonally touching cells are merged into one island\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Graph Algorithms Traversals and DAGs, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 A cyclic graph still returns an ordering\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Graph Algorithms Traversals and DAGs, an engineer observes:\n\"Is being reached twice the same as being in a cycle? - The DFS has two states: visited and not visited. What third piece of information do you need to distinguish 'on the current path' from 'finished, reached by another route'?\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Merging and scheduling are different questions and need different orderings. Merging cares where intervals",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to do.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

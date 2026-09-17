@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode?",
-    "category": "How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode?",
+    "tier": "Recall",
+    "question": "How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode? How does SQLite Write-Ahead Logging (WAL) differ from the default ROLLBACK journal mode?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "No. Readers never block writers, and writers never block readers....",
+        "id": "opt_1",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+        "id": "opt_2",
+        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "id": "opt_3",
+        "text": "A shared-memory index file mapping WAL frame numbers to database page numbers for fast $O(1)$ reader lookups.",
         "is_correct": false
       }
     ],
-    "explanation": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Can readers block writers in SQLite WAL mode?",
-    "category": "Can readers block writers in SQLite WAL mode?",
+    "tier": "Recall",
+    "question": "Can readers block writers in SQLite WAL mode? Can readers block writers in SQLite WAL mode?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "No. Readers never block writers, and writers never block readers....",
+        "id": "opt_corr",
+        "text": "No. Readers never block writers, and writers never block readers.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+        "id": "opt_1",
+        "text": "It eliminates race conditions by reading and updating the document in a single atomic database operation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+        "id": "opt_2",
+        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "id": "opt_3",
+        "text": "B-Trees excel on high-cardinality keys. On low-cardinality keys (boolean/status), B-Trees provide minimal selectivity unless combined in composite or partial indexes.",
         "is_correct": false
       }
     ],
-    "explanation": "No. Readers never block writers, and writers never block readers.",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: No. Readers never block writers, and writers never block readers.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What does PRAGMA synchronous = NORMAL guarantee in WAL mode?",
-    "category": "What does PRAGMA synchronous = NORMAL guarantee in WAL mode?",
+    "tier": "Recall",
+    "question": "What does PRAGMA synchronous = NORMAL guarantee in WAL mode? What does PRAGMA synchronous = NORMAL guarantee in WAL mode?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+        "id": "opt_1",
+        "text": "A deletion marker recorded in SSTables; reading across deleted rows requires scanning all tombstones until compaction purges them.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "No. Readers never block writers, and writers never block readers....",
+        "id": "opt_2",
+        "text": "The ratio of physical bytes written to storage media relative to logical bytes written by the user application.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "id": "opt_3",
+        "text": "Inserting single rows or micro-batches faster than background compaction can merge them.",
         "is_correct": false
       }
     ],
-    "explanation": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What causes a -wal file to grow indefinitely? What causes a -wal file to grow indefinitely?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Data Guard replicates physical block redo for an entire database; GoldenGate performs logical transactional replication across heterogeneous databases and tables.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sqlite_wal_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(nearby)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_sqlite_wal_engine.py`.",
+    "lesson_ref": "test_sqlite_wal_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sqlite_wal_engine.py`, what is the exact evaluated result of:\n\n```python\nnearby[1][\"user_email\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"oakland_user@test.com\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"OAKLAND_USER@TEST.COM\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"oakland_user@test.com\"` as verified in test suite `test_sqlite_wal_engine.py`.",
+    "lesson_ref": "test_sqlite_wal_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sqlite_wal_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_sqlite_wal_engine.py`.",
+    "lesson_ref": "test_sqlite_wal_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sqlite_wal_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(row[\"checksum\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "64",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "65",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "63",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "128",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `64` as verified in test suite `test_sqlite_wal_engine.py`.",
+    "lesson_ref": "test_sqlite_wal_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Embedded Databases SQLite WAL, an engineer observes:\n\"System fault during operation: Database is Locked Exception on High Concurrent Ingestion\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "SQLite connection initialized without setting PRAGMA busytimeout, causing any writer encountering a momentary lock to crash immediately with SQLITEBUSY.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: SQLite connection initialized without setting PRAGMA busytimeout, causing any writer encountering a momentary lock to crash immediately with SQLITEBUSY.\n\nFix Resolution:\nExecute cur.execute('PRAGMA busytimeout = 5000;') upon connection initialization.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Pacing & Ambiguity: In a 45-minute technical system design interview, your interviewer asks: \"Design YouTube.\" What should be your immediate next action?",
-    "category": "Pacing & Ambiguity",
+    "tier": "Recall",
+    "question": "In System Design Fundamentals Interview Playbook, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_a",
-        "text": "Start drawing a multi-region CDN architecture and video transcoding queue.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_b",
-        "text": "Clarify functional requirements (e.g., video upload and video viewing) and non-functional bounds (daily active users, resolution, global audience).",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_c",
-        "text": "Ask which database engine they prefer you use.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_d",
-        "text": "Write the SQL schema for user accounts.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Interviewers intentionally give vague prompts like \"Design YouTube\" to evaluate how you handle ambiguity. Jumping straight into architecture without scoping guarantees failure. You must spend the first 5 minutes establishing constraints: upload size, viewing volume, read-to-write ratio, and whether search or live-strea",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in System Design Fundamentals Interview Playbook.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 00 System Design Fundamentals Interview Playbook failure 'Omission of Storage Replication Factor', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In System Design Fundamentals Interview Playbook, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Capacity estimations calculate raw data volume and forget that Kafka, Cassandra, and HDFS require 3x replication plus 20% filesystem headroom.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 00 System Design Fundamentals Interview Playbook exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 00 System Design Fundamentals Interview Playbook: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in System Design Fundamentals Interview Playbook.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "When diagnosing the 00 System Design Fundamentals Interview Playbook failure 'Peak-to-Average QPS Ratio Blindspots', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In System Design Fundamentals Interview Playbook, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Sizing servers for average daily QPS (e.g. 10M DAU / 86400 = 115 QPS) causes complete brownouts during lunch or marketing spikes.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 00 System Design Fundamentals Interview Playbook exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 00 System Design Fundamentals Interview Playbook: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in System Design Fundamentals Interview Playbook.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In System Design Fundamentals Interview Playbook, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in System Design Fundamentals Interview Playbook.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_interview_capacity_calculator.py`, what is the exact evaluated result of:\n\n```python\nbw[\"ingress_mb_per_sec\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2.89",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3.4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "5.8",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2.89` as verified in test suite `test_interview_capacity_calculator.py`.",
+    "lesson_ref": "test_interview_capacity_calculator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_interview_capacity_calculator.py`, what is the exact evaluated result of:\n\n```python\nstorage[\"daily_storage_gb\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "250.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "250.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "500.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `250.0` as verified in test suite `test_interview_capacity_calculator.py`.",
+    "lesson_ref": "test_interview_capacity_calculator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_interview_capacity_calculator.py`, what is the exact evaluated result of:\n\n```python\nbw[\"ingress_mbps\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "23.15",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "23.6",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "46.3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `23.15` as verified in test suite `test_interview_capacity_calculator.py`.",
+    "lesson_ref": "test_interview_capacity_calculator.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_interview_capacity_calculator.py`, what is the exact evaluated result of:\n\n```python\nbw[\"egress_mb_per_sec\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "231.48",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "232.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "463.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `231.48` as verified in test suite `test_interview_capacity_calculator.py`.",
+    "lesson_ref": "test_interview_capacity_calculator.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in System Design Fundamentals Interview Playbook, an engineer observes:\n\"System fault during operation: Daily Storage Arithmetic Underflows by Factor of 1000 Due to Megabyte/Mebibyte Unit Confusion\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The calculation divided by 10^6 instead of 1024^3 (GiB) or 10^9 (GB) and completely omitted multiplying by the storage replication factor (3x). This led to severe disk exhaustion in production. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The retry decorator executed retries in a tight loop with zero delay, amplifying traffic against a struggling upstream provider by 500%. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Binary instantaneous health checks without hysteresis cause healthy servers operating near capacity to be prematurely marked dead, redirecting load to remaining servers and killing the whole cluster. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The calculation divided by 10^6 instead of 1024^3 (GiB) or 10^9 (GB) and completely omitted multiplying by the storage replication factor (3x). This led to severe disk exhaustion in production. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

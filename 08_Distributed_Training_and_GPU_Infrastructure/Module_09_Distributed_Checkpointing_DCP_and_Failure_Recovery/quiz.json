@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 09 Distributed Checkpointing DCP and Failure Recovery failure 'Top Production Failure Modes in Distributed Checkpointing', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what core system invariant does '1. Systems Architecture of PyTorch DCP' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. - Fix: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Redu",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Systems Architecture of PyTorch DCP.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard. - Root Cause: If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 09 Distributed Checkpointing DCP and Failure Recovery exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 09 Distributed Checkpointing DCP and Failure Recovery: : If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. - Fix: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Redu. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Systems Architecture of PyTorch DCP' in Distributed Checkpointing DCP and Failure Recovery.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Systems Architecture of PyTorch DCP play in 09 Distributed Checkpointing DCP and Failure Recovery?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what core system invariant does '2. Dynamic Resharding on Checkpoint Load' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Systems Architecture of PyTorch DCP is essential for maintaining predictable invariants and high performance in 09 Distributed Checkpointing DCP and Failure Recovery.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Dynamic Resharding on Checkpoint Load.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Systems Architecture of PyTorch DCP is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Systems Architecture of PyTorch DCP in 09 Distributed Checkpointing DCP and Failure Recovery specifications.",
+    "explanation": "Specification detail defined under '2. Dynamic Resharding on Checkpoint Load' in Distributed Checkpointing DCP and Failure Recovery.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Dynamic Resharding on Checkpoint Load play in 09 Distributed Checkpointing DCP and Failure Recovery?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what core system invariant does '3. Asynchronous Non-Blocking Checkpointing' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Dynamic Resharding on Checkpoint Load is essential for maintaining predictable invariants and high performance in 09 Distributed Checkpointing DCP and Failure Recovery.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Asynchronous Non-Blocking Checkpointing.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Dynamic Resharding on Checkpoint Load is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Dynamic Resharding on Checkpoint Load in 09 Distributed Checkpointing DCP and Failure Recovery specifications.",
+    "explanation": "Specification detail defined under '3. Asynchronous Non-Blocking Checkpointing' in Distributed Checkpointing DCP and Failure Recovery.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_checkpoint_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(resharded_2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_distributed_checkpoint_sim.py`.",
+    "lesson_ref": "test_distributed_checkpoint_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_checkpoint_sim.py`, what is the exact evaluated result of:\n\n```python\nresharded_2[0].shape\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "(8, 8)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "12800.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "6400.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `(8, 8)` as verified in test suite `test_distributed_checkpoint_sim.py`.",
+    "lesson_ref": "test_distributed_checkpoint_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Distributed Checkpointing'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -\n: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Distributed Checkpointing DCP and Failure Recovery, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model accuracy degrades when scaling from 8 GPUs to 128 GPUs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

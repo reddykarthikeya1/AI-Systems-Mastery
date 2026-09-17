@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 12 Greedy Algorithms and Interval Scheduling triage of defect 'Merging a nested block shrinks the merged range', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Greedy Algorithms and Interval Scheduling, what core system invariant does '1. When Does Greedy Work?' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it ends. A fully nested block ends sooner, and adopting its end truncates the merged range. [(1, 10), (2, 3)] becomes (1, 3), silently discarding seven ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. When Does Greedy Work?.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it ends. A fully nested block ends sooner, and adopting its end truncates the merged range. [(1, 10), (2, 3)] becomes (1, 3), silently discarding seven ",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. When Does Greedy Work?' in Greedy Algorithms and Interval Scheduling.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 12 Greedy Algorithms and Interval Scheduling triage of defect 'Fewer meetings are scheduled than could fit', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Greedy Algorithms and Interval Scheduling, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Merging and scheduling are different questions and need different orderings. Merging cares where intervals begin; scheduling cares where they end, because the meeting that finishes earliest leaves the most room for the rest. Sorting by start makes th",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Merging and scheduling are different questions and need different orderings. Merging cares where intervals begin; scheduling cares where they end, because the meeting that finishes earliest leaves the most room for the rest. Sorting by start makes th",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Greedy Algorithms and Interval Scheduling.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 12 Greedy Algorithms and Interval Scheduling triage of defect 'A trade can buy and sell on the same day', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Greedy Algorithms and Interval Scheduling, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not being enforced",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not being enforced",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Greedy Algorithms and Interval Scheduling.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Greedy Algorithms and Interval Scheduling, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Greedy Algorithms and Interval Scheduling.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m12_problems.py`, what is the exact evaluated result of:\n\n```python\nmax_profit_stock([2, 4, 1])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_m12_problems.py`.",
+    "lesson_ref": "test_m12_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m12_problems.py`, what is the exact evaluated result of:\n\n```python\nmin_jumps([1])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_m12_problems.py`.",
+    "lesson_ref": "test_m12_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m12_problems.py`, what is the exact evaluated result of:\n\n```python\ngas_station([3], [4])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "-1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `-1` as verified in test suite `test_m12_problems.py`.",
+    "lesson_ref": "test_m12_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m12_problems.py`, what is the exact evaluated result of:\n\n```python\ngas_station([5], [4])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_m12_problems.py`.",
+    "lesson_ref": "test_m12_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Greedy Algorithms and Interval Scheduling, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 A trade can buy and sell on the same day\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Deep trees causing Python RecursionError (mitigate via iterative traversal + explicit stack).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not being enforced at all.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Greedy Algorithms and Interval Scheduling, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Merging a nested block shrinks the merged range\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Greedy Algorithms and Interval Scheduling, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to a question that has none.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Greedy Algorithms and Interval Scheduling, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Fewer meetings are scheduled than could fit\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Merging and scheduling are different questions and need different orderings. Merging cares where intervals",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Every time a node's distance improves, a fresh (dist, node) entry is pushed and the previous one stays in the heap. Without the guard, each stale entry is popped and its neighbours re-relaxed \u2014 work that can never improve anything, because ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Merging and scheduling are different questions and need different orderings. Merging cares where intervals\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

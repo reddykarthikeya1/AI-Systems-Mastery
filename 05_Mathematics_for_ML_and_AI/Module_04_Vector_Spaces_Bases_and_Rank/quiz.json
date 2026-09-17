@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "In 04 Vector Spaces Bases and Rank triage of defect 'none', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Vector Spaces Bases and Rank, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Vector Spaces Bases and Rank.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 2,
-    "question": "In 04 Vector Spaces Bases and Rank triage of defect 'counting non-zero rows with an exact comparison', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Vector Spaces Bases and Rank, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'What you will be able to do' in Vector Spaces Bases and Rank.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 3,
-    "question": "In 04 Vector Spaces Bases and Rank triage of defect 'rank-nullity applied to rows instead of columns', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Vector Spaces Bases and Rank, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Lessons' in Vector Spaces Bases and Rank.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Vector Spaces Bases and Rank, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Vector Spaces Bases and Rank.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_basis_rank_nullspace.py`, what is the exact evaluated result of:\n\n```python\nBasisRankNullspace.matrix_rank(A)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_basis_rank_nullspace.py`.",
+    "lesson_ref": "test_basis_rank_nullspace.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_basis_rank_nullspace.py`, what is the exact evaluated result of:\n\n```python\nBasisRankNullspace.matrix_rank(B)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_basis_rank_nullspace.py`.",
+    "lesson_ref": "test_basis_rank_nullspace.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_basis_rank_nullspace.py`, what is the exact evaluated result of:\n\n```python\nnull_basis.shape[1]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_basis_rank_nullspace.py`.",
+    "lesson_ref": "test_basis_rank_nullspace.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Vector Spaces Bases and Rank, what core engineering trade-off or invariant is addressed by 'Vectors as Arrows and as Lists'?",
+    "category": "Architecture: Vectors as Arrows and as Lists",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Vectors as Arrows and as Lists.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Vectors as Arrows and as Lists.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 9,
+    "tier": "Recall",
+    "question": "In Vector Spaces Bases and Rank, what core engineering trade-off or invariant is addressed by 'Vector Addition and Scalar Multiplication'?",
+    "category": "Architecture: Vector Addition and Scalar Mul",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Vector Addition and Scalar Multiplication.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Vector Addition and Scalar Multiplication.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Vector Spaces Bases and Rank, what core engineering trade-off or invariant is addressed by 'The Vector Space Axioms'?",
+    "category": "Architecture: The Vector Space Axioms",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in The Vector Space Axioms.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: The Vector Space Axioms.",
+    "lesson_ref": "README.md"
   }
 ]

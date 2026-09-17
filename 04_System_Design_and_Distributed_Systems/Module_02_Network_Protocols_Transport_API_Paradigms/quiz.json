@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'TIMEWAIT Socket Accumulation', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Network Protocols Transport API Paradigms, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Creating new TCP connections for every HTTP request exhausts all 65,535 ephemeral ports, resulting in EADDRNOTAVAIL.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Network Protocols Transport API Paradigms.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'Nagle's Algorithm Latency Spikes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Network Protocols Transport API Paradigms, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Small packets delayed up to 200ms when TCP delayed-ACK interacts with Nagle's algorithm (TCPNODELAY disabled).",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Network Protocols Transport API Paradigms.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "When diagnosing the 02 Network Protocols Transport API Paradigms failure 'Framing Buffer Poisoning / Corrupted Payloads', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Network Protocols Transport API Paradigms, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Reading from network socket without loop reading until expectedlength bytes arrive leads to partial deserialization exceptions.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 Network Protocols Transport API Paradigms exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 Network Protocols Transport API Paradigms: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Network Protocols Transport API Paradigms.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Network Protocols Transport API Paradigms, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Network Protocols Transport API Paradigms.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rpc_protocol_engine.py`, what is the exact evaluated result of:\n\n```python\nres[\"id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "f\"ITEM_{i}\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `f\"ITEM_{i}\"` as verified in test suite `test_rpc_protocol_engine.py`.",
+    "lesson_ref": "test_rpc_protocol_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rpc_protocol_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "6",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `5` as verified in test suite `test_rpc_protocol_engine.py`.",
+    "lesson_ref": "test_rpc_protocol_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rpc_protocol_engine.py`, what is the exact evaluated result of:\n\n```python\nframe_type\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "FrameType.REQUEST",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `FrameType.REQUEST` as verified in test suite `test_rpc_protocol_engine.py`.",
+    "lesson_ref": "test_rpc_protocol_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rpc_protocol_engine.py`, what is the exact evaluated result of:\n\n```python\ndecoded_corr_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "correlation_id",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `correlation_id` as verified in test suite `test_rpc_protocol_engine.py`.",
+    "lesson_ref": "test_rpc_protocol_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Network Protocols Transport API Paradigms, an engineer observes:\n\"System fault during operation: TCP Head-of-Line Blocking and Socket Exhaustion Under High Concurrency\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In HTTP/2 over TCP, all virtual streams share a single TCP sequence space. If packet N is dropped, the OS TCP receiver refuses to deliver packets N+1, N+2 to application space until packet N is retransmitted, stalling all streams. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Broadcasting presence changes to all followers using naive fanout creates $O(F)$ network bursts that overwhelm server output buffers when $F$ is large. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In HTTP/2 over TCP, all virtual streams share a single TCP sequence space. If packet N is dropped, the OS TCP receiver refuses to deliver packets N+1, N+2 to application space until packet N is retransmitted, stalling all streams. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

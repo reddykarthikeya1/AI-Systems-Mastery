@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Architectural Foundations: Multi-Layered Guardrails play in 04 Production Guardrails Architecture?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production Guardrails Architecture, what core system invariant does '1. Architectural Foundations: Multi-Layered Guardrails' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations: Multi-Layered Guardrails is essential for maintaining predictable invariants and high performance in 04 Production Guardrails Architecture.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Multi-Layered Guardrails.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations: Multi-Layered Guardrails is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations: Multi-Layered Guardrails in 04 Production Guardrails Architecture specifications.",
+    "explanation": "Specification detail defined under '1. Architectural Foundations: Multi-Layered Guardrails' in Production Guardrails Architecture.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. PII Detection & Pseudonymization play in 04 Production Guardrails Architecture?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production Guardrails Architecture, what core system invariant does '2. PII Detection & Pseudonymization' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. PII Detection & Pseudonymization is essential for maintaining predictable invariants and high performance in 04 Production Guardrails Architecture.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. PII Detection & Pseudonymization.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. PII Detection & Pseudonymization is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. PII Detection & Pseudonymization in 04 Production Guardrails Architecture specifications.",
+    "explanation": "Specification detail defined under '2. PII Detection & Pseudonymization' in Production Guardrails Architecture.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nentities[0].entity_type\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"PER\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"PER\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"PER\"` as verified in test suite `test_neural_ner_pii_scanner.py`.",
+    "lesson_ref": "test_neural_ner_pii_scanner.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nentities[0].text\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Katherine\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"KATHERINE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Katherine\"` as verified in test suite `test_neural_ner_pii_scanner.py`.",
+    "lesson_ref": "test_neural_ner_pii_scanner.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_neural_ner_pii_scanner.py`, what is the exact evaluated result of:\n\n```python\nlen(entities)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_neural_ner_pii_scanner.py`.",
+    "lesson_ref": "test_neural_ner_pii_scanner.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Credit Card Luhn Algorithm False Positives'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Regex only validated digit count without validating the Luhn checksum algorithm. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Substring match on \"ignore previous\". -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Desynchronized system clocks across worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Regex only validated digit count without validating the Luhn checksum algorithm. -\n: Apply Luhn formula validation to candidate 16-digit matches before masking.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "User asking \"How do I ignore previous commits in git?\" gets flagged as prompt injection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Math combinations overflow or unhandled edge cases where $n < k$. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Regex only validated digit count without validating the Luhn checksum algorithm.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Apply Luhn formula validation to candidate 16-digit matches before masking.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Production Guardrails Architecture, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Substring match on \"ignore previous\".",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: 16-digit product serial numbers are masked as credit cards.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

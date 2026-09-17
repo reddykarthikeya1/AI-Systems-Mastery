@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 09 Context Optimization and NIAH Testing failure 'Top Production Failure Modes in Context Optimization', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Context Optimization and NIAH Testing, what core system invariant does '1. Context Distribution & Attention Sinks' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. - Fix: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Context Distribution & Attention Sinks.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it). - Root Cause: Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high fr",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 09 Context Optimization and NIAH Testing exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 09 Context Optimization and NIAH Testing: : Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. - Fix: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Context Distribution & Attention Sinks' in Context Optimization and NIAH Testing.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Context Distribution & Attention Sinks play in 09 Context Optimization and NIAH Testing?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Context Optimization and NIAH Testing, what core system invariant does '2. Needle-in-a-Haystack (NIAH) Protocol' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Context Distribution & Attention Sinks is essential for maintaining predictable invariants and high performance in 09 Context Optimization and NIAH Testing.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Needle-in-a-Haystack (NIAH) Protocol.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Context Distribution & Attention Sinks is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Context Distribution & Attention Sinks in 09 Context Optimization and NIAH Testing specifications.",
+    "explanation": "Specification detail defined under '2. Needle-in-a-Haystack (NIAH) Protocol' in Context Optimization and NIAH Testing.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Needle-in-a-Haystack (NIAH) Protocol play in 09 Context Optimization and NIAH Testing?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_context_optimizer_niah.py`, what is the exact evaluated result of:\n\n```python\nreordered[0]\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Needle-in-a-Haystack (NIAH) Protocol is essential for maintaining predictable invariants and high performance in 09 Context Optimization and NIAH Testing.",
+        "id": "opt_corr",
+        "text": "\"doc_2\"",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Needle-in-a-Haystack (NIAH) Protocol is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "\"DOC_2\"",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "\"\"",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "None",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Needle-in-a-Haystack (NIAH) Protocol in 09 Context Optimization and NIAH Testing specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `\"doc_2\"` as verified in test suite `test_context_optimizer_niah.py`.",
+    "lesson_ref": "test_context_optimizer_niah.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_context_optimizer_niah.py`, what is the exact evaluated result of:\n\n```python\nreordered[-1]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"doc_1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DOC_1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"doc_1\"` as verified in test suite `test_context_optimizer_niah.py`.",
+    "lesson_ref": "test_context_optimizer_niah.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_context_optimizer_niah.py`, what is the exact evaluated result of:\n\n```python\nres.needle_depth_percent\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "50.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "50.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "100.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `50.0` as verified in test suite `test_context_optimizer_niah.py`.",
+    "lesson_ref": "test_context_optimizer_niah.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Context Optimization and NIAH Testing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query with metadata filter {\"category\": \"legal\"} returns only 1 result, even though 10,000 legal documents exist in the database.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Context Optimization and NIAH Testing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Context Optimization and NIAH Testing, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Context Optimization'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -\n: Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Context Optimization and NIAH Testing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

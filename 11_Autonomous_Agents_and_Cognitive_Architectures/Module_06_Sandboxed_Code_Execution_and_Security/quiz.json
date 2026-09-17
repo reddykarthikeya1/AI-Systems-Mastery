@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Threat Modeling: The Autonomous Agent Attack Surface play in 06 Sandboxed Code Execution and Security?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Sandboxed Code Execution and Security, what core system invariant does '1. Threat Modeling: The Autonomous Agent Attack Surface' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Threat Modeling: The Autonomous Agent Attack Surface is essential for maintaining predictable invariants and high performance in 06 Sandboxed Code Execution and Security.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Threat Modeling: The Autonomous Agent Attack Surface.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Threat Modeling: The Autonomous Agent Attack Surface is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Threat Modeling: The Autonomous Agent Attack Surface in 06 Sandboxed Code Execution and Security specifications.",
+    "explanation": "Specification detail defined under '1. Threat Modeling: The Autonomous Agent Attack Surface' in Sandboxed Code Execution and Security.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Sandboxing Architectures Compared play in 06 Sandboxed Code Execution and Security?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Sandboxed Code Execution and Security, what core system invariant does '2. Sandboxing Architectures Compared' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Sandboxing Architectures Compared is essential for maintaining predictable invariants and high performance in 06 Sandboxed Code Execution and Security.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Sandboxing Architectures Compared.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Sandboxing Architectures Compared is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Sandboxing Architectures Compared in 06 Sandboxed Code Execution and Security specifications.",
+    "explanation": "Specification detail defined under '2. Sandboxing Architectures Compared' in Sandboxed Code Execution and Security.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Sandboxed Code Execution and Security, what core system invariant does '3. AST Static Validation + Subprocess Boundary' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. AST Static Validation + Subprocess Boundary.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. AST Static Validation + Subprocess Boundary' in Sandboxed Code Execution and Security.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
+    "lesson_ref": "test_sandboxed_executor.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nres.exit_code\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
+    "lesson_ref": "test_sandboxed_executor.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sandboxed_executor.py`, what is the exact evaluated result of:\n\n```python\nlen(res.security_violations)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_sandboxed_executor.py`.",
+    "lesson_ref": "test_sandboxed_executor.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'AST Bypass via String Obfuscation'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Both agents' classification prompts lack unambiguous domain boundary definitions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The agent forgets a user's name or fundamental preference declared 3 days ago.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -\n: Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Sandboxed Code Execution and Security, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Ban getattr, setattr, and private attribute access (node.attr.startswith('')).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

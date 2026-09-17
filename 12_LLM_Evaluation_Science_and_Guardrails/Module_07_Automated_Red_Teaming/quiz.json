@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Algorithmic Red Teaming Paradigms play in 07 Automated Red Teaming?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Automated Red Teaming, what core system invariant does '1. Algorithmic Red Teaming Paradigms' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Algorithmic Red Teaming Paradigms is essential for maintaining predictable invariants and high performance in 07 Automated Red Teaming.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Algorithmic Red Teaming Paradigms.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Algorithmic Red Teaming Paradigms is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Algorithmic Red Teaming Paradigms in 07 Automated Red Teaming specifications.",
+    "explanation": "Specification detail defined under '1. Algorithmic Red Teaming Paradigms' in Automated Red Teaming.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Attack Success Rate (ASR) Formulation play in 07 Automated Red Teaming?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Automated Red Teaming, what core system invariant does '2. Attack Success Rate (ASR) Formulation' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Attack Success Rate (ASR) Formulation is essential for maintaining predictable invariants and high performance in 07 Automated Red Teaming.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Attack Success Rate (ASR) Formulation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Attack Success Rate (ASR) Formulation is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Attack Success Rate (ASR) Formulation in 07 Automated Red Teaming specifications.",
+    "explanation": "Specification detail defined under '2. Attack Success Rate (ASR) Formulation' in Automated Red Teaming.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_automated_red_teamer.py`, what is the exact evaluated result of:\n\n```python\nsummary.strategy_asr[\"hypothetical\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "0.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.0` as verified in test suite `test_automated_red_teamer.py`.",
+    "lesson_ref": "test_automated_red_teamer.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_automated_red_teamer.py`, what is the exact evaluated result of:\n\n```python\nsummary.strategy_asr[\"roleplay\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_automated_red_teamer.py`.",
+    "lesson_ref": "test_automated_red_teamer.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_automated_red_teamer.py`, what is the exact evaluated result of:\n\n```python\nsummary.total_attempts\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_automated_red_teamer.py`.",
+    "lesson_ref": "test_automated_red_teamer.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_automated_red_teamer.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(summary.attack_success_rate, 0.01)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1 / 3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1 / 3` as verified in test suite `test_automated_red_teamer.py`.",
+    "lesson_ref": "test_automated_red_teamer.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Automated Red Teaming, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "User asks \"How does political risk affect AWS billing?\" and gets blocked by the politics rail.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Direct the safety judge to evaluate only the model's actionable advice, not echoed text.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Automated Red Teaming, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Judge False Refusal (Over-Refusal Bias)'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Safety judge flagged presence of toxic words in the quote of user input. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Safety judge flagged presence of toxic words in the quote of user input. -\n: Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Automated Red Teaming, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Safety judge flagged presence of toxic words in the quote of user input.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Automated Red Teaming, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Red-teaming judge marks benign responses as safety violations.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Red-teaming judge marks benign responses as safety violations.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

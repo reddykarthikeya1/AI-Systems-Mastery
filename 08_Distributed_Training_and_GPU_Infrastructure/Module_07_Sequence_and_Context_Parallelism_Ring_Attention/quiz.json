@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 07 Sequence and Context Parallelism Ring Attention failure 'Top Production Failure Modes in Context Parallelism', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Sequence and Context Parallelism Ring Attention, what core system invariant does '1. Algorithmic Foundation: Ring Attention' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. - Fix: Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Algorithmic Foundation: Ring Attention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Attention output diverges or generates NaN after 16 ring steps when running in native FP16. - Root Cause: When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 c",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 07 Sequence and Context Parallelism Ring Attention exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 07 Sequence and Context Parallelism Ring Attention: : When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. - Fix: Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Algorithmic Foundation: Ring Attention' in Sequence and Context Parallelism Ring Attention.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Algorithmic Foundation: Ring Attention play in 07 Sequence and Context Parallelism Ring Attention?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Sequence and Context Parallelism Ring Attention, what core system invariant does '2. Causal Masking in Ring Attention' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Algorithmic Foundation: Ring Attention is essential for maintaining predictable invariants and high performance in 07 Sequence and Context Parallelism Ring Attention.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Causal Masking in Ring Attention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Algorithmic Foundation: Ring Attention is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Algorithmic Foundation: Ring Attention in 07 Sequence and Context Parallelism Ring Attention specifications.",
+    "explanation": "Specification detail defined under '2. Causal Masking in Ring Attention' in Sequence and Context Parallelism Ring Attention.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Causal Masking in Ring Attention play in 07 Sequence and Context Parallelism Ring Attention?",
-    "category": "System Invariants",
+    "tier": "Diagnose",
+    "question": "In Sequence and Context Parallelism Ring Attention, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Causal Masking in Ring Attention is essential for maintaining predictable invariants and high performance in 07 Sequence and Context Parallelism Ring Attention.",
+        "id": "opt_corr",
+        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Causal Masking in Ring Attention is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Centralize process group creation using strict bijective coordinate mappings.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Causal Masking in Ring Attention in 07 Sequence and Context Parallelism Ring Attention specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Diagnostic Analysis: When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Sequence and Context Parallelism Ring Attention, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Sequence and Context Parallelism Ring Attention, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Context Parallelism'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Collective calls hang indefinitely during process group initialization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -\n: Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Sequence and Context Parallelism Ring Attention, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Attention output diverges or generates NaN after 16 ring steps when running in native FP16.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "When operating Sequence and Context Parallelism Ring Attention workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU cluster slows down to the speed of the slowest lin",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Sequence and Context Parallelism Ring Attention workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Collective calls hang indefinitely during process group initialization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Sequence and Context Parallelism Ring Attention workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

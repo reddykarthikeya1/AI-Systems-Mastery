@@ -7,6 +7,12 @@
 
 ## Why this module exists
 
+<!-- GENERATED_ALGORITHM_DIAGRAM: EIGENVECTOR_SVG START -->
+
+![Eigenvector Invariance and Linear Transformation](../assets/eigenvector_transformation.svg)
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: EIGENVECTOR_SVG END -->
+
 <!-- The one question this module answers that no other module does. Two or
      three sentences, written before any lesson is drafted, because a module
      that cannot state its purpose in three sentences has the wrong scope. -->

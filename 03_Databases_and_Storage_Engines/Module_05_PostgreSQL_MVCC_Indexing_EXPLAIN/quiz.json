@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates?",
-    "category": "How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates?",
+    "tier": "Recall",
+    "question": "How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates? How does PostgreSQL implement Multi-Version Concurrency Control (MVCC) without in-place updates?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
+        "id": "opt_1",
+        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
+        "id": "opt_2",
+        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+        "id": "opt_3",
+        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": false
       }
     ],
-    "explanation": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the purpose of the PostgreSQL Visibility Map?",
-    "category": "What is the purpose of the PostgreSQL Visibility Map?",
+    "tier": "Recall",
+    "question": "What is the purpose of the PostgreSQL Visibility Map? What is the purpose of the PostgreSQL Visibility Map?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
+        "id": "opt_1",
+        "text": "Standard CREATE INDEX locks the table against all writes; CONCURRENTLY runs two scans without blocking concurrent DML.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
+        "id": "opt_2",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
+        "id": "opt_3",
         "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
         "is_correct": false
       }
     ],
-    "explanation": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What happens during a standard VACUUM vs VACUUM FULL?",
-    "category": "What happens during a standard VACUUM vs VACUUM FULL?",
+    "tier": "Recall",
+    "question": "What happens during a standard VACUUM vs VACUUM FULL? What happens during a standard VACUUM vs VACUUM FULL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
+        "id": "opt_1",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
+        "id": "opt_2",
+        "text": "Collections can enforce validation rules using JSON Schema ($jsonSchema) with strict or moderate enforcement levels.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+        "id": "opt_3",
+        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
         "is_correct": false
       }
     ],
-    "explanation": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Why does EXPLAIN (ANALYZE, BUFFERS) provide more actionable insight than plain EXPLAIN? Why does EXPLAIN (ANALYZE, BUFFERS) provide more actionable insight than plain EXPLAIN?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It builds combined payload indices and integrates filter evaluation directly into the HNSW graph traversal loop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "MOVED indicates a slot migration is permanent; ASK indicates a slot is currently in the process of migrating to another node.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It automatically replaces literal values in SQL with system-generated bind variables, converting hard parses into soft parses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mvcc_engine.py`, what is the exact evaluated result of:\n\n```python\nmvcc_table.tuples[0].data[\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Alice\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Alice\"` as verified in test suite `test_mvcc_engine.py`.",
+    "lesson_ref": "test_mvcc_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mvcc_engine.py`, what is the exact evaluated result of:\n\n```python\nplan_broad\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Seq Scan\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"SEQ SCAN\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Seq Scan\"` as verified in test suite `test_mvcc_engine.py`.",
+    "lesson_ref": "test_mvcc_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mvcc_engine.py`, what is the exact evaluated result of:\n\n```python\nalice_old[\"balance\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "101",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "99",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "200",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100` as verified in test suite `test_mvcc_engine.py`.",
+    "lesson_ref": "test_mvcc_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mvcc_engine.py`, what is the exact evaluated result of:\n\n```python\nrows[0][\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Alice\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Alice\"` as verified in test suite `test_mvcc_engine.py`.",
+    "lesson_ref": "test_mvcc_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in PostgreSQL MVCC Indexing EXPLAIN, an engineer observes:\n\"System fault during operation: Dead Tuple Bloat Prevents Autovacuum Reclamation\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A long-running reporting session opened a transaction with BEGIN; SELECT ... and remained idle in transaction for 18 hours, pinning xmin and preventing autovacuum from cleaning dead tuples.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "DROP TABLE does not drop sequences. On :memory: this never surfaces because the whole database vanishes; on a file it surfaces the second time you run.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A long-running reporting session opened a transaction with BEGIN; SELECT ... and remained idle in transaction for 18 hours, pinning xmin and preventing autovacuum from cleaning dead tuples.\n\nFix Resolution:\nConfigure idleintransactionsessiontimeout = '60s' and terminate the lagging backend using SELECT pgterminatebackend(pid).",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

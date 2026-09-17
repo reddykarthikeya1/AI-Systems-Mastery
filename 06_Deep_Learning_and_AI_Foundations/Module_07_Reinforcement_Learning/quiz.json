@@ -1,31 +1,302 @@
 [
   {
     "id": 1,
-    "question": "In 07 Reinforcement Learning triage of defect 'TODO', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Reinforcement Learning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 2,
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'What you will be able to do' in Reinforcement Learning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Lessons' in Reinforcement Learning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Reinforcement Learning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rl_policy_gradient.py`, what is the exact evaluated result of:\n\n```python\nv_star[1]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(100.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "W1.shape",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "b1.shape",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "W2.shape",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(100.0` as verified in test suite `test_rl_policy_gradient.py`.",
+    "lesson_ref": "test_rl_policy_gradient.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_rl_policy_gradient.py`, what is the exact evaluated result of:\n\n```python\nv_star[0]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(90.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "W1.shape",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "b1.shape",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "W2.shape",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(90.0` as verified in test suite `test_rl_policy_gradient.py`.",
+    "lesson_ref": "test_rl_policy_gradient.py"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core engineering trade-off or invariant is addressed by 'MDPs, Returns and Value Functions'?",
+    "category": "Architecture: MDPs, Returns and Value Functi",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in MDPs, Returns and Value Functions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: MDPs, Returns and Value Functions.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Reinforcement Learning, what core engineering trade-off or invariant is addressed by 'Q-Learning and Temporal-Difference Methods'?",
+    "category": "Architecture: Q-Learning and Temporal-Differ",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Q-Learning and Temporal-Difference Methods.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Q-Learning and Temporal-Difference Methods.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 9,
+    "tier": "Recall",
+    "question": "In Reinforcement Learning, what core engineering trade-off or invariant is addressed by 'Policy Gradients and REINFORCE'?",
+    "category": "Architecture: Policy Gradients and REINFORCE",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Policy Gradients and REINFORCE.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Policy Gradients and REINFORCE.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Reinforcement Learning, what core engineering trade-off or invariant is addressed by 'Actor-Critic, PPO and RLHF'?",
+    "category": "Architecture: Actor-Critic, PPO and RLHF",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Actor-Critic, PPO and RLHF.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Actor-Critic, PPO and RLHF.",
+    "lesson_ref": "README.md"
   }
 ]

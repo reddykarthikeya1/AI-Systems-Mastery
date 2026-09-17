@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Theoretical Foundations: Benchmarking Autonomous Trajectories play in 08 Production Agent Evaluation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production Agent Evaluation, what core system invariant does '1. Theoretical Foundations: Benchmarking Autonomous Trajectories' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Theoretical Foundations: Benchmarking Autonomous Trajectories is essential for maintaining predictable invariants and high performance in 08 Production Agent Evaluation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations: Benchmarking Autonomous Trajectories.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Theoretical Foundations: Benchmarking Autonomous Trajectories is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Theoretical Foundations: Benchmarking Autonomous Trajectories in 08 Production Agent Evaluation specifications.",
+    "explanation": "Specification detail defined under '1. Theoretical Foundations: Benchmarking Autonomous Trajectories' in Production Agent Evaluation.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Mathematical Formulation of Trajectory Metrics play in 08 Production Agent Evaluation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production Agent Evaluation, what core system invariant does '2. Mathematical Formulation of Trajectory Metrics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Mathematical Formulation of Trajectory Metrics is essential for maintaining predictable invariants and high performance in 08 Production Agent Evaluation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Mathematical Formulation of Trajectory Metrics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Mathematical Formulation of Trajectory Metrics is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Mathematical Formulation of Trajectory Metrics in 08 Production Agent Evaluation specifications.",
+    "explanation": "Specification detail defined under '2. Mathematical Formulation of Trajectory Metrics' in Production Agent Evaluation.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_eval_benchmark.py`, what is the exact evaluated result of:\n\n```python\nrec.step_efficiency\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_agent_eval_benchmark.py`.",
+    "lesson_ref": "test_agent_eval_benchmark.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_eval_benchmark.py`, what is the exact evaluated result of:\n\n```python\nsummary[\"total_tasks\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_agent_eval_benchmark.py`.",
+    "lesson_ref": "test_agent_eval_benchmark.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_eval_benchmark.py`, what is the exact evaluated result of:\n\n```python\nrec.tool_accuracy\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_agent_eval_benchmark.py`.",
+    "lesson_ref": "test_agent_eval_benchmark.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_eval_benchmark.py`, what is the exact evaluated result of:\n\n```python\nrec.tool_accuracy\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.75",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.75` as verified in test suite `test_agent_eval_benchmark.py`.",
+    "lesson_ref": "test_agent_eval_benchmark.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Production Agent Evaluation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Re-instantiate a clean filesystem container for every individual benchmark task.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Production Agent Evaluation, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Flaky Benchmark Tests Due to Non-Deterministic Environment State'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Tests leave leftover files or database rows in the execution sandbox. -\n: Re-instantiate a clean filesystem container for every individual benchmark task.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Production Agent Evaluation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The same agent achieves 80% pass rate on Run 1, but 65% on Run 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The same agent achieves 80% pass rate on Run 1, but 65% on Run 2.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Production Agent Evaluation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Tests leave leftover files or database rows in the execution sandbox.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

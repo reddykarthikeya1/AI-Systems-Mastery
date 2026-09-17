@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 08 3D Parallelism Integration and Orchestration failure 'Top Production Failure Modes in 3D Parallelism', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In 3D Parallelism Integration and Orchestration, what core system invariant does '1. Mathematical Architecture of 3D Parallel Grids' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. - Fix: Centralize process group creation using strict bijective coordinate mappings.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Architecture of 3D Parallel Grids.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Collective calls hang indefinitely during process group initialization. - Root Cause: If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membe",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 08 3D Parallelism Integration and Orchestration exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 08 3D Parallelism Integration and Orchestration: : If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. - Fix: Centralize process group creation using strict bijective coordinate mappings.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Architecture of 3D Parallel Grids' in 3D Parallelism Integration and Orchestration.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Architecture of 3D Parallel Grids play in 08 3D Parallelism Integration and Orchestration?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In 3D Parallelism Integration and Orchestration, what core system invariant does '2. Multi-Dimensional Communication Schedules' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Architecture of 3D Parallel Grids is essential for maintaining predictable invariants and high performance in 08 3D Parallelism Integration and Orchestration.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Multi-Dimensional Communication Schedules.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Architecture of 3D Parallel Grids is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Architecture of 3D Parallel Grids in 08 3D Parallelism Integration and Orchestration specifications.",
+    "explanation": "Specification detail defined under '2. Multi-Dimensional Communication Schedules' in 3D Parallelism Integration and Orchestration.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Multi-Dimensional Communication Schedules play in 08 3D Parallelism Integration and Orchestration?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_parallel_3d_planner.py`, what is the exact evaluated result of:\n\n```python\ngrid.world_size\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Multi-Dimensional Communication Schedules is essential for maintaining predictable invariants and high performance in 08 3D Parallelism Integration and Orchestration.",
+        "id": "opt_corr",
+        "text": "64",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Multi-Dimensional Communication Schedules is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "65",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "63",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "128",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Multi-Dimensional Communication Schedules in 08 3D Parallelism Integration and Orchestration specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `64` as verified in test suite `test_parallel_3d_planner.py`.",
+    "lesson_ref": "test_parallel_3d_planner.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_parallel_3d_planner.py`, what is the exact evaluated result of:\n\n```python\nreconstructed_rank\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "r",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "12800.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "6400.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `r` as verified in test suite `test_parallel_3d_planner.py`.",
+    "lesson_ref": "test_parallel_3d_planner.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_parallel_3d_planner.py`, what is the exact evaluated result of:\n\n```python\nlen(tp_group)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_parallel_3d_planner.py`.",
+    "lesson_ref": "test_parallel_3d_planner.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_parallel_3d_planner.py`, what is the exact evaluated result of:\n\n```python\nlen(pp_group)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_parallel_3d_planner.py`.",
+    "lesson_ref": "test_parallel_3d_planner.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In 3D Parallelism Integration and Orchestration, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Collective calls hang indefinitely during process group initialization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Collective calls hang indefinitely during process group initialization.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In 3D Parallelism Integration and Orchestration, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in 3D Parallelism'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -\n: Centralize process group creation using strict bijective coordinate mappings.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In 3D Parallelism Integration and Orchestration, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Centralize process group creation using strict bijective coordinate mappings.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In 3D Parallelism Integration and Orchestration, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

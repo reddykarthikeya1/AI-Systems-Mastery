@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 09 Production Benchmarking and Autoscaling failure 'Top Production Failure Modes in Autoscaling', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Production Benchmarking and Autoscaling, what core system invariant does '1. Statistical Telemetry & Performance Benchmarking' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. - Fix: Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weig",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Statistical Telemetry & Performance Benchmarking.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts. - Root Cause: Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before th",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 09 Production Benchmarking and Autoscaling exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 09 Production Benchmarking and Autoscaling: : Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. - Fix: Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weig. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Statistical Telemetry & Performance Benchmarking' in Production Benchmarking and Autoscaling.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Statistical Telemetry & Performance Benchmarking play in 09 Production Benchmarking and Autoscaling?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production Benchmarking and Autoscaling, what core system invariant does '2. Capacity Planning & Little's Law' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Statistical Telemetry & Performance Benchmarking is essential for maintaining predictable invariants and high performance in 09 Production Benchmarking and Autoscaling.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Capacity Planning & Little's Law.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Statistical Telemetry & Performance Benchmarking is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Statistical Telemetry & Performance Benchmarking in 09 Production Benchmarking and Autoscaling specifications.",
+    "explanation": "Specification detail defined under '2. Capacity Planning & Little's Law' in Production Benchmarking and Autoscaling.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Capacity Planning & Little's Law play in 09 Production Benchmarking and Autoscaling?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_serving_benchmarker.py`, what is the exact evaluated result of:\n\n```python\nres.p99_ms\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Capacity Planning & Little's Law is essential for maintaining predictable invariants and high performance in 09 Production Benchmarking and Autoscaling.",
+        "id": "opt_corr",
+        "text": "600.0",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Capacity Planning & Little's Law is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "600.5",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "1200.0",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "0.0",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Capacity Planning & Little's Law in 09 Production Benchmarking and Autoscaling specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `600.0` as verified in test suite `test_serving_benchmarker.py`.",
+    "lesson_ref": "test_serving_benchmarker.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_serving_benchmarker.py`, what is the exact evaluated result of:\n\n```python\nres.recommended_replicas\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_serving_benchmarker.py`.",
+    "lesson_ref": "test_serving_benchmarker.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_serving_benchmarker.py`, what is the exact evaluated result of:\n\n```python\nres.p50_ms\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "100.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "200.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100.0` as verified in test suite `test_serving_benchmarker.py`.",
+    "lesson_ref": "test_serving_benchmarker.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Production Benchmarking and Autoscaling, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Server hangs when GPU memory reaches 99%; no new requests are admitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Production Benchmarking and Autoscaling, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Production Benchmarking and Autoscaling, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Autoscaling'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -\n: Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Production Benchmarking and Autoscaling, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 06 Pipeline Parallelism and Schedules failure 'Top 5 Production Failure Modes in Pipeline Parallelism', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Pipeline Parallelism and Schedules, what core system invariant does '1. Architectural Principles of Pipeline Parallelism' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. - Fix: Register an optim",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Principles of Pipeline Parallelism.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode. - Root Cause: Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because t",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 06 Pipeline Parallelism and Schedules exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 06 Pipeline Parallelism and Schedules: : Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. - Fix: Register an optim. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Architectural Principles of Pipeline Parallelism' in Pipeline Parallelism and Schedules.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Architectural Principles of Pipeline Parallelism play in 06 Pipeline Parallelism and Schedules?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Pipeline Parallelism and Schedules, what core system invariant does '2. Schedule Mechanics & Bubble Analysis' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Principles of Pipeline Parallelism is essential for maintaining predictable invariants and high performance in 06 Pipeline Parallelism and Schedules.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Schedule Mechanics & Bubble Analysis.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Principles of Pipeline Parallelism is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Principles of Pipeline Parallelism in 06 Pipeline Parallelism and Schedules specifications.",
+    "explanation": "Specification detail defined under '2. Schedule Mechanics & Bubble Analysis' in Pipeline Parallelism and Schedules.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Schedule Mechanics & Bubble Analysis play in 06 Pipeline Parallelism and Schedules?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline_schedule_sim.py`, what is the exact evaluated result of:\n\n```python\nmetrics.peak_act_memory_1f1b_mb\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Schedule Mechanics & Bubble Analysis is essential for maintaining predictable invariants and high performance in 06 Pipeline Parallelism and Schedules.",
+        "id": "opt_corr",
+        "text": "4",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Schedule Mechanics & Bubble Analysis is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "5",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "3",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "8",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Schedule Mechanics & Bubble Analysis in 06 Pipeline Parallelism and Schedules specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `4` as verified in test suite `test_pipeline_schedule_sim.py`.",
+    "lesson_ref": "test_pipeline_schedule_sim.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline_schedule_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(forwards)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "6",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "12",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `6` as verified in test suite `test_pipeline_schedule_sim.py`.",
+    "lesson_ref": "test_pipeline_schedule_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline_schedule_sim.py`, what is the exact evaluated result of:\n\n```python\nmetrics.peak_act_memory_gpipe_mb\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "16",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "17",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "15",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "32",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `16` as verified in test suite `test_pipeline_schedule_sim.py`.",
+    "lesson_ref": "test_pipeline_schedule_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pipeline_schedule_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(backwards)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "6",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "12",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `6` as verified in test suite `test_pipeline_schedule_sim.py`.",
+    "lesson_ref": "test_pipeline_schedule_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Pipeline Parallelism and Schedules, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Pipeline Parallelism and Schedules, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Pipeline Parallelism and Schedules, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Pipeline Parallelism and Schedules, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top 5 Production Failure Modes in Pipeline Parallelism'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Account for gated MLP expansion factor in analytical FLOP counters.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -\n: Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

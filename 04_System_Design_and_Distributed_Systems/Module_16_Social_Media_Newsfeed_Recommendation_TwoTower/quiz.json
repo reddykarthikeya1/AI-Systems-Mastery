@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "p99 Request Latency (Alert if p99 > 200ms for 3 consecutive minutes)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Social Media Newsfeed Recommendation TwoTower, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops. Moving data across networks incurs a 10,000x to 1,000,000x latency penalty compared to in-memory lookups. The design maximizes local memory batching while deferring or pipelining I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Social Media Newsfeed Recommendation TwoTower.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Error Rate (Alert if HTTP 5xx or unhandled exceptions exceed 0.5% of total requests)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Social Media Newsfeed Recommendation TwoTower, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes. Fencing tokens or epoch numbers reject stale writes from deposed leaders to eliminate split-brain hazards.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Social Media Newsfeed Recommendation TwoTower.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "Queue Lag / In-Flight Tasks (Alert if queue residency exceeds safety thresholds) Answer 7: Rookie Anti-Patterns A fatal anti-pattern is unbounded in-memory queuing or missing timeout budgets on remote RPC calls. When a downstream service slows down, upstream memory explodes, triggering kernel OOM-killer termination. Answer 8: Tenant Security Isolation is enforced via cryptographically signed JWT/HMAC tokens, per-tenant rate-limiting buckets, and partition-keyed database sharding to prevent cross-tenant data leakage. Answer 9: Trade-Off Analysis Simpler monolithic or single-node designs are easier to reason about, test, and deploy. However, when scale exceeds vertical hardware limits (CPU/RAM/IOPS), distributed partitioning becomes mandatory despite operational complexity. Answer 10: Zero-Downtime Rollouts Upgrades utilize Blue/Green or Canary deployments behind a Layer 7 load balancer. Database schema changes use the Expand/Contract (Parallel Run) pattern to ensure backward and forward compatibility.",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Social Media Newsfeed Recommendation TwoTower, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Social Media Newsfeed Recommendation TwoTower.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Social Media Newsfeed Recommendation TwoTower, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Social Media Newsfeed Recommendation TwoTower.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_newsfeed_recommendation_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(engine.timeline_cache[\"bob\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_newsfeed_recommendation_engine.py`.",
+    "lesson_ref": "test_newsfeed_recommendation_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_newsfeed_recommendation_engine.py`, what is the exact evaluated result of:\n\n```python\nengine.timeline_cache[\"bob\"][0].post_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"post-1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"POST-1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"post-1\"` as verified in test suite `test_newsfeed_recommendation_engine.py`.",
+    "lesson_ref": "test_newsfeed_recommendation_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_newsfeed_recommendation_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(engine.celebrity_posts[\"elon\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_newsfeed_recommendation_engine.py`.",
+    "lesson_ref": "test_newsfeed_recommendation_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_newsfeed_recommendation_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(engine.timeline_cache[\"follower-1\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_newsfeed_recommendation_engine.py`.",
+    "lesson_ref": "test_newsfeed_recommendation_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Social Media Newsfeed Recommendation TwoTower, an engineer observes:\n\"System fault during operation: Write Amplification Catastrophe on Celebrity Fan-Out\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Pure Push (Fan-out-on-Write) works well for normal users, but scales linearly with follower count. For celebrities, $50M$ writes for 1 post saturates storage and queues. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "With only 1 vnode per server, random hash distribution produces large gaps on the ring, assigning disproportionate slices of hash space to single nodes. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Pure Push (Fan-out-on-Write) works well for normal users, but scales linearly with follower count. For celebrities, $50M$ writes for 1 post saturates storage and queues. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

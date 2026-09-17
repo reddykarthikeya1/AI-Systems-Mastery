@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 04 RadixAttention and Prefix Caching failure 'Top Production Failure Modes in Prefix Caching', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In RadixAttention and Prefix Caching, what core system invariant does '1. Systems Architecture of RadixAttention' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! - Fix: Implement ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Systems Architecture of RadixAttention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Server hangs when GPU memory reaches 99%; no new requests are admitted. - Root Cause: All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator wait",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 04 RadixAttention and Prefix Caching exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 04 RadixAttention and Prefix Caching: : All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! - Fix: Implement . Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Systems Architecture of RadixAttention' in RadixAttention and Prefix Caching.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Systems Architecture of RadixAttention play in 04 RadixAttention and Prefix Caching?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In RadixAttention and Prefix Caching, what core system invariant does '2. LRU Eviction Policy & Memory Safety' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Systems Architecture of RadixAttention is essential for maintaining predictable invariants and high performance in 04 RadixAttention and Prefix Caching.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. LRU Eviction Policy & Memory Safety.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Systems Architecture of RadixAttention is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Systems Architecture of RadixAttention in 04 RadixAttention and Prefix Caching specifications.",
+    "explanation": "Specification detail defined under '2. LRU Eviction Policy & Memory Safety' in RadixAttention and Prefix Caching.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. LRU Eviction Policy & Memory Safety play in 04 RadixAttention and Prefix Caching?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_radix_tree_cache.py`, what is the exact evaluated result of:\n\n```python\nmatched_len\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. LRU Eviction Policy & Memory Safety is essential for maintaining predictable invariants and high performance in 04 RadixAttention and Prefix Caching.",
+        "id": "opt_corr",
+        "text": "0",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. LRU Eviction Policy & Memory Safety is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "1",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "1",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. LRU Eviction Policy & Memory Safety in 04 RadixAttention and Prefix Caching specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `0` as verified in test suite `test_radix_tree_cache.py`.",
+    "lesson_ref": "test_radix_tree_cache.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_radix_tree_cache.py`, what is the exact evaluated result of:\n\n```python\nblocks\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[101, 102]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[101, 102]` as verified in test suite `test_radix_tree_cache.py`.",
+    "lesson_ref": "test_radix_tree_cache.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_radix_tree_cache.py`, what is the exact evaluated result of:\n\n```python\nlen(blocks)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_radix_tree_cache.py`.",
+    "lesson_ref": "test_radix_tree_cache.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_radix_tree_cache.py`, what is the exact evaluated result of:\n\n```python\nmatched_len\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_radix_tree_cache.py`.",
+    "lesson_ref": "test_radix_tree_cache.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In RadixAttention and Prefix Caching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Implement preemption: abort or swap out the longest running request to break the cycle.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In RadixAttention and Prefix Caching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In RadixAttention and Prefix Caching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Server hangs when GPU memory reaches 99%; no new requests are admitted.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Server hangs when GPU memory reaches 99%; no new requests are admitted.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In RadixAttention and Prefix Caching, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Prefix Caching'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -\n: Implement preemption: abort or swap out the longest running request to break the cycle.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

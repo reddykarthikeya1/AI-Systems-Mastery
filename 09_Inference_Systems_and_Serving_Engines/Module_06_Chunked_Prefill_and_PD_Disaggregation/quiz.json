@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 06 Chunked Prefill and PD Disaggregation failure 'Top Production Failure Modes in Chunked Prefill', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Chunked Prefill and PD Disaggregation, what core system invariant does '1. The Problem: Inter-Token Latency (ITL) Degeneracy' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). - Fix: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The Problem: Inter-Token Latency (ITL) Degeneracy.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens. - Root Cause: When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 06 Chunked Prefill and PD Disaggregation exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 06 Chunked Prefill and PD Disaggregation: : When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). - Fix: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. The Problem: Inter-Token Latency (ITL) Degeneracy' in Chunked Prefill and PD Disaggregation.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. The Problem: Inter-Token Latency (ITL) Degeneracy play in 06 Chunked Prefill and PD Disaggregation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Chunked Prefill and PD Disaggregation, what core system invariant does '2. Sarathi-Serve Chunked Prefill Mechanics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. The Problem: Inter-Token Latency (ITL) Degeneracy is essential for maintaining predictable invariants and high performance in 06 Chunked Prefill and PD Disaggregation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Sarathi-Serve Chunked Prefill Mechanics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. The Problem: Inter-Token Latency (ITL) Degeneracy is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. The Problem: Inter-Token Latency (ITL) Degeneracy in 06 Chunked Prefill and PD Disaggregation specifications.",
+    "explanation": "Specification detail defined under '2. Sarathi-Serve Chunked Prefill Mechanics' in Chunked Prefill and PD Disaggregation.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Sarathi-Serve Chunked Prefill Mechanics play in 06 Chunked Prefill and PD Disaggregation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Chunked Prefill and PD Disaggregation, what core system invariant does '3. Disaggregated Prefill-Decode (PD) Serving' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Sarathi-Serve Chunked Prefill Mechanics is essential for maintaining predictable invariants and high performance in 06 Chunked Prefill and PD Disaggregation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Disaggregated Prefill-Decode (PD) Serving.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Sarathi-Serve Chunked Prefill Mechanics is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Sarathi-Serve Chunked Prefill Mechanics in 06 Chunked Prefill and PD Disaggregation specifications.",
+    "explanation": "Specification detail defined under '3. Disaggregated Prefill-Decode (PD) Serving' in Chunked Prefill and PD Disaggregation.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chunked_prefill_pd_sim.py`, what is the exact evaluated result of:\n\n```python\nres.total_chunks\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_chunked_prefill_pd_sim.py`.",
+    "lesson_ref": "test_chunked_prefill_pd_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chunked_prefill_pd_sim.py`, what is the exact evaluated result of:\n\n```python\nres.total_chunks\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_chunked_prefill_pd_sim.py`.",
+    "lesson_ref": "test_chunked_prefill_pd_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Chunked Prefill and PD Disaggregation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Chunked Prefill and PD Disaggregation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Chunked Prefill and PD Disaggregation, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Chunked Prefill'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -\n: Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Chunked Prefill and PD Disaggregation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

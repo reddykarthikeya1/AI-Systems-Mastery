@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" width="100%" height="100%">
+  <defs>
+    <marker id="arr-eig1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#10b981" />
+    </marker>
+    <marker id="arr-eig2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#8b5cf6" />
+    </marker>
+    <marker id="arr-x" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#f43f5e" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#09090b" rx="12" />
+
+  <!-- Left: Input Space -->
+  <g transform="translate(170, 190)">
+    <text x="-120" y="-140" fill="#a1a1aa" font-family="monospace" font-size="13" font-weight="bold">Input Space ℝ²: Unit Circle</text>
+    <circle cx="0" cy="0" r="80" fill="none" stroke="#27272a" stroke-width="1.5" stroke-dasharray="3 3" />
+    <line x1="-130" y1="0" x2="130" y2="0" stroke="#3f3f46" stroke-width="1" />
+    <line x1="0" y1="-130" x2="0" y2="130" stroke="#3f3f46" stroke-width="1" />
+
+    <!-- Eigenvector 1: [1, 1] / sqrt(2) -->
+    <line x1="0" y1="0" x2="56.5" y2="-56.5" stroke="#10b981" stroke-width="2.5" marker-end="url(#arr-eig1)" />
+    <text x="65" y="-60" fill="#10b981" font-family="monospace" font-size="12" font-weight="bold">v₁ = [1, 1]ᵀ</text>
+
+    <!-- Eigenvector 2: [-1, 1] / sqrt(2) -->
+    <line x1="0" y1="0" x2="-56.5" y2="-56.5" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arr-eig2)" />
+    <text x="-135" y="-60" fill="#8b5cf6" font-family="monospace" font-size="12" font-weight="bold">v₂ = [-1, 1]ᵀ</text>
+
+    <!-- Arbitrary vector x -->
+    <line x1="0" y1="0" x2="80" y2="0" stroke="#f43f5e" stroke-width="2" marker-end="url(#arr-x)" />
+    <text x="85" y="15" fill="#f43f5e" font-family="monospace" font-size="12">x = [1, 0]ᵀ</text>
+  </g>
+
+  <!-- Transform Arrow -->
+  <g transform="translate(340, 190)">
+    <line x1="-20" y1="0" x2="20" y2="0" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr-eig1)" />
+    <text x="-25" y="-15" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">A = [2 1; 1 2]</text>
+    <text x="-20" y="25" fill="#71717a" font-family="monospace" font-size="11">y = A x</text>
+  </g>
+
+  <!-- Right: Transformed Space -->
+  <g transform="translate(510, 190)">
+    <text x="-120" y="-140" fill="#a1a1aa" font-family="monospace" font-size="13" font-weight="bold">Transformed Space: Ellipse</text>
+    <ellipse cx="0" cy="0" rx="120" ry="40" fill="none" stroke="#27272a" stroke-width="1.5" stroke-dasharray="3 3" transform="rotate(-45)" />
+    <line x1="-130" y1="0" x2="130" y2="0" stroke="#3f3f46" stroke-width="1" />
+    <line x1="0" y1="-130" x2="0" y2="130" stroke="#3f3f46" stroke-width="1" />
+
+    <!-- A * v1 = 3 * v1 (Direction unchanged, scaled by λ1 = 3) -->
+    <line x1="0" y1="0" x2="105" y2="-105" stroke="#10b981" stroke-width="3" marker-end="url(#arr-eig1)" />
+    <text x="110" y="-105" fill="#10b981" font-family="monospace" font-size="12" font-weight="bold">A v₁ = 3 v₁ (λ₁=3)</text>
+
+    <!-- A * v2 = 1 * v2 (Direction unchanged, scaled by λ2 = 1) -->
+    <line x1="0" y1="0" x2="-56.5" y2="-56.5" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#arr-eig2)" />
+    <text x="-140" y="-70" fill="#8b5cf6" font-family="monospace" font-size="12" font-weight="bold">A v₂ = 1 v₂ (λ₂=1)</text>
+
+    <!-- A * x rotates! -->
+    <line x1="0" y1="0" x2="70" y2="-35" stroke="#f43f5e" stroke-width="2" marker-end="url(#arr-x)" />
+    <text x="75" y="-20" fill="#f43f5e" font-family="monospace" font-size="11">A x = [2, 1]ᵀ (Rotated!)</text>
+  </g>
+</svg>

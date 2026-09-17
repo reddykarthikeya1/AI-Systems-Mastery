@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 04 DeepSpeed ZeRO and PyTorch FSDP failure 'Top 5 Production Failure Modes in FSDP / ZeRO', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what core system invariant does '1. Architectural Motivation & Theoretical Foundations' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 s",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Motivation & Theoretical Foundations.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%. - Root Cause: In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the e",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 04 DeepSpeed ZeRO and PyTorch FSDP exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 04 DeepSpeed ZeRO and PyTorch FSDP: : In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 s. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Architectural Motivation & Theoretical Foundations' in DeepSpeed ZeRO and PyTorch FSDP.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Architectural Motivation & Theoretical Foundations play in 04 DeepSpeed ZeRO and PyTorch FSDP?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what core system invariant does '2. DeepSpeed ZeRO Stages: Mathematical Analysis' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Motivation & Theoretical Foundations is essential for maintaining predictable invariants and high performance in 04 DeepSpeed ZeRO and PyTorch FSDP.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. DeepSpeed ZeRO Stages: Mathematical Analysis.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Motivation & Theoretical Foundations is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Motivation & Theoretical Foundations in 04 DeepSpeed ZeRO and PyTorch FSDP specifications.",
+    "explanation": "Specification detail defined under '2. DeepSpeed ZeRO Stages: Mathematical Analysis' in DeepSpeed ZeRO and PyTorch FSDP.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. DeepSpeed ZeRO Stages: Mathematical Analysis play in 04 DeepSpeed ZeRO and PyTorch FSDP?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what core system invariant does '3. PyTorch FSDP (Fully Sharded Data Parallel) Architecture' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. DeepSpeed ZeRO Stages: Mathematical Analysis is essential for maintaining predictable invariants and high performance in 04 DeepSpeed ZeRO and PyTorch FSDP.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. PyTorch FSDP (Fully Sharded Data Parallel) Architecture.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. DeepSpeed ZeRO Stages: Mathematical Analysis is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. DeepSpeed ZeRO Stages: Mathematical Analysis in 04 DeepSpeed ZeRO and PyTorch FSDP specifications.",
+    "explanation": "Specification detail defined under '3. PyTorch FSDP (Fully Sharded Data Parallel) Architecture' in DeepSpeed ZeRO and PyTorch FSDP.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_zero_fsdp_engine.py`, what is the exact evaluated result of:\n\n```python\nlocal_grad.size\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "w1.size // 4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "12800.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "6400.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `w1.size // 4` as verified in test suite `test_zero_fsdp_engine.py`.",
+    "lesson_ref": "test_zero_fsdp_engine.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_zero_fsdp_engine.py`, what is the exact evaluated result of:\n\n```python\nreconstructed.size\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "w1.size",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "12800.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "6400.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `w1.size` as verified in test suite `test_zero_fsdp_engine.py`.",
+    "lesson_ref": "test_zero_fsdp_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_zero_fsdp_engine.py`, what is the exact evaluated result of:\n\n```python\nmem[\"Communication_Overhead_Factor\"][\"ZeRO_3\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.5` as verified in test suite `test_zero_fsdp_engine.py`.",
+    "lesson_ref": "test_zero_fsdp_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0\u20132 execute it. Ranks 0\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top 5 Production Failure Modes in FSDP / ZeRO'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0\u20132 execute it. Ranks\n: Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In DeepSpeed ZeRO and PyTorch FSDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

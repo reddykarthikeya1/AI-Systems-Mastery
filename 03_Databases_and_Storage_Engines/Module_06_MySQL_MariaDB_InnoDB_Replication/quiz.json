@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does InnoDB's Clustered Index architecture differ from secondary indexes?",
-    "category": "How does InnoDB's Clustered Index architecture differ from secondary indexes?",
+    "tier": "Recall",
+    "question": "How does InnoDB's Clustered Index architecture differ from secondary indexes? How does InnoDB's Clustered Index architecture differ from secondary indexes?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
+        "id": "opt_corr",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
+        "id": "opt_1",
+        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
+        "id": "opt_2",
+        "text": "A memory structure that caches the return values of deterministic functions in the SGA, eliminating repeated function execution for identical arguments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "id": "opt_3",
+        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
         "is_correct": false
       }
     ],
-    "explanation": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the purpose of the InnoDB Doublewrite Buffer?",
-    "category": "What is the purpose of the InnoDB Doublewrite Buffer?",
+    "tier": "Recall",
+    "question": "What is the purpose of the InnoDB Doublewrite Buffer? What is the purpose of the InnoDB Doublewrite Buffer?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
+        "id": "opt_1",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary ",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
+        "id": "opt_2",
+        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "id": "opt_3",
+        "text": "An anti-join returns rows from table A that have no matching record in table B: WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.id = A.id).",
         "is_correct": false
       }
     ],
-    "explanation": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).",
-    "category": "Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).?",
+    "tier": "Recall",
+    "question": "Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).? Explain the difference between Statement-Based Replication (SBR) and Row-Based Replication (RBR).",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.",
+        "id": "opt_corr",
+        "text": "SBR transmits SQL statements (prone to non-deterministic divergence, e.g. NOW()); RBR transmits exact before/after row byte changes.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data.",
+        "id": "opt_1",
+        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
+        "id": "opt_2",
+        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "id": "opt_3",
+        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
         "is_correct": false
       }
     ],
-    "explanation": "SBR transmits SQL statements (prone to non-deterministic divergence, e.g. NOW()); RBR transmits exact before/after row byte changes.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: SBR transmits SQL statements (prone to non-deterministic divergence, e.g. NOW()); RBR transmits exact before/after row byte changes.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is a Global Transaction Identifier (GTID) in MySQL replication? What is a Global Transaction Identifier (GTID) in MySQL replication?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Seq Scan reads all heap pages; Index Scan navigates B-Tree to fetch heap tuples individually; Bitmap Index Scan builds an in-memory bitmap of matching pages before reading them sequentially.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_innodb_engine.py`, what is the exact evaluated result of:\n\n```python\napplied_again\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_innodb_engine.py`.",
+    "lesson_ref": "test_innodb_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_innodb_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(executed_gtids)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_innodb_engine.py`.",
+    "lesson_ref": "test_innodb_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_innodb_engine.py`, what is the exact evaluated result of:\n\n```python\nrow[\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Alice\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Alice\"` as verified in test suite `test_innodb_engine.py`.",
+    "lesson_ref": "test_innodb_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_innodb_engine.py`, what is the exact evaluated result of:\n\n```python\nrow[\"role\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"developer\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DEVELOPER\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"developer\"` as verified in test suite `test_innodb_engine.py`.",
+    "lesson_ref": "test_innodb_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in MySQL MariaDB InnoDB Replication, an engineer observes:\n\"System fault during operation: Deadlock 1213 on High Concurrency Multi-Row Updates\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A long-running reporting session opened a transaction with BEGIN; SELECT ... and remained idle in transaction for 18 hours, pinning xmin and preventing autovacuum from cleaning dead tuples.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.\n\nFix Resolution:\nSort item IDs in ascending order in application code prior to issuing UPDATE statements: for itemid in sorted(itemids): ....",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

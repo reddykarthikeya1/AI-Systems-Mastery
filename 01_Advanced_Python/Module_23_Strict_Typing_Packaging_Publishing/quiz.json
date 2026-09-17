@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the technical difference between Nominal Subtyping (standard inheritance) and Structural Subtyping (typing.Protocol)?",
-    "category": "Nominal vs Structural:",
+    "tier": "Recall",
+    "question": "Nominal vs Structural: What is the technical difference between Nominal Subtyping (standard inheritance) and Structural Subtyping (typing.Protocol)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
+        "id": "opt_corr",
+        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):). - Structural (Duck Typing): An object matches the type if it possesses the required methods and attributes, without explicit inheritance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
+        "id": "opt_1",
+        "text": "Python uses short-circuit evaluation. In an and expression, if the left operand (x != 0) is False, the entire condition is guaranteed to be False, so Python immediately stops and never evaluates (100 / x) > 5, preventing the division by zer",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
+        "id": "opt_2",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
+        "id": "opt_3",
+        "text": "super() dynamically follows the Method Resolution Order (MRO) chain of the self instance, which enables clean cooperative multiple inheritance.",
         "is_correct": false
       }
     ],
-    "explanation": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):). - Structural (Duck Typing): An object matches the type if it possesses the required methods and attributes, without explicit inheritance.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):). - Structural (Duck Typing): An object matches the type if it possesses the required methods and attributes, without explicit inheritance.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the purpose of TypeVar(\"T\") and Generic[T] when designing reusable data structures?",
-    "category": "Generics:",
+    "tier": "Recall",
+    "question": "Generics: What is the purpose of TypeVar(\"T\") and Generic[T] when designing reusable data structures?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
+        "id": "opt_1",
+        "text": "Pre-commit hooks run locally in milliseconds on your machine before a commit is created. They catch linting errors, formatting inconsistencies, and broken syntax immediately, preventing broken commits from reaching GitHub and wasting CI com",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
+        "id": "opt_2",
+        "text": "Because source code changes frequently while dependencies change rarely. Placing dependencies first allows Docker to reuse cached layers, cutting build times from minutes to seconds.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
+        "id": "opt_3",
+        "text": "The API schema specifies available tools. The LLM is trained to emit toolcalls JSON payloads matching the schema when a query requires external data or action.",
         "is_correct": false
       }
     ],
-    "explanation": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does typing.ParamSpec preserve the exact parameter signature of a decorated function?",
-    "category": "Decorator Typing:",
+    "tier": "Recall",
+    "question": "Decorator Typing: How does typing.ParamSpec preserve the exact parameter signature of a decorated function?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):).",
+        "id": "opt_1",
+        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second. Algorithms like Bcrypt and Argon2 are intentionally compute- and memory-intensive (Key Stretching) to make brute-forcing mathematically infeasible.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
+        "id": "opt_2",
+        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
+        "id": "opt_3",
+        "text": "Closures look up free variables at the time the function is called (late binding), not at definition time. When called, the loop has already completed with i = 2. Fix it using default parameter evaluation: [lambda x=i: x for i in range(3)].",
         "is_correct": false
       }
     ],
-    "explanation": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "The Type Marker: What is the purpose of the py.typed file in a published Python package?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Filesystem renames are atomic single-step operations in modern operating systems (NTFS, ext4, APFS). The target file is never left half-written; it either remains 100% old version or becomes 100% new version.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It informs type checkers (Mypy, Pyright) that the installed package ships with inline type annotations that should be statically analyzed.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_typed_sdk.py`, what is the exact evaluated result of:\n\n```python\nresp_str.data\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"HEALTHY\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"HEALTHY\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"HEALTHY\"` as verified in test suite `test_typed_sdk.py`.",
+    "lesson_ref": "test_typed_sdk.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_typed_sdk.py`, what is the exact evaluated result of:\n\n```python\ndto.tier\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"pro\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"PRO\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"pro\"` as verified in test suite `test_typed_sdk.py`.",
+    "lesson_ref": "test_typed_sdk.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_typed_sdk.py`, what is the exact evaluated result of:\n\n```python\nresp.data.username\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"alice_sdk\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE_SDK\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"alice_sdk\"` as verified in test suite `test_typed_sdk.py`.",
+    "lesson_ref": "test_typed_sdk.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_typed_sdk.py`, what is the exact evaluated result of:\n\n```python\ndto.username\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"bob_admin\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"BOB_ADMIN\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"bob_admin\"` as verified in test suite `test_typed_sdk.py`.",
+    "lesson_ref": "test_typed_sdk.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Strict Typing Packaging Publishing, an engineer observes:\n\"Type checker false-safety via Any: mypy reports\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Any is an escape hatch that silences static analysis. Using Any instead of protocols, generics, or unions transfers type errors to runtime.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Any is an escape hatch that silences static analysis. Using Any instead of protocols, generics, or unions transfers type errors to runtime.\n\nFix Resolution:\nUse generics with bounds or a Protocol:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

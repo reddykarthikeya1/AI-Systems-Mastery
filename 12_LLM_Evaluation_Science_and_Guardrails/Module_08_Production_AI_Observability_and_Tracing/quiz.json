@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. OpenTelemetry Semantic Conventions for Generative AI play in 08 Production AI Observability and Tracing?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production AI Observability and Tracing, what core system invariant does '1. OpenTelemetry Semantic Conventions for Generative AI' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. OpenTelemetry Semantic Conventions for Generative AI is essential for maintaining predictable invariants and high performance in 08 Production AI Observability and Tracing.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. OpenTelemetry Semantic Conventions for Generative AI.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. OpenTelemetry Semantic Conventions for Generative AI is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. OpenTelemetry Semantic Conventions for Generative AI in 08 Production AI Observability and Tracing specifications.",
+    "explanation": "Specification detail defined under '1. OpenTelemetry Semantic Conventions for Generative AI' in Production AI Observability and Tracing.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Latency Metrics: TTFT and TPOT play in 08 Production AI Observability and Tracing?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Production AI Observability and Tracing, what core system invariant does '2. Latency Metrics: TTFT and TPOT' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Latency Metrics: TTFT and TPOT is essential for maintaining predictable invariants and high performance in 08 Production AI Observability and Tracing.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Latency Metrics: TTFT and TPOT.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Latency Metrics: TTFT and TPOT is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Latency Metrics: TTFT and TPOT in 08 Production AI Observability and Tracing specifications.",
+    "explanation": "Specification detail defined under '2. Latency Metrics: TTFT and TPOT' in Production AI Observability and Tracing.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Production AI Observability and Tracing, what core system invariant does '3. Real-Time Cost Calculation' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Real-Time Cost Calculation.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Real-Time Cost Calculation' in Production AI Observability and Tracing.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_genai_telemetry_tracer.py`, what is the exact evaluated result of:\n\n```python\nspan.attributes[\"gen_ai.usage.total_tokens\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1500",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1501",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1499",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "3000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1500` as verified in test suite `test_genai_telemetry_tracer.py`.",
+    "lesson_ref": "test_genai_telemetry_tracer.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_genai_telemetry_tracer.py`, what is the exact evaluated result of:\n\n```python\npayload[\"span_count\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_genai_telemetry_tracer.py`.",
+    "lesson_ref": "test_genai_telemetry_tracer.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_genai_telemetry_tracer.py`, what is the exact evaluated result of:\n\n```python\nlen(parent.children)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_genai_telemetry_tracer.py`.",
+    "lesson_ref": "test_genai_telemetry_tracer.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_genai_telemetry_tracer.py`, what is the exact evaluated result of:\n\n```python\nchild.parent_span_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "parent.span_id",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `parent.span_id` as verified in test suite `test_genai_telemetry_tracer.py`.",
+    "lesson_ref": "test_genai_telemetry_tracer.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Production AI Observability and Tracing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Production AI Observability and Tracing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Desynchronized system clocks across worker nodes.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Desynchronized system clocks across worker nodes.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Production AI Observability and Tracing, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Clock Skew in Distributed Tracing'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Desynchronized system clocks across worker nodes. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Swap-pair evaluation outputs 85% Ties.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Desynchronized system clocks across worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Desynchronized system clocks across worker nodes. -\n: Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Production AI Observability and Tracing, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Child span duration appears negative or ends before parent span starts.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "User asks \"How does political risk affect AWS billing?\" and gets blocked by the politics rail.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Child span duration appears negative or ends before parent span starts.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "In 06 Orthogonality and Projections triage of defect 'there is none here', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Orthogonality and Projections.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 2,
-    "question": "In 06 Orthogonality and Projections triage of defect 'classical Gram-Schmidt instead of modified', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'What you will be able to do' in Orthogonality and Projections.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 3,
-    "question": "In 06 Orthogonality and Projections triage of defect 'a zero-length remainder tested with > 0', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Lessons' in Orthogonality and Projections.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Orthogonality and Projections.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'The Dot Product and What It Measures'?",
+    "category": "Architecture: The Dot Product and What It Me",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in The Dot Product and What It Measures.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: The Dot Product and What It Measures.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Norms: L1, L2 and Beyond'?",
+    "category": "Architecture: Norms: L1, L2 and Beyond",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Norms: L1, L2 and Beyond.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Norms: L1, L2 and Beyond.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Angles, Cosine Similarity and Correlation'?",
+    "category": "Architecture: Angles, Cosine Similarity and ",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Angles, Cosine Similarity and Correlation.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Angles, Cosine Similarity and Correlation.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Orthogonal and Orthonormal Vectors'?",
+    "category": "Architecture: Orthogonal and Orthonormal Vec",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Orthogonal and Orthonormal Vectors.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Orthogonal and Orthonormal Vectors.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 9,
+    "tier": "Recall",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Orthogonal Complements'?",
+    "category": "Architecture: Orthogonal Complements",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Orthogonal Complements.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Orthogonal Complements.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Orthogonality and Projections, what core engineering trade-off or invariant is addressed by 'Projection Onto a Line'?",
+    "category": "Architecture: Projection Onto a Line",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Projection Onto a Line.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Projection Onto a Line.",
+    "lesson_ref": "README.md"
   }
 ]

@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Theoretical Foundations: Cognitive Architectures & Memory Types play in 04 Agent Memory Systems?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Agent Memory Systems, what core system invariant does '1. Theoretical Foundations: Cognitive Architectures & Memory Types' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Theoretical Foundations: Cognitive Architectures & Memory Types is essential for maintaining predictable invariants and high performance in 04 Agent Memory Systems.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations: Cognitive Architectures & Memory Types.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Theoretical Foundations: Cognitive Architectures & Memory Types is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Theoretical Foundations: Cognitive Architectures & Memory Types in 04 Agent Memory Systems specifications.",
+    "explanation": "Specification detail defined under '1. Theoretical Foundations: Cognitive Architectures & Memory Types' in Agent Memory Systems.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Episodic Retrieval Formulation (Park et al., 2023) play in 04 Agent Memory Systems?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Agent Memory Systems, what core system invariant does '2. Episodic Retrieval Formulation (Park et al., 2023)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Episodic Retrieval Formulation (Park et al., 2023) is essential for maintaining predictable invariants and high performance in 04 Agent Memory Systems.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Episodic Retrieval Formulation (Park et al., 2023).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Episodic Retrieval Formulation (Park et al., 2023) is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Episodic Retrieval Formulation (Park et al., 2023) in 04 Agent Memory Systems specifications.",
+    "explanation": "Specification detail defined under '2. Episodic Retrieval Formulation (Park et al., 2023)' in Agent Memory Systems.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Agent Memory Systems, what core system invariant does '3. Reflection & Memory Consolidation' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Reflection & Memory Consolidation.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Reflection & Memory Consolidation' in Agent Memory Systems.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_agent_memory_manager.py`.",
+    "lesson_ref": "test_agent_memory_manager.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nmemory_manager.semantic_store[\"user_domain\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"GPU and Deep Learning Engineer\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"GPU AND DEEP LEARNING ENGINEER\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"GPU and Deep Learning Engineer\"` as verified in test suite `test_agent_memory_manager.py`.",
+    "lesson_ref": "test_agent_memory_manager.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nmemory_manager.working_memory[0][\"content\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"msg2\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MSG2\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"msg2\"` as verified in test suite `test_agent_memory_manager.py`.",
+    "lesson_ref": "test_agent_memory_manager.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_agent_memory_manager.py`, what is the exact evaluated result of:\n\n```python\nlen(memory_manager.working_memory)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_agent_memory_manager.py`.",
+    "lesson_ref": "test_agent_memory_manager.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": LLM renamed the parameter from query to querytext based on vague docstring instructions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The agent forgets a user's name or fundamental preference declared 3 days ago.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": LLM wrapped JSON inside code blocks with conversational preamble. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The agent forgets a user's name or fundamental preference declared 3 days ago.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Agent Memory Systems, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Recency Decay Overwhelming High-Value Historic Memories'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -\n: Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

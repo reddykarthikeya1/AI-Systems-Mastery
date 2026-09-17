@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Every subset comes back empty', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Backtracking and Constraint Satisfaction, what core system invariant does '1. The Canonical Backtracking Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the same object \u2014 and by the time the search finishes, every append has been undone by its matching pop, leaving that shared object empty. ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The Canonical Backtracking Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the same object \u2014 and by the time the search finishes, every append has been undone by its matching pop, leaving that shared object empty. ",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. The Canonical Backtracking Blueprint' in Backtracking and Constraint Satisfaction.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Permutations are produced but the used flag is never cleared', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Backtracking and Constraint Satisfaction, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch. The search then fi",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch. The search then fi",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Backtracking and Constraint Satisfaction.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 13 Backtracking and Constraint Satisfaction triage of defect 'Candidates cannot be reused', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Backtracking and Constraint Satisfaction, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Passing i + 1 advances past the current candidate, which is exactly right for a subset problem where each element may be used once \u2014 and exactly wrong here, where reuse is permitted. Every combination returned is valid and sums to the target; the set",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Passing i + 1 advances past the current candidate, which is exactly right for a subset problem where each element may be used once \u2014 and exactly wrong here, where reuse is permitted. Every combination returned is valid and sums to the target; the set",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Backtracking and Constraint Satisfaction.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Backtracking and Constraint Satisfaction, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Backtracking and Constraint Satisfaction.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m13_problems.py`, what is the exact evaluated result of:\n\n```python\n\"\".join(parts)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "text",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `text` as verified in test suite `test_m13_problems.py`.",
+    "lesson_ref": "test_m13_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m13_problems.py`, what is the exact evaluated result of:\n\n```python\n[tuple(x) for x in subsets_with_dups(data)]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "expected",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `expected` as verified in test suite `test_m13_problems.py`.",
+    "lesson_ref": "test_m13_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m13_problems.py`, what is the exact evaluated result of:\n\n```python\nn_queens(5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "10",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "20",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `10` as verified in test suite `test_m13_problems.py`.",
+    "lesson_ref": "test_m13_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m13_problems.py`, what is the exact evaluated result of:\n\n```python\nn_queens(4)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_m13_problems.py`.",
+    "lesson_ref": "test_m13_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Backtracking and Constraint Satisfaction, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Every subset comes back empty\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Deep trees causing Python RecursionError (mitigate via iterative traversal + explicit stack).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Backtracking and Constraint Satisfaction, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 Candidates cannot be reused\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Passing i + 1 advances past the current candidate, which is exactly right for a",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Passing i + 1 advances past the current candidate, which is exactly right for a\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Backtracking and Constraint Satisfaction, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Permutations are produced but the used flag is never cleared\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Backtracking and Constraint Satisfaction, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "p99 Request Latency (Alert if p99 > 200ms for 3 consecutive minutes)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Distributed Consensus Raft Vector Clocks, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops. Moving data across networks incurs a 10,000x to 1,000,000x latency penalty compared to in-memory lookups. The design maximizes local memory batching while deferring or pipelining I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Distributed Consensus Raft Vector Clocks.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Error Rate (Alert if HTTP 5xx or unhandled exceptions exceed 0.5% of total requests)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Distributed Consensus Raft Vector Clocks, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes. Fencing tokens or epoch numbers reject stale writes from deposed leaders to eliminate split-brain hazards.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Distributed Consensus Raft Vector Clocks.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "Queue Lag / In-Flight Tasks (Alert if queue residency exceeds safety thresholds) Answer 7: Rookie Anti-Patterns A fatal anti-pattern is unbounded in-memory queuing or missing timeout budgets on remote RPC calls. When a downstream service slows down, upstream memory explodes, triggering kernel OOM-killer termination. Answer 8: Tenant Security Isolation is enforced via cryptographically signed JWT/HMAC tokens, per-tenant rate-limiting buckets, and partition-keyed database sharding to prevent cross-tenant data leakage. Answer 9: Trade-Off Analysis Simpler monolithic or single-node designs are easier to reason about, test, and deploy. However, when scale exceeds vertical hardware limits (CPU/RAM/IOPS), distributed partitioning becomes mandatory despite operational complexity. Answer 10: Zero-Downtime Rollouts Upgrades utilize Blue/Green or Canary deployments behind a Layer 7 load balancer. Database schema changes use the Expand/Contract (Parallel Run) pattern to ensure backward and forward compatibility.",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Distributed Consensus Raft Vector Clocks, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Distributed Consensus Raft Vector Clocks.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Distributed Consensus Raft Vector Clocks, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Distributed Consensus Raft Vector Clocks.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chaos_harness.py`, what is the exact evaluated result of:\n\n```python\ncluster.nodes[\"n3\"].role\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "RaftRole.LEADER",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `RaftRole.LEADER` as verified in test suite `test_chaos_harness.py`.",
+    "lesson_ref": "test_chaos_harness.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_crdt_engine.py`, what is the exact evaluated result of:\n\n```python\nreadable(a.merge(b))\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "readable(b.merge(a))",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `readable(b.merge(a))` as verified in test suite `test_crdt_engine.py`.",
+    "lesson_ref": "test_crdt_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_crdt_engine.py`, what is the exact evaluated result of:\n\n```python\nonce.merge(bob).text()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "once.text()",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `once.text()` as verified in test suite `test_crdt_engine.py`.",
+    "lesson_ref": "test_crdt_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_raft_cluster_engine.py`, what is the exact evaluated result of:\n\n```python\nVectorClock.compare(vc1, vc3)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "CausalityRelation.CONCURRENT",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `CausalityRelation.CONCURRENT` as verified in test suite `test_raft_cluster_engine.py`.",
+    "lesson_ref": "test_raft_cluster_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Distributed Consensus Raft Vector Clocks, an engineer observes:\n\"System fault during operation: Split-Vote Deadlock in Raft Leader Election Without Timeout Jitter\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "If all nodes share the same election timeout, they become Candidates simultaneously upon leader failure, split votes, and repeat indefinitely. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The calculation divided by 10^6 instead of 1024^3 (GiB) or 10^9 (GB) and completely omitted multiplying by the storage replication factor (3x). This led to severe disk exhaustion in production. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Ingesting arbitrary user uploads without strict chunk size limits and streaming piping causes memory consumption to explode. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: If all nodes share the same election timeout, they become Candidates simultaneously upon leader failure, split votes, and repeat indefinitely. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

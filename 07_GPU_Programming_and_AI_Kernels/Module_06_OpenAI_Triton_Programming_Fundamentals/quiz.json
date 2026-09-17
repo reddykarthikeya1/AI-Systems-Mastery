@@ -1,60 +1,242 @@
 [
   {
     "id": 1,
-    "question": "Triton vs CUDA Performance Parity \u2014 In which workloads does Triton match or exceed hand-tuned CUDA C++, and where does it fall short?",
-    "category": "Triton vs CUDA Performance Parity",
+    "tier": "Recall",
+    "question": "In OpenAI Triton Programming Fundamentals, what core system invariant does '1. The Block-Level Programming Paradigm' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Where Triton Excels: 1. Fused elementwise and normalization kernels (LayerNorm, RMSNorm, GeLU, Softmax). Triton matches or beats cuDNN bec...",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The Block-Level Programming Paradigm.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 06 OpenAI Triton Programming Fundamentals.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 06 OpenAI Triton Programming Fundamentals.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "- Where Triton Excels: 1. Fused elementwise and normalization kernels (LayerNorm, RMSNorm, GeLU, Softmax). Triton matches or beats cuDNN because fusion saves DRAM traffic and Triton's register allocator is state-of-the-art. 2. FlashAttention and specialized GEMM variants. Triton allows rapid exploration of tile sizes (BLOCKM, BLOCKN) without rewrit",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The Block-Level Programming Paradigm' in OpenAI Triton Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 06 OpenAI Triton Programming Fundamentals failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In OpenAI Triton Programming Fundamentals, what core system invariant does '2. Core Triton Primitives' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Core Triton Primitives.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Triton compilation error: BLOCKSIZE must be a power of 2. - Root Cause: Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - ",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 06 OpenAI Triton Programming Fundamentals exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 06 OpenAI Triton Programming Fundamentals: : Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. - Fix: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean maskin. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Core Triton Primitives' in OpenAI Triton Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In OpenAI Triton Programming Fundamentals, what core system invariant does '3. Triton Fused Softmax Implementation' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Triton Fused Softmax Implementation.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Triton Fused Softmax Implementation' in OpenAI Triton Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In OpenAI Triton Programming Fundamentals, what core system invariant does '4. Module Study Progression' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Module Study Progression.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Module Study Progression' in OpenAI Triton Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In OpenAI Triton Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Undefined behavior or deadlock on Volta, Hopper, or Blackwell GPUs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In OpenAI Triton Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Sign-extend using bit arithmetic:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Triton compilation error: BLOCKSIZE must be a power of 2.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In OpenAI Triton Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Intermittent numerical inaccuracies or race conditions in matrix outputs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Convert to Structure of Arrays:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In OpenAI Triton Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -\n: Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

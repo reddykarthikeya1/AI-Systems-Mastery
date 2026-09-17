@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 06 Trees Binary Search Trees and Self Balancing triage of defect 'A tree that is not a BST is approved', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Trees Binary Search Trees and Self Balancing, what core system invariant does '1. Binary Tree Node Representation' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not BSTs. [5, ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Binary Tree Node Representation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not BSTs. [5, ",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Binary Tree Node Representation' in Trees Binary Search Trees and Self Balancing.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 06 Trees Binary Search Trees and Self Balancing triage of defect 'Every depth is one too large', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Trees Binary Search Trees and Self Balancing, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root. The reported numbers are small positive integers of exactly the right shape, and the relative comparison be",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root. The reported numbers are small positive integers of exactly the right shape, and the relative comparison be",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Trees Binary Search Trees and Self Balancing.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 06 Trees Binary Search Trees and Self Balancing triage of defect 'An unbalanced tree is reported as balanced', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Trees Binary Search Trees and Self Balancing, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it. The last case in the output is exactly that: the root's two subtree ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it. The last case in the output is exactly that: the root's two subtree ",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Trees Binary Search Trees and Self Balancing.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Trees Binary Search Trees and Self Balancing, what core system invariant does '3. Systems-Level Deep Dive: Cache-Conscious Node Packing vs Pointer Chasing' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Systems-Level Deep Dive: Cache-Conscious Node Packing vs Pointer Chasing.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Systems-Level Deep Dive: Cache-Conscious Node Packing vs Pointer Chasing' in Trees Binary Search Trees and Self Balancing.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m06_problems.py`, what is the exact evaluated result of:\n\n```python\nkth_smallest_bst(spine, 1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_m06_problems.py`.",
+    "lesson_ref": "test_m06_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m06_problems.py`, what is the exact evaluated result of:\n\n```python\nlevel_order(from_level_order([1]))\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[[1]]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[[1]]` as verified in test suite `test_m06_problems.py`.",
+    "lesson_ref": "test_m06_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_avl_tree_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(tree)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "6",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `5` as verified in test suite `test_avl_tree_engine.py`.",
+    "lesson_ref": "test_avl_tree_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m06_problems.py`, what is the exact evaluated result of:\n\n```python\ninorder_traversal(None)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_m06_problems.py`.",
+    "lesson_ref": "test_m06_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Trees Binary Search Trees and Self Balancing, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 An unbalanced tree is reported as balanced\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps re",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Trees Binary Search Trees and Self Balancing, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the right answer and therefore looks almost right.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Trees Binary Search Trees and Self Balancing, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Every depth is one too large\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Accessing .next or .left without checking if node is None.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Trees Binary Search Trees and Self Balancing, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 A tree that is not a BST is approved\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a part",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not BSTs.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

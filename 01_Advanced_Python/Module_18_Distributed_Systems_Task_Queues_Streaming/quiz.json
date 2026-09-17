@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why should long-running operations (like generating 100-page PDF reports) never run directly inside an HTTP request handler?",
-    "category": "Decoupling:",
+    "tier": "Recall",
+    "question": "Decoupling: Why should long-running operations (like generating 100-page PDF reports) never run directly inside an HTTP request handler?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "HTTP requests have strict timeout limits (e.",
+        "id": "opt_corr",
+        "text": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Producer: Generates job instructions and enqueues them.",
+        "id": "opt_1",
+        "text": "asyncio.CancelledError is raised. If caught for cleanup purposes, it must be re-raised (raise) so the task terminates properly.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A poison pill is a message with corrupt data that crashes the worker.",
+        "id": "opt_2",
+        "text": "- Layer 1: Accepts decorator configuration arguments (e.g., maxattempts). - Layer 2: Accepts the target function being decorated (func). - Layer 3: Accepts runtime arguments (args, kwargs) passed during actual execution.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "id": "opt_3",
+        "text": "Use raise ServiceError(...) from None. Setting from None sets suppresscontext = True, hiding internal tracebacks from end-users.",
         "is_correct": false
       }
     ],
-    "explanation": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What are the distinct responsibilities of a Producer, a Message Broker, and a Worker Consumer?",
-    "category": "Broker Architecture:",
+    "tier": "Recall",
+    "question": "Broker Architecture: What are the distinct responsibilities of a Producer, a Message Broker, and a Worker Consumer?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Producer: Generates job instructions and enqueues them.",
+        "id": "opt_corr",
+        "text": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "HTTP requests have strict timeout limits (e.",
+        "id": "opt_1",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A poison pill is a message with corrupt data that crashes the worker.",
+        "id": "opt_2",
+        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "id": "opt_3",
+        "text": "1. sys.path[0]: The directory containing the script used to invoke the interpreter (or current directory in interactive mode). 2. Standard library directories. 3. Third-party site-packages directories.",
         "is_correct": false
       }
     ],
-    "explanation": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is a \"Poison Pill\" message, and what happens to a naive worker pool that does not implement DLQs?",
-    "category": "Poison Pills:",
+    "tier": "Recall",
+    "question": "Poison Pills: What is a \"Poison Pill\" message, and what happens to a naive worker pool that does not implement DLQs?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "A poison pill is a message with corrupt data that crashes the worker.",
+        "id": "opt_corr",
+        "text": "A poison pill is a message with corrupt data that crashes the worker. Without DLQs, the broker constantly re-delivers the message, causing an infinite crash loop.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "HTTP requests have strict timeout limits (e.",
+        "id": "opt_1",
+        "text": "It turns type hints into inert string literals rather than evaluating them at runtime, eliminating forward reference errors and speeding up import time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- Producer: Generates job instructions and enqueues them.",
+        "id": "opt_2",
+        "text": "- BackgroundTasks: In-process background tasks that run after response return (ideal for simple emails or audit logs). - Celery / ARQ: Distributed out-of-process queues backed by Redis/RabbitMQ (essential for heavy CPU tasks, video processi",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "id": "opt_3",
+        "text": "1. Reason: LLM analyzes goal and decides which tool to call. 2. Act: System executes the tool with generated arguments. 3. Observe: Result is passed back to LLM context to formulate next step or final answer.",
         "is_correct": false
       }
     ],
-    "explanation": "A poison pill is a message with corrupt data that crashes the worker. Without DLQs, the broker constantly re-delivers the message, causing an infinite crash loop.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A poison pill is a message with corrupt data that crashes the worker. Without DLQs, the broker constantly re-delivers the message, causing an infinite crash loop.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Dead-Letter Queues: How does a Dead-Letter Queue (DLQ) protect production queues from infinite crash loops?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1. Linting & Type Checking (ruff, mypy) 2. Automated Testing (pytest) 3. Docker Image Build & Push (Docker Hub / AWS ECR) 4. Zero-Downtime Deployment (Kubernetes / ECS / Cloud Run)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_pipeline.py`, what is the exact evaluated result of:\n\n```python\ncalls[\"n\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_distributed_pipeline.py`.",
+    "lesson_ref": "test_distributed_pipeline.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_pipeline.py`, what is the exact evaluated result of:\n\n```python\nlen(dlq)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_distributed_pipeline.py`.",
+    "lesson_ref": "test_distributed_pipeline.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_pipeline.py`, what is the exact evaluated result of:\n\n```python\nlen(dlq)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_distributed_pipeline.py`.",
+    "lesson_ref": "test_distributed_pipeline.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_distributed_pipeline.py`, what is the exact evaluated result of:\n\n```python\ncalls[\"n\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_distributed_pipeline.py`.",
+    "lesson_ref": "test_distributed_pipeline.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Distributed Systems Task Queues Streaming, an engineer observes:\n\"Double debiting / Data corruption under redelivery: When a message broker redelivers an unacknowledged task, Alice is debited twice ($\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In Python 3, defining eq automatically sets hash = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, hash must be explicitly implemented.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "FastAPI (Starlette) evaluates routes in the order they are defined. /items/{itemid} matches any string including \"special\".",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.\n\nFix Resolution:\nImplement deduplication checking against an idempotency store (e.g. Redis SETNX or DB primary key):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

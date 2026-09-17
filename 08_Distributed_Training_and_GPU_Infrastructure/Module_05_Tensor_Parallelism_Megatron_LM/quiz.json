@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 05 Tensor Parallelism Megatron LM failure 'Top 5 Production Failure Modes in Tensor Parallelism', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '1. Mathematical Formulation of Megatron-LM' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{Norm}{\\text",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Formulation of Megatron-LM.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm. - Root Cause: In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates ",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 05 Tensor Parallelism Megatron LM exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 05 Tensor Parallelism Megatron LM: : In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{Norm}{\\text. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Formulation of Megatron-LM' in Tensor Parallelism Megatron LM.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Formulation of Megatron-LM play in 05 Tensor Parallelism Megatron LM?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '2. Self-Attention Tensor Parallelism' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Formulation of Megatron-LM is essential for maintaining predictable invariants and high performance in 05 Tensor Parallelism Megatron LM.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Self-Attention Tensor Parallelism.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Formulation of Megatron-LM is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Formulation of Megatron-LM in 05 Tensor Parallelism Megatron LM specifications.",
+    "explanation": "Specification detail defined under '2. Self-Attention Tensor Parallelism' in Tensor Parallelism Megatron LM.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Self-Attention Tensor Parallelism play in 05 Tensor Parallelism Megatron LM?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Tensor Parallelism Megatron LM, what core system invariant does '3. Megatron Sequence Parallelism (SP)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Self-Attention Tensor Parallelism is essential for maintaining predictable invariants and high performance in 05 Tensor Parallelism Megatron LM.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Megatron Sequence Parallelism (SP).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Self-Attention Tensor Parallelism is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Self-Attention Tensor Parallelism in 05 Tensor Parallelism Megatron LM specifications.",
+    "explanation": "Specification detail defined under '3. Megatron Sequence Parallelism (SP)' in Tensor Parallelism Megatron LM.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top 5 Production Failure Modes in Tensor Parallelism'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{Norm}{\\text{local}} < \\text{Norm}{\\text{global}}$, the calcul\n: Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Account for gated MLP expansion factor in analytical FLOP counters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Tensor Parallelism Megatron LM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights:",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights:\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Tensor Parallelism Megatron LM workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU cluster slows down to the speed of the slowest lin",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Tensor Parallelism Megatron LM workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

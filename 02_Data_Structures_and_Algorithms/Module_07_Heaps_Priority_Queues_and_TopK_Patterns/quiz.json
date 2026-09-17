@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'K-th largest returns the k-th smallest', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Heaps Priority Queues and TopK Patterns, what core system invariant does '1. The $O(N)$ Bottom-Up Heapify Proof' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k smallest. The function computes the k-th smallest and calls it the k-th largest. For k=1 and for all-equal inputs the two answers co",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The $O(N)$ Bottom-Up Heapify Proof.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k smallest. The function computes the k-th smallest and calls it the k-th largest. For k=1 and for all-equal inputs the two answers co",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. The $O(N)$ Bottom-Up Heapify Proof' in Heaps Priority Queues and TopK Patterns.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'The merge stops as soon as any one list is exhausted', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Heaps Priority Queues and TopK Patterns, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists. The output is correc",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists. The output is correc",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Heaps Priority Queues and TopK Patterns.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 07 Heaps Priority Queues and TopK Patterns triage of defect 'The median is wrong for every even-length prefix', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Heaps Priority Queues and TopK Patterns, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean. Every od",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean. Every od",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Heaps Priority Queues and TopK Patterns.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Heaps Priority Queues and TopK Patterns, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Heaps Priority Queues and TopK Patterns.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m07_problems.py`, what is the exact evaluated result of:\n\n```python\nstreaming_median([5, 4, 3, 2, 1])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[5.0, 4.5, 4.0, 3.5, 3.0]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[5.0, 4.5, 4.0, 3.5, 3.0]` as verified in test suite `test_m07_problems.py`.",
+    "lesson_ref": "test_m07_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_binary_min_heap_engine.py`, what is the exact evaluated result of:\n\n```python\ntracker.get_top_k()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[100, 70, 50]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[100, 70, 50]` as verified in test suite `test_binary_min_heap_engine.py`.",
+    "lesson_ref": "test_binary_min_heap_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_binary_min_heap_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(h)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "len(data)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `len(data)` as verified in test suite `test_binary_min_heap_engine.py`.",
+    "lesson_ref": "test_binary_min_heap_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m07_problems.py`, what is the exact evaluated result of:\n\n```python\nkth_largest([1], 1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_m07_problems.py`.",
+    "lesson_ref": "test_m07_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Heaps Priority Queues and TopK Patterns, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The reuse test asks whether some room has already been vacated by the time this meeting starts. That question only makes sense if meetings are considered in chronological order \u2014 otherwise a later meeting can free a room for an earlier one,",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Cyclic references preventing garbage collection in bidirectional pointers.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The reuse test asks whether some room has already been vacated by the time this meeting starts. That question only makes sense if meetings are considered in chronological order \u2014 otherwise a later meeting can free a room for an earlier one, which is not how time works.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Heaps Priority Queues and TopK Patterns, an engineer observes:\n\"0, 2.0, 3.0] expected [\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Exhausting one input list is a completely ordinary event \u2014 it happens k times in any successful merge. Treating it as a termination condition ends the merge at the first one, discarding everything still queued in the other lists.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Heaps Priority Queues and TopK Patterns, an engineer observes:\n\"0, 1.0] expected [\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Heaps Priority Queues and TopK Patterns, an engineer observes:\n\"0] expected [\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

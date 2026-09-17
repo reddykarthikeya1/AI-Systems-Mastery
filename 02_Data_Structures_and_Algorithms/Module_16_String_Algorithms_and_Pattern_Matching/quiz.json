@@ -1,89 +1,242 @@
 [
   {
     "id": 1,
-    "question": "In 16 String Algorithms and Pattern Matching triage of defect 'resuming from zero after a match', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In String Algorithms and Pattern Matching, what core system invariant does 'Learning path' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Learning path.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Learning path' in String Algorithms and Pattern Matching.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 16 String Algorithms and Pattern Matching triage of defect 'trusting the hash', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In String Algorithms and Pattern Matching, what core system invariant does '1. Why the naive scan is wasteful' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Why the naive scan is wasteful.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Why the naive scan is wasteful' in String Algorithms and Pattern Matching.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 16 String Algorithms and Pattern Matching triage of defect 'failure links built, output sets not merged', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In String Algorithms and Pattern Matching, what core system invariant does '2. KMP: the prefix function' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. KMP: the prefix function.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. KMP: the prefix function' in String Algorithms and Pattern Matching.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In String Algorithms and Pattern Matching, what core system invariant does '3. Z-algorithm: the same information, differently shaped' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Z-algorithm: the same information, differently shaped.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Z-algorithm: the same information, differently shaped' in String Algorithms and Pattern Matching.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_string_matching_engine.py`, what is the exact evaluated result of:\n\n```python\nrabin_karp_2d([\"ab\"], [\"abc\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_string_matching_engine.py`.",
+    "lesson_ref": "test_string_matching_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_string_matching_engine.py`, what is the exact evaluated result of:\n\n```python\nsearch(\"aaaa\", \"aa\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[0, 1, 2]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[0, 1, 2]` as verified in test suite `test_string_matching_engine.py`.",
+    "lesson_ref": "test_string_matching_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m16_problems.py`, what is the exact evaluated result of:\n\n```python\nlen(out)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "len(text)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `len(text)` as verified in test suite `test_m16_problems.py`.",
+    "lesson_ref": "test_m16_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m16_problems.py`, what is the exact evaluated result of:\n\n```python\nbuild_prefix_table(\"aaaa\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[0, 1, 2, 3]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[0, 1, 2, 3]` as verified in test suite `test_m16_problems.py`.",
+    "lesson_ref": "test_m16_problems.py"
   }
 ]

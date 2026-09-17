@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "If a Python function executes without encountering an explicit return statement, what value is returned to the caller, and what is its data type?",
-    "category": "Return Semantics:",
+    "tier": "Recall",
+    "question": "Return Semantics: If a Python function executes without encountering an explicit return statement, what value is returned to the caller, and what is its data type?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- a and b are positional-only (because they are before /).",
+        "id": "opt_1",
+        "text": "It prevents model attributes from expiring on commit, allowing objects to be read in Python memory without triggering unauthorized background async I/O.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
+        "id": "opt_2",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
+        "id": "opt_3",
+        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
         "is_correct": false
       }
     ],
-    "explanation": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Python automatically returns the singleton value None, which belongs to the data type NoneType.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "In def configure(a, b, /, c, , d=10, e=20):, which parameters MUST be passed positionally, and which MUST be passed with keywords?",
-    "category": "Parameter Syntax:",
+    "tier": "Recall",
+    "question": "Parameter Syntax: In def configure(a, b, /, c, , d=10, e=20):, which parameters MUST be passed positionally, and which MUST be passed with keywords?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- a and b are positional-only (because they are before /).",
+        "id": "opt_corr",
+        "text": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
+        "id": "opt_1",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
+        "id": "opt_2",
+        "text": "uv and ruff are written in Rust and compiled to native machine code. They utilize multi-threaded file parsing, direct AST memory representations, global package caching with copy-on-write/reflinks, and zero-copy data structures, avoiding Py",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
+        "id": "opt_3",
+        "text": "Child instances will have a dynamic dict created, completely negating the memory savings of the parent class.",
         "is_correct": false
       }
     ],
-    "explanation": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What Python data structure does args arrive as inside a function? What data structure does kwargs arrive as?",
-    "category": "Variable-Length Arguments:",
+    "tier": "Recall",
+    "question": "Variable-Length Arguments: What Python data structure does args arrive as inside a function? What data structure does kwargs arrive as?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- args arrives as a tuple (immutable sequence of positional arguments).",
+        "id": "opt_corr",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Python automatically returns the singleton value None, which belongs to the data type NoneType.",
+        "id": "opt_1",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked. - Code after yield: Executes during response teardown after the route handler finishes, even if an unhandled error occurred.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- a and b are positional-only (because they are before /).",
+        "id": "opt_2",
+        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries. For 1,000 users, this executes 1,001 queries instead of 1 or 2 optimized queries.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-...",
+        "id": "opt_3",
+        "text": "Default parameter expressions are evaluated once at function definition time, not during each invocation. As a result, the same mutable list instance in memory is reused across all subsequent calls that omit the argument.",
         "is_correct": false
       }
     ],
-    "explanation": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Scope Resolution (LEGB): When Python resolves a variable name, what are the four scope layers in the exact search order?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-in (Python's built-in namespace like len, range, print)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL, and return result.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It explicitly sets cause on the new exception, preserving the original error and displaying a clean \"The above exception was the direct cause of the following exception:\" chain in the traceback.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: 1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-in (Python's built-in namespace like len, range, print)",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_game.py`, what is the exact evaluated result of:\n\n```python\nget_p1()[\"hp\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "60",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "61",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "59",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "120",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `60` as verified in test suite `test_game.py`.",
+    "lesson_ref": "test_game.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_game.py`, what is the exact evaluated result of:\n\n```python\nget_p2()[\"hp\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "80",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "81",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "79",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "160",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `80` as verified in test suite `test_game.py`.",
+    "lesson_ref": "test_game.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_game.py`, what is the exact evaluated result of:\n\n```python\nget_stats()[\"inventory\"].count(\"Potion\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_game.py`.",
+    "lesson_ref": "test_game.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_game.py`, what is the exact evaluated result of:\n\n```python\nget_stats()[\"gold\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "35",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "36",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "34",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "70",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `35` as verified in test suite `test_game.py`.",
+    "lesson_ref": "test_game.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Functions Scopes Closures, an engineer observes:\n\"Late-binding closure multiplier bug: Instead of multiplying by\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.\n\nFix Resolution:\nUse None as a sentinel value and instantiate a new list inside the function:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Functions Scopes Closures, an engineer observes:\n\"Cross-contamination of player inventories: Player\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).\n\nFix Resolution:\nRename the variable to avoid collision with standard library built-ins:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Functions Scopes Closures, an engineer observes:\n\"TypeError on calculating team score: Calling calculateteamscore([\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.\n\nFix Resolution:\nBind i at definition time using a default parameter:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does Redis Sentinel achieve automated master failover?",
-    "category": "How does Redis Sentinel achieve automated master failover?",
+    "tier": "Recall",
+    "question": "How does Redis Sentinel achieve automated master failover? How does Redis Sentinel achieve automated master failover?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
+        "id": "opt_1",
+        "text": "No. An autonomous transaction is a completely separate session and cannot see the calling transaction's uncommitted writes.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
+        "id": "opt_2",
+        "text": "An anti-join returns rows from table A that have no matching record in table B: WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.id = A.id).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "id": "opt_3",
+        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
         "is_correct": false
       }
     ],
-    "explanation": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them?",
-    "category": "How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them?",
+    "tier": "Recall",
+    "question": "How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them? How many Hash Slots exist in a Redis Cluster, and how are keys mapped to them?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
+        "id": "opt_corr",
+        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "id": "opt_1",
+        "text": "Labels group nodes into sets/classes (can have multiple per node); relationship types define the single specific semantic edge connecting two nodes.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
+        "id": "opt_2",
+        "text": "Transactions read from a consistent snapshot taken at start; Write Skew anomaly can occur (prevented only by Serializable).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "id": "opt_3",
+        "text": "An ordering produced by an index or sort that satisfies subsequent ORDER BY or GROUP BY clauses, avoiding redundant sort operations.",
         "is_correct": false
       }
     ],
-    "explanation": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: 16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is a Redis Hash Tag, and why is it essential for multi-key cluster operations?",
-    "category": "What is a Redis Hash Tag, and why is it essential for multi-key cluster operations?",
+    "tier": "Recall",
+    "question": "What is a Redis Hash Tag, and why is it essential for multi-key cluster operations? What is a Redis Hash Tag, and why is it essential for multi-key cluster operations?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "id": "opt_1",
+        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384....",
+        "id": "opt_2",
+        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "id": "opt_3",
+        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
         "is_correct": false
       }
     ],
-    "explanation": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What happens when a client sends a query for a key to the wrong Redis Cluster node? What happens when a client sends a query for a key to the wrong Redis Cluster node?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A query predicate written such that the engine can utilize an index seek (e.g. col >= val instead of col + 5 >= val).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sentinel_cluster_streams.py`, what is the exact evaluated result of:\n\n```python\nacked\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_sentinel_cluster_streams.py`.",
+    "lesson_ref": "test_sentinel_cluster_streams.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_redis_ha_live.py`, what is the exact evaluated result of:\n\n```python\nevents[0][1][\"order_id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"ord_1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ORD_1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"ord_1\"` as verified in test suite `test_redis_ha_live.py`.",
+    "lesson_ref": "test_redis_ha_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sentinel_cluster_streams.py`, what is the exact evaluated result of:\n\n```python\ncoordinator.master_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"replica-2\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"REPLICA-2\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"replica-2\"` as verified in test suite `test_sentinel_cluster_streams.py`.",
+    "lesson_ref": "test_sentinel_cluster_streams.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sentinel_cluster_streams.py`, what is the exact evaluated result of:\n\n```python\nres2\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_sentinel_cluster_streams.py`.",
+    "lesson_ref": "test_sentinel_cluster_streams.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Redis Sentinel Clustering Lua, an engineer observes:\n\"System fault during operation: CROSSSLOT Keys in Request Don't Hash to the Same Slot\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.\n\nFix Resolution:\nUse Redis Hash Tags to force keys to the same slot: {user:101}:profile and {user:101}:orders.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

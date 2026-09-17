@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What is the technical difference between WSGI (Web Server Gateway Interface) and ASGI (Asynchronous Server Gateway Interface)?",
-    "category": "Gateway Interfaces:",
+    "tier": "Recall",
+    "question": "Gateway Interfaces: What is the technical difference between WSGI (Web Server Gateway Interface) and ASGI (Asynchronous Server Gateway Interface)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
+        "id": "opt_corr",
+        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+        "id": "opt_1",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the ne",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
+        "id": "opt_2",
         "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
+        "id": "opt_3",
+        "text": "- 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
         "is_correct": false
       }
     ],
-    "explanation": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What role does Uvicorn play in a FastAPI production deployment?",
-    "category": "ASGI Servers:",
+    "tier": "Recall",
+    "question": "ASGI Servers: What role does Uvicorn play in a FastAPI production deployment?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
+        "id": "opt_1",
+        "text": "Because processes have separate memory, data and function signatures must be serialized into bytes (via pickle) and sent across OS IPC pipes to the child process. Anonymous lambda functions and local closures cannot be serialized by pickle.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+        "id": "opt_2",
+        "text": "tomllib (read-only TOML parser introduced in Python 3.11).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
+        "id": "opt_3",
+        "text": "It maintains a list or set of active WebSocket objects and iterates through them with await ws.sendjson(data) inside an async loop.",
         "is_correct": false
       }
     ],
-    "explanation": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does FastAPI utilize standard Python type hints (int, str, Pydantic models) to perform automatic request parsing?",
-    "category": "Type Hint Integration:",
+    "tier": "Recall",
+    "question": "Type Hint Integration: How does FastAPI utilize standard Python type hints (int, str, Pydantic models) to perform automatic request parsing?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django).",
+        "id": "opt_1",
+        "text": "Calling async def does not execute the function body; it merely constructs a dormant coroutine object. It must be scheduled via await or asyncio.createtask() to execute.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+        "id": "opt_2",
+        "text": "Kubernetes continuously compares actual state against desired state, spinning up new container replicas when CPU exceeds thresholds, restarting crashed pods, and shifting traffic during zero-downtime rolling deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP).",
+        "id": "opt_3",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": false
       }
     ],
-    "explanation": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "ASGI Low-Level Protocol: What do the 3 parameters (scope, receive, send) represent in the ASGI specification?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP). - receive: Async callable to receive incoming request body byte chunks. - send: Async callable to emit response headers and body byte chunks back to",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP). - receive: Async callable to receive incoming request body byte chunks. - send: Async callable to emit response headers and body byte chunks back to the client.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_catalog_api.py`, what is the exact evaluated result of:\n\n```python\nres.json()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{\"status\": \"HEALTHY\", \"service\": \"product-catalog\"}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{\"status\": \"HEALTHY\", \"service\": \"product-catalog\"}` as verified in test suite `test_catalog_api.py`.",
+    "lesson_ref": "test_catalog_api.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_catalog_api.py`, what is the exact evaluated result of:\n\n```python\nitems[0][\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Ergonomic Mouse\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ERGONOMIC MOUSE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Ergonomic Mouse\"` as verified in test suite `test_catalog_api.py`.",
+    "lesson_ref": "test_catalog_api.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_catalog_api.py`, what is the exact evaluated result of:\n\n```python\nres.json()[\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Mechanical Keyboard\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MECHANICAL KEYBOARD\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Mechanical Keyboard\"` as verified in test suite `test_catalog_api.py`.",
+    "lesson_ref": "test_catalog_api.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_catalog_api.py`, what is the exact evaluated result of:\n\n```python\nres_get.json()[\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Noise Cancelling Headphones\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"NOISE CANCELLING HEADPHONES\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Noise Cancelling Headphones\"` as verified in test suite `test_catalog_api.py`.",
+    "lesson_ref": "test_catalog_api.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in FastAPI ASGI Architecture, an engineer observes:\n\"Route shadowing: GET /items/special returns {\"itemid\": \"special\", \"type\": \"dynamic\"} instead of invoking getspecialitem().\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "FastAPI (Starlette) evaluates routes in the order they are defined. /items/{itemid} matches any string including \"special\".",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: FastAPI (Starlette) evaluates routes in the order they are defined. /items/{itemid} matches any string including \"special\".\n\nFix Resolution:\nPlace specific static routes before dynamic path parameter routes:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in FastAPI ASGI Architecture, an engineer observes:\n\"ASGI event loop thread blocking: async def route calling time.sleep() freezes all concurrent requests served by that worker process.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a route is declared async def, FastAPI executes it directly on the main event loop thread. Calling blocking I/O or time.sleep() blocks the entire event loop.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: When a route is declared async def, FastAPI executes it directly on the main event loop thread. Calling blocking I/O or time.sleep() blocks the entire event loop.\n\nFix Resolution:\nEither declare the route as regular def (so FastAPI automatically runs it in an external threadpool) or use await asyncio.sleep():",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

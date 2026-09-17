@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "Deriving Ring AllReduce Optimality \u2014 Prove why Ring AllReduce transfers $2 \\frac{N-1}{N} S$ bytes and why no AllReduce algorithm can transfer fewer bytes on a ring network.",
-    "category": "Deriving Ring AllReduce Optimality",
+    "tier": "Recall",
+    "question": "In NCCL Collective Communication Primitives, what core system invariant does '1. Core Collective Communication Operations' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- In AllReduce, each of the $N$ ranks contributes $S/N$ data that must be combined with data from all other $N-1$ ranks.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Core Collective Communication Operations.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 NCCL Collective Communication Primitives.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 02 NCCL Collective Communication Primitives.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "- In AllReduce, each of the $N$ ranks contributes $S/N$ data that must be combined with data from all other $N-1$ ranks. - During Scatter-Reduce: Each rank sends $S/N$ bytes in each of $N-1$ steps. Total data sent = $(N-1)(S/N) = \\frac{N-1}{N} S$. - During AllGather: Each rank sends its reduced $S/N$ slice in each of $N-1$ steps. Total data sent = ",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. Core Collective Communication Operations' in NCCL Collective Communication Primitives.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 02 NCCL Collective Communication Primitives failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In NCCL Collective Communication Primitives, what core system invariant does '2. Tree AllReduce vs Ring AllReduce' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Tree AllReduce vs Ring AllReduce.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": All GPUs hang at 100% compute with 0% memory throughput indefinitely. - Root Cause: Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread ",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 NCCL Collective Communication Primitives exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 NCCL Collective Communication Primitives: : Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! - Fix: Guarantee identical collecti. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Tree AllReduce vs Ring AllReduce' in NCCL Collective Communication Primitives.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In NCCL Collective Communication Primitives, what core system invariant does '3. Module Study Progression' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Module Study Progression.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Module Study Progression' in NCCL Collective Communication Primitives.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_nccl_primitives_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(float(shards[0][0]), rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "8.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4.0` as verified in test suite `test_nccl_primitives_sim.py`.",
+    "lesson_ref": "test_nccl_primitives_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_nccl_primitives_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(float(shards[1][0]), rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "8.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8.0` as verified in test suite `test_nccl_primitives_sim.py`.",
+    "lesson_ref": "test_nccl_primitives_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_nccl_primitives_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(shards)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_nccl_primitives_sim.py`.",
+    "lesson_ref": "test_nccl_primitives_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In NCCL Collective Communication Primitives, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -\n: Guarantee identical collective execution ordering across all ranks.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In NCCL Collective Communication Primitives, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Guarantee identical collective execution ordering across all ranks.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Guarantee identical collective execution ordering across all ranks.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In NCCL Collective Communication Primitives, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In NCCL Collective Communication Primitives, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "All GPUs hang at 100% compute with 0% memory throughput indefinitely.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Guarantee identical collective execution ordering across all ranks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: All GPUs hang at 100% compute with 0% memory throughput indefinitely.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 05 Hash Tables and Collision Resolution triage of defect 'Non-anagrams are grouped together', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Hash Tables and Collision Resolution, what core system invariant does '1. Collision Resolution: Robin Hood Hashing vs Standard Linear Probing' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "A set records which letters appear and throws away how many times. \"aab\" and \"abb\" both reduce to {'a', 'b'}, so they land in the same bucket despite not being anagrams. Every group is non-empty and every word appears exactly once, so the output pass",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Collision Resolution: Robin Hood Hashing vs Standard Linear Probing.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "A set records which letters appear and throws away how many times. \"aab\" and \"abb\" both reduce to {'a', 'b'}, so they land in the same bucket despite not being anagrams. Every group is non-empty and every word appears exactly once, so the output pass",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Collision Resolution: Robin Hood Hashing vs Standard Linear Probing' in Hash Tables and Collision Resolution.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 05 Hash Tables and Collision Resolution triage of defect 'Frequency ties come out in an unpredictable order', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Hash Tables and Collision Resolution, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering in a way t",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering in a way t",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Hash Tables and Collision Resolution.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 05 Hash Tables and Collision Resolution triage of defect 'The consecutive-run scan is quadratic', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Hash Tables and Collision Resolution, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests. The answers are all correct, which is what makes this dang",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests. The answers are all correct, which is what makes this dang",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Hash Tables and Collision Resolution.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Hash Tables and Collision Resolution, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Hash Tables and Collision Resolution.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m05_problems.py`, what is the exact evaluated result of:\n\n```python\nfour_sum_count(A, B, C, D)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "brute",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `brute` as verified in test suite `test_m05_problems.py`.",
+    "lesson_ref": "test_m05_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m05_problems.py`, what is the exact evaluated result of:\n\n```python\nfirst_unique_char(\"leetcode\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_m05_problems.py`.",
+    "lesson_ref": "test_m05_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m05_problems.py`, what is the exact evaluated result of:\n\n```python\nlongest_consecutive([])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_m05_problems.py`.",
+    "lesson_ref": "test_m05_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m05_problems.py`, what is the exact evaluated result of:\n\n```python\nlongest_consecutive(list(range(100_000)))\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100_000",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100_000` as verified in test suite `test_m05_problems.py`.",
+    "lesson_ref": "test_m05_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Hash Tables and Collision Resolution, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 The consecutive-run scan is quadratic\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Kruskal happily terminates on a disconnected graph \u2014 it simply runs out of edges having built a spanning",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Hash Tables and Collision Resolution, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Non-anagrams are grouped together\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A set records which letters appear and throws away how many times. \"aab\" and \"abb\" both reduce to {'a', 'b'}, so they land in the same bucket despite not being anagrams.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Every time a node's distance improves, a fresh (dist, node) entry is pushed and the previous one stays in the heap. Without the guard, each stale entry is popped and its neighbours re-relaxed \u2014 work that can never improve anything, because ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A set records which letters appear and throws away how many times. \"aab\" and \"abb\" both reduce to {'a', 'b'}, so they land in the same bucket despite not being anagrams.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Hash Tables and Collision Resolution, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Frequency ties come out in an unpredictable order\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering in a way the specification does not mention.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Hash Tables and Collision Resolution, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The parameter k is accepted and never used. The set accumulates every element ever seen, so the function answers a different question \u2014",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The parameter k is accepted and never used. The set accumulates every element ever seen, so the function answers a different question \u2014\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

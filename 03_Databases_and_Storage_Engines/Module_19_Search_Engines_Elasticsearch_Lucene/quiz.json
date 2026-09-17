@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is an Inverted Index in information retrieval?",
-    "category": "What is an Inverted Index in information retrieval?",
+    "tier": "Recall",
+    "question": "What is an Inverted Index in information retrieval? What is an Inverted Index in information retrieval?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+        "id": "opt_1",
+        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
+        "id": "opt_2",
+        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "id": "opt_3",
+        "text": "Switchover is a planned, zero-data-loss role reversal between primary and standby; Failover is an emergency promotion of standby following unexpected primary catastrophe.",
         "is_correct": false
       }
     ],
-    "explanation": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Explain the components of Okapi BM25 ranking function.",
-    "category": "Explain the components of Okapi BM25 ranking function.?",
+    "tier": "Recall",
+    "question": "Explain the components of Okapi BM25 ranking function.? Explain the components of Okapi BM25 ranking function.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
+        "id": "opt_1",
+        "text": "Phase 1: Coordinator queries all shards for matching document IDs and scores. Phase 2: Coordinator fetches full document sources only for top-K results.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
+        "id": "opt_2",
+        "text": "BSON is a binary serialization format supporting rich data types (Date, ObjectId, BinData, Int64, Decimal128) and faster field traversal.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "id": "opt_3",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       }
     ],
-    "explanation": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What are the stages of an Elasticsearch Text Analyzer?",
-    "category": "What are the stages of an Elasticsearch Text Analyzer?",
+    "tier": "Recall",
+    "question": "What are the stages of an Elasticsearch Text Analyzer? What are the stages of an Elasticsearch Text Analyzer?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
+        "id": "opt_1",
+        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+        "id": "opt_2",
+        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "id": "opt_3",
+        "text": "Metadata storing minimum and maximum values per column chunk, allowing the query engine to bypass non-matching blocks immediately.",
         "is_correct": false
       }
     ],
-    "explanation": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "How does a compound Bool Query combine must, should, and filter clauses? How does a compound Bool Query combine must, should, and filter clauses?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Rate (queries/sec), Errors (failed connections/deadlocks), and Duration (p95/p99 query latency).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_search_engine.py`, what is the exact evaluated result of:\n\n```python\ntop_hit[\"_id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"art_1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ART_1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"art_1\"` as verified in test suite `test_search_engine.py`.",
+    "lesson_ref": "test_search_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_search_engine.py`, what is the exact evaluated result of:\n\n```python\n[s for s, _ in index.suggest(\"lap\", limit=2)]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"laptop\", \"laptop bag\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"laptop\", \"laptop bag\"]` as verified in test suite `test_search_engine.py`.",
+    "lesson_ref": "test_search_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_search_engine.py`, what is the exact evaluated result of:\n\n```python\nand_results\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"d1\", \"d3\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"d1\", \"d3\"]` as verified in test suite `test_search_engine.py`.",
+    "lesson_ref": "test_search_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_search_engine.py`, what is the exact evaluated result of:\n\n```python\n{s for s, _, _ in auto}\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{\"cat\", \"cot\", \"cap\"}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{\"cat\", \"cot\", \"cap\"}` as verified in test suite `test_search_engine.py`.",
+    "lesson_ref": "test_search_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Search Engines Elasticsearch Lucene, an engineer observes:\n\"System fault during operation: Deep Pagination Offset Crashes Elasticsearch Data Nodes\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The kernel's working directory is the module root, not projectsolution/.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.\n\nFix Resolution:\nUse the searchafter API with tie-breaker sorting or Point-In-Time (PIT) searches instead of high from offsets.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

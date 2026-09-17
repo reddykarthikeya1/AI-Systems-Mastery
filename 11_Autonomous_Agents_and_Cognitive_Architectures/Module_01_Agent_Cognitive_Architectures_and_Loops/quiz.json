@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Theoretical Foundations & Architectural Overview play in 01 Agent Cognitive Architectures and Loops?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Agent Cognitive Architectures and Loops, what core system invariant does '1. Theoretical Foundations & Architectural Overview' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Theoretical Foundations & Architectural Overview is essential for maintaining predictable invariants and high performance in 01 Agent Cognitive Architectures and Loops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations & Architectural Overview.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Theoretical Foundations & Architectural Overview is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Theoretical Foundations & Architectural Overview in 01 Agent Cognitive Architectures and Loops specifications.",
+    "explanation": "Specification detail defined under '1. Theoretical Foundations & Architectural Overview' in Agent Cognitive Architectures and Loops.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Mathematical Formulation & Complexity Analysis play in 01 Agent Cognitive Architectures and Loops?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Agent Cognitive Architectures and Loops, what core system invariant does '2. Mathematical Formulation & Complexity Analysis' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Mathematical Formulation & Complexity Analysis is essential for maintaining predictable invariants and high performance in 01 Agent Cognitive Architectures and Loops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Mathematical Formulation & Complexity Analysis.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Mathematical Formulation & Complexity Analysis is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Mathematical Formulation & Complexity Analysis in 01 Agent Cognitive Architectures and Loops specifications.",
+    "explanation": "Specification detail defined under '2. Mathematical Formulation & Complexity Analysis' in Agent Cognitive Architectures and Loops.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Agent Cognitive Architectures and Loops, what core system invariant does '3. Production Architecture & Cycle Detection' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Production Architecture & Cycle Detection.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Production Architecture & Cycle Detection' in Agent Cognitive Architectures and Loops.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Agent Cognitive Architectures and Loops, what core system invariant does '4. Production Implementation Blueprint' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Production Implementation Blueprint.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Production Implementation Blueprint' in Agent Cognitive Architectures and Loops.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_react_loop_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(trajectory.steps)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_react_loop_sim.py`.",
+    "lesson_ref": "test_react_loop_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_react_loop_sim.py`, what is the exact evaluated result of:\n\n```python\ntrajectory.steps[-1].final_answer\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"An H100 uses 16800 Wh over 24 hours.\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"AN H100 USES 16800 WH OVER 24 HOURS.\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"An H100 uses 16800 Wh over 24 hours.\"` as verified in test suite `test_react_loop_sim.py`.",
+    "lesson_ref": "test_react_loop_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_react_loop_sim.py`, what is the exact evaluated result of:\n\n```python\ntrajectory.steps[0].action_name\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Search\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"SEARCH\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Search\"` as verified in test suite `test_react_loop_sim.py`.",
+    "lesson_ref": "test_react_loop_sim.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Agent Cognitive Architectures and Loops, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Tool Call Parsing Failures Due to Hallucinated Markdown'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": LLM wrapped JSON inside code blocks with conversational preamble. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : LLM wrapped JSON inside code blocks with conversational preamble. -\n: Use regex with optional markdown block stripping: r\"\".",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Agent Cognitive Architectures and Loops, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use regex with optional markdown block stripping: r\"\".",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use regex with optional markdown block stripping: r\"\".\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Agent Cognitive Architectures and Loops, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: parseagentoutput raises ParseError: Could not find Action/Action Input block.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Agent Cognitive Architectures and Loops, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": LLM wrapped JSON inside code blocks with conversational preamble. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: LLM wrapped JSON inside code blocks with conversational preamble.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

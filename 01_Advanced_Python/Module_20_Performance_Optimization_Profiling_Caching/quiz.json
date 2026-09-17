@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "In cProfile statistics, what is the difference between tottime (total time) and cumtime (cumulative time)?",
-    "category": "cProfile Metrics:",
+    "tier": "Recall",
+    "question": "cProfile Metrics: In cProfile statistics, what is the difference between tottime (total time) and cumtime (cumulative time)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
+        "id": "opt_corr",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+        "id": "opt_1",
+        "text": "Use raise ServiceError(...) from None. Setting from None sets suppresscontext = True, hiding internal tracebacks from end-users.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
+        "id": "opt_2",
+        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhe",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
+        "id": "opt_3",
+        "text": "- modeldump(): Returns a native Python dictionary. - modeldumpjson(): Directly serializes into an optimized JSON string (handled in Rust).",
         "is_correct": false
       }
     ],
-    "explanation": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why is Rust-backed orjson significantly faster at serializing JSON than standard library json?",
-    "category": "Fast Serialization:",
+    "tier": "Recall",
+    "question": "Fast Serialization: Why is Rust-backed orjson significantly faster at serializing JSON than standard library json?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
+        "id": "opt_1",
+        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
+        "id": "opt_2",
+        "text": "1. sys.path[0]: The directory containing the script used to invoke the interpreter (or current directory in interactive mode). 2. Standard library directories. 3. Third-party site-packages directories.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
+        "id": "opt_3",
+        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
         "is_correct": false
       }
     ],
-    "explanation": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain the sequential read steps when an application implements the Cache-Aside pattern.",
-    "category": "Cache-Aside Pattern:",
+    "tier": "Recall",
+    "question": "Cache-Aside Pattern: Explain the sequential read steps when an application implements the Cache-Aside pattern.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL...",
+        "id": "opt_corr",
+        "text": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL, and return result.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions.",
+        "id": "opt_1",
+        "text": "@computedfield properties are automatically included in JSON serialization (modeldump() and modeldumpjson()) and OpenAPI schemas.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+        "id": "opt_2",
+        "text": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
+        "id": "opt_3",
+        "text": "Loggers retain registered handlers in memory. Registering handlers repeatedly appends new handler instances to the logger's handler list, causing every subsequent log message to be emitted once per registered handler.",
         "is_correct": false
       }
     ],
-    "explanation": "1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL, and return result.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: 1. Application queries Cache with key. 2. If Hit: Return cached data immediately. 3. If Miss: Query database, store result in cache with TTL, and return result.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Cache Stampede: What is a Cache Stampede (Thundering Herd), and why can it take down production databases on hot key expiry?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The API schema specifies available tools. The LLM is trained to emit toolcalls JSON payloads matching the schema when a query requires external data or action.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: When a highly-requested cache key expires, thousands of concurrent requests miss the cache simultaneously and storm the database with identical heavy queries.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cache_engine.py`, what is the exact evaluated result of:\n\n```python\ncache.stats.expirations\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_cache_engine.py`.",
+    "lesson_ref": "test_cache_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cache_engine.py`, what is the exact evaluated result of:\n\n```python\nstats.l1_ratio\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "0.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.0` as verified in test suite `test_cache_engine.py`.",
+    "lesson_ref": "test_cache_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cache_engine.py`, what is the exact evaluated result of:\n\n```python\ntwo_tier.get_or_load(\"k\", lambda: \"recovered\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"recovered\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"RECOVERED\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"recovered\"` as verified in test suite `test_cache_engine.py`.",
+    "lesson_ref": "test_cache_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cache_engine.py`, what is the exact evaluated result of:\n\n```python\ntwo_tier.get(\"k\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"v\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"V\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"v\"` as verified in test suite `test_cache_engine.py`.",
+    "lesson_ref": "test_cache_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Performance Optimization Profiling Caching, an engineer observes:\n\"Premature expiration or eternal caching under NTP skew: Using time.time() causes entries to suddenly expire or live for hours if system time synchronizes backward.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "time.time() measures calendar wall-clock time and can jump backward or forward during NTP synchronization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Exceptions inside background tasks created via createtask() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: time.time() measures calendar wall-clock time and can jump backward or forward during NTP synchronization.\n\nFix Resolution:\nAlways use time.monotonic() for intervals and timeouts:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Performance Optimization Profiling Caching, an engineer observes:\n\"Cache Stampede on negative caching (Cached None treated as miss): cache.get(\"user\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".\n\nFix Resolution:\nUse a dedicated sentinel object:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

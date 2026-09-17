@@ -174,6 +174,18 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
   const [showSnippets, setShowSnippets] = useState<boolean>(false);
   const [copiedOutput, setCopiedOutput] = useState<boolean>(false);
 
+  // Expected output detection from code comments (# Expected Output: ...)
+  const expectedOutput = React.useMemo(() => {
+    const match = pythonCode.match(/#\s*(?:Expected(?:\s+Output)?|Output):\s*\n?([\s\S]*?)(?=\n[^\s#]|\n#\s*[A-Z]|\Z)/i);
+    if (!match) return null;
+    const cleaned = match[1]
+      .split('\n')
+      .map((l) => l.replace(/^#\s?/, ''))
+      .join('\n')
+      .trim();
+    return cleaned || null;
+  }, [pythonCode]);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cliTerminalEndRef = useRef<HTMLDivElement>(null);
   const cliInputRef = useRef<HTMLInputElement>(null);
@@ -646,7 +658,39 @@ export const SideCodeRunner: React.FC<SideCodeRunnerProps> = ({
 
               {pythonResult && (
                 <>
-                  {pythonResult.stdout && (
+                  {/* Expected Output Verification Diff */}
+                  {expectedOutput && (
+                    <div className="p-3 rounded-xl border border-zinc-800 bg-zinc-950/80 space-y-2 mb-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-bold font-mono text-zinc-400 uppercase tracking-wider">
+                          Expected vs Actual Output
+                        </span>
+                        {pythonResult.stdout.trim() === expectedOutput.trim() ? (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                            <Check className="w-3 h-3" /> Exact Invariant Match
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
+                            <AlertCircle className="w-3 h-3" /> Outputs Differ
+                          </span>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                        <div className="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-800/80 space-y-1">
+                          <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Expected Target</div>
+                          <pre className="text-sky-300 font-mono whitespace-pre-wrap leading-relaxed">{expectedOutput}</pre>
+                        </div>
+                        <div className="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-800/80 space-y-1">
+                          <div className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Actual Stdout</div>
+                          <pre className={pythonResult.stdout.trim() === expectedOutput.trim() ? "text-emerald-400 font-mono whitespace-pre-wrap leading-relaxed" : "text-amber-400 font-mono whitespace-pre-wrap leading-relaxed"}>
+                            {pythonResult.stdout || '(Empty stdout)'}
+                          </pre>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!expectedOutput && pythonResult.stdout && (
                     <pre className="text-emerald-400 whitespace-pre-wrap break-all font-mono">
                       {pythonResult.stdout}
                     </pre>

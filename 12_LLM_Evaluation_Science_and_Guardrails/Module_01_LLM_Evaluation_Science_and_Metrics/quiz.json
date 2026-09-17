@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment play in 01 LLM Evaluation Science and Metrics?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In LLM Evaluation Science and Metrics, what core system invariant does '1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment is essential for maintaining predictable invariants and high performance in 01 LLM Evaluation Science and Metrics.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment in 01 LLM Evaluation Science and Metrics specifications.",
+    "explanation": "Specification detail defined under '1. Theoretical Foundations: From Lexical Overlap to Semantic Alignment' in LLM Evaluation Science and Metrics.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Mathematical Formulation of the RAG Triad play in 01 LLM Evaluation Science and Metrics?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In LLM Evaluation Science and Metrics, what core system invariant does '2. Mathematical Formulation of the RAG Triad' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Mathematical Formulation of the RAG Triad is essential for maintaining predictable invariants and high performance in 01 LLM Evaluation Science and Metrics.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Mathematical Formulation of the RAG Triad.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Mathematical Formulation of the RAG Triad is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Mathematical Formulation of the RAG Triad in 01 LLM Evaluation Science and Metrics specifications.",
+    "explanation": "Specification detail defined under '2. Mathematical Formulation of the RAG Triad' in LLM Evaluation Science and Metrics.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ragas_triad_evaluator.py`, what is the exact evaluated result of:\n\n```python\nreport.faithfulness\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_ragas_triad_evaluator.py`.",
+    "lesson_ref": "test_ragas_triad_evaluator.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ragas_triad_evaluator.py`, what is the exact evaluated result of:\n\n```python\nexact_match_score(\"NVIDIA A100\", \"nvidia h100\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "0.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.0` as verified in test suite `test_ragas_triad_evaluator.py`.",
+    "lesson_ref": "test_ragas_triad_evaluator.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ragas_triad_evaluator.py`, what is the exact evaluated result of:\n\n```python\nexact_match_score(\"NVIDIA H100!\", \"nvidia h100\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_ragas_triad_evaluator.py`.",
+    "lesson_ref": "test_ragas_triad_evaluator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ragas_triad_evaluator.py`, what is the exact evaluated result of:\n\n```python\nexact_match_score(\"NVIDIA H100\", \"nvidia h100\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_ragas_triad_evaluator.py`.",
+    "lesson_ref": "test_ragas_triad_evaluator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In LLM Evaluation Science and Metrics, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Token F1 Skew on Numeric Strings'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Naive whitespace tokenization splits numbers with commas into separate tokens. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Naive whitespace tokenization splits numbers with commas into separate tokens. -\n: Normalize numeric strings and remove internal commas before tokenizing.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In LLM Evaluation Science and Metrics, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Naive whitespace tokenization splits numbers with commas into separate tokens.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Naive whitespace tokenization splits numbers with commas into separate tokens.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In LLM Evaluation Science and Metrics, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model generates \"1,000,000\" but target is \"1000000\", yielding 0.0 F1 score.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Naive whitespace tokenization splits numbers with commas into separate tokens.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model generates \"1,000,000\" but target is \"1000000\", yielding 0.0 F1 score.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In LLM Evaluation Science and Metrics, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Desynchronized system clocks across worker nodes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Normalize numeric strings and remove internal commas before tokenizing.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,60 +1,362 @@
 [
   {
     "id": 1,
-    "question": "FP8 Dynamic Range vs Precision (E4M3 vs E5M2) \u2014 In FlashAttention-3 with FP8 Tensor Cores, which FP8 format is selected for $Q, K, V$ matrix multiplication and why?",
-    "category": "FP8 Dynamic Range vs Precision (E4M3 vs E5M2)",
+    "tier": "Recall",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what core system invariant does '1. Hardware Architectural Leap: Ampere vs Hopper vs Blackwell' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "NVIDIA Hopper supports two 8-bit floating point formats: 1.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Hardware Architectural Leap: Ampere vs Hopper vs Blackwell.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 09 FlashAttention 3 and Hopper Blackwell Features.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 09 FlashAttention 3 and Hopper Blackwell Features.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "NVIDIA Hopper supports two 8-bit floating point formats: 1. E4M3 (1 sign, 4 exponent, 3 mantissa bits, bias=7): - Maximum representable value $\\approx 448$. Higher precision (3 mantissa bits). - Ideal for activations and weights where dynamic range is bounded. 2. E5M2 (1 sign, 5 exponent, 2 mantissa bits, bias=15): - Maximum value $\\approx 57{,}344",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. Hardware Architectural Leap: Ampere vs Hopper vs Blackwell' in FlashAttention 3 and Hopper Blackwell Features.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 09 FlashAttention 3 and Hopper Blackwell Features failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what core system invariant does '2. Tensor Memory Accelerator (TMA) & Asynchronous Barriers' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Tensor Memory Accelerator (TMA) & Asynchronous Barriers.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Kernel hangs indefinitely (deadlock) on H100 with 0% SM activity. - Root Cause: The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruct",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 09 FlashAttention 3 and Hopper Blackwell Features exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 09 FlashAttention 3 and Hopper Blackwell Features: : The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. - Fix: Verify that expectedbyt. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Tensor Memory Accelerator (TMA) & Asynchronous Barriers' in FlashAttention 3 and Hopper Blackwell Features.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what core system invariant does '3. Warp Group Matrix Multiply and Accumulate (WGMMA)' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Warp Group Matrix Multiply and Accumulate (WGMMA).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Warp Group Matrix Multiply and Accumulate (WGMMA)' in FlashAttention 3 and Hopper Blackwell Features.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what core system invariant does '4. FlashAttention-3: Ping-Pong Double Buffering' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. FlashAttention-3: Ping-Pong Double Buffering.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. FlashAttention-3: Ping-Pong Double Buffering' in FlashAttention 3 and Hopper Blackwell Features.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hopper_tma_wgmma_sim.py`, what is the exact evaluated result of:\n\n```python\nbytes_transferred\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "16384",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "16385",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16383",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "32768",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `16384` as verified in test suite `test_hopper_tma_wgmma_sim.py`.",
+    "lesson_ref": "test_hopper_tma_wgmma_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hopper_tma_wgmma_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"num_phases\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "8.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8.0` as verified in test suite `test_hopper_tma_wgmma_sim.py`.",
+    "lesson_ref": "test_hopper_tma_wgmma_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hopper_tma_wgmma_sim.py`, what is the exact evaluated result of:\n\n```python\ntma.allocated_bytes\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_hopper_tma_wgmma_sim.py`.",
+    "lesson_ref": "test_hopper_tma_wgmma_sim.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hopper_tma_wgmma_sim.py`, what is the exact evaluated result of:\n\n```python\ntma.allocated_bytes\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "16384",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "16385",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16383",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "32768",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `16384` as verified in test suite `test_hopper_tma_wgmma_sim.py`.",
+    "lesson_ref": "test_hopper_tma_wgmma_sim.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -\n: Verify that expectedbytes == tilerows tilecols sizeof(element).",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kernel hangs indefinitely (deadlock) on H100 with 0% SM activity.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Kernel hangs indefinitely (deadlock) on H100 with 0% SM activity.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 3 and Hopper Blackwell Features, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Verify that expectedbytes == tilerows tilecols sizeof(element).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Verify that expectedbytes == tilerows tilecols sizeof(element).\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

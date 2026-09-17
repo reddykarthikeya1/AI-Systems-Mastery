@@ -131,6 +131,41 @@ Verify your Prefix Trie and Disjoint Set Union engine:
 
 ## 🧪 Practice & Verification
 
+<!-- GENERATED_ALGORITHM_DIAGRAM: FENWICK_TREE START -->
+
+```mermaid
+graph TD
+  %% Fenwick Tree Interval Coverage & Lowbit Jumps
+  %% Generated from verified algorithm execution
+  classDef default fill:#18181b,stroke:#3f3f46,stroke-width:1px,color:#f4f4f5;
+  classDef queryPath fill:#0284c7,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+  classDef updatePath fill:#7c3aed,stroke:#a78bfa,stroke-width:2px,color:#ffffff;
+  classDef node8 fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+  N1["Index 1 (0001)<br/>Covers: [1..1]<br/>Tree Val: 3"]
+  N2["Index 2 (0010)<br/>Covers: [1..2]<br/>Tree Val: 5"]
+  N3["Index 3 (0011)<br/>Covers: [3..3]<br/>Tree Val: -1"]
+  N4["Index 4 (0100)<br/>Covers: [1..4]<br/>Tree Val: 10"]
+  N5["Index 5 (0101)<br/>Covers: [5..5]<br/>Tree Val: 5"]
+  N6["Index 6 (0110)<br/>Covers: [5..6]<br/>Tree Val: 9"]
+  N7["Index 7 (0111)<br/>Covers: [7..7]<br/>Tree Val: -3"]
+  N8["Index 8 (1000)<br/>Covers: [1..8]<br/>Tree Val: 19"]
+
+  %% Structural Coverage Hierarchy
+  N8 --> N4
+  N8 --> N6
+  N8 --> N7
+  N4 --> N2
+  N4 --> N3
+  N2 --> N1
+  N6 --> N5
+
+  %% Query(7) Jump Path: 7 -> (7-1=6) -> (6-2=4) -> 0
+  N7 -.->|'-lowbit(7)'| N6
+  N6 -.->|'-lowbit(6)'| N4
+```
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: FENWICK_TREE END -->
+
 Reading a module teaches recognition. Only the problems teach recall — and the
 debug lab teaches the thing neither of them does, which is diagnosis.
 

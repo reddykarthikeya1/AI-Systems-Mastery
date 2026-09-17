@@ -1,89 +1,242 @@
 [
   {
     "id": 1,
-    "question": "In 10 Reasoning Under Uncertainty triage of defect 'the denominator is wrong, so the evidence cancels out', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Reasoning Under Uncertainty, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Reasoning Under Uncertainty.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 2,
-    "question": "In 10 Reasoning Under Uncertainty triage of defect 'underflow from multiplying hundreds of probabilities', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Reasoning Under Uncertainty, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'What you will be able to do' in Reasoning Under Uncertainty.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 3,
-    "question": "In 10 Reasoning Under Uncertainty triage of defect 'scores presented as probabilities without normalising', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Reasoning Under Uncertainty, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Lessons' in Reasoning Under Uncertainty.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Reasoning Under Uncertainty, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Reasoning Under Uncertainty.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bayesian_update_classifier.py`, what is the exact evaluated result of:\n\n```python\naccuracy\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_bayesian_update_classifier.py`.",
+    "lesson_ref": "test_bayesian_update_classifier.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bayesian_update_classifier.py`, what is the exact evaluated result of:\n\n```python\nnp.sum(posterior)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(1.0)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{3}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(1.0)` as verified in test suite `test_bayesian_update_classifier.py`.",
+    "lesson_ref": "test_bayesian_update_classifier.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bayesian_update_classifier.py`, what is the exact evaluated result of:\n\n```python\nposterior\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(0.019434",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{3}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(0.019434` as verified in test suite `test_bayesian_update_classifier.py`.",
+    "lesson_ref": "test_bayesian_update_classifier.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bayesian_update_classifier.py`, what is the exact evaluated result of:\n\n```python\nnp.argmax(posterior)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_bayesian_update_classifier.py`.",
+    "lesson_ref": "test_bayesian_update_classifier.py"
   }
 ]

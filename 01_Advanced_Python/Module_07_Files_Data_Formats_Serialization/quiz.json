@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What is the technical difference between opening a file in text mode (\"r\") versus binary mode (\"rb\")?",
-    "category": "Stream Modes:",
+    "tier": "Recall",
+    "question": "Stream Modes: What is the technical difference between opening a file in text mode (\"r\") versus binary mode (\"rb\")?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
+        "id": "opt_corr",
+        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n). - Binary mode (\"rb\") reads raw, uninterpreted bytes without decoding or altering byt",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
+        "id": "opt_1",
+        "text": "It allows centralized logging platforms (Datadog, OpenTelemetry, ELK) to filter all logs, queries, and errors produced across 20 distinct services by a single user request.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
+        "id": "opt_2",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Standard JSON specification does not define a native Date/Time data type.",
+        "id": "opt_3",
+        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
         "is_correct": false
       }
     ],
-    "explanation": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n). - Binary mode (\"rb\") reads raw, uninterpreted bytes without decoding or altering byte sequences.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n). - Binary mode (\"rb\") reads raw, uninterpreted bytes without decoding or altering byte sequences.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why does failing to specify encoding=\"utf-8\" on Windows frequently result in UnicodeDecodeError when emojis or European currency symbols (\u20ac) are present?",
-    "category": "Encoding Traps:",
+    "tier": "Recall",
+    "question": "Encoding Traps: Why does failing to specify encoding=\"utf-8\" on Windows frequently result in UnicodeDecodeError when emojis or European currency symbols (\u20ac) are present?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
+        "id": "opt_corr",
+        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8. UTF-8 multi-byte characters cannot be decoded by legacy single-byte tables, raising UnicodeDecodeError.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
+        "id": "opt_1",
+        "text": "- global tells Python to bind and reassign a variable in the module-level global namespace. - nonlocal tells Python to bind and reassign a variable in the nearest outer enclosing function namespace (excluding global).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
+        "id": "opt_2",
+        "text": "Parquet is columnar, compressed with Snappy/ZSTD, and contains min/max column chunk statistics that allow skipping unneeded data blocks.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Standard JSON specification does not define a native Date/Time data type.",
+        "id": "opt_3",
+        "text": "TestClient uses HTTPX/Requests transport adapters to route requests directly into the ASGI application memory pipeline without opening a physical OS TCP port.",
         "is_correct": false
       }
     ],
-    "explanation": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8. UTF-8 multi-byte characters cannot be decoded by legacy single-byte tables, raising UnicodeDecodeError.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8. UTF-8 multi-byte characters cannot be decoded by legacy single-byte tables, raising UnicodeDecodeError.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "In pathlib.Path, how do you join directory paths using modern pythonic operator overloading?",
-    "category": "Path Composition:",
+    "tier": "Recall",
+    "question": "Path Composition: In pathlib.Path, how do you join directory paths using modern pythonic operator overloading?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.",
+        "id": "opt_corr",
+        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.txt\".",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n).",
+        "id": "opt_1",
+        "text": "APIRouter allows splitting route logic across multiple files (users.py, billing.py) and mounting them with custom prefixes and tags onto the root FastAPI app.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Windows historically uses localized legacy code pages (like cp1252 or charmap) as its default encoding rather than UTF-8.",
+        "id": "opt_2",
+        "text": "RAG retrieves verified up-to-date documentation from a private knowledge store at runtime and inserts it directly into the prompt context, grounding the LLM in factual reality.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Standard JSON specification does not define a native Date/Time data type.",
+        "id": "opt_3",
+        "text": "$$\\cos(\\theta) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{\\sum ui vi}{\\sqrt{\\sum ui^2} \\sqrt{\\sum vi^2}}$$",
         "is_correct": false
       }
     ],
-    "explanation": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.txt\".",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.txt\".",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "JSON Limitations: Why does json.dumps({\"now\": datetime.now()}) raise a TypeError, and how do you fix it?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Standard JSON specification does not define a native Date/Time data type. Fix it by subclassing json.JSONEncoder and overriding default(self, obj) to return obj.isoformat().",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Pinecone, Qdrant, Milvus, or pgvector in PostgreSQL.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It uses a single literal tag field (e.g. type: Literal[\"email\", \"sms\"]) to match and deserialize into the exact target subclass in $O(1)$ time without trial-and-error parsing.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When the class is constructed, Python automatically passes the attribute name (e.g. \"age\") to setname, removing manual string name passing.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Standard JSON specification does not define a native Date/Time data type. Fix it by subclassing json.JSONEncoder and overriding default(self, obj) to return obj.isoformat().",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_config_migrator.py`, what is the exact evaluated result of:\n\n```python\ndata[\"database\"][\"port\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "5432",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5433",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "5431",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "10864",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `5432` as verified in test suite `test_config_migrator.py`.",
+    "lesson_ref": "test_config_migrator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_config_migrator.py`, what is the exact evaluated result of:\n\n```python\nlen(data)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_config_migrator.py`.",
+    "lesson_ref": "test_config_migrator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_config_migrator.py`, what is the exact evaluated result of:\n\n```python\ndata[\"service\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"payment\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"PAYMENT\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"payment\"` as verified in test suite `test_config_migrator.py`.",
+    "lesson_ref": "test_config_migrator.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_config_migrator.py`, what is the exact evaluated result of:\n\n```python\ndata\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_config_migrator.py`.",
+    "lesson_ref": "test_config_migrator.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Files Data Formats Serialization, an engineer observes:\n\"UnicodeDecodeError / Character Mangling: Writing and reading UTF-\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In Python prior to PEP 597 / Python 3.15 UTF-8 Mode, open() uses locale.getpreferredencoding(). On Windows, this is typically cp1252, which cannot encode arbitrary Unicode symbols.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In Python prior to PEP 597 / Python 3.15 UTF-8 Mode, open() uses locale.getpreferredencoding(). On Windows, this is typically cp1252, which cannot encode arbitrary Unicode symbols.\n\nFix Resolution:\nAlways specify encoding=\"utf-8\" on all file operations:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Files Data Formats Serialization, an engineer observes:\n\"TypeError on timezone-naive vs timezone-aware datetime comparison:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.\n\nFix Resolution:\nAlways use timezone-aware datetimes (e.g. UTC):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Files Data Formats Serialization, an engineer observes:\n\"Integer dictionary keys silently converted to strings:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.\n\nFix Resolution:\nRe-cast keys after deserialization, or use a custom objecthook:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

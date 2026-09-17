@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 18 Analytics Engineering Dimensional Modeling Pipelines triage of defect 'the as-of lookup returns the current version', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what core system invariant does '\ud83e\udded Why This Module Exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\udded Why This Module Exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) w",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '\ud83e\udded Why This Module Exists' in Analytics Engineering Dimensional Modeling Pipelines.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 18 Analytics Engineering Dimensional Modeling Pipelines triage of defect 'the closing validto is off by one day', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what core system invariant does '\ud83d\udcca 1. Why Dimensional Modelling, and Not Just Normalising' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83d\udcca 1. Why Dimensional Modelling, and Not Just Normalising.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "A probabilistic cardinality estimation structure requiring at most 12KB RAM to count billions of unique elements with ~0.81% error rate.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Untested backups and failovers frequently fail in real emergencies due to configuration drift, permission errors, or capacity shortages.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '\ud83d\udcca 1. Why Dimensional Modelling, and Not Just Normalising' in Analytics Engineering Dimensional Modeling Pipelines.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 18 Analytics Engineering Dimensional Modeling Pipelines triage of defect 'the incremental merge replaces instead of accumulating', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what core system invariant does '\ud83d\udd70\ufe0f 2. Slowly Changing Dimensions' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83d\udd70\ufe0f 2. Slowly Changing Dimensions.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "For unit vectors, the dot product is mathematically identical to cosine similarity: $\\vec{u} \\cdot \\vec{v} = \\cos(\\theta)$.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '\ud83d\udd70\ufe0f 2. Slowly Changing Dimensions' in Analytics Engineering Dimensional Modeling Pipelines.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what core system invariant does '\ud83d\udd01 3. Materialised Aggregates and Incremental Refresh' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83d\udd01 3. Materialised Aggregates and Incremental Refresh.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Physical copies raw page files on disk (fast restore, exact binary); Logical exports SQL DDL/DML statements (portable, slower).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\ud83d\udd01 3. Materialised Aggregates and Incremental Refresh' in Analytics Engineering Dimensional Modeling Pipelines.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_warehouse_live.py`, what is the exact evaluated result of:\n\n```python\nsecond\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "first + 1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `first + 1` as verified in test suite `test_warehouse_live.py`.",
+    "lesson_ref": "test_warehouse_live.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_warehouse_live.py`, what is the exact evaluated result of:\n\n```python\nclosed\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "date(2024",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `date(2024` as verified in test suite `test_warehouse_live.py`.",
+    "lesson_ref": "test_warehouse_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dimensional_engine.py`, what is the exact evaluated result of:\n\n```python\ndag.run(\"k\")[\"flaky\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"ok\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"OK\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"ok\"` as verified in test suite `test_dimensional_engine.py`.",
+    "lesson_ref": "test_dimensional_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dimensional_engine.py`, what is the exact evaluated result of:\n\n```python\nresult\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{(\"OH\", \"widget\"): 150.0, (\"TX\", \"widget\"): 25.0}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{(\"OH\", \"widget\"): 150.0, (\"TX\", \"widget\"): 25.0}` as verified in test suite `test_dimensional_engine.py`.",
+    "lesson_ref": "test_dimensional_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'ValueError: no open version for customerid='C1''\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Pipeline task ordering \u2014 the dimension change ran before the initial dimension load, or the initial load silently failed and its error was swallowed (see debuglab Defect 6).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Pipeline task ordering \u2014 the dimension change ran before the initial dimension load, or the initial load silently failed and its error was swallowed (see debuglab Defect 6).\n",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'duckdb.duckdb.CatalogException: Table with name mvrevenuebystate already exists'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Application constructs SQL dynamically using f-strings (SELECT FROM emp WHERE id = {empid}), creating 100,000 unique unsharable execution plans in the Library Cache.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second commit of the day.\ncreatematerializedaggregate issues DROP TABLE IF EXISTS before CREATE TABLE AS. If you add a new table, do the same, and verify by running the suite twice back to back:",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'UnicodeEncodeError: 'charmap' codec can't encode character '\u2502''\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.\nThe demo strips the box-drawing glyphs and reports the plan's operators instead. Two other ways to handle it, worth knowing because this bites any tool that prints engine output on Windows:",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In Analytics Engineering Dimensional Modeling Pipelines, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'DimensionalModelError: out-of-order load for 'C1''\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Either a late-arriving dimension row, or reprocessing a partition out of chronological order.\n",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

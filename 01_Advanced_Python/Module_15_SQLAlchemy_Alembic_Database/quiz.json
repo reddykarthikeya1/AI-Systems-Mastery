@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What do the four letters in ACID stand for in relational database transactions?",
-    "category": "ACID Properties:",
+    "tier": "Recall",
+    "question": "ACID Properties: What do the four letters in ACID stand for in relational database transactions?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
+        "id": "opt_corr",
+        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. ",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+        "id": "opt_1",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
+        "id": "opt_2",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- selectinload: Emits a second SELECT .",
+        "id": "opt_3",
+        "text": "- Nominal: Types must explicitly inherit from a parent class (class Dog(Animal):). - Structural (Duck Typing): An object matches the type if it possesses the required methods and attributes, without explicit inheritance.",
         "is_correct": false
       }
     ],
-    "explanation": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. - Durability: Committed data is permanently stored on non-volatile disk.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. - Durability: Committed data is permanently stored on non-volatile disk.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What are the benefits of using Mapped[int] and mappedcolumn() over legacy Column(Integer) in SQLAlchemy 2.0?",
-    "category": "2.0 Declarative Syntax:",
+    "tier": "Recall",
+    "question": "2.0 Declarative Syntax: What are the benefits of using Mapped[int] and mappedcolumn() over legacy Column(Integer) in SQLAlchemy 2.0?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
+        "id": "opt_1",
+        "text": "Path.rglob(\".py\") (or Path.glob(\"/.py\")).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
+        "id": "opt_2",
+        "text": "asyncio.CancelledError is raised. If caught for cleanup purposes, it must be re-raised (raise) so the task terminates properly.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- selectinload: Emits a second SELECT .",
+        "id": "opt_3",
+        "text": "It ensures that foreign keys must match existing primary keys in the referenced table, rejecting insertions with invalid references.",
         "is_correct": false
       }
     ],
-    "explanation": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain the $N+1$ query problem and why it causes extreme database slowdowns.",
-    "category": "The $N+1$ Problem:",
+    "tier": "Recall",
+    "question": "The $N+1$ Problem: Explain the $N+1$ query problem and why it causes extreme database slowdowns.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries.",
+        "id": "opt_corr",
+        "text": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries. For 1,000 users, this executes 1,001 queries instead of 1 or 2 optimized queries.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing).",
+        "id": "opt_1",
+        "text": "Using the forward slash / operator: fullpath = Path(\"parent\") / \"child\" / \"file.txt\".",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+        "id": "opt_2",
+        "text": "RAG retrieves verified up-to-date documentation from a private knowledge store at runtime and inserts it directly into the prompt context, grounding the LLM in factual reality.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- selectinload: Emits a second SELECT .",
+        "id": "opt_3",
+        "text": "Because the JWT contains all necessary user information in its payload, and the signature proves it was generated by the trusted auth server without tampering.",
         "is_correct": false
       }
     ],
-    "explanation": "Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries. For 1,000 users, this executes 1,001 queries instead of 1 or 2 optimized queries.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Querying $N$ parent rows and then executing 1 separate SQL query per row to load its children results in $1 + N$ total queries. For 1,000 users, this executes 1,001 queries instead of 1 or 2 optimized queries.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Eager Loading Strategies: What is the mechanical difference between selectinload and joinedload?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- selectinload: Emits a second SELECT ... WHERE parentid IN (...) query (best for 1-to-many collections). - joinedload: Performs an SQL LEFT OUTER JOIN in a single query (best for many-to-1 relationships).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "TLS operates between the Transport Layer (Layer 4 - TCP) and the Application Layer (Layer 7 - HTTP).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - selectinload: Emits a second SELECT ... WHERE parentid IN (...) query (best for 1-to-many collections). - joinedload: Performs an SQL LEFT OUTER JOIN in a single query (best for many-to-1 relationships).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_inventory_db.py`, what is the exact evaluated result of:\n\n```python\nupdated_p2.stock\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "17",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "18",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "34",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `17` as verified in test suite `test_inventory_db.py`.",
+    "lesson_ref": "test_inventory_db.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_inventory_db.py`, what is the exact evaluated result of:\n\n```python\nupdated_p1.stock\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8` as verified in test suite `test_inventory_db.py`.",
+    "lesson_ref": "test_inventory_db.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_inventory_db.py`, what is the exact evaluated result of:\n\n```python\norder.total_amount\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "650.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "650.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1300.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `650.0` as verified in test suite `test_inventory_db.py`.",
+    "lesson_ref": "test_inventory_db.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_inventory_db.py`, what is the exact evaluated result of:\n\n```python\nprod.stock\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "10",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "20",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `10` as verified in test suite `test_inventory_db.py`.",
+    "lesson_ref": "test_inventory_db.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in SQLAlchemy Alembic Database, an engineer observes:\n\"Silent data loss (Changes not persisted): Added entities disappear completely in subsequent sessions because await session.commit() was never called.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In Python 3, defining eq automatically sets hash = None to prevent mutable equality violations. If instances must be usable in dict keys or sets, hash must be explicitly implemented.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.\n\nFix Resolution:\nExplicitly call await session.commit() or use async with session.begin()::",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

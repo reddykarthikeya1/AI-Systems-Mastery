@@ -6,6 +6,7 @@ import { soundService } from '../services/sound';
 
 export interface McqQuestion {
   id: number;
+  tier?: 'Recall' | 'Apply' | 'Diagnose' | string;
   question: string;
   category?: string;
   options: string[];
@@ -68,7 +69,6 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       // Process structured questions with true randomized option shuffle
       const formatted: McqQuestion[] = loadedRaw.map((q: any, qIdx: number) => {
         const rawOptions = q.options || [];
-        // Extract correct text and distractors
         let correctText = '';
         const distractors: string[] = [];
         rawOptions.forEach((opt: any) => {
@@ -83,13 +83,17 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
           correctText = rawOptions[0].text;
         }
 
-        // Shuffle all 4 options randomly
-        const allOpts: { text: string; is_correct: boolean }[] = rawOptions.map((o: any) => ({ text: String(o.text), is_correct: Boolean(o.is_correct) }));
+        // Shuffle options randomly
+        const allOpts: { text: string; is_correct: boolean }[] = rawOptions.map((o: any) => ({
+          text: String(o.text),
+          is_correct: Boolean(o.is_correct),
+        }));
         const shuffledOpts = shuffleArray<{ text: string; is_correct: boolean }>(allOpts);
         const correctIndex = shuffledOpts.findIndex((o) => o.is_correct);
 
         return {
           id: q.id || qIdx + 1,
+          tier: q.tier || 'Recall',
           question: q.question,
           category: q.category || 'Systems Architecture',
           options: shuffledOpts.map((o) => o.text),
@@ -174,7 +178,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       const cleanAns = ansText.replace(/^[\s*#-]+/, '').slice(0, 180).trim();
       const correctOpt = cleanAns.length > 20 ? cleanAns : `${cleanAns} (Verified invariant)`;
 
-      // Draw distractors from other actual answers in this module
+      // Draw distractors strictly from other actual answers in this module
       const otherAnswers = answerKeys
         .filter((k) => k !== q.num && rawAnswers[k] && rawAnswers[k] !== ansText)
         .map((k) => rawAnswers[k].replace(/^[\s*#-]+/, '').slice(0, 180).trim())
@@ -183,21 +187,19 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       const distractorOpts: string[] = [];
       for (const otherAns of otherAnswers) {
         if (distractorOpts.length >= 3) break;
-        if (!distractorOpts.includes(otherAns)) {
+        if (!distractorOpts.includes(otherAns) && otherAns !== correctOpt) {
           distractorOpts.push(otherAns);
         }
       }
 
-      // If still fewer than 3 distractors, generate contrasting statements
-      const contextualFallbacks = [
-        'Assumes the operation is eagerly evaluated in thread-local storage rather than deferred.',
-        'Fails to enforce boundary invariants, resulting in an unchecked runtime error.',
-        'Requires explicit synchronization barriers across concurrent caller threads.',
-      ];
-      for (const fb of contextualFallbacks) {
-        if (distractorOpts.length >= 3) break;
-        if (!distractorOpts.includes(fb) && fb !== correctOpt) {
-          distractorOpts.push(fb);
+      // If still fewer than 3, reuse sibling questions' prompts
+      if (distractorOpts.length < 3) {
+        for (const siblingQ of rawQuestions) {
+          if (distractorOpts.length >= 3) break;
+          const sibText = siblingQ.text.slice(0, 140);
+          if (sibText && sibText !== q.text && !distractorOpts.includes(sibText)) {
+            distractorOpts.push(sibText);
+          }
         }
       }
 
@@ -210,6 +212,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
       return {
         id: q.num,
+        tier: 'Recall',
         question: q.text,
         category: q.category || 'System Concept',
         options: shuffled.map((o) => o.text),
@@ -336,9 +339,22 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
             {lessonTitle}
           </h2>
-          <p className="text-xs text-zinc-500">
-            Pass with <strong className="text-zinc-700 dark:text-zinc-300">70% or higher</strong> to clear this mastery criterion. Options are dynamically shuffled per attempt.
-          </p>
+          <div className="flex items-center gap-3 pt-1 flex-wrap">
+            <span className="text-xs text-zinc-500">
+              Pass with <strong className="text-zinc-700 dark:text-zinc-300">70% or higher</strong> to clear.
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-mono">
+              <span className="px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
+                {questions.filter((q) => q.tier === 'Recall').length} Recall
+              </span>
+              <span className="px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+                {questions.filter((q) => q.tier === 'Apply').length} Apply
+              </span>
+              <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                {questions.filter((q) => q.tier === 'Diagnose').length} Diagnose
+              </span>
+            </span>
+          </div>
         </div>
 
         {/* Score Pill & Retake */}
@@ -409,12 +425,23 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
               {/* Question Header */}
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
                       Question {qIndex + 1} of {questions.length}
                     </span>
+                    {q.tier && (
+                      <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded border ${
+                        q.tier === 'Diagnose'
+                          ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                          : q.tier === 'Apply'
+                          ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/30'
+                          : 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30'
+                      }`}>
+                        {q.tier}
+                      </span>
+                    )}
                     {q.category && (
-                      <span className="text-xs font-mono text-amber-600 dark:text-amber-400">
+                      <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
                         {q.category}
                       </span>
                     )}

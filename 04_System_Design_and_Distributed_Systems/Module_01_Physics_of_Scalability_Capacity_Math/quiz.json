@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 01 Physics of Scalability Capacity Math failure 'Little's Law Worker Pool Starvation', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Physics of Scalability Capacity Math, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Underestimating concurrency when latency increases: if latency doubles from 50ms to 100ms at 10,000 QPS, required concurrent connections double from 500 to 1,000.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 Physics of Scalability Capacity Math exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 Physics of Scalability Capacity Math: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Physics of Scalability Capacity Math.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 01 Physics of Scalability Capacity Math failure 'Amdahl's Law Core Saturation', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Physics of Scalability Capacity Math, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Adding 64 CPU cores to an algorithm with a 10% sequential database lock step yields only a 9.2x speedup instead of 64x.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 Physics of Scalability Capacity Math exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 Physics of Scalability Capacity Math: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Physics of Scalability Capacity Math.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "When diagnosing the 01 Physics of Scalability Capacity Math failure 'NVMe Random 4KB IOPS vs Sequential Throughput Bottleneck', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Physics of Scalability Capacity Math, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "s Expecting 3 GB/sec disk throughput on random 4KB writes when the drive is limited to 100,000 IOPS (400 MB/sec).",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 Physics of Scalability Capacity Math exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 Physics of Scalability Capacity Math: Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Physics of Scalability Capacity Math.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Physics of Scalability Capacity Math, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Physics of Scalability Capacity Math.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capacity_estimator.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(cache.daily_read_volume_gb, 0.1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2000.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2000.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4000.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2000.0` as verified in test suite `test_capacity_estimator.py`.",
+    "lesson_ref": "test_capacity_estimator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capacity_estimator.py`, what is the exact evaluated result of:\n\n```python\ncache.nodes_required_64gb_ram\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "9",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "10",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "8",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "18",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `9` as verified in test suite `test_capacity_estimator.py`.",
+    "lesson_ref": "test_capacity_estimator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capacity_estimator.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(qps.peak_total_qps, 0.1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "25462.96",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "25463.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "50925.9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `25462.96` as verified in test suite `test_capacity_estimator.py`.",
+    "lesson_ref": "test_capacity_estimator.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capacity_estimator.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(storage.daily_replicated_storage_gb, 0.1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "150.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "150.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "300.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `150.0` as verified in test suite `test_capacity_estimator.py`.",
+    "lesson_ref": "test_capacity_estimator.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Physics of Scalability Capacity Math, an engineer observes:\n\"System fault during operation: Tail Latency Amplification Cripples Microservice Fanout\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a gateway fans out to 100 services in parallel, the user request takes as long as the SLOWEST response. Assuming user p99 equals single-service p99 ignores the binomial distribution: $1 - (1 - 0.01)^{100} = 63.4\\%$. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "NTP time synchronization can jump backwards. If the generator does not refuse or wait until the clock catches up, it generates duplicate IDs. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: When a gateway fans out to 100 services in parallel, the user request takes as long as the SLOWEST response. Assuming user p99 equals single-service p99 ignores the binomial distribution: $1 - (1 - 0.01)^{100} = 63.4\\%$. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

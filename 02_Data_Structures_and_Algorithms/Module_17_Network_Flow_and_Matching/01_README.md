@@ -68,6 +68,43 @@ with irrational capacities may not terminate at all.
 
 ## 3. Dinic
 
+<!-- GENERATED_ALGORITHM_DIAGRAM: DINIC_MAX_FLOW START -->
+
+```mermaid
+graph LR
+  %% Dinic's Algorithm: Level Graph BFS Phase & Admissible Edges
+  %% Generated from verified algorithm execution
+  classDef default fill:#18181b,stroke:#3f3f46,stroke-width:1px,color:#f4f4f5;
+  classDef source fill:#065f46,stroke:#10b981,stroke-width:2px,color:#ffffff;
+  classDef sink fill:#831843,stroke:#f43f5e,stroke-width:2px,color:#ffffff;
+  classDef admissible stroke:#38bdf8,stroke-width:2px,color:#38bdf8;
+  subgraph Level_0 ["Level 0 (Dist = 0)"]
+    S["S<br/>lvl=0"]:::source
+  end
+  subgraph Level_1 ["Level 1 (Dist = 1)"]
+    A["A<br/>lvl=1"]:::default
+    B["B<br/>lvl=1"]:::default
+  end
+  subgraph Level_2 ["Level 2 (Dist = 2)"]
+    C["C<br/>lvl=2"]:::default
+    D["D<br/>lvl=2"]:::default
+  end
+  subgraph Level_3 ["Level 3 (Dist = 3)"]
+    T["T<br/>lvl=3"]:::sink
+  end
+
+  %% Admissible Edges: level[v] == level[u] + 1 with residual capacity > 0
+  S ==>|cap=10 (admissible)| A
+  S ==>|cap=10 (admissible)| B
+  A ==>|cap=4 (admissible)| C
+  A ==>|cap=8 (admissible)| D
+  B ==>|cap=9 (admissible)| D
+  C ==>|cap=10 (admissible)| T
+  D ==>|cap=10 (admissible)| T
+```
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: DINIC_MAX_FLOW END -->
+
 One BFS labels every node with its distance from the source - the **level
 graph**. A DFS then pushes flow, but only along edges going strictly one level
 deeper, until the level graph is saturated. Repeat.

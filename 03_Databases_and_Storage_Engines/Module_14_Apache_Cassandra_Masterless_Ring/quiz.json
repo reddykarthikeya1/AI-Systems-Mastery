@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why is Apache Cassandra described as a masterless, shared-nothing architecture?",
-    "category": "Why is Apache Cassandra described as a masterless, shared-nothing architecture?",
+    "tier": "Recall",
+    "question": "Why is Apache Cassandra described as a masterless, shared-nothing architecture? Why is Apache Cassandra described as a masterless, shared-nothing architecture?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
+        "id": "opt_1",
+        "text": "Because they can always be rebuilt from scratch by replaying the transactional source of truth event log.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
+        "id": "opt_2",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed t",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Last-Write-Wins (LWW) based on microsecond client-side timestamps.",
+        "id": "opt_3",
+        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": false
       }
     ],
-    "explanation": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Explain the formula for strong consistency in tunable quorum replication.",
-    "category": "Explain the formula for strong consistency in tunable quorum replication.?",
+    "tier": "Recall",
+    "question": "Explain the formula for strong consistency in tunable quorum replication.? Explain the formula for strong consistency in tunable quorum replication.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
+        "id": "opt_1",
+        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
+        "id": "opt_2",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Last-Write-Wins (LWW) based on microsecond client-side timestamps.",
+        "id": "opt_3",
+        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
         "is_correct": false
       }
     ],
-    "explanation": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: $R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the difference between a Partition Key and a Clustering Key in CQL?",
-    "category": "What is the difference between a Partition Key and a Clustering Key in CQL?",
+    "tier": "Recall",
+    "question": "What is the difference between a Partition Key and a Clustering Key in CQL? What is the difference between a Partition Key and a Clustering Key in CQL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
+        "id": "opt_1",
+        "text": "It executes multiple aggregation pipelines simultaneously within a single stage on the same input document stream.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
+        "id": "opt_2",
+        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Last-Write-Wins (LWW) based on microsecond client-side timestamps.",
+        "id": "opt_3",
+        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
         "is_correct": false
       }
     ],
-    "explanation": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "How does Cassandra resolve write conflicts without locks? How does Cassandra resolve write conflicts without locks?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Last-Write-Wins (LWW) based on microsecond client-side timestamps.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It iteratively calculates the probability that a random walk across edges will land on a specific node.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Last-Write-Wins (LWW) based on microsecond client-side timestamps.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cassandra_live.py`, what is the exact evaluated result of:\n\n```python\ncoord5._required_acks(\"QUORUM\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_cassandra_live.py`.",
+    "lesson_ref": "test_cassandra_live.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cassandra_ring_engine.py`, what is the exact evaluated result of:\n\n```python\nread_data\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "data",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `data` as verified in test suite `test_cassandra_ring_engine.py`.",
+    "lesson_ref": "test_cassandra_ring_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cassandra_ring_engine.py`, what is the exact evaluated result of:\n\n```python\nrepaired_row.data\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{\"balance\": 500}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{\"balance\": 500}` as verified in test suite `test_cassandra_ring_engine.py`.",
+    "lesson_ref": "test_cassandra_ring_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cassandra_ring_engine.py`, what is the exact evaluated result of:\n\n```python\nrepaired_row.timestamp_us\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2000",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2001",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1999",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2000` as verified in test suite `test_cassandra_ring_engine.py`.",
+    "lesson_ref": "test_cassandra_ring_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Apache Cassandra Masterless Ring, an engineer observes:\n\"System fault during operation: ReadFailure Scanned Over 100,000 Tombstones\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.\n\nFix Resolution:\nDo not use Cassandra as a task queue; model data with TTL expiration on inserts and query using exact partition keys rather than broad range scans.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

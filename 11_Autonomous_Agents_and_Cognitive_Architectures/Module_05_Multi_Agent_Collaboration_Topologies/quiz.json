@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Architectural Foundations: Multi-Agent Communication Topologies play in 05 Multi Agent Collaboration Topologies?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Multi Agent Collaboration Topologies, what core system invariant does '1. Architectural Foundations: Multi-Agent Communication Topologies' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations: Multi-Agent Communication Topologies is essential for maintaining predictable invariants and high performance in 05 Multi Agent Collaboration Topologies.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Multi-Agent Communication Topologies.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations: Multi-Agent Communication Topologies is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations: Multi-Agent Communication Topologies in 05 Multi Agent Collaboration Topologies specifications.",
+    "explanation": "Specification detail defined under '1. Architectural Foundations: Multi-Agent Communication Topologies' in Multi Agent Collaboration Topologies.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Dynamic Handoff Protocols & Memory Transfer play in 05 Multi Agent Collaboration Topologies?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Multi Agent Collaboration Topologies, what core system invariant does '2. Dynamic Handoff Protocols & Memory Transfer' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Dynamic Handoff Protocols & Memory Transfer is essential for maintaining predictable invariants and high performance in 05 Multi Agent Collaboration Topologies.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Dynamic Handoff Protocols & Memory Transfer.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Dynamic Handoff Protocols & Memory Transfer is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Dynamic Handoff Protocols & Memory Transfer in 05 Multi Agent Collaboration Topologies specifications.",
+    "explanation": "Specification detail defined under '2. Dynamic Handoff Protocols & Memory Transfer' in Multi Agent Collaboration Topologies.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Multi Agent Collaboration Topologies, what core system invariant does '3. Consensus & Multi-Agent Debate' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Consensus & Multi-Agent Debate.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Consensus & Multi-Agent Debate' in Multi Agent Collaboration Topologies.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_multi_agent_swarm.py`, what is the exact evaluated result of:\n\n```python\nres[\"vote_distribution\"][\"REJECT\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_multi_agent_swarm.py`.",
+    "lesson_ref": "test_multi_agent_swarm.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_multi_agent_swarm.py`, what is the exact evaluated result of:\n\n```python\nlen(res[\"handoff_history\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_multi_agent_swarm.py`.",
+    "lesson_ref": "test_multi_agent_swarm.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_multi_agent_swarm.py`, what is the exact evaluated result of:\n\n```python\nres[\"response\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Refund of $50 processed.\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"REFUND OF $50 PROCESSED.\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Refund of $50 processed.\"` as verified in test suite `test_multi_agent_swarm.py`.",
+    "lesson_ref": "test_multi_agent_swarm.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_multi_agent_swarm.py`, what is the exact evaluated result of:\n\n```python\nres[\"final_agent\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Billing\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"BILLING\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Billing\"` as verified in test suite `test_multi_agent_swarm.py`.",
+    "lesson_ref": "test_multi_agent_swarm.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Multi Agent Collaboration Topologies, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Triage agent transfers to Support agent, which immediately transfers back to Triage agent.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Triage agent transfers to Support agent, which immediately transfers back to Triage agent.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Multi Agent Collaboration Topologies, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Both agents' classification prompts lack unambiguous domain boundary definitions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "TypeError: got unexpected keyword argument 'querytext'.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Both agents' classification prompts lack unambiguous domain boundary definitions.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Multi Agent Collaboration Topologies, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Multi Agent Collaboration Topologies, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Handoff Oscillation (Ping-Pong Loop)'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Both agents' classification prompts lack unambiguous domain boundary definitions. -\n: Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 04 Stacks Queues and Monotonic Structures triage of defect 'An unclosed bracket is reported as balanced', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Stacks Queues and Monotonic Structures, what core system invariant does '1. Monotonic Stack Invariant Mechanics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed. \"(\" and \"([]\" therefore come back True. Both are structurally plausib",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Monotonic Stack Invariant Mechanics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed. \"(\" and \"([]\" therefore come back True. Both are structurally plausib",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Monotonic Stack Invariant Mechanics' in Stacks Queues and Monotonic Structures.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 04 Stacks Queues and Monotonic Structures triage of defect 'Equal values are treated as greater', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Stacks Queues and Monotonic Structures, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2. The output is the right length and every entry is a value that ge",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2. The output is the right length and every entry is a value that ge",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Stacks Queues and Monotonic Structures.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 04 Stacks Queues and Monotonic Structures triage of defect 'Daily temperatures reports an index instead of a wait', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Stacks Queues and Monotonic Structures, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw. Every value is a small non-negative integer of exactly the right shape, and for index 0 the two answers ev",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw. Every value is a small non-negative integer of exactly the right shape, and for index 0 the two answers ev",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Stacks Queues and Monotonic Structures.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Stacks Queues and Monotonic Structures, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Stacks Queues and Monotonic Structures.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m04_problems.py`, what is the exact evaluated result of:\n\n```python\ndecode_string(\"2[2[2[a]]]\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"a\" * 8",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"a\" * 8` as verified in test suite `test_m04_problems.py`.",
+    "lesson_ref": "test_m04_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m04_problems.py`, what is the exact evaluated result of:\n\n```python\nsimulate_min_stack(ops)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[1]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[1]` as verified in test suite `test_m04_problems.py`.",
+    "lesson_ref": "test_m04_problems.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m04_problems.py`, what is the exact evaluated result of:\n\n```python\ndaily_temperatures([30, 60, 90])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[1, 1, 0]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[1, 1, 0]` as verified in test suite `test_m04_problems.py`.",
+    "lesson_ref": "test_m04_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m04_problems.py`, what is the exact evaluated result of:\n\n```python\ndecode_string(\"3[a2[c]]\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"accaccacc\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ACCACCACC\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"accaccacc\"` as verified in test suite `test_m04_problems.py`.",
+    "lesson_ref": "test_m04_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Stacks Queues and Monotonic Structures, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps re",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kruskal happily terminates on a disconnected graph \u2014 it simply runs out of edges having built a spanning",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps reporting it.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Stacks Queues and Monotonic Structures, an engineer observes:\n\"What was reported, and what is i at the moment index 0 is resolved?\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Stacks Queues and Monotonic Structures, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 Daily temperatures reports an index instead of a wait\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "For maximum sum, a single running best is enough. For maximum product it is not: multiplying by a negative number flips the ordering, so the most negative product so far is a candidate for the largest as soon as another negative appears.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Stacks Queues and Monotonic Structures, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Equal values are treated as greater\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

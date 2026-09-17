@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "Register Pressure and Occupancy Cliff \u2014 You write a CUDA kernel where each thread uses 64 registers. Your thread block size is 1,024 threads.\n1. What happens to SM occupancy on an NVIDIA Ampere GPU (max 65,536 registers per SM)?\n2. How does the compiler handle",
-    "category": "Register Pressure and Occupancy Cliff",
+    "tier": "Recall",
+    "question": "In GPU Microarchitecture and Execution Model, what core system invariant does '1. Physical Hardware Microarchitecture of an SM' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exact...",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Physical Hardware Microarchitecture of an SM.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 01 GPU Microarchitecture and Execution Model.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exactly 65,536 registers, only 1 block can reside on the SM at any time. Active warps per SM = $1{,}024 / 32 = 32 \\text{ warps}$. Since the SM supports a maximum of 64 warps, theoretical occupancy drops to $32 / 64 ",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. Physical Hardware Microarchitecture of an SM' in GPU Microarchitecture and Execution Model.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Memory Bound vs Compute Bound Diagnosis \u2014 A junior engineer converts an FP32 matrix elementwise activation kernel ($y_i = \\text{gelu}(x_i)$) to use FP16 Tensor Cores and notices 0% performance speedup. Why?",
-    "category": "Memory Bound vs Compute Bound Diagnosis",
+    "tier": "Recall",
+    "question": "In GPU Microarchitecture and Execution Model, what core system invariant does '2. The SIMT Execution Model & Warp Divergence' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. The SIMT Execution Model & Warp Divergence.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. A block of 1,024 threads using 64 registers per thread requires $1{,}024 \\times 64 = 65{,}536 \\text{ registers}$. Because an SM has exact...",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 01 GPU Microarchitecture and Execution Model.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Elementwise GeLU reads 1 input element (2 bytes in FP16) and writes 1 output element (2 bytes in FP16) while performing $\\approx 8$ FLOPs. Arithmetic intensity $I = 8 / 4 = 2.0 \\text{ FLOPs/Byte}$. On an A100, the Tensor Core ridge point is $156 \\text{ FLOPs/Byte}$. Because $2.0 \\ll 156$, the kernel is deeply Memory-Bound\u2014stuck waiting for HBM memo",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '2. The SIMT Execution Model & Warp Divergence' in GPU Microarchitecture and Execution Model.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "When diagnosing the 01 GPU Microarchitecture and Execution Model failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In GPU Microarchitecture and Execution Model, what core system invariant does '3. Latency Hiding & Little's Law for GPUs' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Latency Hiding & Little's Law for GPUs.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute. - Root Cause: Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check s",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 GPU Microarchitecture and Execution Model exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 GPU Microarchitecture and Execution Model: : Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. - Diagnosis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution. - Fix: Reorganize data or thread assign. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '3. Latency Hiding & Little's Law for GPUs' in GPU Microarchitecture and Execution Model.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In GPU Microarchitecture and Execution Model, what core system invariant does '4. The Roofline Model: Arithmetic Intensity' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. The Roofline Model: Arithmetic Intensity.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. The Roofline Model: Arithmetic Intensity' in GPU Microarchitecture and Execution Model.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_gpu_microarch_sim.py`, what is the exact evaluated result of:\n\n```python\nres_mem.bound_type\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"memory_bound\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MEMORY_BOUND\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"memory_bound\"` as verified in test suite `test_gpu_microarch_sim.py`.",
+    "lesson_ref": "test_gpu_microarch_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_gpu_microarch_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(res_mem.achieved_tflops, rel=1e-3)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "10.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "10.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "20.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `10.0` as verified in test suite `test_gpu_microarch_sim.py`.",
+    "lesson_ref": "test_gpu_microarch_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_gpu_microarch_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(occ, rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_gpu_microarch_sim.py`.",
+    "lesson_ref": "test_gpu_microarch_sim.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_gpu_microarch_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(intensity, rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2.0` as verified in test suite `test_gpu_microarch_sim.py`.",
+    "lesson_ref": "test_gpu_microarch_sim.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In GPU Microarchitecture and Execution Model, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Reorganize data or thread assignments so that branching evaluates uniformly across all 32 threads in a warp (threadIdx.x / 32).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Performing bitwise operations without proper signed two's complement extension:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Reorganize data or thread assignments so that branching evaluates uniformly across all 32 threads in a warp (threadIdx.x / 32).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In GPU Microarchitecture and Execution Model, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Performing bitwise operations without proper signed two's complement extension:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In GPU Microarchitecture and Execution Model, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Verify that expectedbytes == tilerows tilecols sizeof(element).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In GPU Microarchitecture and Execution Model, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Diagnosis'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

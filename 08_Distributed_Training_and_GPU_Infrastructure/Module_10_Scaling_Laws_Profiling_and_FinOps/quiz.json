@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 10 Scaling Laws Profiling and FinOps failure 'Top Production Failure Modes in Profiling & FinOps', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Scaling Laws Profiling and FinOps, what core system invariant does '1. Mathematical Derivation of Transformer Training FLOPs' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. - Fix: Account for gated MLP expansion factor in analytical FLOP counters.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Derivation of Transformer Training FLOPs.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Telemetry reports impossible MFU (> 70%) on Llama-2/3 models. - Root Cause: Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLO",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 10 Scaling Laws Profiling and FinOps exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 10 Scaling Laws Profiling and FinOps: : Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. - Fix: Account for gated MLP expansion factor in analytical FLOP counters.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Derivation of Transformer Training FLOPs' in Scaling Laws Profiling and FinOps.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Derivation of Transformer Training FLOPs play in 10 Scaling Laws Profiling and FinOps?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Scaling Laws Profiling and FinOps, what core system invariant does '2. MFU vs. HFU (Hardware FLOPs Utilization)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Derivation of Transformer Training FLOPs is essential for maintaining predictable invariants and high performance in 10 Scaling Laws Profiling and FinOps.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. MFU vs. HFU (Hardware FLOPs Utilization).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Derivation of Transformer Training FLOPs is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Derivation of Transformer Training FLOPs in 10 Scaling Laws Profiling and FinOps specifications.",
+    "explanation": "Specification detail defined under '2. MFU vs. HFU (Hardware FLOPs Utilization)' in Scaling Laws Profiling and FinOps.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. MFU vs. HFU (Hardware FLOPs Utilization) play in 10 Scaling Laws Profiling and FinOps?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Scaling Laws Profiling and FinOps, what core system invariant does '3. Chinchilla Scaling Law Formulation' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. MFU vs. HFU (Hardware FLOPs Utilization) is essential for maintaining predictable invariants and high performance in 10 Scaling Laws Profiling and FinOps.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Chinchilla Scaling Law Formulation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. MFU vs. HFU (Hardware FLOPs Utilization) is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. MFU vs. HFU (Hardware FLOPs Utilization) in 10 Scaling Laws Profiling and FinOps specifications.",
+    "explanation": "Specification detail defined under '3. Chinchilla Scaling Law Formulation' in Scaling Laws Profiling and FinOps.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Scaling Laws Profiling and FinOps, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Profiling & FinOps'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Guarantee identical collective execution ordering across all ranks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -\n: Account for gated MLP expansion factor in analytical FLOP counters.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Scaling Laws Profiling and FinOps, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Scaling Laws Profiling and FinOps, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Account for gated MLP expansion factor in analytical FLOP counters.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "All GPUs hang at 100% compute with 0% memory throughput indefinitely.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Account for gated MLP expansion factor in analytical FLOP counters.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Scaling Laws Profiling and FinOps, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Scaling Laws Profiling and FinOps workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire 1,024-GPU cluster slows down to the speed of the slowest lin",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Scaling Laws Profiling and FinOps workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

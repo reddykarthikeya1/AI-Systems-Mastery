@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why is Redis single-threaded, and how does it achieve >100,000 operations per second?",
-    "category": "Why is Redis single-threaded, and how does it achieve >100,000 operations per second?",
+    "tier": "Recall",
+    "question": "Why is Redis single-threaded, and how does it achieve >100,000 operations per second? Why is Redis single-threaded, and how does it achieve >100,000 operations per second?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "RDB creates point-in-time binary disk snapshots; AOF logs every write command sequentially for near-zero RPO.",
+        "id": "opt_1",
+        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "id": "opt_2",
+        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "id": "opt_3",
+        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
         "is_correct": false
       }
     ],
-    "explanation": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the difference between Redis RDB snapshots and AOF (Append-Only File) persistence?",
-    "category": "What is the difference between Redis RDB snapshots and AOF (Append-Only File) persistence?",
+    "tier": "Recall",
+    "question": "What is the difference between Redis RDB snapshots and AOF (Append-Only File) persistence? What is the difference between Redis RDB snapshots and AOF (Append-Only File) persistence?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "RDB creates point-in-time binary disk snapshots; AOF logs every write command sequentially for near-zero RPO.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
+        "id": "opt_1",
+        "text": "1 WCU = 1 write up to 1KB/s; 1 RCU = 1 strongly consistent read (or 2 eventually consistent reads) up to 4KB/s.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "id": "opt_2",
+        "text": "Oversized pools cause CPU context switching thrashing; optimal pool size is roughly $(2 \\times \\text{cores}) + \\text{effective spindles}$.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "id": "opt_3",
+        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
         "is_correct": false
       }
     ],
-    "explanation": "RDB creates point-in-time binary disk snapshots; AOF logs every write command sequentially for near-zero RPO.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: RDB creates point-in-time binary disk snapshots; AOF logs every write command sequentially for near-zero RPO.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does a Sliding-Window Rate Limiter work using Redis Sorted Sets?",
-    "category": "How does a Sliding-Window Rate Limiter work using Redis Sorted Sets?",
+    "tier": "Recall",
+    "question": "How does a Sliding-Window Rate Limiter work using Redis Sorted Sets? How does a Sliding-Window Rate Limiter work using Redis Sorted Sets?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
+        "id": "opt_1",
+        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "RDB creates point-in-time binary disk snapshots; AOF logs every write command sequentially for near-zero RPO.",
+        "id": "opt_2",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "id": "opt_3",
+        "text": "It enforces that no two rows overlap on a range type (e.g. daterange or tsrange) using GiST index bounding-box tests.",
         "is_correct": false
       }
     ],
-    "explanation": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is the difference between volatile-lru and allkeys-lru eviction policies? What is the difference between volatile-lru and allkeys-lru eviction policies?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_redis_engine.py`, what is the exact evaluated result of:\n\n```python\nsl.length\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_redis_engine.py`.",
+    "lesson_ref": "test_redis_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_redis_engine.py`, what is the exact evaluated result of:\n\n```python\nsds.len\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_redis_engine.py`.",
+    "lesson_ref": "test_redis_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_redis_engine.py`, what is the exact evaluated result of:\n\n```python\nsub_items\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[(\"bob\", 20.0), (\"charlie\", 30.0)]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[(\"bob\", 20.0), (\"charlie\", 30.0)]` as verified in test suite `test_redis_engine.py`.",
+    "lesson_ref": "test_redis_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_redis_engine.py`, what is the exact evaluated result of:\n\n```python\nsds.alloc\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "len(raw_payload)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `len(raw_payload)` as verified in test suite `test_redis_engine.py`.",
+    "lesson_ref": "test_redis_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Redis Data Structures Persistence, an engineer observes:\n\"System fault during operation: Distributed Lock Race Condition Releases Another Worker's Lock\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Worker acquires lock with SET lockkey 1 EX 10. Worker takes 12 seconds to finish. Lock expires. Worker 2 acquires lock. Worker 1 then calls DEL lockkey, releasing Worker 2's lock prematurely.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Worker acquires lock with SET lockkey 1 EX 10. Worker takes 12 seconds to finish. Lock expires. Worker 2 acquires lock. Worker 1 then calls DEL lockkey, releasing Worker 2's lock prematurely.\n\nFix Resolution:\nStore a unique UUID token as the lock value and release exclusively via an atomic Lua script verifying token ownership before deleting.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

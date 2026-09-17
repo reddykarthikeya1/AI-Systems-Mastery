@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why does searching for a row in a raw CSV file take $O(N)$ time while an indexed database lookup takes $O(\\log N)$ time?",
-    "category": "Storage Bottleneck:",
+    "tier": "Recall",
+    "question": "Storage Bottleneck: Why does searching for a row in a raw CSV file take $O(N)$ time while an indexed database lookup takes $O(\\log N)$ time?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
+        "id": "opt_corr",
+        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) w",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Atomicity guarantees \"all-or-nothing\".",
+        "id": "opt_1",
+        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
+        "id": "opt_2",
+        "text": "Downstream systems become consistent after a short propagation delay; applications use read-after-write routing to primary for immediate feedback.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
+        "id": "opt_3",
+        "text": "It uses randomized heuristic algorithms rather than exhaustive enumeration when join count exceeds threshold (typically 12 relations).",
         "is_correct": false
       }
     ],
-    "explanation": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) where each node traversal eliminates half the remaining search space, enabling $O(\\log N)$ lookups.",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) where each node traversal eliminates half the remaining search space, enabling $O(\\log N)$ lookups.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What does \"Atomicity\" guarantee when a multi-step transaction encounters a disk error halfway through?",
-    "category": "ACID - Atomicity:",
+    "tier": "Recall",
+    "question": "ACID - Atomicity: What does \"Atomicity\" guarantee when a multi-step transaction encounters a disk error halfway through?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Atomicity guarantees \"all-or-nothing\".",
+        "id": "opt_corr",
+        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
+        "id": "opt_1",
+        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
+        "id": "opt_2",
+        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
+        "id": "opt_3",
+        "text": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
         "is_correct": false
       }
     ],
-    "explanation": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What physical mechanism allows databases to guarantee Durability even if the power is abruptly cut immediately after a COMMIT?",
-    "category": "ACID - Durability:",
+    "tier": "Recall",
+    "question": "ACID - Durability: What physical mechanism allows databases to guarantee Durability even if the power is abruptly cut immediately after a COMMIT?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment.",
+        "id": "opt_corr",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed t",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan).",
+        "id": "opt_1",
+        "text": "A dirty page cannot be written to disk until the WAL log record describing the modification has been flushed to disk (pagelsn <= flushedlsn).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Atomicity guarantees \"all-or-nothing\".",
+        "id": "opt_2",
+        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Relation: The table itself (a mathematical set of unique tuples).",
+        "id": "opt_3",
+        "text": "PostgreSQL 32-bit transaction counters wrap around after 2 billion transactions. Autovacuum freeze runs freeze older tuples with FrozenXID to prevent them from appearing in the future.",
         "is_correct": false
       }
     ],
-    "explanation": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed transactions that had not yet reached the primary tables.",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed transactions that had not yet reached the primary tables.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Relational Theory: What is the formal difference between a Tuple, an Attribute, and a Relation in Codd's Relational Model?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- Relation: The table itself (a mathematical set of unique tuples). - Tuple: A single row / record in the relation. - Attribute: A named column representing a specific domain/data type.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "ClickHouse primary keys determine physical on-disk sort order; sorting by random UUIDs destroys data locality and compression ratios.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Two nodes simultaneously believing they are leader; quorum ($N/2 + 1$) guarantees no two disjoint subsets can both achieve majority.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - Relation: The table itself (a mathematical set of unique tuples). - Tuple: A single row / record in the relation. - Attribute: A named column representing a specific domain/data type.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_csv_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(rows)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_csv_engine.py`.",
+    "lesson_ref": "test_csv_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_live.py`, what is the exact evaluated result of:\n\n```python\nengine_restarted.count_records()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_storage_live.py`.",
+    "lesson_ref": "test_storage_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_live.py`, what is the exact evaluated result of:\n\n```python\nr1[\"name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Alice\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Alice\"` as verified in test suite `test_storage_live.py`.",
+    "lesson_ref": "test_storage_live.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_live.py`, what is the exact evaluated result of:\n\n```python\nengine_recovery.read_record(\"k1\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{\"id\": \"k1\", \"val\": \"legitimate\"}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{\"id\": \"k1\", \"val\": \"legitimate\"}` as verified in test suite `test_storage_live.py`.",
+    "lesson_ref": "test_storage_live.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Storage Theory ACID Relational Model, an engineer observes:\n\"System fault during operation: Uncommitted Transaction Leaks into Primary Table During Power Failure\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The csv engine flushes uncommitted in-memory rows directly to table.csv during insert() rather than deferring until commit(). When a crash occurs before commit(), dirty data is permanently written.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The csv engine flushes uncommitted in-memory rows directly to table.csv during insert() rather than deferring until commit(). When a crash occurs before commit(), dirty data is permanently written.\n\nFix Resolution:\nBuffer all rows in self.uncommittedrows and append to table.csv strictly inside commit() after logging the COMMIT entry to the WAL.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

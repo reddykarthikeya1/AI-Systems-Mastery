@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 07 Speculative Decoding Architectures failure 'Top Production Failure Modes in Speculative Decoding', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Speculative Decoding Architectures, what core system invariant does '1. Mathematical Formulation of Speculative Decoding' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache. - Fix: Ro",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Formulation of Speculative Decoding.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Model produces repetitious nonsense after the first rejected speculative token. - Root Cause: When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected t",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 07 Speculative Decoding Architectures exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 07 Speculative Decoding Architectures: : When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache. - Fix: Ro. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Formulation of Speculative Decoding' in Speculative Decoding Architectures.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Formulation of Speculative Decoding play in 07 Speculative Decoding Architectures?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Speculative Decoding Architectures, what core system invariant does '2. Medusa: Multi-Head Speculation Without Draft Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Formulation of Speculative Decoding is essential for maintaining predictable invariants and high performance in 07 Speculative Decoding Architectures.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Medusa: Multi-Head Speculation Without Draft Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Formulation of Speculative Decoding is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Formulation of Speculative Decoding in 07 Speculative Decoding Architectures specifications.",
+    "explanation": "Specification detail defined under '2. Medusa: Multi-Head Speculation Without Draft Models' in Speculative Decoding Architectures.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Medusa: Multi-Head Speculation Without Draft Models play in 07 Speculative Decoding Architectures?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_speculative_decoding_sim.py`, what is the exact evaluated result of:\n\n```python\nres.total_accepted\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Medusa: Multi-Head Speculation Without Draft Models is essential for maintaining predictable invariants and high performance in 07 Speculative Decoding Architectures.",
+        "id": "opt_corr",
+        "text": "5",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Medusa: Multi-Head Speculation Without Draft Models is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "6",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "4",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "10",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Medusa: Multi-Head Speculation Without Draft Models in 07 Speculative Decoding Architectures specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `5` as verified in test suite `test_speculative_decoding_sim.py`.",
+    "lesson_ref": "test_speculative_decoding_sim.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_speculative_decoding_sim.py`, what is the exact evaluated result of:\n\n```python\nres.acceptance_rate\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_speculative_decoding_sim.py`.",
+    "lesson_ref": "test_speculative_decoding_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_speculative_decoding_sim.py`, what is the exact evaluated result of:\n\n```python\nres.total_accepted\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_speculative_decoding_sim.py`.",
+    "lesson_ref": "test_speculative_decoding_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_speculative_decoding_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(res.accepted_tokens)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_speculative_decoding_sim.py`.",
+    "lesson_ref": "test_speculative_decoding_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Speculative Decoding Architectures, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Roll back KV cache block slot index to $S{\\text{accepted}}$ immediately upon rejection.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Roll back KV cache block slot index to $S{\\text{accepted}}$ immediately upon rejection.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Speculative Decoding Architectures, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Server hangs when GPU memory reaches 99%; no new requests are admitted.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model produces repetitious nonsense after the first rejected speculative token.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Speculative Decoding Architectures, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Speculative Decoding'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache. -\n: Roll back KV cache block slot index to $S{\\text{accepted}}$ immediately upon rejection.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Speculative Decoding Architectures, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

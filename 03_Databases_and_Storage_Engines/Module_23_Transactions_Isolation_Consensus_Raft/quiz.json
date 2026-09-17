@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.",
-    "category": "Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.?",
+    "tier": "Recall",
+    "question": "Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.? Define the three ANSI SQL read phenomena: Dirty Read, Non-Repeatable Read, and Phantom Read.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+        "id": "opt_1",
+        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
+        "id": "opt_2",
+        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+        "id": "opt_3",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       }
     ],
-    "explanation": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)?",
-    "category": "What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)?",
+    "tier": "Recall",
+    "question": "What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)? What is the difference between Two-Phase Locking (2PL) and Strict 2PL (S2PL)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
+        "id": "opt_1",
+        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
+        "id": "opt_2",
+        "text": "A collection scan (every document read into RAM) indicating a missing or unused index.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+        "id": "opt_3",
+        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
         "is_correct": false
       }
     ],
-    "explanation": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: 2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain the two phases of the Two-Phase Commit (2PC) protocol.",
-    "category": "Explain the two phases of the Two-Phase Commit (2PC) protocol.?",
+    "tier": "Recall",
+    "question": "Explain the two phases of the Two-Phase Commit (2PC) protocol.? Explain the two phases of the Two-Phase Commit (2PC) protocol.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL.",
+        "id": "opt_corr",
+        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
+        "id": "opt_1",
+        "text": "Collections can enforce validation rules using JSON Schema ($jsonSchema) with strict or moderate enforcement levels.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+        "id": "opt_2",
+        "text": "Deletions create dead gaps between records; defragmentation compacts active records to the end of the page and updates slot offsets.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+        "id": "opt_3",
+        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": false
       }
     ],
-    "explanation": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Why is 2PC considered a blocking protocol? Why is 2PC considered a blocking protocol?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The estimated cost to access a non-sequential disk page relative to seqpagecost (tuned lower for SSDs, e.g. 1.1).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "UNION deduplicates rows by performing an expensive sort/hash set operation; UNION ALL simply appends streams without deduplication.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_consensus_engine.py`, what is the exact evaluated result of:\n\n```python\np.role\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"FOLLOWER\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"FOLLOWER\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"FOLLOWER\"` as verified in test suite `test_consensus_engine.py`.",
+    "lesson_ref": "test_consensus_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_consensus_engine.py`, what is the exact evaluated result of:\n\n```python\np.commit_index\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_consensus_engine.py`.",
+    "lesson_ref": "test_consensus_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_isolation_live.py`, what is the exact evaluated result of:\n\n```python\nval2\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "100.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "200.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100.0` as verified in test suite `test_isolation_live.py`.",
+    "lesson_ref": "test_isolation_live.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_consensus_engine.py`, what is the exact evaluated result of:\n\n```python\ns2.state\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"COMMITTED\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"COMMITTED\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"COMMITTED\"` as verified in test suite `test_consensus_engine.py`.",
+    "lesson_ref": "test_consensus_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Transactions Isolation Consensus Raft, an engineer observes:\n\"System fault during operation: Split-Brain Dual Leader Election in Raft Cluster\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The kernel's working directory is the module root, not projectsolution/.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).\n\nFix Resolution:\nRequire strict majority: if votesreceived >= (len(self.nodes) // 2) + 1: self.becomeleader().",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

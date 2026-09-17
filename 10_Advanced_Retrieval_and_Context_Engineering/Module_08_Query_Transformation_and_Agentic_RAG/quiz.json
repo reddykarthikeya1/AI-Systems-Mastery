@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 08 Query Transformation and Agentic RAG failure 'Top Production Failure Modes in Agentic RAG', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Query Transformation and Agentic RAG, what core system invariant does '1. Architectural Foundations of Query Translation' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. - Fix: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with t",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations of Query Translation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches. - Root Cause: The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting querie",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 08 Query Transformation and Agentic RAG exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 08 Query Transformation and Agentic RAG: : The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. - Fix: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with t. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Architectural Foundations of Query Translation' in Query Transformation and Agentic RAG.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Architectural Foundations of Query Translation play in 08 Query Transformation and Agentic RAG?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_query_transformation.py`, what is the exact evaluated result of:\n\n```python\nlen(sub_queries)\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations of Query Translation is essential for maintaining predictable invariants and high performance in 08 Query Transformation and Agentic RAG.",
+        "id": "opt_corr",
+        "text": "2",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations of Query Translation is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "3",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "1",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "4",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations of Query Translation in 08 Query Transformation and Agentic RAG specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `2` as verified in test suite `test_query_transformation.py`.",
+    "lesson_ref": "test_query_transformation.py"
+  },
+  {
+    "id": 3,
+    "tier": "Diagnose",
+    "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Agentic RAG'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -\n: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Query Transformation and Agentic RAG, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Vector search returns top hits, but LLM receives empty context strings.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: Vector search returns top hits, but LLM receives empty context strings.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Query Transformation and Agentic RAG workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

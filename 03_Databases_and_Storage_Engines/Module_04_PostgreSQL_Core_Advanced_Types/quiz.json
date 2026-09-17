@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL?",
-    "category": "How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL?",
+    "tier": "Recall",
+    "question": "How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL? How does PostgreSQL's process-based architecture differ from multi-threaded databases like MySQL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
+        "id": "opt_1",
+        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
+        "id": "opt_2",
+        "text": "It defines the amount of RAM allocated per sort or hash join operation before spilling intermediate data to temporary disk files.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
+        "id": "opt_3",
+        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
         "is_correct": false
       }
     ],
-    "explanation": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the difference between JSON and JSONB in PostgreSQL?",
-    "category": "What is the difference between JSON and JSONB in PostgreSQL?",
+    "tier": "Recall",
+    "question": "What is the difference between JSON and JSONB in PostgreSQL? What is the difference between JSON and JSONB in PostgreSQL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+        "id": "opt_1",
+        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
+        "id": "opt_2",
+        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
+        "id": "opt_3",
+        "text": "Inverted File Flat: vectors are clustered into Voronoi cells around centroids; queries search only the nearest centroids.",
         "is_correct": false
       }
     ],
-    "explanation": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Which index type is required to accelerate JSONB containment queries (@>)?",
-    "category": "Which index type is required to accelerate JSONB containment queries (@>)?",
+    "tier": "Recall",
+    "question": "Which index type is required to accelerate JSONB containment queries (@>)? Which index type is required to accelerate JSONB containment queries (@>)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+        "id": "opt_1",
+        "text": "Fan-out is the number of child pointers per node. A fan-out of 100 on a 3-level tree indexes $100^3 = 1,000,000$ pages.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "JSON stores exact textual representation (requiring re-parsing on every query), whereas JSONB stores parsed binary format supporting fast indexing.",
+        "id": "opt_2",
+        "text": "Rate (queries/sec), Errors (failed connections/deadlocks), and Duration (p95/p99 query latency).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
+        "id": "opt_3",
+        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": false
       }
     ],
-    "explanation": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "How do PostgreSQL array operators && and @> work? How do PostgreSQL array operators && and @> work?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "&& tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Writes are immediately appended to an on-disk sequential CommitLog before being stored in in-memory MemTables.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: && tests for array overlap (common elements), while @> tests if the left array contains all elements of the right array.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_jsonb_document_store.py`, what is the exact evaluated result of:\n\n```python\nrecovered[\"author\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Database Specialist\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DATABASE SPECIALIST\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Database Specialist\"` as verified in test suite `test_jsonb_document_store.py`.",
+    "lesson_ref": "test_jsonb_document_store.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_jsonb_document_store.py`, what is the exact evaluated result of:\n\n```python\ndoc[\"price\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1200",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1201",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1199",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2400",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1200` as verified in test suite `test_jsonb_document_store.py`.",
+    "lesson_ref": "test_jsonb_document_store.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_jsonb_document_store.py`, what is the exact evaluated result of:\n\n```python\nresults_multiple\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"doc_2\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"doc_2\"]` as verified in test suite `test_jsonb_document_store.py`.",
+    "lesson_ref": "test_jsonb_document_store.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_jsonb_document_store.py`, what is the exact evaluated result of:\n\n```python\nresults\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"doc_1\", \"doc_2\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"doc_1\", \"doc_2\"]` as verified in test suite `test_jsonb_document_store.py`.",
+    "lesson_ref": "test_jsonb_document_store.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in PostgreSQL Core Advanced Types, an engineer observes:\n\"System fault during operation: Sequential Scan on 5,000,000 JSONB Document Catalog\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Query uses text extraction operator data->>'status' = 'active' which bypasses the GIN index created with jsonbpathops.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Query uses text extraction operator data->>'status' = 'active' which bypasses the GIN index created with jsonbpathops.\n\nFix Resolution:\nRewrite query to use JSONB containment: data @> '{\"status\": \"active\"}' or create an expression index on ((data->>'status')).",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

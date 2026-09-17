@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the technical difference between TCP (Transmission Control Protocol) and UDP (User Datagram Protocol)?",
-    "category": "Protocol Fundamentals:",
+    "tier": "Recall",
+    "question": "Protocol Fundamentals: What is the technical difference between TCP (Transmission Control Protocol) and UDP (User Datagram Protocol)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
+        "id": "opt_corr",
+        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhe",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- IP Address: Identifies the host machine on the network.",
+        "id": "opt_1",
+        "text": "Access tokens expire quickly (e.g. 15 mins) to minimize damage if intercepted. Refresh tokens securely rotate access tokens without forcing the user to log in again.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
+        "id": "opt_2",
+        "text": "- Layer 1: Accepts decorator configuration arguments (e.g., maxattempts). - Layer 2: Accepts the target function being decorated (func). - Layer 3: Accepts runtime arguments (args, kwargs) passed during actual execution.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "OSError: Address already in use.",
+        "id": "opt_3",
+        "text": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
         "is_correct": false
       }
     ],
-    "explanation": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhead (ideal for live video streaming, DNS, multiplayer gaming).",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhead (ideal for live video streaming, DNS, multiplayer gaming).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "In the socket address tuple (\"127.0.0.1\", 8080), what role is played by the IP address vs the Port number?",
-    "category": "Addressing:",
+    "tier": "Recall",
+    "question": "Addressing: In the socket address tuple (\"127.0.0.1\", 8080), what role is played by the IP address vs the Port number?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- IP Address: Identifies the host machine on the network.",
+        "id": "opt_corr",
+        "text": "- IP Address: Identifies the host machine on the network. - Port: Identifies the specific application/process listening on that host.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
+        "id": "opt_1",
+        "text": "TYPECHECKING evaluates to False at runtime (bypassing the import) and True only during static type checking.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
+        "id": "opt_2",
+        "text": "The loop terminates immediately without executing any iterations, because the generator's internal state is exhausted and it immediately raises StopIteration.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "OSError: Address already in use.",
+        "id": "opt_3",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
         "is_correct": false
       }
     ],
-    "explanation": "- IP Address: Identifies the host machine on the network. - Port: Identifies the specific application/process listening on that host.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - IP Address: Identifies the host machine on the network. - Port: Identifies the specific application/process listening on that host.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Describe the 3 packets exchanged during the initial TCP connection handshake.",
-    "category": "TCP Handshake:",
+    "tier": "Recall",
+    "question": "TCP Handshake: Describe the 3 packets exchanged during the initial TCP connection handshake.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet....",
+        "id": "opt_corr",
+        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers).",
+        "id": "opt_1",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- IP Address: Identifies the host machine on the network.",
+        "id": "opt_2",
+        "text": "- selectinload: Emits a second SELECT ... WHERE parentid IN (...) query (best for 1-to-many collections). - joinedload: Performs an SQL LEFT OUTER JOIN in a single query (best for many-to-1 relationships).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "OSError: Address already in use.",
+        "id": "opt_3",
+        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining sibling tasks and raises an ExceptionGroup, preventing orphaned background tasks from leaking.",
         "is_correct": false
       }
     ],
-    "explanation": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: 1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Port Rebinding: What error occurs when restarting a server without SOREUSEADDR, and why does the OS enforce TIMEWAIT?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "OSError: Address already in use. The OS holds ports in TIMEWAIT to ensure delayed or duplicate packets in transit do not corrupt a new connection. SOREUSEADDR allows immediate reuse.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It monitors file size (maxBytes) and automatically closes, renames, and archives older logs up to a fixed count (backupCount), deleting the oldest backup to keep total disk usage strictly bounded.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: OSError: Address already in use. The OS holds ports in TIMEWAIT to ensure delayed or duplicate packets in transit do not corrupt a new connection. SOREUSEADDR allows immediate reuse.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chat_server.py`, what is the exact evaluated result of:\n\n```python\ndata\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "b\"\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `b\"\"` as verified in test suite `test_chat_server.py`.",
+    "lesson_ref": "test_chat_server.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chat_server.py`, what is the exact evaluated result of:\n\n```python\nlen(server.clients)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_chat_server.py`.",
+    "lesson_ref": "test_chat_server.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chat_server.py`, what is the exact evaluated result of:\n\n```python\nserver.host\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"127.0.0.1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"127.0.0.1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"127.0.0.1\"` as verified in test suite `test_chat_server.py`.",
+    "lesson_ref": "test_chat_server.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_chat_server.py`, what is the exact evaluated result of:\n\n```python\nlen(server.clients)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_chat_server.py`.",
+    "lesson_ref": "test_chat_server.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Networking Sockets HTTP, an engineer observes:\n\"OSError on server restart (TIMEWAIT state):\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.\n\nFix Resolution:\nSet SOREUSEADDR before calling bind():",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

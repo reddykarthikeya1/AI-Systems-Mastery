@@ -1,60 +1,362 @@
 [
   {
     "id": 1,
-    "question": "Compute Bound vs Memory Bound Quantization Regimes \u2014 When running batch size = 1 (single-user LLM generation), INT4 quantization provides a $3.5\\times$ speedup. When running batch size = 256 (high-concurrency serving), INT4 quantization is often slower than FP16. Why?",
-    "category": "Compute Bound vs Memory Bound Quantization Regimes",
+    "tier": "Recall",
+    "question": "In Quantization Kernels in Triton, what core system invariant does '1. The VRAM Capacity & Bandwidth Challenge' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Batch Size = 1: The GEMM is deeply Memory-Bound (Matrix-Vector multiply, $I \\approx 1$).",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The VRAM Capacity & Bandwidth Challenge.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 10 Quantization Kernels in Triton.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 10 Quantization Kernels in Triton.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "- Batch Size = 1: The GEMM is deeply Memory-Bound (Matrix-Vector multiply, $I \\approx 1$). Memory bandwidth is the sole bottleneck. INT4 reduces memory traffic by $4\\times$, directly speeding up execution by $\\approx 3.5\\times$. - Batch Size = 256: The GEMM becomes Compute-Bound (high arithmetic intensity, $I > 100$). Memory bandwidth is no longer ",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The VRAM Capacity & Bandwidth Challenge' in Quantization Kernels in Triton.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 10 Quantization Kernels in Triton failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Quantization Kernels in Triton, what core system invariant does '2. Sub-Byte Bitwise Packing Mechanics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Sub-Byte Bitwise Packing Mechanics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Negative weights unpack as large positive integers (e.g. -1 becomes 15). - Root Cause: Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 10 Quantization Kernels in Triton exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 10 Quantization Kernels in Triton: : Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! - Fix: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Sub-Byte Bitwise Packing Mechanics' in Quantization Kernels in Triton.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Quantization Kernels in Triton, what core system invariant does '3. On-The-Fly Register Dequantization' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. On-The-Fly Register Dequantization.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. On-The-Fly Register Dequantization' in Quantization Kernels in Triton.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Quantization Kernels in Triton, what core system invariant does '4. Activation-Aware Weight Quantization (AWQ)' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Activation-Aware Weight Quantization (AWQ).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Activation-Aware Weight Quantization (AWQ)' in Quantization Kernels in Triton.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_quantization_gemm_engine.py`, what is the exact evaluated result of:\n\n```python\npacked.size\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_quantization_gemm_engine.py`.",
+    "lesson_ref": "test_quantization_gemm_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_quantization_gemm_engine.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(float(dequant[128]), rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2.0` as verified in test suite `test_quantization_gemm_engine.py`.",
+    "lesson_ref": "test_quantization_gemm_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_quantization_gemm_engine.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(float(dequant[0]), rel=1e-5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "8.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4.0` as verified in test suite `test_quantization_gemm_engine.py`.",
+    "lesson_ref": "test_quantization_gemm_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_quantization_gemm_engine.py`, what is the exact evaluated result of:\n\n```python\npacked[0]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "(3 | (14 << 4))",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "[0xFFFFFFFF]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `(3 | (14 << 4))` as verified in test suite `test_quantization_gemm_engine.py`.",
+    "lesson_ref": "test_quantization_gemm_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Quantization Kernels in Triton, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Custom object kernel runs at 20% of memory bandwidth.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -\n: Sign-extend using bit arithmetic: int8val = (int8t)(nibble << 4) >> 4; // Preserves sign bit!",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Quantization Kernels in Triton, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Performing bitwise operations without proper signed two's complement extension:",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Performing bitwise operations without proper signed two's complement extension:\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Quantization Kernels in Triton, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Negative weights unpack as large positive integers (e.g. -1 becomes 15).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In Quantization Kernels in Triton, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Sign-extend using bit arithmetic:",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Custom object kernel runs at 20% of memory bandwidth.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Sign-extend using bit arithmetic:\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

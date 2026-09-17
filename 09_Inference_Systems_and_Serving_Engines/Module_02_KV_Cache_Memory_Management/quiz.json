@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 02 KV Cache Memory Management failure 'Top Production Failure Modes in KV Cache Management', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In KV Cache Memory Management, what core system invariant does '1. Mathematical Anatomy of Attention Caching' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. - Fix: Dec",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Anatomy of Attention Caching.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097. - Root Cause: The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, ",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 KV Cache Memory Management exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 KV Cache Memory Management: : The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. - Fix: Dec. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Anatomy of Attention Caching' in KV Cache Memory Management.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Anatomy of Attention Caching play in 02 KV Cache Memory Management?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In KV Cache Memory Management, what core system invariant does '2. Memory Fragmentation: Internal vs. External' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Anatomy of Attention Caching is essential for maintaining predictable invariants and high performance in 02 KV Cache Memory Management.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Memory Fragmentation: Internal vs. External.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Anatomy of Attention Caching is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Anatomy of Attention Caching in 02 KV Cache Memory Management specifications.",
+    "explanation": "Specification detail defined under '2. Memory Fragmentation: Internal vs. External' in KV Cache Memory Management.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Memory Fragmentation: Internal vs. External play in 02 KV Cache Memory Management?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tp_kv_cache_allocator.py`, what is the exact evaluated result of:\n\n```python\nshards[0].num_kv_heads\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Memory Fragmentation: Internal vs. External is essential for maintaining predictable invariants and high performance in 02 KV Cache Memory Management.",
+        "id": "opt_corr",
+        "text": "1",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Memory Fragmentation: Internal vs. External is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "2",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "2",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Memory Fragmentation: Internal vs. External in 02 KV Cache Memory Management specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `1` as verified in test suite `test_tp_kv_cache_allocator.py`.",
+    "lesson_ref": "test_tp_kv_cache_allocator.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tp_kv_cache_allocator.py`, what is the exact evaluated result of:\n\n```python\nshards[0].allocated_bytes\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "shards[7].allocated_bytes",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "131072",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "40",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `shards[7].allocated_bytes` as verified in test suite `test_tp_kv_cache_allocator.py`.",
+    "lesson_ref": "test_tp_kv_cache_allocator.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_kv_cache_allocator.py`, what is the exact evaluated result of:\n\n```python\nres.max_concurrent_requests\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "40",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "41",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "39",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "80",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `40` as verified in test suite `test_kv_cache_allocator.py`.",
+    "lesson_ref": "test_kv_cache_allocator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tp_kv_cache_allocator.py`, what is the exact evaluated result of:\n\n```python\nlen(shards)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8` as verified in test suite `test_tp_kv_cache_allocator.py`.",
+    "lesson_ref": "test_tp_kv_cache_allocator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In KV Cache Memory Management, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In KV Cache Memory Management, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In KV Cache Memory Management, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In KV Cache Memory Management, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in KV Cache Management'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. -\n: Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

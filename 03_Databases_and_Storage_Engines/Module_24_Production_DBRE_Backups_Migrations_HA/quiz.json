@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)?",
-    "category": "What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)?",
+    "tier": "Recall",
+    "question": "What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)? What is the difference between RPO (Recovery Point Objective) and RTO (Recovery Time Objective)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+        "id": "opt_1",
+        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+        "id": "opt_2",
+        "text": "Updates write to the database and invalidate (delete) the cached key; subsequent reads experience a cache miss and fetch fresh data.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+        "id": "opt_3",
+        "text": "A reader/writer acquires the child lock before releasing the parent lock, ensuring intermediate structural modifications do not corrupt traversal.",
         "is_correct": false
       }
     ],
-    "explanation": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Explain Point-In-Time Recovery (PITR) in relational databases.",
-    "category": "Explain Point-In-Time Recovery (PITR) in relational databases.?",
+    "tier": "Recall",
+    "question": "Explain Point-In-Time Recovery (PITR) in relational databases.? Explain Point-In-Time Recovery (PITR) in relational databases.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+        "id": "opt_1",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+        "id": "opt_2",
+        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+        "id": "opt_3",
+        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
         "is_correct": false
       }
     ],
-    "explanation": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the Expand/Contract (Parallel Run) pattern in database migrations?",
-    "category": "What is the Expand/Contract (Parallel Run) pattern in database migrations?",
+    "tier": "Recall",
+    "question": "What is the Expand/Contract (Parallel Run) pattern in database migrations? What is the Expand/Contract (Parallel Run) pattern in database migrations?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+        "id": "opt_1",
+        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+        "id": "opt_2",
+        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+        "id": "opt_3",
+        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
         "is_correct": false
       }
     ],
-    "explanation": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Why should zero-downtime migrations set strict statementtimeout and locktimeout? Why should zero-downtime migrations set strict statementtimeout and locktimeout?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A 1NF table violates 2NF when it has a composite primary key (a key made of 2+ columns) and a non-key column depends on only part of that primary key (a partial key dependency).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It routes read-heavy analytical queries to secondary replicas, reserving the primary replica for transactional writes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dbre_engine.py`, what is the exact evaluated result of:\n\n```python\ntable[1][\"mobile_number\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"555-0200\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"555-0200\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"555-0200\"` as verified in test suite `test_dbre_engine.py`.",
+    "lesson_ref": "test_dbre_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dbre_engine.py`, what is the exact evaluated result of:\n\n```python\nrestored[\"accounts\"][\"a1\"][\"balance\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "500",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "501",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "499",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `500` as verified in test suite `test_dbre_engine.py`.",
+    "lesson_ref": "test_dbre_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dbre_engine.py`, what is the exact evaluated result of:\n\n```python\ntable[2][\"phone\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"555-0300\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"555-0300\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"555-0300\"` as verified in test suite `test_dbre_engine.py`.",
+    "lesson_ref": "test_dbre_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_dbre_engine.py`, what is the exact evaluated result of:\n\n```python\nr1.lsn\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_dbre_engine.py`.",
+    "lesson_ref": "test_dbre_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Production DBRE Backups Migrations HA, an engineer observes:\n\"System fault during operation: Exclusive Table Lock Starvation During Online Schema Migration\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.\n\nFix Resolution:\nSet strict lock timeout before running DDL: SET locktimeout = '2s'; ALTER TABLE ....",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

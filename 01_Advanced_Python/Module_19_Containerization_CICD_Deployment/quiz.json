@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How do Docker containers differ from traditional Virtual Machines (VMs) in terms of kernel sharing and resource overhead?",
-    "category": "Virtualization vs Containers:",
+    "tier": "Recall",
+    "question": "Virtualization vs Containers: How do Docker containers differ from traditional Virtual Machines (VMs) in terms of kernel sharing and resource overhead?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
+        "id": "opt_corr",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "id": "opt_1",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
+        "id": "opt_2",
+        "text": "CPython's internal memory allocator, dictionary lookup tables, and garbage collector are not thread-safe. Concurrent access without the GIL corrupts interpreter state.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "id": "opt_3",
+        "text": "TLS operates between the Transport Layer (Layer 4 - TCP) and the Application Layer (Layer 7 - HTTP).",
         "is_correct": false
       }
     ],
-    "explanation": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the primary security and performance benefit of using a Multi-Stage Dockerfile?",
-    "category": "Multi-Stage Builds:",
+    "tier": "Recall",
+    "question": "Multi-Stage Builds: What is the primary security and performance benefit of using a Multi-Stage Dockerfile?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
+        "id": "opt_1",
+        "text": "Python 3.13 added experimental free-threaded builds (--disable-gil), which remove the Global Interpreter Lock and allow native Python threads to execute in true multi-core parallel fashion.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
+        "id": "opt_2",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "id": "opt_3",
+        "text": "DEBUG (10) $\\rightarrow$ INFO (20) $\\rightarrow$ WARNING (30) $\\rightarrow$ ERROR (40) $\\rightarrow$ CRITICAL (50).",
         "is_correct": false
       }
     ],
-    "explanation": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Why should production containers create and run as a dedicated non-root user (USER appuser)?",
-    "category": "Container Security:",
+    "tier": "Recall",
+    "question": "Container Security: Why should production containers create and run as a dedicated non-root user (USER appuser)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel.",
+        "id": "opt_corr",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "VMs virtualize hardware and run an entire guest OS kernel.",
+        "id": "opt_1",
+        "text": "An empty byte return (b\"\") indicates that the remote peer has cleanly closed or disconnected the connection (received TCP FIN packet).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "id": "opt_2",
+        "text": "Because determining exactly when cached data has changed and coordinating immediate invalidation across distributed nodes without causing Cache Avalanches requires careful consistency mechanisms.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "id": "opt_3",
+        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
         "is_correct": false
       }
     ],
-    "explanation": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Log Buffering: Why is ENV PYTHONUNBUFFERED=1 essential for Python microservices running in Docker?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "An AST is a tree representation of the syntactic structure of source code. Linters walk this tree with ast.NodeVisitor to detect banned patterns (like eval() calls or mutable default arguments) without executing code.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_app.py`, what is the exact evaluated result of:\n\n```python\nrequest_counts[key]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "initial_count + 5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `initial_count + 5` as verified in test suite `test_app.py`.",
+    "lesson_ref": "test_app.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_app.py`, what is the exact evaluated result of:\n\n```python\nres_live.json()[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"LIVE\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"LIVE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"LIVE\"` as verified in test suite `test_app.py`.",
+    "lesson_ref": "test_app.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_app.py`, what is the exact evaluated result of:\n\n```python\napp.title\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Cloud-Native Production Microservice\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"CLOUD-NATIVE PRODUCTION MICROSERVICE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Cloud-Native Production Microservice\"` as verified in test suite `test_app.py`.",
+    "lesson_ref": "test_app.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_app.py`, what is the exact evaluated result of:\n\n```python\nres_ready.json()[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"READY\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"READY\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"READY\"` as verified in test suite `test_app.py`.",
+    "lesson_ref": "test_app.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Containerization CICD Deployment, an engineer observes:\n\"Container port unreachable (Connection refused): Running docker run -p\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).\n\nFix Resolution:\nBind to 0.0.0.0:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

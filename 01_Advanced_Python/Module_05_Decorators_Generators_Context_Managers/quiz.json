@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What is the fundamental difference in execution state between a function using return and a function using yield?",
-    "category": "Generators vs Functions:",
+    "tier": "Recall",
+    "question": "Generators vs Functions: What is the fundamental difference in execution state between a function using return and a function using yield?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
+        "id": "opt_corr",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the ne",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
+        "id": "opt_1",
+        "text": "A custom boolean function return annotation (def isuser(val) -> TypeGuard[User]) that informs the type checker that the inspected variable is definitely of that type when True.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
+        "id": "opt_2",
+        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
+        "id": "opt_3",
+        "text": "C code accesses raw unmanaged hardware memory. Accessing protected memory violates OS kernel memory boundaries, causing the OS kernel to kill the process instantly (SIGSEGV).",
         "is_correct": false
       }
     ],
-    "explanation": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the next next() call.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the next next() call.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why should you always decorate your inner wrapper with @functools.wraps(func)?",
-    "category": "Decorator Metadata:",
+    "tier": "Recall",
+    "question": "Decorator Metadata: Why should you always decorate your inner wrapper with @functools.wraps(func)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
+        "id": "opt_1",
+        "text": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
+        "id": "opt_2",
+        "text": "Use Re-ranking (Cross-Encoders) to rank retrieved chunks by relevance score and retain only the top $K$ chunks that fit comfortably within the context token budget.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
+        "id": "opt_3",
+        "text": "When the class is constructed, Python automatically passes the attribute name (e.g. \"age\") to setname, removing manual string name passing.",
         "is_correct": false
       }
     ],
-    "explanation": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Why does (x2 for x in range(10000000)) consume ~100 bytes of RAM, while [x2 for x in range(10000000)] consumes ~400 MB?",
-    "category": "Memory Footprint:",
+    "tier": "Recall",
+    "question": "Memory Footprint: Why does (x2 for x in range(10000000)) consume ~100 bytes of RAM, while [x2 for x in range(10000000)] consumes ~400 MB?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory.",
+        "id": "opt_corr",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- return terminates the function, destroys its local stack frame, and returns a final value.",
+        "id": "opt_1",
+        "text": "It prevents important context and sentences from being split across chunk boundaries, ensuring semantic coherence in retrieved snippets.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
+        "id": "opt_2",
+        "text": "By suppressing the dynamic dict hash table allocation on each instance, storing attributes in fixed-size C structs (saving up to $60\\%$ RAM).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remai...",
+        "id": "opt_3",
+        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
         "is_correct": false
       }
     ],
-    "explanation": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "The Iterator Protocol: What two magic methods must an object implement to satisfy Python's Iterator Protocol?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "- DataFrame: Executes operations immediately in memory (eager). - LazyFrame: Builds a logical execution plan without executing until .collect() is explicitly called.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "- ENTRYPOINT: Sets the fixed executable command (e.g. uvicorn). - CMD: Provides default arguments that can be easily overridden when running the container.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: 1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_log_analyzer.py`, what is the exact evaluated result of:\n\n```python\nsummary[\"total_errors_and_warnings\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_log_analyzer.py`.",
+    "lesson_ref": "test_log_analyzer.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_log_analyzer.py`, what is the exact evaluated result of:\n\n```python\nfiltered\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_log_analyzer.py`.",
+    "lesson_ref": "test_log_analyzer.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_log_analyzer.py`, what is the exact evaluated result of:\n\n```python\ncompute_squares(5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[0, 1, 4, 9, 16]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[0, 1, 4, 9, 16]` as verified in test suite `test_log_analyzer.py`.",
+    "lesson_ref": "test_log_analyzer.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_log_analyzer.py`, what is the exact evaluated result of:\n\n```python\nlen(created_path.read_text(encoding=\"utf-8\").splitlines())\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "101",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "99",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "200",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100` as verified in test suite `test_log_analyzer.py`.",
+    "lesson_ref": "test_log_analyzer.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Decorators Generators Context Managers, an engineer observes:\n\"Introspection and docstring loss: parseaccesslog.name returns 'wrapper' instead of 'parseaccesslog'.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Any is an escape hatch that silences static analysis. Using Any instead of protocols, generics, or unions transfers type errors to runtime.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "logger.addHandler() appends a handler each time it is called. If called multiple times, the logger has multiple stream handlers attached, printing every message multiple times.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.\n\nFix Resolution:\nDecorate the inner wrapper with @functools.wraps(func):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Decorators Generators Context Managers, an engineer observes:\n\"Generator produces empty results on second pass: Processing the stream a second time returns\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "assert (a == b, \"msg\") parses as assert (<tuple>). In Python, bool((False, \"msg\")) is True. The assertion is completely vacuous and will never catch bugs!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.\n\nFix Resolution:\nEither convert to a list upfront if memory permits, or pass an iterable/factory that creates a fresh generator per pass:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Decorators Generators Context Managers, an engineer observes:\n\"Critical exceptions silently swallowed: A fatal KeyError inside a database block is swallowed, masking critical data corruption.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.\n\nFix Resolution:\nOnly return True for specifically handled exception types; return False (or None) by default:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

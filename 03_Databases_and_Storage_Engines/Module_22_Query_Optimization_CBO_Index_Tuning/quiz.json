@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the role of the Cost-Based Optimizer (CBO) in relational engines?",
-    "category": "What is the role of the Cost-Based Optimizer (CBO) in relational engines?",
+    "tier": "Recall",
+    "question": "What is the role of the Cost-Based Optimizer (CBO) in relational engines? What is the role of the Cost-Based Optimizer (CBO) in relational engines?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
+        "id": "opt_1",
+        "text": "Async commits on primary without waiting; semi-sync waits for at least one replica to acknowledge receiving the binlog event into its relay log.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
         "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
-        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
         "is_correct": false
       }
     ],
-    "explanation": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does System R dynamic programming optimize multi-table join orderings?",
-    "category": "How does System R dynamic programming optimize multi-table join orderings?",
+    "tier": "Recall",
+    "question": "How does System R dynamic programming optimize multi-table join orderings? How does System R dynamic programming optimize multi-table join orderings?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
+        "id": "opt_1",
+        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+        "id": "opt_2",
+        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
+        "id": "opt_3",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": false
       }
     ],
-    "explanation": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.",
-    "category": "Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.?",
+    "tier": "Recall",
+    "question": "Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.? Explain the differences between Nested Loop Join, Hash Join, and Sort-Merge Join.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It explores equivalent relational algebra query execution plans and estimates their execution cost (I/O + CPU) to pick the cheapest plan.",
+        "id": "opt_1",
+        "text": "Metadata storing minimum and maximum values per column chunk, allowing the query engine to bypass non-matching blocks immediately.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
+        "id": "opt_2",
+        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
+        "id": "opt_3",
+        "text": "Using ConditionExpression = 'attributenotexists(PK)' or checking version numbers before applying mutations.",
         "is_correct": false
       }
     ],
-    "explanation": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What are Column Histograms and Most Common Values (MCV) lists in database statistics? What are Column Histograms and Most Common Values (MCV) lists in database statistics?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It automatically detects cycles in its wait-for graph and rolls back the transaction with the fewest undo log records (least expensive to undo).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Statistical summaries in pgstatistic estimating value distribution and selectivity for WHERE clause predicates.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_query_optimizer.py`, what is the exact evaluated result of:\n\n```python\nm[\"k\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_query_optimizer.py`.",
+    "lesson_ref": "test_query_optimizer.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_query_optimizer.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_query_optimizer.py`.",
+    "lesson_ref": "test_query_optimizer.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_query_optimizer.py`, what is the exact evaluated result of:\n\n```python\n{o[\"order_id\"] for o in alice_orders}\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "{101, 102}",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `{101, 102}` as verified in test suite `test_query_optimizer.py`.",
+    "lesson_ref": "test_query_optimizer.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_query_optimizer.py`, what is the exact evaluated result of:\n\n```python\nresults[0][\"id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_query_optimizer.py`.",
+    "lesson_ref": "test_query_optimizer.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Query Optimization CBO Index Tuning, an engineer observes:\n\"System fault during operation: Full Table Scan Caused by Function Wrapping on Indexed Timestamp\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "RETURNING requires DuckDB \u2265 0.8. On older versions the statement parses but yields no row.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.\n\nFix Resolution:\nRewrite as a sargable range query: WHERE createdat >= '2026-01-01' AND createdat < '2026-01-02'.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

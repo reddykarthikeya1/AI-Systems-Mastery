@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 01 Parsing and Hierarchical Chunking failure 'Top Production Failure Modes in Document Chunking', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Parsing and Hierarchical Chunking, what core system invariant does '1. Structural Document Parsing Foundations' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. - Fix: Use transaction",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Structural Document Parsing Foundations.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Vector search returns top hits, but LLM receives empty context strings. - Root Cause: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 01 Parsing and Hierarchical Chunking exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 01 Parsing and Hierarchical Chunking: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. - Fix: Use transaction. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Structural Document Parsing Foundations' in Parsing and Hierarchical Chunking.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Structural Document Parsing Foundations play in 01 Parsing and Hierarchical Chunking?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Parsing and Hierarchical Chunking, what core system invariant does '2. Parent-Child Hierarchical Architecture' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Structural Document Parsing Foundations is essential for maintaining predictable invariants and high performance in 01 Parsing and Hierarchical Chunking.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Parent-Child Hierarchical Architecture.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Structural Document Parsing Foundations is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Structural Document Parsing Foundations in 01 Parsing and Hierarchical Chunking specifications.",
+    "explanation": "Specification detail defined under '2. Parent-Child Hierarchical Architecture' in Parsing and Hierarchical Chunking.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Parent-Child Hierarchical Architecture play in 01 Parsing and Hierarchical Chunking?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nchunker.chunk_document(\"doc_0\", \"Empty\", \"\")\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Parent-Child Hierarchical Architecture is essential for maintaining predictable invariants and high performance in 01 Parsing and Hierarchical Chunking.",
+        "id": "opt_corr",
+        "text": "[]",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Parent-Child Hierarchical Architecture is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "[]",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "None",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Parent-Child Hierarchical Architecture in 01 Parsing and Hierarchical Chunking specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `[]` as verified in test suite `test_hierarchical_chunker.py`.",
+    "lesson_ref": "test_hierarchical_chunker.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nlen(parents)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_hierarchical_chunker.py`.",
+    "lesson_ref": "test_hierarchical_chunker.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nparents[0].parent_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"doc_1_p0\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DOC_1_P0\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"doc_1_p0\"` as verified in test suite `test_hierarchical_chunker.py`.",
+    "lesson_ref": "test_hierarchical_chunker.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hierarchical_chunker.py`, what is the exact evaluated result of:\n\n```python\nparents[1].parent_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"doc_1_p1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DOC_1_P1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"doc_1_p1\"` as verified in test suite `test_hierarchical_chunker.py`.",
+    "lesson_ref": "test_hierarchical_chunker.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter!",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use transactional atomic upserts and cascading deletes between vector index and parent document stores.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Vector search returns top hits, but LLM receives empty context strings.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Vector search returns top hits, but LLM receives empty context strings.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Document Chunking'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -\n: Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Parsing and Hierarchical Chunking, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

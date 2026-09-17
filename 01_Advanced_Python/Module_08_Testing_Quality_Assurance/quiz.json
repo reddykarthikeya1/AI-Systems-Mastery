@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What proportion of tests in a healthy codebase should be Unit Tests versus End-to-End (E2E) tests, and why?",
-    "category": "The Test Pyramid:",
+    "tier": "Recall",
+    "question": "The Test Pyramid: What proportion of tests in a healthy codebase should be Unit Tests versus End-to-End (E2E) tests, and why?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
+        "id": "opt_corr",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+        "id": "opt_1",
+        "text": "- Code before yield: Executes during request setup before the route handler is invoked. - Code after yield: Executes during response teardown after the route handler finishes, even if an unhandled error occurred.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
+        "id": "opt_2",
+        "text": "s[1:6:2] returns \"YHN\". - Start at index 1 ('Y'). - Stop before index 6 (stops before 'I'). - Step by 2: picks index 1 ('Y'), index 3 ('H'), and index 5 ('N').",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
+        "id": "opt_3",
+        "text": "Python follows the Method Resolution Order (MRO) computed via the C3 Linearization algorithm, which guarantees that child classes precede parent classes and multiple parents are checked in left-to-right order.",
         "is_correct": false
       }
     ],
-    "explanation": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why does pytest allow using plain Python assert a == b instead of requiring special assertion methods like self.assertEqual(a, b)?",
-    "category": "Assertion Rewriting:",
+    "tier": "Recall",
+    "question": "Assertion Rewriting: Why does pytest allow using plain Python assert a == b instead of requiring special assertion methods like self.assertEqual(a, b)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
+        "id": "opt_1",
+        "text": "Send a sentinel value (such as None) into the queue for each worker task, or have the main loop call workertask.cancel() after calling await queue.join().",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
+        "id": "opt_2",
+        "text": "- At-Most-Once: Messages are never duplicated, but may be lost. - At-Least-Once: Messages are never lost, but may be delivered multiple times (requires idempotent consumers). - Exactly-Once: Every message is delivered and processed once (re",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
+        "id": "opt_3",
+        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
         "is_correct": false
       }
     ],
-    "explanation": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the primary advantage of @pytest.mark.parametrize over running a for loop of assertions inside a single test function?",
-    "category": "Parametrization:",
+    "tier": "Recall",
+    "question": "Parametrization: What is the primary advantage of @pytest.mark.parametrize over running a for loop of assertions inside a single test function?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs.",
+        "id": "opt_corr",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests.",
+        "id": "opt_1",
+        "text": "1. Linting & Type Checking (ruff, mypy) 2. Automated Testing (pytest) 3. Docker Image Build & Push (Docker Hub / AWS ECR) 4. Zero-Downtime Deployment (Kubernetes / ECS / Cloud Run)",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+        "id": "opt_2",
+        "text": "- async def: Runs directly on the main event loop. - def: Offloaded to an external thread pool (anyio.tothread) to safely execute synchronous blocking code without starving the event loop.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. ses...",
+        "id": "opt_3",
+        "text": "- ctypes: Dynamic runtime bridging using libffi. - Extension Module: Statically compiled C/Rust code adhering to Python's C-ABI, imported directly as a standard Python module (import mymodule).",
         "is_correct": false
       }
     ],
-    "explanation": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single vector.",
-    "lesson_ref": "09_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single vector.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Fixture Scoping: What are the 4 fixture scopes supported by pytest, and what is the default scope?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It provides a single unique trace ID that follows a request across multiple microservices, message queues, and logs, making distributed debugging possible.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "client.websocketconnect(\"/path\") returns a context manager that connects to the ASGI WebSocket handler and allows calling .sendtext() and .receivetext().",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: 1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ledger.py`, what is the exact evaluated result of:\n\n```python\nledger.balance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "expected_total",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `expected_total` as verified in test suite `test_ledger.py`.",
+    "lesson_ref": "test_ledger.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ledger.py`, what is the exact evaluated result of:\n\n```python\nentry.amount\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "110.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "110.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "220.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `110.0` as verified in test suite `test_ledger.py`.",
+    "lesson_ref": "test_ledger.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ledger.py`, what is the exact evaluated result of:\n\n```python\nledger.balance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "110.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "110.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "220.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `110.0` as verified in test suite `test_ledger.py`.",
+    "lesson_ref": "test_ledger.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ledger.py`, what is the exact evaluated result of:\n\n```python\nempty_ledger.balance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "expected_balance",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `expected_balance` as verified in test suite `test_ledger.py`.",
+    "lesson_ref": "test_ledger.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Testing Quality Assurance, an engineer observes:\n\"Fragile floating-point test failure: assert\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "logger.addHandler() appends a handler each time it is called. If called multiple times, the logger has multiple stream handlers attached, printing every message multiple times.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.\n\nFix Resolution:\nUse pytest.approx():",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Testing Quality Assurance, an engineer observes:\n\"False-positive passing test due to tuple assertion: assert (\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.\n\nFix Resolution:\nUse pytest fixtures with appropriate teardown / clean state injection:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Testing Quality Assurance, an engineer observes:\n\"Order dependence and flaky test runs: Running tests under pytest-randomly causes teststeptwoassumessteponeran to fail intermittently.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "assert (a == b, \"msg\") parses as assert (<tuple>). In Python, bool((False, \"msg\")) is True. The assertion is completely vacuous and will never catch bugs!",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: assert (a == b, \"msg\") parses as assert (<tuple>). In Python, bool((False, \"msg\")) is True. The assertion is completely vacuous and will never catch bugs!\n\nFix Resolution:\nRemove parentheses so it parses as assert <condition>, <message>:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

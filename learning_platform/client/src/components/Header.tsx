@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap } from 'lucide-react';
+import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap, GitFork } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 
 interface HeaderProps {
@@ -12,6 +12,7 @@ interface HeaderProps {
   onOpenBookmarks?: () => void;
   onOpenFlashcards?: () => void;
   onOpenPortfolio?: () => void;
+  onOpenPrereqMap?: () => void;
   onToggleSound?: () => void;
 }
 
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenBookmarks,
   onOpenFlashcards,
   onOpenPortfolio,
+  onOpenPrereqMap,
   onToggleSound,
 }) => {
   const isDark = progress.theme === 'dark';
@@ -147,6 +149,19 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <GraduationCap className="w-3.5 h-3.5 text-indigo-500" />
               <span>Transcript</span>
+            </button>
+          )}
+
+          {/* Curriculum Prerequisite Roadmap Button */}
+          {onOpenPrereqMap && (
+            <button
+              onClick={onOpenPrereqMap}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/60 text-sky-700 dark:text-sky-300 text-xs font-mono transition-colors hover:bg-sky-100 dark:hover:bg-sky-900/40"
+              title="Curriculum Prerequisite Roadmap"
+              aria-label="Curriculum prerequisite roadmap"
+            >
+              <GitFork className="w-3.5 h-3.5 text-sky-500" />
+              <span>Roadmap</span>
             </button>
           )}
 

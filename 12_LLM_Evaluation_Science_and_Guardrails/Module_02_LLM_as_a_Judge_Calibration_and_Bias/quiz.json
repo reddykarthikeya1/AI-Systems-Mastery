@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Theoretical Foundations: Systematic Biases in LLM Judges play in 02 LLM as a Judge Calibration and Bias?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In LLM as a Judge Calibration and Bias, what core system invariant does '1. Theoretical Foundations: Systematic Biases in LLM Judges' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Theoretical Foundations: Systematic Biases in LLM Judges is essential for maintaining predictable invariants and high performance in 02 LLM as a Judge Calibration and Bias.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Theoretical Foundations: Systematic Biases in LLM Judges.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Theoretical Foundations: Systematic Biases in LLM Judges is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Theoretical Foundations: Systematic Biases in LLM Judges in 02 LLM as a Judge Calibration and Bias specifications.",
+    "explanation": "Specification detail defined under '1. Theoretical Foundations: Systematic Biases in LLM Judges' in LLM as a Judge Calibration and Bias.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$) play in 02 LLM as a Judge Calibration and Bias?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In LLM as a Judge Calibration and Bias, what core system invariant does '2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$) is essential for maintaining predictable invariants and high performance in 02 LLM as a Judge Calibration and Bias.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$) is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$) in 02 LLM as a Judge Calibration and Bias specifications.",
+    "explanation": "Specification detail defined under '2. Inter-Annotator Agreement: Cohen's Kappa ($\\kappa$)' in LLM as a Judge Calibration and Bias.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_llm_judge_calibrator.py`, what is the exact evaluated result of:\n\n```python\nres.winner\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"TIE\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"TIE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"TIE\"` as verified in test suite `test_llm_judge_calibrator.py`.",
+    "lesson_ref": "test_llm_judge_calibrator.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_llm_judge_calibrator.py`, what is the exact evaluated result of:\n\n```python\nres.forward_winner\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"MODEL_A\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MODEL_A\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"MODEL_A\"` as verified in test suite `test_llm_judge_calibrator.py`.",
+    "lesson_ref": "test_llm_judge_calibrator.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_llm_judge_calibrator.py`, what is the exact evaluated result of:\n\n```python\nres.swapped_winner\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"MODEL_B\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MODEL_B\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"MODEL_B\"` as verified in test suite `test_llm_judge_calibrator.py`.",
+    "lesson_ref": "test_llm_judge_calibrator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_llm_judge_calibrator.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(kappa, 0.01)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_llm_judge_calibrator.py`.",
+    "lesson_ref": "test_llm_judge_calibrator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In LLM as a Judge Calibration and Bias, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'High Tie Rates Due to Overly Strict Agreement Criteria'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Desynchronized system clocks across worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances. -\n: Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In LLM as a Judge Calibration and Bias, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Swap-pair evaluation outputs 85% Ties.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Swap-pair evaluation outputs 85% Ties.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In LLM as a Judge Calibration and Bias, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In LLM as a Judge Calibration and Bias, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Require multi-token intent matches or contextual intent classifier with confidence scoring.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Desynchronized system clocks across worker nodes. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

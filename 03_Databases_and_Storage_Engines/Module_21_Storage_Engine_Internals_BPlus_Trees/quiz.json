@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "How does a Slotted-Page architecture organize variable-length records on a 4KB disk page?",
-    "category": "How does a Slotted-Page architecture organize variable-length records on a 4KB disk page?",
+    "tier": "Recall",
+    "question": "How does a Slotted-Page architecture organize variable-length records on a 4KB disk page? How does a Slotted-Page architecture organize variable-length records on a 4KB disk page?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+        "id": "opt_1",
+        "text": "Values exceeding ~2KB are compressed and stored out-of-line in separate TOAST tables, keeping main heap pages compact.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+        "id": "opt_2",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Fan-out is the number of child pointers per node.",
+        "id": "opt_3",
+        "text": "If two logs contain an entry with the same index and term, they are identical up to that index.",
         "is_correct": false
       }
     ],
-    "explanation": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why are B+ Trees preferred over B-Trees for relational database indexing?",
-    "category": "Why are B+ Trees preferred over B-Trees for relational database indexing?",
+    "tier": "Recall",
+    "question": "Why are B+ Trees preferred over B-Trees for relational database indexing? Why are B+ Trees preferred over B-Trees for relational database indexing?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
+        "id": "opt_1",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+        "id": "opt_2",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Fan-out is the number of child pointers per node.",
+        "id": "opt_3",
+        "text": "To execute range scans (BETWEEN val1 AND val2) sequentially across leaf pages without returning to the root.",
         "is_correct": false
       }
     ],
-    "explanation": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What happens during a B+ Tree node split when maximum capacity is exceeded?",
-    "category": "What happens during a B+ Tree node split when maximum capacity is exceeded?",
+    "tier": "Recall",
+    "question": "What happens during a B+ Tree node split when maximum capacity is exceeded? What happens during a B+ Tree node split when maximum capacity is exceeded?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Slots grow forward from page header storing (offset, length) pointers; tuple data grows backward from the end of the page.",
+        "id": "opt_1",
+        "text": "BEFORE STATEMENT, BEFORE EACH ROW, AFTER EACH ROW, and AFTER STATEMENT.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+        "id": "opt_2",
+        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Fan-out is the number of child pointers per node.",
+        "id": "opt_3",
+        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
         "is_correct": false
       }
     ],
-    "explanation": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is the fan-out of a B+ Tree node, and how does it determine tree height? What is the fan-out of a B+ Tree node, and how does it determine tree height?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Fan-out is the number of child pointers per node. A fan-out of 100 on a 3-level tree indexes $100^3 = 1,000,000$ pages.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Phase 1: Coordinator queries all shards for matching document IDs and scores. Phase 2: Coordinator fetches full document sources only for top-K results.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Fan-out is the number of child pointers per node. A fan-out of 100 on a 3-level tree indexes $100^3 = 1,000,000$ pages.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_engine.py`, what is the exact evaluated result of:\n\n```python\npage.get_tuple(2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "b\"Short\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `b\"Short\"` as verified in test suite `test_storage_engine.py`.",
+    "lesson_ref": "test_storage_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_engine.py`, what is the exact evaluated result of:\n\n```python\nrid.page_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "k // 10",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `k // 10` as verified in test suite `test_storage_engine.py`.",
+    "lesson_ref": "test_storage_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_engine.py`, what is the exact evaluated result of:\n\n```python\ntree.range_scan(100, 200)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_storage_engine.py`.",
+    "lesson_ref": "test_storage_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_storage_engine.py`, what is the exact evaluated result of:\n\n```python\npage.tuple_count\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_storage_engine.py`.",
+    "lesson_ref": "test_storage_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Storage Engine Internals BPlus Trees, an engineer observes:\n\"System fault during operation: Deadlock in Concurrent B+ Tree Node Split\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "DROP TABLE does not drop sequences. On :memory: this never surfaces because the whole database vanishes; on a file it surfaces the second time you run.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.\n\nFix Resolution:\nEnforce strict lock coupling (crabbing): do not release parent lock until child lock is acquired and confirmed safe from splitting.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "Why is accessing a list element by index (lst[500]) an $O(1)$ constant time operation, while finding an element by value (500 in lst) is $O(N)$ linear time?",
-    "category": "Time Complexity:",
+    "tier": "Recall",
+    "question": "Time Complexity: Why is accessing a list element by index (lst[500]) an $O(1)$ constant time operation, while finding an element by value (500 in lst) is $O(N)$ linear time?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- A list is stored in contiguous RAM.",
+        "id": "opt_corr",
+        "text": "- A list is stored in contiguous RAM. Accessing by index uses pointer arithmetic: address = base + (index 8 bytes), which computes immediately in $O(1)$. - Finding by value requires scanning every element sequentially from index $0$ to $N-1",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
+        "id": "opt_1",
+        "text": "Kubernetes continuously compares actual state against desired state, spinning up new container replicas when CPU exceeds thresholds, restarting crashed pods, and shifting traffic during zero-downtime rolling deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
+        "id": "opt_2",
+        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
+        "id": "opt_3",
+        "text": "Playwright controls a real Chromium browser engine, executing JavaScript, waiting for network hydration, and interacting with client-rendered DOM nodes.",
         "is_correct": false
       }
     ],
-    "explanation": "- A list is stored in contiguous RAM. Accessing by index uses pointer arithmetic: address = base + (index 8 bytes), which computes immediately in $O(1)$. - Finding by value requires scanning every element sequentially from index $0$ to $N-1$, taking $O(N)$ linear time.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - A list is stored in contiguous RAM. Accessing by index uses pointer arithmetic: address = base + (index 8 bytes), which computes immediately in $O(1)$. - Finding by value requires scanning every element sequentially from index $0$ to $N-1$, taking $O(N)$ linear time.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why does Python over-allocate memory when growing a list with append(), rather than allocating exact space for one item at a time?",
-    "category": "List Internals:",
+    "tier": "Recall",
+    "question": "List Internals: Why does Python over-allocate memory when growing a list with append(), rather than allocating exact space for one item at a time?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- A list is stored in contiguous RAM.",
+        "id": "opt_1",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
+        "id": "opt_2",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
+        "id": "opt_3",
+        "text": "- else executes only if NO exceptions occurred in the try block. - finally executes unconditionally, regardless of whether an exception occurred, was handled, or remained unhandled.",
         "is_correct": false
       }
     ],
-    "explanation": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Why does Python raise a TypeError if you try to use a list as a dictionary key, but allows tuples?",
-    "category": "Immutability & Hashing:",
+    "tier": "Recall",
+    "question": "Immutability & Hashing: Why does Python raise a TypeError if you try to use a list as a dictionary key, but allows tuples?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime).",
+        "id": "opt_corr",
+        "text": "Dictionary keys must be hashable (their hash value must never change over their lifetime). Lists are mutable (elements can be added/removed, changing their identity), whereas tuples are immutable.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- A list is stored in contiguous RAM.",
+        "id": "opt_1",
+        "text": "It allows catching and handling multiple independent exceptions that occur simultaneously across concurrent tasks or background worker threads.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
+        "id": "opt_2",
+        "text": "Use a yield fixture: Code before yield runs during setup; the value yielded is injected into the test; code after yield runs during teardown.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is ...",
+        "id": "opt_3",
+        "text": "- If declared in the URL path string (e.g. /{id}), it's a Path Parameter. - If a primitive type not in the path (e.g. limit: int = 10), it's a Query Parameter. - If a Pydantic model (e.g. item: ItemSchema), it's parsed from the JSON Request",
         "is_correct": false
       }
     ],
-    "explanation": "Dictionary keys must be hashable (their hash value must never change over their lifetime). Lists are mutable (elements can be added/removed, changing their identity), whereas tuples are immutable.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Dictionary keys must be hashable (their hash value must never change over their lifetime). Lists are mutable (elements can be added/removed, changing their identity), whereas tuples are immutable.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Queue Performance: If you need a FIFO (First-In, First-Out) queue that processes 1,000,000 items, why should you use collections.deque instead of a standard list?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is a doubly-linked list of memory blocks providing $O(1)$ instant pops from both ends.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It ensures that foreign keys must match existing primary keys in the referenced table, rejecting insertions with invalid references.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: list.pop(0) takes $O(N)$ time because removing the first element requires shifting all remaining elements to the left. collections.deque is a doubly-linked list of memory blocks providing $O(1)$ instant pops from both ends.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_matching_engine.py`, what is the exact evaluated result of:\n\n```python\ntrades[0].price\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "100.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "100.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "200.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `100.0` as verified in test suite `test_matching_engine.py`.",
+    "lesson_ref": "test_matching_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_matching_engine.py`, what is the exact evaluated result of:\n\n```python\ndepth[\"bids\"][0]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "(11.50, 5)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `(11.50, 5)` as verified in test suite `test_matching_engine.py`.",
+    "lesson_ref": "test_matching_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_matching_engine.py`, what is the exact evaluated result of:\n\n```python\ndepth[\"asks\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[(100.0, 10)]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[(100.0, 10)]` as verified in test suite `test_matching_engine.py`.",
+    "lesson_ref": "test_matching_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_matching_engine.py`, what is the exact evaluated result of:\n\n```python\ntrades[0].quantity\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "6",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `5` as verified in test suite `test_matching_engine.py`.",
+    "lesson_ref": "test_matching_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Data Structures Collections, an engineer observes:\n\"Mutating cloned portfolio corrupts original portfolio: Modifying cloned[\"trader\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "asyncio operates on cooperative multitasking. When time.sleep() is called, control is never yielded back to the event loop, freezing all other pending tasks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.\n\nFix Resolution:\nUse copy.deepcopy() to create an isolated clone of nested objects:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Data Structures Collections, an engineer observes:\n\"TypeError inserting records into set:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.\n\nFix Resolution:\nStore an immutable hashable representation, such as a tuple of sorted items or frozen dataclass:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Data Structures Collections, an engineer observes:\n\"RuntimeError on dictionary eviction:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.\n\nFix Resolution:\nIterate over a static snapshot of keys or use a dictionary comprehension:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

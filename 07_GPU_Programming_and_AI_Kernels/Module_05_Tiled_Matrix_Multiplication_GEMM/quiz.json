@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Bank Conflicts in Shared Memory Matrix B \u2014 In a tiled GEMM kernel, threads load `sB[k][col]` where `col = threadIdx.x`. Does this cause a bank conflict?",
-    "category": "Bank Conflicts in Shared Memory Matrix B",
+    "tier": "Recall",
+    "question": "In Tiled Matrix Multiplication GEMM, what core system invariant does '1. The Naive GEMM Memory Wall' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "No! When col = threadIdx.x and threadIdx.x ranges from 0 to 31 in warp 0: Thread $i$ accesses sB[k][i]. The 32-bit words are located at cons...",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The Naive GEMM Memory Wall.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the ",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 05 Tiled Matrix Multiplication GEMM.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 05 Tiled Matrix Multiplication GEMM.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "No! When col = threadIdx.x and threadIdx.x ranges from 0 to 31 in warp 0: Thread $i$ accesses sB[k][i]. The 32-bit words are located at consecutive addresses: base + (k stride + i) 4. Because consecutive words map to consecutive banks ($0, 1, 2, \\dots, 31$), all 32 threads hit 32 distinct banks. This access is 100% conflict-free. However, transposi",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The Naive GEMM Memory Wall' in Tiled Matrix Multiplication GEMM.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 05 Tiled Matrix Multiplication GEMM failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Tiled Matrix Multiplication GEMM, what core system invariant does '2. 2D Shared Memory Block Tiling ($BM \\times BN \\times BK$)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. 2D Shared Memory Block Tiling ($BM \\times BN \\times BK$).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Intermittent numerical inaccuracies or race conditions in matrix outputs. - Root Cause: Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 05 Tiled Matrix Multiplication GEMM exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 05 Tiled Matrix Multiplication GEMM: : Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the . Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. 2D Shared Memory Block Tiling ($BM \\times BN \\times BK$)' in Tiled Matrix Multiplication GEMM.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Tiled Matrix Multiplication GEMM, what core system invariant does '3. Register Micro-Tiling & Double Buffering' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Register Micro-Tiling & Double Buffering.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Register Micro-Tiling & Double Buffering' in Tiled Matrix Multiplication GEMM.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Tiled Matrix Multiplication GEMM, what core system invariant does '4. Module Study Progression' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Module Study Progression.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Module Study Progression' in Tiled Matrix Multiplication GEMM.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tiled_gemm_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(tiled_i / naive_i, rel=0.1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "32.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "32.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "64.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `32.0` as verified in test suite `test_tiled_gemm_sim.py`.",
+    "lesson_ref": "test_tiled_gemm_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Tiled Matrix Multiplication GEMM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Intermittent numerical inaccuracies or race conditions in matrix outputs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Sign-extend using bit arithmetic:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Intermittent numerical inaccuracies or race conditions in matrix outputs.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Tiled Matrix Multiplication GEMM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Always include two barriers per iteration:",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Storing data as struct Particle { float x, y, z, mass; } particles[N];.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Always include two barriers per iteration:\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Tiled Matrix Multiplication GEMM, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computi",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kernel runs $20\\times$ slower under Nsight Compute than in production.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always include two barriers per iteration:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computing on the old data! -\n: Always include two barriers per iteration: syncthreads(); // Wait for load compute(...); syncthreads(); // Wait for compute before next load",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Tiled Matrix Multiplication GEMM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Sign-extend using bit arithmetic:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

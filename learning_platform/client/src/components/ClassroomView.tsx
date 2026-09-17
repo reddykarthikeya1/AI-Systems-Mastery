@@ -22,6 +22,12 @@ import { SqlPlaygroundView } from './SqlPlaygroundView';
 import { ArchitectureCanvasView } from './ArchitectureCanvasView';
 import { LessonSkeleton } from './LessonSkeleton';
 import { soundService } from '../services/sound';
+import { ReaderToolbar, ReaderSettings } from './classroom/ReaderToolbar';
+import { SyllabusRail } from './classroom/SyllabusRail';
+import { ScriptViewer } from './classroom/ScriptViewer';
+import { NotebookViewer } from './classroom/NotebookViewer';
+import { MarkdownViewer } from './classroom/MarkdownViewer';
+import { NotesTab } from './classroom/NotesTab';
 
 interface ClassroomViewProps {
   courseTitle: string;
@@ -47,11 +53,7 @@ interface ClassroomViewProps {
   onSrsReview?: (rating: number) => void;
 }
 
-interface ReaderSettings {
-  fontSize: 'sm' | 'md' | 'lg' | 'xl';
-  measure: 'narrow' | 'normal' | 'wide' | 'full';
-  fontFamily: 'sans' | 'serif' | 'mono';
-}
+
 
 const DEFAULT_READER_SETTINGS: ReaderSettings = {
   fontSize: 'md',
@@ -721,203 +723,24 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       />
       <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 space-y-6 transition-all duration-300">
       {/* Top Bar Navigation & Reader Controls */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onBackToSyllabus}
-            className="p-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-zinc-600 dark:text-zinc-400"
-            title="Back to Course Syllabus"
-            aria-label="Back to Course Syllabus"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-          
-          <button
-            onClick={toggleSidebar}
-            className="p-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors text-zinc-600 dark:text-zinc-400 hidden lg:flex items-center justify-center"
-            title={isSidebarOpen ? "Hide syllabus rail" : "Show syllabus rail"}
-            aria-label={isSidebarOpen ? "Hide syllabus rail" : "Show syllabus rail"}
-          >
-            {isSidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeftOpen className="w-4 h-4" />}
-          </button>
-
-          <div>
-            <nav aria-label="Breadcrumb" className="text-xs font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex items-center gap-1.5 flex-wrap">
-              <button 
-                onClick={onBackToSyllabus}
-                className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors underline-offset-2 hover:underline"
-              >
-                {courseTitle}
-              </button>
-              <ChevronRight className="w-3 h-3 text-zinc-400" />
-              <span>Module {module.module_num.toString().padStart(2, '0')}</span>
-              <ChevronRight className="w-3 h-3 text-zinc-400" />
-              <span className="text-zinc-700 dark:text-zinc-300 font-medium truncate max-w-[200px] sm:max-w-xs">{currentLesson.title}</span>
-            </nav>
-            <h1 className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-1 mt-0.5">
-              {currentLesson.title}
-            </h1>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
-                ⏱️ ~{readingMinutes} min read
-              </span>
-              <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
-                complexityBadge === 'Advanced Systems'
-                  ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
-                  : complexityBadge === 'Foundational'
-                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                  : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-              }`}>
-                ⚡ {complexityBadge}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 self-stretch md:self-auto justify-end flex-wrap">
-          {/* Reader Preferences Bar */}
-          <div className="hidden sm:flex items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs select-none" aria-label="Reader Controls">
-            {/* Font Size */}
-            <div className="flex items-center border-r border-zinc-200 dark:border-zinc-700/80 pr-1 gap-0.5">
-              <button
-                onClick={() => {
-                  const sizes: ('sm' | 'md' | 'lg' | 'xl')[] = ['sm', 'md', 'lg', 'xl'];
-                  const idx = sizes.indexOf(readerSettings.fontSize);
-                  if (idx > 0) updateReaderSettings({ fontSize: sizes[idx - 1] });
-                }}
-                disabled={readerSettings.fontSize === 'sm'}
-                className="px-1.5 py-0.5 rounded font-mono font-bold text-zinc-600 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 disabled:opacity-30 transition-colors"
-                title="Decrease reading font size"
-                aria-label="Decrease font size"
-              >
-                A−
-              </button>
-              <span className="text-[11px] font-mono text-zinc-400 px-0.5">
-                {readerSettings.fontSize.toUpperCase()}
-              </span>
-              <button
-                onClick={() => {
-                  const sizes: ('sm' | 'md' | 'lg' | 'xl')[] = ['sm', 'md', 'lg', 'xl'];
-                  const idx = sizes.indexOf(readerSettings.fontSize);
-                  if (idx < sizes.length - 1) updateReaderSettings({ fontSize: sizes[idx + 1] });
-                }}
-                disabled={readerSettings.fontSize === 'xl'}
-                className="px-1.5 py-0.5 rounded font-mono font-bold text-zinc-600 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 disabled:opacity-30 transition-colors"
-                title="Increase reading font size"
-                aria-label="Increase font size"
-              >
-                A+
-              </button>
-            </div>
-
-            {/* Typeface Toggle */}
-            <div className="flex items-center gap-0.5 border-r border-zinc-200 dark:border-zinc-700/80 pr-1">
-              {(['sans', 'serif', 'mono'] as const).map((font) => (
-                <button
-                  key={font}
-                  onClick={() => updateReaderSettings({ fontFamily: font })}
-                  className={`px-1.5 py-0.5 rounded text-xs transition-colors ${
-                    readerSettings.fontFamily === font
-                      ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold shadow-xs'
-                      : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
-                  }`}
-                  title={`${font.charAt(0).toUpperCase() + font.slice(1)} typeface`}
-                  aria-label={`${font} typeface`}
-                >
-                  {font === 'sans' ? 'Sans' : font === 'serif' ? 'Serif' : 'Mono'}
-                </button>
-              ))}
-            </div>
-
-            {/* Measure Toggle */}
-            <div className="flex items-center gap-0.5">
-              {(['narrow', 'normal', 'wide', 'full'] as const).map((measure) => (
-                <button
-                  key={measure}
-                  onClick={() => updateReaderSettings({ measure })}
-                  className={`px-1.5 py-0.5 rounded text-xs font-mono transition-colors ${
-                    readerSettings.measure === measure
-                      ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold shadow-xs'
-                      : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
-                  }`}
-                  title={`Reading measure: ${measure === 'narrow' ? '64ch' : measure === 'normal' ? '76ch' : measure === 'wide' ? '90ch' : 'Full Page Width'}`}
-                  aria-label={`Reading width ${measure}`}
-                >
-                  {measure === 'narrow' ? '64ch' : measure === 'normal' ? '76ch' : measure === 'wide' ? '90ch' : 'Full'}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Bookmark Toggle */}
-          {onToggleBookmark && (
-            <button
-              onClick={onToggleBookmark}
-              className={`p-2 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1.5 ${
-                isBookmarked
-                  ? 'bg-amber-50 dark:bg-amber-950/50 border-amber-300 dark:border-amber-800 text-amber-600 dark:text-amber-400'
-                  : 'bg-zinc-100 dark:bg-zinc-800/90 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
-              }`}
-              title={isBookmarked ? 'Bookmarked' : 'Bookmark this lesson'}
-              aria-label={isBookmarked ? 'Bookmarked' : 'Bookmark this lesson'}
-            >
-              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
-              <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
-            </button>
-          )}
-
-          {/* Live Side Runner Toggle */}
-          <button
-            onClick={() => setIsScratchpadOpen(!isScratchpadOpen)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border flex items-center gap-2 transition-all shadow-sm ${
-              isScratchpadOpen
-                ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
-                : 'bg-zinc-100 dark:bg-zinc-800/90 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-            }`}
-            title="Toggle Page-Aware Interactive Runner (Python, PowerShell, Shell)"
-            aria-label="Toggle Page-Aware Interactive Runner"
-          >
-            <Terminal className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Live Runner</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          </button>
-
-          {/* Mark Complete Toggle */}
-          <button
-            onClick={handleCompleteClick}
-            aria-label={isCompleted ? 'Completed' : 'Mark Complete'}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border flex items-center gap-1.5 transition-all shadow-sm ${
-              isCompleted
-                ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
-                : 'bg-zinc-100 dark:bg-zinc-800/90 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-            }`}
-          >
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-            {isCompleted ? 'Completed' : 'Mark Complete'}
-          </button>
-
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => prevLesson && onSelectLesson(prevLesson.file_path, prevLesson.id)}
-              disabled={!prevLesson}
-              className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 disabled:opacity-30 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 transition-colors"
-              title="Previous Lesson"
-              aria-label="Previous Lesson"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => nextLesson && onSelectLesson(nextLesson.file_path, nextLesson.id)}
-              disabled={!nextLesson}
-              className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 disabled:opacity-30 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 transition-colors"
-              title="Next Lesson"
-              aria-label="Next Lesson"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </div>
+      <ReaderToolbar
+        courseTitle={courseTitle}
+        moduleNum={module.module_num}
+        currentLesson={currentLesson}
+        onBackToSyllabus={onBackToSyllabus}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={toggleSidebar}
+        readingMinutes={readingMinutes}
+        complexityBadge={complexityBadge}
+        readerSettings={readerSettings}
+        onUpdateReaderSettings={updateReaderSettings}
+        isBookmarked={isBookmarked}
+        onToggleBookmark={onToggleBookmark}
+        isScratchpadOpen={isScratchpadOpen}
+        onToggleScratchpad={() => setIsScratchpadOpen(!isScratchpadOpen)}
+        isCompleted={isCompleted}
+        onToggleComplete={handleCompleteClick}
+      />
 
       {/* Navigation Sub-Tabs */}
       <div className="flex items-center gap-1.5 border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2 overflow-x-auto">
@@ -1098,414 +921,131 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         <div className="flex gap-6 2xl:gap-8 items-start w-full">
           {/* Left Sidebar: Lesson Outline (Collapsible) */}
           {isSidebarOpen && (
-            <aside aria-label="Module syllabus sidebar" className="w-72 2xl:w-80 shrink-0 rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm space-y-3 sticky top-20">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2">
-                <span className="text-xs font-mono font-semibold text-zinc-400 uppercase tracking-wider">
-                  Module {module.module_num.toString().padStart(2, '0')} Syllabus
-                </span>
-                <span className="text-xs font-mono text-zinc-400">
-                  {allLessons.filter((l) => completedLessons.includes(l.id)).length}/{allLessons.length}
-                </span>
-              </div>
-
-              <nav aria-label="Module Lessons" className="space-y-1 max-h-[75vh] overflow-y-auto">
-                {allLessons.map((l, idx) => {
-                  const active = l.id === currentLesson.id;
-                  const isDone = completedLessons.includes(l.id);
-
-                  return (
-                    <button
-                      key={l.id}
-                      onClick={() => onSelectLesson(l.file_path, l.id)}
-                      aria-label={`Lesson ${idx + 1}: ${l.title} ${isDone ? '(completed)' : ''}`}
-                      className={`w-full text-left px-2.5 py-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 ${
-                        active
-                          ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60 shadow-sm'
-                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
-                      }`}
-                    >
-                      <span className="line-clamp-1 flex items-center gap-2">
-                        <span className="font-mono text-xs text-zinc-400">
-                          {(idx + 1).toString().padStart(2, '0')}
-                        </span>
-                        <span>{l.title}</span>
-                      </span>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {getLessonBadge(l.type)}
-                        {isDone ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                        ) : (
-                          <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 shrink-0" />
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </nav>
-            </aside>
+            <SyllabusRail
+              moduleNum={module.module_num}
+              allLessons={allLessons}
+              currentLessonId={currentLesson.id}
+              completedLessons={completedLessons}
+              onSelectLesson={onSelectLesson}
+              getLessonBadge={getLessonBadge}
+            />
           )}
 
           {/* Center Area: Active View (Fluid, Takes ALL remaining width) */}
           <div className="flex-1 min-w-0 space-y-4">
-                {/* TAB: THEORY & SCRIPT READER */}
-                {activeTab === 'theory' && (
-                  <div ref={theoryContentRef}>
-                    {/* CASE A: PYTHON / POWERSHELL / SHELL SCRIPT VIEW */}
-                    {(currentLesson.type === 'code' || currentLesson.type === 'powershell' || currentLesson.type === 'shell') ? (
-                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden shadow-sm space-y-0">
-                        {/* Script Header Bar */}
-                        <div className="p-5 border-b border-zinc-200/80 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/70 dark:bg-[#161B22]">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                              <Code2 className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className={`px-2 py-0.5 rounded text-xs font-mono font-bold uppercase ${
-                                  currentLesson.type === 'powershell'
-                                    ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30'
-                                    : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                                }`}>
-                                  {currentLesson.type === 'powershell' ? 'PowerShell Automation' : 'Python Script'}
-                                </span>
-                                <span className="text-xs font-mono text-zinc-400">{currentLesson.file_path}</span>
-                              </div>
-                              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">
-                                {currentLesson.title}
-                              </h2>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(content);
-                                setCodeCopied(true);
-                                setTimeout(() => setCodeCopied(false), 2000);
-                              }}
-                              className="px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-xs font-mono flex items-center gap-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
-                            >
-                              {codeCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                              <span>{codeCopied ? 'Copied' : 'Copy'}</span>
-                            </button>
-
-                            <button
-                              onClick={() => {
-                                setScratchpadCode(content);
-                                setScratchpadMode(currentLesson.type === 'powershell' ? 'powershell' : 'python');
-                                setIsScratchpadOpen(true);
-                              }}
-                              className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all"
-                            >
-                              <Play className="w-3.5 h-3.5 fill-current" />
-                              <span>Run in Live Runner</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Code Body */}
-                        <div className="p-6 bg-[#0D1117] overflow-x-auto">
-                          <pre className="font-mono text-xs sm:text-sm text-zinc-200 leading-relaxed whitespace-pre-wrap">
-                            {content}
-                          </pre>
-                        </div>
-                      </div>
-                    ) : currentLesson.type === 'notebook' && notebookCells.length > 0 ? (
-                      /* CASE B: JUPYTER NOTEBOOK VIEW */
-                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 shadow-sm space-y-6">
-                        <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                              <Layers className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <span className="text-xs font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                                Jupyter Visual Notebook
-                              </span>
-                              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mt-1">{currentLesson.title}</h2>
-                            </div>
-                          </div>
-
-                          <button
-                            onClick={() => {
-                              const allCode = notebookCells.filter((c) => c.type === 'code').map((c) => c.source).join('\n\n');
-                              setScratchpadCode(allCode);
-                              setScratchpadMode('python');
-                              setIsScratchpadOpen(true);
-                            }}
-                            className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-500 text-white flex items-center gap-2 shadow-sm"
-                          >
-                            <Play className="w-3.5 h-3.5 fill-current" />
-                            <span>Run All Cells</span>
-                          </button>
-                        </div>
-
-                        {/* Cells List */}
-                        <div className="space-y-6">
-                          {notebookCells.map((cell, cIdx) => (
-                            <div key={cIdx} className="space-y-2">
-                              {cell.type === 'markdown' ? (
-                                <div
-                                  className="markdown-body text-zinc-800 dark:text-zinc-200 text-sm leading-relaxed"
-                                  dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(cell.source) }}
-                                />
-                              ) : (
-                                <div className="rounded-xl border border-zinc-800 bg-[#0D1117] overflow-hidden">
-                                  <div className="flex items-center justify-between px-3 py-1.5 bg-[#161B22] border-b border-zinc-800 text-xs font-mono text-zinc-400">
-                                    <span>Python Cell [{cIdx + 1}]</span>
-                                    <button
-                                      onClick={() => {
-                                        setScratchpadCode(cell.source);
-                                        setScratchpadMode('python');
-                                        setIsScratchpadOpen(true);
-                                      }}
-                                      className="px-2 py-0.5 rounded hover:bg-emerald-950/60 text-emerald-400 flex items-center gap-1 border border-emerald-500/30"
-                                    >
-                                      <Play className="w-3 h-3 fill-current" />
-                                      <span>Run Cell</span>
-                                    </button>
-                                  </div>
-                                  <pre className="p-4 font-mono text-xs text-zinc-200 overflow-x-auto">
-                                    {cell.source}
-                                  </pre>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      /* CASE C: STANDARD MARKDOWN VIEW (With KaTeX Math) */
-                      <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-8 sm:p-10 shadow-sm">
-                        {isLoading ? (
-                          <LessonSkeleton />
-                        ) : (
-                          <>
-                            <div
-                              className={`markdown-body text-zinc-800 dark:text-zinc-200 mx-auto transition-all ${measureClass} ${fontSizeClass} ${fontFamilyClass}`}
-                              dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
-                            />
-
-                            {/* 1-Tap Spaced Repetition Confidence Rating */}
-                            <div className="mt-12 p-5 rounded-2xl bg-zinc-50/70 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                              <div>
-                                <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                                  How confident do you feel with this lesson?
-                                </h4>
-                                <p className="text-xs text-zinc-500 mt-0.5">
-                                  Rates retention in your SuperMemo SM-2 spaced repetition deck.
-                                </p>
-                                {confidenceRated && (
-                                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                                    ✓ {confidenceRated}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => handleConfidenceClick(5, '🟢 Solid retention scheduled (5/5)')}
-                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors flex items-center gap-1.5"
-                                  title="Got it: high retention, intervals expand"
-                                  aria-label="Got it (High confidence)"
-                                >
-                                  <span>🟢 Got it</span>
-                                </button>
-                                <button
-                                  onClick={() => handleConfidenceClick(3, '🟡 Review scheduled for tomorrow (3/5)')}
-                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-amber-300 dark:border-amber-800/80 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex items-center gap-1.5"
-                                  title="Shaky: review tomorrow to solidify"
-                                  aria-label="Shaky (Medium confidence)"
-                                >
-                                  <span>🟡 Shaky</span>
-                                </button>
-                                <button
-                                  onClick={() => handleConfidenceClick(1, '🔴 Reset for immediate review today (1/5)')}
-                                  className="px-3 py-1.5 rounded-xl text-xs font-medium border border-rose-300 dark:border-rose-800/80 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors flex items-center gap-1.5"
-                                  title="Lost: reset interval to 1 day"
-                                  aria-label="Lost (Low confidence)"
-                                >
-                                  <span>🔴 Lost</span>
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Up Next Preview Card */}
-                            {nextLesson ? (
-                              <div className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-50/80 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs transition-all hover:border-blue-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div className="space-y-1">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                                      Up Next • Lesson {currentLessonIndex + 2} of {allLessons.length}
-                                    </span>
-                                    {getLessonBadge(nextLesson.type)}
-                                  </div>
-                                  <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                                    {nextLesson.title}
-                                  </h3>
-                                </div>
-                                <button
-                                  onClick={handleCompleteAndNext}
-                                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5 shadow-sm transition-all active:scale-95 shrink-0"
-                                  aria-label="Continue to Next Lesson"
-                                >
-                                  <span>Next Lesson</span>
-                                  <ChevronRight className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="my-8 p-6 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div className="space-y-1">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                                      Module Complete
-                                    </span>
-                                  </div>
-                                  <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                                    All lessons cleared for Module {module.module_num.toString().padStart(2, '0')}
-                                  </h3>
-                                  <p className="text-xs text-zinc-500">
-                                    Ready to test your comprehension in the Module Mastery Gate?
-                                  </p>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    if (onOpenMasteryGate) onOpenMasteryGate();
-                                  }}
-                                  className="px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-2 shadow-sm transition-all active:scale-95 shrink-0"
-                                  aria-label="Unlock Module Mastery Gate"
-                                >
-                                  <span>Mastery Gate 🛡️</span>
-                                  <ChevronRight className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </>
-                        )}
-
-                        {/* Bottom Lesson Navigation Dock */}
-                        <div className="mt-12 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 bg-white/95 dark:bg-[#111622]/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-xl z-20">
-                          <div className="flex items-center gap-3 w-full sm:w-auto">
-                            <button
-                              onClick={handlePrevLesson}
-                              disabled={!prevLesson}
-                              className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-2 shadow-sm"
-                            >
-                              <ChevronLeft className="w-4 h-4" />
-                              <span>Previous Lesson</span>
-                            </button>
-                          </div>
-
-                          <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
-                            <span>Lesson {currentLessonIndex + 1} of {allLessons.length}</span>
-                            <span className="text-zinc-300 dark:text-zinc-700">•</span>
-                            <span className={`inline-flex items-center gap-1 font-semibold ${isCompleted ? 'text-emerald-500' : 'text-zinc-400'}`}>
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              {isCompleted ? 'Completed' : 'In Progress'}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                            <button
-                              onClick={handleCompleteAndNext}
-                              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
-                            >
-                              <span>{nextLesson ? 'Mark Complete & Next' : 'Unlock Module Mastery Gate 🛡️'}</span>
-                              <ChevronRight className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* TAB: INTERACTIVE MCQ ASSESSMENT */}
-                {activeTab === 'quiz' && (
-                  <div className="w-full">
-                    <McqQuizView
-                      rawContent={content}
-                      lessonTitle={currentLesson.title}
-                      moduleTitle={module.title}
-                      courseTitle={courseTitle}
-                      lessonId={currentLesson.id}
-                      moduleFolderPath={module.folder_path}
-                      savedScore={savedQuizScore}
-                      onQuizMistake={onQuizMistake}
-                      onPassQuiz={(score, total) => {
-                        if (onSaveQuizScore) {
-                          onSaveQuizScore(score, total, true);
-                        }
-                        if (!isCompleted) {
-                          onToggleComplete();
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* TAB: BUG HUNTER LAB */}
-                {activeTab === 'debug' && (
-                  <div className="w-full">
-                    <DebugLabView
-                      moduleFolderPath={module.folder_path}
-                      moduleTitle={module.title}
-                      onPassLab={() => {
-                        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-                        if (onPassLab) {
-                          onPassLab();
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* TAB: PYTEST & EXECUTION CONSOLE */}
-                {activeTab === 'test' && (
-                  <div className="space-y-4">
-                    <TerminalRunner
-                      result={testResult}
-                      isRunning={isRunning}
-                      onRunTest={handleRunTests}
-                      onRunDemo={handleRunDemo}
-                      hasDemo={Boolean(module.quickstart_script)}
-                    />
-                  </div>
-                )}
-
-                {/* TAB: PERSONAL STUDY NOTES */}
-                {activeTab === 'notes' && (
-                  <div className="rounded-2xl bg-white dark:bg-[#111622] border border-zinc-200/80 dark:border-zinc-800/80 p-6 space-y-4">
-                    <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-3">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-blue-500" />
-                        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                          Personal Study Notes: {currentLesson.title}
-                        </h3>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {noteSavedAlert && (
-                          <span className="text-xs font-mono text-emerald-500 flex items-center gap-1">
-                            ✓ Saved to study profile
-                          </span>
-                        )}
-                        <button
-                          onClick={handleSaveNoteClick}
-                          className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition-colors"
-                        >
-                          <Save className="w-3.5 h-3.5" /> Save Notes
-                        </button>
-                      </div>
-                    </div>
-
-                    <textarea
-                      value={noteText}
-                      onChange={(e) => setNoteText(e.target.value)}
-                      placeholder="Write key takeaways, performance equations, and interview questions here..."
-                      className="w-full h-80 p-4 font-mono text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-y leading-relaxed"
-                    />
-                  </div>
+            {/* TAB: THEORY & SCRIPT READER */}
+            {activeTab === 'theory' && (
+              <div ref={theoryContentRef}>
+                {(currentLesson.type === 'code' || currentLesson.type === 'powershell' || currentLesson.type === 'shell') ? (
+                  <ScriptViewer
+                    currentLesson={currentLesson}
+                    content={content}
+                    onOpenInRunner={(code, mode) => {
+                      setScratchpadCode(code);
+                      setScratchpadMode(mode);
+                      setIsScratchpadOpen(true);
+                    }}
+                  />
+                ) : currentLesson.type === 'notebook' && notebookCells.length > 0 ? (
+                  <NotebookViewer
+                    currentLesson={currentLesson}
+                    notebookCells={notebookCells}
+                    renderMarkdownWithMath={renderMarkdownWithMath}
+                    onRunCode={(code) => {
+                      setScratchpadCode(code);
+                      setScratchpadMode('python');
+                      setIsScratchpadOpen(true);
+                    }}
+                  />
+                ) : (
+                  <MarkdownViewer
+                    isLoading={isLoading}
+                    content={content}
+                    lessonId={currentLesson.id}
+                    measureClass={measureClass}
+                    fontSizeClass={fontSizeClass}
+                    fontFamilyClass={fontFamilyClass}
+                    renderMarkdownWithMath={renderMarkdownWithMath}
+                    confidenceRated={confidenceRated}
+                    onConfidenceClick={handleConfidenceClick}
+                    nextLesson={nextLesson}
+                    prevLesson={prevLesson}
+                    currentLessonIndex={currentLessonIndex}
+                    allLessons={allLessons}
+                    moduleNum={module.module_num}
+                    isCompleted={isCompleted}
+                    onPrevLesson={handlePrevLesson}
+                    onCompleteAndNext={handleCompleteAndNext}
+                    onOpenMasteryGate={onOpenMasteryGate}
+                    getLessonBadge={getLessonBadge}
+                  />
                 )}
               </div>
+            )}
+
+            {/* TAB: INTERACTIVE MCQ ASSESSMENT */}
+            {activeTab === 'quiz' && (
+              <div className="w-full">
+                <McqQuizView
+                  rawContent={content}
+                  lessonTitle={currentLesson.title}
+                  moduleTitle={module.title}
+                  courseTitle={courseTitle}
+                  lessonId={currentLesson.id}
+                  moduleFolderPath={module.folder_path}
+                  savedScore={savedQuizScore}
+                  onQuizMistake={onQuizMistake}
+                  onPassQuiz={(score, total) => {
+                    if (onSaveQuizScore) {
+                      onSaveQuizScore(score, total, true);
+                    }
+                    if (!isCompleted) {
+                      onToggleComplete();
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {/* TAB: BUG HUNTER LAB */}
+            {activeTab === 'debug' && (
+              <div className="w-full">
+                <DebugLabView
+                  moduleFolderPath={module.folder_path}
+                  moduleTitle={module.title}
+                  onPassLab={() => {
+                    confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                    if (onPassLab) {
+                      onPassLab();
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {/* TAB: PYTEST & EXECUTION CONSOLE */}
+            {activeTab === 'test' && (
+              <div className="space-y-4">
+                <TerminalRunner
+                  result={testResult}
+                  isRunning={isRunning}
+                  onRunTest={handleRunTests}
+                  onRunDemo={handleRunDemo}
+                  hasDemo={Boolean(module.quickstart_script)}
+                />
+              </div>
+            )}
+
+            {/* TAB: PERSONAL STUDY NOTES */}
+            {activeTab === 'notes' && (
+              <NotesTab
+                noteText={noteText}
+                onChangeNoteText={setNoteText}
+                onSaveNote={handleSaveNoteClick}
+                noteSavedAlert={noteSavedAlert}
+              />
+            )}
+          </div>
 
           {/* Right Rail: Page-Aware Interactive Runner OR Sticky Quick-Reach TOC */}
           {isScratchpadOpen ? (

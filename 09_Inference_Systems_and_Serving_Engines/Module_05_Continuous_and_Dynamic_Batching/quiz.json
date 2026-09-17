@@ -1,60 +1,242 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 05 Continuous and Dynamic Batching failure 'Top Production Failure Modes in Continuous Batching', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Continuous and Dynamic Batching, what core system invariant does '1. Algorithmic Principles of Iteration-Level Scheduling' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. - Fix: Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding fla",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Algorithmic Principles of Iteration-Level Scheduling.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically. - Root Cause: When adding or removing sequences from the active batch, position IDs or attention masks fa",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 05 Continuous and Dynamic Batching exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 05 Continuous and Dynamic Batching: : When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. - Fix: Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding fla. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Algorithmic Principles of Iteration-Level Scheduling' in Continuous and Dynamic Batching.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Algorithmic Principles of Iteration-Level Scheduling play in 05 Continuous and Dynamic Batching?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_continuous_batcher.py`, what is the exact evaluated result of:\n\n```python\nlen(scheduler.completed_requests)\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Algorithmic Principles of Iteration-Level Scheduling is essential for maintaining predictable invariants and high performance in 05 Continuous and Dynamic Batching.",
+        "id": "opt_corr",
+        "text": "1",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Algorithmic Principles of Iteration-Level Scheduling is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "2",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "2",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Algorithmic Principles of Iteration-Level Scheduling in 05 Continuous and Dynamic Batching specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `1` as verified in test suite `test_continuous_batcher.py`.",
+    "lesson_ref": "test_continuous_batcher.py"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_continuous_batcher.py`, what is the exact evaluated result of:\n\n```python\nlen(scheduler.running_batch)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_continuous_batcher.py`.",
+    "lesson_ref": "test_continuous_batcher.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_continuous_batcher.py`, what is the exact evaluated result of:\n\n```python\nscheduler.completed_requests[0].request_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"req_1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"REQ_1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"req_1\"` as verified in test suite `test_continuous_batcher.py`.",
+    "lesson_ref": "test_continuous_batcher.py"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Continuous and Dynamic Batching, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Continuous Batching'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -\n: Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Continuous and Dynamic Batching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Continuous and Dynamic Batching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Continuous and Dynamic Batching, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it?",
-    "category": "What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it?",
+    "tier": "Recall",
+    "question": "What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it? What is the 16MB document size limit in MongoDB, and what architectural pattern addresses it?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "MongoDB caps single BSON documents at 16MB.",
+        "id": "opt_corr",
+        "text": "MongoDB caps single BSON documents at 16MB. The Time-Series Bucket Pattern or 1:N referencing solves unbounded array growth.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
+        "id": "opt_1",
+        "text": "High offsets force all shards to score and return thousands of documents to the coordinator; use searchafter instead.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
+        "id": "opt_2",
+        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+        "id": "opt_3",
+        "text": "By building doc-value hash tables counting occurrences of exact keyword values across matching documents.",
         "is_correct": false
       }
     ],
-    "explanation": "MongoDB caps single BSON documents at 16MB. The Time-Series Bucket Pattern or 1:N referencing solves unbounded array growth.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: MongoDB caps single BSON documents at 16MB. The Time-Series Bucket Pattern or 1:N referencing solves unbounded array growth.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Explain the structural components of a 12-byte BSON ObjectId.",
-    "category": "Explain the structural components of a 12-byte BSON ObjectId.?",
+    "tier": "Recall",
+    "question": "Explain the structural components of a 12-byte BSON ObjectId.? Explain the structural components of a 12-byte BSON ObjectId.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "MongoDB caps single BSON documents at 16MB.",
+        "id": "opt_1",
+        "text": "The index stores raw values of name, not computed UPPER(name); the planner must fall back to a full table scan.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
+        "id": "opt_2",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+        "id": "opt_3",
+        "text": "It provides Write-Ahead Logging; upon restart, InnoDB replays committed transactions from the redo log that had not yet reached data pages.",
         "is_correct": false
       }
     ],
-    "explanation": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: 4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "When should you Embed vs Reference related data in MongoDB?",
-    "category": "When should you Embed vs Reference related data in MongoDB?",
+    "tier": "Recall",
+    "question": "When should you Embed vs Reference related data in MongoDB? When should you Embed vs Reference related data in MongoDB?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "MongoDB caps single BSON documents at 16MB.",
+        "id": "opt_1",
+        "text": "The percentage of true nearest neighbors (from exact brute force) retrieved by an ANN algorithm in its top-K results.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
+        "id": "opt_2",
+        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed t",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+        "id": "opt_3",
+        "text": "A memory structure that caches the return values of deterministic functions in the SGA, eliminating repeated function execution for identical arguments.",
         "is_correct": false
       }
     ],
-    "explanation": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is a TTL (Time-To-Live) index in MongoDB? What is a TTL (Time-To-Live) index in MongoDB?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Inverted File Flat: vectors are clustered into Voronoi cells around centroids; queries search only the nearest centroids.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_live.py`, what is the exact evaluated result of:\n\n```python\ncustom_oid.timestamp\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "int(official_oid.generation_time.timestamp())",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `int(official_oid.generation_time.timestamp())` as verified in test suite `test_mongo_live.py`.",
+    "lesson_ref": "test_mongo_live.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_live.py`, what is the exact evaluated result of:\n\n```python\nBSON_DOUBLE\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0x01",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0x01` as verified in test suite `test_mongo_live.py`.",
+    "lesson_ref": "test_mongo_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bson_document_engine.py`, what is the exact evaluated result of:\n\n```python\nfound[\"price\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "800",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "801",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "799",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1600",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `800` as verified in test suite `test_bson_document_engine.py`.",
+    "lesson_ref": "test_bson_document_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_bson_document_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(oid.bytes_val)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "12",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "13",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "24",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `12` as verified in test suite `test_bson_document_engine.py`.",
+    "lesson_ref": "test_bson_document_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in MongoDB Document Modeling BSON, an engineer observes:\n\"System fault during operation: BSONObjectTooLarge Error on Unbounded Sensor Array\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.\n\nFix Resolution:\nImplement the Time-Series Bucket Pattern: store at most 500 readings per document bucket and insert a new document when bucket reaches capacity.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

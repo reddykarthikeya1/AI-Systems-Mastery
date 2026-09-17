@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 08 Quantization for Serving failure 'Top Production Failure Modes in Model Quantization', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Quantization for Serving, what core system invariant does '1. Mathematical Principles of Uniform Quantization' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. - Fix: Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Mathematical Principles of Uniform Quantization.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline. - Root Cause: Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU D",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 08 Quantization for Serving exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 08 Quantization for Serving: : Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. - Fix: Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Mathematical Principles of Uniform Quantization' in Quantization for Serving.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Mathematical Principles of Uniform Quantization play in 08 Quantization for Serving?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_quantization_serving_sim.py`, what is the exact evaluated result of:\n\n```python\nres.compression_ratio\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Mathematical Principles of Uniform Quantization is essential for maintaining predictable invariants and high performance in 08 Quantization for Serving.",
+        "id": "opt_corr",
+        "text": "4.0",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Mathematical Principles of Uniform Quantization is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "4.5",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "8.0",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "0.0",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Mathematical Principles of Uniform Quantization in 08 Quantization for Serving specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `4.0` as verified in test suite `test_quantization_serving_sim.py`.",
+    "lesson_ref": "test_quantization_serving_sim.py"
+  },
+  {
+    "id": 3,
+    "tier": "Diagnose",
+    "question": "In Quantization for Serving, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Quantization for Serving, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in Model Quantization'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -\n: Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Quantization for Serving, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Quantization for Serving, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "When operating Quantization for Serving workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Quantization for Serving workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Quantization for Serving workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

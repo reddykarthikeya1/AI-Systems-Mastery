@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What is the programmatic difference between sys.prefix and sys.baseprefix when running inside a virtual environment versus system Python?",
-    "category": "Runtime Introspection:",
+    "tier": "Recall",
+    "question": "Runtime Introspection: What is the programmatic difference between sys.prefix and sys.baseprefix when running inside a virtual environment versus system Python?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "In system/global Python, sys.",
+        "id": "opt_corr",
+        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
+        "id": "opt_1",
+        "text": "OSError: Address already in use. The OS holds ports in TIMEWAIT to ensure delayed or duplicate packets in transit do not corrupt a new connection. SOREUSEADDR allows immediate reuse.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
+        "id": "opt_2",
+        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.g. user authentication). - Async (Broker): When operations are long-running, can be processed out of order, or require high fault tolerance and spike",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "uv and ruff are written in Rust and compiled to native machine code.",
+        "id": "opt_3",
+        "text": "It acts as a token bucket counter. Only $N$ tasks can enter the async with semaphore: block simultaneously. Subsequent tasks queue up and wait until active tasks release their token.",
         "is_correct": false
       }
     ],
-    "explanation": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the original parent Python installation.",
-    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the original parent Python installation.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why is the src-layout (src/myapp/) safer than the flat-layout (myapp/ in root) when running test suites with pytest?",
-    "category": "Project Architecture:",
+    "tier": "Recall",
+    "question": "Project Architecture: Why is the src-layout (src/myapp/) safer than the flat-layout (myapp/ in root) when running test suites with pytest?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
+        "id": "opt_corr",
+        "text": "In a flat layout, running pytest automatically adds the current working directory (.) to sys.path[0]. This allows tests to import the uninstalled local folder directly, masking errors where the package was not properly packaged, built, or i",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "In system/global Python, sys.",
+        "id": "opt_1",
+        "text": "- Threads share the exact same process memory (RAM), heap variables, and address space. - Processes have completely isolated, private memory spaces, requiring explicit Inter-Process Communication (IPC) mechanisms (like queues or pipes) to s",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
+        "id": "opt_2",
+        "text": "HTTP/2 breaks requests and responses down into independent binary frames and multiplexes them over a single shared TCP connection, preventing slow requests from blocking others.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "uv and ruff are written in Rust and compiled to native machine code.",
+        "id": "opt_3",
+        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": false
       }
     ],
-    "explanation": "In a flat layout, running pytest automatically adds the current working directory (.) to sys.path[0]. This allows tests to import the uninstalled local folder directly, masking errors where the package was not properly packaged, built, or installed. The src-layout ensures tests only succeed if the package is installed into the environment.",
-    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: In a flat layout, running pytest automatically adds the current working directory (.) to sys.path[0]. This allows tests to import the uninstalled local folder directly, masking errors where the package was not properly packaged, built, or installed. The src-layout ensures tests only succeed if the package is installed into the environment.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the role of pyproject.toml under PEP 621, and what older configuration files does it replace?",
-    "category": "Packaging Standards:",
+    "tier": "Recall",
+    "question": "Packaging Standards: What is the role of pyproject.toml under PEP 621, and what older configuration files does it replace?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. I...",
+        "id": "opt_corr",
+        "text": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. It replaces setup.py, setup.cfg, requirements.txt, MANIFEST.in, .flake8, pytest.ini, and black.toml.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "In system/global Python, sys.",
+        "id": "opt_1",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "In a flat layout, running pytest automatically adds the current working directory (.",
+        "id": "opt_2",
+        "text": "They both conform to the Apache Arrow C-Data Interface, passing pointers to existing memory buffers instead of copying data.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "uv and ruff are written in Rust and compiled to native machine code.",
+        "id": "opt_3",
+        "text": "- modeldump(): Returns a native Python dictionary. - modeldumpjson(): Directly serializes into an optimized JSON string (handled in Rust).",
         "is_correct": false
       }
     ],
-    "explanation": "pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. It replaces setup.py, setup.cfg, requirements.txt, MANIFEST.in, .flake8, pytest.ini, and black.toml.",
-    "lesson_ref": "11_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: pyproject.toml provides a single, standardized configuration format for project metadata, dependencies, build backends, and tool settings. It replaces setup.py, setup.cfg, requirements.txt, MANIFEST.in, .flake8, pytest.ini, and black.toml.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Tooling Performance: What architectural reason makes uv and ruff 10x\u2013100x faster than traditional Python tools like pip, flake8, and black?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "uv and ruff are written in Rust and compiled to native machine code. They utilize multi-threaded file parsing, direct AST memory representations, global package caching with copy-on-write/reflinks, and zero-copy data structures, avoiding Py",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It defines multi-container applications (API + PostgreSQL + Redis + Prometheus) in a single declarative YAML file, configuring shared internal networks and storage volumes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "- Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances bas",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "No. uv run automatically discovers the local .venv, sets up the environment variables (PATH, VIRTUALENV), and executes the target process inside that isolated context without requiring manual terminal activation (activate.ps1).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: uv and ruff are written in Rust and compiled to native machine code. They utilize multi-threaded file parsing, direct AST memory representations, global package caching with copy-on-write/reflinks, and zero-copy data structures, avoiding Python interpreter overhead.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_core.py`, what is the exact evaluated result of:\n\n```python\npending_tasks[0].id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "t1.id",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `t1.id` as verified in test suite `test_core.py`.",
+    "lesson_ref": "test_core.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_core.py`, what is the exact evaluated result of:\n\n```python\ntask.id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_core.py`.",
+    "lesson_ref": "test_core.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_core.py`, what is the exact evaluated result of:\n\n```python\nretrieved.title\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Task 1\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"TASK 1\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Task 1\"` as verified in test suite `test_core.py`.",
+    "lesson_ref": "test_core.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_core.py`, what is the exact evaluated result of:\n\n```python\nlen(task_manager)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_core.py`.",
+    "lesson_ref": "test_core.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Environment Tooling Workflow, an engineer observes:\n\"Unvalidated CLI Input: Running python debuglab/brokencli.py high crashes with an unhandled traceback:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Iterating through active WebSockets and awaiting sendtext() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.\n\nFix Resolution:\nUse structured argument parsing (argparse or click) with explicit type validation:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Environment Tooling Workflow, an engineer observes:\n\"ImportError / Path Flakiness: sys.path.append(\"./src\") fails to resolve modernapp when invoked from outside the root directory or when packaged.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In Python prior to PEP 597 / Python 3.15 UTF-8 Mode, open() uses locale.getpreferredencoding(). On Windows, this is typically cp1252, which cannot encode arbitrary Unicode symbols.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.\n\nFix Resolution:\nAnchor configuration resolution to the package or module root:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Environment Tooling Workflow, an engineer observes:\n\"FileNotFoundError: Running the script from anywhere other than the exact folder containing config.toml crashes immediately:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.\n\nFix Resolution:\nInstall the project in editable mode (pip install -e . or uv pip install -e .) so that standard package imports work everywhere without manual sys.path tampering. For standalone script pathing, anchor to file:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

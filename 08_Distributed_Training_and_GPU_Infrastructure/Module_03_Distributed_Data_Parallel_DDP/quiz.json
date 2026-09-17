@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "Unused Parameters in DDP \u2014 In a multi-modal model, an image encoder is skipped for text-only samples. When training with PyTorch DDP, the training run hangs indefinitely. Why?",
-    "category": "Unused Parameters in DDP",
+    "tier": "Recall",
+    "question": "In Distributed Data Parallel DDP, what core system invariant does '1. DDP System Architecture' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "DDP expects every registered parameter to fire its backward autograd hook in each step.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. DDP System Architecture.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. - Fix: Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatch",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 03 Distributed Data Parallel DDP.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 03 Distributed Data Parallel DDP.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "DDP expects every registered parameter to fire its backward autograd hook in each step. A bucket only issues AllReduce when its parameter counter reaches 0. If the image encoder was skipped in the forward pass, its parameters receive no gradient and their hooks never fire! The bucket waits forever, causing a cluster-wide distributed deadlock! Fix: ",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. DDP System Architecture' in Distributed Data Parallel DDP.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 03 Distributed Data Parallel DDP failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Distributed Data Parallel DDP, what core system invariant does '2. Autograd Hook Mechanics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. - Fix: Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatch",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Autograd Hook Mechanics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Model accuracy degrades when scaling from 8 GPUs to 128 GPUs. - Root Cause: Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 03 Distributed Data Parallel DDP exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 03 Distributed Data Parallel DDP: : Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. - Fix: Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatch. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Autograd Hook Mechanics' in Distributed Data Parallel DDP.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Distributed Data Parallel DDP, what core system invariant does '3. Module Study Progression' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Module Study Progression.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Module Study Progression' in Distributed Data Parallel DDP.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ddp_bucket_engine.py`, what is the exact evaluated result of:\n\n```python\nmgr.param_to_bucket[\"p3\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_ddp_bucket_engine.py`.",
+    "lesson_ref": "test_ddp_bucket_engine.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ddp_bucket_engine.py`, what is the exact evaluated result of:\n\n```python\nmgr.param_to_bucket[\"p1\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_ddp_bucket_engine.py`.",
+    "lesson_ref": "test_ddp_bucket_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ddp_bucket_engine.py`, what is the exact evaluated result of:\n\n```python\nmgr.param_to_bucket[\"p2\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_ddp_bucket_engine.py`.",
+    "lesson_ref": "test_ddp_bucket_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Distributed Data Parallel DDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Distributed Data Parallel DDP, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -\n: Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Distributed Data Parallel DDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Distributed Data Parallel DDP, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Model accuracy degrades when scaling from 8 GPUs to 128 GPUs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Model accuracy degrades when scaling from 8 GPUs to 128 GPUs.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

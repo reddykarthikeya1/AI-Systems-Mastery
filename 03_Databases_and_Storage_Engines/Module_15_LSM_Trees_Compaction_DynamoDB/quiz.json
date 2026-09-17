@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees?",
-    "category": "Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees?",
+    "tier": "Recall",
+    "question": "Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees? Why do LSM-Trees (Log-Structured Merge-Trees) provide higher write throughput than B+ Trees?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
+        "id": "opt_1",
+        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.g. Customer and Orders) in the same physical partition.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+        "id": "opt_2",
+        "text": "An optimistic implementation of serializable isolation that tracks read-write conflicts (SIREAD locks) and aborts transactions exhibiting dangerous dependency cycles.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
+        "id": "opt_3",
+        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
         "is_correct": false
       }
     ],
-    "explanation": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the role of a Bloom Filter in an SSTable read path?",
-    "category": "What is the role of a Bloom Filter in an SSTable read path?",
+    "tier": "Recall",
+    "question": "What is the role of a Bloom Filter in an SSTable read path? What is the role of a Bloom Filter in an SSTable read path?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "id": "opt_1",
+        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+        "id": "opt_2",
+        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
+        "id": "opt_3",
+        "text": "Data Guard replicates physical block redo for an entire database; GoldenGate performs logical transactional replication across heterogeneous databases and tables.",
         "is_correct": false
       }
     ],
-    "explanation": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.",
-    "category": "Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.?",
+    "tier": "Recall",
+    "question": "Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.? Explain Leveled Compaction vs Size-Tiered Compaction in LSM storage.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "id": "opt_1",
+        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It probabilistically confirms if a key definitely does NOT exist in an SSTable, skipping expensive disk I/O.",
+        "id": "opt_2",
+        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.",
+        "id": "opt_3",
+        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
         "is_correct": false
       }
     ],
-    "explanation": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "How does Amazon DynamoDB Single-Table Design represent 1:N relationships? How does Amazon DynamoDB Single-Table Design represent 1:N relationships?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.g. Customer and Orders) in the same physical partition.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "To ensure atomicity: verify the caller's unique random token matches before deleting the key, preventing releasing another worker's lock.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "As a native C extension providing a vector type, operators (<-> L2, <=> Cosine), and IVFFlat / HNSW index access methods.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.g. Customer and Orders) in the same physical partition.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_lsm_dynamo_engine.py`, what is the exact evaluated result of:\n\n```python\nengine.get(\"k2\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"v2\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"V2\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"v2\"` as verified in test suite `test_lsm_dynamo_engine.py`.",
+    "lesson_ref": "test_lsm_dynamo_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_lsm_dynamo_engine.py`, what is the exact evaluated result of:\n\n```python\neventual_rcu\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.5",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.5` as verified in test suite `test_lsm_dynamo_engine.py`.",
+    "lesson_ref": "test_lsm_dynamo_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_lsm_dynamo_engine.py`, what is the exact evaluated result of:\n\n```python\nsstable_keys\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"user:alice\", \"user:bob\", \"user:charlie\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"user:alice\", \"user:bob\", \"user:charlie\"]` as verified in test suite `test_lsm_dynamo_engine.py`.",
+    "lesson_ref": "test_lsm_dynamo_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_lsm_dynamo_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(memtable.storage)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_lsm_dynamo_engine.py`.",
+    "lesson_ref": "test_lsm_dynamo_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in LSM Trees Compaction DynamoDB, an engineer observes:\n\"System fault during operation: ProvisionedThroughputExceededException on Single Partition Key\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.\n\nFix Resolution:\nImplement write sharding: salt the partition key with random suffixes PK = f'TELEMETRY{random.randint(1, 10)}'.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

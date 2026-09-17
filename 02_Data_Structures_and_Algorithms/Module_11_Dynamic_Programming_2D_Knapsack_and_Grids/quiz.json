@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 11 Dynamic Programming 2D Knapsack and Grids triage of defect 'Knapsack takes the same item more than once', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Dynamic Programming 2D Knapsack and Grids, what core system invariant does '1. 2D DP Space Optimization Principle' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes unbounded knapsack, where every item has infinite supply. The reported value is always achievable under the",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. 2D DP Space Optimization Principle.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes unbounded knapsack, where every item has infinite supply. The reported value is always achievable under the",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. 2D DP Space Optimization Principle' in Dynamic Programming 2D Knapsack and Grids.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 11 Dynamic Programming 2D Knapsack and Grids triage of defect 'An odd total is partitioned into two equal halves', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Dynamic Programming 2D Knapsack and Grids, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a partition that",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a partition that",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Dynamic Programming 2D Knapsack and Grids.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 11 Dynamic Programming 2D Knapsack and Grids triage of defect 'Every grid path cost is far too low', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Dynamic Programming 2D Knapsack and Grids, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "best is supposed to hold, for each column, the cost of the cheapest path reaching that cell. Seeding it with the raw first row claims that every cell in row 0 can be entered for its own value alone \u2014 but the only way into row 0 is by walking across i",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "best is supposed to hold, for each column, the cost of the cheapest path reaching that cell. Seeding it with the raw first row claims that every cell in row 0 can be entered for its own value alone \u2014 but the only way into row 0 is by walking across i",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Dynamic Programming 2D Knapsack and Grids.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Dynamic Programming 2D Knapsack and Grids, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Dynamic Programming 2D Knapsack and Grids.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m11_problems.py`, what is the exact evaluated result of:\n\n```python\nknapsack_01([2, 3], [10, 12], 6)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "22",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "23",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "21",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "44",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `22` as verified in test suite `test_m11_problems.py`.",
+    "lesson_ref": "test_m11_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_grid_knapsack_dp_engine.py`, what is the exact evaluated result of:\n\n```python\nmax_val\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8` as verified in test suite `test_grid_knapsack_dp_engine.py`.",
+    "lesson_ref": "test_grid_knapsack_dp_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m11_problems.py`, what is the exact evaluated result of:\n\n```python\nlongest_palindromic_subseq(text)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "lcs(text",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `lcs(text` as verified in test suite `test_m11_problems.py`.",
+    "lesson_ref": "test_m11_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m11_problems.py`, what is the exact evaluated result of:\n\n```python\nlongest_palindromic_subseq(\"abba\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_m11_problems.py`.",
+    "lesson_ref": "test_m11_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Dynamic Programming 2D Knapsack and Grids, an engineer observes:\n\"Is 2 reachable from those two numbers? Now try [1, 2, 3, 5], whose total is 11. - What does total //\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a part",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Fencepost issues on boundary intervals $[0, N-1]$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a partition that cannot exist.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Dynamic Programming 2D Knapsack and Grids, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: prev[j - 1] is the diagonal neighbour, which represents dropping a character from\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Dynamic Programming 2D Knapsack and Grids, an engineer observes:\n\"- What does total // 2 evaluate to when total is odd, and does target + target still equal total?\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a part",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Dynamic Programming 2D Knapsack and Grids, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 Every grid path cost is far too low\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ">= shrinks the window as soon as it holds k distinct characters, but k distinct is exactly what the problem permits. The window is therefore capped at k - 1 distinct characters and every answer comes back short \u2014 for k=2 it reports 1 where ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: best is supposed to hold, for each column, the cost of the cheapest path\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

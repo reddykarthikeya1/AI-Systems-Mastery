@@ -1,89 +1,302 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 03 PagedAttention Architecture vLLM failure 'Top Production Failure Modes in PagedAttention', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In PagedAttention Architecture vLLM, what core system invariant does '1. Systems Architecture of PagedAttention' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. - Fix: Implement an atomic decref() cascade on al",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Systems Architecture of PagedAttention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant. - Root Cause: When aborting an in-flight branched request, the scheduler frees the parent request's block table b",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 03 PagedAttention Architecture vLLM exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 03 PagedAttention Architecture vLLM: : When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. - Fix: Implement an atomic decref() cascade on al. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Systems Architecture of PagedAttention' in PagedAttention Architecture vLLM.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Systems Architecture of PagedAttention play in 03 PagedAttention Architecture vLLM?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In PagedAttention Architecture vLLM, what core system invariant does '2. Copy-on-Write (CoW) Mechanics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Systems Architecture of PagedAttention is essential for maintaining predictable invariants and high performance in 03 PagedAttention Architecture vLLM.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Copy-on-Write (CoW) Mechanics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Systems Architecture of PagedAttention is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Systems Architecture of PagedAttention in 03 PagedAttention Architecture vLLM specifications.",
+    "explanation": "Specification detail defined under '2. Copy-on-Write (CoW) Mechanics' in PagedAttention Architecture vLLM.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "What architectural role does 2. Copy-on-Write (CoW) Mechanics play in 03 PagedAttention Architecture vLLM?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nmanager.physical_blocks[parent_block].ref_count\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Copy-on-Write (CoW) Mechanics is essential for maintaining predictable invariants and high performance in 03 PagedAttention Architecture vLLM.",
+        "id": "opt_corr",
+        "text": "2",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Copy-on-Write (CoW) Mechanics is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "3",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "1",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "4",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Copy-on-Write (CoW) Mechanics in 03 PagedAttention Architecture vLLM specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `2` as verified in test suite `test_paged_attention_sim.py`.",
+    "lesson_ref": "test_paged_attention_sim.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(manager.free_blocks)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "8",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "7",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `8` as verified in test suite `test_paged_attention_sim.py`.",
+    "lesson_ref": "test_paged_attention_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nlen(manager.block_tables[\"req_1\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_paged_attention_sim.py`.",
+    "lesson_ref": "test_paged_attention_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_paged_attention_sim.py`, what is the exact evaluated result of:\n\n```python\nmanager.physical_blocks[parent_block].ref_count\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_paged_attention_sim.py`.",
+    "lesson_ref": "test_paged_attention_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in PagedAttention'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -\n: Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In PagedAttention Architecture vLLM, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

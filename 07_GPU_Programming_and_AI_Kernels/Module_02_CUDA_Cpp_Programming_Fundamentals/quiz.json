@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Host-to-Device Bottlenecks & Unified Memory \u2014 An engineer replaces explicit `cudaMemcpy` with `cudaMallocManaged` (Unified Memory). Under inference, latency increases by $3\\times$. Why?",
-    "category": "Host-to-Device Bottlenecks & Unified Memory",
+    "tier": "Recall",
+    "question": "In CUDA Cpp Programming Fundamentals, what core system invariant does '1. The 3D Execution Hierarchy' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Unified Memory creates a virtual address space accessible by both CPU and GPU.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The 3D Execution Hierarchy.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- 32 threads (1 warp): Low latency, but poor SM occupancy.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 CUDA Cpp Programming Fundamentals.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Unified Memory creates a virtual address space accessible by both CPU and GPU. However, physical pages start on the host. When the GPU first accesses a managed pointer, a hardware Page Fault occurs. The GPU hardware must stall execution, communicate with the OS virtual memory subsystem via PCIe, migrate the 4KB memory page to GPU VRAM, and invalida",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The 3D Execution Hierarchy' in CUDA Cpp Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Thread Block Sizing Trade-offs \u2014 You can configure your kernel with `blockDim.x = 32` or `blockDim.x = 256` or `blockDim.x = 1024`. How do you choose?",
-    "category": "Thread Block Sizing Trade-offs",
+    "tier": "Recall",
+    "question": "In CUDA Cpp Programming Fundamentals, what core system invariant does '2. Linear Index Calculations' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- 32 threads (1 warp): Low latency, but poor SM occupancy.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Linear Index Calculations.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Unified Memory creates a virtual address space accessible by both CPU and GPU.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 02 CUDA Cpp Programming Fundamentals.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "- 32 threads (1 warp): Low latency, but poor SM occupancy. Each SM has limits on the maximum number of active blocks (typically 32 blocks on modern GPUs). 32 blocks $\\times$ 32 threads = 1,024 threads, reaching only 50% of the SM's 2,048 thread capacity. - 1024 threads (32 warps): High risk of occupancy collapse due to register pressure or shared m",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '2. Linear Index Calculations' in CUDA Cpp Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "When diagnosing the 02 CUDA Cpp Programming Fundamentals failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In CUDA Cpp Programming Fundamentals, what core system invariant does '3. The Grid-Stride Loop Architecture' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. The Grid-Stride Loop Architecture.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress. - Root Cause: Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an il",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 02 CUDA Cpp Programming Fundamentals exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 02 CUDA Cpp Programming Fundamentals: : Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. - Fix: Wrap kernel launches with synchronization during debugging:. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '3. The Grid-Stride Loop Architecture' in CUDA Cpp Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In CUDA Cpp Programming Fundamentals, what core system invariant does '4. Asynchronous Streams & Pinned Memory' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Asynchronous Streams & Pinned Memory.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Asynchronous Streams & Pinned Memory' in CUDA Cpp Programming Fundamentals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_cuda_execution_model_sim.py`, what is the exact evaluated result of:\n\n```python\n(row, col, linear)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "(55, 37, 7077)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "[0xFFFFFFFF]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `(55, 37, 7077)` as verified in test suite `test_cuda_execution_model_sim.py`.",
+    "lesson_ref": "test_cuda_execution_model_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In CUDA Cpp Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. -\n: Wrap kernel launches with synchronization during debugging:",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In CUDA Cpp Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Wrap kernel launches with synchronization during debugging:",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Wrap kernel launches with synchronization during debugging:\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In CUDA Cpp Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In CUDA Cpp Programming Fundamentals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computi",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Wrap kernel launches with synchronization during debugging:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

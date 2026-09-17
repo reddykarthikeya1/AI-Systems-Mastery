@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What does the 3-argument type(name, bases, namespacedict) call do at runtime?",
-    "category": "Class Factories:",
+    "tier": "Recall",
+    "question": "Class Factories: What does the 3-argument type(name, bases, namespacedict) call do at runtime?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It dynamically constructs and returns a new Python class object at runtime.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
+        "id": "opt_1",
+        "text": "Closures look up free variables at the time the function is called (late binding), not at definition time. When called, the loop has already completed with i = 2. Fix it using default parameter evaluation: [lambda x=i: x for i in range(3)].",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
+        "id": "opt_2",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-in (Python's built-in namespace like len, range, print)",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
+        "id": "opt_3",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": false
       }
     ],
-    "explanation": "It dynamically constructs and returns a new Python class object at runtime.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It dynamically constructs and returns a new Python class object at runtime.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is a Metaclass, and what is the relationship between type and object?",
-    "category": "Metaclasses:",
+    "tier": "Recall",
+    "question": "Metaclasses: What is a Metaclass, and what is the relationship between type and object?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "id": "opt_1",
+        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
+        "id": "opt_2",
+        "text": "starlette.websockets.WebSocketDisconnect. Catching it allows removing the dead socket from active broadcast lists, preventing memory leaks and closed-socket write errors.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
+        "id": "opt_3",
+        "text": "Because each object still holds a reference to the other, both objects maintain an obrefcnt >= 1 even when all external variables pointing to them have been deleted.",
         "is_correct": false
       }
     ],
-    "explanation": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does initsubclass allow customizing subclass creation without writing a full metaclass?",
-    "category": "Subclass Hooks:",
+    "tier": "Recall",
+    "question": "Subclass Hooks: How does initsubclass allow customizing subclass creation without writing a full metaclass?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "id": "opt_1",
+        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A metaclass is a \"class of a class\"\u2014a callable that defines how class objects themselves are instantiated and customized during compilation.",
+        "id": "opt_2",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)...",
+        "id": "opt_3",
+        "text": "- seta & setb (Intersection): {3} - seta | setb (Union): {1, 2, 3, 4, 5} - seta - setb (Difference): {1, 2}",
         "is_correct": false
       }
     ],
-    "explanation": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "The Descriptor Protocol: What are the 4 dunder methods that make up the full Python descriptor protocol?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It calculates the average sales for each region without collapsing individual rows, appending the regional average alongside each row.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: 1. get(self, instance, owner) 2. set(self, instance, value) 3. delete(self, instance) 4. setname(self, owner, name)",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mini_orm.py`, what is the exact evaluated result of:\n\n```python\nprod.price\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "129.99",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "130.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "260.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `129.99` as verified in test suite `test_mini_orm.py`.",
+    "lesson_ref": "test_mini_orm.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mini_orm.py`, what is the exact evaluated result of:\n\n```python\nAutoTableItem._table_name\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"autotableitems\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"AUTOTABLEITEMS\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"autotableitems\"` as verified in test suite `test_mini_orm.py`.",
+    "lesson_ref": "test_mini_orm.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mini_orm.py`, what is the exact evaluated result of:\n\n```python\nprod.title\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Mechanical Keyboard\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MECHANICAL KEYBOARD\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Mechanical Keyboard\"` as verified in test suite `test_mini_orm.py`.",
+    "lesson_ref": "test_mini_orm.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mini_orm.py`, what is the exact evaluated result of:\n\n```python\ndesc.name\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"title\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"TITLE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"title\"` as verified in test suite `test_mini_orm.py`.",
+    "lesson_ref": "test_mini_orm.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Metaprogramming Descriptors Memory, an engineer observes:\n\"Cross-instance state bleeding: Setting u\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.\n\nFix Resolution:\nUse setname to record the attribute name, and store the value on the target instance:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

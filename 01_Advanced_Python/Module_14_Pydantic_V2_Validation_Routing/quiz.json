@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is pydantic-core, and what performance advantages does it provide in Pydantic V2?",
-    "category": "Rust Engine:",
+    "tier": "Recall",
+    "question": "Rust Engine: What is pydantic-core, and what performance advantages does it provide in Pydantic V2?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion.",
+        "id": "opt_1",
+        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.",
+        "id": "opt_2",
+        "text": "- BackgroundTasks: In-process background tasks that run after response return (ideal for simple emails or audit logs). - Celery / ARQ: Distributed out-of-process queues backed by Redis/RabbitMQ (essential for heavy CPU tasks, video processi",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses a single literal tag field (e.",
+        "id": "opt_3",
+        "text": "Standard JSON specification does not define a native Date/Time data type. Fix it by subclassing json.JSONEncoder and overriding default(self, obj) to return obj.isoformat().",
         "is_correct": false
       }
     ],
-    "explanation": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What is the difference between @fieldvalidator(mode=\"before\") and @fieldvalidator(mode=\"after\")?",
-    "category": "Validation Modes:",
+    "tier": "Recall",
+    "question": "Validation Modes: What is the difference between @fieldvalidator(mode=\"before\") and @fieldvalidator(mode=\"after\")?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion.",
+        "id": "opt_corr",
+        "text": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion. - mode=\"after\": Runs after Pydantic has validated and coerced the field into its target Python type.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
+        "id": "opt_1",
+        "text": "- Authentication: Verifying the identity of a client (e.g. \"You are User 42 with valid credentials\"). - Authorization: Verifying whether an authenticated user has permission to perform a specific action (e.g. \"User 42 has admin privileges t",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.",
+        "id": "opt_2",
+        "text": "It acts as a token bucket counter. Only $N$ tasks can enter the async with semaphore: block simultaneously. Subsequent tasks queue up and wait until active tasks release their token.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses a single literal tag field (e.",
+        "id": "opt_3",
+        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
         "is_correct": false
       }
     ],
-    "explanation": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion. - mode=\"after\": Runs after Pydantic has validated and coerced the field into its target Python type.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - mode=\"before\": Runs on raw input data before Pydantic performs any type coercion. - mode=\"after\": Runs after Pydantic has validated and coerced the field into its target Python type.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "When should you use @modelvalidator instead of @fieldvalidator?",
-    "category": "Cross-Field Validation:",
+    "tier": "Recall",
+    "question": "Cross-Field Validation: When should you use @modelvalidator instead of @fieldvalidator?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.",
+        "id": "opt_corr",
+        "text": "Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.g. enddate > startdate or password == confirmpassword).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
+        "id": "opt_1",
+        "text": "TLS operates between the Transport Layer (Layer 4 - TCP) and the Application Layer (Layer 7 - HTTP).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion.",
+        "id": "opt_2",
+        "text": "Alembic tracks versioned migration scripts and compares declarative Python metadata against live database catalogs to generate automated ALTER TABLE statements.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses a single literal tag field (e.",
+        "id": "opt_3",
+        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
         "is_correct": false
       }
     ],
-    "explanation": "Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.g. enddate > startdate or password == confirmpassword).",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Use @modelvalidator when validation logic depends on multiple fields simultaneously (e.g. enddate > startdate or password == confirmpassword).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Polymorphic Schemas: How do Discriminated Unions allow parsing heterogeneous JSON objects with a shared tag?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It uses a single literal tag field (e.g. type: Literal[\"email\", \"sms\"]) to match and deserialize into the exact target subclass in $O(1)$ time without trial-and-error parsing.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Playwright controls a real Chromium browser engine, executing JavaScript, waiting for network hydration, and interacting with client-rendered DOM nodes.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It uses a single literal tag field (e.g. type: Literal[\"email\", \"sms\"]) to match and deserialize into the exact target subclass in $O(1)$ time without trial-and-error parsing.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_patient_api.py`, what is the exact evaluated result of:\n\n```python\nres.json()[\"full_name\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Retrieve Me\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"RETRIEVE ME\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Retrieve Me\"` as verified in test suite `test_patient_api.py`.",
+    "lesson_ref": "test_patient_api.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_patient_api.py`, what is the exact evaluated result of:\n\n```python\nlen(res1.json()[\"observations\"])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_patient_api.py`.",
+    "lesson_ref": "test_patient_api.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_patient_api.py`, what is the exact evaluated result of:\n\n```python\ndata[\"mrn\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"MRN-12345\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"MRN-12345\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"MRN-12345\"` as verified in test suite `test_patient_api.py`.",
+    "lesson_ref": "test_patient_api.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_patient_api.py`, what is the exact evaluated result of:\n\n```python\ndata[\"bmi\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "24.27",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "24.8",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "48.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `24.27` as verified in test suite `test_patient_api.py`.",
+    "lesson_ref": "test_patient_api.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Pydantic V2 Validation Routing, an engineer observes:\n\"Validation rules silently bypassed after instantiation: Setting p.age = -\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly configured.\n\nFix Resolution:\nAdd ConfigDict(validateassignment=True):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

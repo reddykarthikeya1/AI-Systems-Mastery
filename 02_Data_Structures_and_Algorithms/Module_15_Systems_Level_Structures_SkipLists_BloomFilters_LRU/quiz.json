@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'A cache hit does not protect an entry from eviction', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Systems Level Structures SkipLists BloomFilters LRU, what core system invariant does '1. Storage Systems Mapping' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO. The cache still returns cor",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Storage Systems Mapping.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO. The cache still returns cor",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Storage Systems Mapping' in Systems Level Structures SkipLists BloomFilters LRU.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'The membership filter says yes to almost everything', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Systems Level Structures SkipLists BloomFilters LRU, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of them is c",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of them is c",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Systems Level Structures SkipLists BloomFilters LRU.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 15 Systems Level Structures SkipLists BloomFilters LRU triage of defect 'A full ring buffer overwrites the wrong slot', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Systems Level Structures SkipLists BloomFilters LRU, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest. The contents and the count stay plausib",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest. The contents and the count stay plausib",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Systems Level Structures SkipLists BloomFilters LRU.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Systems Level Structures SkipLists BloomFilters LRU, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Systems Level Structures SkipLists BloomFilters LRU.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m15_problems.py`, what is the exact evaluated result of:\n\n```python\ncount_min_estimate([], ['a'])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[0]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[0]` as verified in test suite `test_m15_problems.py`.",
+    "lesson_ref": "test_m15_problems.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_lru_and_bloom_filter_engine.py`, what is the exact evaluated result of:\n\n```python\ncache.get(\"a\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_lru_and_bloom_filter_engine.py`.",
+    "lesson_ref": "test_lru_and_bloom_filter_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m15_problems.py`, what is the exact evaluated result of:\n\n```python\nsimulate_lru(1, ops)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[-1, 2]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[-1, 2]` as verified in test suite `test_m15_problems.py`.",
+    "lesson_ref": "test_m15_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m15_problems.py`, what is the exact evaluated result of:\n\n```python\napprox_distinct([])\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_m15_problems.py`.",
+    "lesson_ref": "test_m15_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Systems Level Structures SkipLists BloomFilters LRU, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps re",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Systems Level Structures SkipLists BloomFilters LRU, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 The membership filter says yes to almost everything\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of them is certainly set. The false-negative count stays 0.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Systems Level Structures SkipLists BloomFilters LRU, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 A cache hit does not protect an entry from eviction\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In Systems Level Structures SkipLists BloomFilters LRU, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Memory Leaks'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Cyclic references preventing garbage collection in bidirectional pointers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Cyclic references preventing garbage collection in bidirectional pointers.\n",
+    "lesson_ref": "06_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

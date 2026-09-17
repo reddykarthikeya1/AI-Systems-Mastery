@@ -1,60 +1,302 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Architectural Foundations: Interrupts and Resumption play in 07 Human in the Loop and Time Travel?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Human in the Loop and Time Travel, what core system invariant does '1. Architectural Foundations: Interrupts and Resumption' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations: Interrupts and Resumption is essential for maintaining predictable invariants and high performance in 07 Human in the Loop and Time Travel.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Interrupts and Resumption.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations: Interrupts and Resumption is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations: Interrupts and Resumption in 07 Human in the Loop and Time Travel specifications.",
+    "explanation": "Specification detail defined under '1. Architectural Foundations: Interrupts and Resumption' in Human in the Loop and Time Travel.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Time Travel & State Rewind Semantics play in 07 Human in the Loop and Time Travel?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Human in the Loop and Time Travel, what core system invariant does '2. Time Travel & State Rewind Semantics' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Time Travel & State Rewind Semantics is essential for maintaining predictable invariants and high performance in 07 Human in the Loop and Time Travel.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Time Travel & State Rewind Semantics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Time Travel & State Rewind Semantics is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Time Travel & State Rewind Semantics in 07 Human in the Loop and Time Travel specifications.",
+    "explanation": "Specification detail defined under '2. Time Travel & State Rewind Semantics' in Human in the Loop and Time Travel.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hitl_time_travel_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"REJECTED\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"REJECTED\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"REJECTED\"` as verified in test suite `test_hitl_time_travel_sim.py`.",
+    "lesson_ref": "test_hitl_time_travel_sim.py"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hitl_time_travel_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"COMPLETED\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"COMPLETED\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"COMPLETED\"` as verified in test suite `test_hitl_time_travel_sim.py`.",
+    "lesson_ref": "test_hitl_time_travel_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hitl_time_travel_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"paused_at\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"pay\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"PAY\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"pay\"` as verified in test suite `test_hitl_time_travel_sim.py`.",
+    "lesson_ref": "test_hitl_time_travel_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_hitl_time_travel_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"state\"][\"final_amount\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1000",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1001",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "999",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1000` as verified in test suite `test_hitl_time_travel_sim.py`.",
+    "lesson_ref": "test_hitl_time_travel_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In Human in the Loop and Time Travel, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Human in the Loop and Time Travel, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Non-serializable objects (sockets, class instances) stored in state channels.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Human in the Loop and Time Travel, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Checkpoint Deserialization Failures'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": LLM renamed the parameter from query to querytext based on vague docstring instructions. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Non-serializable objects (sockets, class instances) stored in state channels. -\n: Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Human in the Loop and Time Travel, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

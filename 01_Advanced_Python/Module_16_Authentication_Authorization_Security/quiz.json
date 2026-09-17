@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the technical distinction between Authentication and Authorization?",
-    "category": "Auth Fundamentals:",
+    "tier": "Recall",
+    "question": "Auth Fundamentals: What is the technical distinction between Authentication and Authorization?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Authentication: Verifying the identity of a client (e.",
+        "id": "opt_corr",
+        "text": "- Authentication: Verifying the identity of a client (e.g. \"You are User 42 with valid credentials\"). - Authorization: Verifying whether an authenticated user has permission to perform a specific action (e.g. \"User 42 has admin privileges t",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second.",
+        "id": "opt_1",
+        "text": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A salt is a random string generated per user and appended to the password before hashing.",
+        "id": "opt_2",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Header: Encodes algorithm and token type. 2. Payload: Encodes user claims (sub, role, exp). 3. Signature: Cryptographic hash verifying pa...",
+        "id": "opt_3",
+        "text": "A massive batch of keys expiring at the exact same second. Adding random jitter (e.g. $\\pm 10\\%$) distributes expirations smoothly over time.",
         "is_correct": false
       }
     ],
-    "explanation": "- Authentication: Verifying the identity of a client (e.g. \"You are User 42 with valid credentials\"). - Authorization: Verifying whether an authenticated user has permission to perform a specific action (e.g. \"User 42 has admin privileges to delete records\").",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Authentication: Verifying the identity of a client (e.g. \"You are User 42 with valid credentials\"). - Authorization: Verifying whether an authenticated user has permission to perform a specific action (e.g. \"User 42 has admin privileges to delete records\").",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why are fast hashing algorithms (like SHA-256 or MD5) considered dangerous for storing user passwords?",
-    "category": "Password Hashing:",
+    "tier": "Recall",
+    "question": "Password Hashing: Why are fast hashing algorithms (like SHA-256 or MD5) considered dangerous for storing user passwords?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second.",
+        "id": "opt_corr",
+        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second. Algorithms like Bcrypt and Argon2 are intentionally compute- and memory-intensive (Key Stretching) to make brute-forcing mathematically infeasible.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Authentication: Verifying the identity of a client (e.",
+        "id": "opt_1",
+        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A salt is a random string generated per user and appended to the password before hashing.",
+        "id": "opt_2",
+        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Header: Encodes algorithm and token type. 2. Payload: Encodes user claims (sub, role, exp). 3. Signature: Cryptographic hash verifying pa...",
+        "id": "opt_3",
+        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
         "is_correct": false
       }
     ],
-    "explanation": "Because modern GPUs can compute billions of SHA-256 hashes per second. Algorithms like Bcrypt and Argon2 are intentionally compute- and memory-intensive (Key Stretching) to make brute-forcing mathematically infeasible.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Because modern GPUs can compute billions of SHA-256 hashes per second. Algorithms like Bcrypt and Argon2 are intentionally compute- and memory-intensive (Key Stretching) to make brute-forcing mathematically infeasible.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is a \"Salt\", and how does it prevent precomputed Rainbow Table attacks against password databases?",
-    "category": "Cryptographic Salt:",
+    "tier": "Recall",
+    "question": "Cryptographic Salt: What is a \"Salt\", and how does it prevent precomputed Rainbow Table attacks against password databases?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "A salt is a random string generated per user and appended to the password before hashing.",
+        "id": "opt_corr",
+        "text": "A salt is a random string generated per user and appended to the password before hashing. Even if two users have the password Password123, their salted hashes will be completely unique, invalidating precomputed rainbow tables.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Authentication: Verifying the identity of a client (e.",
+        "id": "opt_1",
+        "text": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second.",
+        "id": "opt_2",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "1. Header: Encodes algorithm and token type. 2. Payload: Encodes user claims (sub, role, exp). 3. Signature: Cryptographic hash verifying pa...",
+        "id": "opt_3",
+        "text": "No. uv run automatically discovers the local .venv, sets up the environment variables (PATH, VIRTUALENV), and executes the target process inside that isolated context without requiring manual terminal activation (activate.ps1).",
         "is_correct": false
       }
     ],
-    "explanation": "A salt is a random string generated per user and appended to the password before hashing. Even if two users have the password Password123, their salted hashes will be completely unique, invalidating precomputed rainbow tables.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A salt is a random string generated per user and appended to the password before hashing. Even if two users have the password Password123, their salted hashes will be completely unique, invalidating precomputed rainbow tables.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "JWT Anatomy: What are the three period-separated parts of a JSON Web Token string (aaaa.bbbb.cccc)?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1. Header: Encodes algorithm and token type. 2. Payload: Encodes user claims (sub, role, exp). 3. Signature: Cryptographic hash verifying payload integrity and authenticity.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The client sends an HTTP GET request with Upgrade: websocket and Connection: Upgrade headers. If accepted (101 Switching Protocols), the socket switches from HTTP request-response mode to raw bidirectional framing.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "$$\\cos(\\theta) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{\\sum ui vi}{\\sqrt{\\sum ui^2} \\sqrt{\\sum vi^2}}$$",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: 1. Header: Encodes algorithm and token type. 2. Payload: Encodes user claims (sub, role, exp). 3. Signature: Cryptographic hash verifying payload integrity and authenticity.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_auth_service.py`, what is the exact evaluated result of:\n\n```python\nres_reg.json()[\"username\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"alice_sec\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE_SEC\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"alice_sec\"` as verified in test suite `test_auth_service.py`.",
+    "lesson_ref": "test_auth_service.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_auth_service.py`, what is the exact evaluated result of:\n\n```python\nres_admin.json()[\"system_health\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"OPTIMAL\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"OPTIMAL\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"OPTIMAL\"` as verified in test suite `test_auth_service.py`.",
+    "lesson_ref": "test_auth_service.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_auth_service.py`, what is the exact evaluated result of:\n\n```python\nres_me.json()[\"email\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"alice@security.com\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ALICE@SECURITY.COM\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"alice@security.com\"` as verified in test suite `test_auth_service.py`.",
+    "lesson_ref": "test_auth_service.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "During triage in Authentication Authorization Security, an engineer observes:\n\"Expired tokens accepted indefinitely: A JWT expired\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.\n\nFix Resolution:\nAllow PyJWT to verify exp by default (or set verifyexp: True):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Authentication Authorization Security, an engineer observes:\n\"Timing attack vulnerability: Standard string equality returns early on first mismatched character, allowing attackers to measure microsecond latency differences to reconstruct secrets.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Python's == operator compares strings byte-by-byte and terminates immediately upon finding the first non-matching byte.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Python's == operator compares strings byte-by-byte and terminates immediately upon finding the first non-matching byte.\n\nFix Resolution:\nUse hmac.comparedigest for constant-time comparison:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

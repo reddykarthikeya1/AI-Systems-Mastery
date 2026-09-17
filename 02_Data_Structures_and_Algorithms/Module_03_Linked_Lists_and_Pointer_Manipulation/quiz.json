@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 03 Linked Lists and Pointer Manipulation triage of defect 'Reversal returns a one-element list', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '1. Physical Node Architecture vs Array Cache Locality' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head is unreacha",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Physical Node Architecture vs Array Cache Locality.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head is unreacha",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '1. Physical Node Architecture vs Array Cache Locality' in Linked Lists and Pointer Manipulation.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "In 03 Linked Lists and Pointer Manipulation triage of defect 'Cycle detection never detects a cycle', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they never meet",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they never meet",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under '2. Curated LeetCode Problem Breakdowns (Brute Force vs. Optimized)' in Linked Lists and Pointer Manipulation.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "In 03 Linked Lists and Pointer Manipulation triage of defect 'The middle of an even-length list is off by one', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '3. Hands-On Project & Test Suite' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the first middle node rather than the second. Odd-length lists are unaffected, which is exactly why this survives casual ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Hands-On Project & Test Suite.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the first middle node rather than the second. Odd-length lists are unaffected, which is exactly why this survives casual ",
+    "explanation": "Specification detail defined under '3. Hands-On Project & Test Suite' in Linked Lists and Pointer Manipulation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Linked Lists and Pointer Manipulation, what core system invariant does '\u2705 You have mastered this module when you can\u2026' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2705 You have mastered this module when you can\u2026.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2705 You have mastered this module when you can\u2026' in Linked Lists and Pointer Manipulation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_doubly_linked_list_engine.py`, what is the exact evaluated result of:\n\n```python\ndll.pop_front()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "10",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "20",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `10` as verified in test suite `test_doubly_linked_list_engine.py`.",
+    "lesson_ref": "test_doubly_linked_list_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_doubly_linked_list_engine.py`, what is the exact evaluated result of:\n\n```python\ndll.to_list()\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[20, 10]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[20, 10]` as verified in test suite `test_doubly_linked_list_engine.py`.",
+    "lesson_ref": "test_doubly_linked_list_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m03_problems.py`, what is the exact evaluated result of:\n\n```python\nm is not None and m.val\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_m03_problems.py`.",
+    "lesson_ref": "test_m03_problems.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_m03_problems.py`, what is the exact evaluated result of:\n\n```python\nto_list(reverse_list(from_list(big)))\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "big[::-1]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"O(1)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"O(n)\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"O(n^2)\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `big[::-1]` as verified in test suite `test_m03_problems.py`.",
+    "lesson_ref": "test_m03_problems.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 1 \u2014 Reversal returns a one-element list\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head is unreachable.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 2 \u2014 Cycle detection never detects a cycle\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they never meet.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"distinct defects.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Fencepost issues on boundary intervals $[0, N-1]$.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.\n\nFix Resolution:\n",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "During triage in Linked Lists and Pointer Manipulation, an engineer observes:\n\"Observed unexpected behavior in Defect 3 \u2014 The middle of an even-length list is off by one\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the\n\nFix Resolution:\n",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

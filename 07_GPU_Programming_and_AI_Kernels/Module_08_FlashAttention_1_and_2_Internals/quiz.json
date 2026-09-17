@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "SRAM Block Sizing Constraints \u2014 How do you choose the block sizes $B_r$ and $B_c$ for FlashAttention on an NVIDIA A100 (164 KB Shared Memory per SM)?",
-    "category": "SRAM Block Sizing Constraints",
+    "tier": "Recall",
+    "question": "In FlashAttention 1 and 2 Internals, what core system invariant does '1. The IO Complexity Problem of Standard Attention' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Each SM must store: - $Qi$ block: $Br \\times d \\times 2 \\text{ bytes}$ (FP16) - $Kj$ block: $Bc \\times d \\times 2 \\text{ bytes}$ - $Vj$ block: $Bc \\times d \\times 2 \\text{ bytes}$ - Intermediate outputs / accumulators.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The IO Complexity Problem of Standard Attention.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. - Fix: Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal m",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 08 FlashAttention 1 and 2 Internals.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 08 FlashAttention 1 and 2 Internals.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Each SM must store: - $Qi$ block: $Br \\times d \\times 2 \\text{ bytes}$ (FP16) - $Kj$ block: $Bc \\times d \\times 2 \\text{ bytes}$ - $Vj$ block: $Bc \\times d \\times 2 \\text{ bytes}$ - Intermediate outputs / accumulators. For hidden dimension $d = 128$: If $Br = 64, Bc = 64$: Memory = $(64 \\times 128 + 64 \\times 128 + 64 \\times 128) \\times 2 = 49{,}15",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The IO Complexity Problem of Standard Attention' in FlashAttention 1 and 2 Internals.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 08 FlashAttention 1 and 2 Internals failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In FlashAttention 1 and 2 Internals, what core system invariant does '2. Tri Dao's Breakthrough: IO-Aware SRAM Tiling' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. - Fix: Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal m",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Tri Dao's Breakthrough: IO-Aware SRAM Tiling.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs. - Root Cause: Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 08 FlashAttention 1 and 2 Internals exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 08 FlashAttention 1 and 2 Internals: : Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. - Fix: Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal m. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Tri Dao's Breakthrough: IO-Aware SRAM Tiling' in FlashAttention 1 and 2 Internals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In FlashAttention 1 and 2 Internals, what core system invariant does '3. Backward Pass: Recomputation vs Memory Storage' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Backward Pass: Recomputation vs Memory Storage.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Backward Pass: Recomputation vs Memory Storage' in FlashAttention 1 and 2 Internals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In FlashAttention 1 and 2 Internals, what core system invariant does '4. FlashAttention-2 Improvements' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. FlashAttention-2 Improvements.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. FlashAttention-2 Improvements' in FlashAttention 1 and 2 Internals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_flash_attention_engine.py`, what is the exact evaluated result of:\n\n```python\nwrites\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "n * d",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "[0xFFFFFFFF]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `n * d` as verified in test suite `test_flash_attention_engine.py`.",
+    "lesson_ref": "test_flash_attention_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 1 and 2 Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Storing data as struct Particle { float x, y, z, mass; } particles[N];.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 1 and 2 Internals, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Intermittent numerical inaccuracies or race conditions in matrix outputs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -\n: Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 1 and 2 Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In FlashAttention 1 and 2 Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Convert to Structure of Arrays:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

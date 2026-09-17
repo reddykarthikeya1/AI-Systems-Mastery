@@ -1,31 +1,272 @@
 [
   {
     "id": 1,
-    "question": "In 10 How to FineTune Models triage of defect 'TODO', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in How to FineTune Models.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 2,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'What you will be able to do' in How to FineTune Models.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Lessons' in How to FineTune Models.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in How to FineTune Models.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core engineering trade-off or invariant is addressed by 'Full Fine-Tuning versus Parameter-Efficient Methods'?",
+    "category": "Architecture: Full Fine-Tuning versus Parame",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Full Fine-Tuning versus Parameter-Efficient Methods.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Full Fine-Tuning versus Parameter-Efficient Methods.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In How to FineTune Models, what core engineering trade-off or invariant is addressed by 'LoRA and QLoRA'?",
+    "category": "Architecture: LoRA and QLoRA",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in LoRA and QLoRA.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: LoRA and QLoRA.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 7,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core engineering trade-off or invariant is addressed by 'Instruction Tuning and Dataset Construction'?",
+    "category": "Architecture: Instruction Tuning and Dataset",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Instruction Tuning and Dataset Construction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Instruction Tuning and Dataset Construction.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In How to FineTune Models, what core engineering trade-off or invariant is addressed by 'Preference Optimization: RLHF and DPO'?",
+    "category": "Architecture: Preference Optimization: RLHF ",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Preference Optimization: RLHF and DPO.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Preference Optimization: RLHF and DPO.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 9,
+    "tier": "Recall",
+    "question": "In How to FineTune Models, what core engineering trade-off or invariant is addressed by 'Checkpoint: Fine-Tune and Beat the Base Model on a Held-Out Set'?",
+    "category": "Architecture: Checkpoint: Fine-Tune and Beat",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in Checkpoint: Fine-Tune and Beat the Base Model on a Held-Out Set.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: Checkpoint: Fine-Tune and Beat the Base Model on a Held-Out Set.",
+    "lesson_ref": "README.md"
   }
 ]

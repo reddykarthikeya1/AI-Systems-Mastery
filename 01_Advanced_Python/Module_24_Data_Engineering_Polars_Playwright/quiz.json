@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "Why is Polars fundamentally faster and more memory-efficient than Pandas?",
-    "category": "Rust & Arrow:",
+    "tier": "Recall",
+    "question": "Rust & Arrow: Why is Polars fundamentally faster and more memory-efficient than Pandas?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "id": "opt_1",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+        "id": "opt_2",
+        "text": "CPython's internal memory allocator, dictionary lookup tables, and garbage collector are not thread-safe. Concurrent access without the GIL corrupts interpreter state.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- DataFrame: Executes operations immediately in memory (eager).",
+        "id": "opt_3",
+        "text": "Python raises a TypeError at instantiation time (TypeError: Can't instantiate abstract class ...), preventing the object from ever being created.",
         "is_correct": false
       }
     ],
-    "explanation": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Apache Arrow's columnar memory layout optimize analytical aggregations like SUM() and AVG()?",
-    "category": "Columnar Memory:",
+    "tier": "Recall",
+    "question": "Columnar Memory: How does Apache Arrow's columnar memory layout optimize analytical aggregations like SUM() and AVG()?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+        "id": "opt_1",
+        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+        "id": "opt_2",
+        "text": "An AST is a tree representation of the syntactic structure of source code. Linters walk this tree with ast.NodeVisitor to detect banned patterns (like eval() calls or mutable default arguments) without executing code.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- DataFrame: Executes operations immediately in memory (eager).",
+        "id": "opt_3",
+        "text": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the ne",
         "is_correct": false
       }
     ],
-    "explanation": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is Predicate Pushdown, and how does Polars use it to minimize data loaded from disk?",
-    "category": "Query Optimization:",
+    "tier": "Recall",
+    "question": "Query Optimization: What is Predicate Pushdown, and how does Polars use it to minimize data loaded from disk?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+        "id": "opt_1",
+        "text": "- BackgroundTasks: In-process background tasks that run after response return (ideal for simple emails or audit logs). - Celery / ARQ: Distributed out-of-process queues backed by Redis/RabbitMQ (essential for heavy CPU tasks, video processi",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "id": "opt_2",
+        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- DataFrame: Executes operations immediately in memory (eager).",
+        "id": "opt_3",
+        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
         "is_correct": false
       }
     ],
-    "explanation": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Lazy vs Eager: What is the mechanical difference between a Polars DataFrame and a LazyFrame?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- DataFrame: Executes operations immediately in memory (eager). - LazyFrame: Builds a logical execution plan without executing until .collect() is explicitly called.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "When incoming client request data fails validation against the endpoint's declared Pydantic schema or type constraints (e.g. string sent where integer required).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. ",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - DataFrame: Executes operations immediately in memory (eager). - LazyFrame: Builds a logical execution plan without executing until .collect() is explicitly called.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_web_harvester.py`, what is the exact evaluated result of:\n\n```python\nperipherals[\"avg_price\"][0]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(189.99)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(189.99)` as verified in test suite `test_web_harvester.py`.",
+    "lesson_ref": "test_web_harvester.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_web_harvester.py`, what is the exact evaluated result of:\n\n```python\ncategory_summary(to_polars([])).height\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_web_harvester.py`.",
+    "lesson_ref": "test_web_harvester.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_web_harvester.py`, what is the exact evaluated result of:\n\n```python\nproduct.price\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1499.00",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1499.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2998.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1499.00` as verified in test suite `test_web_harvester.py`.",
+    "lesson_ref": "test_web_harvester.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_analytics_engine.py`, what is the exact evaluated result of:\n\n```python\nres[\"sector\"][0]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Technology\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"TECHNOLOGY\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Technology\"` as verified in test suite `test_analytics_engine.py`.",
+    "lesson_ref": "test_analytics_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Data Engineering Polars Playwright, an engineer observes:\n\"InvalidSchemaOperationError: Attempting numeric operations on dirty columns fails because dirty strings coerce the entire Arrow series to String (Utf\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.\n\nFix Resolution:\nClean null sentinels or explicitly cast with strict=False:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

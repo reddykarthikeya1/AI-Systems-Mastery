@@ -1,89 +1,242 @@
 [
   {
     "id": 1,
-    "question": "p99 Request Latency (Alert if p99 > 200ms for 3 consecutive minutes)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Probabilistic Data Structures, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops. Moving data across networks incurs a 10,000x to 1,000,000x latency penalty compared to in-memory lookups. The design maximizes local memory batching while deferring or pipelining I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Probabilistic Data Structures.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Error Rate (Alert if HTTP 5xx or unhandled exceptions exceed 0.5% of total requests)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Probabilistic Data Structures, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes. Fencing tokens or epoch numbers reject stale writes from deposed leaders to eliminate split-brain hazards.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Probabilistic Data Structures.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "Queue Lag / In-Flight Tasks (Alert if queue residency exceeds safety thresholds) Answer 7: Rookie Anti-Patterns A fatal anti-pattern is unbounded in-memory queuing or missing timeout budgets on remote RPC calls. When a downstream service slows down, upstream memory explodes, triggering kernel OOM-killer termination. Answer 8: Tenant Security Isolation is enforced via cryptographically signed JWT/HMAC tokens, per-tenant rate-limiting buckets, and partition-keyed database sharding to prevent cross-tenant data leakage. Answer 9: Trade-Off Analysis Simpler monolithic or single-node designs are easier to reason about, test, and deploy. However, when scale exceeds vertical hardware limits (CPU/RAM/IOPS), distributed partitioning becomes mandatory despite operational complexity. Answer 10: Zero-Downtime Rollouts Upgrades utilize Blue/Green or Canary deployments behind a Layer 7 load balancer. Database schema changes use the Expand/Contract (Parallel Run) pattern to ensure backward and forward compatibility.",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Probabilistic Data Structures, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Probabilistic Data Structures.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Probabilistic Data Structures, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Probabilistic Data Structures.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_probabilistic_structures.py`, what is the exact evaluated result of:\n\n```python\ncms.estimate(\"cherry\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_probabilistic_structures.py`.",
+    "lesson_ref": "test_probabilistic_structures.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "In Probabilistic Data Structures, when implementing: Implement a production-grade utility function or state tracker relevant to Probabilistic Data Structures adhering to defensive programming and edge-case handling. \u2014 what is the mathematical invariant?",
+    "category": "Apply: Mathematical Invariant",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Applies structural properties to guarantee correct convergence within bounded iterations.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Yields non-deterministic results due to unbounded floating-point drift.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Violates linear independence, collapsing the rank to zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Requires exponential memory proportional to $2^N$ states.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Mathematical verification from Probabilistic Data Structures challenges.",
     "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "In Probabilistic Data Structures, when implementing: Implement an exponential backoff retry handler with jitter to shield downstream dependencies during recovery. \u2014 what is the mathematical invariant?",
+    "category": "Apply: Mathematical Invariant",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Applies structural properties to guarantee correct convergence within bounded iterations.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Yields non-deterministic results due to unbounded floating-point drift.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Violates linear independence, collapsing the rank to zero.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Requires exponential memory proportional to $2^N$ states.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Mathematical verification from Probabilistic Data Structures challenges.",
+    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "During triage in Probabilistic Data Structures, an engineer observes:\n\"System fault during operation: Bloom Filter False Positive Rate Explodes Beyond Expected Bounds\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Writing to a database and a message broker in sequence cannot be made atomic without distributed transactions. Network crashes between step 1 and step 2 leave systems out of sync. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Dividing $100.00 by 3 gives 33.3333... Rounding each to $33.33 results in $99.99 total, leaking 1 cent into financial limbo. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When a gateway fans out to 100 services in parallel, the user request takes as long as the SLOWEST response. Assuming user p99 equals single-service p99 ignores the binomial distribution: $1 - (1 - 0.01)^{100} = 63.4\\%$. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

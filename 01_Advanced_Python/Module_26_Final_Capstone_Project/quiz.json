@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What are the key architectural trade-offs between a Modular Monolith and a Distributed Microservice architecture?",
-    "category": "Monolith vs Microservices:",
+    "tier": "Recall",
+    "question": "Monolith vs Microservices: What are the key architectural trade-offs between a Modular Monolith and a Distributed Microservice architecture?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
+        "id": "opt_corr",
+        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary. - Microservices: Independent team deployments, isolated failure domains, technology heterogeneity, but introduces network l",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
+        "id": "opt_1",
+        "text": "Python follows the Method Resolution Order (MRO) computed via the C3 Linearization algorithm, which guarantees that child classes precede parent classes and multiple parents are checked in left-to-right order.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
+        "id": "opt_2",
+        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
+        "id": "opt_3",
+        "text": "Windows does not support POSIX fork(); it launches a fresh Python interpreter process that re-imports the main script. Without if name == \"main\":, every child process re-executes the process-spawning code endlessly.",
         "is_correct": false
       }
     ],
-    "explanation": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary. - Microservices: Independent team deployments, isolated failure domains, technology heterogeneity, but introduces network latency and distributed state complexity.",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary. - Microservices: Independent team deployments, isolated failure domains, technology heterogeneity, but introduces network latency and distributed state complexity.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What critical responsibilities does an API Gateway fulfill in an enterprise system?",
-    "category": "API Gateway Role:",
+    "tier": "Recall",
+    "question": "API Gateway Role: What critical responsibilities does an API Gateway fulfill in an enterprise system?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
+        "id": "opt_1",
+        "text": "Python uses short-circuit evaluation. In an and expression, if the left operand (x != 0) is False, the entire condition is guaranteed to be False, so Python immediately stops and never evaluates (100 / x) > 5, preventing the division by zer",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
+        "id": "opt_2",
+        "text": "A massive batch of keys expiring at the exact same second. Adding random jitter (e.g. $\\pm 10\\%$) distributes expirations smoothly over time.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
+        "id": "opt_3",
+        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
         "is_correct": false
       }
     ],
-    "explanation": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the difference between Database Vertical Scaling, Read-Replicas, and Horizontal Sharding?",
-    "category": "Database Scalability:",
+    "tier": "Recall",
+    "question": "Database Scalability: What is the difference between Database Vertical Scaling, Read-Replicas, and Horizontal Sharding?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Vertical: Upgrading CPU/RAM on the single server.",
+        "id": "opt_corr",
+        "text": "- Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances bas",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary.",
+        "id": "opt_1",
+        "text": "- exctype: The exception class (e.g. ZeroDivisionError). - excval: The exception instance/message. - exctb: The traceback object. (If no exception occurred, all three arguments are None).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Centralized SSL termination, authentication/authorization, rate limiting, request routing, telemetry metrics, and CORS policy enforcement.",
+        "id": "opt_2",
+        "text": "- 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.",
+        "id": "opt_3",
+        "text": "Path.rglob(\".py\") (or Path.glob(\"/.py\")).",
         "is_correct": false
       }
     ],
-    "explanation": "- Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances based on a shard key (e.g. tenantid or userid).",
-    "lesson_ref": "07_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances based on a shard key (e.g. tenantid or userid).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Inter-Service Communication: When should microservices communicate synchronously over HTTP/gRPC vs asynchronously via Message Brokers?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.g. user authentication). - Async (Broker): When operations are long-running, can be processed out of order, or require high fault tolerance and spike",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "autospec=True inspects the real class signature and raises an AttributeError if your test calls a nonexistent method or passes incorrect arguments, preventing mock attribute drift.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.g. user authentication). - Async (Broker): When operations are long-running, can be processed out of order, or require high fault tolerance and spike buffering.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capstone.py`, what is the exact evaluated result of:\n\n```python\ndata[0][\"total_budget\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "120000.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "120000.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "240000.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `120000.0` as verified in test suite `test_capstone.py`.",
+    "lesson_ref": "test_capstone.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capstone_security_and_integration.py`, what is the exact evaluated result of:\n\n```python\nlen(user.projects)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_capstone_security_and_integration.py`.",
+    "lesson_ref": "test_capstone_security_and_integration.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capstone.py`, what is the exact evaluated result of:\n\n```python\nres_live.json()[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"LIVE\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"LIVE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"LIVE\"` as verified in test suite `test_capstone.py`.",
+    "lesson_ref": "test_capstone.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_capstone_security_and_integration.py`, what is the exact evaluated result of:\n\n```python\nremaining\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[]` as verified in test suite `test_capstone_security_and_integration.py`.",
+    "lesson_ref": "test_capstone_security_and_integration.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Final Capstone Project, an engineer observes:\n\"Cross-subsystem silent failure / KeyError: Background task fails with KeyError: 'targetformat' because the API endpoint produced a payload using an older parameter name (format).\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.\n\nFix Resolution:\nDefine a shared Pydantic payload schema used by both gateway and worker:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Architectural Foundations: Google Pregel to LangGraph play in 02 State Machine Graphs LangGraph Internals?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In State Machine Graphs LangGraph Internals, what core system invariant does '1. Architectural Foundations: Google Pregel to LangGraph' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations: Google Pregel to LangGraph is essential for maintaining predictable invariants and high performance in 02 State Machine Graphs LangGraph Internals.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Google Pregel to LangGraph.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations: Google Pregel to LangGraph is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations: Google Pregel to LangGraph in 02 State Machine Graphs LangGraph Internals specifications.",
+    "explanation": "Specification detail defined under '1. Architectural Foundations: Google Pregel to LangGraph' in State Machine Graphs LangGraph Internals.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Channel Reducers & State Concurrency play in 02 State Machine Graphs LangGraph Internals?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In State Machine Graphs LangGraph Internals, what core system invariant does '2. Channel Reducers & State Concurrency' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Channel Reducers & State Concurrency is essential for maintaining predictable invariants and high performance in 02 State Machine Graphs LangGraph Internals.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Channel Reducers & State Concurrency.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Channel Reducers & State Concurrency is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Channel Reducers & State Concurrency in 02 State Machine Graphs LangGraph Internals specifications.",
+    "explanation": "Specification detail defined under '2. Channel Reducers & State Concurrency' in State Machine Graphs LangGraph Internals.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In State Machine Graphs LangGraph Internals, what core system invariant does '3. Checkpointing, Time Travel, and Resumption' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Checkpointing, Time Travel, and Resumption.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Checkpointing, Time Travel, and Resumption' in State Machine Graphs LangGraph Internals.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pregel_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nfinal[\"status\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"DONE\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DONE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"DONE\"` as verified in test suite `test_pregel_graph_engine.py`.",
+    "lesson_ref": "test_pregel_graph_engine.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pregel_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nfinal[\"count\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_pregel_graph_engine.py`.",
+    "lesson_ref": "test_pregel_graph_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pregel_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nfinal[\"messages\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"Initial\", \"Step A completed\", \"Step B completed\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"Initial\", \"Step A completed\", \"Step B completed\"]` as verified in test suite `test_pregel_graph_engine.py`.",
+    "lesson_ref": "test_pregel_graph_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_pregel_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nrewound[\"history\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[\"v1\"]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[\"v1\"]` as verified in test suite `test_pregel_graph_engine.py`.",
+    "lesson_ref": "test_pregel_graph_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In State Machine Graphs LangGraph Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use regex with optional markdown block stripping: r\"\".",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In State Machine Graphs LangGraph Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In State Machine Graphs LangGraph Internals, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'RecursionLimitExceeded Error'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong. -\n: Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In State Machine Graphs LangGraph Internals, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Both agents' classification prompts lack unambiguous domain boundary definitions.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

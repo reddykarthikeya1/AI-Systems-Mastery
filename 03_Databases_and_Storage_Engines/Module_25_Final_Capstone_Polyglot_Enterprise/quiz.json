@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the Transactional Outbox Pattern, and what distributed data problem does it solve?",
-    "category": "What is the Transactional Outbox Pattern, and what distributed data problem does it solve?",
+    "tier": "Recall",
+    "question": "What is the Transactional Outbox Pattern, and what distributed data problem does it solve? What is the Transactional Outbox Pattern, and what distributed data problem does it solve?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
+        "id": "opt_1",
+        "text": "It forces the cluster to execute a full table scan across all nodes in the cluster, destroying distributed scalability.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
+        "id": "opt_2",
+        "text": "Seq Scan reads all heap pages; Index Scan navigates B-Tree to fetch heap tuples individually; Bitmap Index Scan builds an in-memory bitmap of matching pages before reading them sequentially.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+        "id": "opt_3",
+        "text": "No. An autonomous transaction is a completely separate session and cannot see the calling transaction's uncommitted writes.",
         "is_correct": false
       }
     ],
-    "explanation": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Change Data Capture (CDC) differ from application-level event publishing?",
-    "category": "How does Change Data Capture (CDC) differ from application-level event publishing?",
+    "tier": "Recall",
+    "question": "How does Change Data Capture (CDC) differ from application-level event publishing? How does Change Data Capture (CDC) differ from application-level event publishing?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+        "id": "opt_1",
+        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
+        "id": "opt_2",
+        "text": "It retrieves entire query result sets into in-memory collections (nested tables or varrays) in a single context switch.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+        "id": "opt_3",
+        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
         "is_correct": false
       }
     ],
-    "explanation": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse?",
-    "category": "In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse?",
+    "tier": "Recall",
+    "question": "In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse? In an enterprise polyglot architecture, what are the distinct roles of PostgreSQL, Redis, Elasticsearch, and ClickHouse?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+        "id": "opt_1",
+        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "CDC reads committed mutations directly from the database transaction log (WAL/binlog), guaranteeing zero event loss even if the app crashes.",
+        "id": "opt_2",
+        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+        "id": "opt_3",
+        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
         "is_correct": false
       }
     ],
-    "explanation": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is a Distributed Saga, and how does it handle cross-database transaction failures? What is a Distributed Saga, and how does it handle cross-database transaction failures?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1 WCU = 1 write up to 1KB/s; 1 RCU = 1 strongly consistent read (or 2 eventually consistent reads) up to 4KB/s.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_polyglot_platform.py`, what is the exact evaluated result of:\n\n```python\nlen(res)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_polyglot_platform.py`.",
+    "lesson_ref": "test_polyglot_platform.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_polyglot_platform.py`, what is the exact evaluated result of:\n\n```python\nsummary[\"total_revenue\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "0.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.0` as verified in test suite `test_polyglot_platform.py`.",
+    "lesson_ref": "test_polyglot_platform.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_polyglot_platform.py`, what is the exact evaluated result of:\n\n```python\nlen(platform.oltp.outbox_events)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "4",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "8",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `4` as verified in test suite `test_polyglot_platform.py`.",
+    "lesson_ref": "test_polyglot_platform.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_polyglot_platform.py`, what is the exact evaluated result of:\n\n```python\ne2[\"order_id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"ord_2\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ORD_2\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"ord_2\"` as verified in test suite `test_polyglot_platform.py`.",
+    "lesson_ref": "test_polyglot_platform.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Final Capstone Polyglot Enterprise, an engineer observes:\n\"System fault during operation: Dual-Write Inconsistency Between Relational DB and Redis Cache\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "RETURNING requires DuckDB \u2265 0.8. On older versions the statement parses but yields no row.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.\n\nFix Resolution:\nImplement the Transactional Outbox pattern: write update and outbox event in the same ACID transaction, relaying to Redis via CDC.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

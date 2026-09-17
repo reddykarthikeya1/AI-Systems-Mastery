@@ -1,89 +1,332 @@
 [
   {
     "id": 1,
-    "question": "In Python, what is the role of Bytecode (.pyc), and why doesn't Python compile directly to raw machine code like C++ or Go?",
-    "category": "Execution Model:",
+    "tier": "Recall",
+    "question": "Execution Model: In Python, what is the role of Bytecode (.pyc), and why doesn't Python compile directly to raw machine code like C++ or Go?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
+        "id": "opt_corr",
+        "text": "Bytecode is a platform-independent, simplified intermediate instruction set. Compiling to bytecode allows Python to be write-once, run-anywhere (cross-platform): the CPython Virtual Machine executes bytecode on Windows, macOS, and Linux wit",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
+        "id": "opt_1",
+        "text": "No. uv run automatically discovers the local .venv, sets up the environment variables (PATH, VIRTUALENV), and executes the target process inside that isolated context without requiring manual terminal activation (activate.ps1).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
+        "id": "opt_2",
+        "text": "- new(cls) is the constructor: it allocates the raw memory and returns the newly created instance. - init(self) is the initializer: it accepts the newly allocated instance and configures its attributes.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- 15 / 4 is True Division: it returns a float 3.",
+        "id": "opt_3",
+        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
         "is_correct": false
       }
     ],
-    "explanation": "Bytecode is a platform-independent, simplified intermediate instruction set. Compiling to bytecode allows Python to be write-once, run-anywhere (cross-platform): the CPython Virtual Machine executes bytecode on Windows, macOS, and Linux without recompiling source code for each specific CPU architecture.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Bytecode is a platform-independent, simplified intermediate instruction set. Compiling to bytecode allows Python to be write-once, run-anywhere (cross-platform): the CPython Virtual Machine executes bytecode on Windows, macOS, and Linux without recompiling source code for each specific CPU architecture.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why is Python considered both Dynamically Typed and Strongly Typed? Give a short example illustrating each.",
-    "category": "Type System:",
+    "tier": "Recall",
+    "question": "Type System: Why is Python considered both Dynamically Typed and Strongly Typed? Give a short example illustrating each.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
+        "id": "opt_corr",
+        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
+        "id": "opt_1",
+        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
+        "id": "opt_2",
+        "text": "Path.rglob(\".py\") (or Path.glob(\"/.py\")).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- 15 / 4 is True Division: it returns a float 3.",
+        "id": "opt_3",
+        "text": "An AST is a tree representation of the syntactic structure of source code. Linters walk this tree with ast.NodeVisitor to detect banned patterns (like eval() calls or mutable default arguments) without executing code.",
         "is_correct": false
       }
     ],
-    "explanation": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversions between incompatible types (e.g., \"5\" + 5 raises a TypeError rather than producing \"55\" or 10).",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversions between incompatible types (e.g., \"5\" + 5 raises a TypeError rather than producing \"55\" or 10).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "If lista = [10, 20] and listb = [10, 20], what are the outputs of lista == listb and lista is listb? Why do they differ?",
-    "category": "Memory & Identity:",
+    "tier": "Recall",
+    "question": "Memory & Identity: If lista = [10, 20] and listb = [10, 20], what are the outputs of lista == listb and lista is listb? Why do they differ?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20).",
+        "id": "opt_corr",
+        "text": "- lista == listb is True because == checks value equality (both lists contain 10, 20). - lista is listb is False because is checks memory address identity. Each list bracket [...] creates a new, separate list object in RAM.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Bytecode is a platform-independent, simplified intermediate instruction set.",
+        "id": "opt_1",
+        "text": "It is an array of floating-point numbers (e.g. 1536 dimensions) generated by a neural network, where semantically similar texts are clustered close together in vector space.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\").",
+        "id": "opt_2",
+        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-in (Python's built-in namespace like len, range, print)",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- 15 / 4 is True Division: it returns a float 3.",
+        "id": "opt_3",
+        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
         "is_correct": false
       }
     ],
-    "explanation": "- lista == listb is True because == checks value equality (both lists contain 10, 20). - lista is listb is False because is checks memory address identity. Each list bracket [...] creates a new, separate list object in RAM.",
-    "lesson_ref": "08_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - lista == listb is True because == checks value equality (both lists contain 10, 20). - lista is listb is False because is checks memory address identity. Each list bracket [...] creates a new, separate list object in RAM.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Division Mechanics: What is the difference in behavior and return type between 15 / 4 and 15 // 4?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The client sends an HTTP GET request with Upgrade: websocket and Connection: Upgrade headers. If accepted (101 Switching Protocols), the socket switches from HTTP request-response mode to raw bidirectional framing.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "In a flat layout, running pytest automatically adds the current working directory (.) to sys.path[0]. This allows tests to import the uninstalled local folder directly, masking errors where the package was not properly packaged, built, or i",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Because processes have separate memory, data and function signatures must be serialized into bytes (via pickle) and sent across OS IPC pipes to the child process. Anonymous lambda functions and local closures cannot be serialized by pickle.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_calculator.py`, what is the exact evaluated result of:\n\n```python\ninterest\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "round(balance - 1000.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `round(balance - 1000.0` as verified in test suite `test_calculator.py`.",
+    "lesson_ref": "test_calculator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_calculator.py`, what is the exact evaluated result of:\n\n```python\nlen(schedule)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "24",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "25",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "23",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "48",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `24` as verified in test suite `test_calculator.py`.",
+    "lesson_ref": "test_calculator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_calculator.py`, what is the exact evaluated result of:\n\n```python\ninterest\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "6470.09",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "6470.6",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "12940.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `6470.09` as verified in test suite `test_calculator.py`.",
+    "lesson_ref": "test_calculator.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_calculator.py`, what is the exact evaluated result of:\n\n```python\npayment\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "106.62",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "107.1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "213.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `106.62` as verified in test suite `test_calculator.py`.",
+    "lesson_ref": "test_calculator.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Python Fundamentals, an engineer observes:\n\"Financial balance verification returns False:\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "except: catches BaseException, which includes KeyboardInterrupt, SystemExit, and GeneratorExit. This traps process termination signals.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.\n\nFix Resolution:\nUse math.isclose or Python's decimal.Decimal module for financial arithmetic:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "During triage in Python Fundamentals, an engineer observes:\n\"Account identity comparison fails unpredictably: calculatetierbonus(\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.\n\nFix Resolution:\nAlways use == when comparing values:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "During triage in Python Fundamentals, an engineer observes:\n\"Missing payment installment: Generating a\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "When a route is declared async def, FastAPI executes it directly on the main event loop thread. Calling blocking I/O or time.sleep() blocks the entire event loop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.\n\nFix Resolution:\nUse range(months) or range(1, months + 1):",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

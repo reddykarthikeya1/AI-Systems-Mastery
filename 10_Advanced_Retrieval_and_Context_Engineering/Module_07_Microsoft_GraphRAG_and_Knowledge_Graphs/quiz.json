@@ -1,60 +1,272 @@
 [
   {
     "id": 1,
-    "question": "When diagnosing the 07 Microsoft GraphRAG and Knowledge Graphs failure 'Top Production Failure Modes in GraphRAG', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Microsoft GraphRAG and Knowledge Graphs, what core system invariant does '1. Algorithmic Architecture of GraphRAG' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. - Fix: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Algorithmic Architecture of GraphRAG.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters. - Root Cause: Missing entity resolution / coreference deduplication during graph ingesti",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 07 Microsoft GraphRAG and Knowledge Graphs exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 07 Microsoft GraphRAG and Knowledge Graphs: : Missing entity resolution / coreference deduplication during graph ingestion. - Fix: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.. Mitigation requires verifying system invariants before committing mutations.",
-    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+    "explanation": "Specification detail defined under '1. Algorithmic Architecture of GraphRAG' in Microsoft GraphRAG and Knowledge Graphs.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 1. Algorithmic Architecture of GraphRAG play in 07 Microsoft GraphRAG and Knowledge Graphs?",
-    "category": "System Invariants",
+    "tier": "Apply",
+    "question": "Given the implementation in `test_graphrag_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(reports)\n```",
+    "category": "Apply: Code Execution",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Algorithmic Architecture of GraphRAG is essential for maintaining predictable invariants and high performance in 07 Microsoft GraphRAG and Knowledge Graphs.",
+        "id": "opt_corr",
+        "text": "2",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Algorithmic Architecture of GraphRAG is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "3",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "1",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "4",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Algorithmic Architecture of GraphRAG in 07 Microsoft GraphRAG and Knowledge Graphs specifications.",
-    "lesson_ref": "01_README.md"
+    "explanation": "Evaluates to `2` as verified in test suite `test_graphrag_engine.py`.",
+    "lesson_ref": "test_graphrag_engine.py"
+  },
+  {
+    "id": 3,
+    "tier": "Diagnose",
+    "question": "In Microsoft GraphRAG and Knowledge Graphs, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Top Production Failure Modes in GraphRAG'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Missing entity resolution / coreference deduplication during graph ingestion. -\n: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Diagnose",
+    "question": "In Microsoft GraphRAG and Knowledge Graphs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Missing entity resolution / coreference deduplication during graph ingestion.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Diagnose",
+    "question": "In Microsoft GraphRAG and Knowledge Graphs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "In Microsoft GraphRAG and Knowledge Graphs, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "When operating Microsoft GraphRAG and Knowledge Graphs workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: : When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs. -",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Microsoft GraphRAG and Knowledge Graphs workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Vector search returns top hits, but LLM receives empty context strings.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: Vector search returns top hits, but LLM receives empty context strings.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Microsoft GraphRAG and Knowledge Graphs workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: When documents are re-indexed or deleted, child vectors are updated in the vector DB, but parent chunks in document storage (MongoDB/S3) are purged or desynchronized, leaving child vectors pointing to non-existent parent IDs.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

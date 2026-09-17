@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product?",
-    "category": "What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product?",
+    "tier": "Recall",
+    "question": "What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product? What is the difference between Cosine Distance, Euclidean ($L2$) Distance, and Dot Product?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_2",
-        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
-        "is_correct": false
-      },
-      {
-        "id": "opt_dist_3",
+        "id": "opt_1",
         "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1NF mandates that all column values must be atomic (indivisible). Storing a comma-separated list of multiple values in a single cell violates 1NF. It should be decomposed into a separate related table (e.g. userhobbies with 1 hobby per row)",
         "is_correct": false
       }
     ],
-    "explanation": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does the Hierarchical Navigable Small World (HNSW) graph index work?",
-    "category": "How does the Hierarchical Navigable Small World (HNSW) graph index work?",
+    "tier": "Recall",
+    "question": "How does the Hierarchical Navigable Small World (HNSW) graph index work? How does the Hierarchical Navigable Small World (HNSW) graph index work?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+        "id": "opt_1",
+        "text": "Immutability eliminates locking and concurrency hazards during reads and makes background compaction trivial.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+        "id": "opt_2",
+        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "id": "opt_3",
+        "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
         "is_correct": false
       }
     ],
-    "explanation": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN?",
-    "category": "What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN?",
+    "tier": "Recall",
+    "question": "What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN? What is Approximate Nearest Neighbor (ANN) search vs Flat (Exact) k-NN?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+        "id": "opt_1",
+        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It organizes vectors into multi-layer skip-list graphs; upper layers perform long-distance routing; bottom layers perform fine-grained local search.",
+        "id": "opt_2",
+        "text": "A deletion marker recorded in SSTables; reading across deleted rows requires scanning all tombstones until compaction purges them.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "id": "opt_3",
+        "text": "Immutability eliminates locking and concurrency hazards during reads and makes background compaction trivial.",
         "is_correct": false
       }
     ],
-    "explanation": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What does the efsearch parameter control in HNSW graph traversal? What does the efsearch parameter control in HNSW graph traversal?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_vector_engine.py`.",
+    "lesson_ref": "test_vector_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_live.py`, what is the exact evaluated result of:\n\n```python\nres[0][\"payload\"][\"category\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"finance\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"FINANCE\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"finance\"` as verified in test suite `test_vector_live.py`.",
+    "lesson_ref": "test_vector_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_live.py`, what is the exact evaluated result of:\n\n```python\nqdrant_results[1][\"id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_vector_live.py`.",
+    "lesson_ref": "test_vector_live.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_engine.py`, what is the exact evaluated result of:\n\n```python\nitem.payload[\"category\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"footwear\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"FOOTWEAR\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"footwear\"` as verified in test suite `test_vector_engine.py`.",
+    "lesson_ref": "test_vector_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in AI Vector Databases pgvector Qdrant, an engineer observes:\n\"System fault during operation: Vector Search Returns Irrelevant Nearest Neighbors Due to Dot Product on Unnormalized Vectors\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Embeddings inserted with arbitrary magnitudes while index was configured for Dot Product, causing vectors with huge norms to dominate similarity scores regardless of direction.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Embeddings inserted with arbitrary magnitudes while index was configured for Dot Product, causing vectors with huge norms to dominate similarity scores regardless of direction.\n\nFix Resolution:\nNormalize all vector embeddings to unit length ($L2$ norm = 1.0) before insertion: v = v / np.linalg.norm(v).",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

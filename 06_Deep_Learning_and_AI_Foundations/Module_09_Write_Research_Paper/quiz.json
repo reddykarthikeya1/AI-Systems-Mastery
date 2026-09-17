@@ -1,31 +1,272 @@
 [
   {
     "id": 1,
-    "question": "In 09 Write Research Paper triage of defect 'TODO', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Write Research Paper, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
+    "explanation": "Specification detail defined under 'Why this module exists' in Write Research Paper.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 2,
+    "tier": "Recall",
+    "question": "In Write Research Paper, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'What you will be able to do' in Write Research Paper.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Write Research Paper, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Lessons' in Write Research Paper.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Write Research Paper, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Write Research Paper.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Recall",
+    "question": "In Write Research Paper, what core engineering trade-off or invariant is addressed by 'From Result to Paper: Structure, Claims and Reproducibility'?",
+    "category": "Architecture: From Result to Paper: Structur",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Governs internal state transitions, invariants, and resource allocations specified in From Result to Paper: Structure, Claims and Reproducibility.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Core invariant analysis covered in lesson: From Result to Paper: Structure, Claims and Reproducibility.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 6,
+    "tier": "Diagnose",
+    "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Multiple threads checked stock > 0 simultaneously before any thread decremented, allowing overselling. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel runs $20\\times$ slower under Nsight Compute than in production.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 7,
+    "tier": "Diagnose",
+    "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Collective calls hang indefinitely during process group initialization.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": Safety judge flagged presence of toxic words in the quote of user input. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Accessing .next or .left without checking if node is None.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "except: catches BaseException, which includes KeyboardInterrupt, SystemExit, and GeneratorExit. This traps process termination signals.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "When operating Write Research Paper workloads under high contention, which architectural defect leads to silent failure?",
+    "category": "Diagnose: High-Load Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause Analysis: In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
     "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

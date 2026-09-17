@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Architectural Foundations: Function Calling & Constrained Decoding play in 03 Tool Execution and Constrained Generation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Tool Execution and Constrained Generation, what core system invariant does '1. Architectural Foundations: Function Calling & Constrained Decoding' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Architectural Foundations: Function Calling & Constrained Decoding is essential for maintaining predictable invariants and high performance in 03 Tool Execution and Constrained Generation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Architectural Foundations: Function Calling & Constrained Decoding.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Architectural Foundations: Function Calling & Constrained Decoding is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Architectural Foundations: Function Calling & Constrained Decoding in 03 Tool Execution and Constrained Generation specifications.",
+    "explanation": "Specification detail defined under '1. Architectural Foundations: Function Calling & Constrained Decoding' in Tool Execution and Constrained Generation.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Tool Schema Protocol & Execution Lifecycle play in 03 Tool Execution and Constrained Generation?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Tool Execution and Constrained Generation, what core system invariant does '2. Tool Schema Protocol & Execution Lifecycle' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Tool Schema Protocol & Execution Lifecycle is essential for maintaining predictable invariants and high performance in 03 Tool Execution and Constrained Generation.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Tool Schema Protocol & Execution Lifecycle.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Tool Schema Protocol & Execution Lifecycle is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Tool Schema Protocol & Execution Lifecycle in 03 Tool Execution and Constrained Generation specifications.",
+    "explanation": "Specification detail defined under '2. Tool Schema Protocol & Execution Lifecycle' in Tool Execution and Constrained Generation.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Tool Execution and Constrained Generation, what core system invariant does '3. Sandboxing & Timeout Management' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Sandboxing & Timeout Management.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Sandboxing & Timeout Management' in Tool Execution and Constrained Generation.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tool_execution_engine.py`, what is the exact evaluated result of:\n\n```python\ncalc_schema[\"parameters\"][\"properties\"][\"a\"][\"type\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"integer\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"INTEGER\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"integer\"` as verified in test suite `test_tool_execution_engine.py`.",
+    "lesson_ref": "test_tool_execution_engine.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_streaming_tool_parser.py`, what is the exact evaluated result of:\n\n```python\nextracted[\"max_results\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "10",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "20",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `10` as verified in test suite `test_streaming_tool_parser.py`.",
+    "lesson_ref": "test_streaming_tool_parser.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_tool_execution_engine.py`, what is the exact evaluated result of:\n\n```python\nresult\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"200\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"200\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"200\"` as verified in test suite `test_tool_execution_engine.py`.",
+    "lesson_ref": "test_tool_execution_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_streaming_tool_parser.py`, what is the exact evaluated result of:\n\n```python\nextracted[\"query\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"NVIDIA H100 TDP\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"NVIDIA H100 TDP\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"NVIDIA H100 TDP\"` as verified in test suite `test_streaming_tool_parser.py`.",
+    "lesson_ref": "test_streaming_tool_parser.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Tool Execution and Constrained Generation, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Parameter Name Mismatch in Schema Dispatch'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": LLM renamed the parameter from query to querytext based on vague docstring instructions. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : LLM renamed the parameter from query to querytext based on vague docstring instructions. -\n: Align docstring argument descriptions precisely with parameter identifiers.",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Tool Execution and Constrained Generation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Use regex with optional markdown block stripping: r\"\".",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Align docstring argument descriptions precisely with parameter identifiers.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Tool Execution and Constrained Generation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "TypeError: got unexpected keyword argument 'querytext'.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The same agent achieves 80% pass rate on Run 1, but 65% on Run 2.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: TypeError: got unexpected keyword argument 'querytext'.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Tool Execution and Constrained Generation, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: LLM renamed the parameter from query to querytext based on vague docstring instructions.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,60 +1,332 @@
 [
   {
     "id": 1,
-    "question": "What architectural role does 1. Landmark AI Benchmarks & Evaluation Paradigms play in 03 Standardized Benchmark Harnesses?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Standardized Benchmark Harnesses, what core system invariant does '1. Landmark AI Benchmarks & Evaluation Paradigms' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 1. Landmark AI Benchmarks & Evaluation Paradigms is essential for maintaining predictable invariants and high performance in 03 Standardized Benchmark Harnesses.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. Landmark AI Benchmarks & Evaluation Paradigms.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "1. Landmark AI Benchmarks & Evaluation Paradigms is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 1. Landmark AI Benchmarks & Evaluation Paradigms in 03 Standardized Benchmark Harnesses specifications.",
+    "explanation": "Specification detail defined under '1. Landmark AI Benchmarks & Evaluation Paradigms' in Standardized Benchmark Harnesses.",
     "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "What architectural role does 2. Pass@k Unbiased Estimator Formulation play in 03 Standardized Benchmark Harnesses?",
-    "category": "System Invariants",
+    "tier": "Recall",
+    "question": "In Standardized Benchmark Harnesses, what core system invariant does '2. Pass@k Unbiased Estimator Formulation' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mastering 2. Pass@k Unbiased Estimator Formulation is essential for maintaining predictable invariants and high performance in 03 Standardized Benchmark Harnesses.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Pass@k Unbiased Estimator Formulation.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "2. Pass@k Unbiased Estimator Formulation is deprecated and ignored during runtime execution.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It applies only to single-threaded test scripts and cannot be used in production.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It bypasses type validation and causes silent truncation on 64-bit platforms.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Detailed coverage of 2. Pass@k Unbiased Estimator Formulation in 03 Standardized Benchmark Harnesses specifications.",
+    "explanation": "Specification detail defined under '2. Pass@k Unbiased Estimator Formulation' in Standardized Benchmark Harnesses.",
     "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Standardized Benchmark Harnesses, what core system invariant does '3. Data Contamination & Decontamination Auditing' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. Data Contamination & Decontamination Auditing.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. Data Contamination & Decontamination Auditing' in Standardized Benchmark Harnesses.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_benchmark_harness_sim.py`, what is the exact evaluated result of:\n\n```python\np_all\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.0` as verified in test suite `test_benchmark_harness_sim.py`.",
+    "lesson_ref": "test_benchmark_harness_sim.py"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_benchmark_harness_sim.py`, what is the exact evaluated result of:\n\n```python\nBenchmarkHarness.extract_numeric_answer(text2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1250.50",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1251.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2501.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1250.50` as verified in test suite `test_benchmark_harness_sim.py`.",
+    "lesson_ref": "test_benchmark_harness_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_benchmark_harness_sim.py`, what is the exact evaluated result of:\n\n```python\nBenchmarkHarness.extract_numeric_answer(text1)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "75.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "75.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "150.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `75.0` as verified in test suite `test_benchmark_harness_sim.py`.",
+    "lesson_ref": "test_benchmark_harness_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_benchmark_harness_sim.py`, what is the exact evaluated result of:\n\n```python\nres[\"correct\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_benchmark_harness_sim.py`.",
+    "lesson_ref": "test_benchmark_harness_sim.py"
+  },
+  {
+    "id": 8,
+    "tier": "Diagnose",
+    "question": "In Standardized Benchmark Harnesses, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Standardized Benchmark Harnesses, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Zero Combinations in Pass@k Calculation'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": Math combinations overflow or unhandled edge cases where $n < k$. -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "16-digit product serial numbers are masked as credit cards.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : Math combinations overflow or unhandled edge cases where $n < k$. -\n: Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Standardized Benchmark Harnesses, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Require multi-token intent matches or contextual intent classifier with confidence scoring.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Math combinations overflow or unhandled edge cases where $n < k$.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Standardized Benchmark Harnesses, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": Desynchronized system clocks across worker nodes. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: ValueError: n - c must be greater than or equal to k or division by zero.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

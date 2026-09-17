@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the execution model of a MongoDB Aggregation Pipeline?",
-    "category": "What is the execution model of a MongoDB Aggregation Pipeline?",
+    "tier": "Recall",
+    "question": "What is the execution model of a MongoDB Aggregation Pipeline? What is the execution model of a MongoDB Aggregation Pipeline?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
+        "id": "opt_1",
+        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+        "id": "opt_2",
+        "text": "Physical copies raw page files on disk (fast restore, exact binary); Logical exports SQL DDL/DML statements (portable, slower).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It deconstructs an array field, outputting one document for every element in the array.",
+        "id": "opt_3",
+        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
         "is_correct": false
       }
     ],
-    "explanation": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does the $lookup stage perform left outer joins between collections?",
-    "category": "How does the $lookup stage perform left outer joins between collections?",
+    "tier": "Recall",
+    "question": "How does the $lookup stage perform left outer joins between collections? How does the $lookup stage perform left outer joins between collections?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
+        "id": "opt_1",
+        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+        "id": "opt_2",
+        "text": "1NF mandates that all column values must be atomic (indivisible). Storing a comma-separated list of multiple values in a single cell violates 1NF. It should be decomposed into a separate related table (e.g. userhobbies with 1 hobby per row)",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It deconstructs an array field, outputting one document for every element in the array.",
+        "id": "opt_3",
+        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
         "is_correct": false
       }
     ],
-    "explanation": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster?",
-    "category": "What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster?",
+    "tier": "Recall",
+    "question": "What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster? What is the difference between a Targeted Query and a Scatter-Gather Query in a sharded cluster?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A multi-stage streaming pipeline where documents pass sequentially through transformation operators ($match, $unwind, $group, $sort).",
+        "id": "opt_1",
+        "text": "For high-volume multi-node distributed systems, network file systems (NFS), or write workloads exceeding hundreds of concurrent writers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It matches localField in the source collection to foreignField in the target collection, outputting matches as an embedded array.",
+        "id": "opt_2",
+        "text": "SERIAL is a non-standard macro creating an underlying sequence susceptible to manual sequence permission drift; IDENTITY is SQL-standard.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It deconstructs an array field, outputting one document for every element in the array.",
+        "id": "opt_3",
+        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": false
       }
     ],
-    "explanation": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What does the $unwind stage do to an embedded array? What does the $unwind stage do to an embedded array?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It deconstructs an array field, outputting one document for every element in the array.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It deconstructs an array field, outputting one document for every element in the array.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_scale_live.py`, what is the exact evaluated result of:\n\n```python\nlen(unwound)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_mongo_scale_live.py`.",
+    "lesson_ref": "test_mongo_scale_live.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_scale_live.py`, what is the exact evaluated result of:\n\n```python\ntop[\"_id\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"Electronics\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ELECTRONICS\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"Electronics\"` as verified in test suite `test_mongo_scale_live.py`.",
+    "lesson_ref": "test_mongo_scale_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_aggregation_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "2",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "3",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `2` as verified in test suite `test_mongo_aggregation_engine.py`.",
+    "lesson_ref": "test_mongo_aggregation_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_mongo_aggregation_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(results)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_mongo_aggregation_engine.py`.",
+    "lesson_ref": "test_mongo_aggregation_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in MongoDB Aggregations Replicas Sharding, an engineer observes:\n\"System fault during operation: Cluster-Wide Scatter-Gather Latency Spikes on Sharded MongoDB\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.\n\nFix Resolution:\nInclude the shard key in the query filter: db.users.find({'tenantid': tenant, 'email': email}).",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

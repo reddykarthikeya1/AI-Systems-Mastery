@@ -14,6 +14,7 @@ import { StudyStatsModal } from './components/StudyStatsModal';
 import { BookmarksModal } from './components/BookmarksModal';
 import { FlashcardsModal } from './components/FlashcardsModal';
 import { PortfolioModal } from './components/PortfolioModal';
+import { PrerequisiteMapModal } from './components/PrerequisiteMapModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
@@ -366,6 +367,7 @@ export const App: React.FC = () => {
   const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
   const [isFlashcardsOpen, setIsFlashcardsOpen] = useState(false);
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
+  const [isPrereqMapOpen, setIsPrereqMapOpen] = useState(false);
 
   // Sync theme class to HTML element
   useEffect(() => {
@@ -504,6 +506,7 @@ export const App: React.FC = () => {
         onOpenBookmarks={() => setIsBookmarksOpen(true)}
         onOpenFlashcards={() => setIsFlashcardsOpen(true)}
         onOpenPortfolio={() => setIsPortfolioOpen(true)}
+        onOpenPrereqMap={() => setIsPrereqMapOpen(true)}
         onNavigateHome={() => navigate('/')}
       />
 
@@ -658,6 +661,14 @@ export const App: React.FC = () => {
         onClose={() => setIsPortfolioOpen(false)}
         courses={courses}
         progress={progress}
+      />
+
+      {/* Curriculum Dependency Roadmap Modal */}
+      <PrerequisiteMapModal
+        isOpen={isPrereqMapOpen}
+        onClose={() => setIsPrereqMapOpen(false)}
+        courses={courses as any}
+        onSelectCourse={(courseId) => navigate(`/course/${courseId}`)}
       />
     </div>
   );

@@ -1,89 +1,362 @@
 [
   {
     "id": 1,
-    "question": "In 02 Logic for Precise Reasoning triage of defect 'De Morgan's law applied without flipping the connective', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Logic for Precise Reasoning, what core system invariant does 'Why this module exists' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Why this module exists.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Why this module exists' in Logic for Precise Reasoning.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 2,
-    "question": "In 02 Logic for Precise Reasoning triage of defect 'implication implemented as conjunction', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Logic for Precise Reasoning, what core system invariant does 'What you will be able to do' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in What you will be able to do.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'What you will be able to do' in Logic for Precise Reasoning.",
+    "lesson_ref": "README.md"
   },
   {
     "id": 3,
-    "question": "In 02 Logic for Precise Reasoning triage of defect '\"for all\" implemented as \"there exists\"', what is the underlying failure mechanism under load?",
-    "category": "Defect Triage",
+    "tier": "Recall",
+    "question": "In Logic for Precise Reasoning, what core system invariant does 'Lessons' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Logic error causes incorrect scaling behavior: ",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Lessons.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "The routine raises an uncaught syntax exception immediately upon interpreter startup.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "The thread pool deadlocks because mutex acquisition order is non-deterministic.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The operating system terminates the process due to kernel memory bounds.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "",
-    "lesson_ref": "debug_lab/ANSWERS.md"
+    "explanation": "Specification detail defined under 'Lessons' in Logic for Precise Reasoning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Logic for Precise Reasoning, what core system invariant does 'Module project' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in Module project.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under 'Module project' in Logic for Precise Reasoning.",
+    "lesson_ref": "README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `16_Counterexamples_and_Disproof.md`, what is the exact evaluated result of:\n\n```python\nsearched\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[], \"no counterexample below 40...\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{3}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[], \"no counterexample below 40...\"` as verified in test suite `16_Counterexamples_and_Disproof.md`.",
+    "lesson_ref": "16_Counterexamples_and_Disproof.md"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `09_Negating_Quantified_Statements.md`, what is the exact evaluated result of:\n\n```python\ncounterexamples\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "[(True, 0.25)]",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises IndexError: list index out of range",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `[(True, 0.25)]` as verified in test suite `09_Negating_Quantified_Statements.md`.",
+    "lesson_ref": "09_Negating_Quantified_Statements.md"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `16_Counterexamples_and_Disproof.md`, what is the exact evaluated result of:\n\n```python\nall(((x * x) ** 0.5)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "abs(x) for x in [-5.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "{3}",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `abs(x) for x in [-5.0` as verified in test suite `16_Counterexamples_and_Disproof.md`.",
+    "lesson_ref": "16_Counterexamples_and_Disproof.md"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `12_Proof_by_Contradiction.md`, what is the exact evaluated result of:\n\n```python\na % 2\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `12_Proof_by_Contradiction.md`.",
+    "lesson_ref": "12_Proof_by_Contradiction.md"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Logic for Precise Reasoning, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Logical equivalence asserted from agreement on a sample'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.\nEnumerate all assignments. For up to about 20 variables that is cheap, and it is a genuine proof rather than evidence.",
+    "lesson_ref": "TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Logic for Precise Reasoning, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'A bounded search reported as a proof'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The domain was not exhausted. At n = 40 the value is 1681 = 41 squared, so the claim is false and the smallest counterexample is one step past the search.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "An implication is only false when the hypothesis holds and the conclusion fails. A case where the hypothesis fails sits in a row where the implication is vacuously true.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "All of NumPy's set routines return sorted, deduplicated arrays. Using the result to index back into the original data reorders rows relative to every parallel array that was not reordered with it.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: The domain was not exhausted. At n = 40 the value is 1681 = 41 squared, so the claim is false and the smallest counterexample is one step past the search.\nPass exhaustive=False whenever the domain is infinite or merely sampled. The checker then returns UNSETTLED, which is the honest verdict.",
+    "lesson_ref": "TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Logic for Precise Reasoning, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'A counterexample that refutes nothing'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "An implication is only false when the hypothesis holds and the conclusion fails. A case where the hypothesis fails sits in a row where the implication is vacuously true.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A step reaching back three values needs three base cases. A single base only establishes 8, 11, 14, ... - every third value.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: An implication is only false when the hypothesis holds and the conclusion fails. A case where the hypothesis fails sits in a row where the implication is vacuously true.\nSearch for the pattern where the hypothesis holds and the conclusion fails. counterexampleshape(hypothesis, conclusion) builds that predicate so the hypothesis cannot be dropped by accident.",
+    "lesson_ref": "TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In Logic for Precise Reasoning, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'An induction with too few base cases'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "A step reaching back three values needs three base cases. A single base only establishes 8, 11, 14, ... - every third value.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: A step reaching back three values needs three base cases. A single base only establishes 8, 11, 14, ... - every third value.\nCount how far back the step reaches and supply that many base cases. The same rule applies to recursive functions with multiple recursive calls.",
+    "lesson_ref": "TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

@@ -1,60 +1,362 @@
 [
   {
     "id": 1,
-    "question": "Low Occupancy with High Performance \u2014 In Nsight Compute, your kernel shows only 25% theoretical occupancy, but achieves 92% of peak FP16 Tensor Core throughput. Should you optimize for higher occupancy?",
-    "category": "Low Occupancy with High Performance",
+    "tier": "Recall",
+    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '1. The Two-Phase Profiling Methodology' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "No! High occupancy is a means to an end (latency hiding), not the end goal itself.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 1. The Two-Phase Profiling Methodology.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It assumes state is eagerly cached in thread-local storage rather than evaluated per request in 11 Profiling with Nsight Compute and Systems.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It causes an unchecked runtime exception due to memory alignment constraints in 11 Profiling with Nsight Compute and Systems.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "No! High occupancy is a means to an end (latency hiding), not the end goal itself. If a kernel already has sufficient Instruction-Level Parallelism (ILP)\u2014for example, each thread computes an $8 \\times 8$ micro-tile in registers\u2014the hardware scheduler has enough independent instructions to hide memory and execution latency with only a few active war",
-    "lesson_ref": "03_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '1. The Two-Phase Profiling Methodology' in Profiling with Nsight Compute and Systems.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "When diagnosing the 11 Profiling with Nsight Compute and Systems failure 'Production Traps & Silent Failure Modes', what is the primary root cause and verified invariant?",
-    "category": "Production Triage",
+    "tier": "Recall",
+    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '2. Deciphering Nsight Compute (NCU) Speed of Light (SOL)' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 2. Deciphering Nsight Compute (NCU) Speed of Light (SOL).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": ": Kernel runs $20\\times$ slower under Nsight Compute than in production. - Root Cause: NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode appl",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Lock contention on shared resource boundaries in 11 Profiling with Nsight Compute and Systems exhausts thread pool capacity.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Network socket timeouts trigger premature retry cascades across client workers.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "In 11 Profiling with Nsight Compute and Systems: : NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). - Fix: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().. Mitigation requires verifying system invariants before committing mutations.",
+    "explanation": "Specification detail defined under '2. Deciphering Nsight Compute (NCU) Speed of Light (SOL)' in Profiling with Nsight Compute and Systems.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 3,
+    "tier": "Recall",
+    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '3. The 4 Critical Warp Stall Reasons in NCU' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 3. The 4 Critical Warp Stall Reasons in NCU.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '3. The 4 Critical Warp Stall Reasons in NCU' in Profiling with Nsight Compute and Systems.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Profiling with Nsight Compute and Systems, what core system invariant does '4. Module Study Progression' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in 4. Module Study Progression.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '4. Module Study Progression' in Profiling with Nsight Compute and Systems.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(speedup, rel=1e-2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1.428",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1.9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2.9",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1.428` as verified in test suite `test_ncu_nsys_profiler_sim.py`.",
+    "lesson_ref": "test_ncu_nsys_profiler_sim.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\ndiag[\"primary_stall_reason\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"stall_long_scoreboard\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"STALL_LONG_SCOREBOARD\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"stall_long_scoreboard\"` as verified in test suite `test_ncu_nsys_profiler_sim.py`.",
+    "lesson_ref": "test_ncu_nsys_profiler_sim.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\npytest.approx(diag[\"memory_sol_pct\"], rel=1e-3)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "90.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "90.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "180.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `90.0` as verified in test suite `test_ncu_nsys_profiler_sim.py`.",
+    "lesson_ref": "test_ncu_nsys_profiler_sim.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_ncu_nsys_profiler_sim.py`, what is the exact evaluated result of:\n\n```python\ndiag[\"dominant_regime\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"compute_bound\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"COMPUTE_BOUND\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"compute_bound\"` as verified in test suite `test_ncu_nsys_profiler_sim.py`.",
+    "lesson_ref": "test_ncu_nsys_profiler_sim.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Failure scenario: 'Production Traps & Silent Failure Modes'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). -",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: : NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). -\n: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 10,
+    "tier": "Diagnose",
+    "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Symptom'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Kernel runs $20\\times$ slower under Nsight Compute than in production.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Always include two barriers per iteration:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Kernel runs $20\\times$ slower under Nsight Compute than in production.\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 11,
+    "tier": "Diagnose",
+    "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Fix'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().\n",
+    "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
+  },
+  {
+    "id": 12,
+    "tier": "Diagnose",
+    "question": "In Profiling with Nsight Compute and Systems, what failure mode triggers the following observed symptom?\n\"Edge case trigger: 'Root Cause'\"",
+    "category": "Diagnose: Failure Analysis",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Performing bitwise operations without proper signed two's complement extension:",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Diagnostic Analysis: NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode).\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   }
 ]

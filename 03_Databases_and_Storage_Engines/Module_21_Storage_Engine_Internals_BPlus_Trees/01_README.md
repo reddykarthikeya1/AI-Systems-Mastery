@@ -85,6 +85,31 @@ Databases cannot afford to read from disk on every query. The **Buffer Pool** is
 
 ## 🌳 3. The $B^+$ Tree Storage Architecture
 
+<!-- GENERATED_ALGORITHM_DIAGRAM: BTREE_SPLIT START -->
+
+```mermaid
+graph TD
+  %% B-Tree Split Sequence (Order M=4: Max 3 Keys, 4 Children)
+  %% Generated from verified B-Tree storage engine logic
+  classDef node fill:#18181b,stroke:#6366f1,stroke-width:1.5px,color:#f4f4f5;
+  classDef promoted fill:#431407,stroke:#f97316,stroke-width:2px,color:#ffedd5;
+  classDef leaf fill:#1e1b4b,stroke:#818cf8,stroke-width:1px,color:#e0e7ff;
+
+  subgraph Before_Split ["Step 1: Node Overflows on Inserting Key 40 (Capacity Exceeded: 4 Keys)"]
+    B1["Node ID: 0x01 (OVERFLOW)<br/>Keys: [ 10 | 20 | 30 | 40 ]<br/>Status: Must Split at Median index 1 (Key 20)"]:::promoted
+  end
+
+  subgraph After_Split ["Step 2: Median Promoted to Parent, Node Split into Two Siblings"]
+    P_Root["Parent Root Node: 0x02<br/>Keys: [ 20 ]<br/>Median Promoted"]:::promoted
+    Left_Child["Left Sibling: 0x01<br/>Keys: [ 10 ]<br/>Values < 20"]:::leaf
+    Right_Child["Right Sibling: 0x03<br/>Keys: [ 30 | 40 ]<br/>Values > 20"]:::leaf
+    P_Root -->|Left Ptr| Left_Child
+    P_Root -->|Right Ptr| Right_Child
+  end
+```
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: BTREE_SPLIT END -->
+
 While B-Trees store data keys and values in all nodes, modern databases exclusively use **$B^+$ Trees**:
 
 ```

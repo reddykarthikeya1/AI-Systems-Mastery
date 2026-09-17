@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is Oracle RAC Cache Fusion?",
-    "category": "What is Oracle RAC Cache Fusion?",
+    "tier": "Recall",
+    "question": "What is Oracle RAC Cache Fusion? What is Oracle RAC Cache Fusion?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+        "id": "opt_1",
+        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "id": "opt_2",
+        "text": "Using ConditionExpression = 'attributenotexists(PK)' or checking version numbers before applying mutations.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
+        "id": "opt_3",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
         "is_correct": false
       }
     ],
-    "explanation": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "What role does the Global Cache Service (GCS) play in an Oracle RAC cluster?",
-    "category": "What role does the Global Cache Service (GCS) play in an Oracle RAC cluster?",
+    "tier": "Recall",
+    "question": "What role does the Global Cache Service (GCS) play in an Oracle RAC cluster? What role does the Global Cache Service (GCS) play in an Oracle RAC cluster?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "id": "opt_1",
+        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "id": "opt_2",
+        "text": "Two nodes simultaneously believing they are leader; quorum ($N/2 + 1$) guarantees no two disjoint subsets can both achieve majority.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
+        "id": "opt_3",
+        "text": "Values exceeding ~2KB are compressed and stored out-of-line in separate TOAST tables, keeping main heap pages compact.",
         "is_correct": false
       }
     ],
-    "explanation": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What is the difference between Oracle Active Data Guard and standard physical standby?",
-    "category": "What is the difference between Oracle Active Data Guard and standard physical standby?",
+    "tier": "Recall",
+    "question": "What is the difference between Oracle Active Data Guard and standard physical standby? What is the difference between Oracle Active Data Guard and standard physical standby?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "id": "opt_1",
+        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+        "id": "opt_2",
+        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable.",
+        "id": "opt_3",
+        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
         "is_correct": false
       }
     ],
-    "explanation": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Explain the three Data Guard protection modes: Maximum Protection, Maximum Availability, and Maximum Performance.? Explain the three Data Guard protection modes: Maximum Protection, Maximum Availability, and Maximum Performance.",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary ",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary impact.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_rac_engine.py`, what is the exact evaluated result of:\n\n```python\nblk.data[\"bal\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "5000",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "5001",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "4999",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "10000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `5000` as verified in test suite `test_oracle_rac_engine.py`.",
+    "lesson_ref": "test_oracle_rac_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_ha_live.py`, what is the exact evaluated result of:\n\n```python\ntransferred_block.data[\"balance\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "500",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "501",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "499",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1000",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `500` as verified in test suite `test_oracle_ha_live.py`.",
+    "lesson_ref": "test_oracle_ha_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_rac_engine.py`, what is the exact evaluated result of:\n\n```python\ndg.standby_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"DB_LON_PRI\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DB_LON_PRI\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"DB_LON_PRI\"` as verified in test suite `test_oracle_rac_engine.py`.",
+    "lesson_ref": "test_oracle_rac_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_rac_engine.py`, what is the exact evaluated result of:\n\n```python\ndg.primary_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"DB_DUB_STB\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"DB_DUB_STB\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"DB_DUB_STB\"` as verified in test suite `test_oracle_rac_engine.py`.",
+    "lesson_ref": "test_oracle_rac_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Oracle RAC DataGuard GoldenGate, an engineer observes:\n\"System fault during operation: Interconnect Saturation Due to Unpartitioned Workload\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.\n\nFix Resolution:\nPartition workloads using dedicated Oracle Services (SRVCTL) to direct specific account partitions to designated RAC instances.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

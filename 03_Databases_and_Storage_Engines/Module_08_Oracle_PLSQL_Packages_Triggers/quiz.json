@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL?",
-    "category": "What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL?",
+    "tier": "Recall",
+    "question": "What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL? What is the purpose of PRAGMA AUTONOMOUSTRANSACTION in PL/SQL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Row triggers cannot query the table being modified.",
+        "id": "opt_1",
+        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
+        "id": "opt_2",
+        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary ",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
+        "id": "opt_3",
+        "text": "Pre-filtering filters metadata before vector traversal; post-filtering searches vectors first and then discards non-matching metadata (risking returning fewer than K items).",
         "is_correct": false
       }
     ],
-    "explanation": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it?",
-    "category": "Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it?",
+    "tier": "Recall",
+    "question": "Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it? Why does an ORA-04091 'mutating table' error occur, and how do Compound Triggers solve it?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Row triggers cannot query the table being modified.",
+        "id": "opt_corr",
+        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+        "id": "opt_1",
+        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
+        "id": "opt_2",
         "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
+        "id": "opt_3",
+        "text": "Updates write to the database and invalidate (delete) the cached key; subsequent reads experience a cache miss and fetch fresh data.",
         "is_correct": false
       }
     ],
-    "explanation": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does FORALL bulk binding improve DML performance compared to standard FOR loops?",
-    "category": "How does FORALL bulk binding improve DML performance compared to standard FOR loops?",
+    "tier": "Recall",
+    "question": "How does FORALL bulk binding improve DML performance compared to standard FOR loops? How does FORALL bulk binding improve DML performance compared to standard FOR loops?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+        "id": "opt_1",
+        "text": "Writes are immediately appended to an on-disk sequential CommitLog before being stored in in-memory MemTables.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Row triggers cannot query the table being modified.",
+        "id": "opt_2",
+        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
+        "id": "opt_3",
+        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
         "is_correct": false
       }
     ],
-    "explanation": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What is the difference between a PL/SQL Package Specification and Package Body? What is the difference between a PL/SQL Package Specification and Package Body?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Standard CREATE INDEX locks the table against all writes; CONCURRENTLY runs two scans without blocking concurrent DML.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: The specification declares public constants, types, and procedure signatures; the body contains the private implementation details and logic.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_plsql_engine.py`, what is the exact evaluated result of:\n\n```python\npkg.accounts[\"ACC_ALICE\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1000.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1000.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2000.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1000.0` as verified in test suite `test_oracle_plsql_engine.py`.",
+    "lesson_ref": "test_oracle_plsql_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_plsql_live.py`, what is the exact evaluated result of:\n\n```python\ninserted\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "25",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "26",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "24",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "50",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `25` as verified in test suite `test_oracle_plsql_live.py`.",
+    "lesson_ref": "test_oracle_plsql_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_plsql_engine.py`, what is the exact evaluated result of:\n\n```python\nupdated_count\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "6",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `3` as verified in test suite `test_oracle_plsql_engine.py`.",
+    "lesson_ref": "test_oracle_plsql_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_plsql_engine.py`, what is the exact evaluated result of:\n\n```python\npkg.accounts[\"ACC_BOB\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "initial_bob_balance",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `initial_bob_balance` as verified in test suite `test_oracle_plsql_engine.py`.",
+    "lesson_ref": "test_oracle_plsql_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Oracle PLSQL Packages Triggers, an engineer observes:\n\"System fault during operation: Audit Log Erased When Financial Transaction Fails\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The security audit logging procedure was declared without PRAGMA AUTONOMOUSTRANSACTION. When the parent transfer rolls back due to insufficient funds, the audit record is rolled back with it.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: The security audit logging procedure was declared without PRAGMA AUTONOMOUSTRANSACTION. When the parent transfer rolls back due to insufficient funds, the audit record is rolled back with it.\n\nFix Resolution:\nAdd PRAGMA AUTONOMOUSTRANSACTION; and an explicit COMMIT; inside the audit logger procedure body.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

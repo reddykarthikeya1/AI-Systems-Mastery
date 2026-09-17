@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is Index-Free Adjacency in graph databases?",
-    "category": "What is Index-Free Adjacency in graph databases?",
+    "tier": "Recall",
+    "question": "What is Index-Free Adjacency in graph databases? What is Index-Free Adjacency in graph databases?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
+        "id": "opt_1",
+        "text": "Redis executes the entire Lua script without interleaving any other command in its single-threaded event loop.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+        "id": "opt_2",
+        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+        "id": "opt_3",
+        "text": "A real-time pub/sub API using the replica set oplog to notify applications of document inserts, updates, and deletes.",
         "is_correct": false
       }
     ],
-    "explanation": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does Cypher's declarative pattern matching syntax model relationships?",
-    "category": "How does Cypher's declarative pattern matching syntax model relationships?",
+    "tier": "Recall",
+    "question": "How does Cypher's declarative pattern matching syntax model relationships? How does Cypher's declarative pattern matching syntax model relationships?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+        "id": "opt_1",
+        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+        "id": "opt_2",
+        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+        "id": "opt_3",
+        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
         "is_correct": false
       }
     ],
-    "explanation": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "Why are graph databases significantly faster than relational databases for deep multi-hop queries?",
-    "category": "Why are graph databases significantly faster than relational databases for deep multi-hop queries?",
+    "tier": "Recall",
+    "question": "Why are graph databases significantly faster than relational databases for deep multi-hop queries? Why are graph databases significantly faster than relational databases for deep multi-hop queries?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+        "id": "opt_1",
+        "text": "The ratio of physical bytes written to storage media relative to logical bytes written by the user application.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
+        "id": "opt_2",
+        "text": "It automatically detects cycles in its wait-for graph and rolls back the transaction with the fewest undo log records (least expensive to undo).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+        "id": "opt_3",
+        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
         "is_correct": false
       }
     ],
-    "explanation": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What does the shortestPath() function in Cypher compute? What does the shortestPath() function in Cypher compute?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(bob.incoming)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_graph_engine.py`.",
+    "lesson_ref": "test_graph_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_graph_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(alice.outgoing)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_graph_engine.py`.",
+    "lesson_ref": "test_graph_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_neo4j_live.py`, what is the exact evaluated result of:\n\n```python\nlen(node1.outgoing)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_neo4j_live.py`.",
+    "lesson_ref": "test_neo4j_live.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_graph_engine.py`, what is the exact evaluated result of:\n\n```python\ndest.node_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "\"acc2\"",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "\"ACC2\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "None",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `\"acc2\"` as verified in test suite `test_graph_engine.py`.",
+    "lesson_ref": "test_graph_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Neo4j Graph Databases Cypher, an engineer observes:\n\"System fault during operation: Cartesian Product OutOfMemoryError in Cypher Path Match\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The security audit logging procedure was declared without PRAGMA AUTONOMOUSTRANSACTION. When the parent transfer rolls back due to insufficient funds, the audit record is rolled back with it.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.\n\nFix Resolution:\nRewrite query to match explicit graph relationships or use an index-supported subquery.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

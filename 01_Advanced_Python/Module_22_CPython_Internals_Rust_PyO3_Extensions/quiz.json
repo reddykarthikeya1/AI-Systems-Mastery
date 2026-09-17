@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What two header fields exist in every single object allocated on the CPython heap?",
-    "category": "The PyObject Struct:",
+    "tier": "Recall",
+    "question": "The PyObject Struct: What two header fields exist in every single object allocated on the CPython heap?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "- obrefcnt: 64-bit integer tracking reference count.",
+        "id": "opt_corr",
+        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+        "id": "opt_1",
+        "text": "Browsers block web apps from fetching data from external domains unless the API server explicitly sends Access-Control-Allow-Origin headers.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
+        "id": "opt_2",
+        "text": "It monitors file size (maxBytes) and automatically closes, renames, and archives older logs up to a fixed count (backupCount), deleting the oldest backup to keep total disk usage strictly bounded.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
+        "id": "opt_3",
+        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
         "is_correct": false
       }
     ],
-    "explanation": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: - obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "How does ctypes.cdll.LoadLibrary() interact with OS shared libraries (.dll / .so)?",
-    "category": "Dynamic Linking:",
+    "tier": "Recall",
+    "question": "Dynamic Linking: How does ctypes.cdll.LoadLibrary() interact with OS shared libraries (.dll / .so)?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- obrefcnt: 64-bit integer tracking reference count.",
+        "id": "opt_1",
+        "text": "BM25 excels at exact keyword and SKU matching, while Vector Search excels at conceptual paraphrasing; combining both catches both exact and semantic matches.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
+        "id": "opt_2",
+        "text": "Every instance of the parent class will share and overwrite the exact same single variable, creating a critical state contamination bug.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
+        "id": "opt_3",
+        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
         "is_correct": false
       }
     ],
-    "explanation": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "What major memory safety and concurrency advantages does Rust have over C when writing Python extensions?",
-    "category": "Rust vs C for Extensions:",
+    "tier": "Recall",
+    "question": "Rust vs C for Extensions: What major memory safety and concurrency advantages does Rust have over C when writing Python extensions?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "- obrefcnt: 64-bit integer tracking reference count.",
+        "id": "opt_1",
+        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+        "id": "opt_2",
+        "text": "uv and ruff are written in Rust and compiled to native machine code. They utilize multi-threaded file parsing, direct AST memory representations, global package caching with copy-on-write/reflinks, and zero-copy data structures, avoiding Py",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python.",
+        "id": "opt_3",
+        "text": "It defines multi-container applications (API + PostgreSQL + Redis + Prometheus) in a single declarative YAML file, configuring shared internal networks and storage volumes.",
         "is_correct": false
       }
     ],
-    "explanation": "Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
-    "lesson_ref": "10_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Rust eliminates NULL pointer dereferences, buffer overflows, use-after-free bugs, and data races at compile time via its borrow checker.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "PyO3 & Maturin: What are the respective roles of the PyO3 crate and the Maturin build tool?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "- PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python. - Maturin: Modern build tool and wheel packager for Rust-based Python extensions.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "The exp claim (UNIX timestamp). When expired, jwt.decode() raises jwt.ExpiredSignatureError and rejects the request.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: - PyO3: Rust crate providing ergonomic macros ([pyfunction], [pymodule]) to bind Rust types to Python. - Maturin: Modern build tool and wheel packager for Rust-based Python extensions.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_native_accelerator.py`, what is the exact evaluated result of:\n\n```python\nPY.fnv1a_64(b\"\")\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0xCBF29CE484222325",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0xCBF29CE484222325` as verified in test suite `test_native_accelerator.py`.",
+    "lesson_ref": "test_native_accelerator.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_native_accelerator.py`, what is the exact evaluated result of:\n\n```python\nstats.mean\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(5.0)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(5.0)` as verified in test suite `test_native_accelerator.py`.",
+    "lesson_ref": "test_native_accelerator.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_native_accelerator.py`, what is the exact evaluated result of:\n\n```python\nrs.variance\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "pytest.approx(py.variance)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "\"Learn uv\"",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "\"Explore fast package manager\"",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `pytest.approx(py.variance)` as verified in test suite `test_native_accelerator.py`.",
+    "lesson_ref": "test_native_accelerator.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_native_accelerator.py`, what is the exact evaluated result of:\n\n```python\nPY.count_primes(0)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_native_accelerator.py`.",
+    "lesson_ref": "test_native_accelerator.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in CPython Internals Rust PyO3 Extensions, an engineer observes:\n\"GIL Starvation of concurrent threads: Native CPU loops without py.allowthreads hold Python's Global Interpreter Lock, freezing GUI, heartbeat, and network threads.\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "PyO3 functions execute while holding the GIL unless explicitly released using py.allowthreads(|| { ... }).",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: PyO3 functions execute while holding the GIL unless explicitly released using py.allowthreads(|| { ... }).\n\nFix Resolution:\nRelease the GIL around pure CPU-bound Rust logic:",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

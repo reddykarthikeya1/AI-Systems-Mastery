@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering?",
-    "category": "What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering?",
+    "tier": "Recall",
+    "question": "What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering? What is the formal difference between RANK() and DENSERANK() when ties occur in window ordering?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "RANK() leaves gaps in the sequence following ties (e.",
+        "id": "opt_corr",
+        "text": "RANK() leaves gaps in the sequence following ties (e.g. 1, 2, 2, 4), while DENSERANK() leaves no gaps (e.g. 1, 2, 2, 3).",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
+        "id": "opt_1",
+        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
+        "id": "opt_2",
+        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+        "id": "opt_3",
+        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
         "is_correct": false
       }
     ],
-    "explanation": "RANK() leaves gaps in the sequence following ties (e.g. 1, 2, 2, 4), while DENSERANK() leaves no gaps (e.g. 1, 2, 2, 3).",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: RANK() leaves gaps in the sequence following ties (e.g. 1, 2, 2, 4), while DENSERANK() leaves no gaps (e.g. 1, 2, 2, 3).",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL?",
-    "category": "Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL?",
+    "tier": "Recall",
+    "question": "Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL? Why does WHERE id NOT IN (SELECT foreignid FROM t) evaluate to 0 rows if any foreignid is NULL?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
+        "id": "opt_corr",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "RANK() leaves gaps in the sequence following ties (e.",
+        "id": "opt_1",
+        "text": "gc cr request and gc buffer busy acquire wait events in AWR reports.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
+        "id": "opt_2",
+        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+        "id": "opt_3",
+        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
         "is_correct": false
       }
     ],
-    "explanation": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does a Common Table Expression (CTE) differ from a subquery in execution optimization?",
-    "category": "How does a Common Table Expression (CTE) differ from a subquery in execution optimization?",
+    "tier": "Recall",
+    "question": "How does a Common Table Expression (CTE) differ from a subquery in execution optimization? How does a Common Table Expression (CTE) differ from a subquery in execution optimization?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "RANK() leaves gaps in the sequence following ties (e.",
+        "id": "opt_1",
+        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN.",
+        "id": "opt_2",
+        "text": "A contiguous set of data blocks allocated within a datafile to form segments (tables, indexes).",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+        "id": "opt_3",
+        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
         "is_correct": false
       }
     ],
-    "explanation": "In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
-    "lesson_ref": "06_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: In modern query planners, non-recursive CTEs can be inlined or materialized as temp tables, whereas subqueries are typically inlined.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "Explain how RECURSIVE CTE termination works.? Explain how RECURSIVE CTE termination works.",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "For unit vectors, the dot product is mathematically identical to cosine similarity: $\\vec{u} \\cdot \\vec{v} = \\cos(\\theta)$.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sql_live.py`, what is the exact evaluated result of:\n\n```python\nnorth_rows[1][\"prev_day_amount\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1200.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1200.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2400.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1200.0` as verified in test suite `test_sql_live.py`.",
+    "lesson_ref": "test_sql_live.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_sql_live.py`, what is the exact evaluated result of:\n\n```python\nround(north_rows[2][\"moving_avg_3day\"], 2)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "round(3800 / 3",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "[]",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `round(3800 / 3` as verified in test suite `test_sql_live.py`.",
+    "lesson_ref": "test_sql_live.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_analytics_suite.py`, what is the exact evaluated result of:\n\n```python\ndiana[\"total_spent\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "0.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0.0` as verified in test suite `test_analytics_suite.py`.",
+    "lesson_ref": "test_analytics_suite.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_analytics_suite.py`, what is the exact evaluated result of:\n\n```python\ndaily[2][\"rolling_3day_avg\"]\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1050.0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1050.5",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "2100.0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0.0",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1050.0` as verified in test suite `test_analytics_suite.py`.",
+    "lesson_ref": "test_analytics_suite.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Modern SQL Mastery Advanced Queries, an engineer observes:\n\"System fault during operation: Running Total Generates Identical Duplicate Numbers on Duplicate Dates\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.\n\nFix Resolution:\nChange window frame to: ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW.",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

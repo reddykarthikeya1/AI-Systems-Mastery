@@ -10,6 +10,36 @@ Distributed consensus guarantees linearizable state machine replication across s
 ---
 
 ## 🏛️ System Architecture Blueprint
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: RAFT_QUORUM_PARTITION START -->
+
+```mermaid
+graph TD
+  %% Raft Cluster Network Partition & Quorum Election Dynamics
+  %% Generated from distributed consensus state simulation
+  classDef leader fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#ffffff;
+  classDef follower fill:#18181b,stroke:#3f3f46,stroke-width:1px,color:#f4f4f5;
+  classDef candidate fill:#78350f,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+  classDef isolated fill:#450a0a,stroke:#ef4444,stroke-width:1px,color:#fca5a5;
+
+  subgraph Majority_Partition ["Majority Partition (3 of 5 Nodes — Can Establish Quorum >= 3)"]
+    N1["Node 1: Leader<br/>Term: 2<br/>Votes: 3/5 (Quorum Met)"]:::leader
+    N2["Node 2: Follower<br/>Term: 2<br/>VotedFor: Node 1"]:::follower
+    N3["Node 3: Follower<br/>Term: 2<br/>VotedFor: Node 1"]:::follower
+    N1 <==>|Heartbeat & AppendEntries| N2
+    N1 <==>|Heartbeat & AppendEntries| N3
+  end
+
+  subgraph Minority_Partition ["Minority Partition (2 of 5 Nodes — CANNOT Form Quorum)"]
+    N4["Node 4: Candidate<br/>Term: 3 (Repeated Timeouts)<br/>Votes: 2/5 (REJECTED)"]:::candidate
+    N5["Node 5: Follower<br/>Term: 3<br/>VotedFor: Node 4"]:::isolated
+    N4 -.->|Votes: 2 (Need 3)| N5
+  end
+
+  Majority_Partition x--x|NETWORK PARTITION CUT (All RPCs Drop)| Minority_Partition
+```
+
+<!-- GENERATED_ALGORITHM_DIAGRAM: RAFT_QUORUM_PARTITION END -->
 ```mermaid
 flowchart TD
     Top["Incoming Requests & Events"] --> Ingress["Ingress & Control Plane<br/>• Request Validation & Auth<br/>• Partition / Routing Dispatch<br/>• In-Memory Caching & Buffering"]

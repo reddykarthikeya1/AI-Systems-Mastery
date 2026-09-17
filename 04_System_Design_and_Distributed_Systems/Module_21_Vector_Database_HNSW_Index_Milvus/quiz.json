@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "p99 Request Latency (Alert if p99 > 200ms for 3 consecutive minutes)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Vector Database HNSW Index Milvus, what core system invariant does '\ud83c\udfaf Executive Overview & Production Relevance' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfaf Executive Overview & Production Relevance.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops. Moving data across networks incurs a 10,000x to 1,000,000x latency penalty compared to in-memory lookups. The design maximizes local memory batching while deferring or pipelining I/O.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfaf Executive Overview & Production Relevance' in Vector Database HNSW Index Milvus.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 2,
-    "question": "Error Rate (Alert if HTTP 5xx or unhandled exceptions exceed 0.5% of total requests)",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Vector Database HNSW Index Milvus, what core system invariant does '\ud83c\udfdb\ufe0f System Architecture Blueprint' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83c\udfdb\ufe0f System Architecture Blueprint.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes. Fencing tokens or epoch numbers reject stale writes from deposed leaders to eliminate split-brain hazards.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83c\udfdb\ufe0f System Architecture Blueprint' in Vector Database HNSW Index Milvus.",
+    "lesson_ref": "01_README.md"
   },
   {
     "id": 3,
-    "question": "Queue Lag / In-Flight Tasks (Alert if queue residency exceeds safety thresholds) Answer 7: Rookie Anti-Patterns A fatal anti-pattern is unbounded in-memory queuing or missing timeout budgets on remote RPC calls. When a downstream service slows down, upstream memory explodes, triggering kernel OOM-killer termination. Answer 8: Tenant Security Isolation is enforced via cryptographically signed JWT/HMAC tokens, per-tenant rate-limiting buckets, and partition-keyed database sharding to prevent cross-tenant data leakage. Answer 9: Trade-Off Analysis Simpler monolithic or single-node designs are easier to reason about, test, and deploy. However, when scale exceeds vertical hardware limits (CPU/RAM/IOPS), distributed partitioning becomes mandatory despite operational complexity. Answer 10: Zero-Downtime Rollouts Upgrades utilize Blue/Green or Canary deployments behind a Layer 7 load balancer. Database schema changes use the Expand/Contract (Parallel Run) pattern to ensure backward and forward compatibility.",
-    "category": "Systems Foundations",
+    "tier": "Recall",
+    "question": "In Vector Database HNSW Index Milvus, what core system invariant does '\ud83e\uddee Theoretical Principles & Mathematical Models' establish?",
+    "category": "Recall: Architecture",
     "options": [
       {
-        "id": "opt_correct",
-        "text": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \ud83e\uddee Theoretical Principles & Mathematical Models.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "Mechanical Constraints Distributed systems in this domain must balance RAM cache locality against disk durability and network RPC hops.",
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "Partition Handling By employing heartbeats, lease timeouts, and quorum voting ($Q = \\lfloor N/2 \\rfloor + 1$), the system isolates failed nodes.",
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "Under Production Load In distributed and high-concurrency environments, naive assumptions about deterministic scheduling, network reliability, or hardware uniformity break down.",
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
         "is_correct": false
       }
     ],
-    "explanation": "Concurrency Control Using atomic compare-and-swap (CAS), distributed lock leases with auto-expiration TTLs, or optimistic concurrency control (OCC) with version numbers, the system ensures linearizable execution without blocking server threads.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification detail defined under '\ud83e\uddee Theoretical Principles & Mathematical Models' in Vector Database HNSW Index Milvus.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "In Vector Database HNSW Index Milvus, what core system invariant does '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' establish?",
+    "category": "Recall: Architecture",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Enforces foundational invariants and design constraints specified in \u2696\ufe0f Architectural Trade-Off Analysis Matrix.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Defines optional telemetry hooks disabled by default in production deployments.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Executes an unconditional blocking flush to persistent storage on each invocation.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Delegates all concurrency arbitration directly to kernel-level spinlocks.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification detail defined under '\u2696\ufe0f Architectural Trade-Off Analysis Matrix' in Vector Database HNSW Index Milvus.",
+    "lesson_ref": "01_README.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_database_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(hnsw_res)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "k",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `k` as verified in test suite `test_vector_database_engine.py`.",
+    "lesson_ref": "test_vector_database_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_database_engine.py`, what is the exact evaluated result of:\n\n```python\nqv.dim\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "len(vec)",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `len(vec)` as verified in test suite `test_vector_database_engine.py`.",
+    "lesson_ref": "test_vector_database_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_database_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(res)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "1",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "2",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `1` as verified in test suite `test_vector_database_engine.py`.",
+    "lesson_ref": "test_vector_database_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_vector_database_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(flat_res)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "k",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "11574.07",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "28935.19",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "115740.74",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `k` as verified in test suite `test_vector_database_engine.py`.",
+    "lesson_ref": "test_vector_database_engine.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Vector Database HNSW Index Milvus, an engineer observes:\n\"System fault during operation: HNSW Graph Disconnection Isolates Vector Subsets from Search\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Cache-aside without request coalescing allows all concurrent callers to experience a cache miss at the exact same millisecond and hammer the backend. ---",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Ingesting arbitrary user uploads without strict chunk size limits and streaming piping causes memory consumption to explode. ---",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---\n\nFix Resolution:\n---",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]

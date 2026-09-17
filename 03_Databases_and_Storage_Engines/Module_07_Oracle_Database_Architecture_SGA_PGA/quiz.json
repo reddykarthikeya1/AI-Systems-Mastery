@@ -1,89 +1,272 @@
 [
   {
     "id": 1,
-    "question": "What is the difference between the System Global Area (SGA) and Program Global Area (PGA) in Oracle?",
-    "category": "What is the difference between the System Global Area (SGA) and Program Global Area (PGA) in Oracle?",
+    "tier": "Recall",
+    "question": "What is the difference between the System Global Area (SGA) and Program Global Area (PGA) in Oracle? What is the difference between the System Global Area (SGA) and Program Global Area (PGA) in Oracle?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+        "id": "opt_1",
+        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
+        "id": "opt_2",
+        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+        "id": "opt_3",
+        "text": "Inserting single rows or micro-batches faster than background compaction can merge them.",
         "is_correct": false
       }
     ],
-    "explanation": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 2,
-    "question": "Explain the difference between a Hard Parse and a Soft Parse in Oracle's Library Cache.",
-    "category": "Explain the difference between a Hard Parse and a Soft Parse in Oracle's Library Cache.?",
+    "tier": "Recall",
+    "question": "Explain the difference between a Hard Parse and a Soft Parse in Oracle's Library Cache.? Explain the difference between a Hard Parse and a Soft Parse in Oracle's Library Cache.",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
+        "id": "opt_1",
+        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
+        "id": "opt_2",
+        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+        "id": "opt_3",
+        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
         "is_correct": false
       }
     ],
-    "explanation": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
   },
   {
     "id": 3,
-    "question": "How does the Oracle Database Buffer Cache touch-count algorithm work?",
-    "category": "How does the Oracle Database Buffer Cache touch-count algorithm work?",
+    "tier": "Recall",
+    "question": "How does the Oracle Database Buffer Cache touch-count algorithm work? How does the Oracle Database Buffer Cache touch-count algorithm work?",
+    "category": "Recall: Architecture Concept",
     "options": [
       {
-        "id": "opt_correct",
+        "id": "opt_corr",
         "text": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
         "is_correct": true
       },
       {
-        "id": "opt_dist_1",
-        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
+        "id": "opt_1",
+        "text": "It routes read-heavy analytical queries to secondary replicas, reserving the primary replica for transactional writes.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_2",
-        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+        "id": "opt_2",
+        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
         "is_correct": false
       },
       {
-        "id": "opt_dist_3",
-        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+        "id": "opt_3",
+        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
         "is_correct": false
       }
     ],
-    "explanation": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
-    "lesson_ref": "05_SELF_ASSESSMENT_AND_CHALLENGES.md"
+    "explanation": "Specification answer: It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 4,
+    "tier": "Recall",
+    "question": "What does the Log Writer (LGWR) process do when a transaction executes COMMIT? What does the Log Writer (LGWR) process do when a transaction executes COMMIT?",
+    "category": "Recall: Architecture Concept",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "For high-volume multi-node distributed systems, network file systems (NFS), or write workloads exceeding hundreds of concurrent writers.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Stages like $sort and $group cannot exceed 100MB RAM unless {allowDiskUse: true} is enabled to spill to temporary files.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Specification answer: LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+    "lesson_ref": "SELF_ASSESSMENT_AND_CHALLENGES.md"
+  },
+  {
+    "id": 5,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_sga_engine.py`, what is the exact evaluated result of:\n\n```python\nlen(redo._buffer)\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_oracle_sga_engine.py`.",
+    "lesson_ref": "test_oracle_sga_engine.py"
+  },
+  {
+    "id": 6,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_sga_engine.py`, what is the exact evaluated result of:\n\n```python\nts.high_water_mark_block\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "12",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "13",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "11",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "24",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `12` as verified in test suite `test_oracle_sga_engine.py`.",
+    "lesson_ref": "test_oracle_sga_engine.py"
+  },
+  {
+    "id": 7,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_sga_engine.py`, what is the exact evaluated result of:\n\n```python\next2.start_block_id\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "9",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "10",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "8",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "18",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `9` as verified in test suite `test_oracle_sga_engine.py`.",
+    "lesson_ref": "test_oracle_sga_engine.py"
+  },
+  {
+    "id": 8,
+    "tier": "Apply",
+    "question": "Given the implementation in `test_oracle_live.py`, what is the exact evaluated result of:\n\n```python\ncache.soft_parses\n```",
+    "category": "Apply: Code Execution",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "0",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "1",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "0",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "1",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Evaluates to `0` as verified in test suite `test_oracle_live.py`.",
+    "lesson_ref": "test_oracle_live.py"
+  },
+  {
+    "id": 9,
+    "tier": "Diagnose",
+    "question": "During triage in Oracle Database Architecture SGA PGA, an engineer observes:\n\"System fault during operation: ORA-04031 Shared Pool Out of Memory via Literal SQL\".\nWhat is the verified root cause?",
+    "category": "Diagnose: Bug Triage",
+    "options": [
+      {
+        "id": "opt_corr",
+        "text": "Application constructs SQL dynamically using f-strings (SELECT FROM emp WHERE id = {empid}), creating 100,000 unique unsharable execution plans in the Library Cache.",
+        "is_correct": true
+      },
+      {
+        "id": "opt_1",
+        "text": "Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_2",
+        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.",
+        "is_correct": false
+      }
+    ],
+    "explanation": "Root Cause: Application constructs SQL dynamically using f-strings (SELECT FROM emp WHERE id = {empid}), creating 100,000 unique unsharable execution plans in the Library Cache.\n\nFix Resolution:\nUse bind variables: cur.execute('SELECT FROM emp WHERE id = :id', {'id': empid}).",
+    "lesson_ref": "debug_lab/ANSWERS.md"
   }
 ]
