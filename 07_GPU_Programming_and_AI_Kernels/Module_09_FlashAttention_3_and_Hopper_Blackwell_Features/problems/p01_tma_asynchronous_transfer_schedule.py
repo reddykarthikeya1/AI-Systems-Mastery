@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Schedule double-buffering pipeline stages for asynchronous TMA loads.
 
+Example:
+    >>> tma_asynchronous_transfer_schedule(3)
+    [('LOAD', 0, 0), ('LOAD', 1, 1), ('COMPUTE', 0, 0), ('LOAD', 2, 0), ('COMPUTE', 1, 1), ('COMPUTE', 2, 0)]
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Double-buffering means the load for tile `i` is issued while
+        the compute for tile `i - 1` is still using the *other* buffer, so
+        loads and computes for adjacent tiles interleave rather than run
+        one-fully-after-another.
+    Hint 2: Emit the schedule as one leading `('LOAD', 0, 0)`, then for each
+        `i` from 1 to `total_tiles - 1` emit `('LOAD', i, i % 2)` followed
+        by `('COMPUTE', i - 1, (i - 1) % 2)`, and finish with one trailing
+        `('COMPUTE', total_tiles - 1, (total_tiles - 1) % 2)`.
+    Hint 3: The buffer id is just the tile id mod 2 (only two physical
+        buffers exist, so tile `i` and tile `i - 2` share one), and
+        `total_tiles <= 0` must return an empty schedule rather than
+        raising or emitting a lone LOAD with no matching COMPUTE.
 """
 
 from __future__ import annotations

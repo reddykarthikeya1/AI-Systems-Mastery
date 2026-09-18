@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Because they can always be rebuilt from scratch by replaying the transactional source of truth event log.",
+        "text": "One node is elected as a coordinator for the cluster's lifetime, and only that node can accept writes, while all others serve as read replicas.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed t",
+        "text": "Every node shares the same physical disk array over the network, so 'shared-nothing' actually refers to sharing no application logic, only storage.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+        "text": "Nodes are arranged in a strict primary-secondary hierarchy where the primary replicates synchronously to secondaries, and a secondary is promoted only when the primary is manually taken offline.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A Generalized Inverted Index (GIN) using either jsonbops or jsonbpathops.",
+        "text": "R + W = N, where equality rather than a strict inequality is what guarantees every read overlaps with the most recent write.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "text": "R x W >= N, where the product of read and write consistency levels must meet or exceed the replication factor.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Dirty Read: reading uncommitted changes; Non-Repeatable Read: re-reading a row returns modified values; Phantom Read: re-executing range query returns newly inserted rows.",
+        "text": "N - R - W > 0, which guarantees strong consistency only when the replication factor exceeds the combined read and write levels.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It executes multiple aggregation pipelines simultaneously within a single stage on the same input document stream.",
+        "text": "The Partition Key determines the on-disk sort order of rows, while the Clustering Key determines which physical node stores the partition.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+        "text": "Both the Partition Key and Clustering Key together determine which node stores a row; there is no separate concept of sort order within a partition in Cassandra.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A mapping from unique terms (words) to postings lists containing document IDs and token positions where the terms occur.",
+        "text": "The Clustering Key is only used for secondary indexes and has no effect on either node placement or row ordering within the primary table.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "text": "Cassandra queues conflicting writes and applies them in the order they arrive at the coordinator node, using server-side arrival time rather than any client timestamp.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "text": "Cassandra merges conflicting writes field by field, keeping whichever value is numerically larger for each column, similar to a CRDT counter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It iteratively calculates the probability that a random walk across edges will land on a specific node.",
+        "text": "Cassandra rejects the second of two concurrent writes to the same row outright, returning a write conflict error to the client that must retry.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "stale_data",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "repaired_data",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.",
+        "text": "gc_grace_seconds was set to 0 on the table, so tombstones are compacted away immediately, and the ReadFailure is actually caused by reading data that was deleted before replicas could reconcile.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "text": "The application uses TTL-based expiration exclusively and never issues an explicit DELETE, so the tombstones are being generated by the compaction strategy itself rather than by application writes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "A single wide partition holds all queue items under one partition key, and the ReadFailure threshold was reached by the sheer number of live (non-deleted) columns in that partition, unrelated to any deletes.",
         "is_correct": false
       }
     ],

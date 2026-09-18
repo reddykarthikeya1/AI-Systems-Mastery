@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "start - 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "start // 2",
         "is_correct": false
       }
     ],
@@ -52,7 +52,7 @@
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "0.4",
         "is_correct": false
       }
     ],
@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "0.6",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "RequestStatus.WAITING",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "RequestStatus.RUNNING",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "RequestStatus.PREEMPTED",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "text": "The scheduler batched requests of wildly different sequence lengths together, so padding the shorter sequences up to the batch max length wasted compute, not memory allocation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "If all nodes share the same election timeout, they become Candidates simultaneously upon leader failure, split votes, and repeat indefinitely. ---",
+        "text": "PagedAttention's block size was set far larger than the model's typical generation length, so most of the last allocated block still went unused per request.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In HTTP/2 over TCP, all virtual streams share a single TCP sequence space. If packet N is dropped, the OS TCP receiver refuses to deliver packets N+1, N+2 to application space until packet N is retransmitted, stalling all streams. ---",
+        "text": "KV-cache blocks were correctly paged, but the eviction policy never freed blocks from finished requests, so completed requests kept occupying memory indefinitely.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By pre-allocating the maximum possible KV-cache size for every request up front, on the assumption that reserving the worst case in advance is the safest way to bound memory.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By running every inference request in its own isolated CUDA stream, without checking whether GPU memory itself is shared and bounded across all of them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the batch size until GPU utilization looks maximal, without validating that the KV-cache blocks required actually fit in available VRAM.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more GPU replicas to serve more concurrent requests, without validating that each replica's own KV-cache block pool stays within its memory budget.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying an out-of-memory request immediately on the same GPU, instead of checking whether finished requests blocks were actually freed back to the pool.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By statically reserving the maximum context length worth of memory per request, trusting that overprovisioning alone prevents any runtime allocation failure.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By pre-allocating the maximum possible KV-cache size for every request up front, on the assumption that reserving the worst case in advance is the safest way to bound memory.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By running every inference request in its own isolated CUDA stream, without checking whether GPU memory itself is shared and bounded across all of them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the batch size until GPU utilization looks maximal, without validating that the KV-cache blocks required actually fit in available VRAM.",
         "is_correct": false
       }
     ],

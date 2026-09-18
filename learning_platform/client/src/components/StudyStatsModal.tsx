@@ -20,7 +20,7 @@ export const StudyStatsModal: React.FC<StudyStatsModalProps> = ({
 
   if (!isOpen) return null;
 
-  const streak = progress.study_streak_days || 1;
+  const streak = progress.study_streak_days || 0;
   const totalCompleted = progress.completed_lessons.length;
   const totalCurriculumLessons = 1296;
   const curriculumPercentage = Math.round((totalCompleted / totalCurriculumLessons) * 100);

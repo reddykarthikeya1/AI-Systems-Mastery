@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python uses short-circuit evaluation. In an and expression, if the left operand (x != 0) is False, the entire condition is guaranteed to be False, so Python immediately stops and never evaluates (100 / x) > 5, preventing the division by zer",
+        "text": "Nominal subtyping matches types purely by their method signatures without any inheritance check, while Structural subtyping (Protocol) requires an explicit class Dog(Animal): declaration -- the two are reversed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "text": "Both nominal and structural subtyping in Python require explicit inheritance; typing.Protocol only changes how mypy formats its error messages, not how type compatibility is determined.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "super() dynamically follows the Method Resolution Order (MRO) chain of the self instance, which enables clean cooperative multiple inheritance.",
+        "text": "Nominal subtyping is enforced only at runtime via isinstance() checks, while structural subtyping (Protocol) is enforced only by the CPython bytecode compiler before the module is even imported.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Pre-commit hooks run locally in milliseconds on your machine before a commit is created. They catch linting errors, formatting inconsistencies, and broken syntax immediately, preventing broken commits from reaching GitHub and wasting CI com",
+        "text": "TypeVar(\"T\") and Generic[T] force every instance of the class to use exactly the same concrete type at runtime, raising a TypeError if two different types are ever used across separate instantiations.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Because source code changes frequently while dependencies change rarely. Placing dependencies first allows Docker to reuse cached layers, cutting build times from minutes to seconds.",
+        "text": "They exist purely for documentation purposes; mypy and Pyright ignore TypeVar and Generic entirely and treat every generic parameter as Any regardless of how it's declared.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The API schema specifies available tools. The LLM is trained to emit toolcalls JSON payloads matching the schema when a query requires external data or action.",
+        "text": "TypeVar(\"T\") creates a new runtime subclass for every distinct type it's used with, similar to C++ template instantiation, generating a separate compiled class per type.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Because modern GPUs can compute billions of SHA-256 hashes per second. Algorithms like Bcrypt and Argon2 are intentionally compute- and memory-intensive (Key Stretching) to make brute-forcing mathematically infeasible.",
+        "text": "ParamSpec works by re-executing the decorated function's source code through the ast module at import time to extract its parameter names as plain strings.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
+        "text": "ParamSpec discards the original function's parameter types entirely and replaces them with *args: Any, **kwargs: Any, trading type safety for decorator flexibility.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Closures look up free variables at the time the function is called (late binding), not at definition time. When called, the loop has already completed with i = 2. Fix it using default parameter evaluation: [lambda x=i: x for i in range(3)].",
+        "text": "ParamSpec only captures positional arguments; keyword arguments passed to a ParamSpec-typed decorator are always silently ignored by the type checker.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
+        "text": "py.typed is a runtime configuration file read by the Python interpreter itself to enable stricter type coercion rules when the package's functions are called.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
+        "text": "py.typed disables type checking for the package entirely, telling Mypy and Pyright to treat every import from it as Any without inspecting its annotations.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Filesystem renames are atomic single-step operations in modern operating systems (NTFS, ext4, APFS). The target file is never left half-written; it either remains 100% old version or becomes 100% new version.",
+        "text": "py.typed is required only for packages published with a compiled C extension; pure-Python packages are statically analyzed automatically without needing the marker file.",
         "is_correct": false
       }
     ],
@@ -132,7 +132,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"HEALTHY\"",
+        "text": "\"healthy\"",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "text": "mypy treats Any exactly the same as object, so using Any actually makes type checking stricter, not weaker, since every operation on an object-typed value is flagged.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "copy.copy() duplicates the top-level container, but the nested list and dict objects inside it remain pointers to the identical memory blocks.",
+        "text": "Any only silences errors inside the function where it's declared; once the Any-typed value is passed to another function, mypy automatically re-infers and re-enforces its real runtime type.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).",
+        "text": "The false-safety only happens when Any is imported from collections.abc instead of typing; importing it from the typing module directly enforces the same strictness as a Union type.",
         "is_correct": false
       }
     ],

@@ -15,8 +15,9 @@ Constraints
 - ``2 <= len(timings) <= 20``, sizes strictly increasing and doubling
 - times are positive floats, possibly noisy
 
-Example
-    classify_growth([(1000, 0.001), (2000, 0.002), (4000, 0.004)])  -> "O(n)"
+Example:
+    >>> classify_growth([(1000, 0.001), (2000, 0.002), (4000, 0.004)])
+    'O(n)'
 
 Hints — read one at a time, and try again between each.
 

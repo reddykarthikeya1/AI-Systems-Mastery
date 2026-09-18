@@ -17,6 +17,10 @@ Example
     ["eat","tea","tan","ate","nat","bat"]
     -> [["bat"], ["eat","tea","ate"], ["tan","nat"]]
 
+Example:
+    >>> group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+    [['bat'], ['eat', 'tea', 'ate'], ['tan', 'nat']]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Two words are anagrams exactly when some canonical form of them is equal. What canonical form?

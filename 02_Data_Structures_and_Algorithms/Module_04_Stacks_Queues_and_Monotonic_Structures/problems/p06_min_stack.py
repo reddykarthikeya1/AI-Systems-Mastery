@@ -15,9 +15,9 @@ or ``get_min`` on an empty stack.
 Constraints
 - ``1 <= len(ops) <= 10**5``
 
-Example
-    ops = [("push", 3), ("push", 1), ("get_min", None), ("pop", None), ("get_min", None)]
-    -> [1, 3]
+Example:
+    >>> simulate_min_stack([("push", 3), ("push", 1), ("get_min", None), ("pop", None), ("get_min", None)])
+    [1, 3]
 
 Hints — read one at a time, and try again between each.
 

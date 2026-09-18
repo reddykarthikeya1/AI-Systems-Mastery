@@ -19,6 +19,12 @@ Once you have the prefix table this is one line. That is the point of the
 exercise: recognising that a problem phrased about prefixes and suffixes is
 already solved by a table you know how to build.
 
+Example:
+    >>> longest_happy_prefix("level")
+    'l'
+    >>> longest_happy_prefix("abcdef")
+    ''
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: You already wrote the tool for this in problem 01.

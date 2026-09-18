@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_orthogonal_projection_subspace import orthogonal_projection_subspace
-except ImportError:
-    from p01_orthogonal_projection_subspace import orthogonal_projection_subspace
+from p01_orthogonal_projection_subspace import orthogonal_projection_subspace
 
 
 def test_orthogonal_projection_subspace():

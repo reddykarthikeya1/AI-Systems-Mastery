@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "text": "reciprocal_rank_fusion() starts its rank counter at 0 instead of 1, so the top-ranked document in every list raises a division by zero and is silently dropped from the fused output.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "text": "The BM25 retriever and the vector retriever are queried with different top-k limits, so one candidate list is systematically shorter than the other before fusion even runs.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
+        "text": "RRF fuses scores using the raw BM25 relevance score and the raw cosine similarity directly, instead of converting both lists to ranks first.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Apply an entity canonicalization step using embedding similarity and string normalization before inserting edges into the graph store.",
+        "text": "The single best-matching document across both retrievers never appears anywhere in the final fused ranking, even though it ranked #1 in each individual list.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "text": "Fused results are dominated entirely by whichever retriever returns scores on a larger numeric scale, regardless of true relevance.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Cap context prefix to $\\le 40$ words ($< 20\\%$ of total chunk size).",
+        "text": "The fused ranking is deterministic for identical queries but changes ordering whenever the two retrievers are queried in a different sequence.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "text": "Start the rank counter at 1 (or add a constant k) so no document's contribution ever divides by zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches.",
+        "text": "Deduplicate the fused result list by document title text after RRF has already run.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "text": "Increase k in the RRF formula 1/(k+rank) so lower-ranked documents contribute more strongly to the fused score.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "RRF fuses scores using raw BM25 and cosine-similarity values directly, without first converting either list to ranks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "text": "The vector retriever silently truncates its returned candidate list to the same length as the BM25 list before fusion, dropping otherwise-relevant documents.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "text": "Two different tokenizers build the BM25 sparse index and perform the query-time BM25 lookup, so the same term hashes to different postings.",
         "is_correct": false
       }
     ],

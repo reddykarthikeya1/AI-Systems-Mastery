@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_speculative_rejection_sampler import speculative_rejection_sampler
-except ImportError:
-    from p01_speculative_rejection_sampler import speculative_rejection_sampler
+from p01_speculative_rejection_sampler import speculative_rejection_sampler
 
 
 def test_speculative_rejection_sampler():

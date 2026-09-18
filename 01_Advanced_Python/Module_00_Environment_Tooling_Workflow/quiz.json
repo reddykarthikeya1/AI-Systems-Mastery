@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "OSError: Address already in use. The OS holds ports in TIMEWAIT to ensure delayed or duplicate packets in transit do not corrupt a new connection. SOREUSEADDR allows immediate reuse.",
+        "text": "sys.prefix always points to the system Python installation directory, while sys.baseprefix points to wherever the currently active virtual environment lives -- the two names are the reverse of their actual meaning.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Sync (HTTP/gRPC): When the caller immediately requires the return payload to continue (e.g. user authentication). - Async (Broker): When operations are long-running, can be processed out of order, or require high fault tolerance and spike",
+        "text": "sys.prefix and sys.baseprefix are always identical in every environment; the only reliable way to detect whether a virtual environment is active is checking os.environ['VIRTUAL_ENV'].",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It acts as a token bucket counter. Only $N$ tasks can enter the async with semaphore: block simultaneously. Subsequent tasks queue up and wait until active tasks release their token.",
+        "text": "sys.baseprefix only exists inside a virtual environment; outside of one, accessing sys.baseprefix raises an AttributeError because there is no base interpreter to reference.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- Threads share the exact same process memory (RAM), heap variables, and address space. - Processes have completely isolated, private memory spaces, requiring explicit Inter-Process Communication (IPC) mechanisms (like queues or pipes) to s",
+        "text": "The src-layout is safer only because it keeps test files physically separate from source files on disk; pytest's sys.path behavior is identical regardless of which layout is used.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "HTTP/2 breaks requests and responses down into independent binary frames and multiplexes them over a single shared TCP connection, preventing slow requests from blocking others.",
+        "text": "In a flat layout, pytest refuses to discover any tests at all unless a conftest.py exists at the repository root; the src-layout works around this by auto-generating one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+        "text": "src-layout prevents accidental imports of the wrong package version because pip always installs src-layout packages in editable mode by default, while flat-layout packages are always installed as regular non-editable copies.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+        "text": "pyproject.toml only configures the build backend (e.g. setuptools or hatchling); dependencies, tool settings, and project metadata must still live in setup.cfg and requirements.txt alongside it.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "They both conform to the Apache Arrow C-Data Interface, passing pointers to existing memory buffers instead of copying data.",
+        "text": "PEP 621 makes pyproject.toml a replacement specifically for requirements.txt; setup.py, setup.cfg, and tool-specific config files like pytest.ini remain necessary and are not affected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- modeldump(): Returns a native Python dictionary. - modeldumpjson(): Directly serializes into an optimized JSON string (handled in Rust).",
+        "text": "pyproject.toml is only read by pip during installation; tools like pytest, ruff, and mypy ignore it entirely and require their own dedicated configuration files to run.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It defines multi-container applications (API + PostgreSQL + Redis + Prometheus) in a single declarative YAML file, configuring shared internal networks and storage volumes.",
+        "text": "uv and ruff are faster only because they cache results more aggressively than pip and flake8; both tool families are written in Python, but uv and ruff skip re-parsing unchanged files entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Vertical: Upgrading CPU/RAM on the single server. - Read-Replicas: Offloading read queries (SELECT) to replica nodes while writes (INSERT/UPDATE) go to the primary node. - Sharding: Partitioning rows across multiple database instances bas",
+        "text": "uv and ruff achieve their speed by running checks and installs in the cloud on Astral's servers and streaming back only the results, avoiding local CPU work entirely.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "No. uv run automatically discovers the local .venv, sets up the environment variables (PATH, VIRTUALENV), and executes the target process inside that isolated context without requiring manual terminal activation (activate.ps1).",
+        "text": "The speed difference comes from uv and ruff dropping support for older Python versions; by targeting only Python 3.12+, they can skip backward-compatibility code paths that slow down pip and flake8.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "tasks[0].id",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "t0.id",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "pending_tasks[1].id",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "-1",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "text": "argparse automatically raises a ValueError instead of exiting with SystemExit when given a non-integer argument, so the crash actually originates from an uncaught ValueError deep inside the argparse library itself.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Iterating through active WebSockets and awaiting sendtext() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "text": "The CLI defines the priority argument with type=str, so int() conversion never runs at all; the traceback is instead raised later when the string priority is used in a numeric comparison.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "text": "click's Choice type was used to restrict priority to a fixed list of allowed strings; passing 'high' should have been rejected by click's own validation before ever reaching the business logic.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In Python prior to PEP 597 / Python 3.15 UTF-8 Mode, open() uses locale.getpreferredencoding(). On Windows, this is typically cp1252, which cannot encode arbitrary Unicode symbols.",
+        "text": "The package is missing an __init__.py file in src/modernapp, so Python does not recognize it as an importable package regardless of the current working directory.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "text": "pip install -e . registers the package under a build-time snapshot of sys.path; once distributed as a wheel, editable installs silently stop resolving until reinstalled.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "text": "sys.path.append() adds paths to the end of the search order, so a same-named third-party package on PyPI shadows the local modernapp module and is imported instead.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "TOML files must be located inside the project's site-packages directory to be discoverable; config.toml works only when Python is invoked as `python -m modernapp` instead of as a direct script path.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "text": "The script opens the file in text mode without specifying encoding='utf-8', and on Windows this raises FileNotFoundError instead of a UnicodeDecodeError when non-ASCII bytes are present.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "text": "config.toml was accidentally excluded from the tracked files and .gitignored, so it only exists locally in the developer's original working directory and was never actually shipped with the project.",
         "is_correct": false
       }
     ],

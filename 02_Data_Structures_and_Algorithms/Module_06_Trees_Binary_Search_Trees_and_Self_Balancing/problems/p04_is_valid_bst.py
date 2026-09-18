@@ -20,6 +20,13 @@ The second example is the whole point. Node 4's children (3 and 6) satisfy a
 local check, but 3 sits in 5's right subtree while being less than 5. Comparing
 only against immediate children accepts this tree, and it is not a BST.
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> is_valid_bst(from_level_order([2, 1, 3]))
+    True
+    >>> is_valid_bst(from_level_order([5, 1, 4, None, None, 3, 6]))
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Checking node.left.val < node.val < node.right.val is not enough - it is a local test for a global property.

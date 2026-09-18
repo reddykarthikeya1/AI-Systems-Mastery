@@ -22,6 +22,11 @@ Prefix sums give O(1) queries but O(n) updates. A plain array gives O(1)
 updates but O(n) queries. A segment tree makes both O(log n), which is the right
 trade when both are frequent.
 
+Example:
+    >>> ops = [("query", 0, 2), ("update", 1, 2), ("query", 0, 2)]
+    >>> simulate_segment_tree([1, 3, 5], ops)
+    [9, 8]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Store the tree in a flat array of size 2n: leaves in the second half, internal nodes in the first, with node i's children at 2i and 2i+1.

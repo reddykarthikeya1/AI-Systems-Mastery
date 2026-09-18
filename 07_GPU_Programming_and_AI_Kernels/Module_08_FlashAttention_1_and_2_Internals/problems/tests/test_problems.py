@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_online_softmax_rescaling import online_softmax_rescaling
-except ImportError:
-    from p01_online_softmax_rescaling import online_softmax_rescaling
+from p01_online_softmax_rescaling import online_softmax_rescaling
 
 
 def test_online_softmax_rescaling():

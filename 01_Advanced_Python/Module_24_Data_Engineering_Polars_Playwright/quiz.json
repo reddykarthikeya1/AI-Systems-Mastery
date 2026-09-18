@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If an assertion fails inside a for loop, the test stops immediately and skips all remaining inputs. @pytest.mark.parametrize treats each parameter combination as an independent test case, reporting exact passes and failures for every single",
+        "text": "Polars is faster only because it stores all data as Python objects instead of using NumPy arrays, avoiding the overhead of NumPy's own type system entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "CPython's internal memory allocator, dictionary lookup tables, and garbage collector are not thread-safe. Concurrent access without the GIL corrupts interpreter state.",
+        "text": "Polars is a thin syntactic wrapper that translates DataFrame calls into equivalent Pandas calls under the hood, and the speed gain comes entirely from Pandas' own internal caching layer.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python raises a TypeError at instantiation time (TypeError: Can't instantiate abstract class ...), preventing the object from ever being created.",
+        "text": "Polars achieves its speed by sampling only a fraction of the rows in large datasets and extrapolating the result, trading some accuracy for a proportional speedup.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+        "text": "Columnar memory stores each row contiguously with all of its columns interleaved, which lets the CPU prefetch an entire record in one cache line for row-wise aggregations.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "An AST is a tree representation of the syntactic structure of source code. Linters walk this tree with ast.NodeVisitor to detect banned patterns (like eval() calls or mutable default arguments) without executing code.",
+        "text": "Arrow's columnar layout speeds up aggregations only because it compresses every column with gzip by default; SIMD instructions are unrelated to Arrow's memory layout.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the ne",
+        "text": "The performance gain comes from Arrow storing every column pre-sorted, so SUM() and AVG() can be computed in O(log N) time via binary search rather than a linear scan.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- BackgroundTasks: In-process background tasks that run after response return (ideal for simple emails or audit logs). - Celery / ARQ: Distributed out-of-process queues backed by Redis/RabbitMQ (essential for heavy CPU tasks, video processi",
+        "text": "Predicate pushdown loads the entire file into memory first, then applies the WHERE filter afterward in a single pass, which is faster only because it avoids re-opening the file handle multiple times.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
+        "text": "It rewrites the filter condition into a database index hint, but only works on relational engines like PostgreSQL; Polars ignores predicate pushdown when scanning flat files like CSV or Parquet.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
+        "text": "Predicate pushdown defers the filter until the very last step of the query plan, after all joins and aggregations, ensuring filters never accidentally exclude rows needed for a later join.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When incoming client request data fails validation against the endpoint's declared Pydantic schema or type constraints (e.g. string sent where integer required).",
+        "text": "- DataFrame: Builds a logical plan and waits for .collect(). - LazyFrame: Executes every operation immediately in memory -- the two names describe the opposite of their real behavior.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+        "text": "Both DataFrame and LazyFrame execute operations immediately; the only difference is that LazyFrame additionally logs each operation to a file for later auditing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- Atomicity: All operations in a transaction succeed or all roll back (all-or-nothing). - Consistency: Data remains valid according to all schema rules and constraints. - Isolation: Concurrent transactions do not interfere with each other. ",
+        "text": "A LazyFrame is simply a DataFrame with multiprocessing enabled by default; calling .collect() only turns multiprocessing off and returns to single-threaded execution.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "189.99",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "pytest.approx(379.98)",
         "is_correct": false
       }
     ],
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "text": "Polars raises InvalidSchemaOperationError only when a column mixes int and float; a non-numeric sentinel like \"N/A\" is instead silently dropped as a null value without changing the column's dtype.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "The column was explicitly cast with .cast(pl.Utf8) earlier in the pipeline, and Polars never allows a column to be cast back to a numeric type afterward, regardless of its actual contents.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "text": "Arrow's columnar format requires every column in a DataFrame to share the exact same dtype as every other column, so one String column forces all numeric columns in the same file to become String too.",
         "is_correct": false
       }
     ],

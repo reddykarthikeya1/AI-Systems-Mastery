@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_query_expansion_hypothetical import query_expansion_hypothetical
-except ImportError:
-    from p01_query_expansion_hypothetical import query_expansion_hypothetical
+from p01_query_expansion_hypothetical import query_expansion_hypothetical
 
 
 def test_query_expansion_hypothetical():

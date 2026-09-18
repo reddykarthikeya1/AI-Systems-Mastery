@@ -5,10 +5,21 @@ Target: Production-grade implementation
 
 Re-rank candidate documents using cross-encoder relevance scores and threshold.
 
+Example:
+    >>> cross_encoder_rerank_sort([("d1", 0.3), ("d2", 0.9), ("d3", 0.6)], 0.5)
+    [('d2', 0.9), ('d3', 0.6)]
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The first-stage retriever's original ordering is irrelevant
+        here — only the cross-encoder score decides both which candidates
+        survive and their final order.
+    Hint 2: Filter with a comprehension keeping only entries where `score >=
+        min_score_threshold`, then sort the survivors by score descending
+        (`list.sort` with a key on the score and `reverse=True`).
+    Hint 3: The threshold is inclusive — a score exactly equal to
+        `min_score_threshold` passes, not just a strictly higher one — and
+        filtering must remove low-score candidates regardless of the input
+        list's original order, before or independent of the sort.
 """
 
 from __future__ import annotations

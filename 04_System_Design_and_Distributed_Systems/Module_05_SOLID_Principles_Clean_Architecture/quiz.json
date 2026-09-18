@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "Decimal(\"200.00\")",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "Decimal(\"115.00\")",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "Decimal(\"290.00\")",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "OrderStatus.PAID",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "OrderStatus.PENDING_PAYMENT",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "OrderStatus.DRAFT",
         "is_correct": false
       }
     ],
@@ -72,7 +72,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"USD\"",
+        "text": "\"EUR\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Truncating cryptographic hashes into 6 or 7 characters creates severe collision probabilities governed by the Birthday Paradox. ---",
+        "text": "The payment gateway call was wrapped in a retry loop that re-charged the customer on every retry, but never touched the inventory reservation at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Partition ordering is only guaranteed if a partition is consumed sequentially by a single thread. Spreading records from one partition across worker threads breaks causality. ---",
+        "text": "Inventory was released immediately after reservation and only re-reserved on successful payment, so a concurrent order could claim the same stock while payment was still processing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Dividing $100.00 by 3 gives 33.3333... Rounding each to $33.33 results in $99.99 total, leaking 1 cent into financial limbo. ---",
+        "text": "The compensation logic executed correctly, but it decremented the inventory counter a second time instead of restoring it, leaving stock permanently short after every failed payment.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding an abstraction layer between every class, so that no two components ever share a direct dependency.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By enforcing that every class expose exactly one public method, on the assumption that this alone satisfies the Single Responsibility Principle.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By wrapping every domain operation in a generic try/except that logs and continues, so a violated invariant never actually halts the checkout flow.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By scaling out more checkout service instances so failed orders are retried by a different instance, without validating that inventory and payment stay consistent across instances.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By allowing the payment gateway to be called multiple times in a row on failure, trusting idempotency instead of validating that inventory reservations are also compensated.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By catching every exception at the outermost API boundary and returning a generic success response, so client-visible errors never surface an inconsistent order state.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding an abstraction layer between every class, so that no two components ever share a direct dependency.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By enforcing that every class expose exactly one public method, on the assumption that this alone satisfies the Single Responsibility Principle.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By wrapping every domain operation in a generic try/except that logs and continues, so a violated invariant never actually halts the checkout flow.",
         "is_correct": false
       }
     ],

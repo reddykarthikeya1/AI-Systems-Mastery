@@ -18,6 +18,10 @@ Example
 Everything else in this module is this function with a different graph in front
 of it. Get it right once.
 
+Example:
+    >>> max_flow_value(4, [(0, 1, 10), (1, 3, 3), (0, 2, 5), (2, 3, 5)], 0, 3)
+    8
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Store edges in pairs so edge `i` and its residual partner are `i` and `i ^ 1`. Add the reverse edge with capacity 0 at the same time as the forward one.

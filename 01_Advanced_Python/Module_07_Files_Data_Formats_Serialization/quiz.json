@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It allows centralized logging platforms (Datadog, OpenTelemetry, ELK) to filter all logs, queries, and errors produced across 20 distinct services by a single user request.",
+        "text": "Text mode (\"r\") reads raw undecoded bytes exactly as stored on disk, while binary mode (\"rb\") decodes those bytes into Python str objects using the platform's default encoding.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
+        "text": "Both modes return identical str objects; the only difference is that binary mode additionally computes and returns a checksum of the file's contents alongside the text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
+        "text": "Text mode (\"r\") and binary mode (\"rb\") differ only in write speed -- text mode buffers writes in 4 KB blocks while binary mode flushes every byte immediately -- both return the same decoded str type.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- global tells Python to bind and reassign a variable in the module-level global namespace. - nonlocal tells Python to bind and reassign a variable in the nearest outer enclosing function namespace (excluding global).",
+        "text": "Windows always defaults to UTF-8 for file I/O since Windows 10; the UnicodeDecodeError instead comes from the terminal's code page, not from how open() reads the file.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Parquet is columnar, compressed with Snappy/ZSTD, and contains min/max column chunk statistics that allow skipping unneeded data blocks.",
+        "text": "Emojis and currency symbols are stored as 2-byte UTF-16 surrogate pairs on disk; UTF-8 can only decode 1-byte sequences, so any multi-byte character triggers UnicodeDecodeError regardless of platform.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "TestClient uses HTTPX/Requests transport adapters to route requests directly into the ASGI application memory pipeline without opening a physical OS TCP port.",
+        "text": "The error is caused by the source .py file itself lacking a # -*- coding: utf-8 -*- header comment, which only matters on Windows because Linux and macOS infer encoding automatically from locale.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "APIRouter allows splitting route logic across multiple files (users.py, billing.py) and mounting them with custom prefixes and tags onto the root FastAPI app.",
+        "text": "Using the plus operator: full_path = Path(\"parent\") + \"child\" + \"file.txt\", since pathlib.Path overloads + for concatenation the same way str does.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "RAG retrieves verified up-to-date documentation from a private knowledge store at runtime and inserts it directly into the prompt context, grounding the LLM in factual reality.",
+        "text": "Using the pipe operator: full_path = Path(\"parent\") | \"child\" | \"file.txt\", mirroring the same union syntax used for merging dictionaries in Python 3.9+.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "$$\\cos(\\theta) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{\\sum ui vi}{\\sqrt{\\sum ui^2} \\sqrt{\\sum vi^2}}$$",
+        "text": "Calling Path.join(\"parent\", \"child\", \"file.txt\") as a static method; the / operator on Path objects is only for comparing two paths, not for building new ones.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Pinecone, Qdrant, Milvus, or pgvector in PostgreSQL.",
+        "text": "json.dumps raises the TypeError because dict keys must be strings and \"now\" contains a space; fix it by renaming the key to now without quotes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It uses a single literal tag field (e.g. type: Literal[\"email\", \"sms\"]) to match and deserialize into the exact target subclass in $O(1)$ time without trial-and-error parsing.",
+        "text": "JSON does support datetimes natively via an ISO-8601 literal syntax, but json.dumps requires the sort_keys=True flag to be set before it will serialize them correctly.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When the class is constructed, Python automatically passes the attribute name (e.g. \"age\") to setname, removing manual string name passing.",
+        "text": "The TypeError happens because datetime.now() returns a generator, not a value; fix it by calling next(datetime.now()) before passing the result into json.dumps.",
         "is_correct": false
       }
     ],
@@ -222,7 +222,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "{}",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In binary floating-point representation, 0.1 and 0.2 cannot be represented with infinite precision. 0.1 + 0.2 is 0.30000000000000004, which is strictly not equal to 0.3.",
+        "text": "The file was opened with open(path, 'r', encoding='utf-8') on both write and read, but Windows silently ignores the encoding argument entirely and always falls back to UTF-16.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "text": "The bug only appears because the source file was saved with a Byte Order Mark (BOM); stripping the BOM before writing is Windows' documented workaround and has nothing to do with locale.getpreferredencoding().",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly",
+        "text": "Python's open() defaults to strict UTF-8 on every OS including Windows; the mangling instead comes from the terminal emulator's font not including the required Unicode glyphs, not from a decoding failure.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "text": "datetime.fromisoformat() always attaches the local system timezone automatically when no offset is given, so the TypeError instead comes from comparing two different timezone objects, not a naive/aware mismatch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "text": "Python 3 removed the ability to compare any two datetime objects directly; every comparison must go through datetime.timestamp() first regardless of whether the object is naive or aware.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "text": "The TypeError is raised because one datetime was constructed with datetime.now() and the other with datetime.utcnow(); mixing these two constructors is what triggers the incompatibility, not the presence of a UTC offset.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "text": "json.dumps() raises a TypeError on any non-string dictionary key, so the keys must have already been strings before serialization; the conversion actually happens during json.loads() instead.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "text": "The dictionary was serialized with pickle instead of json, and pickle's default protocol stores every key as its repr() string, which json.loads() then fails to convert back.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "text": "Integer keys are preserved correctly by both json.dumps() and json.loads(); the strings observed here come from the dict being passed through str(data) for logging before being reloaded.",
         "is_correct": false
       }
     ],

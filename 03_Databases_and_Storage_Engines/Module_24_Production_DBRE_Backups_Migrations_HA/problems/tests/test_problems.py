@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_point_in_time_recovery import point_in_time_recovery
-except ImportError:
-    from p01_point_in_time_recovery import point_in_time_recovery
+from p01_point_in_time_recovery import point_in_time_recovery
 
 
 def test_point_in_time_recovery():

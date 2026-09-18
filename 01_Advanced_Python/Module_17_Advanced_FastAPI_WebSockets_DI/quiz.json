@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python 3.13 added experimental free-threaded builds (--disable-gil), which remove the Global Interpreter Lock and allow native Python threads to execute in true multi-core parallel fashion.",
+        "text": "FastAPI re-evaluates every dependency function from scratch on each sub-dependency reference within a single request, even when use_cache=True, to guarantee freshness.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks. - Cooperative: Coroutines voluntarily surrender execution control back to the Event Loop exclusively at explicit await pause points.",
+        "text": "FastAPI resolves dependencies in the exact reverse order they are declared in the function signature, and shared sub-dependencies are always instantiated once per sub-dependency reference, never shared.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Because processes have separate memory, data and function signatures must be serialized into bytes (via pickle) and sent across OS IPC pipes to the child process. Anonymous lambda functions and local closures cannot be serialized by pickle.",
+        "text": "Dependencies are resolved lazily only when their return value is actually used inside the route body; unused Depends() declarations are silently skipped and never invoked at all.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Whenever a variable goes out of scope or is reassigned, obrefcnt is decremented. The instant obrefcnt == 0, CPython immediately frees the memory back to the memory allocator.",
+        "text": "Code before yield runs during response teardown, and code after yield runs during request setup -- the two phases are reversed from their actual timing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "text": "Code before and after yield both run during request setup, back to back, before the route handler is ever invoked; the split only matters for readability, not execution timing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- At-Most-Once: Messages are never duplicated, but may be lost. - At-Least-Once: Messages are never lost, but may be delivered multiple times (requires idempotent consumers). - Exactly-Once: Every message is delivered and processed once (re",
+        "text": "Code after yield only executes if the route handler explicitly calls request.state.cleanup(); if that call is omitted, the teardown code after yield is skipped entirely.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use the formatting specifier {num:,.2f}:",
+        "text": "Incoming bytes pass through each middleware layer in inner-to-outer order first, execute the endpoint, and the Response skips all middleware entirely on the way back out.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It prevents important context and sentences from being split across chunk boundaries, ensuring semantic coherence in retrieved snippets.",
+        "text": "Each middleware layer runs in an isolated OS process; the request bytes are serialized and passed between processes via a message queue rather than function calls within one process.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It breaks the dataset into memory-bounded chunk streams, processing batches through the CPU pipeline and freeing them continuously.",
+        "text": "Middleware only wraps the Response after the endpoint executes; incoming requests bypass all middleware layers and reach the route handler directly and immediately.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
+        "text": "It is a cryptographic signature that proves the request has not been tampered with in transit, serving the same purpose as a JWT signature but for internal service-to-service calls.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "If two objects are equal (a == b), they must produce the exact same hash value (hash(a) == hash(b)). Overriding eq without hash breaks hash table invariants, leading to lost or duplicate entries in sets/dictionaries.",
+        "text": "It caches the response body keyed by request path, so identical requests carrying the same X-Correlation-ID skip re-execution and return the previously computed result.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- ACK: Confirms successful processing; broker deletes/advances message. - NACK: Rejects message; broker re-queues or diverts to DLQ.",
+        "text": "It is a load-balancer routing key that ensures every request from the same correlation ID is pinned to the same backend server for the lifetime of a user's session.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "custom-trace",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "''",
         "is_correct": false
       }
     ],
@@ -172,7 +172,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,7 +192,7 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{\"status\": \"ok\"}",
         "is_correct": false
       },
       {
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The JSON specification (RFC 8259) requires all object keys to be strings. json.dumps() automatically stringifies integer dictionary keys, but json.loads() does not automatically restore their integer type.",
+        "text": "The broadcast loop uses a regular for loop instead of asyncio.gather(), and synchronous for loops in Python are documented to abort entirely the moment any iteration raises, even outside of async contexts.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "text": "WebSocket connections silently close themselves after exactly 30 seconds of any broadcast activity, and the crash is actually an unrelated timeout, not an unhandled exception from a disconnected client.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python's == operator compares strings byte-by-byte and terminates immediately upon finding the first non-matching byte.",
+        "text": "The manager stores all connections in a set instead of a list; iterating over a set while another coroutine removes an item from it always raises a KeyError that isn't related to the disconnected client's socket.",
         "is_correct": false
       }
     ],

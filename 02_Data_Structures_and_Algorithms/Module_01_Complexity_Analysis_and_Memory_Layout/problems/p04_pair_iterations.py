@@ -15,8 +15,9 @@ Return how many times ``compare`` runs.
 Constraints
 - ``0 <= n <= 10**9`` — again, you must not simulate
 
-Example
-    count_pair_iterations(4) -> 6
+Example:
+    >>> count_pair_iterations(4)
+    6
 
 Hints — read one at a time, and try again between each.
 

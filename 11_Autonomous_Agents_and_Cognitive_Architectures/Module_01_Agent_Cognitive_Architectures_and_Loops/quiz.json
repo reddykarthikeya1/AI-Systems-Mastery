@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "text": "The ReAct loop's only exit condition is finding the substring 'Final Answer:' in the LLM's response, so a model stuck reasoning in circles never terminates.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "The tool-calling prompt omits an explicit output schema, so the LLM is never told what a valid Action block should look like.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "text": "The agent's action parser expects a single JSON object per response, but the LLM occasionally proposes two tool calls in the same message.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "text": "Add a hard max_steps ceiling to the loop and fingerprint each response to detect when the LLM is repeating itself.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "Increase the temperature of the LLM call so it is less likely to wrap its output in markdown formatting.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "Retry the same prompt up to three times whenever parsing fails, without changing the prompt or the parser.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "text": "The agent loop runs for thousands of iterations without ever producing a Final Answer, racking up LLM calls indefinitely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "text": "The agent successfully parses an Action block but calls a tool name that was never registered, raising a KeyError.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "text": "Tool calls parse correctly, but the same tool is invoked with identical arguments on every step regardless of new observations.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "text": "The agent's while-loop has exactly one exit path -- matching 'Final Answer:' in the response -- with no step ceiling or repeated-response detection, so a stuck LLM loops forever.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "text": "The tool-calling prompt's few-shot examples show the Action block in plain text, but the system prompt separately instructs the model to always format code in markdown.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": LLM wrapped JSON inside code blocks with conversational preamble. -",
+        "text": "The parser strips all whitespace from the LLM's response before searching for the Action Input marker, accidentally merging adjacent JSON keys.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting the agent's control loop run indefinitely until the model happens to emit a specific stop phrase, with no step ceiling enforced in the loop itself.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying an identical prompt after every parse failure without tracking whether the model is repeating the same stuck response.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating markdown-wrapped tool-call output as a parse failure to reject, rather than a format to strip and recover.",
         "is_correct": false
       }
     ],

@@ -14,6 +14,12 @@ Example
     can_partition([1, 5, 11, 5]) -> True     ([1,5,5] and [11])
     can_partition([1, 2, 3, 5])  -> False
 
+Example:
+    >>> can_partition([1, 5, 11, 5])
+    True
+    >>> can_partition([1, 2, 3, 5])
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: If the total is odd, no split can be equal - answer False immediately.

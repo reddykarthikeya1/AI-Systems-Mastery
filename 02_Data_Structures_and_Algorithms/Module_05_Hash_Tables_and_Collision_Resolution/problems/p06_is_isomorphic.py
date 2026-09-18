@@ -16,6 +16,12 @@ Example
     ("foo", "bar")     -> False
     ("badc", "baba")   -> False
 
+Example:
+    >>> is_isomorphic("egg", "add")
+    True
+    >>> is_isomorphic("foo", "bar")
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Map each character of s to the corresponding character of t as you scan.

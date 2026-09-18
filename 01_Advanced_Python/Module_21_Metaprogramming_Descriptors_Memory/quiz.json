@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Closures look up free variables at the time the function is called (late binding), not at definition time. When called, the loop has already completed with i = 2. Fix it using default parameter evaluation: [lambda x=i: x for i in range(3)].",
+        "text": "It registers a new subclass hook via __init_subclass__, running once at import time to validate the namespace dict against the parent class's schema.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1. Local (inside current function) 2. Enclosing (in outer enclosing nested functions) 3. Global (module-level top-level namespace) 4. Built-in (Python's built-in namespace like len, range, print)",
+        "text": "It looks up an existing class object with the matching name in sys.modules and returns a cached reference instead of constructing a new one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+        "text": "It compiles the namespace dict into a set of descriptor objects, one per key, without ever producing an actual class object.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In system/global Python, sys.prefix == sys.baseprefix. When a virtual environment is activated, sys.prefix points to the isolated environment directory (where the virtualenv's site-packages lives), while sys.baseprefix still points to the o",
+        "text": "A metaclass is any class decorated with @dataclass; type and object are simply aliases for the same built-in base class in Python 3.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "starlette.websockets.WebSocketDisconnect. Catching it allows removing the dead socket from active broadcast lists, preventing memory leaks and closed-socket write errors.",
+        "text": "type is a subclass of object created only by user code (never built into CPython), and a metaclass is the parent class every metaclass itself inherits from.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Because each object still holds a reference to the other, both objects maintain an obrefcnt >= 1 even when all external variables pointing to them have been deleted.",
+        "text": "A metaclass only controls instance creation (__init__), never class creation itself; type and object are unrelated built-ins used solely for isinstance() checks.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+        "text": "__init_subclass__ must be called explicitly by every child class's __init__ method; Python does not invoke it automatically during class creation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+        "text": "__init_subclass__ runs once on the very first instance created from any subclass, not at class-definition time, making it equivalent to a lazy singleton initializer.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- seta & setb (Intersection): {3} - seta | setb (Union): {1, 2, 3, 4, 5} - seta - setb (Difference): {1, 2}",
+        "text": "__init_subclass__ replaces the need for inheritance entirely; child classes call it directly instead of extending the parent class in their class statement.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
+        "text": "1. bind(self, instance) 2. unbind(self, instance) 3. update(self, instance, value) 4. validate(self, value) -- descriptors use bind/unbind rather than get/set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It calculates the average sales for each region without collapsing individual rows, appending the regional average alongside each row.",
+        "text": "1. init(self) 2. call(self, instance) 3. repr(self) 4. del(self) -- these four dunders define the descriptor protocol in Python 3.12+.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "text": "1. get(self, instance, owner) 2. set(self, instance, value) -- these are the only two required methods; delete and set_name were removed from the protocol in Python 3.",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.",
+        "text": "The descriptor correctly stores data per-instance using self.val, but the bug is that __set_name__ was never implemented, which is unrelated to why state bleeds across instances.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "Each instance actually gets its own separate descriptor object automatically; the bleeding only happens because the class was defined with __slots__, which forces all instances to share one underlying storage array.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "The class uses a class-level WeakValueDictionary to store per-instance state, and Python's garbage collector prematurely evicts entries from weak dictionaries whenever two instances have equal hash values.",
         "is_correct": false
       }
     ],

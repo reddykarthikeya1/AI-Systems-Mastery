@@ -15,6 +15,12 @@ Example
     contains_nearby_duplicate([1, 2, 3, 1], 3) -> True
     contains_nearby_duplicate([1, 2, 3, 1], 2) -> False
 
+Example:
+    >>> contains_nearby_duplicate([1, 2, 3, 1], 3)
+    True
+    >>> contains_nearby_duplicate([1, 2, 3, 1], 2)
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A plain 'seen' set answers 'is there any duplicate', which is a different question - it ignores the distance.

@@ -11,12 +11,14 @@ search space.
 Constraints
 - ``0 <= n <= 10**18``
 
-Example
-    max_binary_search_comparisons(1)  -> 1
-    max_binary_search_comparisons(8)  -> 4
-
 Note that an array of a *quintillion* elements needs only 60 comparisons. That
 number is the entire reason binary search matters.
+
+Example:
+    >>> max_binary_search_comparisons(1)
+    1
+    >>> max_binary_search_comparisons(8)
+    4
 
 Hints — read one at a time, and try again between each.
 

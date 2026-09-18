@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_gaussian_elimination_solve import gaussian_elimination_solve
-except ImportError:
-    from p01_gaussian_elimination_solve import gaussian_elimination_solve
+from p01_gaussian_elimination_solve import gaussian_elimination_solve
 
 
 def test_gaussian_elimination_solve():

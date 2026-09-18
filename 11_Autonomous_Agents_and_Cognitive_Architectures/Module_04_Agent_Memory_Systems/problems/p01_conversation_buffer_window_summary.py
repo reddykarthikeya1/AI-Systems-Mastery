@@ -5,10 +5,21 @@ Target: Production-grade implementation
 
 Prune conversation history keeping last k messages and summarizing evicted turns.
 
+Example:
+    >>> conversation_buffer_window_summary(['msg1', 'msg2', 'msg3', 'msg4'], 2)
+    ('Summary of 2 earlier turns: msg1; msg2', ['msg3', 'msg4'])
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Think of this as a sliding window — the last k messages stay
+        untouched as "remaining", and everything older than that gets
+        collapsed into one summary sentence.
+    Hint 2: Use negative slicing: messages[:-k] for the evicted (older)
+        turns and messages[-k:] for the remaining (recent) ones, then join
+        the evicted list with "; " inside the summary string.
+    Hint 3: The summary wording is exact and checked by string equality —
+        "Summary of {N} earlier turns: " followed by the evicted messages
+        joined with "; " (semicolon-space) — so match the count, phrasing,
+        and punctuation precisely, not just the general idea.
 """
 
 from __future__ import annotations

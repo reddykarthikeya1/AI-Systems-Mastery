@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_cost_based_join_order import cost_based_join_order
-except ImportError:
-    from p01_cost_based_join_order import cost_based_join_order
+from p01_cost_based_join_order import cost_based_join_order
 
 
 def test_cost_based_join_order():

@@ -14,6 +14,12 @@ Example
     climb_stairs(2) -> 2      (1+1, 2)
     climb_stairs(3) -> 3      (1+1+1, 1+2, 2+1)
 
+Example:
+    >>> climb_stairs(2)
+    2
+    >>> climb_stairs(3)
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: To reach step n you arrived from step n-1 or step n-2. Those are the only options.

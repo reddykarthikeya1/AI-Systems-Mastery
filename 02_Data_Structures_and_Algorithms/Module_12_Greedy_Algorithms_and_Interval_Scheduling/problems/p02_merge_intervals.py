@@ -14,6 +14,12 @@ Example
     [(1,3), (2,6), (8,10), (15,18)] -> [(1,6), (8,10), (15,18)]
     [(1,4), (4,5)]                  -> [(1,5)]
 
+Example:
+    >>> merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)])
+    [(1, 6), (8, 10), (15, 18)]
+    >>> merge_intervals([(1, 4), (4, 5)])
+    [(1, 5)]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Sort by START. This is the merging case - compare with the next problem, which sorts by end for a different reason.

@@ -5,10 +5,25 @@ Target: Production-grade implementation
 
 Record state changes in audit trail for INSERT/UPDATE/DELETE events.
 
+Example:
+    >>> deterministic_audit_trigger(
+    ...     'UPDATE', {'salary': 5000, 'dept': 'Eng'}, {'salary': 6000, 'dept': 'Eng'}
+    ... )
+    {'action': 'UPDATE', 'delta': {'salary': (5000, 6000)}, 'timestamp_token': 'DETERMINISTIC_COMMIT'}
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The three event types don't share one delta rule — INSERT only
+        has a "new" side, DELETE only has an "old" side, and UPDATE is the
+        only case that actually compares two rows field by field.
+    Hint 2: Build delta as a dict comprehension over new_row's items for
+        INSERT and old_row's items for DELETE; for UPDATE, iterate the union
+        of both rows' keys (set(old) | set(new)) and compare old.get(k) to
+        new.get(k).
+    Hint 3: UPDATE's delta must include only fields whose value actually
+        changed — an unchanged field like 'dept' above must NOT appear in
+        delta even though it's present in both rows — and old_row/new_row
+        can be None, which should be treated as an empty dict rather than
+        raising on .items() or .get().
 """
 
 from __future__ import annotations

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_recursive_token_splitter import recursive_token_splitter
-except ImportError:
-    from p01_recursive_token_splitter import recursive_token_splitter
+from p01_recursive_token_splitter import recursive_token_splitter
 
 
 def test_recursive_token_splitter():

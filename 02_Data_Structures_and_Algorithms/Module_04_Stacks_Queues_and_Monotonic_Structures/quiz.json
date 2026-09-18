@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "\"a\" * 6",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "\"a\" * 4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "\"2a\" * 8",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[2]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[3]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[1, 2, 0]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[0, 0, 0]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[1, 1, -1]",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"ACCACCACC\"",
+        "text": "\"a2ca2ca2c\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"accacc\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"aaacccccc\"",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "text": "The deque holds values instead of indices, so once an element leaves the window there is no way to tell it apart from a duplicate value still inside the window.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kruskal happily terminates on a disconnected graph \u2014 it simply runs out of edges having built a spanning",
+        "text": "The comparison used to keep the deque decreasing uses <= instead of <, so equal values are evicted from the back too eagerly and the true maximum is popped before the window even closes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "text": "The window-size check uses i >= k instead of i >= k - 1, so the first window's maximum is emitted one step late and every later value is shifted by one position.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "The function pushes every character onto the stack, including closers, so a valid string like \"()\" never pops anything and is reported as unbalanced instead of balanced.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "text": "The mapping from closer to opener is inverted, so ')' is checked against '[' and vice versa, which flags every correctly nested string as broken.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection.",
+        "text": "The loop returns on the first character instead of continuing, so only the opening character of the string is ever inspected before the function decides.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "For maximum sum, a single running best is enough. For maximum product it is not: multiplying by a negative number flips the ordering, so the most negative product so far is a candidate for the largest as soon as another negative appears.",
+        "text": "The stack is popped in the wrong order, so the index compared against is the second-to-last pushed index rather than the most recent one, giving a wait count that is consistently one day short.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "text": "The comparison uses >= instead of >, so a day with the exact same temperature as one still on the stack is treated as warmer and resolves it early.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value.",
+        "text": "The function iterates the temperatures in reverse without adjusting the arithmetic, so every distance is measured from the end of the array instead of from the current day.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "text": "The stack stores values instead of indices, so when a greater element is found there is no way to know which position in the output array to update.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The extra fast.next.next is not None term makes the loop exit one iteration sooner whenever the length is even, so slow lands on the",
+        "text": "The while loop is missing the stack non-empty check, so the comparison runs against an empty stack and silently returns the wrong default for the first element.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "text": "nums[stack[-1]] < x compares the newly seen value against itself instead of the stacked index's value, so the stack is never actually popped and every entry stays -1.",
         "is_correct": false
       }
     ],

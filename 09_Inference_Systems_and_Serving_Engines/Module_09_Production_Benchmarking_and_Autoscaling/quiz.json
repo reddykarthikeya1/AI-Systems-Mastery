@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "text": "The autoscaler computes its scale-up signal as a cumulative average over its entire history instead of a recent sliding window, diluting a genuine spike.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Server hangs when GPU memory reaches 99%; no new requests are admitted.",
+        "text": "The load balancer adds a newly registered pod to its rotation via round-robin before checking any readiness signal at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "text": "The autoscaler scales down a replica the instant its individual utilization dips, even while the aggregate fleet is still overloaded.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "The autoscaler fails to trigger a scale-up event even ten ticks into a sustained overload, because its recent-average signal is diluted by a long healthy history.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "text": "Existing pods continue serving traffic normally, but the newly scaled pod is never added to the load balancer's rotation at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "CPU-based autoscaling metrics report near-zero load throughout the incident because GPU-bound inference barely touches the CPU.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "text": "WINDOW_SIZE is defined but never referenced in the scaling logic, so every decision averages over the full history collected since the process started.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "The autoscaler's scale-up threshold is set as an absolute request count rather than a per-pod ratio, so it never adapts as replica count changes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "Two autoscaler instances behind different load balancers each independently decide to scale up, doubling the fleet size for a single traffic spike.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "text": "Average utilization over only the most recent WINDOW_SIZE ticks instead of the full history collected since startup.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.",
+        "text": "Increase the autoscaler's scale-up threshold so new pods are provisioned earlier, before utilization climbs high.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "Add more replicas to the initial deployment so the autoscaler rarely needs to scale up at all.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By averaging utilization over the entire lifetime of the fleet instead of a bounded recent window, so short spikes rarely trigger a reaction.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By marking a newly scheduled pod ready as soon as its container starts, before its model weights finish loading into VRAM.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By scaling down any replica whose instantaneous utilization dips, even while the rest of the fleet is still overloaded.",
         "is_correct": false
       }
     ],

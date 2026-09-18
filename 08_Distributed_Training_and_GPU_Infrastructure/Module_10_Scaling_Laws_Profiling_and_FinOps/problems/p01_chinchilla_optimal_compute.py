@@ -5,10 +5,20 @@ Target: Production-grade implementation
 
 Compute Chinchilla compute-optimal parameter count N and token count D for FLOP budget C.
 
+Example:
+    >>> chinchilla_optimal_compute(6.0e18)
+    (1000000000.0, 1000000000.0)
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Chinchilla's key finding is that compute-optimal training splits
+        a fixed FLOP budget *evenly* between model size and data size — N
+        and D end up equal, not one dominating the other.
+    Hint 2: Since `C ~= 6*N*D` and the optimum sets `N == D`, both reduce to
+        the same closed-form expression: `N = D = sqrt(flop_budget / 6.0)`.
+    Hint 3: A non-positive `flop_budget` must return `(0.0, 0.0)` rather
+        than calling `math.sqrt` on a negative or zero value (which would
+        raise or silently return 0 in a way that hides the guard). Round
+        both outputs to 2 decimals.
 """
 
 from __future__ import annotations

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The maximum flow is strictly bounded by the number of vertices times the maximum edge capacity.",
+        "text": "The maximum flow always equals the sum of all edge capacities leaving the source, regardless of any bottleneck further into the network.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every directed graph contains at least one cycle with zero net residual capacity.",
+        "text": "The minimum cut is unique for every flow network, so there is always exactly one bottleneck partition separating s and t.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bipartite matching can only be solved using dynamic programming memoization.",
+        "text": "The maximum flow is strictly bounded by the number of vertices times the maximum edge capacity.",
         "is_correct": false
       }
     ],
@@ -47,7 +47,7 @@
       },
       {
         "id": "opt_2",
-        "text": "It sorts vertices topologically and executes dynamic programming.",
+        "text": "It replaces arbitrary path selection with a randomized DFS to avoid adversarial worst-case augmenting sequences.",
         "is_correct": false
       },
       {
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It stores all s-t paths in a priority queue sorted by residual capacity.",
+        "text": "It stores all s-t paths in a priority queue sorted by residual capacity, always saturating the widest path first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It partitions vertices into strongly connected components using Tarjan's algorithm.",
+        "text": "It marks every vertex reachable from the source in the residual graph, without regard to distance, so any admissible edge can be used at any depth.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It computes the all-pairs shortest paths using Floyd-Warshall.",
+        "text": "It recomputes shortest distances from the sink backwards after every single augmenting path, rather than once per phase.",
         "is_correct": false
       }
     ],
@@ -107,12 +107,12 @@
       },
       {
         "id": "opt_2",
-        "text": "Compute Eulerian paths between matching vertices in the bipartite graph.",
+        "text": "Connect every left node directly to every right node with capacity equal to the number of edges between them, and find the min cut instead of the max flow.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Contract edges greedily in descending order of node degrees.",
+        "text": "Add a single edge from source to sink with capacity equal to the total number of edges in the bipartite graph, and read the matching size off that capacity.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],

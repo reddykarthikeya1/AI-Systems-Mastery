@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_scd_type2_dimension_merge import scd_type2_dimension_merge
-except ImportError:
-    from p01_scd_type2_dimension_merge import scd_type2_dimension_merge
+from p01_scd_type2_dimension_merge import scd_type2_dimension_merge
 
 
 def test_scd_type2_dimension_merge():

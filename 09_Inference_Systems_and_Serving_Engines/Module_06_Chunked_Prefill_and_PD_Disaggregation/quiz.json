@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+        "text": "The prefill worker maps each chunk to a transfer slot with chunk_id % NUM_TRANSFER_SLOTS and overwrites it without waiting for the decode side to acknowledge consumption, clobbering earlier chunks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "text": "Chunk boundaries are not aligned to the KV block size, so the tail of one chunk and the head of the next land in the same physical block and overwrite each other.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "text": "The chunked-prefill scheduler recomputes full self-attention over the whole prompt for every chunk instead of reusing prior chunks' KV cache, doubling compute cost per chunk.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "text": "Give every chunk transfer a durable, unique slot key and only reclaim a slot once the decode node acknowledges it has drained that data.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "text": "Increase the chunk size so fewer chunk boundaries exist for positional embeddings to cross.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "text": "Recompute the KV cache for all previous chunks from scratch whenever a new chunk arrives, instead of reusing cached keys and values.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "The decode node reconstructs the prompt from a transfer buffer whose slots were overwritten before it read them, so generation proceeds from a truncated prompt.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "text": "The prefill node sends chunks to the decode node out of order, and the decode node concatenates them in arrival order instead of chunk order.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.",
+        "text": "Chunked prefill interleaves prefill chunks from two different requests into the same batch step, mixing their KV cache writes.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "text": "The decode node silently generates a completion as if the prompt were only its last few tokens, ignoring everything chunked before that.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "text": "Time-to-first-token increases proportionally with prompt length, but output quality is unaffected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "text": "The server raises an explicit shape-mismatch exception the moment a second chunk is processed, rather than continuing silently.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing every previous chunk's attention from scratch on each new chunk, so no cached state ever needs to be trusted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the decode node start generating before every prefill chunk has been transferred and acknowledged.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By reusing a transfer slot as soon as its index wraps around, without waiting for the consumer to acknowledge it drained the previous occupant.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing every previous chunk's attention from scratch on each new chunk, so no cached state ever needs to be trusted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the decode node start generating before every prefill chunk has been transferred and acknowledged.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By reusing a transfer slot as soon as its index wraps around, without waiting for the consumer to acknowledge it drained the previous occupant.",
         "is_correct": false
       }
     ],

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- Text mode (\"r\") decodes raw bytes into Python str characters using an encoding (like UTF-8) and translates OS newline characters (\\r\\n $\\rightarrow$ \\n). - Binary mode (\"rb\") reads raw, uninterpreted bytes without decoding or altering byt",
+        "text": "BaseException and Exception are functionally identical aliases; Python only keeps both names for backward compatibility with Python 2's old-style exception classes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+        "text": "Exception is the parent of system-exiting signals like KeyboardInterrupt, while BaseException covers ordinary application errors; catching BaseException is therefore always the safer default.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining sibling tasks and raises an ExceptionGroup, preventing orphaned background tasks from leaking.",
+        "text": "Application code should catch BaseException instead of Exception because Exception silently swallows KeyboardInterrupt, making it impossible to stop a running script with Ctrl+C.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The syntax is merged = a | b. In case of duplicate keys, the right-hand dictionary (b) overrides the values from the left-hand dictionary (a).",
+        "text": "else executes unconditionally after the try block finishes, regardless of exceptions, while finally executes only when no exception occurred and none of the except clauses matched.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- SLI: The exact metric measured (e.g. \"99.2% of requests returned in $< 200$ms\"). - SLO: The internal team target goal (e.g. \"99.0% of requests must return in $< 200$ms\"). - SLA: The contract with customers with financial penalties if brea",
+        "text": "Both else and finally only run when an exception was raised and successfully handled by an except clause; if the try block succeeds cleanly, neither block executes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A salt is a random string generated per user and appended to the password before hashing. Even if two users have the password Password123, their salted hashes will be completely unique, invalidating precomputed rainbow tables.",
+        "text": "else runs only when an exception is caught by one of the except clauses, letting you add extra handling after recovery, while finally runs only if no except clause matched the exception.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Calling async def does not execute the function body; it merely constructs a dormant coroutine object. It must be scheduled via await or asyncio.createtask() to execute.",
+        "text": "It silently discards the original exception and replaces it entirely, so only ServiceError appears in the traceback with no reference to what actually failed first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- scope: Dictionary containing connection metadata (HTTP method, headers, path, client IP). - receive: Async callable to receive incoming request body byte chunks. - send: Async callable to emit response headers and body byte chunks back to",
+        "text": "It re-raises original_error unchanged, wrapping it in a retry loop so the operation is automatically attempted again before ServiceError is ever surfaced to the caller.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A race condition occurs when two or more threads access and mutate shared data concurrently, causing non-deterministic data loss. It is resolved using threading.Lock (or threading.RLock) to create a mutually exclusive critical section.",
+        "text": "It sets __context__ implicitly the same way a bare raise inside an except block would, but from disables the traceback entirely so neither exception is ever logged.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- global tells Python to bind and reassign a variable in the module-level global namespace. - nonlocal tells Python to bind and reassign a variable in the nearest outer enclosing function namespace (excluding global).",
+        "text": "Use raise ServiceError(...) from original_error; explicitly naming the original exception hides it from the traceback instead of chaining it, unlike from None which keeps it visible.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "BM25 excels at exact keyword and SKU matching, while Vector Search excels at conceptual paraphrasing; combining both catches both exact and semantic matches.",
+        "text": "Wrap the raise statement in a try/except Exception: pass block; swallowing the exception entirely is the standard way to hide internal tracebacks from end-users.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "initsubclass is called on the parent class whenever a new child class inherits from it, allowing validation and auto-registration with simple, clean syntax.",
+        "text": "Set logging.disable(logging.CRITICAL) before raising; disabling the logging module also suppresses the interpreter's own traceback printer for any exception raised afterward.",
         "is_correct": false
       }
     ],
@@ -132,7 +132,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"SUCCESS\"",
+        "text": "\"success\"",
         "is_correct": false
       },
       {
@@ -162,7 +162,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DESK-03\"",
+        "text": "\"DESK-3\"",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "text": "Multiple worker processes were started with multiprocessing, and each process holds its own copy of the interpreter and therefore its own copy of every log line, doubling visible output regardless of handler configuration.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "text": "The logging module's root logger propagates every message to both the console and any attached file handlers by default, printing duplicates unless propagate=False is set on the root logger specifically.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "text": "The log format string includes the same field twice, e.g. '%(message)s %(message)s', causing each log call to render its message twice in the output line.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "asyncio operates on cooperative multitasking. When time.sleep() is called, control is never yielded back to the event loop, freezing all other pending tasks.",
+        "text": "except Exception: is being used instead of a bare except:, and Exception's superclass chain was patched at runtime to include KeyboardInterrupt, so it still gets caught.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "text": "signal.signal(signal.SIGINT, ...) was never registered, so the OS itself never delivers the Ctrl+C interrupt to the Python process, regardless of how the except clauses are written.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Iterating through active WebSockets and awaiting sendtext() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "text": "The script was launched with python -O (optimized mode), which disables all interrupt handling and forces every exception, including KeyboardInterrupt, to be caught by any except clause.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "text": "logging.exception() was called before the raise statement, and calling it clears __cause__ on any exception raised afterward within the same except block.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+        "text": "The original exception was caught with except Exception as e: but e was never referenced anywhere in the new RuntimeError's message string, so the chain link is dropped.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python's dictionary iterators guard against concurrent modifications. Deleting a key while iterating over ordersdict.items() invalidates the internal hashtable iteration pointer.",
+        "text": "RuntimeError does not support exception chaining at all in Python 3; only subclasses of OSError and ValueError retain __cause__ when re-raised inside an except block.",
         "is_correct": false
       }
     ],

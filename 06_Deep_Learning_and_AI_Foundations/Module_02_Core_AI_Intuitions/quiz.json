@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It guarantees any function can be learned exactly from a small dataset if the network is large enough.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It requires restricting the approximating function to purely linear transformations for mathematical tractability.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It applies only to continuous regression outputs, never to discrete classification decisions.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It states that adding more training data always increases variance and should be avoided.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It claims a model with zero training error is guaranteed to generalize best to unseen data.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It says overfitting is fixed by increasing model capacity until training loss reaches zero.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It shows that adding depth increases capacity linearly with layer count, with no diminishing returns.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It argues any function a deep network represents can be matched by a single wide layer just as efficiently.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It concludes deeper networks always converge faster purely because they have more parameters to fit.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It argues hand-engineered domain knowledge always outperforms scale and compute in the long run.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It concludes inductive bias should be maximized so models need less compute and data.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It claims scaling compute only helps once a model has exhausted all available training data.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing model capacity indefinitely so it memorizes every request pattern it has ever seen.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a model that fits the training set perfectly will handle unseen production traffic just as well.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping validation-set checks once offline accuracy looks good, to save inference latency.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By treating a single low training-loss value as proof the model will generalize under load.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By disabling the held-out validation split once the model ships, to speed up retraining cycles.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming inductive bias can be ignored entirely as long as enough compute is thrown at the problem.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing model capacity indefinitely so it memorizes every request pattern it has ever seen.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a model that fits the training set perfectly will handle unseen production traffic just as well.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping validation-set checks once offline accuracy looks good, to save inference latency.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By treating a single low training-loss value as proof the model will generalize under load.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By disabling the held-out validation split once the model ships, to speed up retraining cycles.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming inductive bias can be ignored entirely as long as enough compute is thrown at the problem.",
         "is_correct": false
       }
     ],

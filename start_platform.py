@@ -873,6 +873,59 @@ def find_app_browser() -> Optional[str]:
     return None
 
 
+def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
+    """Checks if a TCP port is currently occupied."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.4)
+            return s.connect_ex((host, port)) == 0
+    except Exception:
+        return False
+
+
+def is_academy_server_running(port: int, host: str = "127.0.0.1") -> bool:
+    """Checks if our own Academy FastAPI or fallback backend is already answering on this port."""
+    import urllib.request
+    try:
+        url = f"http://{host}:{port}/api/courses"
+        with urllib.request.urlopen(url, timeout=0.8) as resp:
+            return resp.status == 200
+    except Exception:
+        return False
+
+
+def find_available_port(start_port: int = 8000, max_tries: int = 25) -> int:
+    """Finds the first available TCP port starting from start_port."""
+    for p in range(start_port, start_port + max_tries):
+        if not is_port_in_use(p):
+            return p
+    return start_port
+
+
+def clean_stale_browser_locks(profile_dir: Path) -> None:
+    """Cleans up stale Chromium singleton lock files that prevent Edge/Chrome from opening."""
+    if not profile_dir.is_dir():
+        return
+    for name in ["SingletonLock", "SingletonCookie", "SingletonSocket", "lockfile"]:
+        lock_path = profile_dir / name
+        try:
+            if lock_path.is_file() or lock_path.is_symlink():
+                lock_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+
+def log_launcher_event(msg: str) -> None:
+    """Appends diagnostic events to .academy_launcher.log for zero-friction debugging."""
+    try:
+        log_file = ROOT_DIR / ".academy_launcher.log"
+        ts = time.strftime("%Y-%m-%d %H:%M:%S")
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(f"[{ts}] {msg}\n")
+    except Exception:
+        pass
+
+
 def launch_interface(
     url: str,
     port: int,
@@ -882,6 +935,7 @@ def launch_interface(
     """Launches the dedicated standalone desktop app window or falls back to the default web browser."""
     if headless:
         print("[*] Headless mode enabled: skipping GUI window launch.")
+        log_launcher_event("Headless mode enabled")
         return None
 
     ready = wait_for_http_ready(port)
@@ -894,6 +948,7 @@ def launch_interface(
 
     if force_browser:
         print(f"\n[+] Opening Academy Learning Portal in your default web browser ({url})...")
+        log_launcher_event(f"Opening browser at {url}")
         webbrowser.open(url)
         return None
 
@@ -901,6 +956,7 @@ def launch_interface(
     if app_browser:
         profile_dir = ROOT_DIR / ".academy_app_profile"
         profile_dir.mkdir(exist_ok=True)
+        clean_stale_browser_locks(profile_dir)
         cmd = [
             app_browser,
             f"--app={url}",
@@ -918,11 +974,14 @@ def launch_interface(
             browser_name = Path(app_browser).stem.replace(".exe", "")
             print(f"\n[+] Dedicated Desktop Application Window launched via {browser_name} (PID: {proc.pid}).")
             print("[*] Running as standalone desktop application. Close window or press Ctrl+C to exit.")
+            log_launcher_event(f"Dedicated desktop window launched via {browser_name} (PID: {proc.pid}) at {url}")
             return proc
         except Exception as exc:
             print(f"[!] Failed to launch dedicated app window ({exc}). Falling back to browser...")
+            log_launcher_event(f"Failed to launch dedicated window: {exc}")
 
     print(f"\n[+] Opening Academy Learning Portal in your default browser ({url})...")
+    log_launcher_event(f"Opening default browser at {url}")
     webbrowser.open(url)
     return None
 
@@ -934,7 +993,25 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8000, help="Port to bind server (default: 8000)")
     args = parser.parse_args()
 
-    port = args.port
+    req_port = args.port
+    log_launcher_event(f"Launcher invoked with port={req_port}, browser={args.browser}, headless={args.headless}")
+
+    # 1. Check if an Academy instance is already running on requested port
+    if is_academy_server_running(req_port):
+        print(f"\n[*] AI & Systems Academy is already running on http://127.0.0.1:{req_port}!")
+        print("[+] Opening Academy window now...")
+        log_launcher_event(f"Re-attaching to existing Academy server on port {req_port}")
+        launch_interface(f"http://127.0.0.1:{req_port}", port=req_port, force_browser=args.browser, headless=args.headless)
+        return
+
+    # 2. Check if the port is busy with another service; if so, allocate an open port
+    port = req_port
+    if is_port_in_use(port):
+        alt_port = find_available_port(start_port=port + 1)
+        print(f"[!] Port {port} is occupied by another process. Automatically switching to port {alt_port}...")
+        log_launcher_event(f"Port {port} in use; switched to port {alt_port}")
+        port = alt_port
+
     print(BANNER.format(port=port))
     ensure_client_built()
 
@@ -945,24 +1022,37 @@ def main() -> None:
 
     def start_ui_supervisor() -> None:
         nonlocal window_proc
+        launch_start = time.time()
         window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
         if window_proc is not None:
             try:
                 window_proc.wait()
-                time.sleep(0.3)
-                print("\n[*] Application window closed by user. Terminating server...")
-                if "uvicorn" in server_holder:
-                    server_holder["uvicorn"].should_exit = True
-                if "httpd" in server_holder:
-                    try:
-                        server_holder["httpd"].shutdown()
-                    except Exception:
-                        pass
-                # Enforce clean, unconditional removal from Windows Task Manager
-                time.sleep(1.2)
-                os._exit(0)
-            except Exception:
-                os._exit(0)
+                elapsed = time.time() - launch_start
+                # Protection against premature exit: Chromium process handoff terminates in <3.5s!
+                if elapsed < 3.5:
+                    log_launcher_event(f"Browser process returned early ({elapsed:.2f}s) via process handoff. Server remains active.")
+                    print(f"[*] Standalone browser process detached in {elapsed:.1f}s. Server remains active at {url}.")
+                    # Ensure browser window opened
+                    webbrowser.open(url)
+                    # Keep thread running to avoid killing the server
+                    while True:
+                        time.sleep(1.0)
+                else:
+                    print("\n[*] Application window closed by user. Terminating server...")
+                    log_launcher_event("Application window closed by user. Terminating server.")
+                    if "uvicorn" in server_holder:
+                        server_holder["uvicorn"].should_exit = True
+                    if "httpd" in server_holder:
+                        try:
+                            server_holder["httpd"].shutdown()
+                        except Exception:
+                            pass
+                    # Enforce clean, unconditional removal from Windows Task Manager
+                    time.sleep(1.0)
+                    os._exit(0)
+            except Exception as e:
+                log_launcher_event(f"UI supervisor exception: {e}")
+                pass
 
     ui_thread = threading.Thread(target=start_ui_supervisor, daemon=True)
     ui_thread.start()
@@ -974,6 +1064,7 @@ def main() -> None:
 
             print(f"[*] Starting High-Performance FastAPI Server at {url} ...")
             print("[*] Press Ctrl+C or close the application window at any time to stop.\n")
+            log_launcher_event(f"Starting FastAPI uvicorn server on port {port}")
 
             from main import app as fastapi_app
 
@@ -987,9 +1078,11 @@ def main() -> None:
             server_holder["uvicorn"] = server
             server.run()
         else:
+            log_launcher_event(f"Starting native fallback server on port {port}")
             run_fallback_server(port=port, server_holder=server_holder)
     except KeyboardInterrupt:
         print("\n[*] Shutdown requested via Ctrl+C.")
+        log_launcher_event("Shutdown requested via Ctrl+C.")
     finally:
         if window_proc is not None and window_proc.poll() is None:
             try:
@@ -997,6 +1090,7 @@ def main() -> None:
             except Exception:
                 pass
         print("[*] Academy Platform safely stopped. Happy studying!")
+        log_launcher_event("Academy platform stopped cleanly.")
 
 
 if __name__ == "__main__":

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bleu_ngram_overlap import bleu_ngram_overlap
-except ImportError:
-    from p01_bleu_ngram_overlap import bleu_ngram_overlap
+from p01_bleu_ngram_overlap import bleu_ngram_overlap
 
 
 def test_bleu_ngram_overlap():

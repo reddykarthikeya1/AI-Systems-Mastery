@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_roofline_model_arithmetic_intensity import roofline_model_arithmetic_intensity
-except ImportError:
-    from p01_roofline_model_arithmetic_intensity import roofline_model_arithmetic_intensity
+from p01_roofline_model_arithmetic_intensity import roofline_model_arithmetic_intensity
 
 
 def test_roofline_model_arithmetic_intensity():

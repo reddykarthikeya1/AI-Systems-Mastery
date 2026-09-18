@@ -18,6 +18,11 @@ Example
     [["John","a@x.com","b@x.com"], ["John","b@x.com","c@x.com"], ["Mary","m@x.com"]]
     -> [["John","a@x.com","b@x.com","c@x.com"], ["Mary","m@x.com"]]
 
+Example:
+    >>> accounts = [["John", "a@x.com", "b@x.com"], ["John", "b@x.com", "c@x.com"], ["Mary", "m@x.com"]]
+    >>> accounts_merge(accounts)
+    [['John', 'a@x.com', 'b@x.com', 'c@x.com'], ['Mary', 'm@x.com']]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Do NOT group by name - two different people can share a name. The emails are the identity.

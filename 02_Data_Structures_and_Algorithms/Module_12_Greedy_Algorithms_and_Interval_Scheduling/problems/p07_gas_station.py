@@ -16,6 +16,12 @@ Example
     gas_station([1,2,3,4,5], [3,4,5,1,2]) -> 3
     gas_station([2,3,4], [3,4,3])         -> -1
 
+Example:
+    >>> gas_station([1, 2, 3, 4, 5], [3, 4, 5, 1, 2])
+    3
+    >>> gas_station([2, 3, 4], [3, 4, 3])
+    -1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: First, a feasibility check: if total gas is less than total cost, no start can work.

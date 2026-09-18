@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_kv_cache_block_allocator import kv_cache_block_allocator
-except ImportError:
-    from p01_kv_cache_block_allocator import kv_cache_block_allocator
+from p01_kv_cache_block_allocator import kv_cache_block_allocator
 
 
 def test_kv_cache_block_allocator():

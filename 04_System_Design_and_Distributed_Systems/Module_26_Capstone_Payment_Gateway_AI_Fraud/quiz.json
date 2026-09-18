@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"FRAUD_RISK_EXCEEDED\"",
+        "text": "\"INSUFFICIENT_FUNDS\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"CARD_EXPIRED\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"VELOCITY_LIMIT_EXCEEDED\"",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "FraudDecision.APPROVE",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "FraudDecision.CHALLENGE_3DS",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "a freshly generated tx_id different from res1[\"tx_id\"]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "res1[\"reason\"]",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Dividing $100.00 by 3 gives 33.3333... Rounding each to $33.33 results in $99.99 total, leaking 1 cent into financial limbo. ---",
+        "text": "The ledger correctly enforced debit-credit balance per posting, but concurrent postings to the same account were not serialized, so two simultaneous balanced postings could still interleave into a corrupted running balance.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Pure Push (Fan-out-on-Write) works well for normal users, but scales linearly with follower count. For celebrities, $50M$ writes for 1 post saturates storage and queues. ---",
+        "text": "Refunds were posted as a new debit to the merchant account without a matching credit to the customer account, since the refund path bypassed the same double-entry helper used for charges.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The scheduler continued in the UP direction indefinitely as long as any UP request arrived, starving waiting DOWN passengers. ---",
+        "text": "Currency conversion was applied before the debit and credit amounts were finalized, so rounding on the converted amount introduced a discrepancy between the two legs of the same posting.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By running fraud scoring asynchronously after the charge is already approved, on the assumption that catching fraud a little late is as good as catching it before the funds move.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By recording each side of a transaction as a separate, independently-validated write, trusting that validating each leg alone is equivalent to validating the whole posting balances.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying a declined charge automatically with the same card, without checking whether the fraud decision that declined it was actually risk-based or a hard block.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more payment service replicas to handle checkout traffic, without validating that they all enforce the same double-entry balance invariant on every posting.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting a webhook retry a payment confirmation multiple times, without checking whether the underlying transaction ID makes that retry idempotent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By approving a charge first and running the fraud model in the background, instead of blocking the charge until the fraud decision comes back.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By running fraud scoring asynchronously after the charge is already approved, on the assumption that catching fraud a little late is as good as catching it before the funds move.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By recording each side of a transaction as a separate, independently-validated write, trusting that validating each leg alone is equivalent to validating the whole posting balances.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying a declined charge automatically with the same card, without checking whether the fraud decision that declined it was actually risk-based or a hard block.",
         "is_correct": false
       }
     ],

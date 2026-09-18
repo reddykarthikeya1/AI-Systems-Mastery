@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+        "text": "__new__(cls) initializes attribute values on an already-allocated instance, while __init__(self) is responsible for allocating the raw memory block and returning the object reference.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- async def: Runs directly on the main event loop. - def: Offloaded to an external thread pool (anyio.tothread) to safely execute synchronous blocking code without starving the event loop.",
+        "text": "Both __new__ and __init__ perform the same role; __new__ is simply the legacy Python 2 name for what Python 3 renamed to __init__, kept only for backward compatibility.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
+        "text": "__new__(cls) is only invoked for subclasses of built-in immutable types like int or str; ordinary classes skip __new__ entirely and only ever define __init__.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+        "text": "Use @classmethod whenever a method doesn't need self at all; it behaves identically to @staticmethod except that it can also be called on an instance rather than only on the class.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
+        "text": "Use @classmethod to guarantee the method runs in a background thread separate from the instance's own thread, which is useful for factory methods that perform I/O.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
+        "text": "@classmethod is required any time a method needs to modify self's instance attributes, since instance methods are read-only views of an object's state by default.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Attempting to insert a duplicate idempotencykey raises a unique key violation, allowing the handler to return the previous successful result instead of charging again.",
+        "text": "It makes the attribute completely private and inaccessible from anywhere outside the class, raising an AttributeError on any external access attempt, including from subclasses.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
+        "text": "It marks the attribute as a class-level constant, so attempts to reassign self.__secret_key later in the same class silently fail instead of updating its value.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+        "text": "It tells the garbage collector to exclude the attribute from reference counting, preventing memory leaks when instances form circular references to each other.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Because source code changes frequently while dependencies change rarely. Placing dependencies first allows Docker to reuse cached layers, cutting build times from minutes to seconds.",
+        "text": "Properties are preferred purely for performance: attribute access via @property compiles to a direct memory offset lookup, while getValue()/setValue() always incur a full function-call overhead.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "text": "Properties are required because Python classes cannot define plain callable methods named get_value or set_value; those names are reserved by the interpreter for internal use.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1. Source Code (.py) 2. Token Stream (Tokenizer / Lexer) 3. Abstract Syntax Tree (AST) (Parser) 4. Bytecode (.pyc / code objects) (Compiler) 5. CPython Virtual Machine (PVM / ceval.c) (Evaluation Loop)",
+        "text": "Properties are preferred because they automatically serialize the attribute to JSON when the object is printed, something getValue()/setValue() methods cannot do without extra code.",
         "is_correct": false
       }
     ],
@@ -132,7 +132,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"$100.00\"",
+        "text": "\"100.00\"",
         "is_correct": false
       },
       {
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "Currency(2400.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "1200.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "Currency(600.0",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "Currency(1000.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "500.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "Currency(0.0",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "Currency(1400.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "700.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "Currency(300.0",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "transaction_log is initialized as self.transaction_log = [] inside __init__, but every account was created by copying a prototype instance instead of constructing a new one, so the list object is copied by reference.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "At line 4, sum = 100 binds the name sum in global module scope to an integer, overwriting the built-in function builtins.sum. When calculateteamscore calls sum(...), Python tries to call 100(...).",
+        "text": "The Bank class stores all accounts in one shared list and iterates it to build each account's history view, so any transaction line looks like it belongs to every account it's displayed for.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "text": "Account.__eq__ was implemented to compare only by owner's last name, so Alice's and Bob's accounts are treated as equal and their transaction histories are merged when displayed.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Iterating through active WebSockets and awaiting sendtext() without isolating exceptions means a single dropped client aborts the entire broadcast.",
+        "text": "SecurityMixin was listed after AuditMixin in the class's base-class tuple, and Python only ever calls the first mixin's overridden method, ignoring every mixin listed afterward regardless of how log() is called.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "AuditMixin failed to decorate its log method with @override, so Python silently falls back to BaseService.log at runtime instead of resolving the override through the MRO.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "asyncio operates on cooperative multitasking. When time.sleep() is called, control is never yielded back to the event loop, freezing all other pending tasks.",
+        "text": "SecurityMixin.log and AuditMixin.log have incompatible signatures, so Python's method resolution order raises a TypeError internally and silently falls back to the base class implementation.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "text": "The class defines __hash__ but not __eq__, and Python requires both to be defined together in the exact same class or it treats the object as permanently unhashable.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "text": "dict keys must be declared with a type hint in the class definition; without an explicit Hashable protocol annotation, Python treats every custom object as unhashable by default.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "text": "The object was passed as a dict key before __init__ finished running, so its attributes were not yet set; Python only computes and caches an object's hash after construction completes.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_distributed_inventory_reservation import distributed_inventory_reservation
-except ImportError:
-    from p01_distributed_inventory_reservation import distributed_inventory_reservation
+from p01_distributed_inventory_reservation import distributed_inventory_reservation
 
 
 def test_distributed_inventory_reservation():

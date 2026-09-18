@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11",
+        "text": "20",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "9",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "20",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[10, 20]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[20]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "[big[-1]]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "big",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "big[:-1]",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "text": "prev and cur both start at head, so the very first assignment links the head to itself and the loop condition goes false before a second node is ever visited, leaving a single node behind.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "text": "The function returns prev immediately after entering the while loop, without letting cur walk to the end of the list, so only the first swapped node is ever handed back to the caller.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "text": "from_list only appends the first node before returning, so reverse_list is actually being called on a list that already had a single node before reversal ever touched it.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "text": "The loop's termination check tests slow == fast before either pointer has moved on the first iteration, so a cycle beginning at the head is flagged as \"no cycle\" before the pointers can converge.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "text": "has_cycle rebuilds a fresh visited set on every call but never inserts the head node into it, so the one node that would prove the cycle is exactly the node the check skips.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "text": "fast is advanced with fast.next.next, but slow is also advanced twice per step, so the gap between them never closes because both pointers move at the same rate.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "text": "The comparison uses a.val > b.val instead of >=, so equal-valued nodes from the second list are skipped entirely and never appended to the merged output.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of",
+        "text": "dummy.next is returned before the loop runs, so the function always hands back an empty merged list regardless of the input lengths.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Fencepost issues on boundary intervals $[0, N-1]$.",
+        "text": "The function merges correctly but sorts the result with the wrong comparator afterward, so nodes from the longer list are pushed out of order rather than dropped.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "text": "slow starts one node ahead of the head, so it is already a full step closer to the middle before the loop begins, which only shows up when the list length is even.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "text": "The loop advances slow twice for every one advance of fast, so slow overshoots the middle and the off-by-one only becomes visible on even-length lists.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw.",
+        "text": "middle_node counts the nodes first and computes length // 2, but integer division rounds toward the wrong half for even lengths, landing one node early.",
         "is_correct": false
       }
     ],

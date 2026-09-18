@@ -52,7 +52,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -82,7 +82,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "Add latency_ms and ttft_ms parameters to the trace record and compute cost_usd from the token count and a price table.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "text": "Always use a context manager or try/finally around span creation so span.finish() executes even on an unhandled exception.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "text": "Round every span's start and end timestamp to the nearest whole second before computing duration.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "text": "record() never accepts latency, time-to-first-token, or cost as parameters at all, so those fields are absent from every trace rather than computed incorrectly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "text": "Spans created without a context manager fail to call finish() when an exception is raised, so they never close and accumulate in memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "The tracer buffers spans in memory and flushes them to storage in batches, so spans from the same request can be written out of order.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "text": "record()'s function signature has no parameter for latency, TTFT, or cost, so a dashboard reading these traces has no data for those fields at all, not merely wrong values.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Swap-pair evaluation outputs 85% Ties.",
+        "text": "Spans that are never wrapped in a context manager skip their finish() call whenever the traced code raises, so their memory is never released.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Desynchronized system clocks across worker nodes.",
+        "text": "The trace exporter batches spans by trace ID but ships each batch as soon as it reaches a fixed size, splitting one logical trace across two separate export calls.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "text": "Every trace record for an LLM call is missing its latency, time-to-first-token, and cost fields entirely, even though the call itself completed normally.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "User asks \"How does political risk affect AWS billing?\" and gets blocked by the politics rail.",
+        "text": "Application RAM usage grows monotonically over several days as spans created without a context manager fail to close on exceptions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "Two sibling spans under the same parent report identical start timestamps down to the millisecond, even though they ran sequentially.",
         "is_correct": false
       }
     ],

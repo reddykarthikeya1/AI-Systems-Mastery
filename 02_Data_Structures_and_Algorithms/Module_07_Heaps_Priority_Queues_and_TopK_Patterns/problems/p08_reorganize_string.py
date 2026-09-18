@@ -15,6 +15,12 @@ Example
     reorganize_string("aab")  -> "aba"
     reorganize_string("aaab") -> ""
 
+Example:
+    >>> reorganize_string("aab")
+    'aba'
+    >>> reorganize_string("aaab")
+    ''
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: When is it impossible? Think about the most frequent character and how many slots it needs.

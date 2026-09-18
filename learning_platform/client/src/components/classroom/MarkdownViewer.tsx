@@ -170,7 +170,12 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
           </div>
 
           {/* You should now be able to... Mastery Checklist */}
-          <MasteryChecklist lessonId={lessonId} content={content} />
+          <MasteryChecklist 
+            lessonId={lessonId} 
+            content={content} 
+            nextModuleTitle={nextLesson?.title}
+            onNextModule={onCompleteAndNext}
+          />
 
           {/* Up Next Preview Card */}
           {nextLesson ? (

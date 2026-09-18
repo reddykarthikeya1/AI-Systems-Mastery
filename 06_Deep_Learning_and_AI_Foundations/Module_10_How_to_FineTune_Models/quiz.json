@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It states parameter-efficient methods always match full fine-tuning accuracy regardless of task or dataset size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It requires freezing every layer of the base model, including the newly added adapter weights.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means full fine-tuning uses less GPU memory than adapter-based methods because there are fewer optimizer states.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires merging the low-rank adapter matrices into the base weights before every forward pass during training.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It states QLoRA trains in full 32-bit precision while only LoRA uses quantization.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means increasing the LoRA rank always improves downstream accuracy with no risk of overfitting.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It states larger instruction datasets always outperform smaller, carefully curated ones regardless of quality.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It requires every training example to use the exact same prompt template as the base model's pretraining data.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means instruction tuning replaces the need for a held-out evaluation set entirely.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires training a separate reward model for DPO the same way RLHF does before any policy update.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It states RLHF directly backpropagates through human preference labels without ever sampling from the policy.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means DPO requires an on-policy rollout phase identical to PPO's sampling loop.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It means beating the base model on the training set is sufficient evidence of improvement.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It requires discarding the held-out set once the base model's score on it is known.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It states any fine-tuned checkpoint that changes the loss value has necessarily improved the model.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a checkpoint that beats the base model on one held-out sample generalizes to the full evaluation set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting a fine-tuned model's outputs without ever re-running the held-out evaluation after a dataset update.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that the adapter weights were actually merged before the model is marked ready to serve.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By merging LoRA adapters back into the base weights on every single inference request instead of once at deploy time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By loading the full fine-tuning optimizer state into memory at serving time even though inference needs no gradients.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping quantization calibration so a QLoRA checkpoint is served at full precision under load without warning.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a checkpoint that beats the base model on one held-out sample generalizes to the full evaluation set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting a fine-tuned model's outputs without ever re-running the held-out evaluation after a dataset update.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that the adapter weights were actually merged before the model is marked ready to serve.",
         "is_correct": false
       }
     ],

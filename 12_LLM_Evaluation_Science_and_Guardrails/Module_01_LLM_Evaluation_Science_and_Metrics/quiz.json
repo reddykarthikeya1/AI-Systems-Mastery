@@ -47,12 +47,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "-1.0",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "evaluate() checks only whether the first five characters of the answer appear as a substring in the context, so a hallucinated answer with a matching opening phrase scores a perfect 1.0.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "16-digit product serial numbers are masked as credit cards.",
+        "text": "The claim extractor splits sentences on every period without recognizing honorific abbreviations, fragmenting a single claim into three separate ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "BLEU score is computed using only unigram overlap, so word order differences between the reference and the generated answer are never penalized.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "ValueError: n - c must be greater than or equal to k or division by zero.",
+        "text": "The faithfulness evaluator only compares the first five characters of the answer against the context, never checking whether the rest of its claims are entailed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "Sentence splitting for claim decomposition breaks on every period, including those inside abbreviations and decimal numbers.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "text": "The exact-match metric strips all punctuation from the target string but not from the model's generated output before comparing them.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Naive whitespace tokenization splits numbers with commas into separate tokens.",
+        "text": "A hallucinated answer that opens with a common phrase from the context scores a perfect 1.0 on faithfulness despite containing fabricated claims.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "text": "A correctly paraphrased answer that reorders the context's wording scores 0.0 on faithfulness even though every claim in it is true.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "The claim extractor splits 'Dr. Smith visited New York' into three separate fragmented claims instead of one.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Desynchronized system clocks across worker nodes.",
+        "text": "Decompose the answer into individual claims and check each one's entailment against the context instead of pattern-matching a fixed prefix.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "Use a negative-lookahead regex when splitting on periods so honorific abbreviations and decimal numbers no longer create false sentence boundaries.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "Lowercase both the model's output and the reference answer before computing token overlap.",
         "is_correct": false
       }
     ],

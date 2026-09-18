@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "0.5",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "100.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "4.0",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By running gradient descent for a fixed number of steps regardless of the loss landscape, without checking whether the trajectory has actually converged to a critical point.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By classifying any point where the loss stops decreasing as a minimum, without ever checking the Hessian to rule out a saddle point.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using a single fixed learning rate for every model, on the assumption that step size alone cannot cause divergence on a non-convex surface.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By classifying any point where the loss stops decreasing as a minimum, without ever checking the Hessian to rule out a saddle point.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating a zero gradient alone as sufficient proof of a minimum, without checking the sign of the Hessian's eigenvalues to rule out a saddle or maximum.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By running gradient descent for a fixed number of steps regardless of the loss landscape, without checking whether the trajectory has actually converged to a critical point.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By running gradient descent for a fixed number of steps regardless of the loss landscape, without checking whether the trajectory has actually converged to a critical point.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By classifying any point where the loss stops decreasing as a minimum, without ever checking the Hessian to rule out a saddle point.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using a single fixed learning rate for every model, on the assumption that step size alone cannot cause divergence on a non-convex surface.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By classifying any point where the loss stops decreasing as a minimum, without ever checking the Hessian to rule out a saddle point.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating a zero gradient alone as sufficient proof of a minimum, without checking the sign of the Hessian's eigenvalues to rule out a saddle or maximum.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By running gradient descent for a fixed number of steps regardless of the loss landscape, without checking whether the trajectory has actually converged to a critical point.",
         "is_correct": false
       }
     ],

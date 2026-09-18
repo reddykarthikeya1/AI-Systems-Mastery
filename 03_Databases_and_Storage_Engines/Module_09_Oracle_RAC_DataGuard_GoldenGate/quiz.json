@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+        "text": "A technology that replicates entire datafiles from the primary node's disk to every other node's local disk in real time, avoiding the need for shared storage.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using ConditionExpression = 'attributenotexists(PK)' or checking version numbers before applying mutations.",
+        "text": "A background process that periodically flushes all dirty buffers from every instance's SGA to disk simultaneously, keeping all nodes' caches empty and therefore consistent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "text": "A locking protocol that forces every block to be read from shared disk storage directly, bypassing each instance's local buffer cache entirely to guarantee consistency.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
+        "text": "GCS load-balances incoming client connections evenly across all RAC instances, without any involvement in buffer cache consistency.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Two nodes simultaneously believing they are leader; quorum ($N/2 + 1$) guarantees no two disjoint subsets can both achieve majority.",
+        "text": "GCS periodically checkpoints each instance's redo log independently, ensuring crash recovery can proceed without coordinating with other instances.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Values exceeding ~2KB are compressed and stored out-of-line in separate TOAST tables, keeping main heap pages compact.",
+        "text": "GCS is only invoked during instance startup to register a new node with the cluster; once running, each instance manages its own cache independently.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
+        "text": "A standard physical standby can already serve read-only queries while applying redo; Active Data Guard's only addition is compressing the redo stream for faster transmission.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
+        "text": "Active Data Guard allows the standby to accept write transactions directly from clients, synchronizing them back to the primary asynchronously.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+        "text": "A standard physical standby applies redo only once per day during a scheduled maintenance window, while Active Data Guard applies it continuously in real time but keeps the database closed to all queries.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
+        "text": "Max Protection ships redo asynchronously to save latency but refuses to open the database for read-only queries; Max Performance is identical to Max Protection except it allows read-only access.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "text": "All three modes use synchronous redo commit to the standby; they differ only in how many standby databases are required to be online at once.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Term Frequency (TF) with saturation ($k1$), Document Frequency (IDF), and Document Length normalization ($b$) relative to average document length.",
+        "text": "Max Availability guarantees zero data loss at all times, even when the standby is completely unreachable, by queuing redo indefinitely on the primary until the standby returns.",
         "is_correct": false
       }
     ],
@@ -192,12 +192,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DB_LON_PRI\"",
+        "text": "DB_LON_STB",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "DB_DUB_PRI",
         "is_correct": false
       },
       {
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DB_DUB_STB\"",
+        "text": "DB_DUB_PRI",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "DB_LON_STB",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "Raises KeyError: 'primary_id'",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "text": "The private interconnect network interface card is misconfigured to use standard Ethernet MTU instead of jumbo frames, adding latency to every Cache Fusion message without affecting which nodes need to communicate.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "text": "Only one RAC node is actually processing transactions; the interconnect saturation is actually background redo log shipping to a physical standby, unrelated to Cache Fusion.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "text": "The workload is correctly partitioned by account block, but the automatic workload repository (AWR) sampling job itself is generating the interconnect traffic by polling GCS statistics too frequently.",
         "is_correct": false
       }
     ],

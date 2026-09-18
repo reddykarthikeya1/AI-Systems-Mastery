@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A custom boolean function return annotation (def isuser(val) -> TypeGuard[User]) that informs the type checker that the inspected variable is definitely of that type when True.",
+        "text": "return pauses the function and preserves its local state so it can be resumed later, while yield permanently destroys the stack frame and produces one final value.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- WSGI: Synchronous, single-request-per-thread model (Flask/Django). - ASGI: Asynchronous, event-driven model supporting non-blocking HTTP requests and WebSockets (FastAPI/Starlette).",
+        "text": "Both return and yield destroy the function's local stack frame immediately; the only difference is that yield additionally logs the returned value to stdout for debugging.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "C code accesses raw unmanaged hardware memory. Accessing protected memory violates OS kernel memory boundaries, causing the OS kernel to kill the process instantly (SIGSEGV).",
+        "text": "yield can only be used inside functions that also contain a return statement; calling a yield-only function without any return raises a SyntaxError at import time.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- args arrives as a tuple (immutable sequence of positional arguments). - kwargs arrives as a dict (dictionary of keyword argument name-value pairs).",
+        "text": "functools.wraps recompiles the wrapper's bytecode to match the original function's bytecode exactly, so the wrapper executes at the same speed as calling the original function directly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use Re-ranking (Cross-Encoders) to rank retrieved chunks by relevance score and retain only the top $K$ chunks that fit comfortably within the context token budget.",
+        "text": "It is only needed when the decorated function accepts keyword arguments; decorators wrapping functions that take purely positional arguments work identically with or without functools.wraps.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When the class is constructed, Python automatically passes the attribute name (e.g. \"age\") to setname, removing manual string name passing.",
+        "text": "functools.wraps registers the wrapper with Python's garbage collector so the original undecorated function is not freed from memory while the wrapper is still in use.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It prevents important context and sentences from being split across chunk boundaries, ensuring semantic coherence in retrieved snippets.",
+        "text": "Both expressions use identical memory because CPython always stores iterable elements in the same underlying array structure; the syntax only changes how many items are returned per next() call.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By suppressing the dynamic dict hash table allocation on each instance, storing attributes in fixed-size C structs (saving up to $60\\%$ RAM).",
+        "text": "The generator expression computes all 10,000,000 values immediately just like the list comprehension, but stores them compressed on disk instead of in RAM, only decompressing values as they are consumed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1. SYN: Client sends synchronization packet to request connection. 2. SYN-ACK: Server acknowledges and sends its own synchronization packet. 3. ACK: Client confirms receipt; socket connection enters ESTABLISHED state.",
+        "text": "range(10000000) itself is lazy, so wrapping it in either () or [] produces the same ~100 bytes; the 400 MB figure only appears if list() is called explicitly on the comprehension afterward.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- DataFrame: Executes operations immediately in memory (eager). - LazyFrame: Builds a logical execution plan without executing until .collect() is explicitly called.",
+        "text": "1. __getitem__(self, index): Must support integer indexing starting at 0. 2. __len__(self): Must return the total number of items so Python knows when to stop.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- ENTRYPOINT: Sets the fixed executable command (e.g. uvicorn). - CMD: Provides default arguments that can be easily overridden when running the container.",
+        "text": "1. __next__(self): Must return the iterator object itself. 2. __iter__(self): Must return the next value, or raise StopIteration when exhausted -- the two names are the reverse of their real roles.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
+        "text": "1. __enter__(self): Must initialize the iteration state. 2. __exit__(self): Must clean up resources once StopIteration is raised, the same two methods used by context managers.",
         "is_correct": false
       }
     ],
@@ -137,12 +137,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -162,7 +162,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"ERROR: disk full\"]",
         "is_correct": false
       },
       {
@@ -172,7 +172,7 @@
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "Raises TypeError: 'NoneType' object is not iterable",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[1, 4, 9, 16, 25]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[0, 1, 4, 9, 16, 25]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "<generator object compute_squares at 0x7f8a2c1b3450>",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Any is an escape hatch that silences static analysis. Using Any instead of protocols, generics, or unions transfers type errors to runtime.",
+        "text": "parse_access_log.__name__ always reflects the name of the last decorator applied in the stack, regardless of functools.wraps, so 'wrapper' is expected whenever more than one decorator is stacked.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "logger.addHandler() appends a handler each time it is called. If called multiple times, the logger has multiple stream handlers attached, printing every message multiple times.",
+        "text": "Python renames any function assigned to a variable called wrapper inside a decorator, permanently overwriting its __name__ attribute in the function's own module namespace.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "The decorator was applied using the @decorator syntax instead of parse_access_log = decorator(parse_access_log); the explicit assignment form is required to preserve the original __name__.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "text": "The stream was opened in text mode instead of binary mode, so re-reading it a second time returns an empty string instead of raising StopIteration.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "process_stream caches its first return value with functools.lru_cache, so calling it again with the same stream object returns the cached (now-empty) result instead of recomputing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "assert (a == b, \"msg\") parses as assert (<tuple>). In Python, bool((False, \"msg\")) is True. The assertion is completely vacuous and will never catch bugs!",
+        "text": "The generator function itself contains a bug where its internal counter variable is a mutable default argument, so it silently resets to a stale empty state on every call after the first.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "The except clause inside the context manager's __exit__ catches the KeyError and re-raises it as a generic Exception, which the calling code's specific except KeyError: no longer matches.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "text": "The with block was written without an as clause, so the database connection object is never bound to a name and cleanup silently fails without propagating any error.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "text": "logging.exception() was called inside __exit__ before returning None, and because the exception was already logged, Python treats it as handled and does not re-raise it.",
         "is_correct": false
       }
     ],

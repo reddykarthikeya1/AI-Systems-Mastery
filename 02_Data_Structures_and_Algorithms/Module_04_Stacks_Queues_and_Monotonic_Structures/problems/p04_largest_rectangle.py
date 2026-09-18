@@ -11,8 +11,9 @@ Constraints
 - ``0 <= len(heights) <= 10**5``  -> O(n) required
 - ``0 <= heights[i] <= 10**4``
 
-Example
-    [2, 1, 5, 6, 2, 3] -> 10     (heights 5 and 6, width 2)
+Example:
+    >>> largest_rectangle([2, 1, 5, 6, 2, 3])
+    10
 
 Hints — read one at a time, and try again between each.
 

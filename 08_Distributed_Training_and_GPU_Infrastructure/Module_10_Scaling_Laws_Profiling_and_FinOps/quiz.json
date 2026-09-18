@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "text": "torch.profiler is left active for hundreds of steps, accumulating millions of CUDA activity records in host RAM and VRAM.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Guarantee identical collective execution ordering across all ranks.",
+        "text": "The FLOP counter double-counts the embedding and output head matrices because they are tied and only one copy of parameters exists.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "Achieved TFLOPS is measured using the GPU's sparse tensor-core peak instead of its dense peak, inflating the reported utilization ratio.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "torch.profiler is left active for hundreds of steps, accumulating millions of CUDA activity records in host RAM and VRAM.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "text": "The FLOP counter double-counts the embedding and output head matrices because they are tied and only one copy of parameters exists.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -",
+        "text": "Achieved TFLOPS is measured using the GPU's sparse tensor-core peak instead of its dense peak, inflating the reported utilization ratio.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "text": "Use schedule=torch.profiler.schedule(wait=2, warmup=2, active=3, repeat=1) to capture only a small profiling window.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "text": "Count the tied embedding and output head matrices only once in the analytical FLOP formula.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "All GPUs hang at 100% compute with 0% memory throughput indefinitely.",
+        "text": "Measure achieved TFLOPS against the GPU's dense tensor-core peak rather than its sparse peak.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "Enabling torch.profiler triggers a GPU out-of-memory error within 5 steps.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "text": "Reported MFU is consistently lower than the vendor's advertised peak, even on a well-tuned kernel.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.",
+        "text": "Step time reported by the profiler drifts upward the longer profiling stays enabled, even though the model itself is unchanged.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "text": "The FLOP-based MFU calculation silently assumes dense GEMMs, so a kernel using structured sparsity reports MFU above 100%.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "text": "The profiler's collection window is left active for the entire training run, so host-side memory used for trace buffers grows without bound.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "text": "Cost-per-token is computed from list-price GPU-hours instead of the cluster's actual sustained throughput, understating the true training cost.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "text": "The FLOP-based MFU calculation silently assumes dense GEMMs, so a kernel using structured sparsity reports MFU above 100%.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.",
+        "text": "The profiler's collection window is left active for the entire training run, so host-side memory used for trace buffers grows without bound.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3",
+        "text": "Cost-per-token is computed from list-price GPU-hours instead of the cluster's actual sustained throughput, understating the true training cost.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By leaving torch.profiler active for the full training run instead of a bounded schedule window.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reporting MFU computed with the standard 6-Phi formula even for architectures with a gated MLP.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By computing cost-per-token from list-price GPU-hours instead of measured sustained throughput.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting an MFU figure above 70% without checking whether the FLOP formula accounts for the model's actual architecture.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a profiler left running for the whole job will never affect the memory it is trying to measure.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a sanity check that reported TFLOPS stays below the GPU's known dense peak.",
         "is_correct": false
       }
     ],

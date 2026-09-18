@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "text": "The very first kernel launch profiled includes one-time JIT compilation and CUDA context initialization overhead.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "text": "The chosen metric set requests every hardware counter available, forcing far more replay passes than a targeted section would need.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "text": "Nsight Systems inserts CPU-side synchronization points around each range, serializing calls that normally overlap asynchronously.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always include two barriers per iteration:",
+        "text": "The very first iteration in a profiled loop takes far longer than every iteration after it.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "text": "Overall wall-clock time reported by Nsight Systems roughly matches production, but per-kernel gaps appear where none existed before.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts, unrelated to whether a profiler is attached.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "text": "Warm up the kernel with a few untimed iterations before starting the profiling range so JIT and context setup are excluded.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode).",
+        "text": "Request only the specific metrics needed for the section being analyzed instead of the full metric set.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "text": "Avoid wrapping profiled ranges in extra host-side synchronization that Nsight Systems does not itself require.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Performing bitwise operations without proper signed two's complement extension:",
+        "text": "The very first kernel launch profiled includes one-time JIT compilation and CUDA context initialization overhead.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "text": "The chosen metric set requests every hardware counter available, forcing far more replay passes than a targeted section would need.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "text": "Nsight Systems inserts CPU-side synchronization points around each range, serializing calls that normally overlap asynchronously.",
         "is_correct": false
       }
     ],

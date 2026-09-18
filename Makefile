@@ -42,3 +42,7 @@ client-check:
 
 smoke-test:
 	python tests/test_platform_smoke.py
+
+# One run should report every failing course, not stop at the first.
+check-gates-all:
+	@$(MAKE) -k check-gates

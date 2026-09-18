@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -47,12 +47,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Both agents' classification prompts lack unambiguous domain boundary definitions.",
+        "text": "execute() calls exec(code) with no explicit globals/locals dict, so the code runs inside the caller's own namespace with full access to self and the host process.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The agent forgets a user's name or fundamental preference declared 3 days ago.",
+        "text": "The sandbox denies network access at the OS level but never restricts filesystem writes, so untrusted code can still exfiltrate data to disk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -",
+        "text": "The AST visitor blocks direct calls to eval and exec by name, but does not walk into nested function definitions where those names could also appear.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero. -",
+        "text": "Untrusted code calls exec() with no isolated namespace and freely reads and rewrites attributes on the live tool-runner instance in the host process.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "Worker processes exhaust the OS's available PIDs after untrusted code spawns processes in an unbounded loop.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "text": "The sandbox correctly blocks eval and exec by name, but a submitted script imports the os module directly and calls os.system without ever triggering a check.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "text": "exec() is invoked without explicit globals/locals arguments, so untrusted code executes inside the caller's own frame with access to self and the full interpreter.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "text": "Untrusted code is allowed to spawn subprocesses in an unbounded loop with no OS-level process limit configured.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "The AST visitor's denylist of forbidden names is case-sensitive, so a submitted script bypasses it by importing 'OS' with different capitalization.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.",
+        "text": "Run untrusted code in a separate subprocess with no shared memory or object references back to the host process, instead of calling exec() in-process.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "text": "Enforce OS-level process limits (ulimit -u / RLIMIT_NPROC) so untrusted code cannot fork unboundedly.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "text": "Lower the AST visitor's recursion depth limit so deeply nested expressions are rejected outright before being evaluated.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By executing untrusted code with exec() inside the caller's own namespace, trusting an AST denylist alone to stop anything dangerous.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By allowing untrusted code to spawn subprocesses or threads without any OS-level cap on how many it can create.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By blocking dangerous function calls through literal name matching in source text, without accounting for string concatenation or getattr-based obfuscation.",
         "is_correct": false
       }
     ],

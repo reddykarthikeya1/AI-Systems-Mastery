@@ -8,8 +8,6 @@ if str(mod_dir) not in sys.path:
 from capstone_platform.tasks import CapstoneTaskBroker
 
 def trigger_analytics_export_task(broker: CapstoneTaskBroker):
-    # Task worker expects payload key 'target_format' ('json' or 'parquet'),
-    # but the API gateway passes 'format'. Task fails with KeyError in worker process!
     task = broker.enqueue("ExportMetrics", {"format": "parquet"})
     return task
 

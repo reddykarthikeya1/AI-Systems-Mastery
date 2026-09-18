@@ -47,12 +47,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "5",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "Raises IndexError: list index out of range",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Deep trees causing Python RecursionError (mitigate via iterative traversal + explicit stack).",
+        "text": "The running minimum is tracked correctly, but profit is computed as cheapest - price instead of price - cheapest, so every profitable trade is reported as a loss and vice versa.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "text": "best is initialized to the first day's price instead of 0, so a stock that only ever falls in value still reports a positive profit equal to that opening price.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "text": "The loop compares today's price against yesterday's price instead of against the running minimum, so a dip that recovers after two days is missed even though it would have been profitable to buy at the bottom.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "Intervals are sorted by their end value instead of their start value before merging, so two overlapping intervals can be compared out of order and merged with the wrong neighbour entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "text": "The overlap check compares start < last_end instead of start <= last_end, so two intervals that touch exactly at a single point are left unmerged and reported as separate.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "The merge only updates out[-1] when the new interval's start is strictly less than last_end, so an interval that starts exactly where the previous one ends is silently dropped from the output altogether.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "text": "The tank total is reset to zero every time it goes negative, but the candidate starting index is not reset along with it, so the final start reported corresponds to an earlier, already-failed attempt.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "text": "gas and cost are summed together into a single combined array before the scan, so the algorithm loses the ability to tell which station contributed the surplus and which contributed the deficit.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "The loop iterates one station short of the full circuit, so the last station's gas and cost are never factored into the running tank total at all.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "text": "Intervals are sorted by their length rather than by start or end, so a long meeting that finishes early can still be scheduled before several shorter meetings that would have allowed more of them to fit.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every time a node's distance improves, a fresh (dist, node) entry is pushed and the previous one stays in the heap. Without the guard, each stale entry is popped and its neighbours re-relaxed \u2014 work that can never improve anything, because ",
+        "text": "The count of scheduled meetings is incremented before checking for overlap instead of after, so an interval that actually conflicts with the previous one is still counted as scheduled.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Two states cannot express the distinction the problem needs. A node already visited may be on the current DFS path \u2014 which is a genuine cycle \u2014 or it may be finished, reached earlier by a different route, which a DAG is entirely allowed to ",
+        "text": "Meetings are compared for overlap using >= instead of >, so two meetings that touch at a single shared endpoint are treated as overlapping and one of them is dropped unnecessarily.",
         "is_correct": false
       }
     ],

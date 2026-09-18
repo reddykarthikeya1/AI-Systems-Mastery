@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It forces the cluster to execute a full table scan across all nodes in the cluster, destroying distributed scalability.",
+        "text": "It writes the event message directly to the message broker first, then updates the database in a second, separate transaction once the broker confirms receipt.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Seq Scan reads all heap pages; Index Scan navigates B-Tree to fetch heap tuples individually; Bitmap Index Scan builds an in-memory bitmap of matching pages before reading them sequentially.",
+        "text": "It uses a two-phase commit between the application database and the message broker, requiring both systems to support XA transactions natively.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "No. An autonomous transaction is a completely separate session and cannot see the calling transaction's uncommitted writes.",
+        "text": "It periodically polls the message broker for delivery confirmations and retries the entire business transaction, including the original database write, if no confirmation arrives in time.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
+        "text": "CDC and application-level event publishing are functionally identical; CDC is simply the marketing term vendors use for the same publish call made from application code.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It retrieves entire query result sets into in-memory collections (nested tables or varrays) in a single context switch.",
+        "text": "CDC publishes events before a transaction commits, giving lower latency than application-level publishing, but at the cost of occasionally emitting events for transactions that later roll back.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Using ASCII art syntax: (start:Label)-[:RELTYPE {prop: val}]->(end:Label).",
+        "text": "CDC requires the application to explicitly call a capture() function after every write, whereas application-level event publishing happens automatically without any code changes.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The recursive member executes repeatedly, taking the previous iteration's result as input until it returns an empty result set.",
+        "text": "PostgreSQL: full-text keyword search; Redis: transactional source of truth; Elasticsearch: low-latency caching; ClickHouse: high-throughput columnar analytics, swapping the usual roles of the relational and search engines.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
+        "text": "All four systems serve as interchangeable read replicas of the same PostgreSQL source of truth, differing only in their on-disk compression ratio.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
+        "text": "Redis and ClickHouse both serve as the transactional source of truth in an active-active configuration, while PostgreSQL and Elasticsearch are used only for reporting.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
+        "text": "A single distributed transaction coordinated by two-phase commit across every service's database, with no concept of compensation since 2PC guarantees all-or-nothing atomicity directly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1 WCU = 1 write up to 1KB/s; 1 RCU = 1 strongly consistent read (or 2 eventually consistent reads) up to 4KB/s.",
+        "text": "A sequence of local transactions where, if a step fails, the saga simply retries that same step indefinitely until it succeeds, rather than undoing any previously completed steps.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+        "text": "A read-only aggregation that replays every service's event log after the fact to detect inconsistencies, without taking any corrective action itself.",
         "is_correct": false
       }
     ],
@@ -142,7 +142,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "250.0",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "text": "The application correctly writes to Redis first and the database second within the same request, but the database write silently fails while Redis retains the new value forever.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "text": "Redis is configured with a TTL on every cache key, and the staleness is actually expected behavior: the cached value is correct until the TTL expires, which is a design choice, not a bug.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "RETURNING requires DuckDB \u2265 0.8. On older versions the statement parses but yields no row.",
+        "text": "The application uses the Transactional Outbox pattern correctly, but the relay process reads the outbox table with the wrong isolation level, causing it to occasionally relay the same event to Redis twice instead of dropping it.",
         "is_correct": false
       }
     ],

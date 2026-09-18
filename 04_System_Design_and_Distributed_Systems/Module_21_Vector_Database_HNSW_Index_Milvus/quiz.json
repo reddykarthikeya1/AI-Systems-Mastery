@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "k - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "2 * k",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "128",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "len(vec) - 1",
         "is_correct": false
       }
     ],
@@ -82,7 +82,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "k + 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "2 * k",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "The index used a fixed entry point at layer 0 instead of the top layer, so searches always started from the densest, most crowded part of the graph regardless of query location.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Cache-aside without request coalescing allows all concurrent callers to experience a cache miss at the exact same millisecond and hammer the backend. ---",
+        "text": "Vectors were inserted without normalizing them first, so cosine similarity comparisons were dominated by magnitude differences rather than direction, degrading recall.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Ingesting arbitrary user uploads without strict chunk size limits and streaming piping causes memory consumption to explode. ---",
+        "text": "The ef_search parameter was set too low for the collection size, so the greedy search terminated before reaching every relevant neighborhood, even though the graph itself stayed fully connected.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By deleting a vector immediately from the graph on request, on the assumption that removing a node alone cannot affect any other node's search path.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By rebuilding the entire HNSW index from scratch on every insert, trusting that a fresh graph is always safer than incrementally updating one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the number of graph layers without bound, since more layers alone are assumed to guarantee the graph stays connected.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more replica shards of the vector index to spread query load, without validating that each shard's own graph stayed connected after deletions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed nearest-neighbor search with a larger k, instead of checking whether the underlying graph was left disconnected by an earlier deletion.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By tombstoning deleted vectors so they are skipped at query time, without ever re-running neighbor selection to bridge the graph around them.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By deleting a vector immediately from the graph on request, on the assumption that removing a node alone cannot affect any other node's search path.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By rebuilding the entire HNSW index from scratch on every insert, trusting that a fresh graph is always safer than incrementally updating one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the number of graph layers without bound, since more layers alone are assumed to guarantee the graph stays connected.",
         "is_correct": false
       }
     ],

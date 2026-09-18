@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 SCAN (LOOK) elevator floor scheduling servicing pending calls.
 
+Example:
+    >>> elevator_dispatcher_scan(5, 'UP', [2, 8, 3, 7, 5])
+    [5, 7, 8, 3, 2]
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: SCAN visits everything "ahead" of the car in its current
+        direction of travel first, then reverses for the rest — it does
+        not answer calls in the order they were requested.
+    Hint 2: De-duplicate and sort the requests, split them relative to
+        `current_floor` into an "ahead" group and a "behind" group, order
+        each group appropriately, and concatenate the two.
+    Hint 3: A request exactly at `current_floor` belongs in the "ahead"
+        group when moving UP (the test shows floor 5 serviced first while
+        going UP from floor 5); the "behind" group must be reversed —
+        descending for UP, ascending for DOWN — since the car only
+        reaches it after finishing the ahead group.
 """
 
 from __future__ import annotations

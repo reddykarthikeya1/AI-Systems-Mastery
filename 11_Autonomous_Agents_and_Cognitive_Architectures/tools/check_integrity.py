@@ -30,6 +30,7 @@ Usage::
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -56,10 +57,12 @@ def modules(only: str | None) -> list[Path]:
     return found
 
 
-def run(args: list[str], cwd: Path, timeout: int = 600) -> subprocess.CompletedProcess:
+def run(args: list[str], cwd: Path, timeout: int = 600,
+        env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
         args, cwd=cwd, capture_output=True, text=True,
         timeout=timeout, encoding="utf-8", errors="replace",
+        env={**os.environ, **env} if env else None,
     )
 
 
@@ -115,7 +118,10 @@ def main() -> int:
         problems = m / "problems"
         if not problems.is_dir():
             continue
-        proc = run([sys.executable, "-m", "pytest", str(problems), "-q"], cwd=ROOT)
+        # The bank grades the learner by default, so an unimplemented stub fails.
+        # This check is about the reference answers, which need solution mode.
+        proc = run([sys.executable, "-m", "pytest", str(problems), "-q"], cwd=ROOT,
+                   env={"ACADEMY_GRADE_SOLUTION": "1"})
         if proc.returncode != 0:
             failures.append(f"{m.name}: reference solutions FAIL their own tests")
             print(f"  FAIL  {m.name[:56]}")

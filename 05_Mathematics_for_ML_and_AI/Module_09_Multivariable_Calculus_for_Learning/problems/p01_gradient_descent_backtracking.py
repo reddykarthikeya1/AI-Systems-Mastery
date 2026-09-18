@@ -5,10 +5,21 @@ Target: Production-grade implementation
 
 One step of gradient descent with Armijo condition step halving.
 
+Example:
+    >>> gradient_descent_backtracking(2.0, 4.0, lambda x: x ** 2, lr=0.1)
+    1.6
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: A gradient step is only useful if it actually makes progress —
+        checking the loss at the candidate point against the loss at the
+        current point tells you whether the chosen step size overshot.
+    Hint 2: Compute the initial loss once, then repeatedly try
+        `curr_x - step * grad`; if that candidate's loss is not greater than
+        the initial loss, accept it, otherwise halve `step` and retry
+        (this simplified condition, not the full Armijo slope test).
+    Hint 3: Cap the halving at 5 attempts and fall back to whatever the
+        smallest tried step produces rather than looping forever if the
+        loss function never improves; round the returned x to 4 decimals.
 """
 
 from __future__ import annotations

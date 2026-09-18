@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(h_p - kl_pq)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(kl_pq)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(h_p * kl_pq)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(0.5)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(0.693)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(2.0)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(8.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(2.079)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(0.125)",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(true_std)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By computing a point estimate once from an initial sample and treating it as fixed truth thereafter, without checking whether new data would shift the estimate.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reporting an entropy or KL-divergence value without checking whether the underlying probabilities were actually normalized to sum to one first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using the biased maximum-likelihood variance estimator everywhere, on the assumption that dividing by n instead of n minus 1 never matters at any sample size.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By reporting an entropy or KL-divergence value without checking whether the underlying probabilities were actually normalized to sum to one first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a maximum-likelihood estimate is automatically unbiased just because it maximizes the likelihood of the observed sample.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By computing a point estimate once from an initial sample and treating it as fixed truth thereafter, without checking whether new data would shift the estimate.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By computing a point estimate once from an initial sample and treating it as fixed truth thereafter, without checking whether new data would shift the estimate.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reporting an entropy or KL-divergence value without checking whether the underlying probabilities were actually normalized to sum to one first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using the biased maximum-likelihood variance estimator everywhere, on the assumption that dividing by n instead of n minus 1 never matters at any sample size.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By reporting an entropy or KL-divergence value without checking whether the underlying probabilities were actually normalized to sum to one first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a maximum-likelihood estimate is automatically unbiased just because it maximizes the likelihood of the observed sample.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By computing a point estimate once from an initial sample and treating it as fixed truth thereafter, without checking whether new data would shift the estimate.",
         "is_correct": false
       }
     ],

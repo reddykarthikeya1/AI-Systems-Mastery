@@ -19,6 +19,11 @@ Constraints
 Example
     3 nodes, 10000 keys, adding a 4th -> approximately 0.25, not ~1.0
 
+Example:
+    >>> keys = [f"key{i}" for i in range(10000)]
+    >>> round(remap_fraction(["n1", "n2", "n3"], "n4", keys), 2)
+    0.24
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Hash each node several times (the virtual nodes) onto a numeric ring, and keep the ring sorted.

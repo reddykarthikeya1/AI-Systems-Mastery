@@ -15,6 +15,10 @@ Constraints
 Example
     max_window_sum([2, 1, 5, 1, 3, 2], 3) -> 9
 
+Example:
+    >>> max_window_sum([2, 1, 5, 1, 3, 2], 3)
+    9
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Summing every window independently is O(n*k). What do two adjacent windows have in common?

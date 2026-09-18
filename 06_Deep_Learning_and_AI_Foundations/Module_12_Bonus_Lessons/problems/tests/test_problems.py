@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_beam_search_decoder import beam_search_decoder
-except ImportError:
-    from p01_beam_search_decoder import beam_search_decoder
+from p01_beam_search_decoder import beam_search_decoder
 
 
 def test_beam_search_decoder():

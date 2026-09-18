@@ -5,10 +5,24 @@ Target: Production-grade implementation
 
 Generate adversarial prompt variants using character substitutions (leetspeak).
 
+Example:
+    >>> mutation_adversarial_fuzzer('hello')
+    ['h3ll0', 'h e l l o']
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The two mutations are independent transformations of the same
+        original string, not chained onto each other — the spaced variant
+        should still contain the original letters, not the leetspeak
+        ones.
+    Hint 2: Build the leetspeak variant with a character-by-character
+        substitution through a lookup dict (a/e/i/o -> @/3/1/0), and build
+        the spaced variant separately with " ".join(prompt) on the
+        untouched original string.
+    Hint 3: The leetspeak map needs both cases of each vowel (lowercase
+        and uppercase should both get replaced, e.g. 'A' and 'a' both
+        become '@') so mixed-case prompts mutate consistently, and any
+        character not in the map (consonants, punctuation, spaces) must
+        pass through unchanged.
 """
 
 from __future__ import annotations

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "txet",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "ttext",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "actual",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "result",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "dedup",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
+        "text": "6",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "1",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Deep trees causing Python RecursionError (mitigate via iterative traversal + explicit stack).",
+        "text": "The recursion never calls path.pop() after path.append(), so path grows monotonically for the whole search and every recorded subset ends up containing every element ever added.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.",
+        "text": "out.append(path) is called before the recursive call that extends path, instead of after, so every subset is recorded one element short of what was actually built.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "The base case checks len(path) == len(nums) instead of checking after every choice, so only the single full-length subset is ever recorded and every smaller subset is skipped.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "text": "The remaining target is computed as remaining - ordered[i + 1] instead of remaining - ordered[i], so the wrong candidate's value is subtracted from the running total on every recursive call.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The whole point of a segment tree is that internal nodes cache the sums of their subtrees. Writing a leaf without repairing that cache leaves every ancestor holding a sum computed from the old value.",
+        "text": "Candidates are sorted in descending order before the search begins, so the pruning check that stops once remaining goes negative fires before the smaller, still-valid candidates are ever tried.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "The base case checks remaining == 0 before the candidate for this step has actually been appended to path, so a valid combination is detected one call too early and discarded before it is recorded.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "text": "path.pop() is called before backtrack() returns instead of after, so the element is removed from the path while it is still being used deeper in the recursion, corrupting every deeper permutation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The function compares the first and last timings, so the ratio compounds across every doubling instead of measuring one. Over three doublings a linear algorithm reaches 4.0 and a quadratic one reaches 16.0 \u2014 but the thresholds were written ",
+        "text": "used is implemented as a single boolean shared by every recursive call instead of one flag per index, so marking any element as used blocks every other element from being chosen as well.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "text": "The recursion appends to path but the check for a completed permutation compares len(path) to len(used) instead of len(ordered), so completed permutations are never detected once elements start being reused.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "text": "Column conflicts are checked with a list instead of a set, so a linear scan across all placed columns is performed for every queen, which slows the search without changing which boards are accepted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "text": "The board size n is off by one in the loop bound, so the search only ever explores placements for an (n-1)-sized board and silently reports solutions for the wrong problem size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "text": "Rows are placed in a fixed left-to-right column order rather than being backtracked over, so the same column is tried for every row and most valid boards are never discovered at all.",
         "is_correct": false
       }
     ],

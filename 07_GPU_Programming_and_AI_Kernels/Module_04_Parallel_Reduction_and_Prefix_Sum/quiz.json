@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "result",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "[0xFFFFFFFF]",
+        "text": "2 * expected_sum",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "expected_sum / block_size",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Reorganize data or thread assignments so that branching evaluates uniformly across all 32 threads in a warp (threadIdx.x / 32).",
+        "text": "The reduction produces a different, slightly wrong sum on every run, with no crash or hang.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4.",
+        "text": "The kernel runs correctly for power-of-two input sizes but silently drops elements for any other size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "text": "A __syncthreads() call is missing between levels of the shared-memory tree reduction, so some threads read partial sums before they are written.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "text": "The block size used for the tree reduction is not a power of two, leaving the last level with an odd thread out.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "Conditionals inside the block depend on threadIdx.x % 2, so half the warp diverges on every reduction step.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Convert to Structure of Arrays:",
+        "text": "A __syncthreads() call is missing between levels of the shared-memory tree reduction, so some threads read partial sums before they are written.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.",
+        "text": "The block size used for the tree reduction is not a power of two, leaving the last level with an odd thread out.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "text": "Conditionals inside the block depend on threadIdx.x % 2, so half the warp diverges on every reduction step.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "text": "Insert a __syncthreads() call after every level of the shared-memory reduction tree before reading the partial sums.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standardize $\\epsilon = 10^{-5}$ or $10^{-6}$ and clamp variance $\\max(\\text{var}, 0.0)$.",
+        "text": "Pad the input array up to the next power of two with zero elements before starting the reduction.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "Reorganize thread assignment so branching in the reduction evaluates uniformly across all 32 threads in a warp.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting a shared-memory tree reduction skip __syncthreads() between levels to save a few cycles.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By passing a full 0xFFFFFFFF mask to every warp shuffle regardless of which threads are still active.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming a reduction kernel that works for one input size works for every input size without retesting.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a reduction result without ever comparing it to a serial CPU-computed sum.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming __shfl_down_sync with a stale active mask still only touches genuinely active threads.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the check that the block size divides evenly into the tree-reduction levels expected.",
         "is_correct": false
       }
     ],

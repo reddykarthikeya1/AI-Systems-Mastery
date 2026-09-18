@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
-  ArrowLeft, CheckCircle2, Bookmark, Terminal, PanelLeftClose, PanelLeftOpen, ChevronRight
+  ArrowLeft, CheckCircle2, Bookmark, Terminal, PanelLeftClose, PanelLeftOpen, ChevronRight,
+  ChevronDown
 } from 'lucide-react';
 import { LessonItem } from '../../types';
 
@@ -47,6 +48,25 @@ export const ReaderToolbar: React.FC<ReaderToolbarProps> = ({
   isCompleted,
   onToggleComplete,
 }) => {
+  const [prefsOpen, setPrefsOpen] = useState(false);
+  const prefsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!prefsOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPrefsOpen(false);
+    const onClick = (e: MouseEvent) => {
+      if (prefsRef.current && !prefsRef.current.contains(e.target as Node)) {
+        setPrefsOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClick);
+    };
+  }, [prefsOpen]);
+
   return (
     <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-border pb-4">
       <div className="flex items-center gap-3">
@@ -96,7 +116,21 @@ export const ReaderToolbar: React.FC<ReaderToolbarProps> = ({
 
       <div className="flex items-center gap-2.5 self-stretch md:self-auto justify-end flex-wrap">
         {/* Reader Preferences Bar */}
-        <div className="hidden sm:flex items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-border text-xs select-none" aria-label="Reader Controls">
+        <div className="relative hidden sm:block" ref={prefsRef}>
+          <button
+            type="button"
+            onClick={() => setPrefsOpen((open) => !open)}
+            aria-expanded={prefsOpen}
+            aria-haspopup="true"
+            aria-label="Reading preferences: text size, typeface and line width"
+            title="Reading preferences"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1 px-2.5 py-2 rounded-lg border border-border bg-zinc-100 dark:bg-zinc-800 text-fg-muted hover:text-fg transition-colors"
+          >
+            <span className="text-sm font-semibold leading-none">Aa</span>
+            <ChevronDown className="w-3 h-3" />
+          </button>
+          {prefsOpen && (
+          <div className="absolute right-0 top-full mt-2 z-30 flex items-center gap-1.5 p-1 rounded-xl bg-surface border border-border shadow-lg text-xs select-none" aria-label="Reader Controls">
           {/* Font Size */}
           <div className="flex items-center border-r border-border pr-1 gap-0.5">
             <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-1.5 py-0.5 rounded font-mono font-bold text-fg-muted hover:bg-surface disabled:opacity-30 transition-colors" onClick={() => {
@@ -159,6 +193,8 @@ export const ReaderToolbar: React.FC<ReaderToolbarProps> = ({
               </button>
             ))}
           </div>
+          </div>
+          )}
         </div>
 
         {/* Bookmark Toggle */}

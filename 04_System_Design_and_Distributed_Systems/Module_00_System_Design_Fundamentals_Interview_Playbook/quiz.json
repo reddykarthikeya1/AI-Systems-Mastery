@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The retry decorator executed retries in a tight loop with zero delay, amplifying traffic against a struggling upstream provider by 500%. ---",
+        "text": "The dashboard correctly computed usage in decimal GB (10^9) but rendered the value with a GiB label without converting units, making consumption look 1000x smaller than it truly was.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Binary instantaneous health checks without hysteresis cause healthy servers operating near capacity to be prematurely marked dead, redirecting load to remaining servers and killing the whole cluster. ---",
+        "text": "The replication factor was applied correctly, but daily_bytes used 3600 seconds instead of 86400 seconds per day, undercounting daily volume by a factor of 24.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "text": "The calculation divided by 1024^2 (MiB) instead of 1024^3 (GiB), which made the reported figure 1024x too large rather than too small.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more replica servers so capacity failures are statistically averaged out, without validating whether the underlying estimate itself is correct.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging every capacity estimate for later offline review, so unit-conversion mistakes are caught only after production has already run out of resources.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By rate-limiting client requests uniformly, regardless of whether the capacity math behind those limits was validated in the first place.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By horizontally scaling out more servers to absorb load spikes, without checking whether the capacity plan they were sized against is itself valid.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying failed capacity checks on the client side until they eventually pass, instead of catching the underlying estimation error.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By wrapping capacity calculations in a broad try/except that swallows unit-conversion errors and continues with whatever partial result was computed.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more replica servers so capacity failures are statistically averaged out, without validating whether the underlying estimate itself is correct.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging every capacity estimate for later offline review, so unit-conversion mistakes are caught only after production has already run out of resources.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By rate-limiting client requests uniformly, regardless of whether the capacity math behind those limits was validated in the first place.",
         "is_correct": false
       }
     ],

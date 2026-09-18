@@ -14,6 +14,12 @@ Example
     max_profit_stock([7, 1, 5, 3, 6, 4]) -> 5     (buy at 1, sell at 6)
     max_profit_stock([7, 6, 4, 3, 1])    -> 0
 
+Example:
+    >>> max_profit_stock([7, 1, 5, 3, 6, 4])
+    5
+    >>> max_profit_stock([7, 6, 4, 3, 1])
+    0
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: For each day, the best sale is that price minus the cheapest price seen so far.

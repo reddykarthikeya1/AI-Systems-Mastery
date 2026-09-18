@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"TIE\"",
+        "text": "\"tie\"",
         "is_correct": false
       },
       {
@@ -42,7 +42,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"MODEL_A\"",
+        "text": "\"model_a\"",
         "is_correct": false
       },
       {
@@ -72,7 +72,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"MODEL_B\"",
+        "text": "\"model_b\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "text": "evaluate() calls judge_fn once in a single fixed order and never swaps the two candidates, so the reported winner tracks seat position rather than quality.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "16-digit product serial numbers are masked as credit cards.",
+        "text": "The judge's output schema lacks a required winner delimiter, so conversational justifications are parsed as ties by default.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Desynchronized system clocks across worker nodes.",
+        "text": "The judge model was fine-tuned on pairwise comparisons always presented in alphabetical order by response ID, biasing it toward whichever ID sorts first.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "text": "A purely position-biased judge returns 'A wins' on every single comparison, regardless of which response is actually higher quality.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "The judge fails to emit the required [[A]] or [[B]] winner delimiter and the parser cannot extract a verdict at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "Running the same pairwise comparison twice with identical inputs and identical ordering produces two different winners half the time.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "text": "The judge is only ever called with one fixed ordering of the two candidates, so position bias is never detected or corrected.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "The judge LLM produces a conversational justification without following the required output schema, so its winner delimiter is never emitted.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "text": "The judge is asked to compare more than five candidate responses in a single prompt, exceeding its effective context for reliable pairwise comparison.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Require multi-token intent matches or contextual intent classifier with confidence scoring.",
+        "text": "Call the judge twice with the candidates in both orderings and report a tie whenever the two passes disagree on the winner.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Desynchronized system clocks across worker nodes. -",
+        "text": "Enforce structured JSON output via tool calling or constrained grammar decoding so a winner delimiter is always emitted.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "Average the judge's verdicts across ten independent sampling runs and take a strict majority vote as the final winner.",
         "is_correct": false
       }
     ],

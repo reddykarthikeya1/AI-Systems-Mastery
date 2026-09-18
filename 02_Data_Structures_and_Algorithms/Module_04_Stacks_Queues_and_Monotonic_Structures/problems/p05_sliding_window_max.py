@@ -12,8 +12,9 @@ Constraints
 - ``1 <= len(nums) <= 10**5``  -> O(n) required; O(n log k) with a heap is not the target
 - ``1 <= k <= len(nums)``
 
-Example
-    sliding_window_max([1, 3, -1, -3, 5, 3, 6, 7], 3) -> [3, 3, 5, 5, 6, 7]
+Example:
+    >>> sliding_window_max([1, 3, -1, -3, 5, 3, 6, 7], 3)
+    [3, 3, 5, 5, 6, 7]
 
 Hints — read one at a time, and try again between each.
 

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_mvcc_tuple_visibility import mvcc_tuple_visibility
-except ImportError:
-    from p01_mvcc_tuple_visibility import mvcc_tuple_visibility
+from p01_mvcc_tuple_visibility import mvcc_tuple_visibility
 
 
 def test_mvcc_tuple_visibility():

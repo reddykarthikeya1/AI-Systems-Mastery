@@ -14,6 +14,10 @@ Example
     permutations([1, 2, 3])
     -> [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
 
+Example:
+    >>> permutations([1, 2, 3])
+    [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Unlike subsets, order matters and every element must be used exactly once.

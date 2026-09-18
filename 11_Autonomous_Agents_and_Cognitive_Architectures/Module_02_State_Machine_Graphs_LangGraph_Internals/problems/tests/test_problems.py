@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_langgraph_state_reducer import langgraph_state_reducer
-except ImportError:
-    from p01_langgraph_state_reducer import langgraph_state_reducer
+from p01_langgraph_state_reducer import langgraph_state_reducer
 
 
 def test_langgraph_state_reducer():

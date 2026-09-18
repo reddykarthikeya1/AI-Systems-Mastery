@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_prepend_document_summary import prepend_document_summary
-except ImportError:
-    from p01_prepend_document_summary import prepend_document_summary
+from p01_prepend_document_summary import prepend_document_summary
 
 
 def test_prepend_document_summary():

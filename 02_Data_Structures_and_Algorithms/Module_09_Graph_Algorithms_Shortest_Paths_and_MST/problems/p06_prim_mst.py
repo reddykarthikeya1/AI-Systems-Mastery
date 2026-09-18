@@ -18,6 +18,10 @@ Example
 Both algorithms are `O(E log V)`. Prim wins on dense graphs, Kruskal on sparse
 ones and when the edges arrive already sorted.
 
+Example:
+    >>> prim_mst(4, [(0, 1, 1), (1, 2, 2), (2, 3, 3), (0, 3, 10)])
+    6
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Keep the tree as a visited set. The candidate edges are those with exactly one endpoint inside it.

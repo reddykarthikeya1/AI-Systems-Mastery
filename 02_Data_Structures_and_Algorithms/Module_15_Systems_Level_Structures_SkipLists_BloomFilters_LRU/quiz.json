@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[1]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[-1]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "Raises KeyError: 'a'",
         "is_correct": false
       }
     ],
@@ -47,12 +47,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[2, -1]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[-1, -1]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[1, 2]",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "text": "count is incremented even after the buffer is full, so the buffer believes it holds more elements than its capacity and eventually indexes past the end of the underlying array.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "text": "The write index is computed as (head + count + 1) % capacity instead of (head + count) % capacity, so once the buffer is full every new value overwrites the slot one position after the oldest entry instead of the oldest entry itself.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps re",
+        "text": "head is advanced on every push regardless of whether the buffer is full, so once the buffer fills, the oldest entries are overwritten one push earlier than they should be, before they have actually been evicted.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Omitting the max removes the choice the problem is built on. The recurrence becomes \"take this element and add it to the total from two back\", which forces a strictly alternating selection.",
+        "text": "The hash functions used to set bits on insert are not the same ones used to check bits on query, so a query can look up positions that were never actually set even for an inserted item.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "text": "The bit array is sized far too small for the number of items inserted, so collisions saturate nearly every bit regardless of which combining function, any or all, is used to check membership.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "text": "positions() returns one fewer hash position on query than it used on insert, so the last bit of every item's signature is never checked and the filter effectively has one less hash function than intended.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "text": "The eviction step removes the least recently inserted key by comparing insertion timestamps directly, but the timestamps are stored with second-level precision, so two keys inserted within the same second evict in an arbitrary order.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "cache.move_to_end(key) is called on every get, including misses, so a query for a key that was never in the cache raises a KeyError instead of returning a sentinel value.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 2",
+        "text": "capacity is checked before the new key is inserted rather than after, so the cache is allowed to briefly hold one more entry than its capacity before the oldest one is evicted.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A queen attacks along two diagonals, and only one of them is being tracked. Placements that share an anti-diagonal \u2014 (0, 1) and (1, 0), for instance \u2014 are accepted, so the search counts arrangements that are not solutions.",
+        "text": "The bloom filter's bit array grows every time an item is inserted instead of using one fixed-size array declared up front, so memory grows without bound as more items are added regardless of any reference cycles.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "text": "A skip list's higher-level towers are appended to a global list for statistics tracking and never removed even after the corresponding node is deleted, so the count of towers grows independently of the list's actual size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "text": "The LRU cache never calls its own eviction path when the cache object itself is destroyed, so its entries are simply forgotten rather than explicitly freed, which delays collection rather than truly leaking anything.",
         "is_correct": false
       }
     ],

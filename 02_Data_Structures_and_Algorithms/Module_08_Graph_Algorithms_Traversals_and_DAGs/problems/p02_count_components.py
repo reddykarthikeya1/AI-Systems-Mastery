@@ -15,6 +15,12 @@ Example
     count_components(5, [(0, 1), (1, 2), (3, 4)]) -> 2
     count_components(5, [(0, 1), (1, 2), (2, 3), (3, 4)]) -> 1
 
+Example:
+    >>> count_components(5, [(0, 1), (1, 2), (3, 4)])
+    2
+    >>> count_components(5, [(0, 1), (1, 2), (2, 3), (3, 4)])
+    1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Build an adjacency list first - scanning the edge list per node would be O(n * E).

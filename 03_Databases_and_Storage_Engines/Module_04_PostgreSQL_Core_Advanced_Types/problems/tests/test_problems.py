@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_gin_inverted_index_query import gin_inverted_index_query
-except ImportError:
-    from p01_gin_inverted_index_query import gin_inverted_index_query
+from p01_gin_inverted_index_query import gin_inverted_index_query
 
 
 def test_gin_inverted_index_query():

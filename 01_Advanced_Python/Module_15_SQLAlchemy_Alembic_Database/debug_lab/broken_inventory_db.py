@@ -23,7 +23,6 @@ async def faulty_database_ops():
 
     async with session_factory() as session:
         session.add(Product(sku="SKU-999"))
-        # Forgot: await session.commit()
 
     # Query in new session
     async with session_factory() as session:

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "UploadStatus.FAILED",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "\"uploading\"",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "UploadStatus.FAILED",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "\"completed\"",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "UploadStatus.FAILED",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "\"uploading\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "NTP time synchronization can jump backwards. If the generator does not refuse or wait until the clock catches up, it generates duplicate IDs. ---",
+        "text": "The transcoding worker spawned one FFmpeg subprocess per resolution rendition instead of reusing a single pass, so peak worker count, not memory per request, was the actual limiting factor.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "Uploaded chunks were written to local disk correctly, but the disk cleanup job ran only once a day, so temporary files accumulated and exhausted disk rather than memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Cache-aside without request coalescing allows all concurrent callers to experience a cache miss at the exact same millisecond and hammer the backend. ---",
+        "text": "The HLS segmenter buffered an entire group of pictures in memory before writing each segment, so longer keyframe intervals, not upload size, drove the memory spike.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By buffering the entire uploaded file in memory before starting transcoding, on the assumption that having the whole file available up front makes the pipeline more reliable.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By transcoding every uploaded resolution rendition inside a single unbounded worker process, without capping how much of the input it can hold at once.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By accepting uploads of any size with no chunk limit, trusting that the streaming pipe underneath will bound memory automatically.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more transcoding workers to absorb upload spikes, without validating that each worker enforces its own chunk size and memory limits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed transcode job on the same worker with the same unbounded input, instead of checking whether the input first needs to be chunked.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By storing the raw uploaded file in object storage before validating its size, so a single oversized upload can still exhaust local buffer memory during the copy.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By buffering the entire uploaded file in memory before starting transcoding, on the assumption that having the whole file available up front makes the pipeline more reliable.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By transcoding every uploaded resolution rendition inside a single unbounded worker process, without capping how much of the input it can hold at once.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By accepting uploads of any size with no chunk limit, trusting that the streaming pipe underneath will bound memory automatically.",
         "is_correct": false
       }
     ],

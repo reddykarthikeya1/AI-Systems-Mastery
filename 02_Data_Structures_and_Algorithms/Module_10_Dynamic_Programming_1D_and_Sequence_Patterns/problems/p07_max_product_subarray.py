@@ -19,6 +19,12 @@ This is the module's most instructive problem. Tracking only the running
 *maximum* is not enough: a large **negative** product becomes the maximum the
 moment it meets another negative. The state has to be two values.
 
+Example:
+    >>> max_product_subarray([2, 3, -2, 4])
+    6
+    >>> max_product_subarray([-2, 3, -4])
+    24
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The single-variable state that works for maximum SUM does not work for maximum PRODUCT. Ask what a negative number does to your running best.

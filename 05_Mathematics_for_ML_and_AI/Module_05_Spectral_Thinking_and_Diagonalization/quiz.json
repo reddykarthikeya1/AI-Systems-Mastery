@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "0.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "3.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "0.33",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Requires an eigenvector to have unit length before it can be called an eigenvector, since any rescaled version of it no longer satisfies Av = lambda v.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Claims that every direction a matrix maps to itself is unique to that matrix, so two different matrices can never share an eigenvector.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats an eigenvector as any vector that ends up longer after the transformation, regardless of whether its direction changed.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines the characteristic polynomial as the determinant of A itself, rather than the determinant of A minus lambda times the identity.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Guarantees that an n by n matrix always has n distinct real eigenvalues, since the characteristic polynomial always factors into that many linear terms over the reals.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats the characteristic polynomial's constant term as the largest eigenvalue, since it is the value of the polynomial when lambda is zero.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Solves for eigenvalues by setting each diagonal entry of A equal to lambda directly, without ever forming or solving the characteristic polynomial.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires computing the matrix inverse first, since eigenvalues are defined only in terms of A inverse, not A itself.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Finds eigenvalues by averaging the row sums of the matrix, which only coincides with an eigenvalue when every row sums to the same constant.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By diagonalizing a matrix once at startup and reusing that factorization forever, without checking whether the underlying matrix is updated later.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a matrix is diagonalizable whenever it is square, without checking whether it actually has enough linearly independent eigenvectors.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By running power iteration for a fixed number of steps regardless of the input, without checking whether the estimate has actually converged.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a matrix is diagonalizable whenever it is square, without checking whether it actually has enough linearly independent eigenvectors.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating the largest-magnitude entry of a matrix as its dominant eigenvalue, instead of actually solving the characteristic equation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By running power iteration for a fixed number of steps regardless of the input, without checking whether the estimate has actually converged.",
         "is_correct": false
       }
     ],

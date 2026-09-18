@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -32,7 +32,7 @@
   {
     "id": 2,
     "tier": "Apply",
-    "question": "In Probabilistic Data Structures, when implementing: Implement a production-grade utility function or state tracker relevant to Probabilistic Data Structures adhering to defensive programming and edge-case handling. \u2014 what is the mathematical invariant?",
+    "question": "In Probabilistic Data Structures, when implementing: Implement a production-grade utility function or state tracker relevant to Probabilistic Data Structures adhering to defensive programming and edge-case handling. — what is the mathematical invariant?",
     "category": "Apply: Mathematical Invariant",
     "options": [
       {
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Yields non-deterministic results due to unbounded floating-point drift.",
+        "text": "Guarantees exact results by re-hashing every element until zero collisions remain, regardless of how many iterations that requires.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Violates linear independence, collapsing the rank to zero.",
+        "text": "Bounds error only in the limit as the number of hash functions approaches infinity, so any finite configuration provides no real guarantee.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Requires exponential memory proportional to $2^N$ states.",
+        "text": "Trades memory for a probability of error that shrinks each time the same item is queried again, rather than being fixed at insertion time.",
         "is_correct": false
       }
     ],
@@ -62,7 +62,7 @@
   {
     "id": 3,
     "tier": "Apply",
-    "question": "In Probabilistic Data Structures, when implementing: Implement an exponential backoff retry handler with jitter to shield downstream dependencies during recovery. \u2014 what is the mathematical invariant?",
+    "question": "In Probabilistic Data Structures, when implementing: Implement an exponential backoff retry handler with jitter to shield downstream dependencies during recovery. — what is the mathematical invariant?",
     "category": "Apply: Mathematical Invariant",
     "options": [
       {
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Yields non-deterministic results due to unbounded floating-point drift.",
+        "text": "Guarantees the operation eventually succeeds because the delay after enough retries becomes effectively infinite, blocking forever until the dependency recovers.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Violates linear independence, collapsing the rank to zero.",
+        "text": "Keeps every retry attempt at a fixed interval, since jitter only randomizes which caller goes first, not how long any individual wait actually is.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Requires exponential memory proportional to $2^N$ states.",
+        "text": "Requires a strictly increasing retry count across the whole process, so once max_retries is reached the function must restart the counter from zero and try again.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Writing to a database and a message broker in sequence cannot be made atomic without distributed transactions. Network crashes between step 1 and step 2 leave systems out of sync. ---",
+        "text": "The Bloom filter used too many hash functions relative to its bit array size, so nearly every bit was set to 1 after only a handful of insertions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dividing $100.00 by 3 gives 33.3333... Rounding each to $33.33 results in $99.99 total, leaking 1 cent into financial limbo. ---",
+        "text": "contains() checked only a single bit instead of all k hash positions, so a single collision on that one bit produced a false positive for almost any query.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When a gateway fans out to 100 services in parallel, the user request takes as long as the SLOWEST response. Assuming user p99 equals single-service p99 ignores the binomial distribution: $1 - (1 - 0.01)^{100} = 63.4\\%$. ---",
+        "text": "The filter was correctly sized for its expected item count, but items were inserted twice due to a retried write path, silently doubling the effective load factor.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By replicating the same fixed-size probabilistic structure across more nodes to spread query load, without checking whether its capacity was sized for the actual item count.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a query against the structure whenever it returns a positive result, trusting that a retry alone can distinguish a true positive from a false one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By resetting the structure periodically to control memory growth, without recomputing what error rate that reset implies for the current item count.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the number of hash functions without bound, on the assumption that more hashing alone prevents the false-positive rate from ever rising.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the structure grow unboundedly in memory as more items are added, instead of fixing its size and accepting a bounded error rate.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating a probabilistic structure's negative result as a guarantee and its positive result as certain too, rather than only trusting the one-sided guarantee it actually provides.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By replicating the same fixed-size probabilistic structure across more nodes to spread query load, without checking whether its capacity was sized for the actual item count.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a query against the structure whenever it returns a positive result, trusting that a retry alone can distinguish a true positive from a false one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By resetting the structure periodically to control memory growth, without recomputing what error rate that reset implies for the current item count.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the number of hash functions without bound, on the assumption that more hashing alone prevents the false-positive rate from ever rising.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the structure grow unboundedly in memory as more items are added, instead of fixing its size and accepting a bounded error rate.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating a probabilistic structure's negative result as a guarantee and its positive result as certain too, rather than only trusting the one-sided guarantee it actually provides.",
         "is_correct": false
       }
     ],

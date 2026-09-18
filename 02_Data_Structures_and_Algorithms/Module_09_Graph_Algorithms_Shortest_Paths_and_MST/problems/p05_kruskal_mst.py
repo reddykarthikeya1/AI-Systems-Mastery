@@ -14,6 +14,10 @@ Constraints
 Example
     kruskal_mst(4, [(0,1,1),(1,2,2),(2,3,3),(0,3,10)]) -> 6
 
+Example:
+    >>> kruskal_mst(4, [(0, 1, 1), (1, 2, 2), (2, 3, 3), (0, 3, 10)])
+    6
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Consider the edges in increasing weight order and take an edge only if it joins two currently separate components.

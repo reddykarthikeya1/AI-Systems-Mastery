@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 Compute broadcasted output shape and strides for two tensor shapes.
 
+Example:
+    >>> tensor_broadcast_strides([8, 1, 64], [7, 64])
+    [8, 7, 64]
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Broadcasting compares shapes dimension-by-dimension starting
+        from the TRAILING (rightmost) axis, so shapes of different lengths
+        still line up correctly by their last dimensions.
+    Hint 2: Reverse both shape lists, pad the shorter one out with implicit
+        1s wherever it runs out of dimensions, then for each aligned pair
+        take whichever of the two sizes is not 1 (or the shared size if
+        they're equal) — then reverse the result back to normal order.
+    Hint 3: Two dimensions are only compatible if they're equal or one of
+        them is exactly 1 — anything else (like `[5]` vs `[4]`) must raise
+        `ValueError("Incompatible broadcast shapes")` rather than silently
+        picking one.
 """
 
 from __future__ import annotations

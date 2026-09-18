@@ -15,6 +15,13 @@ Example
     [1, 2, 3, 4, 5]    -> node 3
     [1, 2, 3, 4, 5, 6] -> node 4
 
+Example:
+    >>> from linked_list_common import from_list
+    >>> middle_node(from_list([1, 2, 3, 4, 5])).val
+    3
+    >>> middle_node(from_list([1, 2, 3, 4, 5, 6])).val
+    4
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Move one pointer twice as fast as the other.

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
+        "text": "Both the clustered index and secondary indexes store the full row data at their leaf nodes; the only difference is which column determines the sort order.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A memory structure that caches the return values of deterministic functions in the SGA, eliminating repeated function execution for identical arguments.",
+        "text": "The clustered index is a separate hidden table that InnoDB maintains alongside the primary table, kept in sync via triggers on every insert and update.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "PostgreSQL: transactional source of truth; Redis: low-latency caching & leaderboards; Elasticsearch: full-text keyword search; ClickHouse: high-throughput columnar analytics.",
+        "text": "Secondary indexes store a direct physical pointer (page number and offset) to the row, exactly like the clustered index does, so both provide the same single lookup cost.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary ",
+        "text": "It keeps a second in-memory copy of every dirty page so that a read query can be served from the copy while the original page is still being flushed to disk.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
+        "text": "It duplicates every committed transaction's redo log records to a second physical disk in real time, providing hardware-level redundancy against disk failure.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "An anti-join returns rows from table A that have no matching record in table B: WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.id = A.id).",
+        "text": "It writes each dirty page directly to its final position in the tablespace twice in a row, doubling durability by ensuring at least one of the two writes survives a crash.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+        "text": "SBR replicates the exact binary row changes for perfect fidelity, while RBR replicates SQL statements, which is faster because it avoids sending the full text of the query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
+        "text": "SBR and RBR both transmit the SQL text, but RBR additionally computes a checksum on the replica to detect divergence, while SBR does not.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
+        "text": "SBR replays each statement against a fixed random seed so that a function like NOW() or RAND() always evaluates identically on every replica, eliminating divergence.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Seq Scan reads all heap pages; Index Scan navigates B-Tree to fetch heap tuples individually; Bitmap Index Scan builds an in-memory bitmap of matching pages before reading them sequentially.",
+        "text": "A sequential integer counter reset to zero on every replica independently, used only to order transactions locally rather than across the cluster.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
+        "text": "A hash of the transaction's SQL text used to detect and skip duplicate statements if the same statement is accidentally replayed on a replica.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "text": "A per-table identifier assigned to each row modified by a transaction, allowing conflict detection when two replicas modify the same row concurrently.",
         "is_correct": false
       }
     ],
@@ -137,12 +137,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.",
+        "text": "innodb_lock_wait_timeout is set far too high, so a transaction that is merely slow to commit is mistaken for a deadlock rather than genuinely waiting in a cycle.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "text": "The two transactions update the same two rows in the same order, but a gap lock taken by a concurrent INSERT on the same range blocks both of them from ever acquiring either row lock.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A long-running reporting session opened a transaction with BEGIN; SELECT ... and remained idle in transaction for 18 hours, pinning xmin and preventing autovacuum from cleaning dead tuples.",
+        "text": "The application retries a failed UPDATE by reconnecting with a new connection but reuses the old transaction ID, so InnoDB sees two transactions holding locks under the same identifier and refuses to release either.",
         "is_correct": false
       }
     ],

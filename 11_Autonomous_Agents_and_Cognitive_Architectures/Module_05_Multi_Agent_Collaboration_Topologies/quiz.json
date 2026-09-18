@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "text": "A three-agent delegation chain (planner to researcher to critic to planner) repeats indefinitely without ever reaching a 'Done' state, since nothing tracks which agents were already visited.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "text": "The Billing agent asks the customer for their name and issue again immediately after a handoff, even though they already provided both to the Triage agent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "text": "A single agent silently double-executes the same tool call twice in a row for the same user request.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "The swarm's run() loop tracks no visited-agent history at all, so any cycle in the handoff graph -- not just an immediate ping-pong -- repeats forever.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "TypeError: got unexpected keyword argument 'querytext'.",
+        "text": "The execution engine wipes the conversation message history whenever it switches the active agent pointer, discarding prior context.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "text": "The Support agent's system prompt was copy-pasted from the Triage agent's template and never updated to describe its own actual capabilities.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "text": "Track a list of visited agents for the entire run and raise an error the moment a repeat is detected, rather than just blocking the immediate caller.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "Persist the full conversation message list across handoffs while only swapping the active system prompt and tool definitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "text": "Cap the total number of handoffs allowed in a single run as a hard backstop, independent of any cycle-detection logic.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "text": "The swarm has no visited-agent tracking at all, so any multi-hop cycle among three or more agents can loop indefinitely, not just a direct back-and-forth.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "text": "The execution engine wipes conversation history on every agent switch, so each agent re-asks for information the customer already gave.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "text": "The Triage agent's routing decision is cached from the first message of the session and never re-evaluated on later turns.",
         "is_correct": false
       }
     ],

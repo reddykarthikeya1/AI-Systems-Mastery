@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
+        "text": "PostgreSQL uses a lightweight thread pool internally, similar to MySQL, but exposes it to the client as if each connection were a separate process.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It defines the amount of RAM allocated per sort or hash join operation before spilling intermediate data to temporary disk files.",
+        "text": "PostgreSQL and MySQL both use one OS process for the entire server; the difference is that PostgreSQL spawns a new thread per query while MySQL spawns a new thread per connection.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It tracks which heap pages contain only tuples visible to all current transactions, allowing index-only scans to skip checking heap pages.",
+        "text": "PostgreSQL forks a new process for each query, not each connection, so a client that runs ten queries over one session causes ten separate backend processes to start and exit.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
+        "text": "JSON preserves key ordering and duplicate keys exactly as written, while JSONB is the one that reformats and re-parses the text on every query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
+        "text": "JSON and JSONB are stored identically on disk; the only difference is which operators, -> or ->>, are allowed to query each type.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inverted File Flat: vectors are clustered into Voronoi cells around centroids; queries search only the nearest centroids.",
+        "text": "JSONB stores the exact original text including whitespace and key order for auditing, while JSON strips whitespace and converts everything to a compact binary form for speed.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Fan-out is the number of child pointers per node. A fan-out of 100 on a 3-level tree indexes $100^3 = 1,000,000$ pages.",
+        "text": "A B-Tree index on the full JSONB column, since PostgreSQL can compare entire JSONB documents byte-for-byte using the default operator class.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Rate (queries/sec), Errors (failed connections/deadlocks), and Duration (p95/p99 query latency).",
+        "text": "A BRIN (Block Range Index), which is optimized for JSONB containment because it stores min/max summaries of the semi-structured ranges within each block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+        "text": "A standard hash index on the JSONB column, because @> containment is fundamentally an equality check under the hood.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Writes are immediately appended to an on-disk sequential CommitLog before being stored in in-memory MemTables.",
+        "text": "&& tests whether the left array fully contains the right array, while @> merely checks whether the two arrays share at least one element.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It executes an independent transaction within a procedure, committing or rolling back its work without affecting the main caller transaction.",
+        "text": "&& and @> are aliases for the same containment check in PostgreSQL arrays; the choice between them is purely stylistic.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "$set updates/adds a field; $inc atomically increments a numeric field; $push appends an item to an array.",
+        "text": "&& concatenates two arrays into one, while @> tests whether a single scalar value appears anywhere inside an array.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"doc_1\"]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -222,12 +222,12 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"doc_3\"]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[]",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "The GIN index exists and is used correctly, but it was built with jsonb_ops instead of jsonb_path_ops, which only supports the ? operator and not equality comparisons at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "The table's autovacuum has not run recently, so the visibility map is stale and the planner falls back to a sequential scan rather than trusting an index-only scan.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.",
+        "text": "The query filters on data->>'status', which the planner correctly serves from the GIN index, but the index itself is still being built (INVALID) and silently ignored until the build finishes.",
         "is_correct": false
       }
     ],

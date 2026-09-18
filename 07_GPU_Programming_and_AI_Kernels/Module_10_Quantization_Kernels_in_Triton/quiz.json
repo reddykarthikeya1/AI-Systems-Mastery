@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2.5",
+        "text": "8.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "4.0",
+        "text": "0.25",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "-2.0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "(14 | (3 << 4))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "[0xFFFFFFFF]",
+        "text": "(3 + 14 << 4)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "(3 << 4) | (14 << 4)",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "text": "The dequantization step selects the scale and zero-point from the wrong group index, off by one group boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "text": "The pack step writes the high and low nibbles in swapped order, so unpacking returns values from the wrong position.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Custom object kernel runs at 20% of memory bandwidth.",
+        "text": "The zero-point is stored as an unsigned integer but subtracted as if it were signed, flipping its effective sign.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs.",
+        "text": "The dequantization step selects the scale and zero-point from the wrong group index, off by one group boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kernel launches exit with code 0, but subsequent memory operations crash with cudaErrorIllegalAddress.",
+        "text": "The pack step writes the high and low nibbles in swapped order, so unpacking returns values from the wrong position.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "text": "The zero-point is stored as an unsigned integer but subtracted as if it were signed, flipping its effective sign.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "text": "Dequantized weights near a group boundary use the wrong scale, producing values roughly 2x too large or too small.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "Unpacked weights are shifted by one nibble, so every value comes from its neighboring weight instead of itself.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "text": "The kernel produces NaNs when a fp16 accumulator overflows during the scale multiplication.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "text": "Recompute the group index from the flat weight index before selecting its scale and zero-point.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "text": "Pack the low nibble first and the high nibble second, consistently, in both the pack and unpack functions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Custom object kernel runs at 20% of memory bandwidth.",
+        "text": "Store the zero-point as a signed integer and subtract it using signed arithmetic throughout.",
         "is_correct": false
       }
     ],

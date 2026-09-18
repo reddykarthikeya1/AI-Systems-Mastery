@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "text": "The recommendation engine recomputed the full two-tower embedding for every follower's feed on each request, so read latency, not write volume, was the actual bottleneck.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "With only 1 vnode per server, random hash distribution produces large gaps on the ring, assigning disproportionate slices of hash space to single nodes. ---",
+        "text": "Celebrity posts were fanned out lazily at read time correctly, but the read-time merge step re-scored every historical post instead of only new ones, so each feed load re-ran the full ranking model.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "The timeline cache had no TTL, so old fanned-out posts accumulated in every follower cache indefinitely regardless of how many followers the poster had.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By fanning out every new post to every follower timeline cache immediately, on the assumption that push delivery alone bounds write volume regardless of follower count.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By re-ranking a user's entire history with the two-tower model on every single feed request, trusting that recomputation alone keeps results fresh.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching celebrity posts in the same per-follower structure as normal posts, without checking whether that structure size still scales with follower count.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more timeline-cache shards to hold fanned-out posts, without validating that celebrity accounts are excluded from push fan-out in the first place.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed fan-out write to a follower cache immediately, instead of checking whether that account should be served via read-time merge instead.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By precomputing recommendation scores for every user-post pair nightly, without checking whether that precomputation cost itself scales with follower count.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By fanning out every new post to every follower timeline cache immediately, on the assumption that push delivery alone bounds write volume regardless of follower count.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By re-ranking a user's entire history with the two-tower model on every single feed request, trusting that recomputation alone keeps results fresh.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching celebrity posts in the same per-follower structure as normal posts, without checking whether that structure size still scales with follower count.",
         "is_correct": false
       }
     ],

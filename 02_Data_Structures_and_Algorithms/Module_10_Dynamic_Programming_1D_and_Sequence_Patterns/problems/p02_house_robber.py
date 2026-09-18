@@ -14,6 +14,12 @@ Example
     house_robber([1, 2, 3, 1]) -> 4     (houses 0 and 2)
     house_robber([2, 7, 9, 3, 1]) -> 12 (houses 0, 2, 4)
 
+Example:
+    >>> house_robber([1, 2, 3, 1])
+    4
+    >>> house_robber([2, 7, 9, 3, 1])
+    12
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: At each house you have exactly two choices: rob it, or skip it.

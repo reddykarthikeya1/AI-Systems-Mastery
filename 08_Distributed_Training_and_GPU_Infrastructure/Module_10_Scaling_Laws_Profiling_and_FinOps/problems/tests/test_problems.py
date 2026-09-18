@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_chinchilla_optimal_compute import chinchilla_optimal_compute
-except ImportError:
-    from p01_chinchilla_optimal_compute import chinchilla_optimal_compute
+from p01_chinchilla_optimal_compute import chinchilla_optimal_compute
 
 
 def test_chinchilla_optimal_compute():

@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "text": "Wrap the training loop in DDP's join() context manager so ranks with uneven dataset lengths do not deadlock.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Pass find_unused_parameters=True so DDP tolerates a data-dependent forward path that skips some parameters.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "text": "Re-enable broadcast_buffers so every replica's running mean and variance are kept in sync across ranks.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "text": "Different ranks build different autograd graphs because of a data-dependent branch, so find_unused_parameters mismatches trigger a bucket that never completes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "The gradient bucket all-reduce averages by world_size twice, once inside the collective and once in the optimizer step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "text": "broadcast_buffers is disabled, so each replica's running statistics silently drift apart even though the trainable weights stay in sync.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "Different ranks build different autograd graphs because of a data-dependent branch, so find_unused_parameters mismatches trigger a bucket that never completes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "text": "The gradient bucket all-reduce averages by world_size twice, once inside the collective and once in the optimizer step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights:",
+        "text": "broadcast_buffers is disabled, so each replica's running statistics silently drift apart even though the trainable weights stay in sync.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "text": "Training hangs indefinitely on one rank while every other rank finishes the epoch and waits at the next barrier.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "text": "Loss curves match a single-GPU baseline exactly at 8 GPUs but diverge only when the per-GPU batch size is increased, not decreased.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "text": "Gradients are twice as large as expected on every rank, causing the optimizer to take oversized steps.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming BatchNorm statistics stay consistent across ranks without ever syncing them at larger world sizes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that a model trained with a data-dependent forward path never needs find_unused_parameters.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the join() context manager because every rank is assumed to have the same number of batches.",
         "is_correct": false
       }
     ],

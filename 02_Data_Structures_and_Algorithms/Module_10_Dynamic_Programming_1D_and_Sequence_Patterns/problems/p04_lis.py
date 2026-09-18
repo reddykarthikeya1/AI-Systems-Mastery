@@ -14,6 +14,10 @@ Constraints
 Example
     lis([10, 9, 2, 5, 3, 7, 101, 18]) -> 4     (2, 3, 7, 101)
 
+Example:
+    >>> lis([10, 9, 2, 5, 3, 7, 101, 18])
+    4
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The O(n^2) DP is: best[i] = 1 + max(best[j]) over all j < i with nums[j] < nums[i]. Get that working first.

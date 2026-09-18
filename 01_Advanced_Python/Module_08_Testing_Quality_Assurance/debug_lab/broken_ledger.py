@@ -13,7 +13,6 @@ def test_step_two_assumes_step_one_ran():
 def test_broken_tuple_assertion():
     computed_val = 99
     expected_val = 100
-    # In Python, any non-empty tuple evaluates to True! This assertion NEVER fails!
     assert (computed_val == expected_val, "Values should match!")
 
 def test_floating_point_equality_without_approx():

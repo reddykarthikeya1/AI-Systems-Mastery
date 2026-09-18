@@ -5,6 +5,8 @@ description = "A structured path from math fundamentals to building and operatin
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.26",
+
+    "torch>=2.2",
 ]
 
 [project.optional-dependencies]

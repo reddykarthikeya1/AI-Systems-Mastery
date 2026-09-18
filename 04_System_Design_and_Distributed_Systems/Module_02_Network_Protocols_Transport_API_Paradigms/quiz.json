@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "f\"ITEM_{i+1}\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "f\"ITEM_{4-i}\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "FrameType.RESPONSE",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "FrameType.ERROR",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "FrameType.HEARTBEAT",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "payload",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "frame_type",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "text": "Each HTTP/2 stream opened its own dedicated TCP connection instead of multiplexing over one socket, so file-descriptor exhaustion, not packet loss, was the real bottleneck.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---",
+        "text": "The server's congestion window was fixed at its initial size and never grew, capping throughput regardless of how many streams were multiplexed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Broadcasting presence changes to all followers using naive fanout creates $O(F)$ network bursts that overwhelm server output buffers when $F$ is large. ---",
+        "text": "Streams were multiplexed correctly, but the client reused a single correlation ID for all in-flight requests, delivering responses to the wrong callback.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming TCP guarantees message boundaries are preserved end-to-end, so application-level framing and length-prefixing are never validated.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating every socket write() call as atomic, so partial writes under backpressure are never checked or retried.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting that HTTP/2 stream multiplexing alone eliminates head-of-line blocking, without validating behavior at the TCP layer beneath it.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By opening a new TCP connection per request so failures are isolated, without validating whether the resulting socket and file-descriptor usage stays within bounds.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying every timed-out RPC call from the client, which masks protocol-level correlation bugs instead of catching them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By falling back silently to a lower protocol version whenever a frame fails to parse, without verifying that no in-flight correlation IDs were dropped.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming TCP guarantees message boundaries are preserved end-to-end, so application-level framing and length-prefixing are never validated.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating every socket write() call as atomic, so partial writes under backpressure are never checked or retried.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting that HTTP/2 stream multiplexing alone eliminates head-of-line blocking, without validating behavior at the TCP layer beneath it.",
         "is_correct": false
       }
     ],

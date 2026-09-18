@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"CRITICAL\"",
+        "text": "\"critical\"",
         "is_correct": false
       },
       {
@@ -42,7 +42,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"LLM01\"",
+        "text": "\"llm01\"",
         "is_correct": false
       },
       {
@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -102,7 +102,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"HIGH\"",
+        "text": "\"high\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Safety judge flagged presence of toxic words in the quote of user input. -",
+        "text": "Case-fold the input and decode any Base64-looking substrings before comparing against the known attack phrase.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances. -",
+        "text": "Enforce valid Base64 padding checks and verify decoded bytes form valid UTF-8 before attempting a decode.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "text": "Block any message containing the word 'ignore' anywhere in the text, regardless of surrounding context.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "The scanner performs a case-sensitive exact-substring check for one literal phrase, so a case-swapped or Base64-encoded variant of the attack evades it entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "text": "The Base64 detector matches any 8-character alphanumeric run as a candidate to decode, so random query-string parameters are misidentified as encoded payloads.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Naive whitespace tokenization splits numbers with commas into separate tokens.",
+        "text": "The scanner strips all punctuation from the input before matching, so 'ignore, previous instructions' with a comma no longer matches the attack pattern.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Substring match on \"ignore previous\".",
+        "text": "The scanner blocks the exact textbook attack phrase but waves through a case-swapped or Base64-smuggled version of the same instruction.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Greedy keyword matching flagged \"political\" without checking customer service context.",
+        "text": "A long URL with random alphanumeric query parameters triggers hundreds of failed Base64 decode attempts, slowing down every request.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "A user's message containing the literal attack phrase in a foreign language passes through undetected because the scanner only matches English text.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "The scanner only performs a case-sensitive check for one exact phrase, so uppercase or Base64-encoded variants of the same attack bypass it completely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Math combinations overflow or unhandled edge cases where $n < k$. -",
+        "text": "The Base64-candidate regex fires on any 8-character alphanumeric substring, so ordinary URL query parameters get treated as suspicious encoded payloads and slow down scanning.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Naive whitespace tokenization splits numbers with commas into separate tokens. -",
+        "text": "The scanner's phrase list is stored in a case-insensitive set, but the lookup code accidentally hashes the original-case string before checking membership.",
         "is_correct": false
       }
     ],

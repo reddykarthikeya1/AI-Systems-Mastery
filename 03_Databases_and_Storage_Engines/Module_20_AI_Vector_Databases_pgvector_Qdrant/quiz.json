@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "text": "Cosine measures geometric distance between two points; Euclidean measures angle regardless of magnitude; Dot product only works for normalized vectors.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
+        "text": "Euclidean and Dot Product are mathematically identical for all vectors; Cosine is simply Euclidean distance divided by a constant.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1NF mandates that all column values must be atomic (indivisible). Storing a comma-separated list of multiple values in a single cell violates 1NF. It should be decomposed into a separate related table (e.g. userhobbies with 1 hobby per row)",
+        "text": "Dot product always produces a value between -1 and 1 like cosine similarity, so the two are interchangeable regardless of vector magnitude.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Immutability eliminates locking and concurrency hazards during reads and makes background compaction trivial.",
+        "text": "It organizes vectors into a single flat graph with no layers, where every node has an edge to every other node within a fixed radius, and search is simply a radius query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
+        "text": "It builds a strict binary tree over the vector space, similar to a k-d tree, where each level halves the search space along a different dimension.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
+        "text": "It clusters vectors into a fixed number of centroids using k-means, and search only ever compares the query to the nearest centroid, never visiting individual vectors directly.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
+        "text": "Flat search uses an approximate hash-based shortcut to skip most vectors, while ANN always performs an exact O(N) comparison to guarantee correctness.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A deletion marker recorded in SSTables; reading across deleted rows requires scanning all tombstones until compaction purges them.",
+        "text": "ANN and Flat search have identical time complexity; the only difference is that ANN additionally stores vectors compressed on disk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Immutability eliminates locking and concurrency hazards during reads and makes background compaction trivial.",
+        "text": "Flat search is sub-linear because it pre-sorts vectors by magnitude, while ANN is O(N) because it must still visit every graph node before returning results.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+        "text": "The maximum number of layers the HNSW graph is allowed to build at index-construction time, fixed once and never adjustable per query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+        "text": "The number of vectors returned to the client per query, independent of how many candidates are examined internally during the graph traversal.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "16,384 hash slots. Keys are mapped using CRC16(key) mod 16384.",
+        "text": "A compression ratio applied to stored vectors at query time, trading precision of each vector's components for faster distance computation.",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "The index was correctly configured for Cosine distance, but the embedding model was retrained with a different dimensionality, so the stored vectors and query vectors are being compared across incompatible vector spaces.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.",
+        "text": "HNSW's efSearch parameter was set too low, so the graph traversal terminates before reaching the true nearest neighbors, returning only nearby-but-suboptimal candidates regardless of the distance metric used.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "text": "The embeddings are correctly normalized to unit length, but a stale HNSW index built before the last re-embedding still references the old, unnormalized vectors, so search compares new queries against outdated candidates.",
         "is_correct": false
       }
     ],

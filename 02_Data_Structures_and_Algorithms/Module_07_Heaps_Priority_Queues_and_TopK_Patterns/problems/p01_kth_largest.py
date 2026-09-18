@@ -11,9 +11,11 @@ Constraints
 - ``1 <= k <= len(nums) <= 10**5``
 - target O(n log k), better than sorting
 
-Example
-    kth_largest([3, 2, 1, 5, 6, 4], 2)          -> 5
-    kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) -> 4
+Example:
+    >>> kth_largest([3, 2, 1, 5, 6, 4], 2)
+    5
+    >>> kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4)
+    4
 
 Hints — read one at a time, and try again between each.
 

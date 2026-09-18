@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bayes_posterior_update import bayes_posterior_update
-except ImportError:
-    from p01_bayes_posterior_update import bayes_posterior_update
+from p01_bayes_posterior_update import bayes_posterior_update
 
 
 def test_bayes_posterior_update():

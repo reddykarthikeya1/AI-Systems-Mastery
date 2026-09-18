@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_regex_pattern_guardrail import regex_pattern_guardrail
-except ImportError:
-    from p01_regex_pattern_guardrail import regex_pattern_guardrail
+from p01_regex_pattern_guardrail import regex_pattern_guardrail
 
 
 def test_regex_pattern_guardrail():

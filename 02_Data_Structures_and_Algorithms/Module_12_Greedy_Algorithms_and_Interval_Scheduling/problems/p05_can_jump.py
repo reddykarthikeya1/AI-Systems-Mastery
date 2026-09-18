@@ -14,6 +14,12 @@ Example
     can_jump([2, 3, 1, 1, 4]) -> True
     can_jump([3, 2, 1, 0, 4]) -> False
 
+Example:
+    >>> can_jump([2, 3, 1, 1, 4])
+    True
+    >>> can_jump([3, 2, 1, 0, 4])
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You do not need to know WHICH jumps to take, only how far you can possibly get.

@@ -72,12 +72,12 @@
       },
       {
         "id": "opt_1",
-        "text": "1.0",
+        "text": "0.75",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1.0",
+        "text": "0.25",
         "is_correct": false
       },
       {
@@ -107,7 +107,7 @@
       },
       {
         "id": "opt_2",
-        "text": "12800.0",
+        "text": "3200.0",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.",
+        "text": "Pin each GPU's collective traffic to the NIC on its own PCIe root complex so cross-NUMA hops are never taken.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "text": "Reduce the collective's algorithm to a tree instead of a ring so a single slow link no longer stalls every rank.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "text": "Provision the leaf-spine fabric at full bisection bandwidth instead of an oversubscribed ratio.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "Every training run on the cluster is consistently 30% slower than the vendor's advertised peak, with no run-to-run variance.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order.",
+        "text": "One specific node consistently fails to join the process group at startup, blocking the entire job from launching.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "text": "Step time is stable most of the run but spikes sharply during the checkpoint-saving phase only.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "text": "The NCCL topology auto-detection falls back to a tree algorithm across NVLink-less server pairs, adding an extra network hop for every collective.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "text": "The job's GPUs are bound to a NUMA node whose PCIe root complex is not the one directly attached to the NIC used for inter-node traffic.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "The leaf-spine fabric is oversubscribed 4:1, so full-bisection inter-node traffic contends for the same spine uplinks.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "text": "The NCCL topology auto-detection falls back to a tree algorithm across NVLink-less server pairs, adding an extra network hop for every collective.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "text": "The job's GPUs are bound to a NUMA node whose PCIe root complex is not the one directly attached to the NIC used for inter-node traffic.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step.",
+        "text": "The leaf-spine fabric is oversubscribed 4:1, so full-bisection inter-node traffic contends for the same spine uplinks.",
         "is_correct": false
       }
     ],

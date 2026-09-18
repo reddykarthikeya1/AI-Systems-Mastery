@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "5000",
         "is_correct": false
       }
     ],
@@ -42,12 +42,12 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "4999",
         "is_correct": false
       },
       {
@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "5000",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "The cache TTL was set far too long, so stale data was served for hours before ever expiring and triggering a refresh.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dynamic websites generate infinite valid URLs. Without URL normalization, path depth limits, and trap detection, crawlers get trapped. ---",
+        "text": "The cache eviction policy was LRU instead of LFU, so a hot key was evicted early even though it was still being accessed frequently.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Pure Push (Fan-out-on-Write) works well for normal users, but scales linearly with follower count. For celebrities, $50M$ writes for 1 post saturates storage and queues. ---",
+        "text": "Each application instance maintained its own local in-memory cache instead of a shared distributed cache, so the same key was fetched from the database once per instance instead of once per cluster.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By setting a long, fixed TTL on every cache entry, on the assumption that a stable expiration time alone prevents concurrent cache misses.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting every cache miss independently query the database and repopulate the cache, trusting that the cache will catch up once enough responses land.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By evicting the least-recently-used entry whenever memory pressure rises, without checking whether that entry is currently being read by in-flight requests.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more cache replicas to spread read traffic, without validating that a coordinated refresh strategy exists for keys that expire on all replicas at once.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a cache miss against the database immediately from every caller, instead of having concurrent callers share a single in-flight fetch.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By pre-warming the cache once at deploy time, without re-validating that hot keys are refreshed before they actually expire under load.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By setting a long, fixed TTL on every cache entry, on the assumption that a stable expiration time alone prevents concurrent cache misses.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting every cache miss independently query the database and repopulate the cache, trusting that the cache will catch up once enough responses land.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By evicting the least-recently-used entry whenever memory pressure rises, without checking whether that entry is currently being read by in-flight requests.",
         "is_correct": false
       }
     ],

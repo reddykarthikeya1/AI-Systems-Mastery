@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "(batch, dim, seq_len)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "(seq_len, batch, dim)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "(batch, seq_len, dim // 2)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "(batch, seq_len, seq_len)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "(seq_len, batch, d_k)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "(batch, d_k, seq_len)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "float(np.dot(q.flatten(), k2.flatten()))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "float(np.dot(q2.flatten(), k.flatten()))",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "0.0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "float('-inf')",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "float('nan')",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing rotary position embeddings from scratch for the whole context on every decode step instead of caching them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By growing the KV cache without any bound as sequence length increases during generation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the max-subtraction step in softmax because attention scores are assumed to always stay small.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming each row of attention weights sums to one without checking after the causal mask is applied.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that RoPE-rotated queries and keys preserve embedding norm without ever verifying it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the causal mask once offline validation accuracy looks acceptable.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing rotary position embeddings from scratch for the whole context on every decode step instead of caching them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By growing the KV cache without any bound as sequence length increases during generation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the max-subtraction step in softmax because attention scores are assumed to always stay small.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming each row of attention weights sums to one without checking after the causal mask is applied.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that RoPE-rotated queries and keys preserve embedding norm without ever verifying it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the causal mask once offline validation accuracy looks acceptable.",
         "is_correct": false
       }
     ],

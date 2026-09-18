@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_paged_kv_block_table import paged_kv_block_table
-except ImportError:
-    from p01_paged_kv_block_table import paged_kv_block_table
+from p01_paged_kv_block_table import paged_kv_block_table
 
 
 def test_paged_kv_block_table():

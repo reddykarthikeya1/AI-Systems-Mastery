@@ -5,7 +5,6 @@ def verify_accounts_settled(credit: float, debit: float, target: float) -> bool:
     return (credit + debit) == target
 
 def calculate_tier_bonus(account_id_a: int, account_id_b: int) -> bool:
-    # Works for -5..256 due to CPython small integer caching, breaks for >= 257!
     return account_id_a is account_id_b
 
 def compute_installments(total_amount: float, months: int) -> list[float]:

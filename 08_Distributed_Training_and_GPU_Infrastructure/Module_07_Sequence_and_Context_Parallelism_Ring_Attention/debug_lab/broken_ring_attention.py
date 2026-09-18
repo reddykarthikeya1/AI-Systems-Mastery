@@ -1,8 +1,6 @@
 """Broken Ring Attention Circular Shift Simulation."""
 def ring_shift(kv_blocks: list[int], step: int, rank: int, world_size: int) -> int:
-    # BUG: Overwrites buffer index incorrectly, skipping circular modulo step
-    # Causes rank to access out-of-range or stale blocks
-    source_rank = (rank - step)  # Missing % world_size
+    source_rank = (rank - step)
     return kv_blocks[source_rank]
 
 if __name__ == '__main__':

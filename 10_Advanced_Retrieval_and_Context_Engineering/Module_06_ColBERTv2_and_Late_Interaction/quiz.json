@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates. -",
+        "text": "late_interaction_score() averages each query token's similarities across all document tokens instead of taking the max, diluting an excellent single-token match with unrelated tokens.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "Document token embeddings are L2-normalized before the MaxSim computation, but query token embeddings are not, so cosine similarity is computed inconsistently.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "text": "The retriever compares query token embeddings against document embeddings indexed with an older, incompatible ColBERT checkpoint.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
+        "text": "Late-interaction scoring ranks a document with uniformly mediocre token matches above a document containing one near-perfect token match.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "text": "Query latency grows linearly with the number of document tokens indexed per document, becoming the dominant cost at retrieval time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates.",
+        "text": "Index build succeeds, but every query returns an empty result list regardless of the query text.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "text": "late_interaction_score() reduces per-query-token similarities with a mean instead of a max, reintroducing the averaging behavior MaxSim was designed to avoid.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "text": "Token-level embeddings are stored in FP16 for the index but compared against FP32 query embeddings at search time, silently truncating precision.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "text": "The MaxSim computation sums over document tokens instead of taking the maximum, so longer documents systematically score higher regardless of relevance.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "text": "Replace the mean reduction in late_interaction_score() with a max reduction over document-token similarities.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter! -",
+        "text": "Truncate every embedding vector to 128 dimensions by dropping the last 640 values, regardless of whether a projection layer was trained.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
+        "text": "Pad the 128-dimension ColBERT embeddings with zeros up to 768 dimensions so both tensors match shape.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "text": "Every query re-runs the full BERT encoder over each candidate document's tokens at search time instead of reusing precomputed, indexed token embeddings.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "text": "The MaxSim computation materializes a full query-tokens by document-tokens similarity matrix for every candidate with no early pruning, so memory use scales with candidate count under load.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "text": "Token embeddings from two different model checkpoints get mixed into the same index after a partial re-embedding job is interrupted mid-run.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Comparing token embeddings from the query encoder directly against document embeddings from a different, unprojected 768-dimension checkpoint.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Reducing per-query-token similarity scores by averaging across all document tokens rather than taking the single best match.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Storing document token embeddings without ever validating that their dimensionality matches the query encoder's projected output dimension.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Comparing token embeddings from the query encoder directly against document embeddings from a different, unprojected 768-dimension checkpoint.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Reducing per-query-token similarity scores by averaging across all document tokens rather than taking the single best match.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Storing document token embeddings without ever validating that their dimensionality matches the query encoder's projected output dimension.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Comparing token embeddings from the query encoder directly against document embeddings from a different, unprojected 768-dimension checkpoint.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Reducing per-query-token similarity scores by averaging across all document tokens rather than taking the single best match.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Storing document token embeddings without ever validating that their dimensionality matches the query encoder's projected output dimension.",
         "is_correct": false
       }
     ],

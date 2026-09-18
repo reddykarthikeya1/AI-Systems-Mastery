@@ -16,6 +16,10 @@ Constraints
 Example
     dijkstra(3, [(0, 1, 4), (0, 2, 1), (2, 1, 2)], 0) -> [0, 3, 1]
 
+Example:
+    >>> dijkstra(3, [(0, 1, 4), (0, 2, 1), (2, 1, 2)], 0)
+    [0, 3, 1]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Always expand the unfinalised node with the smallest known distance. A min-heap gives you that.

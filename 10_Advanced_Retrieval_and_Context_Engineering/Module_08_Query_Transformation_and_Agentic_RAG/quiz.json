@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "text": "gather_context() keys its merged results dictionary by each result's rank position instead of the document's identity, so only the last sub-question's retrievals survive the merge.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Never prune tokens from a protected list of semantic modulators (\"not\", \"no\", \"never\", \"except\", \"unless\").",
+        "text": "The query decomposition step splits a complex question into sub-questions but never de-duplicates near-identical rewrites, so the same search fires many times.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "text": "The agent's stopping condition checks whether retrieval returned zero results, but never checks whether the results it did get satisfy the original question.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates. -",
+        "text": "The final answer only reflects evidence from the last sub-question processed, even though the complex query was decomposed into several independent sub-questions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "text": "The agent returns an answer after a single retrieval call even when the retrieved context clearly does not address the question.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "text": "Two sub-questions retrieve the same document but the agent cites it twice with two different, inconsistent confidence scores.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "text": "gather_context() merges each sub-question's results into a dictionary keyed by rank position, so later sub-questions silently overwrite earlier ones at the same rank.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "text": "The query rewriter paraphrases the question using a fixed template that never changes its retrieval intent, so every rewrite fetches the exact same documents.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "text": "The agent's context-sufficiency check compares retrieved text against the original query using exact string match instead of semantic similarity.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Letting an evaluation agent reject retrieved context indefinitely with no cap on how many times a query can be rewritten.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Merging results from multiple decomposed sub-queries by their rank position in each individual result list rather than by document identity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Treating a single failed retrieval attempt as sufficient grounds to abandon a sub-question entirely instead of retrying or rewriting it.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Letting an evaluation agent reject retrieved context indefinitely with no cap on how many times a query can be rewritten.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Merging results from multiple decomposed sub-queries by their rank position in each individual result list rather than by document identity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Treating a single failed retrieval attempt as sufficient grounds to abandon a sub-question entirely instead of retrying or rewriting it.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Letting an evaluation agent reject retrieved context indefinitely with no cap on how many times a query can be rewritten.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Merging results from multiple decomposed sub-queries by their rank position in each individual result list rather than by document identity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Treating a single failed retrieval attempt as sufficient grounds to abandon a sub-question entirely instead of retrying or rewriting it.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Letting an evaluation agent reject retrieved context indefinitely with no cap on how many times a query can be rewritten.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Merging results from multiple decomposed sub-queries by their rank position in each individual result list rather than by document identity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Treating a single failed retrieval attempt as sufficient grounds to abandon a sub-question entirely instead of retrying or rewriting it.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_reciprocal_rank_fusion_merge import reciprocal_rank_fusion_merge
-except ImportError:
-    from p01_reciprocal_rank_fusion_merge import reciprocal_rank_fusion_merge
+from p01_reciprocal_rank_fusion_merge import reciprocal_rank_fusion_merge
 
 
 def test_reciprocal_rank_fusion_merge():

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_judge_position_bias_debias import judge_position_bias_debias
-except ImportError:
-    from p01_judge_position_bias_debias import judge_position_bias_debias
+from p01_judge_position_bias_debias import judge_position_bias_debias
 
 
 def test_judge_position_bias_debias():

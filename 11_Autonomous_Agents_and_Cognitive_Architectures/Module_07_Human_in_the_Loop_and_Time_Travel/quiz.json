@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"REJECTED\"",
+        "text": "\"rejected\"",
         "is_correct": false
       },
       {
@@ -42,7 +42,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"COMPLETED\"",
+        "text": "\"completed\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "text": "The approval step calls input() and immediately raises EOFError the moment it runs in a non-interactive worker process with no attached stdin.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "text": "Two human reviewers click approve on the same pending action simultaneously, and both approvals apply, double-processing the payment.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "text": "Resuming a checkpoint replays every tool call between the pause point and the resume point a second time.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "text": "The approval step blocks on the builtin input(), which has no durable pause/persist/resume path and simply crashes if no interactive terminal is attached.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "TypeError: Object of type CustomTool is not JSON serializable when saving checkpoint.",
+        "text": "Checkpoint status updates are written without an optimistic-concurrency condition, so two simultaneous approvals can both succeed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "text": "The checkpoint writer serializes state using pickle instead of JSON, and the deserializing process runs a different Python version that can't load the pickle format.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "text": "The approval gate calls input() directly, which raises EOFError instead of durably pausing whenever no interactive stdin is attached.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "text": "Checkpoint status transitions from PENDING to RESUMED are not guarded by a conditional update, so a race between two reviewers can resume the same checkpoint twice.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": LLM renamed the parameter from query to querytext based on vague docstring instructions. -",
+        "text": "The state channel schema allows any Python object as a value, so a tool accidentally stores a live database connection object instead of its serializable configuration.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "text": "Replace the blocking input() call with an explicit pause/persist/resume pattern so approval becomes an asynchronous event instead of a synchronous wait.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "text": "Guard the checkpoint's status transition with a conditional SQL update that only succeeds when the row is still in the PENDING state.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "text": "Serialize checkpoint state with pickle instead of JSON so arbitrary Python objects, including custom tool instances, can be stored directly.",
         "is_correct": false
       }
     ],

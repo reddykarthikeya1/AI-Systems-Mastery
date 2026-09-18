@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DONE\"",
+        "text": "\"done\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "Build a fresh state dict each step instead of mutating the caller's dict in place, so checkpoints taken before a step remain independent snapshots.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "text": "Read the next node exclusively from the node function's own 'next' field instead of hardcoding a single transition.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use regex with optional markdown block stripping: r\"\".",
+        "text": "Increase the maximum supersteps limit from 25 to a much larger number so long-running graphs have more room to converge.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "The engine hardcodes termination after exactly one node runs, so the graph never visits any node the router intended to route to next.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "text": "A state snapshot captured before a step silently reflects the post-step data, because the same dict object was mutated in place.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "text": "Two nodes scheduled in the same superstep both attempt to write to the same state key, and one silently overwrites the other.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "text": "run() hardcodes curr = \"END\" at the end of every loop iteration, ignoring the 'next' node field the router actually returned.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "text": "state.update() mutates the caller-supplied state dict in place, so any checkpoint reference silently aliases post-step data instead of a snapshot.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "The graph's conditional edge function is evaluated once at compile time and cached, so it never re-evaluates as state changes during execution.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Both agents' classification prompts lack unambiguous domain boundary definitions.",
+        "text": "run() ignores the 'next' field returned by each node function and always hardcodes the same single transition, regardless of routing logic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Both agents' classification prompts lack unambiguous domain boundary definitions. -",
+        "text": "State updates are applied via in-place mutation of the shared dict rather than building a new object per step, aliasing any snapshot taken earlier.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "text": "The router function compares state values using object identity (is) instead of equality (==), so semantically equal states are treated as different.",
         "is_correct": false
       }
     ],

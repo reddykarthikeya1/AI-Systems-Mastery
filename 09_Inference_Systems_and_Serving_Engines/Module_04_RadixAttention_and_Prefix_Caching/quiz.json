@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "text": "Increase the GPU memory fraction reserved for the KV cache so the pool never actually reaches 99% utilization in practice.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "Add a timeout that kills any request waiting longer than 30 seconds for memory, freeing whatever blocks it had already allocated.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "text": "Switch the radix tree's cache key to hash each request's leading tokens instead of its trailing tokens, so more prefixes collide and less memory is needed.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "The radix tree's cache key is derived from each request's trailing tokens instead of its shared leading prefix, so almost no requests ever hit the cache.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "The eviction policy walks the radix tree in insertion order rather than by recency, so hot prefixes get evicted before cold ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "text": "The scheduler grants memory strictly to whichever request arrived first, without checking whether a higher-priority request is starved indefinitely.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "text": "Cache hit rate stays near zero even though most requests share an identical system prompt, and compute cost never drops.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "text": "The server keeps admitting new requests normally, but average latency slowly climbs as GPU memory usage approaches its limit.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "A small number of requests receive HTTP 500 errors while the rest of the fleet continues serving traffic normally.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "The radix tree merges two unrelated requests' branches whenever their token IDs happen to collide in the hash table, mixing unrelated KV entries.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "Long-running requests are given lower scheduling priority than newly arrived ones, so old requests are perpetually preempted before completing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "text": "The eviction routine frees a node's children before checking whether the parent node is still referenced, corrupting the tree's prefix structure.",
         "is_correct": false
       }
     ],

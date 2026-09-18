@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Wrapping part of a key in braces {user:101} forces Redis Cluster to hash only the braced substring, placing related keys in the same slot.",
+        "text": "SGA and PGA are both private per-process memory areas; the difference is only that SGA is used for sorting while PGA caches shared data blocks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Both primary and promoted replica accept writes simultaneously; prevented by automated fencing and odd-numbered quorum witnesses.",
+        "text": "SGA is allocated once per session and freed when the session disconnects, while PGA persists for the lifetime of the instance regardless of active sessions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inserting single rows or micro-batches faster than background compaction can merge them.",
+        "text": "PGA is shared memory accessible to every background and server process, while SGA is private memory allocated separately for each user session's sort operations.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
+        "text": "A hard parse reuses a previously compiled plan from the Library Cache, while a soft parse always recompiles the SQL from scratch regardless of whether it has been seen before.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The size of the dynamic priority queue during search: higher efsearch yields higher accuracy (recall) at the cost of latency.",
+        "text": "A soft parse only occurs the very first time a SQL statement is ever executed on the instance; every execution after that, even with different bind values, is a hard parse.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+        "text": "Hard and soft parses both skip syntax analysis; the only difference is that a hard parse also updates the table's statistics before execution.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It routes read-heavy analytical queries to secondary replicas, reserving the primary replica for transactional writes.",
+        "text": "It evicts the block that was most recently touched first, on the theory that a block just used is least likely to be needed again soon.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "text": "It assigns every block the same fixed lifetime in the cache regardless of how often it is accessed, and evicts strictly in the order blocks were loaded.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
+        "text": "It tracks only whether a block has ever been touched at all, as a single boolean flag, and protects any block that has been touched even once from eviction forever.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "For high-volume multi-node distributed systems, network file systems (NFS), or write workloads exceeding hundreds of concurrent writers.",
+        "text": "LGWR asynchronously flushes the redo buffer to disk on a fixed timer every three seconds, and COMMIT returns to the client immediately without waiting for that flush.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "text": "LGWR writes the modified data blocks themselves from the Buffer Cache directly to the datafiles, which is what makes a COMMIT durable against a crash.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Stages like $sort and $group cannot exceed 100MB RAM unless {allowDiskUse: true} is enabled to spill to temporary files.",
+        "text": "LGWR only writes redo to disk when the redo log buffer becomes completely full; a COMMIT by itself does not trigger a redo write at all.",
         "is_correct": false
       }
     ],
@@ -137,12 +137,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -227,12 +227,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.",
+        "text": "CURSOR_SHARING is set to FORCE, which replaces every literal with a bind variable automatically, but the resulting single cached plan is a poor fit for the wide range of id values, causing execution plan instability instead of memory exhaustion.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "The shared pool size itself was left at its default value from installation, which was simply too small for the number of distinct application modules, unrelated to how any individual statement is parsed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.",
+        "text": "PL/SQL objects were compiled with debug information left enabled in production, and the extra symbol tables for stack traces consumed the shared pool until it filled up.",
         "is_correct": false
       }
     ],

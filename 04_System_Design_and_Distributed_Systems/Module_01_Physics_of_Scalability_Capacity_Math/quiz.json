@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "text": "The gateway retried each of the 100 downstream calls independently on timeout, so the measured p99 reflected retried latency rather than the original single-attempt response.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "NTP time synchronization can jump backwards. If the generator does not refuse or wait until the clock catches up, it generates duplicate IDs. ---",
+        "text": "The p99 was computed by averaging the 100 per-service p99 values instead of taking the maximum, which understated the true tail latency by roughly half.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "text": "The fanout calls executed sequentially instead of in parallel, so total latency became the sum of all 100 p50s rather than being dominated by one slow response.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By provisioning extra hardware headroom so the capacity math never actually needs to be checked against real traffic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging peak QPS only after an incident, so under-provisioning is discovered once the fleet has already fallen over.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By uniformly throttling all clients at a fixed rate, regardless of whether the capacity estimate it was derived from is accurate.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding redundant replicas to absorb overload, without verifying that the per-node capacity estimate driving the replica count was correct.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting clients retry indefinitely on timeout, which hides an under-provisioned fleet instead of catching the sizing error.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By catching and discarding capacity-planning exceptions so the service keeps running even when its resource estimates are wrong.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By provisioning extra hardware headroom so the capacity math never actually needs to be checked against real traffic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging peak QPS only after an incident, so under-provisioning is discovered once the fleet has already fallen over.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By uniformly throttling all clients at a fixed rate, regardless of whether the capacity estimate it was derived from is accurate.",
         "is_correct": false
       }
     ],

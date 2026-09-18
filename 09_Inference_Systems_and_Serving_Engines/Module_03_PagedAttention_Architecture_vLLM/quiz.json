@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "text": "fork() shares physical blocks by bumping refcount, but append_token() never re-checks that refcount before writing, so both branches mutate the same shared block in place.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "text": "The block allocator rounds every new sequence's initial allocation up to a full block, so partially-filled blocks accumulate wasted internal fragmentation over time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "text": "The prefix-cache hash table never evicts entries for completed requests, so the hash map itself keeps growing even though physical blocks are freed correctly.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "text": "The scheduler calls decref() twice on the same physical block during a single abort, corrupting the free-list with a double free.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "text": "Copy-on-write never triggers because append_token() skips the refcount check, so beam-search siblings silently overwrite each other's most recent tokens.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "text": "The block table stores logical-to-physical mappings in a flat array indexed by request ID instead of block index, so long-running requests eventually index out of bounds.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "text": "Periodically restart the vLLM server every few hours to reclaim whatever memory was not freed correctly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Server functions normally for 10,000 requests, then crashes with CUDA OOM when a single request reaches token 4,097.",
+        "text": "Increase gpu_memory_utilization so the allocator reserves a larger memory pool up front, delaying when the leak becomes visible.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "text": "Cap the maximum number of branches a single request is allowed to fork, so fewer shared blocks are ever created in the first place.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "text": "Two beam-search branches forked from the same parent silently converge on identical completions, even though they were sampled with different temperatures.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "Throughput drops sharply the instant the free block count reaches zero, then recovers immediately once any request completes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "A single request's generation quality degrades and it starts emitting repeated tokens once its sequence crosses 4,096 tokens.",
         "is_correct": false
       }
     ],

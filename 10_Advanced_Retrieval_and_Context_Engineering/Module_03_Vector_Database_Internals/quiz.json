@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Hybrid search returns duplicated documents with divergent ranks.",
+        "text": "The IVF index selects the centroid farthest from the query vector at search time instead of the nearest one, scanning the one partition guaranteed not to contain the true neighbors.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use transactional atomic upserts and cascading deletes between vector index and parent document stores.",
+        "text": "The metadata filter is applied before the vector search even runs, so the ANN graph never sees the pre-filtered candidate set and returns empty.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates. -",
+        "text": "The HNSW index was built with ef_construction set far too low, so its graph has too few edges to reach most of the legal documents at all.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "text": "Have both insert-time and query-time partition lookups call the same nearest-centroid function so they can never drift apart.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "BM25 index stores document integer IDs (1042), while vector DB stores UUID strings (\"doc1042\"). RRF fails to match documents, splitting them into duplicate disjoint candidates.",
+        "text": "Raise the ANN search's top-k parameter from 10 to 1,000 so more candidates survive the metadata filter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Raw cross-encoder heads output uncalibrated classification logits. -",
+        "text": "Move the metadata filter into a post-processing step that runs after the full unfiltered result set has already been ranked.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "text": "A query returns its single most distant match instead of its nearest neighbors, even though the requested vector exists in the index.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter! -",
+        "text": "Every query against the filtered index returns zero results at all, regardless of how many documents match the filter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Hybrid search returns duplicated documents with divergent ranks.",
+        "text": "Query latency for filtered searches is identical to unfiltered searches, but recall for the unfiltered case is measurably worse.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Applying metadata filters only after the ANN graph traversal has already selected its fixed top-k candidate set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Using a different nearest-centroid comparison at query time than the one used when vectors were originally inserted into their partitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Sizing the HNSW graph's construction parameters for indexing speed alone, without regard to how many edges a query-time traversal can reach.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Applying metadata filters only after the ANN graph traversal has already selected its fixed top-k candidate set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Using a different nearest-centroid comparison at query time than the one used when vectors were originally inserted into their partitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Sizing the HNSW graph's construction parameters for indexing speed alone, without regard to how many edges a query-time traversal can reach.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Applying metadata filters only after the ANN graph traversal has already selected its fixed top-k candidate set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Using a different nearest-centroid comparison at query time than the one used when vectors were originally inserted into their partitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Sizing the HNSW graph's construction parameters for indexing speed alone, without regard to how many edges a query-time traversal can reach.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Applying metadata filters only after the ANN graph traversal has already selected its fixed top-k candidate set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Using a different nearest-centroid comparison at query time than the one used when vectors were originally inserted into their partitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Sizing the HNSW graph's construction parameters for indexing speed alone, without regard to how many edges a query-time traversal can reach.",
         "is_correct": false
       }
     ],

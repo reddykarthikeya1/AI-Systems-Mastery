@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Redis executes the entire Lua script without interleaving any other command in its single-threaded event loop.",
+        "text": "Each node stores a separate B-Tree index of its relationships, so a traversal is an O(log K) index lookup rather than a true O(1) pointer dereference.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "text": "The database precomputes and caches the shortest path between every pair of nodes at write time, so any traversal is a simple cache lookup rather than a real-time walk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A real-time pub/sub API using the replica set oplog to notify applications of document inserts, updates, and deletes.",
+        "text": "Every relationship is stored in a single global adjacency-list index shared across all nodes, which is scanned linearly to find a given node's neighbors.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
+        "text": "Using SQL-style JOIN clauses between node tables, where the relationship type is specified as a join condition on a foreign key column.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+        "text": "Using indentation-based nesting similar to Python, where a relationship is expressed by indenting the target node under the source node.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+        "text": "Using a single flat WHERE clause listing every node and relationship as separate conditions, with no dedicated arrow syntax for direction.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The ratio of physical bytes written to storage media relative to logical bytes written by the user application.",
+        "text": "Graph databases are faster only because they keep the entire dataset in RAM at all times, which relational databases are architecturally incapable of doing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It automatically detects cycles in its wait-for graph and rolls back the transaction with the fewest undo log records (least expensive to undo).",
+        "text": "Relational databases traverse pre-linked pointers just like graph databases; the actual speed difference comes entirely from graph databases compressing data more aggressively on disk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
+        "text": "Both approaches have the same computational complexity per hop; graph databases only appear faster because they cache the results of previous multi-hop queries more aggressively.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
+        "text": "It uses Dijkstra's algorithm by default, weighting each relationship by a numeric property named weight even when the query never mentions one.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "text": "It performs a depth-first search and returns the first complete path it finds, which is not guaranteed to be the shortest in terms of hop count.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "text": "It computes every possible path between the two nodes up to a fixed depth and returns the one with the fewest distinct node labels, not the fewest hops.",
         "is_correct": false
       }
     ],
@@ -142,7 +142,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "text": "The query does include a relationship pattern, MATCH (a:Person)-[:WORKS_AT]->(b:Company), but the WORKS_AT relationship type was never actually created between any nodes, so Neo4j falls back to scanning the full node store.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "Two separate MATCH clauses are used instead of one, and Neo4j's planner always evaluates every MATCH clause as an independent full graph scan regardless of shared variables.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The security audit logging procedure was declared without PRAGMA AUTONOMOUSTRANSACTION. When the parent transfer rolls back due to insufficient funds, the audit record is rolled back with it.",
+        "text": "The query correctly matches a relationship, but the a.city = b.city filter is applied after the traversal instead of during it, so the full result set of the traversal must be held in memory before filtering.",
         "is_correct": false
       }
     ],

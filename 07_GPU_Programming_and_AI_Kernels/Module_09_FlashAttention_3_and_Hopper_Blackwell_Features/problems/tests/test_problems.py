@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_tma_asynchronous_transfer_schedule import tma_asynchronous_transfer_schedule
-except ImportError:
-    from p01_tma_asynchronous_transfer_schedule import tma_asynchronous_transfer_schedule
+from p01_tma_asynchronous_transfer_schedule import tma_asynchronous_transfer_schedule
 
 
 def test_tma_asynchronous_transfer_schedule():

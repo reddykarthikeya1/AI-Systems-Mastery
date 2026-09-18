@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "Run unit tests for candidate code in subprocesses bounded by a strict 1-second timeout.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "Cache math.comb(n, k) results across problems so the same n/k pair is only ever computed once per benchmark run.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "Clip k to n silently whenever a caller requests k greater than the number of sampled completions, without raising any error.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "16-digit product serial numbers are masked as credit cards.",
+        "text": "Candidate code contains an infinite while True loop and the evaluation suite has no execution timeout guard, so the whole run hangs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "pass_at_k() casts n and k to floats before calling math.comb(), so floating-point rounding occasionally pushes the estimator's ratio above 1.0.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "text": "The benchmark harness averages pass@k scores across problems using an unweighted mean, so problems with fewer sampled completions count as much as problems with many.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Require multi-token intent matches or contextual intent classifier with confidence scoring.",
+        "text": "Candidate code lacks an execution timeout guard, so a unit test containing an infinite loop hangs the whole evaluation suite indefinitely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "text": "The pass@k estimator recomputes math.comb(n, k) from scratch for every problem in the benchmark, making large sweeps slow but not incorrect.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "Sample completions are deduplicated before counting c, the number of correct ones, so two identical correct completions are only counted once.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "text": "The evaluation suite hangs indefinitely on a single problem whose candidate code contains an infinite loop, blocking the rest of the benchmark run.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Desynchronized system clocks across worker nodes. -",
+        "text": "Two different benchmark runs on the same model and the same sampled completions report different pass@k scores due to non-deterministic dictionary ordering.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "text": "pass@k silently returns a negative number when the number of correct completions c exceeds the number of sampled completions n.",
         "is_correct": false
       }
     ],

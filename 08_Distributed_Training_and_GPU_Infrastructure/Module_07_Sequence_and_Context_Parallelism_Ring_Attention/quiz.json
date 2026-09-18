@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "text": "The K/V buffer for the next ring step is read before the background dist.irecv on that buffer has finished, so stale data from two steps ago is used.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "text": "The causal mask block boundaries are computed using the local rank's sequence offset instead of the global sequence position, so some ring steps mask out valid attention.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "The running softmax denominator l is accumulated in bf16, so it silently saturates once enough ring steps have added to it.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Use two ping-pong buffers and record CUDA events so a rank never reads a K/V buffer before its irecv has completed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "Recompute the causal mask block boundaries from the global sequence position instead of the local rank offset.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use Megatron's clipgradnormfp32 which performs an All-Reduce of sum-of-squares across the model parallel group before taking the square root.",
+        "text": "Accumulate the running softmax denominator l in fp32 even when m is kept in a lower precision.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Collective calls hang indefinitely during process group initialization.",
+        "text": "The K/V buffer for the next ring step is read before the background dist.irecv on that buffer has finished, so stale data from two steps ago is used.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "text": "The causal mask block boundaries are computed using the local rank's sequence offset instead of the global sequence position, so some ring steps mask out valid attention.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "text": "The running softmax denominator l is accumulated in bf16, so it silently saturates once enough ring steps have added to it.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "text": "Generation becomes inconsistent or produces nondeterministic loss spikes from run to run, even with a fixed seed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "text": "The output is numerically correct but the ring communication never overlaps with compute, so throughput matches a serial implementation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "text": "One rank's attention output is silently computed over the wrong subset of key/value blocks, off by one ring step.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "The ring communication step size does not match the number of context-parallel ranks, so some ranks send K/V blocks to a rank outside the ring.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "text": "Double buffering is disabled for the K/V rotation, so every ring step blocks on a synchronous P2P transfer instead of overlapping with compute.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "text": "The online softmax rescaling is skipped for the first ring step, so the running max is never initialized before the first block is processed.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+        "text": "The ring communication step size does not match the number of context-parallel ranks, so some ranks send K/V blocks to a rank outside the ring.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "Double buffering is disabled for the K/V rotation, so every ring step blocks on a synchronous P2P transfer instead of overlapping with compute.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Collective calls hang indefinitely during process group initialization.",
+        "text": "The online softmax rescaling is skipped for the first ring step, so the running max is never initialized before the first block is processed.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "text": "The ring communication step size does not match the number of context-parallel ranks, so some ranks send K/V blocks to a rank outside the ring.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "Double buffering is disabled for the K/V rotation, so every ring step blocks on a synchronous P2P transfer instead of overlapping with compute.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "text": "The online softmax rescaling is skipped for the first ring step, so the running max is never initialized before the first block is processed.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By accumulating the online softmax running max and sum in fp16 to save memory across ring steps.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reading the next K/V buffer before its background irecv has finished, to start compute sooner.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the ping-pong buffer swap under heavy load since ranks are assumed to always be synchronized.",
         "is_correct": false
       }
     ],

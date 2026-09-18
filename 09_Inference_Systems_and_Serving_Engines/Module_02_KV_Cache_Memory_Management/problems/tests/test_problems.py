@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_kv_cache_footprint_estimator import kv_cache_footprint_estimator
-except ImportError:
-    from p01_kv_cache_footprint_estimator import kv_cache_footprint_estimator
+from p01_kv_cache_footprint_estimator import kv_cache_footprint_estimator
 
 
 def test_kv_cache_footprint_estimator():

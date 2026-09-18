@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "The continuous-batching scheduler admits requests strictly first-in-first-out, so a burst of very long generations occupies every batch slot and starves shorter requests waiting behind them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "text": "Sustained high-concurrency GEMM kernels push the GPU core past its thermal limit, so the driver silently downclocks it even though utilization still reads 100%.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "External fragmentation in the KV-cache block allocator leaves enough free memory in aggregate, but no single contiguous span large enough to admit a new sequence.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "Raise max_num_seqs so more requests fit into each batch, shrinking the average time a request spends waiting in the queue.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "text": "Lower the global max_tokens cap so every generation is forced to stop earlier, regardless of whether the client is still connected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "Add a Kubernetes liveness probe that restarts the pod whenever GPU utilization stays above 95% for more than 30 seconds.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "text": "Steady-state TPOT increases by roughly 25% after two hours of sustained peak traffic, while GPU utilization looks visually unchanged.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "Process memory (RSS) climbs steadily for several hours until the container is OOM-killed, even though incoming request volume is flat.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "text": "p50 latency holds steady but p99 tail latency triples once more than fifty requests are in flight concurrently.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.",
+        "text": "A newly autoscaled pod is marked Ready by the orchestrator before the engine finishes loading and warming up its weights, so early requests routed to it stall.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "text": "The block allocator evicts the least-recently-used prefix-cache entries by wall-clock age rather than by reference count, freeing blocks a live request still shares.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "text": "Speculative decoding accepts a draft token without re-validating it against the target model's output distribution, silently corrupting the generated sequence.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "text": "The scheduler holds a single lock across tokenization and CUDA graph replay, serializing batch preparation that should run concurrently.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "text": "The block allocator evicts prefix-cache entries by wall-clock age instead of reference count, freeing blocks a live request still shares.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "text": "Continuous batching resizes the active batch every decode step without repacking padding, so wasted padding silently consumes a growing share of each forward pass.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "text": "Throughput degrades gradually and roughly linearly starting from the very first request, rather than failing abruptly at a fixed token count.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -",
+        "text": "The server returns HTTP 499 for a small fraction of requests, but GPU memory usage never rises above its steady-state baseline.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "text": "Every request whose prompt exceeds 2,048 tokens is rejected immediately at admission time with a clear 'context length exceeded' error.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting TTFT grow unbounded during traffic spikes so that TPOT for already in-flight requests stays perfectly smooth.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By favoring maximum GPU utilization over queueing fairness, so long generations always preempt shorter ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying every timed-out request indefinitely at the load balancer until the model eventually responds.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting TTFT grow unbounded during traffic spikes so that TPOT for already in-flight requests stays perfectly smooth.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By favoring maximum GPU utilization over queueing fairness, so long generations always preempt shorter ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying every timed-out request indefinitely at the load balancer until the model eventually responds.",
         "is_correct": false
       }
     ],

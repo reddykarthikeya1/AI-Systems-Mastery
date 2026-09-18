@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "No. An autonomous transaction is a completely separate session and cannot see the calling transaction's uncommitted writes.",
+        "text": "Sentinels replicate the master's entire dataset continuously and instantly swap in as the new master themselves the moment a heartbeat is missed, without any voting or quorum.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "An anti-join returns rows from table A that have no matching record in table B: WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.id = A.id).",
+        "text": "The master itself detects that it can no longer reach a majority of replicas and voluntarily demotes itself to a replica role, which the remaining replicas then promote one of themselves to replace.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It uses Breadth-First Search (BFS) to find the minimum-hop relationship path between two nodes.",
+        "text": "A single designated Sentinel node makes the failover decision alone; the other Sentinels only observe and log the outcome for auditing, without a quorum vote.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Labels group nodes into sets/classes (can have multiple per node); relationship types define the single specific semantic edge connecting two nodes.",
+        "text": "65,536 hash slots, matching the 16-bit range of CRC16 directly, with keys mapped using CRC16(key) mod 65536.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Transactions read from a consistent snapshot taken at start; Write Skew anomaly can occur (prevented only by Serializable).",
+        "text": "1,024 hash slots, one per possible cluster node, with keys mapped by simply hashing the node's own ID rather than the key.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "An ordering produced by an index or sort that satisfies subsequent ORDER BY or GROUP BY clauses, avoiding redundant sort operations.",
+        "text": "16,384 hash slots, but keys are mapped using a consistent-hashing ring based on the key's MD5 hash rather than CRC16.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using operating system file-level byte-range locks on the database and WAL index file (.shm).",
+        "text": "Wrapping part of a key in braces excludes that substring from hashing entirely, so Redis Cluster hashes only the remaining, unbraced part of the key.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
+        "text": "A Hash Tag is a metadata label attached to a key that tells Sentinel which replica should serve reads for that key, unrelated to cluster slot placement.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It writes dirty pages to a contiguous disk buffer before writing to primary data files, preventing page corruption from torn writes during crashes.",
+        "text": "Braces around part of a key mark it as compressed on disk; Redis Cluster still hashes the full key, but stores the braced portion using a smaller encoding.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A query predicate written such that the engine can utilize an index seek (e.g. col >= val instead of col + 5 >= val).",
+        "text": "The node silently proxies the request to the correct node internally and returns the result to the client as if it had handled it locally, with no redirection error at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
+        "text": "The node returns a -ASK redirection unconditionally, which tells the client to permanently update its slot mapping and never contact this node again for that key.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
+        "text": "The node queues the request until the cluster's next gossip round completes, then serves it locally once ownership of the slot is confirmed, without any redirect.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,12 +192,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"REPLICA-2\"",
+        "text": "\"replica-1\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"master-1\"",
         "is_correct": false
       },
       {
@@ -232,7 +232,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.",
+        "text": "The application already wraps both keys with the same hash tag, {user:101}:profile and {user:101}:orders, but a Lua script running the MGET recomputes the slot using the full key including the braces, defeating the hash tag.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "text": "MGET is being run against a single-node Redis instance without cluster mode enabled at all, so CROSSSLOT is a red herring and the real error is a connection timeout.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "text": "The two keys were created on different Redis Cluster shards before cluster mode was enabled, so no hash tag can move them into the same slot after the fact without a manual MIGRATE.",
         "is_correct": false
       }
     ],

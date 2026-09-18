@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "0.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not ",
+        "text": "The function is already O(log n) as required; the slowness at large n is caused entirely by Python's function call overhead in the while loop, not by the algorithm's asymptotic behavior.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "For maximum sum, a single running best is enough. For maximum product it is not: multiplying by a negative number flips the ordering, so the most negative product so far is a candidate for the largest as soon as another negative appears.",
+        "text": "capacity *= 2 doubles correctly, but the bug is that copies += capacity records too many copies per resize; the true copy count should be capacity // 2, which would also fix the runtime.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "text": "The while loop's exit condition size < n is checked using a float comparison, and float comparisons are the actual bottleneck at scale, not the number of loop iterations.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "text": "fits_budget correctly raises a ValueError for any unrecognized class; the reported bug is actually that valid classes like O(n log n) are being rejected due to a typo in the comparison string, not the else branch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "text": "The else branch returning False is intentional and documented behavior; the real defect is that the budget threshold itself was computed using the wrong exponent, so even recognized classes are misclassified.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Accessing .next or .left without checking if node is None.",
+        "text": "Returning False here only affects logging output, not the actual budget decision, because the caller re-derives the fit/no-fit answer independently from the raw runtime measurement.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "text": "The off-by-one only happens because int() truncates instead of rounds; switching to round(math.log2(n)) fixes the discrepancy at every input size without needing bit_length().",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "text": "math.log2 is exact at every magnitude Python supports; the wrong comparison count instead comes from the +1 being applied twice, once in the function and once by the caller.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "The error appears because n is passed in as a string representation of a large number, and Python silently truncates strings longer than 15 characters before converting them with math.log2.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "text": "A quadratic algorithm's ratio over three doublings would also compound to 4.0, identical to the linear case, so the two are fundamentally indistinguishable by this ratio alone regardless of how it's computed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "text": "The ratio for a genuinely quadratic algorithm would be 8.0, since quadratic growth means each doubling multiplies runtime by exactly the number of doublings performed so far, not by a fixed factor.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "isword is set on insert and then never read, so search and startswith are literally the same operation. Every prefix of every stored word is reported as a stored word.",
+        "text": "There is no meaningful difference: both linear and quadratic algorithms produce a ratio that approaches 1.0 as n grows, because timing noise dominates the true asymptotic signal at any measurable scale.",
         "is_correct": false
       }
     ],

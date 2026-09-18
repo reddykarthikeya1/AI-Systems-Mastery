@@ -76,6 +76,23 @@ export interface CustomSrsCard {
   createdAt: number;
 }
 
+export interface EngineeringRank {
+  level: number;
+  title: string;
+  minXp: number;
+  maxXp: number;
+  badge: string;
+}
+
+export const ENGINEERING_RANKS: EngineeringRank[] = [
+  { level: 1, title: 'Junior Systems Engineer', minXp: 0, maxXp: 500, badge: '🌱' },
+  { level: 2, title: 'Systems Apprentice', minXp: 500, maxXp: 1500, badge: '⚡' },
+  { level: 3, title: 'Core Infrastructure Engineer', minXp: 1500, maxXp: 3500, badge: '🏗️' },
+  { level: 4, title: 'Distributed Systems Architect', minXp: 3500, maxXp: 7000, badge: '🌐' },
+  { level: 5, title: 'GPU Kernel Hacker', minXp: 7000, maxXp: 12000, badge: '🚀' },
+  { level: 6, title: 'Principal AI Systems Architect', minXp: 12000, maxXp: 25000, badge: '👑' },
+];
+
 export interface ProgressPayload {
   completed_lessons: string[];
   completed_modules: string[];
@@ -93,6 +110,9 @@ export interface ProgressPayload {
   notes?: Record<string, string>;
   last_study_date?: string;
   study_streak_days?: number;
+  solved_problems?: string[];
+  earned_xp?: number;
+  welcome_dismissed?: boolean;
 }
 
 export type RunnerMode = 'python' | 'powershell' | 'shell';

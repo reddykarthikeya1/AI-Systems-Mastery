@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_cassandra_murmur3_token_ring import cassandra_murmur3_token_ring
-except ImportError:
-    from p01_cassandra_murmur3_token_ring import cassandra_murmur3_token_ring
+from p01_cassandra_murmur3_token_ring import cassandra_murmur3_token_ring
 
 
 def test_cassandra_murmur3_token_ring():

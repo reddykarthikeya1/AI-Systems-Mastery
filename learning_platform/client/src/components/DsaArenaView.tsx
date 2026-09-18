@@ -8,6 +8,8 @@ import {
   RotateCcw,
   Sparkles,
   Maximize2,
+  Minimize2,
+  Trash2,
   Columns,
   BookOpen,
   ChevronLeft,
@@ -26,6 +28,7 @@ import { DsaProblem, DsaRunResult } from '../types';
 import { fetchDsaProblems, runDsaTest, formatCode, fetchModuleProblems, runProblemTest } from '../services/api';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { soundService } from '../services/sound';
+import { fireConfettiBurst } from '../services/confetti';
 
 interface DsaArenaViewProps {
   moduleTitle: string;
@@ -46,6 +49,8 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   const [userCode, setUserCode] = useState('');
   const [viewMode, setViewMode] = useState<'split' | 'code' | 'spec'>('split');
   const [fontSize, setFontSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [consoleHeight, setConsoleHeight] = useState(260);
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [runResult, setRunResult] = useState<DsaRunResult | null>(null);
@@ -54,6 +59,31 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   const [solvedSet, setSolvedSet] = useState<Set<string>>(new Set());
   const [renderedDescription, setRenderedDescription] = useState('');
   const [renderedExplanation, setRenderedExplanation] = useState('');
+
+  const isDraggingConsole = useRef(false);
+
+  const handleStartConsoleDrag = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isDraggingConsole.current = true;
+    const startY = e.clientY;
+    const startH = consoleHeight;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      if (!isDraggingConsole.current) return;
+      const delta = startY - moveEvent.clientY; // dragging up increases console height
+      const nextH = Math.min(550, Math.max(140, startH + delta));
+      setConsoleHeight(nextH);
+    };
+
+    const handleMouseUp = () => {
+      isDraggingConsole.current = false;
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+  };
 
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
@@ -254,6 +284,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
         if (res.all_passed) {
           soundService.playFanfare();
+          fireConfettiBurst('medium');
           const nextSolved = new Set(solvedSet);
           nextSolved.add(currentProblem.id);
           setSolvedSet(nextSolved);
@@ -286,6 +317,7 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
         if (allPassed) {
           soundService.playFanfare();
+          fireConfettiBurst('medium');
           const nextSolved = new Set(solvedSet);
           nextSolved.add(currentProblem.id);
           setSolvedSet(nextSolved);
@@ -473,7 +505,9 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   const solvedCount = problems.filter((p) => solvedSet.has(p.id)).length;
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-slate-100 rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden min-h-[820px]">
+    <div className={`flex flex-col bg-slate-950 text-slate-100 rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden transition-all ${
+      isFullscreen ? 'fixed inset-0 z-50 rounded-none h-screen w-screen' : 'h-full min-h-[820px]'
+    }`}>
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between px-5 py-3.5 bg-slate-900/90 border-b border-slate-800/80 gap-3 backdrop-blur-sm">
         {/* Left Section: Back, Problem Selector, Navigation */}
@@ -529,8 +563,16 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
           </div>
         </div>
 
-        {/* Right Section: View Mode, Font Size, Reset */}
+        {/* Right Section: View Mode, Font Size, Fullscreen, Reset */}
         <div className="flex items-center gap-2">
+          {/* Fullscreen Toggle */}
+          <button
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/60"
+            title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Coding Arena'}
+          >
+            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-cyan-400" /> : <Maximize2 className="w-3.5 h-3.5 text-slate-300" />}
+          </button>
           {/* Font Size controls */}
           <div className="flex items-center bg-slate-950 rounded-lg border border-slate-800 p-0.5 text-xs font-mono text-slate-400">
             <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-1 rounded ${fontSize === 'sm' ? 'bg-slate-800 text-slate-100 font-bold' : 'hover:text-slate-200'}`} onClick={() => setFontSize('sm')}
@@ -762,10 +804,22 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
 
             {/* Docked Test Results Panel */}
             {runResult && (
-              <div className="border-t border-slate-800 bg-slate-900/90 max-h-[300px] flex flex-col overflow-hidden">
+              <div
+                style={{ height: `${consoleHeight}px` }}
+                className="border-t border-slate-800 bg-slate-900/95 flex flex-col overflow-hidden relative shadow-2xl transition-all"
+              >
+                {/* Draggable Divider Handle */}
+                <div
+                  onMouseDown={handleStartConsoleDrag}
+                  className="h-1.5 w-full bg-slate-800 hover:bg-sky-500/60 cursor-row-resize transition-colors flex items-center justify-center group flex-shrink-0"
+                  title="Drag to resize test console"
+                >
+                  <div className="w-10 h-0.5 rounded-full bg-slate-600 group-hover:bg-sky-300 transition-colors" />
+                </div>
+
                 {/* Result Header Banner */}
                 <div
-                  className={`flex items-center justify-between px-5 py-2.5 border-b ${
+                  className={`flex items-center justify-between px-5 py-2 border-b flex-shrink-0 ${
                     runResult.all_passed
                       ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-400'
                       : 'bg-rose-950/40 border-rose-500/30 text-rose-400'
@@ -799,20 +853,40 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
                     <span>
                       Passed: {runResult.passed_cases} / {runResult.total_cases}
                     </span>
+                    <button
+                      onClick={() => setRunResult(null)}
+                      className="flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs transition border border-slate-700/50"
+                      title="Clear console output"
+                    >
+                      <Trash2 className="w-3 h-3 text-slate-400" />
+                      <span>Clear</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* Error Banner if any */}
                 {runResult.error && (
-                  <div className="p-4 bg-rose-950/20 text-rose-300 font-mono text-xs overflow-auto whitespace-pre-wrap border-b border-rose-500/20">
+                  <div className="p-4 bg-rose-950/20 text-rose-300 font-mono text-xs overflow-auto whitespace-pre-wrap border-b border-rose-500/20 flex-shrink-0">
                     {runResult.error}
                   </div>
                 )}
 
                 {/* Pytest Output when running module problems */}
                 {(!runResult.results || runResult.results.length === 0) && (
-                  <div className="p-4 bg-slate-950 font-mono text-xs overflow-auto whitespace-pre-wrap text-slate-300 max-h-[220px]">
-                    {runResult.error || runResult.reference_solution || (runResult.all_passed ? 'All pytest assertions passed successfully.' : 'Tests failed.')}
+                  <div className="p-4 bg-slate-950 font-mono text-xs overflow-auto whitespace-pre-wrap text-slate-300 flex-1">
+                    {(runResult.error || runResult.reference_solution || (runResult.all_passed ? 'All pytest assertions passed successfully.' : 'Tests failed.'))
+                      .split('\n')
+                      .map((line, lIdx) => {
+                        const isPass = line.includes('PASSED') || line.includes('passed');
+                        const isFail = line.includes('FAILED') || line.includes('failed') || line.includes('ERROR');
+                        const isHeader = line.startsWith('===') || line.startsWith('---');
+                        const colorClass = isPass ? 'text-emerald-400 font-semibold' : isFail ? 'text-rose-400 font-semibold' : isHeader ? 'text-sky-400 font-bold' : 'text-slate-300';
+                        return (
+                          <div key={lIdx} className={colorClass}>
+                            {line || '\u00A0'}
+                          </div>
+                        );
+                      })}
                   </div>
                 )}
 

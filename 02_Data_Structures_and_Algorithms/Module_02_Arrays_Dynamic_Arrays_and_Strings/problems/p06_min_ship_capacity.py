@@ -20,6 +20,10 @@ This is the canonical "binary search on the answer" problem. Notice that the
 input size is small but the *answer* ranges up to the total weight — that
 mismatch is the recognition signal.
 
+Example:
+    >>> min_ship_capacity([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5)
+    15
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You cannot compute the capacity directly. But given a candidate capacity, can you check whether it works?

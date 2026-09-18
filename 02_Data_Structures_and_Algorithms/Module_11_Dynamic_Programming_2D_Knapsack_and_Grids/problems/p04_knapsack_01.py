@@ -20,6 +20,10 @@ low. Iterating low to high lets the same item be picked up again within the same
 pass, which silently computes *unbounded* knapsack — a larger, plausible, wrong
 answer. The tests below include a case where the two differ.
 
+Example:
+    >>> knapsack_01([1, 3, 4, 5], [1, 4, 5, 7], 7)
+    9
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The 2D form is clear: best[i][c] = max(skip item i, take item i). Write that first and get it right.

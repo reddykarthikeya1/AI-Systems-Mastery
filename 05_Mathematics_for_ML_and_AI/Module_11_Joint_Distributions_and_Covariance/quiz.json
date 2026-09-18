@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines the joint distribution as the product of the two variables individual probabilities, regardless of whether they are actually independent.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires X and Y to take values from the same set, since a joint distribution cannot be defined over two variables with different possible outcomes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats P(X, Y) as simply P(X) plus P(Y), so the joint probability of a pair is obtained by adding the two marginal probabilities.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Computes the marginal of X by taking the maximum joint probability over all values of Y, rather than summing across them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires the two variables to be independent before a marginal distribution can be computed from their joint distribution at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats the marginal distribution as identical to the joint distribution restricted to a single fixed value of the other variable, rather than summed over it.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines P(X | Y) as P(X) divided by P(Y), without ever involving the joint probability of X and Y together.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Treats a conditional distribution as only valid when X and Y are independent, since otherwise conditioning is assumed to change the sample space itself.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Computes P(X | Y = y) by swapping the roles of X and Y in the joint distribution, which is assumed to always equal P(Y | X = y).",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Declares X and Y independent whenever their covariance is zero, treating zero covariance as fully equivalent to the joint factoring into the product of marginals.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires checking independence for only one pair of values of X and Y, since if the joint factors there it is assumed to factor everywhere.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Defines independence as the joint distribution being uniform over all pairs of outcomes, rather than factoring into the product of the marginals.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Treats the joint density value at a single point as a probability, rather than something that must be integrated over a region to get a probability.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Computes the marginal density by evaluating the joint density at y = 0, rather than integrating the joint density over all values of y.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Defines the conditional density f(x | y) as the joint density f(x, y) itself, without dividing by the marginal density of the conditioning variable.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Treats a covariance of zero between two variables as proof that they are statistically independent.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Defines covariance as the correlation coefficient scaled by a constant, so the two are always numerically identical rather than differing by the variables standard deviations.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Requires both variables to be measured in the same units before a covariance can be computed at all.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming two features are independent whenever their sample covariance rounds to zero, without checking for a nonlinear relationship between them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By computing a marginal distribution once from an initial dataset and reusing it, without checking whether the joint distribution has since shifted.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating a covariance matrix as always valid for downstream use, without checking that it stays positive semi-definite as new data streams in.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By treating a covariance matrix as always valid for downstream use, without checking that it stays positive semi-definite as new data streams in.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming two features are independent whenever their sample covariance rounds to zero, without checking for a nonlinear relationship between them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By normalizing a joint distribution's table only when its total looks obviously wrong, instead of enforcing that probabilities sum to one by construction.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_otel_span_duration_aggregator import otel_span_duration_aggregator
-except ImportError:
-    from p01_otel_span_duration_aggregator import otel_span_duration_aggregator
+from p01_otel_span_duration_aggregator import otel_span_duration_aggregator
 
 
 def test_otel_span_duration_aggregator():

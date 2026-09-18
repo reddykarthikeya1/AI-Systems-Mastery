@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "12800.0",
+        "text": "(4, 8)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "6400.0",
+        "text": "(16, 8)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "(8, 4)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "text": "A bit flips in the checkpoint file during parallel filesystem transit, and no checksum is stored to catch it.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "text": "The manifest records shard shapes assuming the original number of ranks, so a reshard to a different world size cannot locate the right byte ranges.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "text": "Two ranks write to the same shard filename concurrently because the temporary directory is not unique per checkpoint step.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership. -",
+        "text": "A bit flips in the checkpoint file during parallel filesystem transit, and no checksum is stored to catch it.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "The manifest records shard shapes assuming the original number of ranks, so a reshard to a different world size cannot locate the right byte ranges.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "Two ranks write to the same shard filename concurrently because the temporary directory is not unique per checkpoint step.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "text": "Store SHA-256 or CRC32 checksums for every chunk in the manifest and verify hashes during read.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Record shard shapes in the manifest independently of rank count so resharding can recompute byte ranges for any target world size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "text": "Write each rank's shard to a filename that includes both the checkpoint step and a unique rank id.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "text": "Checkpoint loads cleanly, but evaluation loss jumps from 1.8 to 8.4 immediately after restore.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model accuracy degrades when scaling from 8 GPUs to 128 GPUs.",
+        "text": "The checkpoint restores successfully but resharding to a different world size silently returns the wrong shard boundaries.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "text": "Saving a checkpoint takes far longer than expected, though the checkpoint itself is never corrupted.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting Rank 0 write the completion manifest without waiting for a consensus barrier from every other rank.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping checksum verification on checkpoint chunks to save I/O bandwidth during a save.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By resharding a checkpoint to a new world size without recomputing shard boundaries from the original shapes.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a checkpoint that loads without an exception to be bit-for-bit uncorrupted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming every rank finished writing its shard without an explicit completion consensus barrier.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a checksum comparison between the written chunk and the one read back during restore.",
         "is_correct": false
       }
     ],

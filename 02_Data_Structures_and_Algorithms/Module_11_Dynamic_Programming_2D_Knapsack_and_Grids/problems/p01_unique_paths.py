@@ -14,6 +14,12 @@ Example
     unique_paths(3, 7) -> 28
     unique_paths(3, 2) -> 3
 
+Example:
+    >>> unique_paths(3, 7)
+    28
+    >>> unique_paths(3, 2)
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You reach a cell only from above or from the left.

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "LGWR synchronously writes the transaction's redo vectors from the Redo Log Buffer in SGA to the online redo log files on disk before acknowledging the commit.",
+        "text": "RPO: maximum acceptable downtime until service restoration; RTO: maximum acceptable data loss measured in time, the reverse of the standard definitions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Updates write to the database and invalidate (delete) the cached key; subsequent reads experience a cache miss and fetch fresh data.",
+        "text": "RPO and RTO both measure the same thing, downtime, but RPO is expressed in minutes while RTO is expressed as a percentage of uptime (e.g. 99.9%).",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A reader/writer acquires the child lock before releasing the parent lock, ensuring intermediate structural modifications do not corrupt traversal.",
+        "text": "RPO: the total dollar cost of a data loss incident; RTO: the total dollar cost of downtime, both derived financially rather than measured in time.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "text": "Restoring only the most recent full backup and discarding all WAL/binlog segments, since a full backup by itself already represents the most recent consistent point in time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
+        "text": "Replaying WAL/binlog segments alone, without ever restoring a base backup first, since the log is assumed to contain the complete history of every row from table creation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
+        "text": "Taking a new backup at the exact moment recovery is needed, rather than restoring an older backup at all, so PITR only works if the failure is anticipated in advance.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "text": "Expand: drop the old column/table immediately to force all writers onto the new structure; Contract: add the new structure only after traffic has already fully migrated.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+        "text": "Expand and Contract both happen in a single offline maintenance window, since online schema changes are not possible with this pattern.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It guarantees durability across application crashes, and calls fsync during checkpoints, providing an optimal balance of safety and speed.",
+        "text": "Expand: migrate application traffic to the new structure immediately; Contract: add the new column/table afterward once traffic has already moved, keeping both live indefinitely.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A 1NF table violates 2NF when it has a composite primary key (a key made of 2+ columns) and a non-key column depends on only part of that primary key (a partial key dependency).",
+        "text": "To make the migration run faster by skipping the transaction log entirely when statement_timeout is set, trading durability for speed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "text": "To ensure the migration retries indefinitely in a tight loop until it succeeds, since a timeout error is treated as a signal to retry immediately rather than to abort.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It routes read-heavy analytical queries to secondary replicas, reserving the primary replica for transactional writes.",
+        "text": "To guarantee the migration acquires its lock before any other query, by making every other transaction's lock requests wait behind the migration's queued request.",
         "is_correct": false
       }
     ],
@@ -132,12 +132,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"555-0200\"",
+        "text": "\"555-0100\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"555-0201\"",
         "is_correct": false
       },
       {
@@ -192,12 +192,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"555-0300\"",
+        "text": "\"555-0301\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"555-0003\"",
         "is_correct": false
       },
       {
@@ -232,7 +232,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "text": "The ALTER TABLE statement itself completes instantly since adding a nullable column is metadata-only, but a separate backfill UPDATE statement run immediately after holds the row lock that blocks the queue.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "High-frequency operational user profile queries filter on email instead of the collection shard key tenantid, broadcasting every query to all 10 shards.",
+        "text": "lock_timeout was set correctly, but statement_timeout was left at its default of zero (no timeout), so the ALTER TABLE itself runs indefinitely once it does acquire the lock, still queuing traffic behind it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "text": "The migration correctly uses a short lock_timeout and retries on failure, but each retry re-queues at the back of the same lock wait queue behind the same slow query, so the effective wait time is unbounded even though each individual attempt is short.",
         "is_correct": false
       }
     ],

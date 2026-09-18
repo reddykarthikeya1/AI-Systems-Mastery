@@ -16,6 +16,13 @@ Example
     tree [3, 1, 4, None, 2], k = 1 -> 1
     tree [5, 3, 6, 2, 4, None, None, 1], k = 3 -> 3
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> kth_smallest_bst(from_level_order([3, 1, 4, None, 2]), 1)
+    1
+    >>> kth_smallest_bst(from_level_order([5, 3, 6, 2, 4, None, None, 1]), 3)
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A BST's inorder traversal is sorted. So the k-th smallest is the k-th node visited inorder.

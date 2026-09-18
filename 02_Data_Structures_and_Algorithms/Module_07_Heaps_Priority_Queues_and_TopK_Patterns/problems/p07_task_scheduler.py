@@ -16,6 +16,12 @@ Example
     task_scheduler(["A","A","A","B","B","B"], 2) -> 8    (A B _ A B _ A B)
     task_scheduler(["A","A","A","B","B","B"], 0) -> 6
 
+Example:
+    >>> task_scheduler(["A", "A", "A", "B", "B", "B"], 2)
+    8
+    >>> task_scheduler(["A", "A", "A", "B", "B", "B"], 0)
+    6
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A heap simulation works, but there is a closed form. Think about the most frequent task.

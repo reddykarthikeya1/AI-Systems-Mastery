@@ -1,10 +1,12 @@
 import React from 'react';
-import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap, GitFork } from 'lucide-react';
-import { CourseSummary, ProgressPayload } from '../types';
+import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap, GitFork, Cpu } from 'lucide-react';
+import { CourseSummary, ProgressPayload, EngineeringRank } from '../types';
 
 interface HeaderProps {
   progress: ProgressPayload;
   courses: CourseSummary[];
+  rankInfo?: { currentRank: EngineeringRank; nextRank: EngineeringRank | null; progressPercent: number };
+  earnedXp?: number;
   onToggleTheme: () => void;
   onOpenSearch: () => void;
   onNavigateHome: () => void;
@@ -13,12 +15,15 @@ interface HeaderProps {
   onOpenFlashcards?: () => void;
   onOpenPortfolio?: () => void;
   onOpenPrereqMap?: () => void;
+  onOpenHardwareTopology?: () => void;
   onToggleSound?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   progress,
   courses,
+  rankInfo,
+  earnedXp,
   onToggleTheme,
   onOpenSearch,
   onNavigateHome,
@@ -27,11 +32,12 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenFlashcards,
   onOpenPortfolio,
   onOpenPrereqMap,
+  onOpenHardwareTopology,
   onToggleSound,
 }) => {
   const isDark = progress.theme === 'dark';
   const totalCompleted = progress.completed_lessons.length;
-  const streakDays = progress.study_streak_days || 1;
+  const streakDays = progress.study_streak_days || 0;
   const bookmarkCount = progress.bookmarks?.length || 0;
 
   return (
@@ -81,9 +87,13 @@ export const Header: React.FC<HeaderProps> = ({
             <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-xs font-mono transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/40" onClick={onOpenStats}
               
               title="Daily Study Streak & Analytics"
-              aria-label={`Daily Study Streak: ${streakDays} days`} >
+              aria-label={streakDays > 0
+                ? `Daily study streak: ${streakDays} days`
+                : 'No study streak yet. Complete a lesson to start one.'} >
               <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse" />
-              <span className="font-semibold">{streakDays}d Streak</span>
+              <span className="font-semibold">
+                {streakDays > 0 ? `${streakDays}d Streak` : 'Start streak'}
+              </span>
             </button>
           )}
 
@@ -118,6 +128,28 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
+          {/* Engineering Rank & XP Pill */}
+          {rankInfo && (
+            <div 
+              className="hidden xl:flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-border text-xs font-mono"
+              title={`${rankInfo.currentRank.title} (${earnedXp || 0} XP) - ${rankInfo.progressPercent}% to ${rankInfo.nextRank?.title || 'Max Level'}`}
+            >
+              <span className="text-sm">{rankInfo.currentRank.badge}</span>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">Lvl {rankInfo.currentRank.level}</span>
+                  <span className="text-zinc-500 font-normal truncate max-w-[120px]">{rankInfo.currentRank.title}</span>
+                </div>
+                <div className="w-20 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden mt-1">
+                  <div 
+                    className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"
+                    style={{ width: `${rankInfo.progressPercent}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Flashcards SRS Button */}
           {onOpenFlashcards && (
             <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-xs font-mono transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/40" onClick={onOpenFlashcards}
@@ -126,6 +158,16 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Spaced repetition flashcards deck" >
               <Layers className="w-3.5 h-3.5 text-amber-500" />
               <span>Flashcards</span>
+            </button>
+          )}
+
+          {/* AI Systems Hardware Topology Explorer */}
+          {onOpenHardwareTopology && (
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200/80 dark:border-cyan-800/60 text-cyan-700 dark:text-cyan-300 text-xs font-mono transition-colors hover:bg-cyan-100 dark:hover:bg-cyan-900/40" onClick={onOpenHardwareTopology}
+              title="AI Systems Hardware & Memory Hierarchy"
+              aria-label="Hardware topology and memory hierarchy" >
+              <Cpu className="w-3.5 h-3.5 text-cyan-500" />
+              <span>Hardware</span>
             </button>
           )}
 

@@ -37,7 +37,7 @@ relocated from Ohio to Texas in June.
 $130 of revenue earned in March and April — while `C1` was demonstrably in Ohio —
 is now reported as Texas revenue.
 
-**Why this one is dangerous:** the first load was correct. The defect is dormant
+**Why this one is dangerous:** the first load was correct. It stays dormant
 until a partition is reprocessed, which is an ordinary weekly operation. So it
 ships, passes review, produces correct numbers for months, and then silently
 rewrites history the first time someone backfills.

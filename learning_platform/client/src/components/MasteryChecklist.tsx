@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { CheckSquare, Square, Award } from 'lucide-react';
+import { CheckSquare, Square, Award, ArrowRight, Compass, Sparkles } from 'lucide-react';
+import { fireConfettiBurst } from '../services/confetti';
 
 interface MasteryChecklistProps {
   lessonId: string;
   content: string;
+  nextModuleTitle?: string;
+  onNextModule?: () => void;
+  onOpenCapstoneBridge?: () => void;
 }
 
-export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, content }) => {
+export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({
+  lessonId,
+  content,
+  nextModuleTitle,
+  onNextModule,
+  onOpenCapstoneBridge,
+}) => {
   // Extract mastery checklist items
   const items = useMemo(() => {
     if (!content) return [];
@@ -27,7 +37,6 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
       }
 
       if (inMasterySection && trimmed.startsWith('## ')) {
-        // Next major section reached
         break;
       }
 
@@ -70,11 +79,16 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
     } catch {
       // ignore
     }
+
+    if (items.length > 0 && updated.length === items.length && checkedIndices.length < items.length) {
+      fireConfettiBurst('grand');
+    }
   };
 
   if (items.length === 0) return null;
 
   const percent = Math.round((checkedIndices.length / items.length) * 100);
+  const isAllChecked = items.length > 0 && checkedIndices.length === items.length;
 
   return (
     <div className="mt-10 p-6 rounded-2xl bg-zinc-50/90 dark:bg-zinc-900/50 border border-border shadow-xs space-y-4">
@@ -96,11 +110,11 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
         <div className="flex items-center gap-2">
           <div className="w-24 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
             <div
-              className="h-full bg-blue-500 transition-all duration-300"
+              className={`h-full transition-all duration-300 ${isAllChecked ? 'bg-emerald-500' : 'bg-blue-500'}`}
               style={{ width: `${percent}%` }}
             />
           </div>
-          <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+          <span className={`text-xs font-mono font-bold ${isAllChecked ? 'text-emerald-500' : 'text-blue-600 dark:text-blue-400'}`}>
             {checkedIndices.length}/{items.length} ({percent}%)
           </span>
         </div>
@@ -117,7 +131,7 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
               }`} key={idx}
               onClick={() => toggleIndex(idx)} >
               <div className="mt-0.5 shrink-0 text-blue-500">
-                {isChecked ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 text-zinc-400" />}
+                {isChecked ? <CheckSquare className="w-4 h-4 text-emerald-500" /> : <Square className="w-4 h-4 text-zinc-400" />}
               </div>
               <span className={isChecked ? 'line-through opacity-80' : ''}>
                 {item}
@@ -126,6 +140,44 @@ export const MasteryChecklist: React.FC<MasteryChecklistProps> = ({ lessonId, co
           );
         })}
       </div>
+
+      {/* Completion Banner & Next Action Card */}
+      {isAllChecked && (
+        <div className="pt-3 border-t border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-950/20 p-4 rounded-xl border border-emerald-500/30">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div>
+              <span className="text-xs font-bold text-emerald-400 block">
+                Module Competencies 100% Verified!
+              </span>
+              <span className="text-[11px] text-zinc-400">
+                You have satisfied the mathematical and architectural foundations of this module.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {onOpenCapstoneBridge && (
+              <button
+                onClick={onOpenCapstoneBridge}
+                className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium flex items-center gap-1.5 transition-colors"
+              >
+                <Compass className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Capstone Bridge</span>
+              </button>
+            )}
+            {onNextModule && (
+              <button
+                onClick={onNextModule}
+                className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md transition-colors"
+              >
+                <span>{nextModuleTitle ? `Next: ${nextModuleTitle}` : 'Next Module'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query with metadata filter {\"category\": \"legal\"} returns only 1 result, even though 10,000 legal documents exist in the database.",
+        "text": "Compute the needle's insertion index as depth_percent * len(haystack) measured from the start of the document, instead of subtracting from the end.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "text": "Increase the compression ratio's frequency threshold so only words appearing in more than 95% of the corpus get pruned.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Missing entity resolution / coreference deduplication during graph ingestion.",
+        "text": "Run the compressed context through a second summarization pass to catch any meaning that was lost in the first pass.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "text": "A needle requested at a shallow 10% depth is measured landing at roughly 90% depth, flipping the entire accuracy-vs-depth chart left to right.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "The compressed context is shorter than the configured token budget, but retrieval latency increases anyway.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "text": "The model correctly cites the source policy clause but assigns it the wrong document ID in its citation.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts.",
+        "text": "insert_needle_at_depth() subtracts the depth-scaled offset from the end of the haystack instead of measuring it from the start, inverting every requested depth.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "text": "The context compressor scores sentences by TF-IDF and discards every sentence below the median score, regardless of whether it contains a negation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "text": "Context windows are truncated to the model's max length by removing tokens from the middle of the prompt rather than the least relevant ones.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Pruning any token whose corpus frequency exceeds a fixed threshold, without checking whether that token is a negation or other semantic modulator.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Measuring a NIAH needle's insertion depth from the end of the document instead of the start, so shallow and deep placements get swapped.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Compressing context by length alone, trusting that shorter always preserves the meaning that matters for the query.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Pruning any token whose corpus frequency exceeds a fixed threshold, without checking whether that token is a negation or other semantic modulator.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Measuring a NIAH needle's insertion depth from the end of the document instead of the start, so shallow and deep placements get swapped.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Compressing context by length alone, trusting that shorter always preserves the meaning that matters for the query.",
         "is_correct": false
       }
     ],

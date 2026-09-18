@@ -16,6 +16,12 @@ Example
     min_meeting_rooms([(0, 30), (5, 10), (15, 20)]) -> 2
     min_meeting_rooms([(7, 10), (2, 4)])            -> 1
 
+Example:
+    >>> min_meeting_rooms([(0, 30), (5, 10), (15, 20)])
+    2
+    >>> min_meeting_rooms([(7, 10), (2, 4)])
+    1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Process meetings in order of start time - so sort first.

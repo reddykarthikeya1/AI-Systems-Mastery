@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_lora_weight_merge import lora_weight_merge
-except ImportError:
-    from p01_lora_weight_merge import lora_weight_merge
+from p01_lora_weight_merge import lora_weight_merge
 
 
 def test_lora_weight_merge():

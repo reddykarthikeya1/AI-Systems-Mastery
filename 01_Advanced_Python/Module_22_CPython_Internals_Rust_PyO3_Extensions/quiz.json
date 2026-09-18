@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Browsers block web apps from fetching data from external domains unless the API server explicitly sends Access-Control-Allow-Origin headers.",
+        "text": "- ob_size: The exact byte length of the object's docstring. - ob_hash: A precomputed hash computed once at allocation and reused for all future comparisons, even on mutable objects.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It monitors file size (maxBytes) and automatically closes, renames, and archives older logs up to a fixed count (backupCount), deleting the oldest backup to keep total disk usage strictly bounded.",
+        "text": "- ob_gc_head: A pointer used only by strings and bytes objects. - ob_weakref: A mandatory pointer to a weak reference list present on every heap object without exception.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
+        "text": "- ob_module: A pointer back to the module the object's class was defined in. - ob_dict: A pointer to a per-object dict of instance attributes, present even on int and str objects.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "BM25 excels at exact keyword and SKU matching, while Vector Search excels at conceptual paraphrasing; combining both catches both exact and semantic matches.",
+        "text": "It parses the .dll or .so file as plain Python bytecode and executes it inside the interpreter, exactly like importing a .pyc file compiled for the current platform.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every instance of the parent class will share and overwrite the exact same single variable, creating a critical state contamination bug.",
+        "text": "It spawns the shared library as a separate OS process and communicates with it exclusively over a local socket, never mapping any of its code into the Python process's own memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It moves filter conditions (WHERE price > 100) as early as possible in the query pipeline, discarding irrelevant rows at the file scanner level before loading them into memory.",
+        "text": "It copies the entire shared library's source code into a temporary .py file at import time and re-interprets it using Python's own bytecode compiler.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+        "text": "Rust's main advantage is that it compiles roughly twice as fast as C, which shortens the extension's CI build time but provides no additional runtime memory-safety guarantees over C.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "uv and ruff are written in Rust and compiled to native machine code. They utilize multi-threaded file parsing, direct AST memory representations, global package caching with copy-on-write/reflinks, and zero-copy data structures, avoiding Py",
+        "text": "Rust extensions run inside a separate sandboxed process from the main Python interpreter by default, so any memory corruption in the extension cannot crash the host process, unlike C extensions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It defines multi-container applications (API + PostgreSQL + Redis + Prometheus) in a single declarative YAML file, configuring shared internal networks and storage volumes.",
+        "text": "Rust automatically inserts garbage collection into every compiled extension, removing the need for manual reference counting that C extensions must implement by hand.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Uvicorn is a lightning-fast ASGI web server implementation that binds to OS network sockets and passes incoming HTTP packets to FastAPI's ASGI application.",
+        "text": "- PyO3: A build tool and wheel packager for Rust-based Python extensions. - Maturin: A Rust crate providing macros to bind Rust types to Python -- the two tools' roles are swapped.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "text": "- PyO3: A pure-Python linter that checks Rust FFI declarations for type mismatches. - Maturin: A runtime interpreter that executes Rust bytecode inside the CPython VM.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The exp claim (UNIX timestamp). When expired, jwt.decode() raises jwt.ExpiredSignatureError and rejects the request.",
+        "text": "PyO3 and Maturin are two names for the same tool; Maturin was simply renamed to PyO3 starting with Rust extension tooling version 2.0.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "0x0000000000000000",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "0xCBF29CE484222326",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "5.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "pytest.approx(10.0)",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "py.variance",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "pytest.approx(py.variance * 2)",
         "is_correct": false
       }
     ],
@@ -227,12 +227,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "10",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Without shared Pydantic validation schemas across producer (FastAPI route) and consumer (Background worker), field renames cause silent task failures in distributed systems.",
+        "text": "PyO3 automatically releases the GIL for any function call longer than 100ms; the freezing instead means the native loop is stuck in an actual infinite loop unrelated to the GIL.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "text": "py.allow_threads only affects I/O-bound Rust code; CPU-bound native loops are required to hold the GIL at all times and cannot be freed from it under any circumstances.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Closures in Python look up the variable i in the enclosing scope when called, not when created. At the end of the loop, i == 2, so every lambda evaluates x 2.",
+        "text": "The GUI, heartbeat, and network threads are frozen because they were spawned with threading.Thread(daemon=True), and daemon threads in CPython are paused whenever any native extension function is executing, GIL or not.",
         "is_correct": false
       }
     ],

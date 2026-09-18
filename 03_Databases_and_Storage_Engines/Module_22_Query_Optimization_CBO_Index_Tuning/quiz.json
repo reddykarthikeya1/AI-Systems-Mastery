@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Async commits on primary without waiting; semi-sync waits for at least one replica to acknowledge receiving the binlog event into its relay log.",
+        "text": "It rewrites every query into an equivalent but always faster form using a fixed set of heuristic transformation rules, without estimating any cost at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A fencing mechanism that forcefully powers off or isolates a failed primary node to guarantee it cannot write during failover.",
+        "text": "It executes the query once using the simplest possible plan, measures the actual elapsed time, and only considers alternative plans if that first run exceeds a timeout.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
+        "text": "It selects the join order that minimizes the number of distinct tables touched, regardless of the estimated size of intermediate results.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
+        "text": "It evaluates every possible join order exhaustively without any pruning, relying purely on the exponential search space being small enough in practice for typical queries.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It sorts data by primary key, writes immutable sorted column parts, and merges them asynchronously in the background.",
+        "text": "It always joins tables in the order they appear in the FROM clause, and 'dynamic programming' refers only to caching the result of the final join for reuse by later queries.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+        "text": "It builds the join plan top-down, starting from the full n-way join and greedily removing the most expensive table at each step until only two tables remain.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Metadata storing minimum and maximum values per column chunk, allowing the query engine to bypass non-matching blocks immediately.",
+        "text": "Nested Loop Join builds a hash table on the smaller relation; Hash Join scans the inner relation once per outer row; Sort-Merge Join requires an index on both join columns to work at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
+        "text": "All three join algorithms have identical average-case time complexity; the choice between them only affects how much memory is used, never how long the join takes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Using ConditionExpression = 'attributenotexists(PK)' or checking version numbers before applying mutations.",
+        "text": "Sort-Merge Join builds a hash table on the larger relation and probes with the smaller one, while Hash Join sorts both relations before merging them linearly.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "text": "A cache of the exact result set for the most frequently run queries, replayed directly instead of re-estimating selectivity each time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "text": "A list of every distinct value in a column along with its exact row count, rebuilt synchronously on every INSERT, UPDATE, or DELETE to the table.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It automatically detects cycles in its wait-for graph and rolls back the transaction with the fewest undo log records (least expensive to undo).",
+        "text": "A single global histogram shared across all columns in a table, rather than one histogram per column, used only to estimate the table's total row count.",
         "is_correct": false
       }
     ],
@@ -142,7 +142,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{101}",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{101, 102, 103}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{}",
         "is_correct": false
       }
     ],
@@ -222,7 +222,7 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       },
       {
@@ -232,7 +232,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "RETURNING requires DuckDB \u2265 0.8. On older versions the statement parses but yields no row.",
+        "text": "The index on created_at is a hash index rather than a B-Tree, and hash indexes never support range or equality-on-function predicates of any kind.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "The query does use a sargable range filter already, but statistics on created_at are stale, so the optimizer underestimates the row count and chooses a sequential scan anyway.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "created_at is indexed, but the WHERE clause compares it to a string literal instead of a properly typed date, forcing an implicit cast that happens to be sargable but evaluates slowly.",
         "is_correct": false
       }
     ],

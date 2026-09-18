@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_skip_list_probabilistic_index import skip_list_probabilistic_index
-except ImportError:
-    from p01_skip_list_probabilistic_index import skip_list_probabilistic_index
+from p01_skip_list_probabilistic_index import skip_list_probabilistic_index
 
 
 def test_skip_list_probabilistic_index():

@@ -19,6 +19,12 @@ Read the previous problem again, then read this one. They look like the same
 shape, and a sliding window is **wrong** here. Work out why before you start —
 that reasoning is the point of this problem.
 
+Example:
+    >>> subarray_sum_k([1, 1, 1], 2)
+    2
+    >>> subarray_sum_k([1, 2, 3], 3)
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A sliding window needs validity to be monotone in the window's width. With negative numbers, growing the window can make the sum smaller, so there is no direction to shrink in. The window approach has no valid move.

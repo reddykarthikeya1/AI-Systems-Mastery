@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_cosine_similarity_matrix import cosine_similarity_matrix
-except ImportError:
-    from p01_cosine_similarity_matrix import cosine_similarity_matrix
+from p01_cosine_similarity_matrix import cosine_similarity_matrix
 
 
 def test_cosine_similarity_matrix():

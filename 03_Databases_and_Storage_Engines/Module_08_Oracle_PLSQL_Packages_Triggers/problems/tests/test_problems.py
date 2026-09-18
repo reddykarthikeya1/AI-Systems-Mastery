@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_deterministic_audit_trigger import deterministic_audit_trigger
-except ImportError:
-    from p01_deterministic_audit_trigger import deterministic_audit_trigger
+from p01_deterministic_audit_trigger import deterministic_audit_trigger
 
 
 def test_deterministic_audit_trigger():

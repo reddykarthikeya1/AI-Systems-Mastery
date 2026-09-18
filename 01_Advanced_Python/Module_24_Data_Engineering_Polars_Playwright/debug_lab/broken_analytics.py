@@ -13,7 +13,6 @@ def process_scraped_market_data():
     df = pl.DataFrame(raw)
     print(f"Polars inferred price schema: {df.schema['price']}")
     try:
-        # Fails because price was inferred as String, not Float!
         mean_price = df.select(pl.col("price").mean())
     except Exception as err:
         print(f"Mean computation failed on inferred string column: {err}")

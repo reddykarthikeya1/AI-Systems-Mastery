@@ -13,6 +13,10 @@ Example
     generate_parentheses(3)
     -> ["((()))", "(()())", "(())()", "()(())", "()()()"]
 
+Example:
+    >>> generate_parentheses(3)
+    ['((()))', '(()())', '(())()', '()(())', '()()()']
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Generating all 2^(2n) strings and filtering works but wastes almost all of the work.

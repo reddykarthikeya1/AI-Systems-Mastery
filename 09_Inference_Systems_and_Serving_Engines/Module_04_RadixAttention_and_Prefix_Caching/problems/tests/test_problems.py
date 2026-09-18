@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_radix_tree_prefix_matcher import radix_tree_prefix_matcher
-except ImportError:
-    from p01_radix_tree_prefix_matcher import radix_tree_prefix_matcher
+from p01_radix_tree_prefix_matcher import radix_tree_prefix_matcher
 
 
 def test_radix_tree_prefix_matcher():

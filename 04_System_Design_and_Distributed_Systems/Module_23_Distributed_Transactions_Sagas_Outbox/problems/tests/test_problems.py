@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_orchestrated_saga_coordinator import orchestrated_saga_coordinator
-except ImportError:
-    from p01_orchestrated_saga_coordinator import orchestrated_saga_coordinator
+from p01_orchestrated_saga_coordinator import orchestrated_saga_coordinator
 
 
 def test_orchestrated_saga_coordinator():

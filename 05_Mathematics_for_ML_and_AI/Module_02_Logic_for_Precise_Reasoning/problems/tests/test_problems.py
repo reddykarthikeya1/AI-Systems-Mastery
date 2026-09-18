@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_boolean_satisfiability_dpll import boolean_satisfiability_dpll
-except ImportError:
-    from p01_boolean_satisfiability_dpll import boolean_satisfiability_dpll
+from p01_boolean_satisfiability_dpll import boolean_satisfiability_dpll
 
 
 def test_boolean_satisfiability_dpll():

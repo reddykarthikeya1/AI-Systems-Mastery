@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Dynamic websites generate infinite valid URLs. Without URL normalization, path depth limits, and trap detection, crawlers get trapped. ---",
+        "text": "Consumer offsets were committed asynchronously before message processing finished, so a crash could cause the same message to be reprocessed out of order after restart.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "The producer used a random partitioner instead of keying by entity ID, so events for the same entity landed on different partitions with no ordering guarantee between them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Cache-aside without request coalescing allows all concurrent callers to experience a cache miss at the exact same millisecond and hammer the backend. ---",
+        "text": "The broker's replication factor was set to 1, so a leader failover briefly served stale reads until the new leader caught up.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the number of consumer threads per partition, so more workers can pull from the same partition in parallel.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By committing offsets immediately on message receipt, before the message has actually finished processing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting the producer choose a random partition per message, so load is spread evenly regardless of message key.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more broker nodes to absorb throughput, without validating that partition count and consumer count stay properly aligned.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed consume from the last committed offset, without checking whether that offset was committed before or after the message was actually processed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By replicating every partition to every broker, without checking whether in-order delivery within a partition is otherwise preserved.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the number of consumer threads per partition, so more workers can pull from the same partition in parallel.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By committing offsets immediately on message receipt, before the message has actually finished processing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting the producer choose a random partition per message, so load is spread evenly regardless of message key.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_run_length_encoding_decompress import run_length_encoding_decompress
-except ImportError:
-    from p01_run_length_encoding_decompress import run_length_encoding_decompress
+from p01_run_length_encoding_decompress import run_length_encoding_decompress
 
 
 def test_run_length_encoding_decompress():

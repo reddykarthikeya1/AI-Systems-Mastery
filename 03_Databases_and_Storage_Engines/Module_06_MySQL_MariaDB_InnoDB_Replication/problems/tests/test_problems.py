@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_binlog_gtid_reconciliation import binlog_gtid_reconciliation
-except ImportError:
-    from p01_binlog_gtid_reconciliation import binlog_gtid_reconciliation
+from p01_binlog_gtid_reconciliation import binlog_gtid_reconciliation
 
 
 def test_binlog_gtid_reconciliation():

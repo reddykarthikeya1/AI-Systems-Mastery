@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 Determine number of 128-byte cache lines needed to serve warp memory transaction addresses.
 
+Example:
+    >>> memory_coalescing_detector([0, 4, 8, 200, 260], 128)
+    3
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: What matters isn't the raw addresses but which aligned segment
+        each one lands in — the number of distinct segments touched is the
+        number of memory transactions the warp must issue.
+    Hint 2: Integer-divide each address by `cache_line_bytes` to get its
+        segment id, then count how many distinct segment ids appear (a
+        `set` comprehension is the natural fit).
+    Hint 3: Order and duplicate addresses don't matter, only distinctness.
+        A fully contiguous run of addresses within one 128-byte window
+        collapses to a single segment, while a stride equal to
+        `cache_line_bytes` puts every thread in its own segment — the
+        worst case the tests check for.
 """
 
 from __future__ import annotations

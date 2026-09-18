@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_tensor_broadcast_strides import tensor_broadcast_strides
-except ImportError:
-    from p01_tensor_broadcast_strides import tensor_broadcast_strides
+from p01_tensor_broadcast_strides import tensor_broadcast_strides
 
 
 def test_tensor_broadcast_strides():

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_debt_simplification_graph import debt_simplification_graph
-except ImportError:
-    from p01_debt_simplification_graph import debt_simplification_graph
+from p01_debt_simplification_graph import debt_simplification_graph
 
 
 def test_debt_simplification_graph():

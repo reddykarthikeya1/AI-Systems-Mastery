@@ -17,6 +17,10 @@ Constraints
 Example
     network_delay(4, [(2,1,1),(2,3,1),(3,4,1)], 2) -> 2
 
+Example:
+    >>> network_delay(4, [(2, 1, 1), (2, 3, 1), (3, 4, 1)], 2)
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The time for all nodes to receive it is the MAXIMUM of the shortest distances - not the sum.

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bidirectional_graph_expansion import bidirectional_graph_expansion
-except ImportError:
-    from p01_bidirectional_graph_expansion import bidirectional_graph_expansion
+from p01_bidirectional_graph_expansion import bidirectional_graph_expansion
 
 
 def test_bidirectional_graph_expansion():

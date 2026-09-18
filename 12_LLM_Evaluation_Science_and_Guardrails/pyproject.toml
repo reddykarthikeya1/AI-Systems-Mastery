@@ -8,5 +8,13 @@ dependencies = [
     "hypothesis>=6.100.0"
 ]
 
+
+[project.optional-dependencies]
+# Used only by tools/check_notebooks.py, not by the course material.
+notebook = [
+    "nbclient>=0.9",
+    "nbformat>=5.9",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["."]

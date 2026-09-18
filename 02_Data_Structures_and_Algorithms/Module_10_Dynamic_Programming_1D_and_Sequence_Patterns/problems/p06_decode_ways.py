@@ -16,6 +16,14 @@ Example
     decode_ways("226")  -> 3      ("BZ", "VF", "BBF")
     decode_ways("06")   -> 0
 
+Example:
+    >>> decode_ways("12")
+    2
+    >>> decode_ways("226")
+    3
+    >>> decode_ways("06")
+    0
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Very similar to climbing stairs, but with validity conditions on each step.

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_base62_url_encoder import base62_url_encoder
-except ImportError:
-    from p01_base62_url_encoder import base62_url_encoder
+from p01_base62_url_encoder import base62_url_encoder
 
 
 def test_base62_url_encoder():

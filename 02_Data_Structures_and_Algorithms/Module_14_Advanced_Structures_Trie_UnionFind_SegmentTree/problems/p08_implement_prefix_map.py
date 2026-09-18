@@ -18,6 +18,11 @@ Example
     ops = [("insert","apple",3), ("sum","ap",0), ("insert","app",2), ("sum","ap",0)]
     -> [3, 5]
 
+Example:
+    >>> ops = [("insert", "apple", 3), ("sum", "ap", 0), ("insert", "app", 2), ("sum", "ap", 0)]
+    >>> simulate_prefix_map(ops)
+    [3, 5]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Storing the total at each trie node makes `sum` an O(len(prefix)) walk with no subtree traversal at all.

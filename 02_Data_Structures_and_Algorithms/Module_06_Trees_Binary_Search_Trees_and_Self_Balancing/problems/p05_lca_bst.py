@@ -16,6 +16,13 @@ Example
     tree [6,2,8,0,4,7,9], p=2, q=8 -> node 6
     tree [6,2,8,0,4,7,9], p=2, q=4 -> node 2
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> lca_bst(from_level_order([6, 2, 8, 0, 4, 7, 9]), 2, 8).val
+    6
+    >>> lca_bst(from_level_order([6, 2, 8, 0, 4, 7, 9]), 2, 4).val
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: In a general binary tree this needs a full search. A BST gives you far more: the ordering tells you which way to go.

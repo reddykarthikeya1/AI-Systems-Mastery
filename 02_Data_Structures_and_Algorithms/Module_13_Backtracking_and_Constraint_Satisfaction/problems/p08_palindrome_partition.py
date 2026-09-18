@@ -13,6 +13,10 @@ Constraints
 Example
     palindrome_partition("aab") -> [["a", "a", "b"], ["aa", "b"]]
 
+Example:
+    >>> palindrome_partition("aab")
+    [['a', 'a', 'b'], ['aa', 'b']]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: At each position, try every prefix of the remaining string.

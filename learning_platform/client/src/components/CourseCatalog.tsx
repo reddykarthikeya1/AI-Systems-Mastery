@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { BookOpen, Clock, ArrowRight, Play, CheckCircle2, Flame, Bookmark, Sparkles, Compass } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 import { soundService } from '../services/sound';
+import { WelcomeGuide } from './WelcomeGuide';
 import { renderMarkdownWithMath } from '../services/markdown';
 
 interface CourseCatalogProps {
   courses: CourseSummary[];
   progress: ProgressPayload;
   onSelectCourse: (courseId: string) => void;
+  onStartHere?: () => void;
+  welcomeDismissed?: boolean;
+  onDismissWelcome?: () => void;
   onResumeLastPosition?: () => void;
   onOpenFlashcards?: () => void;
   onOpenPortfolio?: () => void;
@@ -17,6 +21,9 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   courses,
   progress,
   onSelectCourse,
+  onStartHere,
+  welcomeDismissed,
+  onDismissWelcome,
   onResumeLastPosition,
   onOpenFlashcards,
   onOpenPortfolio,
@@ -44,11 +51,12 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
 
   // Compute Spaced Repetition (SRS) cards due today
   const dueCardsCount = React.useMemo(() => {
-    const customCards = progress.srs_custom_cards || [];
-    const totalCardIds = [
-      ...customCards.map((c) => c.id),
-      ...Array.from({ length: 22 }, (_, i) => `srs-${(i + 1).toString().padStart(2, '0')}`),
-    ];
+    // Cards the learner has actually met: ones generated from their own
+    // wrong answers, plus seed cards they have already reviewed once. The
+    // untouched seed deck is not "due" - nothing has been forgotten yet.
+    const customIds = (progress.srs_custom_cards || []).map((c) => c.id);
+    const reviewedIds = Object.keys(progress.srs_card_reviews || {});
+    const totalCardIds = Array.from(new Set([...customIds, ...reviewedIds]));
     return totalCardIds.filter((id) => {
       const rev = progress.srs_card_reviews?.[id];
       return !rev || rev.next_review_epoch <= Date.now();
@@ -70,7 +78,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           <div className="text-xs font-mono text-fg-muted space-x-2">
             <span>{totalCurriculumWords > 0 ? `~${Math.round(totalCurriculumWords / 1000)}k WORDS` : '1,018k WORDS'}</span>
             <span className="text-zinc-300 dark:text-zinc-700">/</span>
-            <span>{totalCurriculumLabs > 0 ? `${totalCurriculumLabs} BUG LABS` : '171 BUG LABS'}</span>
+            <span>{`${totalCurriculumLabs} BUG LABS`}</span>
             <span className="text-zinc-300 dark:text-zinc-700">/</span>
             <span>1,609 VERIFIED TESTS</span>
           </div>
@@ -95,10 +103,23 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
             {currentCourse && (
               <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-5 py-2.5 rounded-lg font-medium text-xs bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-2 shadow-sm" onClick={() => {
                   soundService.playClick();
-                  onSelectCourse(currentCourse.id);
-                }} >
+                  // Land on the lesson that was open, not on a syllabus the
+                  // learner then has to re-navigate.
+                  if (lastPos && onResumeLastPosition) {
+                    onResumeLastPosition();
+                  } else {
+                    onSelectCourse(currentCourse.id);
+                  }
+                }}
+                title={lastPos?.lesson_title ? `Resume: ${lastPos.lesson_title}` : undefined} >
                 <Play className="w-3.5 h-3.5 fill-current" />
-                Resume Curriculum ({currentCourse.title.split(' ')[0]})
+                {totalLessonsDone === 0 && !lastPos
+                  ? 'Start the first lesson'
+                  : lastPos?.lesson_title
+                    ? `Resume: ${lastPos.lesson_title.length > 34
+                        ? `${lastPos.lesson_title.slice(0, 34)}…`
+                        : lastPos.lesson_title}`
+                    : `Resume ${currentCourse.title.split(' ')[0]}`}
               </button>
             )}
 
@@ -138,6 +159,10 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           </div>
         </div>
       </div>
+
+      {totalLessonsDone === 0 && !welcomeDismissed && onStartHere && onDismissWelcome && (
+        <WelcomeGuide onStartHere={onStartHere} onDismiss={onDismissWelcome} />
+      )}
 
       {/* Spaced Repetition Due Today Hero Card */}
       {onOpenFlashcards && dueCardsCount > 0 && (

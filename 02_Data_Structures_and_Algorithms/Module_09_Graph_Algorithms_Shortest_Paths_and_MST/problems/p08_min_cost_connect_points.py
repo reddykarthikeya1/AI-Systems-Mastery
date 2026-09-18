@@ -14,6 +14,10 @@ Constraints
 Example
     min_cost_connect_points([(0,0),(2,2),(3,10),(5,2),(7,0)]) -> 20
 
+Example:
+    >>> min_cost_connect_points([(0, 0), (2, 2), (3, 10), (5, 2), (7, 0)])
+    20
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: 'Connect everything at minimum total cost' is a minimum spanning tree.

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_gradient_descent_backtracking import gradient_descent_backtracking
-except ImportError:
-    from p01_gradient_descent_backtracking import gradient_descent_backtracking
+from p01_gradient_descent_backtracking import gradient_descent_backtracking
 
 
 def test_gradient_descent_backtracking():

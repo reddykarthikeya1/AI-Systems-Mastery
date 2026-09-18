@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_zero_memory_partitioning import zero_memory_partitioning
-except ImportError:
-    from p01_zero_memory_partitioning import zero_memory_partitioning
+from p01_zero_memory_partitioning import zero_memory_partitioning
 
 
 def test_zero_memory_partitioning():

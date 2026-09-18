@@ -13,7 +13,6 @@ def get_item(item_id: str):
 
 @app.get("/items/special")
 def get_special_item():
-    # Never reached! Matched by /items/{item_id} with item_id='special'
     return {"item_id": "special", "type": "special_offer"}
 
 @app.get("/slow-calc")

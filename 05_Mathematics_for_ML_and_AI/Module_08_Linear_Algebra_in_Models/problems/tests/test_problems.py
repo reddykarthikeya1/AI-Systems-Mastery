@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_ridge_regression_closed_form import ridge_regression_closed_form
-except ImportError:
-    from p01_ridge_regression_closed_form import ridge_regression_closed_form
+from p01_ridge_regression_closed_form import ridge_regression_closed_form
 
 
 def test_ridge_regression_closed_form():

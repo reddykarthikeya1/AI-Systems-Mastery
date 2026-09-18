@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[1]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[[1], []]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[[1, 1]]",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "None",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "Raises AttributeError: 'NoneType' object has no attribute 'val'",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[None]",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 2",
+        "text": "The height function returns the height of the left subtree only, so the right subtree's contribution to the balance check never enters the comparison at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "The recursion recomputes height correctly at every node, but the tolerance check uses < 1 instead of <= 1, so trees whose subtree heights differ by exactly one are wrongly rejected as unbalanced.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The back eviction keeps the deque decreasing, which is necessary but not sufficient. Without the front eviction, the largest value ever seen stays at the front forever, so once the true maximum slides out of the window the function keeps re",
+        "text": "is_balanced checks the root and its immediate children, but never recurses past the second level, so a skew that only appears three or more levels down is invisible to the check.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "text": "The queue is a stack in disguise: nodes are pushed and popped from the same end, so nodes within a level come out in reverse order while the level groupings themselves stay correct.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "text": "level_size is computed after the children of the current level have already been enqueued, so each level's node count includes nodes that actually belong to the next level.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "text": "The BFS never enqueues right children, so every level is missing exactly the right half of the tree, though the shape of the output list is otherwise correct.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "text": "The recursion adds 1 for both the left and right branches at every node instead of taking the max of the two, so the total is closer to a node count than a height.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Accessing .next or .left without checking if node is None.",
+        "text": "A leaf node's depth is computed correctly, but the function adds 1 twice before returning at the very top of the recursion, so only the root's reported depth is affected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "text": "max_depth calls len() on a flattened list of the tree's nodes instead of recursing, so the number reported is the total node count, not the height.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A Bloom filter's contract is one-sided: it may say \"maybe present\" for an item that is absent, but never \"absent\" for one that was inserted. any does not break that guarantee \u2014 an inserted item still has all its bits set, so at least one of",
+        "text": "The comparison operators are reversed, so the function checks that left children are greater and right children are smaller, which happens to still accept some genuinely invalid trees.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "text": "The traversal does an inorder walk and checks that each visited value is non-decreasing, but it compares each node to its position in the traversal instead of to the previous value, so the check is vacuously true.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a part",
+        "text": "The recursion passes the same (low, high) bounds unchanged to both the left and right subtrees instead of tightening them, so a value valid anywhere in the tree is accepted everywhere in it.",
         "is_correct": false
       }
     ],

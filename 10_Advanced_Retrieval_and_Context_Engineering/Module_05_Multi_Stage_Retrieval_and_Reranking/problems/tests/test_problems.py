@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_cross_encoder_rerank_sort import cross_encoder_rerank_sort
-except ImportError:
-    from p01_cross_encoder_rerank_sort import cross_encoder_rerank_sort
+from p01_cross_encoder_rerank_sort import cross_encoder_rerank_sort
 
 
 def test_cross_encoder_rerank_sort():

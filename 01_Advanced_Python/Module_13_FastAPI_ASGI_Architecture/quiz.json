@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- return terminates the function, destroys its local stack frame, and returns a final value. - yield produces a value, pauses the function, and preserves its entire execution state (variables, instruction pointer) so it can resume on the ne",
+        "text": "WSGI and ASGI are functionally identical specifications; ASGI is simply the version-2 label Django adopted once it added type hints to its view functions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+        "text": "WSGI natively supports async def views and WebSockets, while ASGI is a legacy protocol restricted to serving static files behind Apache.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
+        "text": "WSGI passes one environ dict per worker for the app's lifetime, while ASGI requires spawning a brand-new OS thread for every concurrent connection to achieve non-blocking behavior.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Because processes have separate memory, data and function signatures must be serialized into bytes (via pickle) and sent across OS IPC pipes to the child process. Anonymous lambda functions and local closures cannot be serialized by pickle.",
+        "text": "Uvicorn is a WSGI-compatible reverse proxy that must sit in front of Gunicorn to translate synchronous Flask requests into FastAPI coroutines.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "tomllib (read-only TOML parser introduced in Python 3.11).",
+        "text": "Uvicorn is the HTTP client library FastAPI imports internally to make outbound calls to other microservices, similar to httpx or requests.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It maintains a list or set of active WebSocket objects and iterates through them with await ws.sendjson(data) inside an async loop.",
+        "text": "Uvicorn only performs WebSocket upgrade handshakes; regular HTTP GET and POST routing is handled directly by Starlette's own built-in socket listener.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Calling async def does not execute the function body; it merely constructs a dormant coroutine object. It must be scheduled via await or asyncio.createtask() to execute.",
+        "text": "FastAPI reads the docstring of each path operation function at runtime and uses regex to extract the expected parameter types from developer comments.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kubernetes continuously compares actual state against desired state, spinning up new container replicas when CPU exceeds thresholds, restarting crashed pods, and shifting traffic during zero-downtime rolling deployments.",
+        "text": "FastAPI requires the client to send an explicit `X-Param-Types` header describing each field's Python type before the request body can be parsed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Polars is written in Rust, utilizes multi-threaded parallel execution (Rayon), processes data in columnar Arrow format, and optimizes query execution graphs before running.",
+        "text": "FastAPI defers all type coercion to the ASGI server layer, so Uvicorn casts query parameters to the annotated type before the request ever reaches the route function.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "text": "- scope: The synchronous WSGI environ dictionary reused unmodified for compatibility. - receive: A blocking socket read executed once. - send: A blocking socket write executed once per connection.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It provides 100% full static type checking with Mypy/Pyright, autocompletion in IDEs, and removes ambiguity between Python types and database SQL types.",
+        "text": "- scope: Only populated for WebSocket connections and left unset for HTTP. - receive: Called once at startup to fetch the app's route table. - send: Async callable used only to close the socket.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
+        "text": "- scope: A single mutable object shared across every concurrent request handled by the worker. - receive: A synchronous generator yielding body chunks. - send: A callable that may be awaited multiple times per response.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{\"status\": \"ok\", \"service\": \"product-catalog\"}",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{\"status\": \"HEALTHY\"}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{\"status\": \"healthy\", \"service\": \"product-catalog\"}",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"ERGONOMIC MOUSE\"",
+        "text": "\"Coffee Mug\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"ergonomic mouse\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"Mouse\"",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"MECHANICAL KEYBOARD\"",
+        "text": "\"Coffee Mug\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"mechanical keyboard\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"Wireless Keyboard\"",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"NOISE CANCELLING HEADPHONES\"",
+        "text": "\"Coffee Mug\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"noise cancelling headphones\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"Headphones\"",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Inside a container network namespace, 127.0.0.1 refers strictly to the container's isolated local loopback. Outside requests routed via Docker's bridge interface arrive on eth0, which is ignored unless bound to all interfaces (0.0.0.0).",
+        "text": "The `/items/special` handler was declared as a regular `def` function, so FastAPI routes it through the thread pool where it resolves after the dynamic coroutine route responds first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "FastAPI matches routes by comparing the specificity of each path's Pydantic schema, so a broader `str` path parameter takes priority over a fixed literal path segment.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "is checks memory address identity (id(a) == id(b)), while == checks value equivalence. CPython pre-allocates and caches integer objects in the range [-5, 256]. Integers outside that range are distinct objects unless interned.",
+        "text": "The `get_special_item()` function was defined in a separate `APIRouter` module that was never passed to `app.include_router()`, so only the dynamic handler was ever registered.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "The route's path collided with an earlier dynamic route, so FastAPI's path-matching kept re-evaluating the same handler in a loop, appearing to freeze the worker.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Descriptor objects live on the class dictionary, meaning there is only one descriptor instance shared across all instances of the owner class. Storing self.val treats all instances as identical.",
+        "text": "Uvicorn was started with a single worker process, so the OS scheduler serializes every TCP connection onto one thread regardless of how the route function is written.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "text": "time.sleep() releases the GIL while waiting, but FastAPI's dependency injection system still holds a global lock on the request object until the coroutine returns.",
         "is_correct": false
       }
     ],

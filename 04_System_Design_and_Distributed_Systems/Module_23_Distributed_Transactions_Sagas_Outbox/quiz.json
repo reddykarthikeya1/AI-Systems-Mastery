@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "SagaStatus.COMPLETED",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "SagaStatus.FAILED",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "SagaStatus.COMPENSATING",
         "is_correct": false
       }
     ],
@@ -52,7 +52,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The scheduler continued in the UP direction indefinitely as long as any UP request arrived, starving waiting DOWN passengers. ---",
+        "text": "The saga compensating transaction for the inventory step was written to update stock but never actually invoked on failure, so a failed order left inventory permanently reserved.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dividing $100.00 by 3 gives 33.3333... Rounding each to $33.33 results in $99.99 total, leaking 1 cent into financial limbo. ---",
+        "text": "The order service used two-phase commit across the database and broker, but the coordinator itself crashed mid-commit, leaving both participants blocked in an uncertain state.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The retry decorator executed retries in a tight loop with zero delay, amplifying traffic against a struggling upstream provider by 500%. ---",
+        "text": "Message deduplication on the consumer side used the wrong key, so a single successfully published event was processed twice, double-applying its side effects.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By writing to the database and publishing to the message broker as two separate calls in the request handler, trusting that both will succeed together under normal load.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By running every saga step's compensation logic optimistically in parallel with the forward step, on the assumption that failures are rare enough not to matter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying a failed saga step indefinitely with the same input, without checking whether an earlier step already applied its side effect.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more saga orchestrator replicas to handle throughput, without validating that each one reads a consistent view of in-flight saga state.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the message broker redeliver a message on any consumer timeout, without checking whether that message effects were already committed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By logging every dual-write failure for later manual reconciliation, instead of using an outbox table to guarantee the write and the publish happen atomically.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By writing to the database and publishing to the message broker as two separate calls in the request handler, trusting that both will succeed together under normal load.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By running every saga step's compensation logic optimistically in parallel with the forward step, on the assumption that failures are rare enough not to matter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By retrying a failed saga step indefinitely with the same input, without checking whether an earlier step already applied its side effect.",
         "is_correct": false
       }
     ],

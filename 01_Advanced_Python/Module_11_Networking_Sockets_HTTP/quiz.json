@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Access tokens expire quickly (e.g. 15 mins) to minimize damage if intercepted. Refresh tokens securely rotate access tokens without forcing the user to log in again.",
+        "text": "- TCP: Connectionless, no ordering guarantees, minimal overhead, ideal for video streaming and DNS lookups. - UDP: Connection-oriented, retransmits lost packets, and guarantees ordering -- the two protocols are reversed from their real behavior.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Layer 1: Accepts decorator configuration arguments (e.g., maxattempts). - Layer 2: Accepts the target function being decorated (func). - Layer 3: Accepts runtime arguments (args, kwargs) passed during actual execution.",
+        "text": "Both TCP and UDP guarantee packet ordering and retransmission; the only difference is that TCP runs over IPv4 while UDP is exclusive to IPv6 networks.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- a and b are positional-only (because they are before /). - c can be passed either positionally or by keyword. - d and e are keyword-only (because they are after ).",
+        "text": "TCP and UDP differ only in port number range: TCP uses ports 0-32767 and UDP uses ports 32768-65535, so a single physical port can never be shared between both protocols.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "TYPECHECKING evaluates to False at runtime (bypassing the import) and True only during static type checking.",
+        "text": "The IP address identifies which specific application is listening, while the port number identifies the physical host machine on the network -- the two roles are reversed from their real definitions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The loop terminates immediately without executing any iterations, because the generator's internal state is exhausted and it immediately raises StopIteration.",
+        "text": "Both the IP address and the port number together only identify the host machine; the specific application is instead selected by the URL path in the HTTP request, not by the socket tuple.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "text": "The port number encodes the protocol being used (TCP vs UDP), while the IP address encodes both the host machine and the specific process listening on it.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It forces Python to flush standard output immediately to the terminal stdout stream, ensuring logs appear in docker logs and CloudWatch in real time without lag.",
+        "text": "1. ACK: Client immediately confirms it wants to connect. 2. SYN: Server requests synchronization. 3. SYN-ACK: Client acknowledges and the connection enters ESTABLISHED state -- the three packets happen in reverse order.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- selectinload: Emits a second SELECT ... WHERE parentid IN (...) query (best for 1-to-many collections). - joinedload: Performs an SQL LEFT OUTER JOIN in a single query (best for many-to-1 relationships).",
+        "text": "1. SYN: Client sends synchronization packet. 2. ACK: Server immediately accepts without any acknowledgment packet. 3. FIN: Client closes the connection right after establishing it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "asyncio.TaskGroup enforces structured concurrency: If any child task raises an exception, the TaskGroup automatically cancels all remaining sibling tasks and raises an ExceptionGroup, preventing orphaned background tasks from leaking.",
+        "text": "The handshake exchanges exactly one packet: the client sends a single CONNECT packet, and the server either accepts by staying silent or rejects by sending back a RST packet.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "text": "ConnectionRefusedError is raised, and the OS enforces TIMEWAIT specifically to give the client time to display a retry dialog before the next connection attempt.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "orjson is written in Rust, leverages SIMD CPU instructions for direct memory copies, and bypasses Python object creation bottlenecks during string encoding.",
+        "text": "OSError: Address already in use only occurs on Windows; Linux and macOS both reuse closed ports immediately by default without ever entering a TIMEWAIT state.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It monitors file size (maxBytes) and automatically closes, renames, and archives older logs up to a fixed count (backupCount), deleting the oldest backup to keep total disk usage strictly bounded.",
+        "text": "TIMEWAIT exists so that the OS can renegotiate a new TCP window size with the client before allowing a different process to bind to the same port.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "b\"\\x00\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "\"\"",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "2",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,7 +192,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"127.0.0.1\"",
+        "text": "\"localhost\"",
         "is_correct": false
       },
       {
@@ -227,12 +227,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "text": "The server crashed without calling socket.close(), leaving the OS thinking the port is still actively bound by a live process indefinitely until a manual reboot.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "text": "SO_REUSEADDR is enabled by default on every OS; the OSError instead means a completely different, unrelated process is already listening on that exact port.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None is a valid cacheable value (e.g., negative caching missing records). Returning None conflates \"not in cache\" with \"cached value is None\".",
+        "text": "TIMEWAIT is a firewall-level security feature that blocks any process owned by a different user ID from rebinding to a recently used port, regardless of elapsed time.",
         "is_correct": false
       }
     ],

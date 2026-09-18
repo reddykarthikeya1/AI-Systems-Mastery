@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_multiple_choice_evaluator import multiple_choice_evaluator
-except ImportError:
-    from p01_multiple_choice_evaluator import multiple_choice_evaluator
+from p01_multiple_choice_evaluator import multiple_choice_evaluator
 
 
 def test_multiple_choice_evaluator():

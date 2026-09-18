@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- mode=\"before\": Runs on raw input data before Pydantic performs any type coercion. - mode=\"after\": Runs after Pydantic has validated and coerced the field into its target Python type.",
+        "text": "RAG works by fine-tuning the LLM's weights on the private knowledge store every time a new query arrives, permanently updating the model's static knowledge cutoff.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- obrefcnt: 64-bit integer tracking reference count. - obtype: Pointer to the object's PyTypeObject struct defining its methods and behavior.",
+        "text": "RAG overcomes hallucination by asking the LLM to double-check its own answer with a second, independent LLM call, without ever consulting an external knowledge store.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- Modular Monolith: Simpler deployments, zero network latency between modules, single database transaction boundary. - Microservices: Independent team deployments, isolated failure domains, technology heterogeneity, but introduces network l",
+        "text": "RAG only helps with knowledge cutoff dates, not hallucination; retrieved documents are appended after the LLM's response is generated, purely as citations for the user to verify manually.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- ctypes: Dynamic runtime bridging using libffi. - Extension Module: Statically compiled C/Rust code adhering to Python's C-ABI, imported directly as a standard Python module (import mymodule).",
+        "text": "It is a sparse binary array (mostly zeros) where each dimension corresponds to one exact keyword in the vocabulary, similar to a one-hot encoded bag-of-words vector.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks. - Cooperative: Coroutines voluntarily surrender execution control back to the Event Loop exclusively at explicit await pause points.",
+        "text": "It is a single integer hash of the input text used only to detect exact duplicate documents; semantically similar but non-identical texts always hash to completely unrelated values.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Child instances will have a dynamic dict created, completely negating the memory savings of the parent class.",
+        "text": "It is a compressed version of the original text produced by a tokenizer, where each dimension represents one token's position in the original sentence, not a semantic feature.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- Preemptive: The OS scheduler forcefully interrupts threads at arbitrary intervals to switch tasks. - Cooperative: Coroutines voluntarily surrender execution control back to the Event Loop exclusively at explicit await pause points.",
+        "text": "$$\\cos(\\theta) = \\mathbf{u} \\cdot \\mathbf{v}$$ -- the dot product alone, without normalizing by the vectors' magnitudes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- ctypes: Dynamic runtime bridging using libffi. - Extension Module: Statically compiled C/Rust code adhering to Python's C-ABI, imported directly as a standard Python module (import mymodule).",
+        "text": "$$\\cos(\\theta) = \\|\\mathbf{u} - \\mathbf{v}\\|$$ -- the Euclidean distance between the two vectors, which cosine similarity is often confused with.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It copies the original function's metadata (name, doc, annotations, and module) to the wrapper, preventing debugging tools, IDE autocomplete, and test frameworks from seeing a generic 'wrapper' function.",
+        "text": "$$\\cos(\\theta) = \\frac{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}{\\mathbf{u} \\cdot \\mathbf{v}}$$ -- the reciprocal of the correct formula, with numerator and denominator swapped.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Access tokens expire quickly (e.g. 15 mins) to minimize damage if intercepted. Refresh tokens securely rotate access tokens without forcing the user to log in again.",
+        "text": "Overlap exists so the vector database can deduplicate identical chunks across different documents, not to preserve sentence-level context.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+        "text": "A sliding window overlap is required only because most embedding models have a strict minimum input length; overlap pads short chunks up to that minimum, not to preserve context across boundaries.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Example-based tests test specific hardcoded inputs chosen by the developer. Property-based tests define universal invariants (e.g. \"Sorting never loses elements\") and let hypothesis generate hundreds of randomized, adversarial inputs (null ",
+        "text": "Overlap trades retrieval accuracy for storage efficiency: it deliberately introduces controlled redundancy so the index compresses better, with no benefit to answer coherence.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "len(results) - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "len(results) + 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -222,7 +222,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"\"]",
         "is_correct": false
       },
       {

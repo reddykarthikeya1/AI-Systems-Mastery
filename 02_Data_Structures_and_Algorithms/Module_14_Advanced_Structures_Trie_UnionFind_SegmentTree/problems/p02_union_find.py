@@ -20,6 +20,11 @@ Example
     n = 4, ops = [("connected",0,1), ("union",0,1), ("connected",0,1), ("count",0,0)]
     -> [False, True, 3]
 
+Example:
+    >>> ops = [("connected", 0, 1), ("union", 0, 1), ("connected", 0, 1), ("count", 0, 0)]
+    >>> simulate_union_find(4, ops)
+    [False, True, 3]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: `parent[x]` points toward the representative of x's set. `find` walks to the root.

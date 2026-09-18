@@ -10,8 +10,9 @@ Return 0 where no warmer day follows.
 Constraints
 - ``1 <= len(temps) <= 10**5``  -> O(n) required
 
-Example
-    [73, 74, 75, 71, 69, 72, 76, 73] -> [1, 1, 4, 2, 1, 1, 0, 0]
+Example:
+    >>> daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73])
+    [1, 1, 4, 2, 1, 1, 0, 0]
 
 Hints — read one at a time, and try again between each.
 

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "12800.0",
+        "text": "w2.size // 4",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "6400.0",
+        "text": "w1.size * 4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "12800.0",
+        "text": "w2.size",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "6400.0",
+        "text": "w1.size * 4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "text": "Loss becomes NaN or training diverges after 100 steps only when using custom gradient clipping or optimizer hooks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "text": "Wrapping a model with FSDP(model) yields no memory reduction at all compared to plain DDP.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "text": "Training completes each step successfully but peak GPU memory grows a little every step until the job OOMs.",
         "is_correct": false
       }
     ],
@@ -132,21 +132,21 @@
       },
       {
         "id": "opt_1",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "gradient_as_bucket_view=True makes gradients non-owning views into the communication bucket buffer, and an in-place gradient modification invalidates that bucket layout.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3",
+        "text": "FSDP(model) is wrapped without an auto_wrap_policy, so the entire network is treated as one atomic unit and the whole model is all-gathered into memory at once.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "The optimizer state shard for one rank is restored from a checkpoint saved with a different world size, so shard boundaries no longer align with the current sharding.",
         "is_correct": false
       }
     ],
-    "explanation": "Diagnostic Analysis: In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0\u20132 execute it. Ranks 0\n",
+    "explanation": "Diagnostic Analysis: In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0–2 execute it. Ranks 0\n",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
@@ -162,21 +162,21 @@
       },
       {
         "id": "opt_1",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "gradient_as_bucket_view=True makes gradients non-owning views into the communication bucket buffer, and an in-place gradient modification invalidates that bucket layout.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "text": "FSDP(model) is wrapped without an auto_wrap_policy, so the entire network is treated as one atomic unit and the whole model is all-gathered into memory at once.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "text": "The optimizer state shard for one rank is restored from a checkpoint saved with a different world size, so shard boundaries no longer align with the current sharding.",
         "is_correct": false
       }
     ],
-    "explanation": "Diagnostic Analysis: : In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0\u20132 execute it. Ranks\n: Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+    "explanation": "Diagnostic Analysis: : In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, Rank 3 skips that module while Ranks 0–2 execute it. Ranks\n: Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
     "lesson_ref": "04_TROUBLESHOOTING_AND_EDGE_CASES.md"
   },
   {
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Rank 0 issues an AllReduce on Group A, while Rank 1 issues an AllReduce on Group B in different order. - NCCL's internal proxy thread locks the ring waiting for matching sequence IDs, causing a circular deadlock! -",
+        "text": "Pass gradient_as_bucket_view=False, or use torch.nn.utils.clip_grad_norm_ instead of manipulating bucket-view gradients in place.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "text": "Specify a transformer layer auto_wrap_policy so FSDP shards the model into multiple units instead of one atomic block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "Resave the optimizer state shards whenever the world size changes so shard boundaries realign with the new sharding.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a model wrapped with FSDP(model) alone shards memory the same way regardless of auto_wrap_policy.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting gradient_as_bucket_view=True to tolerate any in-place gradient modification without corrupting the bucket.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that every rank executes the same wrapped submodules in the same order before an All-Gather.",
         "is_correct": false
       }
     ],

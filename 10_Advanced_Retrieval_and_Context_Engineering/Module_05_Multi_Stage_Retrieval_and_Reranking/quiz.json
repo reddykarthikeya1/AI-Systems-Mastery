@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "text": "rerank() sorts candidates ascending by score after converting distance to similarity, so the least relevant document is promoted to the top instead of the most relevant.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries. -",
+        "text": "The reranker model was fine-tuned on a different query distribution than production traffic, so its scores are systematically miscalibrated for unseen query types.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "text": "The threshold filter compares reranker scores against a hard-coded cutoff of 0.5 tuned for a different cross-encoder checkpoint.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "text": "Sort the final candidate list in descending order by score instead of relying on the default ascending sort.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model answers the opposite of the truth (e.g. asserts a refund is allowed when the policy expressly forbids it).",
+        "text": "Clip all negative logits to zero before applying the threshold filter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "text": "Replace the threshold filter with a fixed top-k cutoff so the sign of the score no longer matters.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "text": "The reranker promotes an obviously irrelevant passage to the #1 position while the most relevant passage sinks to the bottom of the ranked list.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus. -",
+        "text": "Reranking latency scales linearly with the number of candidates from the first-stage retriever, becoming the dominant cost at high candidate counts.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "text": "All candidate documents receive nearly identical scores clustered around zero, so the reranked order is effectively random.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Sorting reranked candidates in whatever order the underlying score happens to default to, without checking whether the metric means 'bigger is better' or 'smaller is better'.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Feeding the first-stage retriever's raw similarity scores directly into downstream thresholds without ever passing candidates through the cross-encoder.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Comparing a cross-encoder's raw, uncalibrated logits directly against a fixed relevance threshold instead of normalizing them first.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Sorting reranked candidates in whatever order the underlying score happens to default to, without checking whether the metric means 'bigger is better' or 'smaller is better'.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Feeding the first-stage retriever's raw similarity scores directly into downstream thresholds without ever passing candidates through the cross-encoder.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Comparing a cross-encoder's raw, uncalibrated logits directly against a fixed relevance threshold instead of normalizing them first.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Sorting reranked candidates in whatever order the underlying score happens to default to, without checking whether the metric means 'bigger is better' or 'smaller is better'.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Feeding the first-stage retriever's raw similarity scores directly into downstream thresholds without ever passing candidates through the cross-encoder.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Comparing a cross-encoder's raw, uncalibrated logits directly against a fixed relevance threshold instead of normalizing them first.",
         "is_correct": false
       }
     ],

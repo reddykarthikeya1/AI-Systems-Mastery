@@ -17,7 +17,7 @@
       },
       {
         "id": "opt_2",
-        "text": "8.0",
+        "text": "2.0",
         "is_correct": false
       },
       {
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "One rank calls all_reduce while another rank calls broadcast at the same call site in the training loop.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "text": "A dataloader without drop_last gives one rank one extra batch, so that rank issues one more collective call than the others.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Training hangs indefinitely at a specific forward layer without throwing an error. GPU utilization drops to 0%.",
+        "text": "Two ranks pass tensors of different dtypes into the same all_reduce call, one in fp16 and the other in fp32.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Set drop_last=True on every rank's dataloader so all ranks issue exactly the same number of collective calls.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Replace BatchNorm with GroupNorm/LayerNorm, or convert to torch.nn.SyncBatchNorm.",
+        "text": "Cast every tensor to the same dtype before it enters a collective, regardless of which rank produced it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "text": "Insert an explicit barrier before every collective so no rank can race ahead of the others.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "text": "One rank calls all_reduce while another rank calls broadcast at the same call site in the training loop.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken. -",
+        "text": "A dataloader without drop_last gives one rank one extra batch, so that rank issues one more collective call than the others.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use two-phase commit: All ranks write to temporary directory ckpttmpstep/. An All-Reduce consensus barrier confirms all ranks completed successfully. Rank 0 atomically renames directory to ckptstep/.",
+        "text": "Two ranks pass tensors of different dtypes into the same all_reduce call, one in fp16 and the other in fp32.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "text": "All ranks except one complete the epoch; the last rank hangs waiting on a collective that never arrives.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Guarantee identical collective execution ordering across all ranks.",
+        "text": "Training throughput silently drops because NCCL falls back to a slower transport instead of failing outright.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming all ranks issue collectives in the same order without ever asserting a matching call sequence.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that a hang during an all_reduce will always raise a timeout error instead of blocking silently.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that every rank's tensor shape and dtype match before entering a collective.",
         "is_correct": false
       }
     ],

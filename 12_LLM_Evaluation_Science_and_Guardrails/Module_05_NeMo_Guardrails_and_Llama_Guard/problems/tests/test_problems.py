@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_dialogue_policy_jailbreak_check import dialogue_policy_jailbreak_check
-except ImportError:
-    from p01_dialogue_policy_jailbreak_check import dialogue_policy_jailbreak_check
+from p01_dialogue_policy_jailbreak_check import dialogue_policy_jailbreak_check
 
 
 def test_dialogue_policy_jailbreak_check():

@@ -20,6 +20,12 @@ Example
 ``str.find`` in a loop is acceptable here and is genuinely linear in CPython -
 but write it with the prefix table, because the point is to own the mechanism.
 
+Example:
+    >>> find_all("aaaa", "aa")
+    [0, 1, 2]
+    >>> find_all("abababa", "aba")
+    [0, 2, 4]
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Run the same matching loop as KMP over the text, tracking how many pattern characters are currently matched.

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_evaluate_window_frame import evaluate_window_frame
-except ImportError:
-    from p01_evaluate_window_frame import evaluate_window_frame
+from p01_evaluate_window_frame import evaluate_window_frame
 
 
 def test_evaluate_window_frame():

@@ -14,6 +14,11 @@ Example
     [1, 2, 3, 4, 5], n = 2 -> [1, 2, 3, 5]
     [1], n = 1             -> []
 
+Example:
+    >>> from linked_list_common import from_list, to_list
+    >>> to_list(remove_nth_from_end(from_list([1, 2, 3, 4, 5]), 2))
+    [1, 2, 3, 5]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Two pointers with a fixed gap of n between them: when the leader hits the end, the follower is at the node before the one to remove.

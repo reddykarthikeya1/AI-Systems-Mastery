@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 XFetch probabilistic early recomputation algorithm to prevent cache stampedes.
 
+Example:
+    >>> probabilistic_early_expiration(100.0, 200.0, 5.0, 1.0, 0.5)
+    False
+    >>> probabilistic_early_expiration(200.0, 200.0, 5.0, 1.0, 0.5)
+    True
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: This isn't a hard TTL check -- it randomly jitters the expiry
+        earlier so many clients don't all recompute the same cache value
+        at the exact same instant (a stampede).
+    Hint 2: Apply the given formula directly -- no loop or data structure
+        is needed, just `read_time - compute_cost * beta * log(rand_val)`
+        compared against `expiry_time`.
+    Hint 3: `log(rand_val)` is negative for `rand_val` in (0, 1), so
+        subtracting it effectively adds time -- get that sign right; and
+        `rand_val <= 0.0` makes the logarithm undefined, so that case must
+        short-circuit to True (force recompute) instead of raising.
 """
 
 from __future__ import annotations

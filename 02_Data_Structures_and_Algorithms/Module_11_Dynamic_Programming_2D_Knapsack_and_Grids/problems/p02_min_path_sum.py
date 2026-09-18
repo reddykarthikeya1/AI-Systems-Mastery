@@ -14,6 +14,10 @@ Constraints
 Example
     [[1,3,1],[1,5,1],[4,2,1]] -> 7    (1 -> 3 -> 1 -> 1 -> 1)
 
+Example:
+    >>> min_path_sum([[1, 3, 1], [1, 5, 1], [4, 2, 1]])
+    7
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Same shape as unique paths, but you take a minimum instead of a sum of counts, and you add the cell's own value.

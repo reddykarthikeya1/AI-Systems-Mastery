@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A sequence of local transactions across services; if a step fails, the saga orchestrator executes compensating transactions to undo previous steps.",
+        "text": "It runs the procedure's DML statements in parallel with the caller's transaction on a separate database session, merging both results back together at commit time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Max Protection: Zero data loss, synchronous redo commit on standby; primary halts if standby unreachable. Max Availability: Synchronous commit, downgrades to async if standby fails. Max Performance: Asynchronous redo shipping, zero primary ",
+        "text": "It defers all of the procedure's DML statements until the caller's transaction commits, then applies them as a single autonomous batch afterward.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Pre-filtering filters metadata before vector traversal; post-filtering searches vectors first and then discards non-matching metadata (risking returning fewer than K items).",
+        "text": "It marks a procedure's changes as read-only, so that any DML it attempts inside a transaction is silently ignored rather than committed or rolled back independently.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
+        "text": "ORA-04091 occurs because two different triggers on the same table run in an undefined order; a Compound Trigger fixes it by letting the developer pick which trigger fires first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It switches context between the PL/SQL runtime and the SQL execution engine once for the entire array batch rather than once per row.",
+        "text": "The mutating table error happens only in triggers that use autonomous transactions; a Compound Trigger avoids it by removing the PRAGMA AUTONOMOUS_TRANSACTION requirement entirely.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Updates write to the database and invalidate (delete) the cached key; subsequent reads experience a cache miss and fetch fresh data.",
+        "text": "Row triggers cannot fire more than once per statement; a Compound Trigger solves this by allowing the same row-level logic to run for every row without restriction.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Writes are immediately appended to an on-disk sequential CommitLog before being stored in in-memory MemTables.",
+        "text": "It rewrites the DML statement as a single multi-row UPDATE...SET with a CASE expression, avoiding the loop entirely at the SQL level.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Targeted queries include the Shard Key and route to exactly 1 shard; Scatter-Gather queries lack the shard key and broadcast to every shard in the cluster.",
+        "text": "It runs each row's DML on a separate background parallel worker process, so the total wall-clock time is divided across available CPU cores.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
+        "text": "It caches the compiled execution plan the first time the loop runs so that later iterations reuse it, but still performs one PL/SQL-to-SQL context switch per row.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sentinels monitor master nodes via heartbeat pings; when a quorum agrees master is down (ODOWN), a sentinel is elected to promote a replica.",
+        "text": "The specification contains the actual procedure implementations, while the body only lists which of those procedures are exposed publicly to callers.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standard CREATE INDEX locks the table against all writes; CONCURRENTLY runs two scans without blocking concurrent DML.",
+        "text": "A package body can exist and be compiled without a corresponding specification, since the specification is only an optional performance optimization.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "text": "Both the specification and the body are visible to calling code; the only difference is that the specification is compiled first and the body second.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "updated_bob_balance",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "final_bob_balance",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "text": "A previous BEGIN TRANSACTION was never committed or rolled back, usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Window frame specification uses default RANGE frame instead of ROWS frame, causing rows with identical ORDER BY keys to sum together simultaneously.",
+        "text": "The audit logging procedure does use PRAGMA AUTONOMOUS_TRANSACTION, but it commits before the parent transaction validates the funds, so a denied transfer is logged as if it had succeeded.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Both RAC nodes concurrently write and update the same account block ranges, causing continuous Cache Fusion buffer pinging over private interconnect.",
+        "text": "The audit table has a foreign key constraint referencing the accounts table, so when the parent transfer rolls back, the constraint cascades the delete to the just-inserted audit row as well.",
         "is_correct": false
       }
     ],

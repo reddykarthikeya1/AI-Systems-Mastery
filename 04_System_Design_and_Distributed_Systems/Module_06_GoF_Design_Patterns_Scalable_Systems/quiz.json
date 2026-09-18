@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"SMS\"",
+        "text": "\"EMAIL\"",
         "is_correct": false
       },
       {
@@ -52,7 +52,7 @@
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "6",
         "is_correct": false
       }
     ],
@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "text": "The retry decorator used exponential backoff correctly, but the maximum retry count was left unbounded, so a persistently down provider was retried forever at ever-increasing intervals.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Cache-aside without request coalescing allows all concurrent callers to experience a cache miss at the exact same millisecond and hammer the backend. ---",
+        "text": "The audit-logging decorator synchronously wrote every attempt to disk before forwarding the call, so I/O latency on the log write consumed the bulk of the outage.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "Each retry created a brand-new HTTP connection instead of reusing the pooled client, so most of the observed latency was TLS handshake overhead rather than the SMS provider itself.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By wrapping every method call in a Decorator purely for logging, on the assumption that decoration alone bounds retries or resource usage.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By routing every request through a long Chain of Responsibility so more handlers get a chance to validate it, regardless of whether each handler stays within its own resource bounds.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using the Singleton pattern for shared state so there is only one copy in memory, without validating that concurrent access to it is otherwise safe.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding a Decorator that retries every failed call indefinitely, trusting that eventual success is the same thing as a bounded, reliable system.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By using the Observer pattern to notify more subscribers on failure, without checking that any subscriber own processing stays within its resource bounds.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By falling back through a Chain of Responsibility to ever-cheaper handlers on error, without verifying that the final fallback still meets the caller actual requirements.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By wrapping every method call in a Decorator purely for logging, on the assumption that decoration alone bounds retries or resource usage.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By routing every request through a long Chain of Responsibility so more handlers get a chance to validate it, regardless of whether each handler stays within its own resource bounds.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By using the Singleton pattern for shared state so there is only one copy in memory, without validating that concurrent access to it is otherwise safe.",
         "is_correct": false
       }
     ],

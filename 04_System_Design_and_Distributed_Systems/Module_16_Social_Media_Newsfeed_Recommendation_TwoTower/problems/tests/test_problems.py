@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_fanout_on_write_feed import fanout_on_write_feed
-except ImportError:
-    from p01_fanout_on_write_feed import fanout_on_write_feed
+from p01_fanout_on_write_feed import fanout_on_write_feed
 
 
 def test_fanout_on_write_feed():

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_prompt_injection_heuristic_detector import prompt_injection_heuristic_detector
-except ImportError:
-    from p01_prompt_injection_heuristic_detector import prompt_injection_heuristic_detector
+from p01_prompt_injection_heuristic_detector import prompt_injection_heuristic_detector
 
 
 def test_prompt_injection_heuristic_detector():

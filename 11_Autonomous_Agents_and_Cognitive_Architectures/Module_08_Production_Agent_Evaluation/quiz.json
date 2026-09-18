@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong. -",
+        "text": "Gate the step-efficiency score on task_success, returning 0.0 for any task that did not actually succeed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "text": "Average results across many runs and report the mean pass rate instead of trusting any single run's number.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "text": "Pin the agent's LLM sampling temperature to 0 so its behavior becomes fully deterministic across runs.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "score() accepts a success flag as a parameter but never reads it, so a task that fails immediately can score higher than one that succeeds slowly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "text": "Benchmark tasks are run in a fixed, hard-coded order, so an earlier task's random seed leaks into a later task's sampling.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "text": "The evaluation harness caches an agent's first response to a prompt and replays it for every subsequent identical prompt within the same run.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "LLM wrapped JSON inside code blocks with conversational preamble.",
+        "text": "An agent that abandons a complex task after two steps reports a higher step-efficiency score than an agent that completes the same task in forty steps.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Add mutual exclusion rules and maintain an active session history of visited agents, forbidding re-routing to the caller without new user input.",
+        "text": "Every benchmark run reports exactly the same pass rate regardless of which tasks the agent actually completed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "text": "The evaluation harness reports a 100% pass rate even though several tasks raised unhandled exceptions during execution.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Recency decay factor $\\lambda$ was too aggressive, reducing the recency component to zero.",
+        "text": "score() computes optimal/actual step efficiency unconditionally, without ever branching on whether the task's success flag was True.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "LLM renamed the parameter from query to querytext based on vague docstring instructions.",
+        "text": "Benchmark tasks share a single long-lived sandbox process across the whole suite instead of each getting its own isolated environment.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Graph raises RecursionLimitExceeded: Maximum supersteps 25 reached.",
+        "text": "The harness retries a failed task automatically up to three times and reports only the best of the three attempts.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_int8_symmetric_quantization import int8_symmetric_quantization
-except ImportError:
-    from p01_int8_symmetric_quantization import int8_symmetric_quantization
+from p01_int8_symmetric_quantization import int8_symmetric_quantization
 
 
 def test_int8_symmetric_quantization():

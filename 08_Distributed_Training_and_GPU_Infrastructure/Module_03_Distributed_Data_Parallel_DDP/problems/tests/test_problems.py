@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bucket_gradient_allreduce import bucket_gradient_allreduce
-except ImportError:
-    from p01_bucket_gradient_allreduce import bucket_gradient_allreduce
+from p01_bucket_gradient_allreduce import bucket_gradient_allreduce
 
 
 def test_bucket_gradient_allreduce():

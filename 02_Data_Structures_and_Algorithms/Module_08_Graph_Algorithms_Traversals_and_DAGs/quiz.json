@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "5",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[0, 2, 1, 3]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[0, 1, 3, 2]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -107,7 +107,7 @@
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "5",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "text": "The depth counter is incremented after checking for the destination instead of before, so every reported hop count is exactly one less than the true number of edges traversed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "The visited set is shared across separate DFS calls without being reset, so a node marked seen from an earlier query is skipped even when it is actually reachable this time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "text": "best[0] is overwritten on every arrival at the destination instead of only the first, so the function ends up reporting the length of whichever path happens to be explored last.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "text": "The visited grid is shared across separate calls to num_islands without being cleared, so cells marked from a previous grid suppress new islands that reuse the same coordinates.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "text": "The flood fill checks grid[r][c] == '1' with the wrong comparison, so water cells marked '0' are treated as land and connected into the surrounding islands.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "text": "The bounds check allows r and c to wrap around negative indices, so a flood fill from the last row can bleed into the first row and merge islands that are not actually adjacent.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "text": "The in-degree array is initialized to 1 for every node instead of 0, so every node needs one fewer incoming edge processed before it is emitted, which happens to still complete for acyclic graphs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "Nodes are pushed onto the queue in reverse of the order their in-degree reaches zero, so the returned ordering is a valid topological sort only when read backwards.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "text": "The queue is seeded with every node that has in-degree zero at the start, but nodes whose in-degree only later drops to zero inside a cycle are added once their neighbours finish, double-counting them.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Merging and scheduling are different questions and need different orderings. Merging cares where intervals",
+        "text": "The adjacency list stores each edge twice, once in each direction, so the DFS treats the graph as undirected and reports the edge back to a parent as a cycle.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "text": "The visited array is reset to all False at the start of every recursive call instead of once before the traversal begins, so a node can appear unvisited on a later call even though it was already processed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "text": "The function checks visited[v] before ever marking the current node u as visited, so the very first node visited is compared against its own stale default state and flagged as a revisit.",
         "is_correct": false
       }
     ],

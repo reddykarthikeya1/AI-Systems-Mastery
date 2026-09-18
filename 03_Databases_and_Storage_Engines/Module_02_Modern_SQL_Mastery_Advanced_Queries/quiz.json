@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
+        "text": "RANK() and DENSE_RANK() both leave gaps after ties, but they differ only in which duplicate row is listed first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+        "text": "RANK() restarts numbering from 1 for every new partition, while DENSE_RANK() continues counting across partition boundaries without resetting.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A single-field index on a date field that automatically deletes documents after a specified number of seconds via a background reaper thread.",
+        "text": "DENSE_RANK() leaves gaps in the sequence following ties, while RANK() leaves no gaps, making RANK() the more compact of the two.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "gc cr request and gc buffer busy acquire wait events in AWR reports.",
+        "text": "NOT IN performs an implicit DISTINCT on the subquery results, and a NULL value collapses every row into a single group that never matches.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Nested Loop: for each outer row, scans inner (fast with inner index); Hash Join: builds hash table on smaller relation, probes with larger; Sort-Merge: sorts both relations, merges linearly.",
+        "text": "The subquery returns an empty result set whenever any row contains NULL, so NOT IN has nothing to compare against and short-circuits to no rows.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "An active long-running read transaction holds an open read snapshot, preventing the checkpoint from truncating older frames.",
+        "text": "NOT IN silently skips comparing against NULL values and evaluates strictly against the remaining non-NULL values, so the outer WHERE clause returns every row that doesn't match those.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "4 bytes unix epoch timestamp, 5 bytes random value unique to machine/process, and 3 bytes incrementing counter.",
+        "text": "A CTE is always materialized as a temporary table on disk before the outer query runs, while a subquery is always evaluated purely in memory.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A contiguous set of data blocks allocated within a datafile to form segments (tables, indexes).",
+        "text": "CTEs and subqueries are optimized identically by the planner; the only difference is syntactic, since a CTE is just a subquery with a name attached.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+        "text": "A subquery can be referenced multiple times in the same statement without being re-evaluated, while a CTE is always re-evaluated once for every place it is referenced.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "For unit vectors, the dot product is mathematically identical to cosine similarity: $\\vec{u} \\cdot \\vec{v} = \\cos(\\theta)$.",
+        "text": "The recursive member runs exactly once and then UNIONs its single result with the anchor member to produce the final output.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+        "text": "Recursion terminates automatically once the total number of rows produced exceeds the database's configured work_mem, cutting off further iterations.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
+        "text": "The anchor member is re-executed on every iteration alongside the recursive member, and termination happens when the two produce identical row counts.",
         "is_correct": false
       }
     ],
@@ -142,7 +142,7 @@
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "600.0",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "round(3800 / 2",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "round(3600 / 3",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "round(3800, 2)",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "0.5",
+        "text": "150.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -232,7 +232,7 @@
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "525.0",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "text": "The running total resets to zero every time the sale_date changes, so each new date starts counting from scratch instead of continuing the cumulative sum.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "text": "The rows are not sorted by sale_date before the cumulative sum is computed, so amounts are added in an arbitrary order that happens to repeat values when dates collide.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "All telemetry data from 50,000 sensors written to a single static partition key PK = 'TELEMETRY', exceeding DynamoDB's 1,000 WCU per-partition ceiling.",
+        "text": "The accumulator variable is reinitialized inside the loop instead of before it, so every row after the first duplicate date reads a stale value from the previous iteration only.",
         "is_correct": false
       }
     ],

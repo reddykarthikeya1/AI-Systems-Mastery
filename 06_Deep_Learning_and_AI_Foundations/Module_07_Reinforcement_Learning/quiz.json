@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(10.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(9.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(0.0",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(81.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(9.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(0.0",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires the discount factor gamma to equal exactly 1 for the value function to be well defined.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It defines the return as the single immediate reward received after the current action, ignoring future rewards.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It states the value function is only defined for terminal states, not for states earlier in an episode.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires a full episode to finish before any Q-value can be updated, the same as Monte Carlo methods.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It updates Q-values using the action actually taken next, rather than the greedy max over next-state actions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It guarantees convergence to the optimal policy after a single pass through the state space, regardless of exploration.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It computes the gradient of the value function directly, without ever sampling trajectories from the policy.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It requires the reward signal to be differentiable with respect to the action taken.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It updates the policy using the raw episode return with no baseline, and this has no effect on gradient variance.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It removes the need for a reward model entirely by training the policy directly on human preference labels.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It clips the value-function loss instead of the policy ratio to keep updates stable in PPO.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It requires the critic network to share no parameters or gradients at all with the actor network.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By replaying the entire episode history from scratch before serving every inference request.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the replay buffer grow without bound instead of capping and evicting old transitions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the exploration-rate decay schedule so the policy keeps acting randomly under load.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a policy that maximizes reward in simulation will behave identically once deployed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting an unclipped importance-sampling ratio to stay bounded without ever checking it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping reward normalization and assuming raw returns will not destabilize the value estimate.",
         "is_correct": false
       }
     ],

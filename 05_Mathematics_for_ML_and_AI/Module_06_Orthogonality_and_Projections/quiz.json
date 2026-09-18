@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Measures the physical distance between the tips of two vectors, the way a ruler would, rather than how aligned their directions are.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Is only defined for vectors of length 2 or 3, since higher-dimensional coordinates have no direction that dot product could measure.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Always returns a positive number, since it is built from multiplying and summing quantities that individually can't be negative.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines the L1 norm as the largest single coordinate of the vector, and the L2 norm as the smallest.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires every norm to satisfy the triangle equality exactly, rather than the triangle inequality, for any two vectors.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats the L2 norm as always larger than the L1 norm for any vector, since squaring each coordinate before summing is assumed to only increase the total.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines cosine similarity as the raw dot product between two vectors, without dividing by their norms.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Treats correlation and cosine similarity as unrelated measures that happen to share a formula by coincidence, rather than correlation being cosine similarity on centered data.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Restricts cosine similarity to a range of 0 to 1, since a negative value would imply a physically impossible angle greater than 180 degrees.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Treats any two vectors that are not parallel as automatically orthogonal, since only exactly parallel vectors are assumed to have a nonzero dot product.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires an orthonormal set to contain at least three vectors, since 'ortho' and 'normal' each impose their own separate minimum count.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Considers a set of vectors orthogonal only if their lengths are all equal, regardless of what their dot products evaluate to.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines the orthogonal complement of a subspace as any other subspace that does not intersect it, whether or not their vectors are actually perpendicular.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Claims a subspace and its orthogonal complement can share nonzero vectors, as long as those vectors are short enough.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats the orthogonal complement as always having the same dimension as the original subspace, regardless of the dimension of the whole space.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Computes the projection onto a line by scaling the line's direction vector by the target vector's own length, ignoring the direction vector's length entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Defines the projection as the component of the vector that is perpendicular to the line, rather than the component that lies along it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Requires the direction vector defining the line to already be a unit vector, since projecting onto a non-unit vector is treated as mathematically undefined.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By normalizing every vector to unit length before comparing them, on the assumption that normalization alone guarantees a meaningful cosine similarity regardless of dimensionality.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By projecting a query vector onto a fixed reference line once and reusing that projection for every subsequent comparison.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating any two vectors with a small dot product as orthogonal, without checking how that dot product compares to their actual norms.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By treating any two vectors with a small dot product as orthogonal, without checking how that dot product compares to their actual norms.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a set of vectors is orthonormal whenever it has the right number of vectors, without checking pairwise dot products or individual norms.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By computing a projection once and caching it indefinitely, without revalidating it when the line or subspace being projected onto changes.",
         "is_correct": false
       }
     ],

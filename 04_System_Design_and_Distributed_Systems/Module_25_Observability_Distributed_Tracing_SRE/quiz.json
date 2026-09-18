@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "pytest.approx(0.9)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "pytest.approx(0.1)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "CircuitBreakerState.HALF_OPEN",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "CircuitBreakerState.FAILED",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "CircuitBreakerState.HALF_OPEN",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "CircuitBreakerState.FAILED",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "CircuitBreakerState.HALF_OPEN",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "CircuitBreakerState.FAILED",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "text": "Each service correctly propagated the W3C traceparent header, but two services disagreed on which header name to use, so downstream spans were created under a brand-new trace ID instead of merging with the original.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The checkout orchestrator lacked try-finally compensation logic. When payment raised an exception, the reserved inventory lock was abandoned. ---",
+        "text": "Spans were sampled at 1% to reduce overhead, so most of the requests in the reported trace simply were never recorded in the first place, not dropped mid-flight.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---",
+        "text": "The tracing SDK batched spans and flushed them every 30 seconds, so a short-lived async task's spans were queued but the process exited before the batch was ever exported.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By sampling only a small percentage of requests for tracing, on the assumption that a lower sampling rate alone keeps trace context intact across every async boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging a request ID to stdout on every service, trusting that grepping logs later is equivalent to having a propagated distributed trace.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By storing trace context in a global mutable variable shared across all requests, since a single shared value is assumed to be enough state for concurrent traces.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more collector replicas to ingest spans faster, without validating that trace context is actually propagated correctly across every async hop.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed span export silently in the background, instead of checking whether the trace context it was exporting was ever captured correctly.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By raising alerts purely on aggregate error rate, without checking whether the underlying traces show the error budget itself is actually being consumed.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By sampling only a small percentage of requests for tracing, on the assumption that a lower sampling rate alone keeps trace context intact across every async boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By logging a request ID to stdout on every service, trusting that grepping logs later is equivalent to having a propagated distributed trace.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By storing trace context in a global mutable variable shared across all requests, since a single shared value is assumed to be enough state for concurrent traces.",
         "is_correct": false
       }
     ],

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "High offsets force all shards to score and return thousands of documents to the coordinator; use searchafter instead.",
+        "text": "MongoDB caps single BSON documents at 16MB, and the fix is to enable {allowDiskUse: true} so oversized documents spill to temporary files on disk instead of being rejected.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
+        "text": "MongoDB caps single BSON documents at 100MB, and the Time-Series Bucket Pattern is only needed once a collection's total size exceeds several terabytes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By building doc-value hash tables counting occurrences of exact keyword values across matching documents.",
+        "text": "The 16MB limit applies only to documents returned by a query, not to documents stored on disk, so an oversized array only becomes a problem when it is read back.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The index stores raw values of name, not computed UPPER(name); the planner must fall back to a full table scan.",
+        "text": "8 bytes unix epoch timestamp with millisecond precision, and 4 bytes of a purely random value with no counter component at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Because in three-valued logic, comparison with NULL yields UNKNOWN. Any condition WHERE UNKNOWN is treated as false.",
+        "text": "4 bytes incrementing counter, 4 bytes machine identifier, and 4 bytes process id, with no timestamp component.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It provides Write-Ahead Logging; upon restart, InnoDB replays committed transactions from the redo log that had not yet reached data pages.",
+        "text": "12 bytes of a cryptographically secure random value, generated fresh for every document with no embedded timestamp or counter.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The percentage of true nearest neighbors (from exact brute force) retrieved by an ANN algorithm in its top-K results.",
+        "text": "Always embed related data regardless of relationship size, since MongoDB has no meaningful limit on array length in practice.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The database flushes transaction intentions and data changes to a sequential Write-Ahead Log (WAL) on non-volatile storage before returning a success acknowledgment. Upon power restoration, the engine reads the WAL to replay any committed t",
+        "text": "Reference should be used for 1:1 relationships accessed together atomically, while embedding is reserved for large, unbounded M:N relationships to save storage.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A memory structure that caches the return values of deterministic functions in the SGA, eliminating repeated function execution for identical arguments.",
+        "text": "The choice between embedding and referencing only affects read performance, never write performance, so it can be changed freely at any time without a migration.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Inverted File Flat: vectors are clustered into Voronoi cells around centroids; queries search only the nearest centroids.",
+        "text": "A compound index on a date field and a boolean 'expired' flag that an application cron job must check and delete manually; MongoDB does not delete documents automatically.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "text": "An index that limits how long a query is allowed to run before it is automatically cancelled by the server, unrelated to document lifetime.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Phase 1 (Prepare): Coordinator asks participants if they can commit; participants vote YES and write to WAL. Phase 2 (Commit): If all voted YES, coordinator issues COMMIT; otherwise ABORT.",
+        "text": "A single-field index on a date field that prevents any document older than the specified number of seconds from being inserted in the first place.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "int(official_oid.generation_time.timestamp()) + 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "int(official_oid.generation_time.timestamp()) - 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "official_oid.generation_time.timestamp()",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "0x02",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "0x03",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "0x10",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "The sensor readings are stored correctly in separate documents, but a poorly designed aggregation pipeline uses $group to reassemble them into one oversized in-memory result before returning it to the client.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "text": "Each sensor reading is stored as its own tiny document, and the 16MB limit was hit by the total size of the collection's index on sensor_id, not by any single document.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "text": "A change stream watching the sensor collection buffers every update event in an unbounded in-memory queue on the application side, and that queue, not any MongoDB document, is what exceeded 16MB.",
         "is_correct": false
       }
     ],

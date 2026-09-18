@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bson_size_validator import bson_size_validator
-except ImportError:
-    from p01_bson_size_validator import bson_size_validator
+from p01_bson_size_validator import bson_size_validator
 
 
 def test_bson_size_validator():

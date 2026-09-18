@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_redis_crc16_hash_slot import redis_crc16_hash_slot
-except ImportError:
-    from p01_redis_crc16_hash_slot import redis_crc16_hash_slot
+from p01_redis_crc16_hash_slot import redis_crc16_hash_slot
 
 
 def test_redis_crc16_hash_slot():

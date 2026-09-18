@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Insert record bytes into a slotted page. Returns page dict with 'slots' and 'free_space'.
 
+Example:
+    >>> page = {'capacity': 100, 'slots': [], 'free_offset': 100}
+    >>> slotted_page_insert(page, b'hello')
+    0
+    >>> page
+    {'capacity': 100, 'slots': [(95, 5)], 'free_offset': 95}
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The page grows from both ends at once: the slot directory grows
+        forward from the front while record bytes grow backward from
+        free_offset, so free space is whatever is left between them.
+    Hint 2: Track free space as free_offset minus the space already claimed
+        by existing slot entries (8 bytes each: 4 for offset, 4 for length),
+        then append the new (offset, length) tuple to the slots list.
+    Hint 3: A candidate insert needs room for the record bytes AND the new
+        8-byte slot entry itself; if that check fails, return -1 without
+        mutating page['slots'] or page['free_offset'] at all.
 """
 
 from __future__ import annotations

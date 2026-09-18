@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_geohash_proximity_search import geohash_proximity_search
-except ImportError:
-    from p01_geohash_proximity_search import geohash_proximity_search
+from p01_geohash_proximity_search import geohash_proximity_search
 
 
 def test_geohash_proximity_search():

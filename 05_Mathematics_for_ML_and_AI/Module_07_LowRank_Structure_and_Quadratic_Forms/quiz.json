@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "B.shape",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "A.shape",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "(rank, rank)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(1.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(0.5)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(25.0 / 126.0)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "(20, rank)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "(10, rank)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "(10, 20)",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(1.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(10.0 / 16.0)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(25.0 / 126.0)",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By truncating a matrix's SVD to a fixed rank for every input, without checking how much energy that rank actually retains for the specific matrix at hand.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching a low-rank factorization once and reusing it indefinitely, without revalidating it when the original matrix is updated.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming any low-rank approximation error is negligible as long as the rank is greater than zero, without checking the actual retained energy ratio.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming any low-rank approximation error is negligible as long as the rank is greater than zero, without checking the actual retained energy ratio.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating a quadratic form matrix as positive definite whenever its diagonal entries are all positive, without checking its eigenvalues or leading principal minors.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By truncating a matrix's SVD to a fixed rank for every input, without checking how much energy that rank actually retains for the specific matrix at hand.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By truncating a matrix's SVD to a fixed rank for every input, without checking how much energy that rank actually retains for the specific matrix at hand.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching a low-rank factorization once and reusing it indefinitely, without revalidating it when the original matrix is updated.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming any low-rank approximation error is negligible as long as the rank is greater than zero, without checking the actual retained energy ratio.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming any low-rank approximation error is negligible as long as the rank is greater than zero, without checking the actual retained energy ratio.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating a quadratic form matrix as positive definite whenever its diagonal entries are all positive, without checking its eigenvalues or leading principal minors.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By truncating a matrix's SVD to a fixed rank for every input, without checking how much energy that rank actually retains for the specific matrix at hand.",
         "is_correct": false
       }
     ],

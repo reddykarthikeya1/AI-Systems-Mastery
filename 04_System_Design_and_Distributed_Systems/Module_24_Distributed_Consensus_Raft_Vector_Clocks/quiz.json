@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "RaftRole.FOLLOWER",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "RaftRole.CANDIDATE",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "readable(a)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "readable(a) + readable(b)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "bob.text()",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "once.text() + bob.text()",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "CausalityRelation.HAPPENED_BEFORE",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "CausalityRelation.HAPPENED_AFTER",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "CausalityRelation.EQUAL",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The calculation divided by 10^6 instead of 1024^3 (GiB) or 10^9 (GB) and completely omitted multiplying by the storage replication factor (3x). This led to severe disk exhaustion in production. ---",
+        "text": "The cluster used an even number of nodes, so a network partition could produce two equally sized halves with no majority possible on either side.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Ingesting arbitrary user uploads without strict chunk size limits and streaming piping causes memory consumption to explode. ---",
+        "text": "Log replication used asynchronous acknowledgment, so the leader considered an entry committed before a majority of followers had actually persisted it, allowing an uncommitted entry to be lost on failover.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "Heartbeat messages were sent at a longer interval than the election timeout itself, so followers routinely timed out and started elections even while a healthy leader was still running.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By giving every node the exact same election timeout, on the assumption that identical timing alone guarantees a quick, deterministic leader election.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting a leader commit a log entry as soon as it writes it locally, without waiting for acknowledgment from a majority of followers.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By comparing vector clocks with a single global counter instead of one counter per node, since a single number is assumed to capture causality just as well.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more nodes to the cluster to improve fault tolerance, without validating that the quorum size still reflects the new cluster membership.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed vote request immediately at the same fixed interval, instead of randomizing the timeout so candidates don't perpetually collide.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating any two updates with different vector clocks as conflicting, without checking whether one actually happened causally before the other.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By giving every node the exact same election timeout, on the assumption that identical timing alone guarantees a quick, deterministic leader election.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting a leader commit a log entry as soon as it writes it locally, without waiting for acknowledgment from a majority of followers.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By comparing vector clocks with a single global counter instead of one counter per node, since a single number is assumed to capture causality just as well.",
         "is_correct": false
       }
     ],

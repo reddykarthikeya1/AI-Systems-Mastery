@@ -5,7 +5,6 @@ import socket
 import time
 
 def create_server_socket():
-    # Restarting server immediately fails with 'Address already in use' (TIME_WAIT trap).
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(("127.0.0.1", 9999))
     server.listen(5)

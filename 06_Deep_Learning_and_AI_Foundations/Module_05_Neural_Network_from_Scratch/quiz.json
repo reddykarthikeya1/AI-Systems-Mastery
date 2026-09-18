@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(float(c_pt.grad.item()))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(float(d_pt.grad.item()))",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(float(loss_pt.grad.item()))",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(float(e_pt.item()))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(float(d_pt.item()))",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(float(c_pt.item()))",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(2.0)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(3.0)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(8.0)",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "pytest.approx(float(c_pt.grad.item()))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "pytest.approx(float(d_pt.grad.item()))",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "pytest.approx(float(e_pt.grad.item()))",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing the full forward pass from scratch on every backward call instead of reusing cached activations.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting gradients silently overflow to inf without ever checking for NaNs before the next update.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By zeroing every parameter's gradient except the last layer's before each optimizer step.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting hand-derived gradients as correct without ever comparing them to numerical gradient checks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a dead ReLU unit will start producing gradients again on its own without any intervention.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the comparison against a reference autograd engine once the shapes happen to match.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing the full forward pass from scratch on every backward call instead of reusing cached activations.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting gradients silently overflow to inf without ever checking for NaNs before the next update.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By zeroing every parameter's gradient except the last layer's before each optimizer step.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting hand-derived gradients as correct without ever comparing them to numerical gradient checks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a dead ReLU unit will start producing gradients again on its own without any intervention.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the comparison against a reference autograd engine once the shapes happen to match.",
         "is_correct": false
       }
     ],

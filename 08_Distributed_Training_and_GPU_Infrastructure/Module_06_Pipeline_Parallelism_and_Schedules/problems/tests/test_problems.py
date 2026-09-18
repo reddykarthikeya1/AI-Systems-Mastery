@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_one_f_one_b_pipeline_schedule import one_f_one_b_pipeline_schedule
-except ImportError:
-    from p01_one_f_one_b_pipeline_schedule import one_f_one_b_pipeline_schedule
+from p01_one_f_one_b_pipeline_schedule import one_f_one_b_pipeline_schedule
 
 
 def test_one_f_one_b_pipeline_schedule():

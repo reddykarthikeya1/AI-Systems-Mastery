@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_idempotent_payment_deduplication import idempotent_payment_deduplication
-except ImportError:
-    from p01_idempotent_payment_deduplication import idempotent_payment_deduplication
+from p01_idempotent_payment_deduplication import idempotent_payment_deduplication
 
 
 def test_idempotent_payment_deduplication():

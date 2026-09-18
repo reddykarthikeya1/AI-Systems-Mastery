@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "\"node-3\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "\"node-1\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "a different node on each call, since get_node() re-hashes randomly every time",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None, since two independent lookups for the same key are not guaranteed to agree",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "ring.nodes[0] (whichever node was registered first)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "len(prefs) - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "len(prefs) * 3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "The hash function itself was cryptographically weak, clustering many distinct keys into the same output range regardless of how many virtual nodes existed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Static memory reservation pre-allocates for maximum possible token length, wasting 60-80% of VRAM when actual responses are short. ---",
+        "text": "Virtual node counts were fine, but the replication factor was set to 1, so a single hot key had no replicas to spread its read load across.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "text": "The ring correctly used 200 virtual nodes per server, but they were all hashed from the same seed value, collapsing them onto nearly identical ring positions.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the replication factor until every key is stored everywhere, on the assumption that more copies alone balances hash-space distribution.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By re-hashing the entire keyspace onto a fresh ring on every node join or leave, instead of only remapping the minimal affected slice.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming a single virtual node per physical server is enough, since the hash function itself is already uniform.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more physical nodes to the ring to dilute hot spots, without validating that each node actually received enough virtual nodes to balance load.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying reads against whichever node currently owns a key, without checking whether that ownership itself is skewed by low virtual-node density.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By replicating every key to all nodes so no single node can become a bottleneck, without checking whether the ring's hash-space distribution is otherwise balanced.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing the replication factor until every key is stored everywhere, on the assumption that more copies alone balances hash-space distribution.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By re-hashing the entire keyspace onto a fresh ring on every node join or leave, instead of only remapping the minimal affected slice.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming a single virtual node per physical server is enough, since the hash function itself is already uniform.",
         "is_correct": false
       }
     ],

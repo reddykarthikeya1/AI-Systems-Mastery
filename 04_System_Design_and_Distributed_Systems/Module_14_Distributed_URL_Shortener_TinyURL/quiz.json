@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "short_url",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "\"\"",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "3",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "encoded",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "num - 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The checkout orchestrator lacked try-finally compensation logic. When payment raised an exception, the reserved inventory lock was abandoned. ---",
+        "text": "The service used Base62 encoding on a monotonically increasing integer ID, but reset the counter to zero after every deploy, producing the same short code repeatedly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "Short codes were generated correctly, but the datastore's unique-index constraint was missing, so a rare collision silently overwrote an existing mapping instead of being rejected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In HTTP/2 over TCP, all virtual streams share a single TCP sequence space. If packet N is dropped, the OS TCP receiver refuses to deliver packets N+1, N+2 to application space until packet N is retransmitted, stalling all streams. ---",
+        "text": "The service hashed the full original URL including a per-request timestamp, so the same URL shortened twice always produced two different codes instead of colliding.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By hashing the full long URL and truncating it to a fixed number of characters, on the assumption that truncation alone keeps collisions statistically negligible.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assigning short codes from an in-memory counter on each application server independently, without checking whether two servers ever hand out the same code.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching every short-to-long URL mapping forever, without validating that the underlying ID sequence it was derived from never wraps around.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more shortening service replicas to handle traffic, without validating that they share a single coordinated source of unique IDs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a shorten request with the same input URL on failure, trusting that a retry alone cannot produce a colliding short code.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By redirecting expired short codes to a generic error page, without checking whether that code could be safely recycled for a new URL.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By hashing the full long URL and truncating it to a fixed number of characters, on the assumption that truncation alone keeps collisions statistically negligible.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assigning short codes from an in-memory counter on each application server independently, without checking whether two servers ever hand out the same code.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching every short-to-long URL mapping forever, without validating that the underlying ID sequence it was derived from never wraps around.",
         "is_correct": false
       }
     ],

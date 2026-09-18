@@ -5,10 +5,24 @@ Target: Production-grade implementation
 
 Determine source and destination ranks for ring attention KV chunk shift.
 
+Example:
+    >>> ring_attention_kv_shift(0, 4, 1)
+    (1, 3)
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Ranks are arranged in a logical ring, so "next" and "previous"
+        neighbor are just one position clockwise and counter-clockwise,
+        wrapping back around at the ends of the ring.
+    Hint 2: Compute the next neighbor with modular arithmetic, `(rank + 1) %
+        world_size`, and the previous neighbor the same way but shifted
+        back and re-offset before the modulo: `(rank - 1 + world_size) %
+        world_size`.
+    Hint 3: Adding `world_size` before taking `%` is what keeps the
+        previous-rank computation correct when `rank == 0` (Python's `%`
+        already returns a non-negative result for a positive modulus, but
+        the `+ world_size` makes that explicit and is worth keeping). Note
+        `step` doesn't change who the neighbors are — every step shifts by
+        exactly one ring position — so it isn't used in the formula at all.
 """
 
 from __future__ import annotations

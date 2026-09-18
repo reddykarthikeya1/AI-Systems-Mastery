@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_grid_block_thread_indexer import grid_block_thread_indexer
-except ImportError:
-    from p01_grid_block_thread_indexer import grid_block_thread_indexer
+from p01_grid_block_thread_indexer import grid_block_thread_indexer
 
 
 def test_grid_block_thread_indexer():

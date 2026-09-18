@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[None]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[-1]",
         "is_correct": false
       },
       {
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "100_000",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "99_998",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "(1, 2)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "(1, 3)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -107,12 +107,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "0.1",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "text": "Edge weights are summed using integer arithmetic, so a very large negative weight silently wraps around to a small positive number before it can push a distance below zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "text": "The relaxation loop runs n-1 times as required, but distances are compared with <= instead of <, so a cycle that costs exactly the same each lap keeps relaxing until the loop runs out and a stale value is returned.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The stack holds indices precisely so the distance can be computed, and then the distance is never computed \u2014 the resolving index is stored raw.",
+        "text": "The algorithm detects the negative cycle correctly but reports the last valid distance found before entering it, rather than flagging the graph as having no shortest path.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Updating the running minimum before computing the profit lets a day be both the purchase and the sale. The profit is then price - price == 0, which is harmless \u2014 until you notice it means the invariant \"buy strictly before sell\" is not bein",
+        "text": "The disjoint-set find operation does not use path compression, so two components that were already merged can be reported as still separate, making the total look smaller than it should.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "math.log2 works in double precision, which has 53 bits of mantissa. Above 2",
+        "text": "Edges are sorted by weight in descending order instead of ascending, so Kruskal greedily picks the most expensive edges first and total ends up far larger than the true minimum spanning tree cost.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "text": "The union step merges components by rank, but the rank array is never initialized, so an early union based on garbage ranks can silently create a cycle that consumes an edge without connecting anything.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "The two implementations round intermediate distances differently, so on graphs with floating point weights they occasionally disagree by less than machine epsilon and the comparison flags it as a real mismatch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "text": "Bellman-Ford is run for n rounds instead of n-1, so it performs one relaxation pass too many and reports a distance that has been relaxed along an edge that should no longer count.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "text": "The adjacency list used by Dijkstra lists each edge in both directions, so it silently treats the graph as undirected while Bellman-Ford correctly respects edge direction, and the two report different distances for that reason.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "text": "The heap compares tuples (dist, node), and when two entries share the same distance, comparing the node objects directly raises a TypeError that is silently caught and skipped, dropping a valid entry.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "dist[u] is updated after the neighbours are relaxed instead of before, so every relaxation reads the distance from one step behind the true current value.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "After rebalancing, len(lower) == len(upper) means an even number of values, and the median is the average of the two roots. >= sends that case down the odd-count branch, which returns the lower of the two middle values instead of their mean",
+        "text": "The visited set marks a node as done the moment it is first pushed onto the heap rather than when it is popped, so a shorter path discovered later is never allowed to update it.",
         "is_correct": false
       }
     ],

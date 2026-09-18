@@ -16,6 +16,10 @@ Example
     subsets([1, 2, 3])
     -> [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]
 
+Example:
+    >>> subsets([1, 2, 3])
+    [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Each element is either in a subset or not, so there are 2^n subsets. That is the shape of the recursion.

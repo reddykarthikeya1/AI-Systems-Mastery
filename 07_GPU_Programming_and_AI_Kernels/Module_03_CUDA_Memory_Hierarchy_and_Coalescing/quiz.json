@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "16",
         "is_correct": false
       },
       {
@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "[0xFFFFFFFF]",
+        "text": "1.0 / 4.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "32.0",
         "is_correct": false
       }
     ],
@@ -102,12 +102,12 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
+        "text": "16",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "33",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kernel hangs indefinitely (deadlock) on H100 with 0% SM activity.",
+        "text": "Pad the shared-memory tile's row stride by one element so column access no longer maps every thread to the same bank.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Custom object kernel runs at 20% of memory bandwidth.",
+        "text": "Round the array size up so the total number of threads is an exact multiple of the warp size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Standardize $\\epsilon = 10^{-5}$ or $10^{-6}$ and clamp variance $\\max(\\text{var}, 0.0)$.",
+        "text": "Cache the particle struct in shared memory first, then have each thread copy its own field out before computing.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "text": "Shared-memory reads serialize into 32 separate transactions instead of completing in one broadcast.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "text": "The kernel hangs indefinitely with 0% SM activity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "Throughput matches the strided-access benchmark at roughly 3% of the coalesced-access bandwidth.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction.",
+        "text": "All 32 threads in a warp read shared-memory addresses that map to the same bank, serializing the access 32 ways.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers.",
+        "text": "The array size is not a multiple of the cache-line size, leaving one partially-filled 128-byte transaction per tile.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -",
+        "text": "The kernel reads global memory through the read-only texture cache path instead of the standard L1/L2 path.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sign-extend using bit arithmetic:",
+        "text": "All 32 threads in a warp read shared-memory addresses that map to the same bank, serializing the access 32 ways.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "text": "The array size is not a multiple of the cache-line size, leaving one partially-filled 128-byte transaction per tile.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "text": "The kernel reads global memory through the read-only texture cache path instead of the standard L1/L2 path.",
         "is_correct": false
       }
     ],

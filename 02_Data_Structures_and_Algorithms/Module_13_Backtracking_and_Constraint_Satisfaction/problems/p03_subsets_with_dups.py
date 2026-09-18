@@ -13,6 +13,10 @@ Constraints
 Example
     subsets_with_dups([1, 2, 2]) -> [[], [1], [1,2], [1,2,2], [2], [2,2]]
 
+Example:
+    >>> subsets_with_dups([1, 2, 2])
+    [[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Deduplicating the output afterwards works but is wasteful - you generate the duplicates first.

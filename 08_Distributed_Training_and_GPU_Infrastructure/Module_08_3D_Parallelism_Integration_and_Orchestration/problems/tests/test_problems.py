@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_compute_3d_rank_coordinates import compute_3d_rank_coordinates
-except ImportError:
-    from p01_compute_3d_rank_coordinates import compute_3d_rank_coordinates
+from p01_compute_3d_rank_coordinates import compute_3d_rank_coordinates
 
 
 def test_compute_3d_rank_coordinates():

@@ -18,6 +18,10 @@ This problem is intractable without pruning and instant with it. Enumerating
 all placements for n = 8 is C(64, 8) ≈ 4.4 billion; pruning column by column
 with three constraint sets visits a few thousand states.
 
+Example:
+    >>> n_queens(4)
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Place one queen per row - that removes row conflicts by construction.

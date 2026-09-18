@@ -19,6 +19,12 @@ The question is really "what is the longest palindromic *prefix* of s" - that
 part stays put, and the rest is mirrored in front of it. Finding that prefix in
 linear time is the trick worth learning.
 
+Example:
+    >>> shortest_palindrome("aacecaaa")
+    'aaacecaaa'
+    >>> shortest_palindrome("abcd")
+    'dcbabcd'
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: If the longest palindromic prefix has length k, the answer is `reversed(s[k:]) + s`.

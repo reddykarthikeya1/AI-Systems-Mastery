@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python follows the Method Resolution Order (MRO) computed via the C3 Linearization algorithm, which guarantees that child classes precede parent classes and multiple parents are checked in left-to-right order.",
+        "text": "- Modular Monolith: Independent team deployments and isolated failure domains. - Microservices: Zero network latency and a single shared database transaction boundary -- the trade-offs are swapped between the two architectures.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- A shallow copy duplicates the outer container, but child/nested objects inside still point to the same memory references. - A deep copy recursively duplicates every single nested container and object, creating a 100% isolated clone.",
+        "text": "Both architectures share identical deployment complexity and network characteristics; the only real difference is which programming language each module is allowed to use.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Windows does not support POSIX fork(); it launches a fresh Python interpreter process that re-imports the main script. Without if name == \"main\":, every child process re-executes the process-spawning code endlessly.",
+        "text": "A Modular Monolith always requires a service mesh and container orchestration, while Microservices can run as a single deployable process without any network calls between modules.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python uses short-circuit evaluation. In an and expression, if the left operand (x != 0) is False, the entire condition is guaranteed to be False, so Python immediately stops and never evaluates (100 / x) > 5, preventing the division by zer",
+        "text": "An API Gateway's only job is to cache static assets like images and CSS files closer to the end user; authentication and rate limiting are handled exclusively by each individual downstream service.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A massive batch of keys expiring at the exact same second. Adding random jitter (e.g. $\\pm 10\\%$) distributes expirations smoothly over time.",
+        "text": "It replaces the need for a load balancer entirely by executing business logic directly, meaning downstream services never receive requests themselves, only precomputed responses.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It uses OS system calls (LoadLibraryW on Windows, dlopen on POSIX) to load compiled machine code directly into the Python process virtual memory space.",
+        "text": "An API Gateway's primary responsibility is compiling client-side JavaScript bundles at request time so that no build step is needed before deployment.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- exctype: The exception class (e.g. ZeroDivisionError). - excval: The exception instance/message. - exctb: The traceback object. (If no exception occurred, all three arguments are None).",
+        "text": "- Vertical: Partitioning rows across multiple servers. - Read-Replicas: Upgrading CPU/RAM on a single server. - Sharding: Offloading reads to replica nodes -- the three strategies are rotated relative to their real definitions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- 15 / 4 is True Division: it returns a float 3.75. - 15 // 4 is Floor Division: it rounds down towards negative infinity and returns an integer 3.",
+        "text": "Read-Replicas and Sharding are the same technique under two different names; Vertical Scaling is the only strategy that actually increases the total number of database servers.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Path.rglob(\".py\") (or Path.glob(\"/.py\")).",
+        "text": "Vertical Scaling and Sharding both require rewriting application queries to target multiple servers; only Read-Replicas can be added without any changes to the application code.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "autospec=True inspects the real class signature and raises an AttributeError if your test calls a nonexistent method or passes incorrect arguments, preventing mock attribute drift.",
+        "text": "- Sync (HTTP/gRPC): Used only for long-running, fire-and-forget background jobs. - Async (Broker): Used only when the caller needs the response immediately to continue -- the two use cases are reversed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The GIL is a mutex that prevents multiple native OS threads from executing CPython bytecode at the same time, protecting Python's internal memory management (reference counts) from corruption.",
+        "text": "Message brokers are strictly faster than HTTP/gRPC in every scenario, so synchronous calls should be avoided entirely in a well-designed microservice architecture.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Columnar memory stores values of the same column contiguously in RAM, allowing the CPU to load only that column into L1/L2 cache and use SIMD vector instructions.",
+        "text": "The choice between sync and async communication is determined solely by the programming language each service is written in, not by the nature of the operation being performed.",
         "is_correct": false
       }
     ],
@@ -192,7 +192,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"LIVE\"",
+        "text": "\"live\"",
         "is_correct": false
       },
       {
@@ -222,7 +222,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"proj-1\"]",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Raising raise RuntimeError(...) inside an except block without from err fails to set cause explicitly, which obscures the original root cause during debugging.",
+        "text": "The background worker's queue consumer uses a different serialization library (pickle) than the API producer (json), and pickle silently renames dictionary keys to their attribute equivalents during deserialization.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "text": "FastAPI automatically renames any field ending in _format to targetformat internally for OpenAPI schema generation, but the background worker was never updated to expect this automatic rename.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.",
+        "text": "The KeyError only appears because the background worker's queue message has expired (TTL exceeded) by the time it's processed, and expired messages return a default payload missing all of their original keys.",
         "is_correct": false
       }
     ],

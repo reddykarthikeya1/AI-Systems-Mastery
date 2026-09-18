@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using composite Partition Keys (PK) and Sort Keys (SK) to group related entities (e.g. Customer and Orders) in the same physical partition.",
+        "text": "LSM-Trees skip writing to disk entirely for the first several minutes after a write, relying purely on replication to other nodes for durability during that window.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "An optimistic implementation of serializable isolation that tracks read-write conflicts (SIREAD locks) and aborts transactions exhibiting dangerous dependency cycles.",
+        "text": "LSM-Trees achieve higher write throughput by writing directly to the final sorted position on disk using a B+Tree-like structure, but with a larger page size than typical B+Trees.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+        "text": "LSM-Trees batch multiple client writes into a single larger write, but each batch is still written to a random location on disk determined by the key's hash.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
+        "text": "It probabilistically confirms a key definitely exists in an SSTable, allowing the read to skip checking the MemTable entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Columnar stores read only the specific columns referenced in queries and use CPU SIMD vectorization to process thousands of values per instruction.",
+        "text": "It stores the actual value for every key in a compact form, letting the read path return results directly for common keys without touching the SSTable.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Data Guard replicates physical block redo for an entire database; GoldenGate performs logical transactional replication across heterogeneous databases and tables.",
+        "text": "It sorts the keys within an SSTable so that a binary search can be used, reducing the number of disk seeks needed to find a match.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
+        "text": "Leveled compaction merges SSTables of similar size together and is optimal for writes, while Size-Tiered maintains non-overlapping key ranges and is optimal for reads.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "To abort immediately if an exclusive lock cannot be acquired within milliseconds, preventing blocking application traffic queues.",
+        "text": "Size-Tiered and Leveled compaction produce identical on-disk layouts; the only difference is how often the background compaction thread runs.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
+        "text": "Leveled compaction never merges SSTables at all, relying entirely on the Bloom filter to make reads fast regardless of how many SSTables exist on disk.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "To ensure atomicity: verify the caller's unique random token matches before deleting the key, preventing releasing another worker's lock.",
+        "text": "By creating a separate table for each entity type and joining them at query time using DynamoDB's built-in JOIN operator across partition keys.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "must: must match, contributes to score; should: optional, boosts score; filter: must match, cached, does NOT contribute to score.",
+        "text": "By storing the entire 1:N relationship as a single large JSON blob in one item's value, since DynamoDB items are schemaless and can hold arbitrarily nested data.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "As a native C extension providing a vector type, operators (<-> L2, <=> Cosine), and IVFFlat / HNSW index access methods.",
+        "text": "By using the Partition Key alone to represent the child entity and a Global Secondary Index to represent the parent, avoiding the need for a Sort Key entirely.",
         "is_correct": false
       }
     ],
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "1.0",
+        "text": "0.25",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "2.0",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"user:bob\", \"user:alice\", \"user:charlie\"]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[\"user:alice\", \"user:bob\"]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -227,12 +227,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Writer released parent latch before acquiring child latch during downward traversal, allowing a concurrent split to invalidate node pointers.",
+        "text": "The table's provisioned throughput was correctly set at 10,000 WCU total, but DynamoDB enforces that limit per individual attribute rather than per partition, and 'value' is a single hot attribute.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "text": "Each sensor writes to its own uniquely named partition key, but all 50,000 partitions happen to hash to the same physical storage node due to a Murmur3 collision, creating a hot node rather than a hot key.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "text": "The table uses on-demand (pay-per-request) capacity mode, which has no WCU ceiling at all, so the exception is actually a client-side connection pool exhaustion mislabeled by the SDK.",
         "is_correct": false
       }
     ],

@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[None]",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "text": "Increase the vector index's ef_search parameter so the ANN search returns more candidate neighbors before filtering.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "text": "Re-embed every chunk nightly with a fresh embedding model so stale vectors are replaced on a fixed schedule.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Post-filtering ANN search. The HNSW index traverses the top-10 nearest neighbors in vector space, and then discards 9 of them because they fail the metadata filter!",
+        "text": "Increase the overlap between adjacent chunks so more context is duplicated across chunk boundaries.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Chunking each document into fixed-size windows with zero overlap between consecutive chunks, so no character is ever duplicated across a boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Purging parent chunks from document storage the instant a corresponding vector embedding is updated, to avoid any stale duplication.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Selecting the chunk size that minimizes the total number of embedding API calls, independent of how coherent each chunk's content is.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Chunking each document into fixed-size windows with zero overlap between consecutive chunks, so no character is ever duplicated across a boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Purging parent chunks from document storage the instant a corresponding vector embedding is updated, to avoid any stale duplication.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Selecting the chunk size that minimizes the total number of embedding API calls, independent of how coherent each chunk's content is.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Chunking each document into fixed-size windows with zero overlap between consecutive chunks, so no character is ever duplicated across a boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Purging parent chunks from document storage the instant a corresponding vector embedding is updated, to avoid any stale duplication.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Selecting the chunk size that minimizes the total number of embedding API calls, independent of how coherent each chunk's content is.",
         "is_correct": false
       }
     ],

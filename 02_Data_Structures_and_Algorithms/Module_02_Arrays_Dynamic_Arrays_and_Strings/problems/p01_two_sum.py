@@ -16,6 +16,10 @@ Constraints
 Example
     two_sum([2, 7, 11, 15], 9) -> [0, 1]
 
+Example:
+    >>> two_sum([2, 7, 11, 15], 9)
+    [0, 1]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: For each element you need to know whether target - x appeared earlier.

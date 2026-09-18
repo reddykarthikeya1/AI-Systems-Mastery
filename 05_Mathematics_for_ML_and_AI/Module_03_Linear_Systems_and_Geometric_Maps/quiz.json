@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
@@ -52,7 +52,7 @@
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "-10.0",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "0.5",
+        "text": "8.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "2.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "5.0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more decimal places of floating-point precision to every computation, on the assumption that precision alone prevents an ill-conditioned system from producing garbage results.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed solve with the exact same matrix, trusting that a second attempt at Gaussian elimination will avoid a singular pivot.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching a previously computed solution and reusing it whenever the system looks similar, without checking whether the new right-hand side actually keeps the system consistent.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By computing a matrix determinant and treating any nonzero result as proof the system is well-conditioned, without checking how close to zero it actually is.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By solving every linear system with a single fixed elimination order, without checking whether a pivot near zero should trigger a row swap first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming rank(A) always equals rank([A|b]) for any system, so consistency is never actually checked before reporting a solution.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more decimal places of floating-point precision to every computation, on the assumption that precision alone prevents an ill-conditioned system from producing garbage results.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed solve with the exact same matrix, trusting that a second attempt at Gaussian elimination will avoid a singular pivot.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching a previously computed solution and reusing it whenever the system looks similar, without checking whether the new right-hand side actually keeps the system consistent.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By computing a matrix determinant and treating any nonzero result as proof the system is well-conditioned, without checking how close to zero it actually is.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By solving every linear system with a single fixed elimination order, without checking whether a pivot near zero should trigger a row swap first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming rank(A) always equals rank([A|b]) for any system, so consistency is never actually checked before reporting a solution.",
         "is_correct": false
       }
     ],

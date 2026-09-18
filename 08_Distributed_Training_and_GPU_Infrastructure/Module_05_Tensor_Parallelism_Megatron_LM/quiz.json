@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "text": "Ensure LayerNorm gradients are reduced across the TP group so every rank computes an identical update.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "All-reduce the local softmax normalization constant across the vocabulary-parallel group before computing cross-entropy.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "Re-shard the embedding table so its partitioning matches the sampler's assumed layout.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "text": "LayerNorm weights are replicated across all TP ranks, but their gradients are not averaged, so the replicas silently drift apart after the first optimizer step.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Register an optimizer pre-step hook that performs an all-reduce across the embedding group [0, p-1].",
+        "text": "The vocab-parallel cross-entropy computes the softmax normalization constant from each rank's local logit shard without an all-reduce across the vocabulary-parallel group, understating the true partition function.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "The embedding weight is column-sharded but the sampler assumes it is row-sharded, so out-of-range token ids silently wrap around into another rank's shard.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Account for gated MLP expansion factor in analytical FLOP counters.",
+        "text": "Rank 0 and Rank 1 diverge in weights after step 1, even though both started from an identical checkpoint.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0.",
+        "text": "Training loss is numerically stable but consistently a few percent higher than a single-GPU baseline at convergence.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Attention output diverges or generates NaN after 16 ring steps when running in native FP16.",
+        "text": "One rank's embedding lookup returns garbage values for tokens near the edge of its vocabulary shard.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "text": "LayerNorm weights are replicated across all TP ranks, but their gradients are not averaged, so the replicas silently drift apart after the first optimizer step.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In models where input embedding and output lmhead weights are tied (shared), loss fails to converge or gradients explode.",
+        "text": "The vocab-parallel cross-entropy computes the softmax normalization constant from each rank's local logit shard without an all-reduce across the vocabulary-parallel group, understating the true partition function.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Model gradients explode or training diverges unexpectedly when using torch.nn.utils.clipgradnorm.",
+        "text": "The embedding weight is column-sharded but the sampler assumes it is row-sharded, so out-of-range token ids silently wrap around into another rank's shard.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always accumulate online softmax running stats ($m, l$) in FP32 precision (float32), even when inputs and outputs are FP16 or BF16.",
+        "text": "GPUs within a tensor-parallel group span two different NVLink islands, forcing every all-reduce over the slower inter-node network fabric.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "The tensor-parallel group size does not evenly divide the hidden dimension, so one rank carries a padded shard and wastes compute every step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs. -",
+        "text": "The column-parallel and row-parallel linear layers are split across mismatched tensor-parallel group ranks, so their all-reduce calls target different process groups.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "text": "GPUs within a tensor-parallel group span two different NVLink islands, forcing every all-reduce over the slower inter-node network fabric.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "text": "The tensor-parallel group size does not evenly divide the hidden dimension, so one rank carries a padded shard and wastes compute every step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Run periodic network health sweeps (ibdiagnet, nccl-tests) and quarantine degraded links automatically.",
+        "text": "The column-parallel and row-parallel linear layers are split across mismatched tensor-parallel group ranks, so their all-reduce calls target different process groups.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By clipping gradients using only each rank's local shard norm instead of an all-reduced global norm.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting LayerNorm replicas drift apart across tensor-parallel ranks instead of reducing their gradients.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the all-reduce of the softmax normalization constant in vocab-parallel cross-entropy under heavy load.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a locally computed gradient norm on one TP rank equals the true global norm without an all-reduce.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that replicated LayerNorm parameters stay identical across ranks without ever comparing them.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that the vocabulary shard boundaries used by the sampler match the embedding table's actual sharding.",
         "is_correct": false
       }
     ],

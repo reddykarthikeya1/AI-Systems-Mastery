@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_jaccard_similarity_sets import jaccard_similarity_sets
-except ImportError:
-    from p01_jaccard_similarity_sets import jaccard_similarity_sets
+from p01_jaccard_similarity_sets import jaccard_similarity_sets
 
 
 def test_jaccard_similarity_sets():

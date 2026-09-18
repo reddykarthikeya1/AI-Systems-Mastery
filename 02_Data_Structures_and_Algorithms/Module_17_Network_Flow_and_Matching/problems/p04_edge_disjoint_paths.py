@@ -18,6 +18,10 @@ the route survive? Menger's theorem says the answer equals the smallest number
 of edges whose removal disconnects the two nodes - which is a minimum cut, which
 is a maximum flow.
 
+Example:
+    >>> edge_disjoint_paths(4, [(0, 1), (1, 3), (0, 2), (2, 3), (0, 3)], 0, 3)
+    3
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Give every edge capacity 1.

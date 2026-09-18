@@ -14,6 +14,10 @@ Constraints
 Example
     a=[1,2], b=[-2,-1], c=[-1,2], d=[0,2] -> 2
 
+Example:
+    >>> four_sum_count([1, 2], [-2, -1], [-1, 2], [0, 2])
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Four nested loops is O(n^4). Split the problem in half.

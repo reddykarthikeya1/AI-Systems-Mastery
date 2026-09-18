@@ -13,6 +13,11 @@ Constraints
 Example
     from_level_order([1, None, 2, 3]) -> [1, 3, 2]
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> inorder_traversal(from_level_order([1, None, 2, 3]))
+    [1, 3, 2]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Recursion uses the call stack. Doing it iteratively means managing that stack yourself.

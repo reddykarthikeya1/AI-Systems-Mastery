@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Processing data in batches of columnar vectors (e.g. 2,048 values in CPU L1/L2 cache) rather than executing an iterator loop one tuple at a time.",
+        "text": "Dirty Read: re-reading a row returns modified values; Non-Repeatable Read: reading uncommitted changes; Phantom Read: reading a row that was deleted by another transaction.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "PostgreSQL forks an independent operating system backend process for each client connection, sharing memory via the Shared Buffer Pool.",
+        "text": "Dirty Read and Non-Repeatable Read are the same phenomenon under different names; Phantom Read only occurs in single-row queries, never in range queries.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "text": "Phantom Read: reading uncommitted changes from another transaction that later rolls back; Dirty Read: a range query returns a different set of rows on re-execution.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+        "text": "2PL holds all locks until commit or abort, while Strict 2PL allows releasing locks during a shrinking phase before the transaction ends.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A collection scan (every document read into RAM) indicating a missing or unused index.",
+        "text": "Strict 2PL only applies to read locks, releasing write locks immediately after each statement, while plain 2PL holds both lock types until commit.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Standard VACUUM marks dead tuple space as reusable without shrinking file size; VACUUM FULL rewrites the table into a new file and reclaims disk space under an exclusive lock.",
+        "text": "2PL and Strict 2PL differ only in how many locks a transaction may hold simultaneously, not in when those locks are released.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Collections can enforce validation rules using JSON Schema ($jsonSchema) with strict or moderate enforcement levels.",
+        "text": "Phase 1 (Commit): the coordinator immediately applies the transaction on all participants. Phase 2 (Prepare): participants confirm afterward that the already-applied changes were valid.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Deletions create dead gaps between records; defragmentation compacts active records to the end of the page and updates slot offsets.",
+        "text": "Phase 1: each participant independently decides to commit or abort without consulting the coordinator. Phase 2: the coordinator only logs the outcome for audit purposes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+        "text": "Phase 1 (Prepare): the coordinator commits its own local changes first. Phase 2 (Vote): participants then vote on whether to accept the coordinator's already-committed state.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The estimated cost to access a non-sequential disk page relative to seqpagecost (tuned lower for SSDs, e.g. 1.1).",
+        "text": "2PC is blocking because every participant must communicate directly with every other participant during the prepare phase, creating an all-to-all network bottleneck.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "UNION deduplicates rows by performing an expensive sort/hash set operation; UNION ALL simply appends streams without deduplication.",
+        "text": "2PC is blocking only when participants use pessimistic locking; participants using optimistic concurrency control never block, even if the coordinator crashes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Row triggers cannot query the table being modified. A Compound Trigger provides 4 timing phases, allowing row-level data to be collected and aggregated in the statement phase.",
+        "text": "A participant that voted NO in the prepare phase is blocked from starting any new transaction until the coordinator explicitly sends it an ABORT for the current one.",
         "is_correct": false
       }
     ],
@@ -132,12 +132,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"FOLLOWER\"",
+        "text": "\"CANDIDATE\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"LEADER\"",
         "is_correct": false
       },
       {
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -222,12 +222,12 @@
       },
       {
         "id": "opt_1",
-        "text": "\"COMMITTED\"",
+        "text": "\"PREPARED\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"ABORTED\"",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query written as MATCH (a:Person), (b:Company) WHERE a.city = b.city without a relationship pattern, forcing an exhaustive $N \\times M$ Cartesian product in RAM.",
+        "text": "The candidate correctly waited for a majority of 3 votes, but two of the five nodes were partitioned from each other and each formed their own valid majority within their partition, so two leaders emerged simultaneously despite correct vote counting.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "text": "votes_received counts the candidate's own vote twice, once at self-vote and once when its RequestVote reply arrives back over the network, so 2 real votes from other nodes are miscounted as reaching the majority of 3.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The kernel's working directory is the module root, not projectsolution/.",
+        "text": "The cluster size was miscalculated as 3 instead of 5 because two nodes had not yet finished joining, so a majority of 2 out of the assumed 3-node cluster was treated as sufficient.",
         "is_correct": false
       }
     ],

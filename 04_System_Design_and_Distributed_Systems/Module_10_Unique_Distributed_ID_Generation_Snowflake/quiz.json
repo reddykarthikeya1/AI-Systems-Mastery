@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "parsed.timestamp",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "raw_id + 1",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "total_ids - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "total_ids // 2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Multiple threads checked stock > 0 simultaneously before any thread decremented, allowing overselling. ---",
+        "text": "The datacenter_id and worker_id bit fields overlapped due to an incorrect bit-shift width, so two different workers produced identical ID suffixes even with correct timestamps.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating cryptographic hashes into 6 or 7 characters creates severe collision probabilities governed by the Birthday Paradox. ---",
+        "text": "The sequence counter was reset to zero on every call instead of only when the millisecond changed, so multiple IDs within the same millisecond collided.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Dynamic websites generate infinite valid URLs. Without URL normalization, path depth limits, and trap detection, crawlers get trapped. ---",
+        "text": "IDs were generated using the machine's local time zone offset instead of UTC, so servers in different time zones computed different millisecond timestamps for simultaneous events.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By widening the sequence-number bit field until it can never overflow, on the assumption that this alone prevents duplicate IDs across machines.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By generating IDs purely from a random UUID with no coordination, trusting that randomness alone bounds the probability of collision to zero.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting each worker pick its own worker_id at start-up without checking for conflicts with other already-running workers.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more ID-generation workers to increase throughput, without validating that each one was assigned a unique worker_id.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying ID generation on any error, trusting that a fresh timestamp alone makes the retried ID unique.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By logging every generated ID to a central store for later deduplication, instead of preventing collisions before an ID is ever handed out.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By widening the sequence-number bit field until it can never overflow, on the assumption that this alone prevents duplicate IDs across machines.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By generating IDs purely from a random UUID with no coordination, trusting that randomness alone bounds the probability of collision to zero.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting each worker pick its own worker_id at start-up without checking for conflicts with other already-running workers.",
         "is_correct": false
       }
     ],

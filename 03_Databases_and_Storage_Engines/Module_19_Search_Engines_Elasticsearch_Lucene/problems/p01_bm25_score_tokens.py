@@ -5,10 +5,28 @@ Target: Production-grade implementation
 
 Calculate BM25 relevance score for document against query terms.
 
+Example:
+    >>> bm25_score_tokens(
+    ...     query_terms=["database", "acid"],
+    ...     doc_tokens=["database", "storage", "database", "acid", "engine"],
+    ...     avg_doc_len=5.0,
+    ...     doc_freqs={"database": 10, "acid": 5},
+    ...     total_docs=100,
+    ... )
+    6.023022156659784
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: BM25 is a per-term score that gets summed — a query term that
+        never occurs in this document contributes nothing at all, it isn't
+        penalized or scored as zero-with-a-remainder.
+    Hint 2: Use collections.Counter over doc_tokens to get each term's
+        in-document term frequency (tf), then apply the given IDF and
+        term_score formulas directly with math.log; total doc_len is just
+        len(doc_tokens).
+    Hint 3: Skip query terms with tf == 0 (not in counts) rather than
+        plugging tf=0 into the formula, and guard the doc_len / avg_doc_len
+        ratio against avg_doc_len == 0 (treat that ratio as 1.0) so a
+        degenerate corpus average doesn't raise a ZeroDivisionError.
 """
 
 from __future__ import annotations

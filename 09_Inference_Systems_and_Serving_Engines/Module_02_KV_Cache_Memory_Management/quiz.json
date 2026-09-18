@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "req_a's decoding output silently becomes corrupted mid-generation once req_b starts a new request, with no crash or error raised by the server.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "text": "GPU memory usage climbs slowly and continuously across thousands of small requests until the process is OOM-killed after several hours.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets.",
+        "text": "Every request whose context exceeds 4,096 tokens is rejected immediately at admission with a 'sequence too long' validation error.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "Add a refcount check to the evictor so it only reclaims blocks nobody currently holds, raising a MemoryError when none are evictable.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "Round every request's max context length down to the nearest lower power of two before admission, so allocation always undershoots.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "Pre-allocate the full context-length worth of KV memory for every request at admission time, regardless of how many tokens it actually generates.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator. -",
+        "text": "The block evictor reclaims the least-recently-used block without checking its reference count, so a live request's memory is silently handed to a new one.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "text": "The scheduler double-counts a shared prefix's blocks when two branched requests fork from the same parent, inflating the reported free memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "The allocator releases a finished request's blocks back to the free pool asynchronously, so a burst of concurrent completions can momentarily report negative free memory.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "text": "Tensor-parallel shards disagree on how many KV heads to allocate per GPU, so one shard silently exhausts its cache slots before the others.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "The prefix-cache hash function collides for two different token sequences, so a new request's attention reads stale KV entries left by an unrelated conversation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "text": "The scheduler frees a block's memory the instant a request finishes, without waiting for the CUDA kernel still reading from it to complete.",
         "is_correct": false
       }
     ],

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "n * n",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "[0xFFFFFFFF]",
+        "text": "n * n * 2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "block_r * block_c",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "text": "The running softmax rescaling factor is applied to the output accumulator but not to the running denominator when a new block's max exceeds the previous one.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Storing data as struct Particle { float x, y, z, mass; } particles[N];.",
+        "text": "The kernel launches with too few warps for the chosen block size, so each block's softmax reduction serializes within the warp instead of parallelizing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always define BLOCKSIZE as a power of 2 (e.g. 32, 64, 128, 256, 512, 1024) and use boolean masking offsets < N to handle arbitrary boundary lengths.",
+        "text": "Block sizes Br and Bc are chosen so large that the working tiles no longer fit in shared memory, forcing spills to global memory.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Intermittent numerical inaccuracies or race conditions in matrix outputs.",
+        "text": "The running softmax rescaling factor is applied to the output accumulator but not to the running denominator when a new block's max exceeds the previous one.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "text": "The kernel launches with too few warps for the chosen block size, so each block's softmax reduction serializes within the warp instead of parallelizing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "text": "Block sizes Br and Bc are chosen so large that the working tiles no longer fit in shared memory, forcing spills to global memory.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "The output matches bidirectional attention numerically, even for tokens that should never attend to future positions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "text": "The kernel produces NaNs partway through the sequence once the running max grows large enough to overflow the exponential.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": NCU replays kernel passes multiple times to collect hardware performance counters (Kernel Replay mode). -",
+        "text": "Shared-memory throughput reported by Nsight Compute is far below peak with a high bank-conflict count.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "text": "Rescale both the output accumulator and the running denominator every time a new block's max exceeds the current running max.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Convert to Structure of Arrays:",
+        "text": "Increase the number of warps assigned to each block so the softmax reduction parallelizes instead of serializing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The transaction count passed to mbarrier.arriveandexpecttx(bytes) does not match the exact number of bytes transferred by the TMA instruction. - The hardware barrier never flips phase, so compute threads wait forever. -",
+        "text": "Shrink Br and Bc until the query and key tiles fit comfortably in shared memory without spilling.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting that block-skipped causal attention matches the full masked computation without ever comparing outputs numerically.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming the running softmax denominator stays correct without rescaling it when a block updates the running max.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that FlashAttention's output actually avoids materializing an N x N matrix in memory.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By iterating over every key/value block for every query block regardless of the causal mask, to keep the loop simple.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By recomputing the full N x N attention matrix in HBM on every forward pass instead of streaming blocks through shared memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the online softmax rescaling step once the sequence length is assumed to be short.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting that block-skipped causal attention matches the full masked computation without ever comparing outputs numerically.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming the running softmax denominator stays correct without rescaling it when a block updates the running max.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a check that FlashAttention's output actually avoids materializing an N x N matrix in memory.",
         "is_correct": false
       }
     ],

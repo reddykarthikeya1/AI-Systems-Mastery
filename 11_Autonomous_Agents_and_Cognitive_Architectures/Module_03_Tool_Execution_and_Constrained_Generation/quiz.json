@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"200\"",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "\"\"",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "None",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "Raises KeyError",
         "is_correct": false
       }
     ],
@@ -102,7 +102,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"NVIDIA H100 TDP\"",
+        "text": "\"nvidia h100 tdp\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "text": "dispatch() indexes directly into self.tools[name] with no existence check, so calling an unregistered tool raises a raw KeyError instead of a recoverable error.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Boost the importance weight $wi$ for high-importance items ($importance \\ge 8$) or store core facts in semantic memory which has zero recency decay.",
+        "text": "dispatch() calls the tool with **args without validating that every required parameter is present, so a missing argument raises a raw TypeError from inside the tool.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr. -",
+        "text": "The constrained-generation grammar allows the LLM to emit any string as a parameter name, without checking it against the tool's declared JSON schema.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Inspect router return values and ensure state mutations progress monotonically towards the termination threshold.",
+        "text": "Wrap every tool call in a try/except that converts unknown-tool and bad-argument errors into a structured error result instead of letting them raise.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use regex with optional markdown block stripping: r\"\".",
+        "text": "Run every tool call inside a ThreadPoolExecutor with an explicit timeout so a hanging tool cannot block the dispatcher forever.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "text": "Reject any tool call whose arguments don't exactly match a hard-coded whitelist of allowed keyword names, dropping the call silently otherwise.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The same agent achieves 80% pass rate on Run 1, but 65% on Run 2.",
+        "text": "Calling an unregistered tool name crashes the whole agent process with an unhandled KeyError instead of returning a recoverable error.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Tests leave leftover files or database rows in the execution sandbox.",
+        "text": "A slow tool call blocks the dispatcher thread indefinitely because no timeout was ever configured for the call.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "text": "The tool executes successfully and returns a result, but the result is silently discarded before reaching the agent's context.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Code executes getattr(builtins, 'ev' + 'al') and bypasses direct name checks.",
+        "text": "dispatch() never checks whether the requested tool name exists in the registry before invoking it, letting a raw KeyError escape.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Restrict state variables to JSON-serializable primitives, Pydantic models, or dataclasses.",
+        "text": "dispatch() never validates that the supplied arguments satisfy the tool's required parameters before calling it, letting a raw TypeError escape from inside the tool.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Align docstring argument descriptions precisely with parameter identifiers.",
+        "text": "The tool's JSON schema marks the parameter as optional when the underlying Python function actually requires it as positional.",
         "is_correct": false
       }
     ],

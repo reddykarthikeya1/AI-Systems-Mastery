@@ -5,10 +5,25 @@ Target: Production-grade implementation
 
 Simulate Raft candidate election votes and step-down rules.
 
+Example:
+    >>> raft_leader_election(5, 3, [('node2', 3, True), ('node3', 3, True), ('node4', 3, False), ('node5', 3, False)])
+    ('LEADER', 3)
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: A candidate wins by MAJORITY, not unanimity, and any peer
+        reporting a newer term immediately overrides the whole election,
+        even if that peer didn't vote yes.
+    Hint 2: Start the vote tally at 1 (the self-vote), scan the peer
+        responses once accumulating granted votes at the candidate's own
+        term, but bail out the instant a peer's term exceeds
+        `candidate_term`; compare the final tally against
+        `cluster_size // 2`.
+    Hint 3: A peer's vote only counts toward the tally if its `peer_term`
+        EQUALS `candidate_term` (a grant at a different term doesn't
+        count, and a higher term short-circuits straight to FOLLOWER
+        before tallying continues); the majority check is strictly
+        greater than `cluster_size // 2`, not `>=`, so an exact half is
+        not enough to win.
 """
 
 from __future__ import annotations

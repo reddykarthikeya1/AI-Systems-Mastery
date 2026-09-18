@@ -15,6 +15,11 @@ Constraints
 Example
     [1, 2, 4] + [1, 3, 4] -> [1, 1, 2, 3, 4, 4]
 
+Example:
+    >>> from linked_list_common import from_list, to_list
+    >>> to_list(merge_sorted(from_list([1, 2, 4]), from_list([1, 3, 4])))
+    [1, 1, 2, 3, 4, 4]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Handling 'which list does the head come from?' as a special case is where the bugs live.

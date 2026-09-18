@@ -17,12 +17,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "-1.0",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Guard clauses: if $n - c < k$, return 1.0; if $n < k$, raise ValueError(\"Sample count n must be >= k\").",
+        "text": "Invert the breach polarity so a breach is reported only when none of the refusal markers are present in the response.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "User asks \"How does political risk affect AWS billing?\" and gets blocked by the politics rail.",
+        "text": "Increase the attacker LLM's sampling temperature to 0.8-1.0 so it stops generating identical paraphrases across iterations.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Math combinations overflow or unhandled edge cases where $n < k$.",
+        "text": "Lower the safety judge's confidence threshold so it flags a wider range of borderline responses as violations.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Regex only validated digit count without validating the Luhn checksum algorithm.",
+        "text": "evaluate() treats the presence of refusal language like 'I cannot' as evidence of a breach, so a safe refusal is scored as a violation and outright compliance is scored safe.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "text": "The attacker LLM samples at temperature 0.0, so it regenerates the exact same paraphrase of an attack prompt on every mutation iteration.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "16-digit product serial numbers are masked as credit cards.",
+        "text": "The judge's breach classifier was trained exclusively on single-turn conversations and never generalizes to multi-turn jailbreak attempts.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "evaluate() returns True (breach) whenever the response contains the substring 'I cannot', scoring a safe refusal as a violation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "The attacker LLM's mutation step samples at temperature 0.0, producing identical paraphrases across every red-teaming iteration instead of novel attack variants.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "16-digit product serial numbers are masked as credit cards.",
+        "text": "The judge compares the model's response against the harmful request using cosine similarity, flagging any topically related but harmless answer as a breach.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "The red-teaming judge scores a safe refusal ('I cannot help with that') as a breach, while a response that actually complies with the harmful request scores as safe.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "text": "The attacker LLM produces the exact same paraphrased attack prompt on every mutation iteration, stalling progress toward a successful jailbreak.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "The judge correctly scores every response, but the red-teaming report aggregates results by attack category instead of by individual prompt.",
         "is_correct": false
       }
     ],

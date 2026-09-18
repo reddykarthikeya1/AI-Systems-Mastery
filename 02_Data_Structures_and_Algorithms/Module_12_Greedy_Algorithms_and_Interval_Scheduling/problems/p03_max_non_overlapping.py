@@ -18,6 +18,10 @@ Compare this with the previous problem. Same input shape, and the sort key is
 different: **end**, not start. Sorting by start here gives a plausible wrong
 answer — the tests include a case where it does.
 
+Example:
+    >>> max_non_overlapping([(1, 3), (2, 4), (3, 5)])
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Which interval is always safe to take first? Think about which choice leaves the most room for everything after it.

@@ -47,12 +47,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "64",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Broadcasting presence changes to all followers using naive fanout creates $O(F)$ network bursts that overwhelm server output buffers when $F$ is large. ---",
+        "text": "The crawler deduplicated pages using exact URL string matching only, so pages reachable via different query-parameter orderings were treated as new and re-crawled forever.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In HTTP/2 over TCP, all virtual streams share a single TCP sequence space. If packet N is dropped, the OS TCP receiver refuses to deliver packets N+1, N+2 to application space until packet N is retransmitted, stalling all streams. ---",
+        "text": "The frontier queue used a single unbounded in-memory list shared across all crawl workers, so queue growth, not URL explosion, was what exhausted memory.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "text": "robots.txt was fetched once per host and cached forever, so a site that later added a crawl-delay directive kept getting hit at the original, much faster rate.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By deduplicating pages using SimHash alone, on the assumption that near-duplicate detection also bounds how many distinct URLs a single host can generate.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the frontier queue grow without any per-host cap, trusting that eventual crawl completion alone keeps memory bounded.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By following every link a page contains regardless of path depth, since more coverage is assumed to always be better for the index.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more crawler workers to increase throughput, without validating that each worker enforces its own per-host page and depth limits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a page that returned an error immediately from the same worker, instead of checking whether that URL pattern is actually a generated trap.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching canonicalized URLs in memory forever to skip re-normalization, without checking whether that cache itself is bounded in size.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By deduplicating pages using SimHash alone, on the assumption that near-duplicate detection also bounds how many distinct URLs a single host can generate.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the frontier queue grow without any per-host cap, trusting that eventual crawl completion alone keeps memory bounded.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By following every link a page contains regardless of path depth, since more coverage is assumed to always be better for the index.",
         "is_correct": false
       }
     ],

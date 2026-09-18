@@ -5,10 +5,20 @@ Target: Production-grade implementation
 
 Compute linear pointer offsets and boundary mask for Triton block kernel.
 
+Example:
+    >>> triton_pointer_offset_math(1, 4, 6)
+    ([4, 5, 6, 7], [True, True, False, False])
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Each program instance (`pid`) owns one contiguous block of
+        `block_size` elements; its offsets are just that block's starting
+        position plus a local index within the block.
+    Hint 2: Compute `start = pid * block_size`, build offsets as `start +
+        i` for `i` in `range(block_size)`, then derive the mask elementwise
+        by comparing each offset against `n_elements`.
+    Hint 3: The last block usually overruns the array — offsets can exceed
+        `n_elements - 1`, and it's the mask (`offset < n_elements`), not the
+        offsets list itself, that must reflect which lanes are in bounds.
 """
 
 from __future__ import annotations

@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "Decimal(\"33.33\")",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "Decimal(\"133.33\")",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "Decimal(\"50.00\")",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "Decimal(\"50.00\")",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "Decimal(\"60.00\")",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "Decimal(\"0.00\")",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "The split was computed using floating-point division instead of Decimal, so the rounding error came from binary floating-point representation rather than integer cent truncation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Multiple threads checked stock > 0 simultaneously before any thread decremented, allowing overselling. ---",
+        "text": "The remainder from the division was added entirely to the first participant's share instead of being distributed one cent at a time, so totals matched but individual allocations were skewed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The scheduler continued in the UP direction indefinitely as long as any UP request arrived, starving waiting DOWN passengers. ---",
+        "text": "Each participant share was rounded up to the nearest cent independently, so the sum of shares exceeded the original total by a few cents instead of falling short.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By rounding every intermediate money calculation to two decimal places as it flows through the system, trusting that repeated rounding cannot accumulate into a visible discrepancy.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By representing money as floating-point dollars end to end, since floats are precise enough for values under an ordinary bill size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By capping the number of participants a bill can be split across, on the assumption that fewer participants alone prevents any rounding leak.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding a reconciliation job that re-sums all ledgers once a day, so a one-cent leak from a bad split is only caught long after the transaction has settled.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed settlement transfer with the same rounded amounts, instead of recomputing the split from the original integer-cent total.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting each service instance round its own share of a split independently, trusting that the roundings will coincidentally cancel out under heavy concurrent traffic.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By rounding every intermediate money calculation to two decimal places as it flows through the system, trusting that repeated rounding cannot accumulate into a visible discrepancy.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By representing money as floating-point dollars end to end, since floats are precise enough for values under an ordinary bill size.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By capping the number of participants a bill can be split across, on the assumption that fewer participants alone prevents any rounding leak.",
         "is_correct": false
       }
     ],

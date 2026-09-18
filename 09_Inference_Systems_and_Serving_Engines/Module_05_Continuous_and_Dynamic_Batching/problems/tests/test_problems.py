@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_iteration_level_scheduler import iteration_level_scheduler
-except ImportError:
-    from p01_iteration_level_scheduler import iteration_level_scheduler
+from p01_iteration_level_scheduler import iteration_level_scheduler
 
 
 def test_iteration_level_scheduler():

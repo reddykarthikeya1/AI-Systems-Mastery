@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"PER\"",
+        "text": "\"per\"",
         "is_correct": false
       },
       {
@@ -82,7 +82,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "sanitize() is a pure pass-through that returns its input unmodified, so PII like SSNs and emails is never redacted at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Substring match on \"ignore previous\". -",
+        "text": "Entity detection matches names by exact string only, so a possessive form like 'Alice's' is never recognized as referring to the already-anonymized 'Alice'.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Desynchronized system clocks across worker nodes.",
+        "text": "The redaction regex for phone numbers also matches 16-digit product SKUs because both patterns share the same digit-grouping format.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "User asking \"How do I ignore previous commits in git?\" gets flagged as prompt injection.",
+        "text": "sanitize() returns its input text completely unchanged, with no pattern matching or redaction logic applied at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Math combinations overflow or unhandled edge cases where $n < k$. -",
+        "text": "Entity anonymization performs an exact string match with no stemming or possessive handling, so inflected forms of a detected name slip through untouched.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "text": "The credit card regex requires exactly 16 digits with no separators, so real card numbers formatted with spaces or dashes are never even matched.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Normalize numeric strings and remove internal commas before tokenizing.",
+        "text": "Implement actual pattern matching and substitution for each PII category instead of returning the input text unchanged.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "Strip possessive suffixes during entity detection and apply the anonymization mapping to both the root and inflected forms of a name.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "text": "Widen the credit card regex to match any run of 13 to 19 digits regardless of formatting, to catch more potential card numbers.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Substring match on \"ignore previous\".",
+        "text": "Social Security numbers, credit card numbers, and email addresses all pass straight through the guardrail completely unredacted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use monotonic time (time.monotonic()) for span durations and synchronize server clocks via PTP/NTP.",
+        "text": "The anonymizer replaces 'Alice' with a placeholder but leaves 'Alice's' untouched in the same sentence.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Safety judge flagged presence of toxic words in the quote of user input.",
+        "text": "A genuine 16-digit credit card number passes through completely unmasked because it happened to fail the Luhn checksum due to a typo.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By returning input text completely unmodified from the sanitization step whenever no PII pattern happens to match on the first pass.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By matching PII candidates on digit count or string pattern alone, without ever validating them against a checksum or grammar rule.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By anonymizing an entity's exact surface form only, leaving its possessive or inflected forms to pass through unredacted.",
         "is_correct": false
       }
     ],

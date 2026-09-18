@@ -15,6 +15,10 @@ Constraints
 Example
     combination_sum([2, 3, 6, 7], 7) -> [[2, 2, 3], [7]]
 
+Example:
+    >>> combination_sum([2, 3, 6, 7], 7)
+    [[2, 2, 3], [7]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Reuse is allowed, so after choosing candidate i you may choose i again - recurse with the same start index, not start + 1.

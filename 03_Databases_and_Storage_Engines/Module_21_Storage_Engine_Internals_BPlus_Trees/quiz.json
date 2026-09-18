@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Values exceeding ~2KB are compressed and stored out-of-line in separate TOAST tables, keeping main heap pages compact.",
+        "text": "Slots and tuple data both grow forward from the page header, with a fixed boundary reserved in advance for the maximum possible number of tuples.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "text": "Tuple data is stored in a fixed-size array at the start of the page, and the slot directory grows backward from the end of the page to record free space.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If two logs contain an entry with the same index and term, they are identical up to that index.",
+        "text": "Each tuple is stored as a separate fixed-length page rather than sharing a page with other tuples, so slot directories are unnecessary.",
         "is_correct": false
       }
     ],
@@ -42,12 +42,12 @@
       },
       {
         "id": "opt_1",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "text": "B-Trees store data records exclusively in leaf nodes linked as a doubly-linked list, while B+ Trees store data in every node, which is why B+ Trees are preferred for range scans.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "text": "B+ Trees are preferred because they store fewer keys per node than B-Trees, which keeps each node small enough to fit in a single CPU cache line.",
         "is_correct": false
       },
       {
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "BEFORE STATEMENT, BEFORE EACH ROW, AFTER EACH ROW, and AFTER STATEMENT.",
+        "text": "The node discards its lower half entirely and only the upper half survives, with the median key deleted rather than promoted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
+        "text": "The node splits into three roughly equal parts instead of two, and both the low-median and high-median keys are promoted to the parent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
+        "text": "The overflow keys are moved to a sibling node without touching the parent at all, so the tree's height never increases regardless of how many splits occur.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Phase 1: Coordinator queries all shards for matching document IDs and scores. Phase 2: Coordinator fetches full document sources only for top-K results.",
+        "text": "Fan-out is the maximum number of bytes a single tuple may occupy within a node, and a higher fan-out means fewer, larger tuples fit per page.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+        "text": "Fan-out is fixed at 2 for every B+ Tree regardless of page size, which is why the structure is sometimes confused with a binary search tree.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "B+ Trees store data records exclusively in leaf nodes linked as a doubly-linked list, enabling high fan-out in internal nodes and fast sequential range scans.",
+        "text": "Fan-out only affects the leaf level of the tree; internal nodes always have exactly 16 children regardless of the configured fan-out value.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "b\"Shor\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "b\"Shorter\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "b\"\"",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "k // 5",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "k % 10",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "k // 100",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[100]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[150]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "text": "Two writers both correctly hold parent-then-child latches in the same top-down order, but one thread times out waiting for a latch already held by the other, which the deadlock detector misreports as a corrupted node.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "text": "The reader thread takes a shared latch on a leaf node but never releases it after the scan completes, so a writer attempting to split that leaf blocks forever waiting for the phantom reader latch to clear.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "DROP TABLE does not drop sequences. On :memory: this never surfaces because the whole database vanishes; on a file it surfaces the second time you run.",
+        "text": "Latches are acquired bottom-up instead of top-down, starting from the leaf and working toward the root, so two concurrent splits at different leaves can request the same root latch in opposite orders and deadlock.",
         "is_correct": false
       }
     ],

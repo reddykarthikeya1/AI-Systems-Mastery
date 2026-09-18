@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The process of copying committed frame pages from the -wal file back into the primary .db file and resetting log pointers.",
+        "text": "A mapping from document IDs to the full list of terms they contain, sorted alphabetically, which must be scanned linearly for every query term.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every UPDATE writes a completely new tuple version to the heap page, populating xmin (creation transaction) and xmax (deletion transaction).",
+        "text": "A B-Tree index built over the primary key of the documents table, renamed 'inverted' because it stores IDs in descending rather than ascending order.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Switchover is a planned, zero-data-loss role reversal between primary and standby; Failover is an emergency promotion of standby following unexpected primary catastrophe.",
+        "text": "A hash table mapping each document's checksum to its storage location on disk, used only to detect duplicate documents before indexing.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Phase 1: Coordinator queries all shards for matching document IDs and scores. Phase 2: Coordinator fetches full document sources only for top-K results.",
+        "text": "Raw term count only, with no saturation curve and no adjustment for document length, since BM25 assumes all documents are the same length.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "BSON is a binary serialization format supporting rich data types (Date, ObjectId, BinData, Int64, Decimal128) and faster field traversal.",
+        "text": "Cosine similarity between the query vector and the document vector, combined with a static popularity boost per document.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "LSM-Trees convert random writes into sequential writes by buffering in memory (MemTable) and writing sequential immutable SSTables to disk.",
+        "text": "Term Frequency alone, weighted by how recently the document was indexed, with no inverse document frequency component at all.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If the coordinator crashes after participants enter the PREPARED state, participants must hold locks indefinitely until coordinator recovers.",
+        "text": "Tokenizer (split into terms) -> Character Filters (strip HTML) -> Token Filters (lowercasing, stopwords, stemming), so filtering happens on already-tokenized text.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "SGA is shared memory accessible to all Oracle background and server processes; PGA is private non-shared memory allocated per server process for sorting and session state.",
+        "text": "Token Filters (stemming, lowercasing) run first to normalize the raw text, followed by the Tokenizer, and Character Filters run last to clean up any leftover HTML in the terms.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Metadata storing minimum and maximum values per column chunk, allowing the query engine to bypass non-matching blocks immediately.",
+        "text": "A single combined stage that tokenizes and filters text simultaneously; Elasticsearch does not separate character filtering from tokenization.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2PL releases locks during shrinking phase before commit; Strict 2PL holds all exclusive locks until transaction COMMIT or ABORT, preventing cascading rollbacks.",
+        "text": "must: optional and boosts score; should: must match and contributes to score; filter: must match and contributes to score but is not cached.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Rate (queries/sec), Errors (failed connections/deadlocks), and Duration (p95/p99 query latency).",
+        "text": "filter: must match and contributes to score just like must, with the only difference being that filter clauses run in a separate query phase.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A Service is a logical abstraction representing a workload; it allows load balancing and transparent failover across available cluster instances.",
+        "text": "should: must match, contributes to score; must and filter: both optional and never contribute to score, used only for cache warming.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"laptop bag\", \"laptop\"]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[\"laptop\"]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[\"d1\", \"d2\", \"d3\"]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[\"d2\"]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{\"cat\", \"cot\"}",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{\"cat\", \"cot\", \"cap\", \"bat\"}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{}",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application attempts multi-key MGET on user:101:profile and user:101:orders across Redis Cluster, failing with CROSSSLOT error.",
+        "text": "The query uses a scroll API with a 1-minute keep-alive that was never cleared, so the accumulated open scroll contexts, not the from/size pagination itself, exhausted the heap.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "Each data node correctly returns only 50 results per shard, but the coordinator node re-sorts the combined results using a naive O(n^2) algorithm that becomes the bottleneck at high offsets.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The kernel's working directory is the module root, not projectsolution/.",
+        "text": "The index has far more primary shards than the cluster has data nodes, so every query is scatter-gathered across more shards than necessary, and it is shard count, not pagination depth, causing the crash.",
         "is_correct": false
       }
     ],

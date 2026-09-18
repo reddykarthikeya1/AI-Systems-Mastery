@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "encoded",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "text.encode()",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires a fixed vocabulary size decided before any merge rules are learned from the corpus.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It merges the least frequent adjacent byte pair first so rare tokens get assigned first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It guarantees every word in the training corpus becomes exactly one token, with no word ever split.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires the model to see the full dataset in a single epoch before any weight update can happen.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It states next-token loss can only decrease if the context window is increased with every step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means validation loss and training loss must always move in the same direction during pretraining.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It states raising the temperature above 1.0 makes the output distribution more peaked and deterministic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It means top-k and top-p sampling always produce identical token sets for the same value of k and p.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It guarantees beam search always produces a more diverse set of outputs than pure sampling.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It requires discarding the optimizer state at every checkpoint so training always resumes from step zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It states perplexity is measured on the training split rather than a held-out evaluation split.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It means a checkpoint that samples coherent text is sufficient proof the model has converged.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a model with low training perplexity will produce coherent text at every sampling temperature.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping the check that decode(encode(text)) round-trips before shipping the tokenizer.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting that top-p sampling always returns at least one token without checking for an empty candidate set.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By regenerating the entire byte-pair encoding merge table from the corpus on every incoming request.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting the KV cache grow unbounded across a session instead of capping the context window.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By disabling temperature-based sampling so every request always runs full beam search over the vocabulary.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a model with low training perplexity will produce coherent text at every sampling temperature.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping the check that decode(encode(text)) round-trips before shipping the tokenizer.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting that top-p sampling always returns at least one token without checking for an empty candidate set.",
         "is_correct": false
       }
     ],

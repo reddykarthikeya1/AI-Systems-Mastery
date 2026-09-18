@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Heuristic compression algorithms pruned the word \"never\" or \"except\" because it had high frequency in the corpus.",
+        "text": "Increase the contextual prefix to roughly 200 words so it captures the full document summary before each chunk.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches.",
+        "text": "Fix the off-by-one slice in contextualize_chunks() so each chunk is paired with its own context sentence instead of a shifted one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Knowledge graph contains disjoint nodes for \"Apple\", \"Apple Inc.\", \"Apple Corporation\", and \"AAPL\", splitting community clusters.",
+        "text": "Switch to an embedding model with a larger output dimension so numeric values are represented with more precision.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always apply the trained linear projection layer: $E{\\text{projected}} = \\text{LayerNorm}(W{\\text{proj}} \\cdot H{\\text{bert}})$.",
+        "text": "contextualize_chunks() zips contexts[1:] against chunks, so every chunk after the first gets the wrong context sentence and the last chunk is dropped entirely.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Agentic RAG request times out after 120 seconds, executing 25 consecutive web searches.",
+        "text": "The context-generation prompt asks the LLM to summarize the entire document rather than situate just the one chunk, so every chunk's context ends up nearly identical.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Apply sigmoid transform $\\sigma(s) = \\frac{1}{1 + e^{-s}}$ to normalize relevance scores into $[0.0, 1.0]$.",
+        "text": "Chunks are embedded before their context prefix is prepended, so the context text is never actually part of the vector being searched.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "text": "contextualize_chunks() drops the last chunk of every document because it zips a context list one shorter than the chunk list, and zip() truncates silently.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Raw cross-encoder heads output uncalibrated classification logits.",
+        "text": "The context-generation LLM call gets rate-limited under load, so the pipeline silently falls back to indexing raw chunks with no contextual prefix at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Hybrid search returns duplicated documents with divergent ranks.",
+        "text": "Two indexing workers regenerate context for the same chunk concurrently and both write to the vector store, leaving duplicate embeddings for one chunk.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Generating one shared context summary for the entire document and prepending an identical copy to every chunk, regardless of that chunk's own content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Making the contextual prefix as long as possible so each chunk's embedding captures the full document, even if it crowds out the chunk's own text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Pairing each chunk with whichever context sentence is fastest to retrieve from cache, rather than the one generated specifically for that chunk's index position.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Generating one shared context summary for the entire document and prepending an identical copy to every chunk, regardless of that chunk's own content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Making the contextual prefix as long as possible so each chunk's embedding captures the full document, even if it crowds out the chunk's own text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Pairing each chunk with whichever context sentence is fastest to retrieve from cache, rather than the one generated specifically for that chunk's index position.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Generating one shared context summary for the entire document and prepending an identical copy to every chunk, regardless of that chunk's own content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Making the contextual prefix as long as possible so each chunk's embedding captures the full document, even if it crowds out the chunk's own text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Pairing each chunk with whichever context sentence is fastest to retrieve from cache, rather than the one generated specifically for that chunk's index position.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Generating one shared context summary for the entire document and prepending an identical copy to every chunk, regardless of that chunk's own content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Making the contextual prefix as long as possible so each chunk's embedding captures the full document, even if it crowds out the chunk's own text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Pairing each chunk with whichever context sentence is fastest to retrieve from cache, rather than the one generated specifically for that chunk's index position.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Generating one shared context summary for the entire document and prepending an identical copy to every chunk, regardless of that chunk's own content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Making the contextual prefix as long as possible so each chunk's embedding captures the full document, even if it crowds out the chunk's own text.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Pairing each chunk with whichever context sentence is fastest to retrieve from cache, rather than the one generated specifically for that chunk's index position.",
         "is_correct": false
       }
     ],

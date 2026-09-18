@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "text": "INT8 dequantized outputs are shifted by a small constant offset across every value, even though relative differences between weights look correct.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "Perplexity on held-out prompts rises sharply immediately after switching from FP16 to INT4, even though throughput improves as expected.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception.",
+        "text": "The quantized model produces bit-identical outputs to FP16 on short prompts but diverges increasingly on prompts longer than 2,000 tokens.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "dequantize() undoes the scale factor but never subtracts zero_point, so every reconstructed value is shifted by a constant offset.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "text": "The GEMM kernel selects a tile size tuned for FP16 memory bandwidth and never re-tunes it for INT4's different bytes-per-element ratio.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "Weights are quantized per-tensor with a single scale factor, so a handful of outlier weights force the scale so wide that most other weights round to the same few codes.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When chunk $k$ attends to cached keys from chunks $1 \\dots k-1$, failure to offset query position indices causes positional embedding distortion (RoPE frequency misalignment). -",
+        "text": "The dequantization kernel casts INT4 codes to FP32 before unpacking bits and casts back to FP16 afterward, tripling memory traffic per element versus unpacking directly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+        "text": "dequantize() forgets to subtract zero_point after rescaling, so every value comes out shifted by a constant amount rather than costing extra time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "The kernel launches one thread block per row of the weight matrix regardless of matrix size, leaving most streaming multiprocessors idle on small matrices.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "text": "Subtract zero_point from each code before multiplying by scale during dequantization.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When speculative tokens are rejected, the engine must roll back the target model's KV cache pointers to erase the rejected tokens. Failing to decrement the sequence length in the block manager leaves phantom tokens in the attention cache.",
+        "text": "Switch from per-tensor to per-channel quantization scales to reduce accuracy loss from outlier weights.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Wire HTTP disconnect callbacks (request.isdisconnected()) directly to the serving engine queue to cancel active request IDs immediately.",
+        "text": "Fall back to running the model in FP16 whenever batch size exceeds a fixed threshold.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model produces repetitious nonsense after the first rejected speculative token.",
+        "text": "INT4 dequantization silently overflows its accumulator for a small fraction of weight blocks, corrupting outputs without raising an exception.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks! -",
+        "text": "The quantization calibration set does not cover the activation ranges seen in production traffic, so scale factors clip a growing fraction of values as load increases.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "text": "The packed GEMM kernel reads a few bytes past the end of its allocated buffer on the final block of a matrix, silently corrupting adjacent memory.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Implement an atomic decref() cascade on all physical blocks registered in a sequence's block table upon request termination.",
+        "text": "The dequantization kernel spills registers to local GPU DRAM under high register pressure, so kernel latency grows silently without any error being raised.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler. -",
+        "text": "Quantized weight tensors are stored in pinned host memory instead of device memory, so every matrix multiply silently triggers a PCIe transfer.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "text": "The INT4 packing format stores four weights per byte, but the dequant kernel unpacks assuming eight per byte on certain hardware, silently reading garbage bits.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Implement preemption: abort or swap out the longest running request to break the cycle.",
+        "text": "A quantized model stores KV cache entries in INT8 while queries stay FP16, and the type mismatch silently upcasts every attention score computation, doubling memory traffic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": The KV allocator pre-allocated memory in powers-of-two (e.g., buffer sizes 1024, 2048, 4096). When token 4,097 arrived, the allocator attempted to allocate an 8,192-token contiguous chunk, triggering an immediate out-of-memory exception. ",
+        "text": "The calibration step recomputes activation scales on every forward pass instead of caching them, adding a full statistics pass to each request under load.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "GPU memory fills up over 24 hours of operation, even though active concurrent request count is constant.",
+        "text": "Two requests quantized with different calibration scales are batched together, and the kernel applies only one shared scale to both, silently corrupting one request's outputs.",
         "is_correct": false
       }
     ],

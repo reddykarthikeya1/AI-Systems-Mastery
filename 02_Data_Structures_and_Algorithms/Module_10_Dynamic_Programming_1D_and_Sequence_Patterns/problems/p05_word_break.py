@@ -15,6 +15,12 @@ Example
     word_break("leetcode", ["leet", "code"])       -> True
     word_break("catsandog", ["cats","dog","sand","and","cat"]) -> False
 
+Example:
+    >>> word_break("leetcode", ["leet", "code"])
+    True
+    >>> word_break("catsandog", ["cats", "dog", "sand", "and", "cat"])
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: State: reachable[i] means the first i characters can be segmented.

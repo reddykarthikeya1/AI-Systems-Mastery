@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_maxsim_late_interaction import maxsim_late_interaction
-except ImportError:
-    from p01_maxsim_late_interaction import maxsim_late_interaction
+from p01_maxsim_late_interaction import maxsim_late_interaction
 
 
 def test_maxsim_late_interaction():

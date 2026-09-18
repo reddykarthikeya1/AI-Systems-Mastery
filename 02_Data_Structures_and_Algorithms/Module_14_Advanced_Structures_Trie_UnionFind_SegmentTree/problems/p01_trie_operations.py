@@ -19,6 +19,11 @@ Example
            ("starts_with","app"), ("insert","app"), ("search","app")]
     -> [True, False, True, True]
 
+Example:
+    >>> ops = [("insert", "apple"), ("search", "apple"), ("search", "app"), ("starts_with", "app"), ("insert", "app"), ("search", "app")]
+    >>> simulate_trie(ops)
+    [True, False, True, True]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A trie node is just a mapping from a character to a child node, plus a flag saying whether a word ends here.

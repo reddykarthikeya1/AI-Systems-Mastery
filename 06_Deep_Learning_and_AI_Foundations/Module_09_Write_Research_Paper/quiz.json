@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "It states results should be reported only as point estimates, since confidence intervals are optional for camera-ready submission.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "It argues code and data release can happen after peer review concludes, since reviewers only check the writing quality.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "It concludes a single successful run is sufficient evidence for a claim, without needing repeated seeds or ablations.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.",
+        "text": "Adding the project root to PYTHONPATH permanently in .bashrc, which works locally but is never set in the CI container.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Multiple threads checked stock > 0 simultaneously before any thread decremented, allowing overselling. ---",
+        "text": "Using a relative import inside a script that is also executed directly as __main__, which breaks depending on how it is invoked.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Kernel runs $20\\times$ slower under Nsight Compute than in production.",
+        "text": "Shipping a stale editable install where the compiled .pyc bytecode is never refreshed after the source changed.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Collective calls hang indefinitely during process group initialization.",
+        "text": "Reading a config value from an environment variable with no default, so a missing variable silently becomes an empty string.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Generated completions contain random gibberish or repeat previous sentences when batch size changes dynamically.",
+        "text": "Caching the parsed config object at import time, so edits to the file after startup are never picked up.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Safety judge flagged presence of toxic words in the quote of user input. -",
+        "text": "Using a YAML loader that silently converts the string \"no\" into the boolean False for a key that expected text.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "text": "Wrapping the int() call in a bare except that logs a warning and silently substitutes a default priority of zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Accessing .next or .left without checking if node is None.",
+        "text": "Validating that the priority is non-negative only after the int() conversion has already raised.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "except: catches BaseException, which includes KeyboardInterrupt, SystemExit, and GeneratorExit. This traps process termination signals.",
+        "text": "Casting the input with float() instead of int(), which accepts decimal priorities without ever rejecting them.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "text": "Comparing the two floats with 'is' instead of '==', which fails because Python does not cache non-integer float objects.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "Rounding both floats to two decimal places before comparing, which hides the discrepancy instead of fixing it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "text": "Using math.isclose() with both rel_tol and abs_tol left at zero, which makes the comparison exact again.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a claim that holds on one benchmark to generalize to every dataset without further testing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a script that ran once on the author's machine will run identically in the reproducibility checklist environment.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the check that reported numbers actually match the logged experiment output before publication.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By reporting results from the single best random seed out of many runs, without disclosing the others.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By omitting the exact hyperparameters and hardware used, so results cannot be reproduced under similar conditions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping ablation studies once the headline metric looks good enough to submit.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a claim that holds on one benchmark to generalize to every dataset without further testing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a script that ran once on the author's machine will run identically in the reproducibility checklist environment.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the check that reported numbers actually match the logged experiment output before publication.",
         "is_correct": false
       }
     ],

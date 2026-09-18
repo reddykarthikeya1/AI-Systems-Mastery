@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_checkpoint_time_travel_fork import checkpoint_time_travel_fork
-except ImportError:
-    from p01_checkpoint_time_travel_fork import checkpoint_time_travel_fork
+from p01_checkpoint_time_travel_fork import checkpoint_time_travel_fork
 
 
 def test_checkpoint_time_travel_fork():

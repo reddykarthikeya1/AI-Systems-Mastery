@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "[40]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "[0]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[(True, 0.15), (True, 0.25)]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[(False, 0.30)]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "False",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "TypeError: bad operand type for abs(): 'complex'",
         "is_correct": false
       }
     ],
@@ -107,12 +107,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "It varies: 0 for some values of a and 1 for others in this range",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "text": "Returning True on the first success is the existential behavior, and a universal returns False on the first failure; the two happen to agree on collections that are entirely passing or entirely failing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "text": "The two expressions were compared by their string representations rather than their evaluated truth values, so semantically identical formulas were incorrectly flagged as inequivalent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "The sample points tested only satisfied one of the two expressions' preconditions, so the comparison silently short-circuited to 'equal' without evaluating the other expression at all.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "An implication is only false when the hypothesis holds and the conclusion fails. A case where the hypothesis fails sits in a row where the implication is vacuously true.",
+        "text": "The search used a random sample of 40 values from a much larger range instead of checking them in order, so it happened to skip n = 40 even though the intended check was supposed to cover exactly that value.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "All of NumPy's set routines return sorted, deduplicated arrays. Using the result to index back into the original data reorders rows relative to every parallel array that was not reordered with it.",
+        "text": "The primality test itself had an off-by-one error and incorrectly reported 1681 as prime, so the search correctly ran up to n = 40 but got the wrong verdict on that one case.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "text": "The loop condition used n < 40 instead of n <= 40, so the search silently stopped one iteration short of its own intended upper bound, rather than the domain itself being infinite.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "Returning True on the first success is the existential behavior, and a universal returns False on the first failure; the two happen to agree on collections that are entirely passing or entirely failing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A step reaching back three values needs three base cases. A single base only establishes 8, 11, 14, ... - every third value.",
+        "text": "The proposed counterexample satisfies both the hypothesis and the conclusion, so it cannot refute the implication no matter which values are involved.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "text": "The implication being tested was actually a biconditional, so a case satisfying only one direction does not violate it.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "Returning True on the first success is the existential behavior, and a universal returns False on the first failure; the two happen to agree on collections that are entirely passing or entirely failing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "text": "The inductive step itself was proved incorrectly: P(n-3) -> P(n) was assumed without actually being derived from the recurrence, so the chain of implications was never established regardless of how many base cases existed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The grouping key is not inducing a partition. Rows whose key is null or missing fall into no group, so the blocks do not cover the data.",
+        "text": "The single base case P(8) was true, but the property being proved does not actually hold for all n >= 8, so the induction fails at P(9) because the claim itself is false there, not because of a missing base case.",
         "is_correct": false
       }
     ],

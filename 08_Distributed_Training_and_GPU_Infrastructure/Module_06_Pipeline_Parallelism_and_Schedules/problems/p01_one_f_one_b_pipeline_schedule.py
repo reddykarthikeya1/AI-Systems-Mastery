@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Generate 1F1B micro-batch schedule for pipeline stages.
 
+Example:
+    >>> one_f_one_b_pipeline_schedule(4, 32)
+    {'warmup_steps': 3, 'bubble_fraction_pct': 9}
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Every stage but the first has to wait for the stage before it
+        to finish its first forward pass — that fixed startup latency is
+        the source of both the warmup steps and the pipeline bubble.
+    Hint 2: `warmup_steps` is simply `num_stages - 1`. The bubble fraction
+        is that same `num_stages - 1` "wasted" time divided by the total
+        schedule length `num_microbatches + num_stages - 1`, then expressed
+        as a percentage.
+    Hint 3: Guard the case where `total <= 0` (falls back to a `0.0`
+        bubble fraction), and round the percentage with `round(bubble *
+        100)` cast to `int` — more microbatches relative to stages shrinks
+        the bubble fraction, which is why deep pipelines need large batch
+        counts to stay efficient.
 """
 
 from __future__ import annotations

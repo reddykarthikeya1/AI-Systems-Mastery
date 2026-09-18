@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_ttft_tbt_sla_calculator import ttft_tbt_sla_calculator
-except ImportError:
-    from p01_ttft_tbt_sla_calculator import ttft_tbt_sla_calculator
+from p01_ttft_tbt_sla_calculator import ttft_tbt_sla_calculator
 
 
 def test_ttft_tbt_sla_calculator():

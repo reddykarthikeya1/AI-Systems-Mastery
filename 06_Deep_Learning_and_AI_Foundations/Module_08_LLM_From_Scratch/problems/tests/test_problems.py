@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_rotary_position_embedding import rotary_position_embedding
-except ImportError:
-    from p01_rotary_position_embedding import rotary_position_embedding
+from p01_rotary_position_embedding import rotary_position_embedding
 
 
 def test_rotary_position_embedding():

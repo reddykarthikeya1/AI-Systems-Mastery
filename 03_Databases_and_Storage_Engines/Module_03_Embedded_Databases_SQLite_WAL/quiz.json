@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "text": "WAL mode still uses a rollback journal but stores it in memory instead of on disk, so the difference is purely about storage medium, not architecture.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+        "text": "In WAL mode, every write directly modifies the original database file pages in place, and the -wal file is only a backup copy created after each transaction commits.",
         "is_correct": false
       },
       {
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It eliminates race conditions by reading and updating the document in a single atomic database operation.",
+        "text": "Readers never block writers, but a writer must wait for every existing reader to finish before it can begin appending new frames.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The node divides in half; the median key is promoted to the parent node, creating a new level if root splits.",
+        "text": "Yes. In WAL mode a long-running reader holds a shared lock on the main database file that a writer cannot append past until it is released.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "B-Trees excel on high-cardinality keys. On low-cardinality keys (boolean/status), B-Trees provide minimal selectivity unless combined in composite or partial indexes.",
+        "text": "Only the first reader to open a snapshot blocks a writer; any additional concurrent readers after that queue behind the writer instead.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A deletion marker recorded in SSTables; reading across deleted rows requires scanning all tombstones until compaction purges them.",
+        "text": "It guarantees durability across both application crashes and full power loss, by calling fsync after every single write transaction commits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The ratio of physical bytes written to storage media relative to logical bytes written by the user application.",
+        "text": "It disables fsync entirely for maximum write throughput, trading all crash durability for speed, equivalent to PRAGMA synchronous = OFF.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inserting single rows or micro-batches faster than background compaction can merge them.",
+        "text": "It only affects read performance by controlling how often the page cache is flushed to keep queries consistent, and has no effect on write durability at all.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Data Guard replicates physical block redo for an entire database; GoldenGate performs logical transactional replication across heterogeneous databases and tables.",
+        "text": "Automatic checkpointing is disabled by default in SQLite, so the -wal file only truncates when the application calls PRAGMA wal_checkpoint explicitly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A technology that transfers data blocks directly between the SGA buffer caches of different cluster instances over high-speed private interconnect RAM, avoiding disk I/O.",
+        "text": "The -wal file is append-only by design and is never truncated in place; a new -wal file is instead created after every single transaction commits.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It tracks block access frequency using a counter; blocks with high touch counts (>2) are protected from eviction when new blocks are read into the buffer.",
+        "text": "PRAGMA synchronous is set to OFF, which skips the fsync that the checkpoint needs before it is allowed to truncate old frames from the log.",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "text": "The application opens a brand new connection for every single query instead of reusing one, and SQLite's default connection pool silently caps concurrent connections at 1.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "text": "Multiple threads share the same SQLite connection object without serializing access to it, and SQLite raises 'database is locked' for any concurrent use of one connection from different threads.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a lock timeout, blocking behind a slow query and queuing all incoming web requests.",
         "is_correct": false
       }
     ],

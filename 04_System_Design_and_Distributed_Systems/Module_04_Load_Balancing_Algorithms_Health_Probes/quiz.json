@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
+        "text": "6",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "8",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "4",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "6",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "1",
         "is_correct": false
       },
       {
-        "id": "opt_3",
+        "id": "opt_2",
         "text": "4",
+        "is_correct": false
+      },
+      {
+        "id": "opt_3",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The rate limiter checked tokens > 0 and decremented tokens without synchronization (or without Redis atomic Lua script). Concurrent requests all read tokens=1 before any thread decremented, allowing 5 requests through. ---",
+        "text": "The health check timeout was set shorter than the server's actual p99 response time, so healthy servers under normal peak load were misclassified as unresponsive.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The retry decorator executed retries in a tight loop with zero delay, amplifying traffic against a struggling upstream provider by 500%. ---",
+        "text": "The load balancer used round-robin instead of least-connections, so a slow server kept receiving an equal share of new requests and fell further behind.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Broadcasting presence changes to all followers using naive fanout creates $O(F)$ network bursts that overwhelm server output buffers when $F$ is large. ---",
+        "text": "Health checks were performed from a single monitoring node whose own network path to the servers was congested, making healthy servers appear to fail probes intermittently.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By reducing health-check intervals to zero delay, so failing servers are detected and evicted as fast as technically possible.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By evicting any server that fails a single health probe immediately, without requiring a consecutive-failure threshold.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By routing all traffic to the server with the lowest historical latency, without re-checking its current load before each request.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By failing over to one backup server for all traffic whenever any primary is marked unhealthy, without checking that the backup has enough spare capacity.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By treating every timeout as a permanent server failure and never re-adding that server to the pool, even after it recovers.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By broadcasting every health-check result to all load balancer instances synchronously, blocking new request routing until the broadcast completes.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By reducing health-check intervals to zero delay, so failing servers are detected and evicted as fast as technically possible.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By evicting any server that fails a single health probe immediately, without requiring a consecutive-failure threshold.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By routing all traffic to the server with the lowest historical latency, without re-checking its current load before each request.",
         "is_correct": false
       }
     ],

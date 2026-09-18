@@ -15,6 +15,12 @@ Example
     longest_k_distinct("eceba", 2) -> 3     ("ece")
     longest_k_distinct("aa", 1)    -> 2
 
+Example:
+    >>> longest_k_distinct("eceba", 2)
+    3
+    >>> longest_k_distinct("aa", 1)
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The window's validity is monotone: adding a character can only increase the distinct count, removing one can only decrease it. That is what makes a sliding window correct here.

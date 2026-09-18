@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_circuit_breaker_state_machine import circuit_breaker_state_machine
-except ImportError:
-    from p01_circuit_breaker_state_machine import circuit_breaker_state_machine
+from p01_circuit_breaker_state_machine import circuit_breaker_state_machine
 
 
 def test_circuit_breaker_state_machine():

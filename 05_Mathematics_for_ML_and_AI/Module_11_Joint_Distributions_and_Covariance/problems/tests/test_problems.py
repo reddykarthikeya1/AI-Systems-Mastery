@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_sample_covariance_matrix import sample_covariance_matrix
-except ImportError:
-    from p01_sample_covariance_matrix import sample_covariance_matrix
+from p01_sample_covariance_matrix import sample_covariance_matrix
 
 
 def test_sample_covariance_matrix():

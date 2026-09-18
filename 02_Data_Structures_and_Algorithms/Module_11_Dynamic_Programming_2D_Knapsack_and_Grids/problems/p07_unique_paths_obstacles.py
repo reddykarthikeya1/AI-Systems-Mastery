@@ -14,6 +14,12 @@ Example
     [[0,0,0],[0,1,0],[0,0,0]] -> 2
     [[1]]                     -> 0
 
+Example:
+    >>> unique_paths_obstacles([[0, 0, 0], [0, 1, 0], [0, 0, 0]])
+    2
+    >>> unique_paths_obstacles([[1]])
+    0
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Same recurrence as unique paths, with one addition: an obstacle cell has zero paths through it.

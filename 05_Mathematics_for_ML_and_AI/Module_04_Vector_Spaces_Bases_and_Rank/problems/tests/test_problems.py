@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_gram_schmidt_orthogonalization import gram_schmidt_orthogonalization
-except ImportError:
-    from p01_gram_schmidt_orthogonalization import gram_schmidt_orthogonalization
+from p01_gram_schmidt_orthogonalization import gram_schmidt_orthogonalization
 
 
 def test_gram_schmidt_orthogonalization():

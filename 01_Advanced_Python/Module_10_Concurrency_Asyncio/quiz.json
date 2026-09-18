@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
+        "text": "- Preemptive: Coroutines voluntarily yield control back to the Event Loop at await points. - Cooperative: The OS scheduler forcefully interrupts threads at arbitrary intervals -- the two models are the reverse of their real definitions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The syntax is merged = a | b. In case of duplicate keys, the right-hand dictionary (b) overrides the values from the left-hand dictionary (a).",
+        "text": "Both models are identical in CPython because the GIL already forces every thread to yield cooperatively; asyncio's Event Loop is simply a convenience wrapper around threading.Thread.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It calculates the average sales for each region without collapsing individual rows, appending the regional average alongside each row.",
+        "text": "Preemptive multitasking runs multiple Python interpreters in separate memory spaces, while cooperative multitasking runs multiple threads inside a single shared interpreter with no locking.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "asyncio.CancelledError is raised. If caught for cleanup purposes, it must be re-raised (raise) so the task terminates properly.",
+        "text": "The coroutine's local variables are discarded immediately, and the Event Loop restarts the coroutine from the top of its function body once the awaited operation finishes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "CPython's internal memory allocator, dictionary lookup tables, and garbage collector are not thread-safe. Concurrent access without the GIL corrupts interpreter state.",
+        "text": "await blocks the entire Python process, including the Event Loop itself, until the awaited operation completes; other coroutines only resume once the process is unblocked.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It monitors file size (maxBytes) and automatically closes, renames, and archives older logs up to a fixed count (backupCount), deleting the oldest backup to keep total disk usage strictly bounded.",
+        "text": "await spawns a brand-new OS thread to run the awaited operation in the background, then immediately returns control to the coroutine without waiting for the thread to finish.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Pinecone, Qdrant, Milvus, or pgvector in PostgreSQL.",
+        "text": "time.sleep(5) is fine inside a coroutine as long as the function is declared with async def; the async keyword automatically makes any blocking call inside it non-blocking.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Because source code changes frequently while dependencies change rarely. Placing dependencies first allows Docker to reuse cached layers, cutting build times from minutes to seconds.",
+        "text": "time.sleep(5) only blocks the current coroutine's own task, not the Event Loop itself; other coroutines keep running normally, so it is a minor inefficiency rather than a critical bug.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It stores the return values of previous function calls in an in-memory Least Recently Used (LRU) dictionary. If the function is called again with identical arguments, it returns the cached result in $O(1)$ time without re-running the comput",
+        "text": "The bug is that time.sleep(5) accepts an int instead of a float; replacing it with time.sleep(5.0) inside the coroutine resolves the freeze without needing asyncio.sleep.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Incoming bytes pass through each middleware layer in outer-to-inner order, execute the endpoint, and the resulting Response flows back through the layers in reverse (inner-to-outer) order.",
+        "text": "TaskGroup runs all child tasks in separate OS processes instead of the single event loop thread that gather() uses, isolating a crash in one task from affecting the others.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It allows classes and functions to operate over arbitrary data types while strictly preserving type identity between inputs and outputs.",
+        "text": "asyncio.gather() already cancels all sibling tasks and raises an ExceptionGroup automatically on any failure; TaskGroup only adds a cleaner context-manager syntax on top of the same behavior.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
+        "text": "TaskGroup retries a failed child task up to three times automatically before giving up, while gather() immediately propagates the first exception without any retry attempts.",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.",
+        "text": "async def functions execute immediately and synchronously when called, exactly like a normal function; the RuntimeWarning is unrelated and instead comes from Python's garbage collector finalizing an unrelated object.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.",
+        "text": "The coroutine was called without parentheses, e.g. my_coro instead of my_coro(); adding await in front of the bare function reference is sufficient to execute it without ever calling it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "text": "asyncio.run() was called twice in the same process; the second call silently discards its coroutine argument instead of executing it, which is what triggers the warning.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "text": "asyncio.create_task() automatically logs and re-raises any exception the moment it occurs inside the task, so this warning actually indicates a bug in the logging configuration, not in the task itself.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "except: catches BaseException, which includes KeyboardInterrupt, SystemExit, and GeneratorExit. This traps process termination signals.",
+        "text": "The task was created with asyncio.ensure_future() instead of asyncio.create_task(); ensure_future() is documented to suppress all exceptions permanently rather than storing them for later retrieval.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "Background tasks silently swallow exceptions unless the event loop is running in debug mode (asyncio.run(debug=True)); enabling debug mode alone fully resolves the issue without changing any task-handling code.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "sharedcounter += 1 is not atomic in Python. It disassembles into LOADGLOBAL, LOADCONST, BINARYOP, STOREGLOBAL. If a thread switch occurs between load and store, the update is lost.",
+        "text": "The two coroutines were both scheduled with asyncio.create_task(), but create_task() runs tasks strictly in the order they were created and never actually overlaps their execution.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Exceptions inside background tasks created via createtask() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "text": "asyncio.gather() was used instead of a TaskGroup; gather() executes its awaitables strictly one at a time and only TaskGroup provides true concurrent scheduling.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "Both coroutines internally call await asyncio.sleep(0) too frequently, and each call to asyncio.sleep(0) blocks the Event Loop for a full second by design, serializing the two coroutines.",
         "is_correct": false
       }
     ],

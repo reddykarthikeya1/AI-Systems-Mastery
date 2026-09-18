@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_probabilistic_early_expiration import probabilistic_early_expiration
-except ImportError:
-    from p01_probabilistic_early_expiration import probabilistic_early_expiration
+from p01_probabilistic_early_expiration import probabilistic_early_expiration
 
 
 def test_probabilistic_early_expiration():

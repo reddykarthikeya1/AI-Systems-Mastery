@@ -16,6 +16,11 @@ Example
     [1, 2, 3, 4]    -> [1, 4, 2, 3]
     [1, 2, 3, 4, 5] -> [1, 5, 2, 4, 3]
 
+Example:
+    >>> from linked_list_common import from_list, to_list
+    >>> to_list(reorder_list(from_list([1, 2, 3, 4])))
+    [1, 4, 2, 3]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: This is three problems you have already solved, composed: find the middle, reverse a list, merge two lists by alternating.

@@ -13,6 +13,11 @@ Constraints
 Example
     build_cycle([3, 2, 0, -4], 1) -> the node with value 2
 
+Example:
+    >>> from linked_list_common import build_cycle
+    >>> cycle_start(build_cycle([3, 2, 0, -4], 1)).val
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: First detect the cycle with fast/slow, exactly as in problem 02.

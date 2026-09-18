@@ -21,6 +21,11 @@ Example
     ops = [("insert",3), ("insert",1), ("search",3), ("items",0), ("delete",3), ("search",3)]
     -> [True, [1, 3], True, False]
 
+Example:
+    >>> ops = [("insert", 3), ("insert", 1), ("search", 3), ("items", 0), ("delete", 3), ("search", 3)]
+    >>> simulate_skip_list(ops)
+    [True, [1, 3], True, False]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A skip list is a stack of linked lists. The bottom level holds every element; each level above holds a random subset of the level below.

@@ -14,6 +14,12 @@ Example
     can_finish_courses(2, [(1, 0)])         -> True
     can_finish_courses(2, [(1, 0), (0, 1)]) -> False
 
+Example:
+    >>> can_finish_courses(2, [(1, 0)])
+    True
+    >>> can_finish_courses(2, [(1, 0), (0, 1)])
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: 'Can I order these respecting the prerequisites?' is 'is this graph a DAG?'.

@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Track active user sessions and expire missed heartbeat deadlines.
 
+Example:
+    >>> active, expired = heartbeat_presence_tracker(
+    ...     {'u1': 100, 'u2': 80, 'u3': 60}, 110, 30)
+    >>> sorted(active), sorted(expired)
+    (['u1', 'u2'], ['u3'])
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: This is a single-pass classification problem -- every user is
+        independently either still online or timed out, based purely on
+        how long it has been since their last heartbeat.
+    Hint 2: Iterate `heartbeats.items()` once, compute
+        `current_time - last_seen` for each user, and bucket the user_id
+        into one of two sets based on that elapsed time.
+    Hint 3: The boundary is inclusive on the online side -- a user exactly
+        at the ttl (elapsed == ttl_seconds) still counts as online, so the
+        expired branch needs a strict `>` comparison against
+        `ttl_seconds`, not `>=`.
 """
 
 from __future__ import annotations

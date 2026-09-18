@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- Code before yield: Executes during request setup before the route handler is invoked. - Code after yield: Executes during response teardown after the route handler finishes, even if an unhandled error occurred.",
+        "text": "Approximately 70% E2E Tests, 20% Integration Tests, and 10% Unit Tests, because end-to-end coverage is what actually proves the product works for real users.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "s[1:6:2] returns \"YHN\". - Start at index 1 ('Y'). - Stop before index 6 (stops before 'I'). - Step by 2: picks index 1 ('Y'), index 3 ('H'), and index 5 ('N').",
+        "text": "An even 33/33/33 split across Unit, Integration, and E2E tests is considered healthiest, since over-investing in any one layer creates blind spots in the others.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python follows the Method Resolution Order (MRO) computed via the C3 Linearization algorithm, which guarantees that child classes precede parent classes and multiple parents are checked in left-to-right order.",
+        "text": "Unit tests should be avoided almost entirely (under 5%) in favor of Integration and E2E tests, because unit tests only verify implementation details that change too often to be worth maintaining.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Send a sentinel value (such as None) into the queue for each worker task, or have the main loop call workertask.cancel() after calling await queue.join().",
+        "text": "pytest requires every assert statement to be wrapped in a try/except block internally; the detailed diff output comes from parsing that exception's traceback, not from any AST rewriting.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- At-Most-Once: Messages are never duplicated, but may be lost. - At-Least-Once: Messages are never lost, but may be delivered multiple times (requires idempotent consumers). - Exactly-Once: Every message is delivered and processed once (re",
+        "text": "Python's own assert statement natively prints variable values on failure in every context; pytest simply forwards this built-in behavior without doing any additional processing.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
+        "text": "pytest replaces assert with a call to unittest.TestCase.assertEqual under the hood at import time, so the detailed diffs are actually produced by the unittest module, not by pytest itself.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1. Linting & Type Checking (ruff, mypy) 2. Automated Testing (pytest) 3. Docker Image Build & Push (Docker Hub / AWS ECR) 4. Zero-Downtime Deployment (Kubernetes / ECS / Cloud Run)",
+        "text": "@pytest.mark.parametrize runs faster because it executes all parameter combinations in a single test invocation using threads, while a for loop runs each iteration sequentially in the main thread.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- async def: Runs directly on the main event loop. - def: Offloaded to an external thread pool (anyio.tothread) to safely execute synchronous blocking code without starving the event loop.",
+        "text": "The main advantage is that parametrize automatically generates the input values themselves (e.g. random integers), whereas a for loop requires the developer to hardcode every input by hand.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- ctypes: Dynamic runtime bridging using libffi. - Extension Module: Statically compiled C/Rust code adhering to Python's C-ABI, imported directly as a standard Python module (import mymodule).",
+        "text": "A for loop of assertions already reports every individual pass and failure separately in pytest's output; parametrize offers no additional visibility, only cleaner syntax.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It provides a single unique trace ID that follows a request across multiple microservices, message queues, and logs, making distributed debugging possible.",
+        "text": "1. session (Default: runs once for the whole suite) 2. module 3. class 4. function (runs once per test suite execution) -- broader scopes are preferred by default for speed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "pydantic-core is a high-performance validation and serialization engine written in Rust, compiling schema validation into native C-ABI calls for a 5x\u201320x speedup.",
+        "text": "1. function 2. module 3. package 4. global -- there is no class-scoped fixture; class-level setup must use unittest's setUp method instead.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "client.websocketconnect(\"/path\") returns a context manager that connects to the ASGI WebSocket handler and allows calling .sendtext() and .receivetext().",
+        "text": "pytest supports only two fixture scopes, function and session; class and module scoping were deprecated in pytest 7 in favor of explicit parametrize calls.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "actual_total",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "expected_total * 2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "0.0",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "actual_balance",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "0.0",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "sys.getsizeof() returns only the bytes allocated directly to the container object itself (its pointer array), not the memory consumed by the objects it points to.",
+        "text": "The test uses pytest.approx() correctly, but the tolerance keyword was misspelled as relative_tolerance instead of rel_tol, so no tolerance is actually applied at comparison time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "logger.addHandler() appends a handler each time it is called. If called multiple times, the logger has multiple stream handlers attached, printing every message multiple times.",
+        "text": "The values being compared are Decimal instances, not floats, and Decimal arithmetic in Python always rounds to the nearest cent automatically, so the assertion should already pass without approx().",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Sets require elements to implement hash and be immutable. Python dicts are mutable and do not have a hash method.",
+        "text": "The assertion compares two different currency types (USD float vs cents-as-int) without converting units first, which is a unit-mismatch bug unrelated to floating-point precision.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Default argument values are evaluated once when the function is defined, not every time it is called. Every invocation that omits tags mutates that exact same shared list in memory.",
+        "text": "pytest's assertion rewriting only supports simple comparisons like ==; wrapping the assertion in extra parentheses disables the rewriting entirely, so the test silently reports itself as skipped instead of passed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "open(\"config.toml\") looks in Path.cwd(), not the directory where the code lives.",
+        "text": "The comparison uses is instead of ==, and since the compared objects are cached by CPython, is always evaluates to True regardless of their actual values, making the test appear to pass.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "text": "The message string passed as the second assert argument is empty, and pytest treats any assertion with an empty message as an automatic pass rather than evaluating the condition.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By default in Pydantic V2, validation is only executed when the model is initialized (init). Attribute assignments on already-instantiated models (p.age = -50) are plain Python attribute sets that do not trigger validators unless explicitly",
+        "text": "pytest-randomly reseeds Python's random module before each test, and this test's business logic itself depends on a fixed random seed rather than depending on any other test's side effects.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When a TCP socket closes, it enters the TIMEWAIT state for 1\u20134 minutes to ensure in-flight packets are drained. By default, the OS prevents rebinding to the same port.",
+        "text": "The two tests each open their own SQLite in-memory database, but pytest occasionally reuses connection objects across test processes when running with pytest -n auto, corrupting isolated state.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "text": "step_two's fixture is scoped to session instead of function, so it only initializes once per test run; the fixture's setup code just hasn't been updated to reset itself between tests.",
         "is_correct": false
       }
     ],

@@ -45,8 +45,9 @@ class SimpleBloomFilter:
         self.size = size
         self.bits = [0] * size
     def _hashes(self, item):
-        h1 = hash(item) & 0x7FFFFFFF % self.size
-        h2 = (hash(item) * 31 + 7) & 0x7FFFFFFF % self.size
+        raw = item.encode("utf-8")
+        h1 = int(hashlib.md5(raw).hexdigest(), 16) % self.size
+        h2 = int(hashlib.sha256(raw).hexdigest(), 16) % self.size
         return [h1, h2]
     def add(self, item):
         for h in self._hashes(item):

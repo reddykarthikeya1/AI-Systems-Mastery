@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 Generate HLS media playlist segment durations and chunk byte ranges.
 
+Example:
+    >>> adaptive_bitrate_manifest(15.0, 6.0)
+    [(0, 6.0), (1, 6.0), (2, 3.0)]
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: This is repeated subtraction -- keep carving fixed-size
+        chunks off the remaining duration until less than a full chunk is
+        left over.
+    Hint 2: Use a while loop tracking the remaining duration and a
+        segment index counter, appending
+        `(index, min(remaining, segment_target_sec))` on each iteration.
+    Hint 3: A `total_duration_sec` of 0 (or negative) must return an empty
+        list rather than looping forever; end the loop on a small epsilon
+        (e.g. `remaining > 0.001`) instead of `> 0`, so floating-point
+        residue doesn't produce one extra near-zero segment, and round
+        each segment's duration to 2 decimals.
 """
 
 from __future__ import annotations

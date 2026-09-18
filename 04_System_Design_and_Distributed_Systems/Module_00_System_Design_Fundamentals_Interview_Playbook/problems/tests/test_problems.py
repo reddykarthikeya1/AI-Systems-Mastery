@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_back_of_envelope_capacity import back_of_envelope_capacity
-except ImportError:
-    from p01_back_of_envelope_capacity import back_of_envelope_capacity
+from p01_back_of_envelope_capacity import back_of_envelope_capacity
 
 
 def test_back_of_envelope_capacity():

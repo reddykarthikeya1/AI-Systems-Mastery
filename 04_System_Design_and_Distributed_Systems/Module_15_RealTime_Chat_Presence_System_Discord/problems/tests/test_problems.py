@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_heartbeat_presence_tracker import heartbeat_presence_tracker
-except ImportError:
-    from p01_heartbeat_presence_tracker import heartbeat_presence_tracker
+from p01_heartbeat_presence_tracker import heartbeat_presence_tracker
 
 
 def test_heartbeat_presence_tracker():

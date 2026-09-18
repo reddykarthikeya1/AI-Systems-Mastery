@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_change_data_capture_sync import change_data_capture_sync
-except ImportError:
-    from p01_change_data_capture_sync import change_data_capture_sync
+from p01_change_data_capture_sync import change_data_capture_sync
 
 
 def test_change_data_capture_sync():

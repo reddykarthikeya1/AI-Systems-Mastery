@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_slotted_page_insert import slotted_page_insert
-except ImportError:
-    from p01_slotted_page_insert import slotted_page_insert
+from p01_slotted_page_insert import slotted_page_insert
 
 
 def test_slotted_page_insert():

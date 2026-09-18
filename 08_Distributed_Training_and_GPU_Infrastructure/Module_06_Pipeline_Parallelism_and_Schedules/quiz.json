@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Pipeline bubble fraction exceeds 50% and GPU utilization is abysmal even though loss converges normally.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "text": "The last pipeline stage runs out of memory while every earlier stage still has memory to spare.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If Rank 47 dies mid-write and Rank 0 writes the .metadata manifest without checking completion consensus, the checkpoint directory is irreversibly broken.",
+        "text": "Training throughput is stable but the first stage's GPU sits idle for a large fraction of every step.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Using standard $6\\Phi$ FLOP formula while neglecting that SwiGLU has 3 linear matrices in the MLP rather than 2, under-counting true model FLOPs.",
+        "text": "The number of micro-batches m is smaller than the pipeline depth p, so some stages sit idle for an entire iteration.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "text": "The 1F1B schedule interleaves forward and backward passes in the wrong order, so a stage computes a backward pass before its matching forward pass has produced an activation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks.",
+        "text": "Activation checkpointing is enabled on every stage except the last, so the last stage's peak memory is far higher than the others'.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": In Tensor Parallelism, weights are sharded. If clipgradnorm is called naively on each rank, it calculates the $L2$ norm of only the local slice of weights: $$\\text{Norm}{\\text{local}} = \\sqrt{\\sum \\|g{\\text{local}}\\|^2}$$ Because $\\text{N",
+        "text": "Configure the global batch size and micro-batch size so that the number of micro-batches m is at least 4p.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "Reorder the 1F1B schedule so every stage's backward pass only runs after its matching forward activation is available.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions. - Because synchronous Ring AllReduce requires every node to pass data to its neighbor, the entire ",
+        "text": "Enable activation checkpointing uniformly across every pipeline stage, including the last one.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Standard BatchNorm computes mean and variance locally per GPU. When batch size per GPU shrinks to 2 samples, batch statistics become noisy and diverge across ranks. -",
+        "text": "The number of micro-batches m is smaller than the pipeline depth p, so some stages sit idle for an entire iteration.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A single degraded optical transceiver on one switch port drops from 400 Gbps (NDR) to 100 Gbps (EDR) or experiences packet retransmissions.",
+        "text": "The 1F1B schedule interleaves forward and backward passes in the wrong order, so a stage computes a backward pass before its matching forward pass has produced an activation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Account for gated MLP expansion factor in analytical FLOP counters.",
+        "text": "Activation checkpointing is enabled on every stage except the last, so the last stage's peak memory is far higher than the others'.",
         "is_correct": false
       }
     ],

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_dependency_inversion_container import dependency_inversion_container
-except ImportError:
-    from p01_dependency_inversion_container import dependency_inversion_container
+from p01_dependency_inversion_container import dependency_inversion_container
 
 
 def test_dependency_inversion_container():

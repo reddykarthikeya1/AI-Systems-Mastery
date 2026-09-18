@@ -11,8 +11,9 @@ Constraints
 - target O(N log k) where N is the total number of elements — concatenating and
   sorting is O(N log N) and is not the answer being asked for
 
-Example
-    merge_k_sorted([[1, 4, 5], [1, 3, 4], [2, 6]]) -> [1, 1, 2, 3, 4, 4, 5, 6]
+Example:
+    >>> merge_k_sorted([[1, 4, 5], [1, 3, 4], [2, 6]])
+    [1, 1, 2, 3, 4, 4, 5, 6]
 
 Hints — read one at a time, and try again between each.
 

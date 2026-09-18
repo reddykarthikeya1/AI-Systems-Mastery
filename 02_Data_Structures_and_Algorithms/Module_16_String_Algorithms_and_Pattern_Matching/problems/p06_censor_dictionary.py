@@ -23,6 +23,12 @@ Note the first example: `she` covers indices 1-3 and `he` covers 2-3, so the
 union is 1-3 - the leading `u` and the trailing `rs` survive. Get the nesting
 right, and count the indices rather than trusting your eye.
 
+Example:
+    >>> censor("ushers", ["he", "she"])
+    'u***rs'
+    >>> censor("hello world", ["world"])
+    'hello *****'
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Build one automaton from all the banned words: a trie plus failure links pointing at the longest proper suffix that is still a node.

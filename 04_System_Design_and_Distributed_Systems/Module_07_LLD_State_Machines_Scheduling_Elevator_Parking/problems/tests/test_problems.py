@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_elevator_dispatcher_scan import elevator_dispatcher_scan
-except ImportError:
-    from p01_elevator_dispatcher_scan import elevator_dispatcher_scan
+from p01_elevator_dispatcher_scan import elevator_dispatcher_scan
 
 
 def test_elevator_dispatcher_scan():

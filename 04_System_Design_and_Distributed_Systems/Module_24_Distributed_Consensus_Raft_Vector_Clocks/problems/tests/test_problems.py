@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_raft_leader_election import raft_leader_election
-except ImportError:
-    from p01_raft_leader_election import raft_leader_election
+from p01_raft_leader_election import raft_leader_election
 
 
 def test_raft_leader_election():

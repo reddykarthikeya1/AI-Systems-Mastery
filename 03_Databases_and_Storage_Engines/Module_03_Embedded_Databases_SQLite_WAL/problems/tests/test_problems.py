@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_wal_checkpoint_merge import wal_checkpoint_merge
-except ImportError:
-    from p01_wal_checkpoint_merge import wal_checkpoint_merge
+from p01_wal_checkpoint_merge import wal_checkpoint_merge
 
 
 def test_wal_checkpoint_merge():

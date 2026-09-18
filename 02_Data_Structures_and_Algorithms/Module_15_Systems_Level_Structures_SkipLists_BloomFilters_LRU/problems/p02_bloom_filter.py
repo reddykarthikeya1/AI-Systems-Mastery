@@ -20,6 +20,10 @@ Example
     bloom_check(["cat"], ["cat", "dog"]) -> [True, ...]
     where the first entry is guaranteed True and the second is usually False.
 
+Example:
+    >>> bloom_check(["cat"], ["cat", "dog"])
+    [True, False]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Set `hashes` bits per item, and report True only when ALL of a query's bits are set.

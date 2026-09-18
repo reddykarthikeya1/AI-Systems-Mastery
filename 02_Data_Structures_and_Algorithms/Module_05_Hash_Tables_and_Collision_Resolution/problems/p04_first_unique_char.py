@@ -16,6 +16,12 @@ Example
     "loveleetcode" -> 2
     "aabb"       -> -1
 
+Example:
+    >>> first_unique_char("leetcode")
+    0
+    >>> first_unique_char("aabb")
+    -1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You cannot know a character is unique until you have seen the whole string. So one pass is not enough.

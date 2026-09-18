@@ -5,10 +5,26 @@ Target: Production-grade implementation
 
 Replay WAL frames into database pages keeping latest committed page version.
 
+Example:
+    >>> pages = {1: b"page1_v0", 2: b"page2_v0"}
+    >>> frames = [
+    ...     (1, 1, b"page1_v1", False),
+    ...     (2, 2, b"page2_v1", True),
+    ...     (3, 1, b"page1_uncommitted", False),
+    ... ]
+    >>> wal_checkpoint_merge(pages, frames)
+    {1: b'page1_v1', 2: b'page2_v1'}
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Frames don't apply to the database directly — they belong to a
+        transaction, and only a transaction that reaches its commit frame
+        is allowed to change what a reader sees.
+    Hint 2: Accumulate writes from the frames seen so far into a pending
+        buffer (a dict keyed by page_no); only fold that buffer into the
+        result pages, and clear it, when a frame's is_commit flag is True.
+    Hint 3: Any frames left pending after the loop ends belong to a
+        transaction that never committed and must be discarded entirely —
+        even though they touch pages that already exist in db_pages.
 """
 
 from __future__ import annotations

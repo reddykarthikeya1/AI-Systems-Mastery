@@ -16,6 +16,12 @@ Example
     [[0, 0, 0], [1, 1, 0], [1, 1, 0]] -> 4
     [[1, 0], [0, 0]] -> -1
 
+Example:
+    >>> shortest_path_grid([[0, 1], [1, 0]])
+    2
+    >>> shortest_path_grid([[1, 0], [0, 0]])
+    -1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Shortest path, unweighted: BFS. DFS finds a path but not the shortest.

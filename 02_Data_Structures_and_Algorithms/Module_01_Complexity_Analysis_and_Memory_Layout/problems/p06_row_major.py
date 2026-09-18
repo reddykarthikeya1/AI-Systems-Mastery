@@ -22,6 +22,10 @@ addresses and every cache line you fetch is fully used. Iterating along columns
 strides by ``cols`` elements and can waste most of each cache line. Same
 asymptotic complexity, and often an order of magnitude difference in wall time.
 
+Example:
+    >>> row_major_index(3, 4, 1, 2)
+    6
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Row r starts at offset r * cols.

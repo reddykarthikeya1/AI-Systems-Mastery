@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_count_min_sketch_heavy_hitters import count_min_sketch_heavy_hitters
-except ImportError:
-    from p01_count_min_sketch_heavy_hitters import count_min_sketch_heavy_hitters
+from p01_count_min_sketch_heavy_hitters import count_min_sketch_heavy_hitters
 
 
 def test_count_min_sketch_heavy_hitters():

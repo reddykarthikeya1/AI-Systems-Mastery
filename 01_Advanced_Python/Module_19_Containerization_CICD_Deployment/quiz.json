@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1. iter(self): Must return the iterator object itself. 2. next(self): Must return the next value, or raise StopIteration when no items remain.",
+        "text": "Containers virtualize their own kernel just like VMs but share the host's physical CPU cores; the millisecond boot time comes from the kernel being pre-compiled into the image.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "CPython's internal memory allocator, dictionary lookup tables, and garbage collector are not thread-safe. Concurrent access without the GIL corrupts interpreter state.",
+        "text": "Docker containers run a stripped-down guest kernel (roughly 10 MB) while VMs share the host kernel directly; that's why VMs boot faster despite having more RAM overhead.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "TLS operates between the Transport Layer (Layer 4 - TCP) and the Application Layer (Layer 7 - HTTP).",
+        "text": "There is no meaningful kernel difference between containers and VMs on Linux; the only distinction is that containers cannot be assigned their own IP address, while VMs can.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python 3.13 added experimental free-threaded builds (--disable-gil), which remove the Global Interpreter Lock and allow native Python threads to execute in true multi-core parallel fashion.",
+        "text": "It lets the final image install build tools like gcc directly, since multi-stage builds automatically strip compiler binaries from the image at container start time rather than at build time.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "VMs virtualize hardware and run an entire guest OS kernel. Containers share the host OS kernel and isolate processes using Linux namespaces and cgroups, booting in milliseconds with negligible RAM overhead.",
+        "text": "Multi-stage builds exist purely to speed up docker build caching; they have no effect on the size or contents of the final shipped image.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "DEBUG (10) $\\rightarrow$ INFO (20) $\\rightarrow$ WARNING (30) $\\rightarrow$ ERROR (40) $\\rightarrow$ CRITICAL (50).",
+        "text": "It splits the Dockerfile so each instruction runs in a separate container that is merged back together at runtime, reducing memory usage while the application is running.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "An empty byte return (b\"\") indicates that the remote peer has cleanly closed or disconnected the connection (received TCP FIN packet).",
+        "text": "Running as root inside a container is actually just as safe as running as a non-root user, because Docker's default namespace isolation already fully sandboxes root the same way it does any other UID.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Because determining exactly when cached data has changed and coordinating immediate invalidation across distributed nodes without causing Cache Avalanches requires careful consistency mechanisms.",
+        "text": "USER appuser is required only to satisfy Docker Hub's automated vulnerability scanner; it has no effect on what an attacker can do once code execution is achieved inside the container.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
+        "text": "Non-root users are used exclusively to reduce the container image's file size, since root-owned file permissions require additional metadata to be stored in every image layer.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "An AST is a tree representation of the syntactic structure of source code. Linters walk this tree with ast.NodeVisitor to detect banned patterns (like eval() calls or mutable default arguments) without executing code.",
+        "text": "It disables Python's bytecode caching (.pyc files) inside the container, forcing every module to be recompiled from source on each request for easier debugging.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
+        "text": "It increases the size of the internal socket buffer used for incoming HTTP connections, allowing more concurrent requests to queue before the OS starts dropping packets.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It triggers Name Mangling: Python automatically prefixes the attribute name with ClassName (e.g. self.secretkey becomes self.Accountsecretkey) to prevent accidental naming collisions in subclasses.",
+        "text": "It is required only for multiprocessing-based apps; single-process asyncio apps in Docker already flush stdout immediately by default without this variable.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "initial_count + 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "initial_count",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "initial_count * 5",
         "is_correct": false
       }
     ],
@@ -162,7 +162,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"LIVE\"",
+        "text": "\"live\"",
         "is_correct": false
       },
       {
@@ -222,7 +222,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"READY\"",
+        "text": "\"ready\"",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "The container's Dockerfile is missing an EXPOSE 8080 instruction; without EXPOSE, Docker refuses to route any traffic to that port regardless of the -p flag used at runtime.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using sys.path.append(\"./src\") relies on whatever current working directory (os.getcwd()) happens to be when the command runs. If executed from a parent or sibling folder, ./src points to a non-existent path.",
+        "text": "The host machine's firewall blocks all Docker bridge traffic by default, and this is unrelated to which interface the application inside the container is bound to.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "text": "The -p flag maps host port to container port in the wrong order (host:container is being read as container:host), so traffic is actually being routed to a completely different port inside the container.",
         "is_correct": false
       }
     ],

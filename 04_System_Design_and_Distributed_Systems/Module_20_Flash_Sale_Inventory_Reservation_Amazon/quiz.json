@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "num_threads",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "initial_stock - 1",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "num_threads",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "(initial_stock - num_threads)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "ReservationStatus.RESERVED",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "ReservationStatus.PURCHASED",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "ReservationStatus.EXPIRED",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Pure Push (Fan-out-on-Write) works well for normal users, but scales linearly with follower count. For celebrities, $50M$ writes for 1 post saturates storage and queues. ---",
+        "text": "The reservation TTL expired before payment completed, silently releasing stock back to the pool while the customer's payment was still processing, so two customers ended up holding the same unit.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating cryptographic hashes into 6 or 7 characters creates severe collision probabilities governed by the Birthday Paradox. ---",
+        "text": "Each application server kept its own local cached copy of the stock count instead of querying the shared database, so decrements on one server were invisible to the others.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The calculation divided by 10^6 instead of 1024^3 (GiB) or 10^9 (GB) and completely omitted multiplying by the storage replication factor (3x). This led to severe disk exhaustion in production. ---",
+        "text": "The database used read-committed isolation instead of serializable, so a long-running analytics query on the inventory table caused writers to block indefinitely rather than oversell.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting every incoming purchase request check current stock and decrement it in two separate, unsynchronized steps, trusting that checks alone are enough under low traffic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching the stock count locally on each application server for speed, without validating that all servers see the same up-to-date count before accepting a purchase.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By setting a long reservation hold time so customers have more time to pay, without checking whether that hold itself is what is starving other buyers of stock.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more application servers to handle flash-sale traffic, without validating that stock decrements are still atomic across all of them.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed purchase attempt immediately against the same cached stock count, instead of re-checking the authoritative count first.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting reservations silently expire and release stock back to the pool, without checking whether a pending payment for that reservation is still in flight.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting every incoming purchase request check current stock and decrement it in two separate, unsynchronized steps, trusting that checks alone are enough under low traffic.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching the stock count locally on each application server for speed, without validating that all servers see the same up-to-date count before accepting a purchase.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By setting a long reservation hold time so customers have more time to pay, without checking whether that hold itself is what is starving other buyers of stock.",
         "is_correct": false
       }
     ],

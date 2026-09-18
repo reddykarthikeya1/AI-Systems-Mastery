@@ -18,6 +18,12 @@ Example
     word_ladder("hit", "cog", ["hot","dot","dog","lot","log","cog"]) -> 5
     word_ladder("hit", "cog", ["hot","dot","dog","lot","log"])       -> 0
 
+Example:
+    >>> word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
+    5
+    >>> word_ladder("hit", "cog", ["hot", "dot", "dog", "lot", "log"])
+    0
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The graph is implicit: words are nodes, and an edge joins words that differ in exactly one position. Shortest path, unweighted -> BFS.

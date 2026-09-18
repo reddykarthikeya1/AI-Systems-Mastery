@@ -18,11 +18,13 @@ would make this function worse than useless.
 Constraints
 - ``1 <= n <= 10**9``
 
-Example
-    fits_budget(100_000, "O(n log n)")  -> True
-    fits_budget(100_000, "O(n^2)")      -> False
-
 This is Step 1 of the triage, executable.
+
+Example:
+    >>> fits_budget(100_000, "O(n log n)")
+    True
+    >>> fits_budget(100_000, "O(n^2)")
+    False
 
 Hints — read one at a time, and try again between each.
 

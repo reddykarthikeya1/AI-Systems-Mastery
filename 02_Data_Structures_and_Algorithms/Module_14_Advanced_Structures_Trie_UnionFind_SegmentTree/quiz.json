@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "n - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "n + 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "log(n)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[0]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[7, 0]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "Raises KeyError: 'abc'",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[-1, -1]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[-5, -1]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[3, -5]",
         "is_correct": false
       }
     ],
@@ -102,7 +102,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "['A']",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "path is one list object reused for the whole search. Appending it stores a reference, so every entry in out is the",
+        "text": "insert never allocates a new node for a character that already exists along the path, so two words sharing a prefix end up overwriting each other's is_word flag.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "text": "The root node itself is marked is_word = True at construction time, so an empty-string query is always reported as a stored word regardless of what has been inserted.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "text": "walk() stops one character early when the query is a prefix of a longer stored word, so search reports the last common node instead of following the query to its actual end.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "text": "The size array is tracked but the union step always attaches to whichever root was passed as the second argument, ignoring size entirely, so the order elements are unioned in determines the final shape rather than balance.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every element begins a walk, so a run of length L is traversed L times \u2014 once from each of its members. On a single long run that is O(n\u00b2): 20,000 elements means 200 million membership tests.",
+        "text": "find caches the discovered root back onto the immediate parent only, one link at a time, instead of the whole path, so a single find call shortens the chain by at most one step no matter how long it is.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "<= admits equal values, so the function computes the longest non-decreasing subsequence. On [7, 7, 7, 7] it reports 4, describing a subsequence that does not increase at any step.",
+        "text": "Path compression runs correctly on every find call, but union never compares the size of the two trees before attaching one root to the other, so merging elements in increasing order still builds a chain one node at a time.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The base case claims an absent subtree has depth 1, so every leaf's depth is inflated by one and the error propagates all the way to the root.",
+        "text": "The update function recomputes every ancestor's sum correctly, but it walks up starting from the wrong index, so it repairs the cache for a sibling subtree instead of the one that was actually changed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "Queries recompute the requested range's sum from the leaves directly every time instead of reading cached internal nodes at all, so updates are always reflected but every query pays the full O(n) cost instead of O(log n).",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "text": "The tree array is sized for exactly n leaves with no extra room for internal nodes, so writing an ancestor's recomputed sum overflows into a neighbouring leaf's slot and corrupts an unrelated value.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "Every insert into the trie allocates a brand new fixed-size array of child slots even when most of them stay unused, so memory grows with the alphabet size rather than with the data actually stored.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Fencepost issues on boundary intervals $[0, N-1]$.",
+        "text": "The segment tree is rebuilt from scratch on every update instead of updating in place, so the old tree array is never freed until the next garbage collection cycle happens to run.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "text": "Union-find's path compression keeps a separate history of every root a node has ever pointed to for debugging purposes, and that history list is never cleared.",
         "is_correct": false
       }
     ],

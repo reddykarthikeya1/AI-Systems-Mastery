@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[5.0, 4.0, 4.0, 3.0, 3.0]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[5.0, 4.5, 4.0, 3.5]",
         "is_correct": false
       },
       {
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[50, 70, 100]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[100, 70]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[100, 100, 70]",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "len(data) - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "len(data) + 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "text": "The heap of end times is never popped when a room is freed, so ends grows without bound and every meeting appears to need a brand new room.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "text": "The comparison ends[0] <= start uses <= instead of <, so a meeting that starts exactly when another ends is forced to wait for a new room instead of reusing the one that just freed up.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Cyclic references preventing garbage collection in bidirectional pointers.",
+        "text": "Rooms are tracked with a list instead of a heap, so the reuse check always compares against the first room ever created instead of the one that frees up soonest.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The loop correctly rejects a closer with no matching opener, so every input with a stray ) is handled. What it never checks is the opposite failure: openers that were never closed.",
+        "text": "The heap comparison breaks ties by list index instead of by value, so when two lists have equal fronts the wrong one is advanced and its remaining elements are silently skipped.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "text": "Each list's pointer is advanced before the value is pushed onto the heap, so the very first element of every list is dropped before the merge even starts.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "text": "The output list is deduplicated as it is built, so any value that happens to repeat across two of the input lists appears only once in the final merged result.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DFS commits to one branch and follows it to the end, so the first time it reaches the destination it may have taken a long detour. Recording that first arrival gives",
+        "text": "The heap is compared using a custom key that sorts strings before numbers, so heappop's notion of 'largest' does not match the numeric ordering the problem needs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The loop is correct while both lists have nodes, and stops the moment either runs out. At that point the other list still holds every remaining node, and they are simply never linked in.",
+        "text": "k is used as a 0-indexed position into the heap instead of a count of elements to keep, so kth_largest(nums, 1) actually returns the element sitting at index 1, not the biggest one.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Inserting before looking up means the current element is already in the map when its own complement is sought. Whenever 2",
+        "text": "The heap keeps growing without ever popping, so by the end it holds every element, and heap[0] returns the smallest value in the whole input rather than the k-th largest.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Iterating capacity upward means best[c - w] may already include the current item, so taking it again compounds. The recurrence quietly becomes",
+        "text": "The two heaps are rebalanced by size after every insertion, but the rebalancing step pushes into the wrong heap, so lower ends up holding the larger half of the values and upper the smaller half.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kahn's algorithm already detects cycles for free \u2014 nodes inside one never reach in-degree zero, so they are never emitted. The information is right there in len(out), and the function throws it away.",
+        "text": "The median is computed as (lower[0] + upper[0]) / 2 without negating lower[0] back first, since lower is a max-heap stored as negated values, so every even-length median comes out with the wrong sign.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Using 0 as the \"cannot be made\" marker collides with the one amount that genuinely costs zero coins. Worse, the value propagates: any amount reachable from an unreachable one inherits the fiction and comes back with a small, confident, wron",
+        "text": "Ties between the two heap sizes are broken by always popping from upper first, so an even-length stream reports the second-smallest of the two middle values instead of their average.",
         "is_correct": false
       }
     ],

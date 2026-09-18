@@ -15,6 +15,10 @@ Constraints
 Example
     streaming_median([2, 3, 4]) -> [2.0, 2.5, 3.0]
 
+Example:
+    >>> streaming_median([2, 3, 4])
+    [2.0, 2.5, 3.0]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Split the data at the median: a lower half and an upper half.

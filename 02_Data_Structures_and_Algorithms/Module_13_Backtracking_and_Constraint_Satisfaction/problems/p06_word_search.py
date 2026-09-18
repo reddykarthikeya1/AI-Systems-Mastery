@@ -18,6 +18,13 @@ Example
     word_search(board, "SEE")    -> True
     word_search(board, "ABCB")   -> False    (the B would be reused)
 
+Example:
+    >>> board = [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]]
+    >>> word_search(board, "ABCCED")
+    True
+    >>> word_search(board, "ABCB")
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Try every cell as a starting point, then walk outward matching one character at a time.

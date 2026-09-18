@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bootstrap_confidence_interval import bootstrap_confidence_interval
-except ImportError:
-    from p01_bootstrap_confidence_interval import bootstrap_confidence_interval
+from p01_bootstrap_confidence_interval import bootstrap_confidence_interval
 
 
 def test_bootstrap_confidence_interval():

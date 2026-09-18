@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use raise ServiceError(...) from None. Setting from None sets suppresscontext = True, hiding internal tracebacks from end-users.",
+        "text": "tottime measures cumulative time inside a function plus all its sub-function calls, while cumtime measures only the time spent directly inside that function -- the two definitions are reversed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- TCP: Connection-oriented, guarantees packet ordering, retransmits lost packets, and provides error checking (ideal for HTTP, databases, file transfers). - UDP: Connectionless, unordered, no retransmission guarantee, minimal latency overhe",
+        "text": "Both tottime and cumtime measure wall-clock time including time spent waiting on I/O or network calls; the only difference is that cumtime rounds to the nearest millisecond and tottime to the nearest microsecond.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- modeldump(): Returns a native Python dictionary. - modeldumpjson(): Directly serializes into an optimized JSON string (handled in Rust).",
+        "text": "tottime is the time spent the very first time a function is called, and cumtime is the average time spent across every subsequent call to that same function during the profiling run.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "pytest intercepts and rewrites Python's AST bytecode at test discovery time, extracting sub-expression values so that failing assert a == b statements print detailed visual diffs without verbose helper methods.",
+        "text": "orjson is faster only because it skips validating that the input is well-formed JSON; it trades correctness for speed and can silently produce corrupt output on malformed data.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1. sys.path[0]: The directory containing the script used to invoke the interpreter (or current directory in interactive mode). 2. Standard library directories. 3. Third-party site-packages directories.",
+        "text": "orjson achieves its speed by caching every previously serialized object in memory and returning the cached bytes on any subsequent call with an equal object, similar to functools.lru_cache.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The loop else block executes only if the loop completed naturally (i.e., finished all iterations of a for loop or the while condition became False). It is skipped if the loop exited via a break statement.",
+        "text": "orjson is a thin wrapper around the standard library's json module that simply disables Python's garbage collector for the duration of the dumps() call, reducing pause time.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "@computedfield properties are automatically included in JSON serialization (modeldump() and modeldumpjson()) and OpenAPI schemas.",
+        "text": "1. Application writes to the database first. 2. Database triggers a webhook. 3. Cache is updated asynchronously in the background before the response is ever read from either store.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
+        "text": "1. Application always queries the database directly. 2. If the database is slow, only then does it fall back to checking the cache. 3. The cache is treated strictly as a last-resort read path.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Loggers retain registered handlers in memory. Registering handlers repeatedly appends new handler instances to the logger's handler list, causing every subsequent log message to be emitted once per registered handler.",
+        "text": "1. Application queries the cache and the database simultaneously. 2. Whichever responds first is returned to the caller. 3. The slower response is discarded and never written back to the cache.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+        "text": "A cache stampede happens when a single request holds a distributed lock for too long, blocking every other unrelated cache key from being read until the lock times out.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The API schema specifies available tools. The LLM is trained to emit toolcalls JSON payloads matching the schema when a query requires external data or action.",
+        "text": "It refers to a cache growing unbounded in memory because expired keys are never evicted, eventually causing an out-of-memory crash on the caching server itself, unrelated to request volume.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
+        "text": "A cache stampede describes many independent cache keys expiring at slightly different times, each individually causing one extra database query that gradually accumulates into higher average latency.",
         "is_correct": false
       }
     ],
@@ -142,7 +142,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -167,12 +167,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0.0",
+        "text": "1.0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "0.0",
+        "text": "0.25",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Generators produce values on demand and maintain internal state (giframe). Once exhausted (StopIteration), they cannot be re-iterated.",
+        "text": "time.time() only has second-level precision, so cache entries created within the same second as another entry are treated as already expired regardless of NTP synchronization.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Exceptions inside background tasks created via createtask() are stored on the Task object. If task.exception() or await task is never called, the exception goes unhandled.",
+        "text": "The cache stores expiration as a naive datetime instead of a Unix timestamp, and naive datetimes are always interpreted as UTC+0 even on servers configured for a different timezone, causing incorrect expiry math.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "text": "The TTL value itself was passed as a string instead of an int, so Python's string comparison is used to decide expiration, which sorts \"120\" as expired before \"30\" due to lexicographic ordering.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Python's primary memory management is reference counting. In a circular reference (a.link = b; b.link = a), deleting names a and b decrements their reference counts from 2 to 1, never reaching 0. Only the cyclic garbage collector (gc.collec",
+        "text": "cache.get(\"user\") raises a KeyError instead of returning None whenever the key is missing, and the calling code's except KeyError: block incorrectly re-fetches and re-caches the value on every call.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In Python's context management protocol, if exit returns a truthy value, Python suppresses the exception that occurred inside the with block.",
+        "text": "The cache backend serializes None as the empty string \"\" internally, and the deserialization step fails to convert \"\" back into None, so the application logic never sees a cached negative result.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "text": "Negative caching was implemented with a TTL of 0 seconds by mistake, so cached None values expire immediately, which coincidentally produces the same symptom as never checking for None explicitly.",
         "is_correct": false
       }
     ],

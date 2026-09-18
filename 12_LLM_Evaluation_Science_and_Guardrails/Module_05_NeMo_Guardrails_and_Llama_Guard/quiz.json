@@ -12,7 +12,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DELEGATE_LLM\"",
+        "text": "\"delegate_llm\"",
         "is_correct": false
       },
       {
@@ -42,7 +42,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"DIVERT\"",
+        "text": "\"divert\"",
         "is_correct": false
       },
       {
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Apply Luhn formula validation to candidate 16-digit matches before masking.",
+        "text": "process() ignores the text argument entirely and always returns the constant DELEGATE_LLM, so no message is ever inspected for intent at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Direct the safety judge to evaluate only the model's actionable advice, not echoed text.",
+        "text": "The safety rubric conflates a defensive, conceptual explanation of an attack technique with instructions for actually carrying it out.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Require exact multi-phrase matches: ignore (?:all )?previous instructions.",
+        "text": "The politics rail's canonical-form matcher was trained only on English text and silently passes through non-English political content.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "User asking \"How do I ignore previous commits in git?\" gets flagged as prompt injection.",
+        "text": "Classify the message's intent before routing, and block only messages matching a defined set of unsafe intents instead of returning a constant verdict.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The judge outputs slight differences in reasoning between runs that cause opposite votes on minor nuances.",
+        "text": "Refine the safety rubric to distinguish defensive conceptual explanations from actionable exploit code generation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Naive whitespace tokenization splits numbers with commas into separate tokens. -",
+        "text": "Remove the politics rail entirely so no message can ever be blocked for mentioning a political topic.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Substring match on \"ignore previous\".",
+        "text": "Every message, safe or malicious, is routed straight to the underlying LLM because the safety router never actually inspects its content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "A user asking 'What is a SQL injection vulnerability?' is blocked as a Cyberattack (S6) violation even though the question is purely educational.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Substring match on \"ignore previous\". -",
+        "text": "The politics rail blocks every message containing the word 'election', including ones about a company's internal promotion cycle.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Substring match on \"ignore previous\".",
+        "text": "The Colang safety router returns the same 'DELEGATE_LLM' verdict on every call regardless of the message's actual content.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use numeric scoring rubrics (e.g. 1-10) in both permutations and declare a winner if the average margin exceeds an epsilon threshold $\\epsilon = 1.0$.",
+        "text": "Llama Guard's safety classifier cannot distinguish a defensive explanation of an exploit from instructions to carry it out, so dual-use questions get flagged.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Swap-pair evaluation outputs 85% Ties.",
+        "text": "The customer-service flow and the politics flow share an overlapping canonical form, so the router non-deterministically picks whichever flow was registered last.",
         "is_correct": false
       }
     ],

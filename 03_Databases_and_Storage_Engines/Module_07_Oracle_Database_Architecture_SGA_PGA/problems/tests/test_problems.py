@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_buffer_cache_clock_sweep import buffer_cache_clock_sweep
-except ImportError:
-    from p01_buffer_cache_clock_sweep import buffer_cache_clock_sweep
+from p01_buffer_cache_clock_sweep import buffer_cache_clock_sweep
 
 
 def test_buffer_cache_clock_sweep():

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_warp_divergence_metrics import warp_divergence_metrics
-except ImportError:
-    from p01_warp_divergence_metrics import warp_divergence_metrics
+from p01_warp_divergence_metrics import warp_divergence_metrics
 
 
 def test_warp_divergence_metrics():

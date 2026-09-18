@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Model perplexity degrades on prompt tokens when chunking is enabled; generation hallucinates early tokens.",
+        "text": "The scheduler only checks for new admissions when the running batch is completely empty, so freed slots sit idle until every request in the wave finishes together.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM. -",
+        "text": "Padded attention masks are computed once when a batch is formed and never recomputed as requests join or leave mid-flight, so stale padding silently attends to garbage.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "text": "The scheduler assigns a new sequence to a KV cache slot before the previous occupant's blocks are fully freed, corrupting the new sequence's keys and values.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "text": "The scheduler's admission check only fires once the entire running batch is empty, so continuous batching quietly degrades into static wave-by-wave batching.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Decouple physical memory allocation from power-of-two doubling by adopting fixed-size block paging (PagedAttention).",
+        "text": "The tokenizer applies a different padding side (left vs. right) depending on whether a sequence is newly admitted or already in-flight.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use optimized assembly-level packed GEMM kernels (like Marlin or GPTQ-Triton).",
+        "text": "Rotary position embeddings are computed relative to a sequence's index within the batch tensor rather than its own token offset, scrambling positions after a resize.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "text": "Gate admission on len(running) < max_batch_size every step instead of waiting for the whole batch to drain first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When autoscaler spins up a new pod, clients routed to the new pod experience 60-second connection timeouts.",
+        "text": "Pad every sequence in the batch to the same fixed maximum length and recompute the full attention mask from scratch on every step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When aborting an in-flight branched request, the scheduler frees the parent request's block table but fails to decrement refcount on shared prefix blocks, orphaning physical blocks in the allocator.",
+        "text": "Freeze the batch composition for the duration of the longest sequence's generation, only admitting new requests once it finishes.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "text": "The scheduler admits new requests only in synchronized waves, so overall throughput matches static batching even though continuous batching is enabled.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "Every request in the batch returns correct tokens, but latency variance grows sharply as the batch composition changes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization. -",
+        "text": "The server raises a shape-mismatch exception and crashes whenever a request joins a batch containing sequences of different lengths.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recomputing the full attention mask from scratch after every batch resize, regardless of which sequences actually changed.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By gating new admissions on the running batch reaching zero occupancy, so batches always drain completely before refilling.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By padding every sequence to the length of the longest one in the batch and accepting the wasted compute as the cost of correctness.",
         "is_correct": false
       }
     ],

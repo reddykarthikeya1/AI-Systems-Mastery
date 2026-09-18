@@ -19,6 +19,12 @@ A greedy "take the biggest coin first" is **wrong** here: with coins
 ``[1, 3, 4]`` and amount 6, greedy gives 4+1+1 = 3 coins while the optimum is
 3+3 = 2. Problem 03's tests include that case.
 
+Example:
+    >>> coin_change_min([1, 2, 5], 11)
+    3
+    >>> coin_change_min([2], 3)
+    -1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Greedy fails - see the note above. So you need to consider every coin at every amount.

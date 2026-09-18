@@ -4,8 +4,8 @@
 Fails on:
   - Missing project_solution/
   - Missing starter/
-  - Missing debug_lab/
-  - Missing problems/
+  - debug_lab/ present but empty
+  - problems/ present but empty
   - Missing quiz.json
 
 Usage:
@@ -31,10 +31,10 @@ def main() -> int:
                 failures.append(f"{course.name}/{mod.name}: missing project_solution/")
             if not (mod / "starter").is_dir():
                 failures.append(f"{course.name}/{mod.name}: missing starter/")
-            if not (mod / "debug_lab").is_dir():
-                failures.append(f"{course.name}/{mod.name}: missing debug_lab/")
-            if not (mod / "problems").is_dir():
-                failures.append(f"{course.name}/{mod.name}: missing problems/")
+            if not any((mod / "debug_lab").glob("broken_*.py")):
+                failures.append(f"{course.name}/{mod.name}: debug_lab/ has no broken_*.py")
+            if not any((mod / "problems").glob("p*.py")):
+                failures.append(f"{course.name}/{mod.name}: problems/ has no p*.py")
             if not (mod / "quiz.json").is_file():
                 failures.append(f"{course.name}/{mod.name}: missing quiz.json")
 

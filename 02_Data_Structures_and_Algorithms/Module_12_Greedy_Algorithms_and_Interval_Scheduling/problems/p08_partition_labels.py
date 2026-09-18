@@ -14,6 +14,10 @@ Constraints
 Example
     partition_labels("ababcbacadefegdehijhklij") -> [9, 7, 8]
 
+Example:
+    >>> partition_labels("ababcbacadefegdehijhklij")
+    [9, 7, 8]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A part cannot end before the last occurrence of every letter it contains.

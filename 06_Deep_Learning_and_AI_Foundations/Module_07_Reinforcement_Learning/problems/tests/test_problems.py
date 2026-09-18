@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_q_learning_bellman_update import q_learning_bellman_update
-except ImportError:
-    from p01_q_learning_bellman_update import q_learning_bellman_update
+from p01_q_learning_bellman_update import q_learning_bellman_update
 
 
 def test_q_learning_bellman_update():

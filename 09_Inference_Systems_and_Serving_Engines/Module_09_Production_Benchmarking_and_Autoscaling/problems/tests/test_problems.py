@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_concurrency_queue_autoscaler import concurrency_queue_autoscaler
-except ImportError:
-    from p01_concurrency_queue_autoscaler import concurrency_queue_autoscaler
+from p01_concurrency_queue_autoscaler import concurrency_queue_autoscaler
 
 
 def test_concurrency_queue_autoscaler():

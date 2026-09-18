@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_model_artifact_drift_detector import model_artifact_drift_detector
-except ImportError:
-    from p01_model_artifact_drift_detector import model_artifact_drift_detector
+from p01_model_artifact_drift_detector import model_artifact_drift_detector
 
 
 def test_model_artifact_drift_detector():

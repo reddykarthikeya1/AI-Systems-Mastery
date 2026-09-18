@@ -20,6 +20,11 @@ Example
     capacity 3, ops = [("push",1),("push",2),("push",3),("push",4),("items",0)]
     -> [[2, 3, 4]]      (1 was overwritten)
 
+Example:
+    >>> ops = [("push", 1), ("push", 2), ("push", 3), ("push", 4), ("items", 0)]
+    >>> simulate_ring_buffer(3, ops)
+    [[2, 3, 4]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A Python list with pop(0) is O(n) because everything shifts. The point of a ring buffer is that nothing ever moves.

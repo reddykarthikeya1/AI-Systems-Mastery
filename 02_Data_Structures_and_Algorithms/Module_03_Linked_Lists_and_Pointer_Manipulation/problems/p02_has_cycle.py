@@ -14,6 +14,13 @@ Example
     build_cycle([3, 2, 0, -4], 1) -> True
     build_cycle([1, 2], -1)       -> False
 
+Example:
+    >>> from linked_list_common import build_cycle
+    >>> has_cycle(build_cycle([3, 2, 0, -4], 1))
+    True
+    >>> has_cycle(build_cycle([1, 2], -1))
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Two runners on a circular track, one twice as fast as the other, must eventually meet.

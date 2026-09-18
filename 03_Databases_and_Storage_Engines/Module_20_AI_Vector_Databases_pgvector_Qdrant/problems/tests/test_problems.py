@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_ivf_flat_nearest_neighbors import ivf_flat_nearest_neighbors
-except ImportError:
-    from p01_ivf_flat_nearest_neighbors import ivf_flat_nearest_neighbors
+from p01_ivf_flat_nearest_neighbors import ivf_flat_nearest_neighbors
 
 
 def test_ivf_flat_nearest_neighbors():

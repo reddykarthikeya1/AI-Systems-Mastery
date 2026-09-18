@@ -12,6 +12,11 @@ Constraints
 Example
     from_level_order([3, 9, 20, None, None, 15, 7]) -> [[3], [9, 20], [15, 7]]
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> level_order(from_level_order([3, 9, 20, None, None, 15, 7]))
+    [[3], [9, 20], [15, 7]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Breadth-first with a queue visits nodes in exactly this order.

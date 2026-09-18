@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_ring_attention_kv_shift import ring_attention_kv_shift
-except ImportError:
-    from p01_ring_attention_kv_shift import ring_attention_kv_shift
+from p01_ring_attention_kv_shift import ring_attention_kv_shift
 
 
 def test_ring_attention_kv_shift():

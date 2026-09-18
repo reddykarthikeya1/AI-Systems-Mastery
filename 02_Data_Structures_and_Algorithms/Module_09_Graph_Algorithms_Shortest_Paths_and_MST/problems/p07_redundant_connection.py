@@ -16,6 +16,10 @@ Constraints
 Example
     redundant_connection([(1, 2), (1, 3), (2, 3)]) -> (2, 3)
 
+Example:
+    >>> redundant_connection([(1, 2), (1, 3), (2, 3)])
+    (2, 3)
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Process the edges in order, merging endpoints as you go.

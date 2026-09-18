@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_rdb_snapshot_ziplist import rdb_snapshot_ziplist
-except ImportError:
-    from p01_rdb_snapshot_ziplist import rdb_snapshot_ziplist
+from p01_rdb_snapshot_ziplist import rdb_snapshot_ziplist
 
 
 def test_rdb_snapshot_ziplist():

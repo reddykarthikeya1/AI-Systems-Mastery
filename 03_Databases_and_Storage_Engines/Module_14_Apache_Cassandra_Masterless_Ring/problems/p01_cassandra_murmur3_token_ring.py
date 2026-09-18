@@ -5,10 +5,26 @@ Target: Production-grade implementation
 
 Find replica node IDs for key using token ring and replication factor RF.
 
+Example:
+    >>> ring = [(100, "nodeA"), (200, "nodeB"), (300, "nodeC"), (400, "nodeD")]
+    >>> cassandra_murmur3_token_ring(ring, 150, 3)
+    ['nodeB', 'nodeC', 'nodeD']
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The ring is circular, not linear — after finding the key's home
+        position you keep walking clockwise past the highest token straight
+        back around to the lowest one, exactly like a clock face.
+    Hint 2: First find the "coordinator" position with a forward scan for
+        the first token >= key_token (or ring[0] if key_token is past every
+        token — that's the wraparound case), then walk forward with modulo
+        arithmetic collecting node_ids into a list, skipping ones already
+        collected.
+    Hint 3: Replication factor counts distinct nodes, not distinct ring
+        entries — a real ring often has several tokens (vnodes) per
+        physical node, so you must dedupe by node_id while walking and stop
+        once you have replication_factor unique nodes (or fewer, if the
+        ring has fewer than RF distinct nodes total); an empty ring must
+        return [] rather than raising.
 """
 
 from __future__ import annotations

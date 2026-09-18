@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_exact_match_f1_score import exact_match_f1_score
-except ImportError:
-    from p01_exact_match_f1_score import exact_match_f1_score
+from p01_exact_match_f1_score import exact_match_f1_score
 
 
 def test_exact_match_f1_score():

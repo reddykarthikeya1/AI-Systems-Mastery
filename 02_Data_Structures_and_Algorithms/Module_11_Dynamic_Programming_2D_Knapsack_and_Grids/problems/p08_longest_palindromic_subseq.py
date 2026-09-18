@@ -14,6 +14,12 @@ Example
     longest_palindromic_subseq("bbbab") -> 4     ("bbbb")
     longest_palindromic_subseq("cbbd")  -> 2     ("bb")
 
+Example:
+    >>> longest_palindromic_subseq("bbbab")
+    4
+    >>> longest_palindromic_subseq("cbbd")
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: There is a one-line answer: it is the LCS of s with its own reverse. Convince yourself why that works.

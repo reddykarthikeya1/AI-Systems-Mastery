@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_trajectory_accuracy_evaluator import trajectory_accuracy_evaluator
-except ImportError:
-    from p01_trajectory_accuracy_evaluator import trajectory_accuracy_evaluator
+from p01_trajectory_accuracy_evaluator import trajectory_accuracy_evaluator
 
 
 def test_trajectory_accuracy_evaluator():

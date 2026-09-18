@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "(1, 100)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "(100, 0)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "(2, 1)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "pytest.approx(true_weights * 2)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "None",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "pytest.approx(0.0)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "(100, 3)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "(2, 100)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "(1, 100)",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "0.0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "pytest.approx(true_intercept * 2)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By fitting a regression model once on initial data and reusing its coefficients indefinitely, without checking whether the underlying feature distribution has since shifted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By always keeping every principal component from a PCA decomposition, on the assumption that discarding any component risks losing important reliability guarantees.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By solving the normal equations directly even when the feature matrix is ill-conditioned, without checking its condition number first.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By solving the normal equations directly even when the feature matrix is ill-conditioned, without checking its condition number first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming PCA projections always preserve the sign of each original feature, without checking that eigenvectors are only defined up to a sign flip.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By fitting a regression model once on initial data and reusing its coefficients indefinitely, without checking whether the underlying feature distribution has since shifted.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By fitting a regression model once on initial data and reusing its coefficients indefinitely, without checking whether the underlying feature distribution has since shifted.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By always keeping every principal component from a PCA decomposition, on the assumption that discarding any component risks losing important reliability guarantees.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By solving the normal equations directly even when the feature matrix is ill-conditioned, without checking its condition number first.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By solving the normal equations directly even when the feature matrix is ill-conditioned, without checking its condition number first.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming PCA projections always preserve the sign of each original feature, without checking that eigenvectors are only defined up to a sign flip.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By fitting a regression model once on initial data and reusing its coefficients indefinitely, without checking whether the underlying feature distribution has since shifted.",
         "is_correct": false
       }
     ],

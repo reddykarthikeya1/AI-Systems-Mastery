@@ -10,10 +10,11 @@ order. The string contains only ``()[]{}``.
 Constraints
 - ``0 <= len(s) <= 10**4``
 
-Example
-    "()[]{}"  -> True
-    "([)]"    -> False
-    "("       -> False
+Example:
+    >>> balanced_brackets("()[]{}")
+    True
+    >>> balanced_brackets("([)]")
+    False
 
 Hints — read one at a time, and try again between each.
 

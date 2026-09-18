@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_chunked_prefill_budget_split import chunked_prefill_budget_split
-except ImportError:
-    from p01_chunked_prefill_budget_split import chunked_prefill_budget_split
+from p01_chunked_prefill_budget_split import chunked_prefill_budget_split
 
 
 def test_chunked_prefill_budget_split():

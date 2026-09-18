@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_lru_cdn_cache_purge import lru_cdn_cache_purge
-except ImportError:
-    from p01_lru_cdn_cache_purge import lru_cdn_cache_purge
+from p01_lru_cdn_cache_purge import lru_cdn_cache_purge
 
 
 def test_lru_cdn_cache_purge():

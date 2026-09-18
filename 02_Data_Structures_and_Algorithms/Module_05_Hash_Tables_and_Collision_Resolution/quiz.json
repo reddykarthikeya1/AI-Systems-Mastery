@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "hash",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "two_pointer",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "sort",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "-1",
         "is_correct": false
       }
     ],
@@ -77,12 +77,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "Raises ValueError: max() arg is an empty sequence",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "99_999",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "50_000",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kruskal happily terminates on a disconnected graph \u2014 it simply runs out of edges having built a spanning",
+        "text": "present is a list rather than a set, so every membership check inside the walk is itself O(n), turning an O(n) walk into O(n^2) lookups.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "text": "The function recomputes the length of the whole input on every iteration to decide when to stop, so the quadratic cost comes from repeatedly measuring the input inside the loop.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "text": "Duplicate values in the input are not deduplicated before the scan, so a value appearing many times restarts a full walk over the input each time it recurs, independent of runs.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "text": "The key is the word's length rather than its letters, so any two words of the same length land in the same group regardless of which letters they contain.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "Words are grouped by their first letter only, so \"bat\" and \"bin\" end up in the same bucket because they both start with 'b'.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Every time a node's distance improves, a fresh (dist, node) entry is pushed and the previous one stays in the heap. Without the guard, each stale entry is popped and its neighbours re-relaxed \u2014 work that can never improve anything, because ",
+        "text": "The key is computed as the sum of the letters' character codes, and two different words can add up to the same total, so unrelated words occasionally collide into the same group.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "prev[j - 1] is the diagonal neighbour, which represents dropping a character from",
+        "text": "The counts are kept in a plain dict instead of a Counter, and plain dicts in this version of Python do not preserve insertion order, so iteration order is randomized on every run.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "With <=, a value equal to the one on the stack pops it and is recorded as its \"next greater\" \u2014 but an equal value is not greater. For [1, 1, 2] index 0 is answered with 1 instead of 2.",
+        "text": "The sort key only compares kv[0], the element itself, and never looks at kv[1], so the returned list is really the k smallest elements, not the most frequent ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "text": "heapq.nlargest is used with the default comparison, and it breaks ties by comparing the elements directly, which raises a TypeError whenever two tied elements are of different types.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "text": "The window set is correctly bounded to size k, but the comparison checks nums[i] against nums[i - 1] instead of against every element currently in the window, so only adjacent duplicates are ever found.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "text": "The distance is computed as i - k instead of the difference between the two matching indices, so the function occasionally reports True or False using the wrong pair of positions.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Backtracking is a contract: every change made on the way down must be undone on the way back up. Here path is restored and used is not, so an element consumed by the first branch stays permanently consumed for every sibling branch.",
+        "text": "window.add(x) runs before the duplicate check instead of after, so every element matches itself on the same iteration and the function always returns True immediately.",
         "is_correct": false
       }
     ],

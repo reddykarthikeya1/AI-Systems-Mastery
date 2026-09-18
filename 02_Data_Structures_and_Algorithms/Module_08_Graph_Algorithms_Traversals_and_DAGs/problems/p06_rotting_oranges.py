@@ -17,6 +17,12 @@ Example
     [[2,1,1],[0,1,1],[1,0,1]] -> -1
     [[0,2]]                   -> 0
 
+Example:
+    >>> rotting_oranges([[2, 1, 1], [1, 1, 0], [0, 1, 1]])
+    4
+    >>> rotting_oranges([[2, 1, 1], [0, 1, 1], [1, 0, 1]])
+    -1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: This must be BFS, not DFS - you need the number of *rounds*, and BFS processes the grid in exactly those rounds.

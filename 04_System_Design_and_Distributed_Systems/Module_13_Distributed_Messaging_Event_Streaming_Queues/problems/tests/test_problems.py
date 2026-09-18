@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_partitioned_consumer_group import partitioned_consumer_group
-except ImportError:
-    from p01_partitioned_consumer_group import partitioned_consumer_group
+from p01_partitioned_consumer_group import partitioned_consumer_group
 
 
 def test_partitioned_consumer_group():

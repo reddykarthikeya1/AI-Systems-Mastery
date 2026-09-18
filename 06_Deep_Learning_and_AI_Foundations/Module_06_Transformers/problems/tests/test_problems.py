@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_multi_head_attention_mask import multi_head_attention_mask
-except ImportError:
-    from p01_multi_head_attention_mask import multi_head_attention_mask
+from p01_multi_head_attention_mask import multi_head_attention_mask
 
 
 def test_multi_head_attention_mask():

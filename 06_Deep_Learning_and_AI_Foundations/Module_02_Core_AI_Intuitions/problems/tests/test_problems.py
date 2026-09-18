@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_binary_cross_entropy_gradient import binary_cross_entropy_gradient
-except ImportError:
-    from p01_binary_cross_entropy_gradient import binary_cross_entropy_gradient
+from p01_binary_cross_entropy_gradient import binary_cross_entropy_gradient
 
 
 def test_binary_cross_entropy_gradient():

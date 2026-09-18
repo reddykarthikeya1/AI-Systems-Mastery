@@ -20,6 +20,11 @@ Example
     capacity 2, ops = [("put",1,1), ("put",2,2), ("get",1,0), ("put",3,3), ("get",2,0)]
     -> [1, -1]      (putting 3 evicted key 2, since 1 had just been used)
 
+Example:
+    >>> ops = [("put", 1, 1), ("put", 2, 2), ("get", 1, 0), ("put", 3, 3), ("get", 2, 0)]
+    >>> simulate_lru(2, ops)
+    [1, -1]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A dict gives O(1) lookup but no ordering. A list gives ordering but O(n) removal from the middle. You need both properties at once.

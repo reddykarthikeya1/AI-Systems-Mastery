@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_conversation_buffer_window_summary import conversation_buffer_window_summary
-except ImportError:
-    from p01_conversation_buffer_window_summary import conversation_buffer_window_summary
+from p01_conversation_buffer_window_summary import conversation_buffer_window_summary
 
 
 def test_conversation_buffer_window_summary():

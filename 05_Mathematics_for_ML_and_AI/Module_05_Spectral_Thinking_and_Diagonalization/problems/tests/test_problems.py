@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_power_iteration_eigenvalue import power_iteration_eigenvalue
-except ImportError:
-    from p01_power_iteration_eigenvalue import power_iteration_eigenvalue
+from p01_power_iteration_eigenvalue import power_iteration_eigenvalue
 
 
 def test_power_iteration_eigenvalue():

@@ -1,28 +1,35 @@
-# Debug Lab 08 — Symptoms
+# Debug Lab Incident Report: Greedy Decoder Gets Stuck Repeating One Token
 
-> **Status:** 🔴 Scaffold.
-
-> Work from the output. Do **not** open `ANSWERS.md` until you have written a
-> diagnosis for each symptom — the reasoning is the skill, and reading the
-> answer first skips exactly the part worth practising.
-
-There are **N** distinct defects. The program runs to completion and exits 0.
+- **Severity:** P1 Generation Quality
+- **Affected Subsystem:** Module_08_LLM_From_Scratch
+- **Reported Impact:** A minimal greedy text generator is supposed to walk forward through a next-token lookup table, feeding each predicted token back in as the new context for the following prediction. Instead, every generated sequence collapses into the same token repeated over and over.
 
 ---
 
-## Symptom 1 — TODO
-
+## 🚨 Observable Symptoms & Logs
+```text
+Generated sequence:
+the cat cat cat cat cat cat cat
+Unique tokens produced: 2 out of 8 generated
 ```
-TODO
-```
-
-**Questions to answer:**
-- TODO
+A greedy decoder over this bigram table starting from "the" should walk `the -> cat -> sat -> on -> the -> ...`, cycling through several distinct tokens. Instead the output is almost entirely one repeated word.
 
 ---
 
-## How to verify a fix
+## 🔬 How to Reproduce
+1. Navigate to this module's debug lab:
+   ```bash
+   cd Module_08_LLM_From_Scratch/debug_lab
+   ```
+2. Run the defective simulation script:
+   ```bash
+   python broken_greedy_decoding.py
+   ```
+3. Count how many distinct tokens appear in the generated sequence.
 
-| Symptom | Test that proves the fix |
-| :--- | :--- |
-| 1 | TODO |
+---
+
+## 🎯 Your Objective
+1. Inspect `broken_greedy_decoding.py`'s `greedy_generate()` loop.
+2. Trace what value is looked up in `table` on each iteration of the loop.
+3. Formulate a hypothesis for why the same token keeps appearing, then check `ANSWERS.md`.

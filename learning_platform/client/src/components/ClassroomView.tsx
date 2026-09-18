@@ -5,7 +5,7 @@ import {
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
   Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
   Play, Code2, Copy, Check, FileCode, ExternalLink, Layers, Eye, Brain, Database,
-  ArrowUp, PanelLeftClose, PanelLeftOpen
+  ArrowUp, PanelLeftClose, PanelLeftOpen, Compass
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ModuleItem, LessonItem, TestResult, RunnerMode, LastPosition } from '../types';
@@ -20,6 +20,7 @@ import { DsaArenaView } from './DsaArenaView';
 import { TableOfContents } from './TableOfContents';
 import { SqlPlaygroundView } from './SqlPlaygroundView';
 import { ArchitectureCanvasView } from './ArchitectureCanvasView';
+import { CapstoneBridgeModal } from './CapstoneBridgeModal';
 import { LessonSkeleton } from './LessonSkeleton';
 import { soundService } from '../services/sound';
 import { ReaderToolbar, ReaderSettings } from './classroom/ReaderToolbar';
@@ -143,6 +144,47 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     }
     setConfidenceRated(feedback);
     setTimeout(() => setConfidenceRated(null), 4000);
+  };
+
+  // Capstone Bridge Architecture Blueprint modal state
+  const [isCapstoneBridgeOpen, setIsCapstoneBridgeOpen] = useState(false);
+
+  // Resizable side runner width state
+  const [sideRunnerWidth, setSideRunnerWidth] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('academy_side_runner_width');
+      return saved ? parseInt(saved, 10) : 480;
+    } catch {
+      return 480;
+    }
+  });
+
+  const isDraggingSplit = useRef(false);
+
+  const handleStartSplitDrag = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isDraggingSplit.current = true;
+    const startX = e.clientX;
+    const startWidth = sideRunnerWidth;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      if (!isDraggingSplit.current) return;
+      const delta = startX - moveEvent.clientX; // dragging left expands side runner
+      const nextWidth = Math.min(850, Math.max(320, startWidth + delta));
+      setSideRunnerWidth(nextWidth);
+    };
+
+    const handleMouseUp = () => {
+      isDraggingSplit.current = false;
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      try {
+        localStorage.setItem('academy_side_runner_width', String(sideRunnerWidth));
+      } catch {}
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
   };
 
   // Back to top button state
@@ -635,6 +677,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       ) {
         return;
       }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+        return;
+      }
       if (e.key === 'j') {
         if (nextLesson) {
           soundService.playClick();
@@ -653,7 +700,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextLesson, prevLesson, onOpenMasteryGate, onSelectLesson]);
+  }, [nextLesson, prevLesson, onOpenMasteryGate, onSelectLesson, toggleSidebar]);
 
   const handlePrevLesson = () => {
     if (prevLesson) {
@@ -746,6 +793,22 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         onToggleComplete={handleCompleteClick}
       />
 
+      {/* Module Prerequisite Progression Pill */}
+      {module.module_num > 1 && (
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-100/80 dark:bg-zinc-900/60 border border-border/80 text-[11px] font-mono text-zinc-500 w-fit">
+          <span className="text-zinc-400">Prerequisites:</span>
+          <span className="text-emerald-500 font-semibold">Module {module.module_num - 1}</span>
+          <span className="text-zinc-400">→</span>
+          <span className="text-indigo-400 font-bold">Module {module.module_num} (Active)</span>
+          {module.module_num < 15 && (
+            <>
+              <span className="text-zinc-400">→</span>
+              <span className="text-zinc-400">Unlocks Module {module.module_num + 1}</span>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Navigation Sub-Tabs */}
       <div className="flex items-center gap-1.5 border-b border-border/80 pb-2 overflow-x-auto">
         <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
@@ -770,7 +833,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 : 'text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30'
             }`} onClick={() => setActiveTab('project')} >
             <Hammer className="w-3.5 h-3.5" /> In-Browser Project Studio
-            <span className="text-xs px-1 py-0.5 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
+            <span className="text-xs px-1.5 py-0.5 rounded bg-purple-200 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono">
               IDE
             </span>
           </button>
@@ -798,7 +861,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <CheckSquare className="w-3.5 h-3.5" /> Interactive Assessment (MCQ)
             {savedQuizScore?.passed && (
               <span className="text-xs px-1 py-0.5 rounded bg-emerald-500 text-white font-mono">
-                {savedQuizScore.score}%
+                Passed
               </span>
             )}
           </button>
@@ -807,7 +870,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         {hasDebugLab && (
           <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === 'debug'
-                ? 'bg-rose-600 text-white shadow-sm'
+                ? 'bg-rose-600 text-white shadow-sm font-bold'
                 : 'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30'
             }`} onClick={() => setActiveTab('debug')} >
             <Bug className="w-3.5 h-3.5" /> Bug Hunter Lab
@@ -863,6 +926,16 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </span>
           </button>
         )}
+
+        {/* Capstone Architecture Blueprint & Bridge Modal Trigger */}
+        <button
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-emerald-500/20"
+          onClick={() => setIsCapstoneBridgeOpen(true)}
+          title="Inspect production capstone architecture blueprint"
+        >
+          <Compass className="w-3.5 h-3.5 text-emerald-500" />
+          <span>Capstone Bridge</span>
+        </button>
       </div>
 
       {/* Main Content Stage */}
@@ -1026,19 +1099,34 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
           {/* Right Rail: Page-Aware Interactive Runner OR Sticky Quick-Reach TOC */}
           {isScratchpadOpen ? (
-            <aside aria-label="Interactive multi-runtime code runner" className="w-96 2xl:w-[480px] shrink-0 sticky top-20 h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-border/80 shadow-2xl">
-              <SideCodeRunner
-                initialCode={scratchpadCode}
-                initialMode={scratchpadMode}
-                courseTitle={courseTitle}
-                moduleTitle={module.title}
-                moduleFolderPath={module.folder_path}
-                lessonTitle={currentLesson.title}
-                lessonFilePath={currentLesson.file_path}
-                pageSnippets={pageSnippets}
-                onClose={() => setIsScratchpadOpen(false)}
-              />
-            </aside>
+            <div className="flex shrink-0 sticky top-20 h-[calc(100vh-6rem)]">
+              {/* Draggable Divider Handle */}
+              <div
+                onMouseDown={handleStartSplitDrag}
+                className="w-2 hover:w-3 -ml-1 cursor-col-resize group flex items-center justify-center transition-all z-20 select-none"
+                title="Drag horizontally to resize code runner"
+              >
+                <div className="w-1 h-8 rounded-full bg-zinc-400/40 group-hover:bg-cyan-500 transition-colors" />
+              </div>
+
+              <aside 
+                aria-label="Interactive multi-runtime code runner" 
+                style={{ width: `${sideRunnerWidth}px` }}
+                className="shrink-0 h-full rounded-2xl overflow-hidden border border-border/80 shadow-2xl"
+              >
+                <SideCodeRunner
+                  initialCode={scratchpadCode}
+                  initialMode={scratchpadMode}
+                  courseTitle={courseTitle}
+                  moduleTitle={module.title}
+                  moduleFolderPath={module.folder_path}
+                  lessonTitle={currentLesson.title}
+                  lessonFilePath={currentLesson.file_path}
+                  pageSnippets={pageSnippets}
+                  onClose={() => setIsScratchpadOpen(false)}
+                />
+              </aside>
+            </div>
           ) : (
             activeTab === 'theory' && (
               <aside aria-label="On this page quick reach" className="w-72 2xl:w-80 shrink-0 sticky top-20 hidden xl:block">
@@ -1052,6 +1140,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           )}
         </div>
       )}
+
+      {/* Capstone Architecture Blueprint & Bridge Modal */}
+      <CapstoneBridgeModal
+        isOpen={isCapstoneBridgeOpen}
+        onClose={() => setIsCapstoneBridgeOpen(false)}
+        module={module}
+        onNavigateToCapstone={() => setActiveTab('project')}
+      />
+
       {showBackToTop && (
         <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 fixed bottom-8 right-8 z-30 p-3 rounded-full bg-zinc-900/90 dark:bg-zinc-100/90 text-white dark:text-zinc-900 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-700/50 dark:border-zinc-300/50" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           

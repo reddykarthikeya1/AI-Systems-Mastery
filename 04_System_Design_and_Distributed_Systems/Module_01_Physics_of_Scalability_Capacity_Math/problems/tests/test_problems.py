@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_little_law_concurrency import little_law_concurrency
-except ImportError:
-    from p01_little_law_concurrency import little_law_concurrency
+from p01_little_law_concurrency import little_law_concurrency
 
 
 def test_little_law_concurrency():

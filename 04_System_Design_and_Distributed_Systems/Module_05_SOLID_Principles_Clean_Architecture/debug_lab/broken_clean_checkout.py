@@ -11,7 +11,6 @@ def process_checkout(order_id: str, payment_gateway, inventory_service):
     inventory_service.reserve(order_id)
     # Payment fails:
     raise ValueError('Payment declined: insufficient funds')
-    # Inventory was reserved but never released!
 
 
 def reproduce_defect():
@@ -31,5 +30,6 @@ if __name__ == "__main__":
     try:
         reproduce_defect()
     except Exception as e:
-        print(f"\n[DEFECT TRIGGERED SUCCESSFULLY]\nException: {type(e).__name__}: {e}", file=sys.stderr)
-        sys.exit(1)
+        print(f"\n[OBSERVED FAILURE] {type(e).__name__}: {e}")
+        print("\nThat is not what this should do. SYMPTOMS.md describes the "
+              "expected behaviour; the cause is in the code above.")

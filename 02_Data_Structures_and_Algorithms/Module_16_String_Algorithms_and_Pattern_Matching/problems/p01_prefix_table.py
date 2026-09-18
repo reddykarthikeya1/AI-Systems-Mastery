@@ -18,6 +18,10 @@ Example
 This one table is the whole of KMP. Everything else in this module is built on
 it, so get it right before moving on.
 
+Example:
+    >>> build_prefix_table("ababaca")
+    [0, 0, 1, 2, 3, 0, 1]
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Track `k`, the length currently matched. For each new character, if it extends the match, `k += 1`.

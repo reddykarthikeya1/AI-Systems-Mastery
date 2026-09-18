@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_adaptive_bitrate_manifest import adaptive_bitrate_manifest
-except ImportError:
-    from p01_adaptive_bitrate_manifest import adaptive_bitrate_manifest
+from p01_adaptive_bitrate_manifest import adaptive_bitrate_manifest
 
 
 def test_adaptive_bitrate_manifest():

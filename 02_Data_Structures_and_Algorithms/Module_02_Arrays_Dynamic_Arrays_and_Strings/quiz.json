@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "sum(range(1000))",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "max(big) * 1000",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ">= shrinks the window as soon as it holds k distinct characters, but k distinct is exactly what the problem permits. The window is therefore capped at k - 1 distinct characters and every answer comes back short \u2014 for k=2 it reports 1 where ",
+        "text": "The dictionary correctly starts with {0: 1}; the undercount instead comes from using target - k instead of k when computing the complement prefix sum to look up.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The BST property is global: every node in a left subtree must be less than the node, not merely the child that hangs directly off it. Checking only immediate children is a local test for a global invariant, and it passes trees that are not ",
+        "text": "subarray_sum_k iterates with a plain for loop instead of enumerate, so the running prefix sum resets to zero every ten iterations due to a fencepost error in the loop bounds.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In an LRU cache, reading an entry is a use \u2014 that is what the \"recently used\" in the name refers to. Without refreshing recency on a hit, the ordering reflects insertion time only, and the policy silently degrades to FIFO.",
+        "text": "The bug is that counts is a list instead of a dict, so looking up a prefix sum by value requires an O(n) linear scan; this makes the function slow but does not change which subarrays are counted.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Dijkstra's correctness rests on a single assumption: once a node is popped with the smallest tentative distance, nothing can improve it, because every remaining path can only add non-negative weight. A negative edge breaks exactly that assu",
+        "text": "best is correctly seeded from the first window; the zero result instead comes from the window sum being computed with integer division, which truncates every negative total toward zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "/ is true division and always produces a float, even when both operands are integers and the result is mathematically whole. n",
+        "text": "The window slides by recomputing sum(nums[left:left+k]) from scratch every step instead of using a running total, and re-slicing a list with only negative numbers in Python always returns an empty slice.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Returning False for an unrecognised class conflates two completely different statements:",
+        "text": "max(best, total) was written as max(best, abs(total)), so every negative window sum is silently converted to its positive magnitude before being compared.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "text": "lo, hi = 1, sum(weights) is fine because Python's bisect module automatically excludes infeasible capacities; the real bug is that days_needed starts counting days from 0 instead of 1.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "isword is set on insert and then never read, so search and startswith are literally the same operation. Every prefix of every stored word is reported as a stored word.",
+        "text": "The binary search's upper bound sum(weights) is the actual problem: it allows the ship to be sized so large that days_needed always returns 1, which binary search then wrongly treats as optimal.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "text": "days_needed correctly rejects any capacity below max(weights) by raising an exception; the reported wrong answer instead comes from the binary search's mid calculation overflowing for very large weight lists.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "text": "seen[x] = i is written after the lookup, so the map never contains the current element when its complement is sought; the duplicate index instead comes from the loop iterating over nums twice.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Python's sort is stable, so items with equal counts keep the order they had in counts.items() \u2014 which is dict insertion order, i.e. the order the values first appeared in the input. The function's output therefore depends on input ordering ",
+        "text": "The bug is that target - x is computed before x is added to nums, so complement is always calculated against a stale, one-element-shorter version of the list.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "text": "two_sum uses a list instead of a dict for seen, and list.index() returns the first matching value's position, which coincidentally is always the current element's own index when duplicates exist.",
         "is_correct": false
       }
     ],

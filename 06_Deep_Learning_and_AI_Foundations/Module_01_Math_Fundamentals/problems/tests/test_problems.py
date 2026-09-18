@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_softmax_stable_derivatives import softmax_stable_derivatives
-except ImportError:
-    from p01_softmax_stable_derivatives import softmax_stable_derivatives
+from p01_softmax_stable_derivatives import softmax_stable_derivatives
 
 
 def test_softmax_stable_derivatives():

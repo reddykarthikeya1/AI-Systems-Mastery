@@ -20,6 +20,11 @@ Example
     capacity 2, ops = [("put",1,1),("put",2,2),("get",1,0),("put",3,3),("get",2,0),("get",3,0)]
     -> [1, -1, 3]
 
+Example:
+    >>> ops = [("put", 1, 1), ("put", 2, 2), ("get", 1, 0), ("put", 3, 3), ("get", 2, 0), ("get", 3, 0)]
+    >>> simulate_lfu(2, ops)
+    [1, -1, 3]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: LFU needs more state than LRU: a value per key, a frequency per key, and an ordering within each frequency.

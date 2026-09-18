@@ -14,6 +14,10 @@ Constraints
 Example
     three_sum([-1, 0, 1, 2, -1, -4]) -> [[-1, -1, 2], [-1, 0, 1]]
 
+Example:
+    >>> three_sum([-1, 0, 1, 2, -1, -4])
+    [[-1, -1, 2], [-1, 0, 1]]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Sorting first makes both the deduplication and the inner search easy.

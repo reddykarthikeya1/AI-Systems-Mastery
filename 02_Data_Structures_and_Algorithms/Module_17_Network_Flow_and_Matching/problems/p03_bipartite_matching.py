@@ -17,6 +17,10 @@ Example
 Greedy gets this wrong: taking ``(0,0)`` first strands worker 1. The answer is
 2, by giving job 1 to worker 0 and job 0 to worker 1.
 
+Example:
+    >>> max_matching(2, 2, [(0, 0), (0, 1), (1, 0)])
+    2
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Super-source -> every worker, every job -> super-sink, all with capacity 1. Keep the qualification edges at capacity 1 too.

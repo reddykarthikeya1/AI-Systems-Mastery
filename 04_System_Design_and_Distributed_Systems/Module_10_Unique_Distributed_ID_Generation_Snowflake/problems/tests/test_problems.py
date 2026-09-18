@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_twitter_snowflake_generator import twitter_snowflake_generator
-except ImportError:
-    from p01_twitter_snowflake_generator import twitter_snowflake_generator
+from p01_twitter_snowflake_generator import twitter_snowflake_generator
 
 
 def test_twitter_snowflake_generator():

@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_truncated_svd_reconstruction import truncated_svd_reconstruction
-except ImportError:
-    from p01_truncated_svd_reconstruction import truncated_svd_reconstruction
+from p01_truncated_svd_reconstruction import truncated_svd_reconstruction
 
 
 def test_truncated_svd_reconstruction():

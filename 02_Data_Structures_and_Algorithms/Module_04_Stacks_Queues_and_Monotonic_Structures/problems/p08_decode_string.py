@@ -11,10 +11,11 @@ Constraints
 - ``1 <= len(s) <= 30``
 - digits appear only as repeat counts, and ``k >= 1``; ``k`` may be multi-digit
 
-Example
-    "3[a]2[bc]"   -> "aaabcbc"
-    "3[a2[c]]"    -> "accaccacc"
-    "2[abc]3[cd]ef" -> "abcabccdcdcdef"
+Example:
+    >>> decode_string("3[a]2[bc]")
+    'aaabcbc'
+    >>> decode_string("3[a2[c]]")
+    'accaccacc'
 
 Hints — read one at a time, and try again between each.
 

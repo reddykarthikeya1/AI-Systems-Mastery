@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_two_layer_mlp_backward import two_layer_mlp_backward
-except ImportError:
-    from p01_two_layer_mlp_backward import two_layer_mlp_backward
+from p01_two_layer_mlp_backward import two_layer_mlp_backward
 
 
 def test_two_layer_mlp_backward():

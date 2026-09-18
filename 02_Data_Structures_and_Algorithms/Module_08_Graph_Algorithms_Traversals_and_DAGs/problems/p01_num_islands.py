@@ -17,6 +17,10 @@ Example
      ["1","0","0"],
      ["0","0","1"]]  -> 2
 
+Example:
+    >>> num_islands([["1", "1", "0"], ["1", "0", "0"], ["0", "0", "1"]])
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Every time you find an unvisited land cell, you have found a new island.

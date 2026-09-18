@@ -72,7 +72,7 @@
       },
       {
         "id": "opt_1",
-        "text": "The minimum spanning tree over character transition frequencies.",
+        "text": "The length of the longest prefix that matched at the immediately preceding index, carried forward by one position.",
         "is_correct": false
       },
       {
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Binary search tree over dictionary words.",
+        "text": "A trie of dictionary words with no failure links, restarting the match from the root after every mismatched character.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Segment tree with range minimum query.",
+        "text": "A hash set of all dictionary words, checked by re-slicing and re-hashing the text at every starting position.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Disjoint set union (DSU) forest.",
+        "text": "A suffix tree built once over the text and then queried separately for each pattern in the dictionary.",
         "is_correct": false
       }
     ],
@@ -132,7 +132,7 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[(0, 0)]",
         "is_correct": false
       },
       {
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[0, 2]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[1, 2, 3]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[1, 2]",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "len(text) - 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "len(text) + 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[0, 0, 0, 0]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[1, 2, 3, 4]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[0, 1, 1, 1]",
         "is_correct": false
       }
     ],

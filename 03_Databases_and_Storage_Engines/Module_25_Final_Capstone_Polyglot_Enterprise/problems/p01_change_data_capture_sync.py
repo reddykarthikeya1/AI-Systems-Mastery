@@ -5,10 +5,28 @@ Target: Production-grade implementation
 
 Materialize idempotent real-time CDC updates into read-optimized aggregate view.
 
+Example:
+    >>> events = [
+    ...     {'op': 'UPDATE', 'account_id': 'A1', 'amount': 150.0, 'seq': 2},
+    ...     {'op': 'INSERT', 'account_id': 'A1', 'amount': 100.0, 'seq': 1},
+    ...     {'op': 'DELETE', 'account_id': 'A2', 'seq': 3},
+    ... ]
+    >>> change_data_capture_sync(events, {'A2': 50.0})
+    {'A1': 150.0}
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: CDC events can arrive out of order (note seq=2 listed before
+        seq=1 above), so the input list's order is not the order to apply
+        them in — "idempotent real-time sync" means the final state must
+        depend only on logical sequence, not arrival order.
+    Hint 2: Sort cdc_events by their 'seq' field first, then fold them one
+        at a time into a copy of existing_view, dispatching on 'op' with a
+        plain dict assignment or dict.pop.
+    Hint 3: INSERT and UPDATE behave identically here (both just set
+        view[account_id] = amount), DELETE removes the key entirely (use
+        pop with a default so deleting an account not currently in the view
+        doesn't raise), and the events list, once sorted by seq, must be
+        replayed in full even though it was given out of seq order.
 """
 
 from __future__ import annotations

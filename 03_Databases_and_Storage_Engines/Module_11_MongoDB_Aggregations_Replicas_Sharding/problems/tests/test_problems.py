@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_shard_key_range_router import shard_key_range_router
-except ImportError:
-    from p01_shard_key_range_router import shard_key_range_router
+from p01_shard_key_range_router import shard_key_range_router
 
 
 def test_shard_key_range_router():

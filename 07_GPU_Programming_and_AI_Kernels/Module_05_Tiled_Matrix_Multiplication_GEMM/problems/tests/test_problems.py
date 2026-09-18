@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_shared_memory_gemm_tiling import shared_memory_gemm_tiling
-except ImportError:
-    from p01_shared_memory_gemm_tiling import shared_memory_gemm_tiling
+from p01_shared_memory_gemm_tiling import shared_memory_gemm_tiling
 
 
 def test_shared_memory_gemm_tiling():

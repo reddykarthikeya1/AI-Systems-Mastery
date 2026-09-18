@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_consistent_hash_ring_vnodes import consistent_hash_ring_vnodes
-except ImportError:
-    from p01_consistent_hash_ring_vnodes import consistent_hash_ring_vnodes
+from p01_consistent_hash_ring_vnodes import consistent_hash_ring_vnodes
 
 
 def test_consistent_hash_ring_vnodes():

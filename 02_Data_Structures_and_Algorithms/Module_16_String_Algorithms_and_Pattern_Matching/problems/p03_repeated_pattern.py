@@ -19,6 +19,12 @@ Example
 The O(n^2) approach tries every divisor length. There is an O(n) answer that
 falls straight out of the prefix table.
 
+Example:
+    >>> is_repeated_pattern("abab")
+    True
+    >>> is_repeated_pattern("aba")
+    False
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Let `k = pi[-1]`. Then `n - k` is the smallest period of the string.

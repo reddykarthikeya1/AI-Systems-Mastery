@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "pyproject.toml defines high-level dependency declarations and acceptable version ranges (e.g., pydantic>=2.7.0). uv.lock records the exact pinned versions, sub-dependencies, and cryptographic file hashes to ensure identical, reproducible in",
+        "text": "pydantic-core is an optional plugin written in pure Python that only activates when mypy is installed; without mypy, Pydantic V2 falls back to the same validation speed as V1.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- BackgroundTasks: In-process background tasks that run after response return (ideal for simple emails or audit logs). - Celery / ARQ: Distributed out-of-process queues backed by Redis/RabbitMQ (essential for heavy CPU tasks, video processi",
+        "text": "pydantic-core is a caching layer that stores previously validated JSON payloads in Redis, so repeated requests with identical bodies skip validation entirely on the second call.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Standard JSON specification does not define a native Date/Time data type. Fix it by subclassing json.JSONEncoder and overriding default(self, obj) to return obj.isoformat().",
+        "text": "pydantic-core replaces Python's type hints with runtime reflection over docstrings; the speedup comes from skipping type hint parsing entirely rather than from being compiled to native code.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- Authentication: Verifying the identity of a client (e.g. \"You are User 42 with valid credentials\"). - Authorization: Verifying whether an authenticated user has permission to perform a specific action (e.g. \"User 42 has admin privileges t",
+        "text": "mode=\"before\" runs after type coercion has already converted the field to its target type, and mode=\"after\" runs on the raw untouched input before Pydantic does anything -- the two names are reversed from their actual timing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It acts as a token bucket counter. Only $N$ tasks can enter the async with semaphore: block simultaneously. Subsequent tasks queue up and wait until active tasks release their token.",
+        "text": "Both modes run at exactly the same point in the validation pipeline; the only difference is that mode=\"after\" also re-runs automatically if a later field fails validation.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It guarantees that processing the exact same event multiple times (due to network retries) produces the identical system state as processing it once.",
+        "text": "mode=\"before\" only applies to fields with a default value, and mode=\"after\" only applies to required fields with no default; you cannot mix both modes on the same model.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "TLS operates between the Transport Layer (Layer 4 - TCP) and the Application Layer (Layer 7 - HTTP).",
+        "text": "Use @model_validator any time a field has a default value, since @field_validator can only run on fields that are explicitly required with no default.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Alembic tracks versioned migration scripts and compares declarative Python metadata against live database catalogs to generate automated ALTER TABLE statements.",
+        "text": "Use @model_validator only for fields typed as str; @field_validator is reserved exclusively for numeric fields like int and float.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If a hacker exploits a remote code execution (RCE) vulnerability in a root container, they gain root access to the host kernel. Non-root users constrain attackers inside the unprivileged container sandbox.",
+        "text": "@model_validator and @field_validator are interchangeable aliases in Pydantic V2; the choice is purely stylistic and has no effect on which fields are visible inside the validator function.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Playwright controls a real Chromium browser engine, executing JavaScript, waiting for network hydration, and interacting with client-rendered DOM nodes.",
+        "text": "Pydantic tries each subclass in the union sequentially, catching the ValidationError from each failed attempt until one succeeds, similar to a series of except blocks.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "FastAPI inspects function type signatures via reflection at startup and generates Pydantic validation schemas to parse, cast, and validate incoming query/path parameters and JSON payloads.",
+        "text": "It hashes the entire incoming JSON payload and looks up a matching subclass in a precomputed dictionary, so the tag field's actual value is never inspected at all.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- Producer: Generates job instructions and enqueues them. - Broker: Stores and routes message envelopes safely (Redis, RabbitMQ, Kafka). - Consumer: Long-running background processes pulling jobs and computing results.",
+        "text": "Discriminated unions require every subclass to share an identical set of fields; the tag field only controls which default values are applied, not which class is instantiated.",
         "is_correct": false
       }
     ],
@@ -172,7 +172,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,7 +192,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"MRN-12345\"",
+        "text": "\"mrn-12345\"",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "p.age = -50 does trigger the field's validator, but the validator itself has a bug where negative numbers pass an off-by-one boundary check; the issue is in the validator logic, not in when it runs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Polars infers column datatypes based on the input entries. A single non-numeric sentinel (e.g. \"N/A\") causes the entire column to be typed as String.",
+        "text": "Pydantic V2 disables all validation by default unless the model explicitly sets model_config = ConfigDict(strict=True); enabling strict mode alone will make this assignment raise an error.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "The model was defined with frozen=True, which allows direct attribute assignment to bypass __setattr__ entirely, going around both validation and Pydantic's own immutability check.",
         "is_correct": false
       }
     ],

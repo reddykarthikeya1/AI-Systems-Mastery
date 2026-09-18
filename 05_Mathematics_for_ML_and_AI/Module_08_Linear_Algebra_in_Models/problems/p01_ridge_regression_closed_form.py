@@ -5,10 +5,21 @@ Target: Production-grade implementation
 
 Compute 1D ridge regression regularized slope: w = (X^T X + lambda)^(-1) X^T y.
 
+Example:
+    >>> ridge_regression_closed_form([1.0, 2.0, 3.0], [2.0, 4.0, 6.0], lmbda=5.0)
+    1.4737
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: In one dimension the normal equations collapse to plain scalars,
+        so the "matrix inverse" in the formula is just a single division —
+        no matrix machinery is actually needed here.
+    Hint 2: Compute `sum(x * y)` for the numerator and `sum(x * x)` for the
+        denominator, add `lmbda` to the denominator before dividing, and
+        that gives the regularized slope directly.
+    Hint 3: With `lmbda=0.0` this must reduce exactly to ordinary
+        least-squares (matching the unregularized slope), and any `lmbda >
+        0` should shrink the magnitude of w toward zero versus that
+        unregularized value — round the final result to 4 decimal places.
 """
 
 from __future__ import annotations

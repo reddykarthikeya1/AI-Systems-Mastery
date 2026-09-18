@@ -16,6 +16,10 @@ Constraints
 Example
     top_k_frequent([1, 1, 1, 2, 2, 3], 2) -> [1, 2]
 
+Example:
+    >>> top_k_frequent([1, 1, 1, 2, 2, 3], 2)
+    [1, 2]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Count frequencies first - that part is unavoidable and O(n).

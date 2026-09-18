@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Supervisor routes query to specialized agent based on task keywords.
 
+Example:
+    >>> supervisor_routing_consensus('Optimize SQL query')
+    'DatabaseAgent'
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: This is a rule-based classifier — each query maps to exactly
+        one of four buckets, decided by which keyword family shows up,
+        checked in a fixed priority order.
+    Hint 2: Lowercase the query once, then test keyword membership with
+        'in' against each category's keyword set in order (database
+        keywords, then coder keywords, then tester keywords), falling
+        through to a general-purpose default.
+    Hint 3: Check order matters when a query could match more than one
+        family — return the first matching category in the given priority
+        (database, then coder, then tester) rather than the "best" match,
+        and treat 'sql'/'database'/etc. as substrings, not whole-word-only
+        matches.
 """
 
 from __future__ import annotations

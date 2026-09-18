@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_needle_in_haystack_evaluator import needle_in_haystack_evaluator
-except ImportError:
-    from p01_needle_in_haystack_evaluator import needle_in_haystack_evaluator
+from p01_needle_in_haystack_evaluator import needle_in_haystack_evaluator
 
 
 def test_needle_in_haystack_evaluator():

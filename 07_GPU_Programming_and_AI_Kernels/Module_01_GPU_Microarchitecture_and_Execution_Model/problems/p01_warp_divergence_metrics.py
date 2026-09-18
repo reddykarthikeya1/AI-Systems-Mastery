@@ -5,10 +5,20 @@ Target: Production-grade implementation
 
 Calculate active threads and warp execution efficiency under SIMT branch divergence.
 
+Example:
+    >>> warp_divergence_metrics([0xF, 0xFF], 8)
+    (2, 0.75)
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Efficiency measures what fraction of all available lane-slots
+        across every divergent pass actually did work — not the average
+        popcount of a single mask in isolation.
+    Hint 2: Popcount each bitmask with `bin(mask).count('1')`, sum those
+        counts across all masks, then divide by `len(active_masks) *
+        warp_size` to get the fraction of busy lane-slots.
+    Hint 3: An empty `active_masks` list must short-circuit to `(0, 1.0)`
+        instead of dividing by zero, and the efficiency value must be
+        rounded to exactly 4 decimal places.
 """
 
 from __future__ import annotations

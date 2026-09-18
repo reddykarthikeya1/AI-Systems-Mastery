@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "x.shape",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "y.shape",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "b2.shape",
+        "text": "(2, 8)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "b1.shape",
+        "text": "x.shape",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "W2.shape",
+        "text": "(5, 8)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "b2.shape",
+        "text": "(8, 4)",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "y.shape",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "b1.shape",
+        "text": "(8,)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "W2.shape",
+        "text": "loss",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "W1.shape",
+        "text": "x.shape",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "W2.shape",
+        "text": "(2,)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "b2.shape",
+        "text": "loss",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting the optimizer self-correct a flipped gradient sign over enough training epochs instead of catching it early.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By silently clipping any NaN or exploding loss value to zero so the training loop never halts.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the learning rate whenever the loss plateaus so convergence looks faster under load.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By asserting that loss always decreases every single epoch with zero tolerance for numerical noise.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping unit tests of the parameter-update rule once the model reaches production.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting a visual inspection of the loss curve instead of an automated convergence check.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting the optimizer self-correct a flipped gradient sign over enough training epochs instead of catching it early.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By silently clipping any NaN or exploding loss value to zero so the training loop never halts.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By increasing the learning rate whenever the loss plateaus so convergence looks faster under load.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By asserting that loss always decreases every single epoch with zero tolerance for numerical noise.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping unit tests of the parameter-update rule once the model reaches production.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting a visual inspection of the loss curve instead of an automated convergence check.",
         "is_correct": false
       }
     ],

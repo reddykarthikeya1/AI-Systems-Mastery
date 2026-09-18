@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_bm25_score_tokens import bm25_score_tokens
-except ImportError:
-    from p01_bm25_score_tokens import bm25_score_tokens
+from p01_bm25_score_tokens import bm25_score_tokens
 
 
 def test_bm25_score_tokens():

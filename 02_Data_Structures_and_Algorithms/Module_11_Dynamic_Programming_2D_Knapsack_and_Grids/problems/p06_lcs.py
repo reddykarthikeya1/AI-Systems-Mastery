@@ -14,6 +14,12 @@ Example
     lcs("abcde", "ace") -> 3      ("ace")
     lcs("abc", "def")   -> 0
 
+Example:
+    >>> lcs("abcde", "ace")
+    3
+    >>> lcs("abc", "def")
+    0
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: State: length of the LCS of the first i characters of a and the first j of b.

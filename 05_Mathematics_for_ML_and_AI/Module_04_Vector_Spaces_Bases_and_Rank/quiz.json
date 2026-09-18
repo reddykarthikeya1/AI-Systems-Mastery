@@ -12,12 +12,12 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "3",
         "is_correct": false
       },
       {
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "(2, 2)",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Distinguishes vectors from scalars purely by whether they can be multiplied together, rather than by direction and magnitude.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires every vector to be drawn starting at the origin, since two arrows with the same direction and length but a different starting point are considered different vectors.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats the list-of-numbers representation as only a rounding approximation of the 'true' geometric arrow, valid only in two or three dimensions.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Defines vector addition as concatenating the two lists of numbers together, producing a longer vector rather than adding component by component.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires two vectors to have the same direction before they can be added; vectors pointing different ways must first be projected onto a common axis.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Treats scalar multiplication by a negative number as undefined, since 'shrinking a vector by a negative amount' has no geometric meaning.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Bypasses computational graph recording to execute purely speculative kernel dispatches.",
+        "text": "Applies only to vectors in two or three dimensions, since higher-dimensional or function-valued 'vectors' cannot satisfy the same closure and identity requirements.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Forces strict synchronous page-locked host memory transfers, disabling double-buffering.",
+        "text": "Requires every vector space to have a defined notion of length or angle, since without a norm the addition and scalar multiplication axioms cannot be checked.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforces deterministic gradient checkpointing across distributed worker nodes.",
+        "text": "Is satisfied automatically by any set equipped with an addition operation, whether or not scalar multiplication or a zero element is ever defined.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By computing a matrix's rank once at startup and caching it forever, without revalidating whether later updates to the matrix's rows keep that rank the same.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming any set of vectors spanning the expected dimension is automatically a valid basis, without checking that the vectors are actually linearly independent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By padding a vector to a fixed length with zeros whenever it's shorter than expected, instead of checking whether it actually belongs to the vector space being used.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming any set of vectors spanning the expected dimension is automatically a valid basis, without checking that the vectors are actually linearly independent.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By computing a matrix's rank once at startup and caching it forever, without revalidating whether later updates to the matrix's rows keep that rank the same.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By treating the null space as always trivial (just the zero vector), without checking whether the matrix actually has more columns than its rank.",
         "is_correct": false
       }
     ],

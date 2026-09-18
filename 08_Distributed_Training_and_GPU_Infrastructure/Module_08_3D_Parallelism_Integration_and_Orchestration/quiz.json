@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "12800.0",
+        "text": "coord.tp",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "6400.0",
+        "text": "r + 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "8",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -",
+        "text": "Loss diverges and the data-parallel replicas fail to learn, even though no collective ever hangs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Centralize process group creation using strict bijective coordinate mappings.",
+        "text": "Training runs to completion but uses far more network bandwidth than the configured parallelism should require.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "text": "One data-parallel replica converges to a different loss than the others despite starting from the same checkpoint.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, ",
+        "text": "DP gradient reduction is triggered on every micro-batch instead of once per iteration, so communication volume explodes m-fold and gradients are scaled incorrectly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Never wrap conditional or dynamically skipped submodules with individual FSDP wrappers. Wrap the parent router module, or ensure dummy inputs are routed to ensure collective consensus.",
+        "text": "The TP and PP group sizes multiply to more than the total world size, so some coordinates map to a rank that does not exist.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "If Rank 0 builds groups with order (TP, PP, DP) and Rank 1 builds groups with order (DP, PP, TP), ranks disagree on collective membership.",
+        "text": "Two different ranks compute the same (tp, pp, dp) coordinate because the grid's rank-to-coordinate mapping is not one-to-one.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Telemetry reports impossible MFU (> 70%) on Llama-2/3 models.",
+        "text": "Accumulate gradients across all m micro-batches and run the data-parallel synchronization only during the final cooldown phase.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Stage 0 hosts the input embedding and Stage $p-1$ hosts the output head. Because they reside on different physical GPUs, their gradients must be synchronized via an explicit cross-stage All-Reduce before the optimizer step. -",
+        "text": "Validate that tp * pp * dp equals the total world size before any process group is created.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A 1,024-GPU training run exhibits random 30% performance drops without any crash or error logs.",
+        "text": "Assert that the rank-to-coordinate mapping is one-to-one before launching any collective.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In ZeRO-3/FSDP, every rank must execute the forward pass of every wrapped submodule in the exact same order to participate in the collective All-Gather. If an Expert module in a Mixture of Experts (MoE) network receives 0 tokens on Rank 3, ",
+        "text": "DP gradient reduction is triggered on every micro-batch instead of once per iteration, so communication volume explodes m-fold and gradients are scaled incorrectly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": When computing $e^{m{\\text{old}} - m{\\text{new}}}$, if $m{\\text{new}} - m{\\text{old}} > 11$, underflow in FP16 collapses running scale to exact 0. -",
+        "text": "The TP and PP group sizes multiply to more than the total world size, so some coordinates map to a rank that does not exist.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Checkpoint restore fails with CorruptedCheckpointError: Incomplete shard.",
+        "text": "Two different ranks compute the same (tp, pp, dp) coordinate because the grid's rank-to-coordinate mapping is not one-to-one.",
         "is_correct": false
       }
     ],

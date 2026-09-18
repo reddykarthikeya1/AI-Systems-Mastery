@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_simhash_near_duplicate_filter import simhash_near_duplicate_filter
-except ImportError:
-    from p01_simhash_near_duplicate_filter import simhash_near_duplicate_filter
+from p01_simhash_near_duplicate_filter import simhash_near_duplicate_filter
 
 
 def test_simhash_near_duplicate_filter():

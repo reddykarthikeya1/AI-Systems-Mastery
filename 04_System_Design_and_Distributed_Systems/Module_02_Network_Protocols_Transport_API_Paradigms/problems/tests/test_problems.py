@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_sliding_window_flow_control import sliding_window_flow_control
-except ImportError:
-    from p01_sliding_window_flow_control import sliding_window_flow_control
+from p01_sliding_window_flow_control import sliding_window_flow_control
 
 
 def test_sliding_window_flow_control():

@@ -22,7 +22,7 @@
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "Direction.UP",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "Direction.IDLE",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "\"down\"",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "DoorState.OPEN",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "DoorState.OPENING",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "None",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In HNSW graphs, deleting a vertex without reconnecting its neighbors breaks entry-point navigation paths, stranding entire subgraphs. ---",
+        "text": "The elevator's door timer was set too short, so passengers boarding at intermediate floors kept re-triggering the door-open sensor and stalling the car in place.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The checkout orchestrator lacked try-finally compensation logic. When payment raised an exception, the reserved inventory lock was abandoned. ---",
+        "text": "Hall call requests above the current floor were given a higher priority score than requests below, which only mildly favors UP calls rather than truly starving DOWN ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "With only 1 vnode per server, random hash distribution produces large gaps on the ring, assigning disproportionate slices of hash space to single nodes. ---",
+        "text": "The car capacity check rejected new passengers once weight sensors reported a near-full load, so DOWN passengers appeared stuck because the car was physically full, not because of directional bias.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By keeping the elevator state machine transitioning through every possible state on each tick, regardless of whether the current floor and direction are still valid.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By granting every hall call the same priority as the car already-committed direction, so state transitions simply happen more often under load.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting the door state machine skip its 'closing' transition under time pressure, so heavy traffic can be serviced without waiting for the door to fully close.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more elevator cars to the bank to absorb hall calls, without validating that each car's own state machine transitions stay within a bounded number of steps.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a rejected floor request immediately from the same car, instead of checking whether the request violates a capacity or direction invariant.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By logging every state transition for later review, so an elevator stuck oscillating between floors is only caught after passengers file a complaint.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By keeping the elevator state machine transitioning through every possible state on each tick, regardless of whether the current floor and direction are still valid.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By granting every hall call the same priority as the car already-committed direction, so state transitions simply happen more often under load.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By letting the door state machine skip its 'closing' transition under time pressure, so heavy traffic can be serviced without waiting for the door to fully close.",
         "is_correct": false
       }
     ],

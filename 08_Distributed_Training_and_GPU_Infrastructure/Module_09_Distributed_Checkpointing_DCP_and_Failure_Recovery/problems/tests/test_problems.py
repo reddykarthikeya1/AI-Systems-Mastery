@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_sharded_state_dict_merge import sharded_state_dict_merge
-except ImportError:
-    from p01_sharded_state_dict_merge import sharded_state_dict_merge
+from p01_sharded_state_dict_merge import sharded_state_dict_merge
 
 
 def test_sharded_state_dict_merge():

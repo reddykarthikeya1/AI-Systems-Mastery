@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "text": "The kernel's boundary mask uses offsets <= N instead of offsets < N, reading one element past the end of the tensor.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "text": "The grid size passed to the kernel launch is computed with truncating integer division instead of ceiling division, dropping the last partial block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Undefined behavior or deadlock on Volta, Hopper, or Blackwell GPUs.",
+        "text": "The kernel was compiled once for a given BLOCK_SIZE and reused for a different tensor shape without triggering autotune recompilation.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "text": "The kernel compiles and runs but silently produces incorrect results near the tensor boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "text": "The kernel recompiles on every call, adding tens of milliseconds of JIT overhead to every training step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Sign-extend using bit arithmetic:",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Intermittent numerical inaccuracies or race conditions in matrix outputs.",
+        "text": "Round the grid size up with ceiling division so the last partial block is still launched.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Always pass activemask() when calling warp shuffles inside divergent branch sections:",
+        "text": "Mark BLOCK_SIZE as a tl.constexpr autotune key so a new kernel variant is compiled for each distinct shape.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Convert to Structure of Arrays:",
+        "text": "Change the boundary comparison from offsets <= N to offsets < N when building the mask.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault. -",
+        "text": "The kernel's boundary mask uses offsets <= N instead of offsets < N, reading one element past the end of the tensor.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Conditionals inside thread blocks depending on threadIdx.x % 2 or threadIdx.x % 4. -",
+        "text": "The grid size passed to the kernel launch is computed with truncating integer division instead of ceiling division, dropping the last partial block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "text": "The kernel was compiled once for a given BLOCK_SIZE and reused for a different tensor shape without triggering autotune recompilation.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recompiling the Triton kernel from scratch on every single call instead of caching compiled variants by key.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By launching a kernel with a grid size computed by truncating division, silently dropping the final partial block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the boundary mask entirely because BLOCK_SIZE usually divides the tensor size evenly.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a kernel that passes for one tensor shape will produce correct results for every shape without a mask check.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that BLOCK_SIZE will always be a power of two without asserting it before launch.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison against the equivalent PyTorch op once the kernel compiles without error.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By recompiling the Triton kernel from scratch on every single call instead of caching compiled variants by key.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By launching a kernel with a grid size computed by truncating division, silently dropping the final partial block.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the boundary mask entirely because BLOCK_SIZE usually divides the tensor size evenly.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a kernel that passes for one tensor shape will produce correct results for every shape without a mask check.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that BLOCK_SIZE will always be a power of two without asserting it before launch.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison against the equivalent PyTorch op once the kernel compiles without error.",
         "is_correct": false
       }
     ],

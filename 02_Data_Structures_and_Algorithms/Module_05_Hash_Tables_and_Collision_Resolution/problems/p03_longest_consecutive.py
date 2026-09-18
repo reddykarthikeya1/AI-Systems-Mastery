@@ -15,6 +15,10 @@ Constraints
 Example
     longest_consecutive([100, 4, 200, 1, 3, 2]) -> 4    (1, 2, 3, 4)
 
+Example:
+    >>> longest_consecutive([100, 4, 200, 1, 3, 2])
+    4
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Put everything in a set so membership is O(1).

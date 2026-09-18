@@ -22,6 +22,13 @@ the solution, not a trick — if you need to survive a 5000-deep spine, either
 call ``sys.setrecursionlimit`` deliberately or rewrite the traversal with an
 explicit stack, as Problem 01 does.
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> is_balanced(from_level_order([3, 9, 20, None, None, 15, 7]))
+    True
+    >>> is_balanced(from_level_order([1, 2, 2, 3, 3, None, None, 4, 4]))
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The obvious solution computes the height at every node, which recomputes the same subtree heights over and over - that is O(n^2) on a skewed tree.

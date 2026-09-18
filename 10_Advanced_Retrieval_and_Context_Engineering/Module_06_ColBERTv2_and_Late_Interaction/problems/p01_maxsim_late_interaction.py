@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 Compute ColBERT MaxSim operator between query and document token embeddings.
 
+Example:
+    >>> maxsim_late_interaction([[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.5, 0.5]])
+    1.5
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: ColBERT keeps every token's own embedding instead of pooling
+        into one vector, so each QUERY token independently picks its own
+        best-matching document token — different query tokens can align to
+        different doc tokens.
+    Hint 2: Nested iteration: for each query token embedding, compute its
+        dot product against every document token embedding and take the
+        max, then sum those per-query-token maxima across all query tokens.
+    Hint 3: An empty `query_token_embeddings` or `doc_token_embeddings` must
+        return 0.0 rather than raising on an empty `max()`; the final sum is
+        rounded to 4 decimals; and the operation order matters — it's
+        max-then-sum over query tokens, never sum-then-max or an average.
 """
 
 from __future__ import annotations

@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The evaluation agent rejects retrieved context because of impossible precision criteria, repeatedly rewriting queries.",
+        "text": "compute_degree_centrality() only increments the score for each relationship's source entity, so an entity that is purely a target across all its relationships gets a degree of zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use single-stage filtered graph traversal (e.g. Qdrant / pgvector) where filtering bitsets restrict the neighbor traversal candidates during graph traversal.",
+        "text": "The community detection algorithm merges every node within two hops of a seed entity into a single community, regardless of edge weight or relation type.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "text": "Relationship extraction only captures entity pairs that appear in the same sentence, so entities related across sentence or paragraph boundaries never get an edge at all.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Standard BERT output is dimension 768, but ColBERT projects token embeddings down to linear bottleneck dimension $d=128$. Forgetting the projection layer causes $6\\times$ memory explosion and dimension mismatches. -",
+        "text": "Degree centrality is computed by counting only the source side of each relationship triple, so hub entities that are always the target of a relation are silently ranked at zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "The graph store deduplicates edges by relationship type alone, so two different real-world facts between the same two entities collapse into a single edge.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "text": "Community summarization runs before all documents finish being ingested, so later documents' entities never get incorporated into any community summary.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": If contextual prefix $pi$ is too long (e.g. 200 words), its embedding vector dominates the 50-word chunk, overshadowing local facts. -",
+        "text": "Increment the degree count for both the source and target entity of every relationship triple, not just the source.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Reranker outputs negative logits (e.g. $-4.2, -1.8$), causing threshold filters to discard valid documents.",
+        "text": "Increase the community detection algorithm's resolution parameter so it forms more, smaller communities.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Enforce a strict recursion limit (max 3 retrieval attempts). If criteria are not met, degrade gracefully and answer with the best available context with an explicit uncertainty disclaimer.",
+        "text": "Re-run relationship extraction with a larger context window so more distant entity pairs are captured per document.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Enforce a strict canonical string ID schema across both retrieval backends prior to RRF aggregation.",
+        "text": "The graph's most heavily-referenced hub entity never appears in any query's top-ranked context, even though dozens of relationships point to it.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Missing entity resolution / coreference deduplication during graph ingestion. -",
+        "text": "Community summaries mix unrelated topics together because two very different entities were merged into a single canonical node.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Search queries for niche numerical values retrieve generic company overviews instead of specific calculation clauses.",
+        "text": "Global (map-reduce) queries over community summaries return answers, but local entity-lookup queries always return empty results.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Counting only the source side of each relationship triple when ranking entity importance, so purely-referenced hub entities score zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Treating every distinct surface form of an entity's name ('Apple', 'Apple Inc.', 'AAPL') as a separate node instead of resolving them to one canonical entity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Running community summarization before entity resolution, so unresolved duplicate entities get folded into separate community summaries.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Counting only the source side of each relationship triple when ranking entity importance, so purely-referenced hub entities score zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Treating every distinct surface form of an entity's name ('Apple', 'Apple Inc.', 'AAPL') as a separate node instead of resolving them to one canonical entity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Running community summarization before entity resolution, so unresolved duplicate entities get folded into separate community summaries.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Executing full-table scans across unindexed vector embeddings on each query.",
+        "text": "Counting only the source side of each relationship triple when ranking entity importance, so purely-referenced hub entities score zero.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Truncating all context windows to zero tokens during peak traffic spikes.",
+        "text": "Treating every distinct surface form of an entity's name ('Apple', 'Apple Inc.', 'AAPL') as a separate node instead of resolving them to one canonical entity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Bypassing semantic reranking and returning raw random documents.",
+        "text": "Running community summarization before entity resolution, so unresolved duplicate entities get folded into separate community summaries.",
         "is_correct": false
       }
     ],

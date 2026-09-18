@@ -15,6 +15,10 @@ Constraints
 Example
     last_stone_weight([2, 7, 4, 1, 8, 1]) -> 1
 
+Example:
+    >>> last_stone_weight([2, 7, 4, 1, 8, 1])
+    1
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You repeatedly need the two largest of a changing collection. That is a max-heap.

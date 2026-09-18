@@ -14,6 +14,10 @@ Constraints
 Example
     words_with_prefix(["cat","car","card","dog"], "car") -> ["car", "card"]
 
+Example:
+    >>> words_with_prefix(["cat", "car", "card", "dog"], "car")
+    ['car', 'card']
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Build a trie, walk to the prefix node, then collect every word beneath it.

@@ -15,6 +15,12 @@ Example
     longest_palindrome("babad") -> "bab"
     longest_palindrome("cbbd")  -> "bb"
 
+Example:
+    >>> longest_palindrome("babad")
+    'bab'
+    >>> longest_palindrome("cbbd")
+    'bb'
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Every palindrome has a centre. How many centres does a string of length n have?

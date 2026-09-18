@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
+        "text": "It spawns one lightweight green thread per client connection internally, so it only appears single-threaded from the outside while actually using cooperative multitasking under the hood.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Cosine measures angle regardless of magnitude; Euclidean measures geometric distance; Dot product combines angle and magnitude.",
+        "text": "It shards its keyspace across 16 internal worker threads by hash slot, giving the appearance of a single thread to any one client while parallelizing across clients.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "$R + W > N$, where $R$ is Read Consistency, $W$ is Write Consistency, and $N$ is Replication Factor.",
+        "text": "It relies on the operating system's kernel-level thread scheduler to interleave many blocking I/O calls so quickly that no explicit event loop is needed.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1 WCU = 1 write up to 1KB/s; 1 RCU = 1 strongly consistent read (or 2 eventually consistent reads) up to 4KB/s.",
+        "text": "RDB logs every write command sequentially for near-zero RPO, while AOF creates periodic point-in-time binary snapshots, making AOF the faster option to restart from.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Oversized pools cause CPU context switching thrashing; optimal pool size is roughly $(2 \\times \\text{cores}) + \\text{effective spindles}$.",
+        "text": "RDB and AOF are two names for the same persistence mechanism in modern Redis; the config option only changes the file extension used on disk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It builds optimal join plans bottom-up for sub-relations of size $k$, pruning sub-optimal permutations based on cost and interesting sort orders.",
+        "text": "RDB continuously streams changes to a replica in real time, while AOF is only used for one-time data export/import between different Redis instances.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
+        "text": "A single counter key is incremented with INCR on every request and reset to zero with EXPIRE at a fixed interval, without needing a sorted set at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Active Data Guard allows the physical standby database to remain open in Read-Only mode for reporting queries while continuously applying redo in real-time.",
+        "text": "Members are request IDs rather than timestamps; ZRANGEBYSCORE fetches all members, and the application counts how many fall inside the window in its own code.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It enforces that no two rows overlap on a range type (e.g. daterange or tsrange) using GiST index bounding-box tests.",
+        "text": "ZADD stores the score as the request count rather than a timestamp, and the window is enforced by capping the sorted set's total size with ZREMRANGEBYRANK instead of by time.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
+        "text": "volatile-lru evicts keys across the entire database regardless of TTL, while allkeys-lru only evicts keys that have an expire set.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Every node in the cluster plays an identical role; any node can coordinate any read or write request without a single point of failure.",
+        "text": "volatile-lru refuses to evict anything and instead returns an out-of-memory error to the client, while allkeys-lru is the only policy that actually removes keys.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It acts as a stateless gateway directing client queries to appropriate shards based on cluster metadata from config servers.",
+        "text": "Both policies only ever evict keys that have already expired; the difference is only in which background thread performs the deletion.",
         "is_correct": false
       }
     ],
@@ -132,7 +132,7 @@
       },
       {
         "id": "opt_1",
-        "text": "4",
+        "text": "5",
         "is_correct": false
       },
       {
@@ -167,7 +167,7 @@
       },
       {
         "id": "opt_2",
-        "text": "3",
+        "text": "2",
         "is_correct": false
       },
       {
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[(\"alice\", 10.0), (\"bob\", 20.0)]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[(\"bob\", 20.0)]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[]",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "len(raw_payload) + 1",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "len(raw_payload) * 2",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "0",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "text": "Worker 1 sets the lock with SET lock_key 1 EX 10 but never checks the return value, so it proceeds to the critical section even when another worker already holds the lock, unrelated to expiry.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "text": "The lock key is stored with no expiration at all, so it never expires, and the race happens because two workers both call SETNX before either one's write is visible to the other.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "text": "Worker 2 acquires the lock using APPEND instead of SET, which merges its token with Worker 1's leftover value instead of replacing it, so both workers believe they hold a valid lock simultaneously.",
         "is_correct": false
       }
     ],

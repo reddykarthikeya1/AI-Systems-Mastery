@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "text": "The fused kernel accumulates the sum of squares in fp16 instead of fp32, so the variance underflows to zero for long rows before epsilon is even added.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "text": "The kernel normalizes over the batch dimension instead of the feature dimension, mixing statistics across unrelated tokens.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "text": "The kernel subtracts the mean before computing RMS, applying LayerNorm's centering step where RMSNorm should skip it.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Reorganize data or thread assignments so that branching evaluates uniformly across all 32 threads in a warp (threadIdx.x / 32).",
+        "text": "The fused kernel accumulates the sum of squares in fp16 instead of fp32, so the variance underflows to zero for long rows before epsilon is even added.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "text": "The kernel normalizes over the batch dimension instead of the feature dimension, mixing statistics across unrelated tokens.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "The kernel subtracts the mean before computing RMS, applying LayerNorm's centering step where RMSNorm should skip it.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When inputs $x$ are zero or near-zero, $\\text{RMS}(x) = \\sqrt{0 + \\epsilon}$. If $\\epsilon$ is too small (e.g. $10^{-12}$) or floats round down, division by zero occurs. -",
+        "text": "Accumulate the sum of squares in fp32 even when the input and output tensors are stored in fp16 or bf16.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Sign-extend using bit arithmetic:",
+        "text": "Normalize strictly over the feature dimension and never mix statistics across the batch dimension.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Causal attention runs at the same speed as bidirectional attention, wasting 50% FLOPs.",
+        "text": "Drop the mean-centering step so the kernel implements RMSNorm instead of LayerNorm.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Performing bitwise operations without proper signed two's complement extension: int4val = (packed >> 4) & 0x0F; // Treats 0x0F as +15 instead of -1! -",
+        "text": "Training loss plateaus far above the expected value but never produces a NaN or Inf.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computi",
+        "text": "The model trains fine on GPU but produces different normalized outputs when the same checkpoint is run on CPU.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Convert to Structure of Arrays:",
+        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By accumulating the normalization variance in fp16 to save memory bandwidth on every fused kernel launch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reusing the same epsilon value tuned for fp32 training when the kernel later runs in fp16 or bf16 at serving time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the variance clamp because inputs are assumed to never be exactly zero in production.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a fused normalization kernel that matches its unfused reference on one batch size matches it on every batch size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that epsilon is large enough to avoid division by zero without ever testing near-zero inputs.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison between the fused kernel's output and PyTorch's LayerNorm or RMSNorm before shipping.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By accumulating the normalization variance in fp16 to save memory bandwidth on every fused kernel launch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By reusing the same epsilon value tuned for fp32 training when the kernel later runs in fp16 or bf16 at serving time.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping the variance clamp because inputs are assumed to never be exactly zero in production.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By assuming a fused normalization kernel that matches its unfused reference on one batch size matches it on every batch size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By trusting that epsilon is large enough to avoid division by zero without ever testing near-zero inputs.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison between the fused kernel's output and PyTorch's LayerNorm or RMSNorm before shipping.",
         "is_correct": false
       }
     ],

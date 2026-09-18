@@ -14,6 +14,12 @@ Example
     edit_distance("horse", "ros")     -> 3
     edit_distance("intention", "execution") -> 5
 
+Example:
+    >>> edit_distance("horse", "ros")
+    3
+    >>> edit_distance("intention", "execution")
+    5
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: State: dist[i][j] is the cost of turning the first i characters of a into the first j characters of b.

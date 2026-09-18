@@ -5,10 +5,19 @@ Target: Production-grade implementation
 
 Compute Jaccard similarity and Jaccard distance between two categorical sets.
 
+Example:
+    >>> jaccard_similarity_sets({'a', 'b', 'c'}, {'b', 'c', 'd'})
+    (0.5, 0.5)
+
 Hints:
-    Hint 1: Review module invariants and mathematical definitions.
-    Hint 2: Handle edge cases, dimensions, and numerical stability cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Both quantities come from just two numbers: the size of the
+        intersection and the size of the union — everything else follows.
+    Hint 2: Build the union with `|` and the intersection with `&`, then
+        divide `len(intersection) / len(union)` to get the similarity, and
+        subtract from 1.0 for the distance.
+    Hint 3: Two empty sets give an empty union, which would divide by zero;
+        the spec defines that special case as similarity 1.0 (identical,
+        vacuously) and distance 0.0. Round both results to 4 decimal places.
 """
 
 from __future__ import annotations

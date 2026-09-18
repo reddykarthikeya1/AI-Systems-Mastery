@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_computational_graph_toposort import computational_graph_toposort
-except ImportError:
-    from p01_computational_graph_toposort import computational_graph_toposort
+from p01_computational_graph_toposort import computational_graph_toposort
 
 
 def test_computational_graph_toposort():

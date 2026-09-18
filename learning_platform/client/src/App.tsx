@@ -15,6 +15,7 @@ import { BookmarksModal } from './components/BookmarksModal';
 import { FlashcardsModal } from './components/FlashcardsModal';
 import { PortfolioModal } from './components/PortfolioModal';
 import { PrerequisiteMapModal } from './components/PrerequisiteMapModal';
+import { HardwareTopologyModal } from './components/HardwareTopologyModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
@@ -389,6 +390,8 @@ const MasteryGateRoute: React.FC<MasteryGateRouteProps> = ({
 export const App: React.FC = () => {
   const { 
     progress, 
+    earnedXp,
+    rankInfo,
     toggleLesson, 
     toggleTheme, 
     toggleSound,
@@ -402,6 +405,7 @@ export const App: React.FC = () => {
     updateMasteryGate,
     addCustomSrsCard,
     updateSrsReview,
+    markProblemSolved,
   } = useProgress();
 
   const navigate = useNavigate();
@@ -418,6 +422,24 @@ export const App: React.FC = () => {
   const [isFlashcardsOpen, setIsFlashcardsOpen] = useState(false);
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
   const [isPrereqMapOpen, setIsPrereqMapOpen] = useState(false);
+  const [isHardwareModalOpen, setIsHardwareModalOpen] = useState(false);
+
+  // Keyboard shortcut: Escape to close modals
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsCommandPaletteOpen(false);
+        setIsStatsOpen(false);
+        setIsBookmarksOpen(false);
+        setIsFlashcardsOpen(false);
+        setIsPortfolioOpen(false);
+        setIsPrereqMapOpen(false);
+        setIsHardwareModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Sync theme class to HTML element
   useEffect(() => {
@@ -555,6 +577,8 @@ export const App: React.FC = () => {
       <Header
         progress={progress}
         courses={courses}
+        rankInfo={rankInfo}
+        earnedXp={earnedXp}
         onToggleTheme={toggleTheme}
         onToggleSound={toggleSound}
         onOpenSearch={() => setIsCommandPaletteOpen(true)}
@@ -563,6 +587,7 @@ export const App: React.FC = () => {
         onOpenFlashcards={() => setIsFlashcardsOpen(true)}
         onOpenPortfolio={() => setIsPortfolioOpen(true)}
         onOpenPrereqMap={() => setIsPrereqMapOpen(true)}
+        onOpenHardwareTopology={() => setIsHardwareModalOpen(true)}
         onNavigateHome={() => navigate('/')}
       />
 
@@ -581,6 +606,17 @@ export const App: React.FC = () => {
                     courses={courses}
                     progress={progress}
                     onSelectCourse={(courseId) => navigate(`/course/${courseId}`)}
+                    onStartHere={() => {
+                      // The first module of the first track assumes nothing. A
+                      // newcomer should land in a lesson, not in a catalogue.
+                      const first = courses[0];
+                      navigate(first ? `/course/${first.id}/module/00` : '/');
+                    }}
+                    welcomeDismissed={progress.welcome_dismissed}
+                    onDismissWelcome={() => updateProgress((prev) => ({
+                      ...prev,
+                      welcome_dismissed: true,
+                    }))}
                     onResumeLastPosition={handleResumeLastPosition}
                     onOpenFlashcards={() => setIsFlashcardsOpen(true)}
                     onOpenPortfolio={() => setIsPortfolioOpen(true)}
@@ -725,6 +761,12 @@ export const App: React.FC = () => {
         onClose={() => setIsPrereqMapOpen(false)}
         courses={courses as any}
         onSelectCourse={(courseId) => navigate(`/course/${courseId}`)}
+      />
+
+      {/* AI Systems Hardware Topology & Memory Hierarchy Explorer Modal */}
+      <HardwareTopologyModal
+        isOpen={isHardwareModalOpen}
+        onClose={() => setIsHardwareModalOpen(false)}
       />
     </div>
   );

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "dp",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "two_pointer",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "greedy",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "(0, [])",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "(1, [])",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "(2, [42, 42])",
         "is_correct": false
       }
     ],
@@ -107,12 +107,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "text": "The running maximum is reset to x whenever x is negative, so a negative number always starts a brand-new subarray instead of being allowed to combine with a still-more-negative running product.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "best is updated with max(best, cur) only at the end of the loop instead of after every multiplication, so the true maximum can be overwritten before it is ever recorded.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "When the buffer is full, (head + count) % capacity is exactly head \u2014 the oldest slot. The new value lands there correctly, but head still points at it, so the buffer now believes the newest entry is the oldest.",
+        "text": "Two running variables are kept, one for the maximum and one for the minimum, but they are updated using the minimum from two steps back instead of the immediately preceding one, so the effect of a negative flip only shows up one element late.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "best is supposed to hold, for each column, the cost of the cheapest path",
+        "text": "The comparison is correctly nums[j] < nums[i], but the DP array is initialized to 0 instead of 1, so every subsequence length is undercounted by exactly one regardless of duplicates.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Height-balance is a property of every node, and this checks only the root. A tree whose root is perfectly balanced can contain a deeply skewed subtree, and the function approves it.",
+        "text": "The outer and inner loop indices are swapped, so each element is compared against subsequences that start after it in the array instead of before it, breaking the ordering assumption of the algorithm.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Initialising an extremum to zero smuggles in a candidate that does not exist in the data. When every window is negative, max keeps the fabricated 0 and the function reports a window sum that no window has.",
+        "text": "The function tracks the longest subsequence length correctly but returns the length of the whole input array by mistake whenever the array contains any duplicate value.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "For maximum sum, a single running best is enough. For maximum product it is not: multiplying by a negative number flips the ordering, so the most negative product so far is a candidate for the largest as soon as another negative appears.",
+        "text": "The base cases for the first two houses are swapped, so the recurrence starts one house ahead and effectively treats the second house as unrobbable no matter what.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The traversal order is correct \u2014 BFS does visit nodes level by level \u2014 but each node is wrapped in its own list, so the level structure is lost. The output is a list of singleton lists in the right sequence, which flattens to exactly the ri",
+        "text": "The recurrence takes max(skip, take) instead of max(take, skip + x), so the running total can never actually add the current house's value, and the reported total stays at the value of the best single house.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "text": "Adjacent houses are defined by shared walls in the floor plan rather than by consecutive indices in the list, so two houses that are numerically adjacent but not physically adjacent are allowed to both be robbed.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "cur.next = prev overwrites the only pointer to the remainder of the list. The very next statement then reads that same field, so cur walks backwards into prev instead of forwards, the loop ends after one step, and everything past the head i",
+        "text": "The minimum is taken including the impossible previous amounts before they are filtered out, so an amount that requires an unreachable sub-amount can still register a smaller count than it should by chance.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Cyclic references preventing garbage collection in bidirectional pointers.",
+        "text": "The coins are not sorted before the DP loop runs, so amounts are updated in an order where a later, cheaper coin combination cannot overwrite an earlier and more expensive one that was already stored.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Negating the values turns heapq into a max-heap, so heappop removes the largest element \u2014 and the survivors are the k",
+        "text": "The DP array is one element too short, so the amount requested is actually read from best[amount - 1], silently reporting the minimum coins for one less than what was asked.",
         "is_correct": false
       }
     ],

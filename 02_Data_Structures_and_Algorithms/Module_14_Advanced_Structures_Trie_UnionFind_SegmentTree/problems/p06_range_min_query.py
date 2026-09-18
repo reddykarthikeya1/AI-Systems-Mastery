@@ -19,6 +19,10 @@ never changes, a sparse table gives `O(1)` queries — because `min` is
 *idempotent*, so overlapping ranges may be combined freely. That does not work
 for `sum`, which is why sums use a different structure.
 
+Example:
+    >>> range_minimums([2, 5, 1, 4, 9], [(0, 2), (1, 4), (3, 3)])
+    [1, 1, 4]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Precompute the minimum of every range whose length is a power of two: table[k][i] covers nums[i .. i + 2^k - 1].

@@ -17,6 +17,10 @@ Constraints
 Example
     product_except_self([1, 2, 3, 4]) -> [24, 12, 8, 6]
 
+Example:
+    >>> product_except_self([1, 2, 3, 4])
+    [24, 12, 8, 6]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: out[i] is (product of everything left of i) * (product of everything right of i).

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Kubernetes continuously compares actual state against desired state, spinning up new container replicas when CPU exceeds thresholds, restarting crashed pods, and shifting traffic during zero-downtime rolling deployments.",
+        "text": "Both lst[500] and 500 in lst are O(1) because CPython caches the memory address of every element the first time the list is created, so later lookups by either index or value are instant hash-table lookups.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "ParamSpec captures the exact positional and keyword arguments of a callable Callable[P, R], ensuring full type safety through decorators.",
+        "text": "lst[500] is O(N) because Python must walk from the head of the list to the 500th node, exactly like a linked list; 500 in lst is O(1) because membership tests use a hidden hash index built automatically for every list.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Playwright controls a real Chromium browser engine, executing JavaScript, waiting for network hydration, and interacting with client-rendered DOM nodes.",
+        "text": "Both operations are O(log N) because CPython stores list elements in a sorted, balanced binary tree internally, allowing binary search for both direct indexing and value lookups.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "- tottime: Total time spent directly inside that specific function, excluding calls to sub-functions. - cumtime: Cumulative time spent inside that function plus all sub-functions called by it.",
+        "text": "Python over-allocates because append() always doubles the list's memory in-place without moving any existing elements, and no reallocation ever happens after the very first over-allocation.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Approximately 70% Unit Tests, 20% Integration Tests, and 10% E2E Tests. Unit tests run in milliseconds and pinpoint exact code failures, whereas E2E tests are slow, expensive to maintain, and brittle.",
+        "text": "The over-allocated slots are required by CPython's garbage collector, which needs spare capacity in every list to run its mark-and-sweep cycle without pausing the interpreter.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- else executes only if NO exceptions occurred in the try block. - finally executes unconditionally, regardless of whether an exception occurred, was handled, or remained unhandled.",
+        "text": "Over-allocation exists purely so that list.insert(0, x) can shift elements right without needing a temporary buffer; append() itself always allocates exact space for one new item.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It allows catching and handling multiple independent exceptions that occur simultaneously across concurrent tasks or background worker threads.",
+        "text": "Lists raise TypeError because they don't define __eq__, while tuples define both __eq__ and __hash__; hashability has nothing to do with mutability in either case.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Use a yield fixture: Code before yield runs during setup; the value yielded is injected into the test; code after yield runs during teardown.",
+        "text": "Both lists and tuples are hashable by their memory address; the TypeError instead comes from dict keys being required to be sortable, and lists don't support the < operator between elements of different types.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "- If declared in the URL path string (e.g. /{id}), it's a Path Parameter. - If a primitive type not in the path (e.g. limit: int = 10), it's a Query Parameter. - If a Pydantic model (e.g. item: ItemSchema), it's parsed from the JSON Request",
+        "text": "Dictionaries actually accept lists as keys as long as every element inside the list is itself hashable; the TypeError only appears when a list contains another unhashable list nested inside it.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It allows compiling dependencies (which requires heavy build tools and compilers like gcc) in an ephemeral stage and copying only pure wheels to a minimal slim production image, cutting image size from 1 GB to $< 80$ MB.",
+        "text": "list.pop(0) is O(1) because CPython keeps a head pointer for every list, but collections.deque is preferred anyway because it also supports O(1) random access by index, which lists lack.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1. function (Default: runs fresh for every test function) 2. class (runs once per test class) 3. module (runs once per .py test file) 4. session (runs once per entire test suite execution)",
+        "text": "Both list.pop(0) and deque.popleft() are O(N); deque is only faster in practice because it stores items in a contiguous array like a list but pre-allocates extra head-room to avoid a full list copy on append.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It ensures that foreign keys must match existing primary keys in the referenced table, rejecting insertions with invalid references.",
+        "text": "deque is preferred only because it enforces a maximum length automatically, preventing memory leaks; its actual pop/append performance is identical to a plain list's O(N) behavior at both ends.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "(11.50, 10)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"Learn uv\"",
+        "text": "(11.00, 5)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"Explore fast package manager\"",
+        "text": "[11.50, 5]",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "asyncio operates on cooperative multitasking. When time.sleep() is called, control is never yielded back to the event loop, freezing all other pending tasks.",
+        "text": "copy.copy() actually creates a fully independent deep clone of the portfolio; the corruption instead comes from both variables being reassigned to the same dict literal earlier in the script.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A custom decorator replaces the decorated function with wrapper. Without functools.wraps(func), metadata (name, doc, annotations) is replaced by the wrapper's metadata.",
+        "text": "The clone was created with dict(portfolio) instead of copy.copy(), and dict() silently returns a reference to the original object instead of building a new top-level mapping.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Calling an async def function returns a coroutine object. It does not begin execution until it is awaited or scheduled on the event loop via asyncio.createtask().",
+        "text": "portfolio was declared as a class attribute rather than an instance attribute, so every clone created from the class automatically shares one dictionary regardless of how the copy was made.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Directly calling BaseService.log(self, ...) short-circuits Python's C3 linearization (MRO), skipping sibling mixins in multiple inheritance hierarchies.",
+        "text": "set() only accepts elements of a single consistent type; the TypeError is raised because the collection mixes dict and str records instead of because dicts are unhashable.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "In distributed messaging (e.g. Redis Streams, SQS, RabbitMQ), \"at-least-once\" delivery is the standard delivery guarantee. If a consumer crashes before ACKing, the message is redelivered. Handlers must be idempotent.",
+        "text": "Sets silently convert unhashable elements like dict into a hashable proxy in older Python versions, but this trader-record schema disables that conversion by defining a custom __eq__ without __hash__.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "SQLAlchemy sessions run inside a transaction by default. If the session closes without commit(), SQLite automatically issues a ROLLBACK.",
+        "text": "The TypeError comes from calling set.add() with two positional arguments instead of one; a set element must be passed as a single object, not spread across multiple arguments.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.",
+        "text": "orders_dict.items() returns a fully materialized list snapshot in Python 3, so deleting a key mid-loop should be safe; the RuntimeError is instead caused by iterating the dict while another thread holds the GIL.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IEEE-754 precision limits mean binary float representations cannot represent exact decimal sums.",
+        "text": "Deleting a key changes the dict's insertion order, and Python 3.7+ dicts raise RuntimeError whenever iteration order is altered, even if no keys are added or removed.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Tests sharing global state create hidden execution coupling. If pytest runs tests in parallel (pytest -n auto) or randomized order (pytest-random-order), tests fail unpredictably.",
+        "text": "The RuntimeError only occurs because the loop uses del orders_dict[k] instead of orders_dict.pop(k); pop() is documented as the sole safe way to remove a key during iteration.",
         "is_correct": false
       }
     ],

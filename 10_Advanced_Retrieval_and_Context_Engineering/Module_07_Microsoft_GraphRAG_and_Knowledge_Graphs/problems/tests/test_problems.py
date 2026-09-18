@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_entity_relation_subgraph_extract import entity_relation_subgraph_extract
-except ImportError:
-    from p01_entity_relation_subgraph_extract import entity_relation_subgraph_extract
+from p01_entity_relation_subgraph_extract import entity_relation_subgraph_extract
 
 
 def test_entity_relation_subgraph_extract():

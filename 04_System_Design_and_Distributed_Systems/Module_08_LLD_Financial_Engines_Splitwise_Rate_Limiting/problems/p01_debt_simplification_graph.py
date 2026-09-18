@@ -5,10 +5,22 @@ Target: Production-grade implementation
 
 Minimize transactions among group expense balances.
 
+Example:
+    >>> debt_simplification_graph({'Alice': 50.0, 'Bob': -30.0, 'Charlie': -20.0})
+    [('Bob', 'Alice', 30.0), ('Charlie', 'Alice', 20.0)]
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle edge cases, scale factors, and state transitions cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: Minimizing the transaction count is a greedy matching problem
+        — always settle the single biggest debtor against the single
+        biggest creditor first, not balances in input order.
+    Hint 2: Maintain two lists of (amount, person) — debtors and
+        creditors — and repeatedly re-sort and take the largest of each,
+        settling `min(debt_amt, cred_amt)` between that pair.
+    Hint 3: Use an epsilon tolerance (e.g. 0.001) when comparing balances
+        or remaining amounts to zero, since floating-point subtraction
+        leaves tiny residues that would otherwise create phantom
+        leftover entries; round every settled amount to 2 decimal places
+        before appending it to the result.
 """
 
 from __future__ import annotations

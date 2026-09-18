@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_json_schema_tool_validator import json_schema_tool_validator
-except ImportError:
-    from p01_json_schema_tool_validator import json_schema_tool_validator
+from p01_json_schema_tool_validator import json_schema_tool_validator
 
 
 def test_json_schema_tool_validator():

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
+        "text": "Authentication verifies whether a user has permission to perform an action, while Authorization verifies the user's identity via credentials -- the two terms are reversed from their real definitions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "- Dynamically typed: Variable names are not bound to a fixed type; a variable can point to an int and later point to a str (x = 5; x = \"hello\"). - Strongly typed: Python strictly enforces types and will not perform silent implicit conversio",
+        "text": "Authentication and Authorization are handled by the exact same HTTP header (Authorization: Bearer <token>); the distinction is purely a naming convention with no functional difference in how a server processes the request.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A massive batch of keys expiring at the exact same second. Adding random jitter (e.g. $\\pm 10\\%$) distributes expirations smoothly over time.",
+        "text": "Authentication only applies to human users logging in through a browser, while Authorization is the separate process used exclusively for machine-to-machine API keys.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It moves messages that fail $N$ consecutive processing attempts to a quarantined secondary queue for developer inspection without blocking new traffic.",
+        "text": "SHA-256 and MD5 are dangerous because they produce a fixed-length output regardless of input size, making it trivial to guess the original password from the hash length alone.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The generator expression calculates values lazily on demand one item at a time in $O(1)$ memory. The list comprehension evaluates and stores all 10,000,000 integers in RAM immediately in $O(N)$ memory.",
+        "text": "Fast hashes are dangerous only because they are not salted by default; adding a salt to SHA-256 makes it exactly as brute-force-resistant as Bcrypt or Argon2 without any other changes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Over-allocating memory ensures that most append() operations simply write to already-reserved memory without needing expensive operating system memory reallocations, giving append() an amortized $O(1)$ running time.",
+        "text": "SHA-256 and MD5 are considered dangerous because they are reversible functions that can be mathematically decrypted back into the original plaintext password given enough CPU time.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "HTTP requests have strict timeout limits (e.g. 30s) and block client connections. Long tasks must be offloaded to background workers so the API can respond instantly with 202 Accepted and a job ID.",
+        "text": "A salt is a secret key shared by every user in the system that is XORed with the password before hashing, functioning like a single global encryption key for the whole database.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "It dynamically constructs and returns a new Python class object at runtime.",
+        "text": "A salt is a checksum appended after hashing to detect if the stored hash has been tampered with, similar to a CRC32 integrity check on a downloaded file.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "No. uv run automatically discovers the local .venv, sets up the environment variables (PATH, VIRTUALENV), and executes the target process inside that isolated context without requiring manual terminal activation (activate.ps1).",
+        "text": "A salt works by delaying each login attempt by a fixed number of milliseconds, making rainbow table attacks too slow to be practical regardless of whether the password itself is unique.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The client sends an HTTP GET request with Upgrade: websocket and Connection: Upgrade headers. If accepted (101 Switching Protocols), the socket switches from HTTP request-response mode to raw bidirectional framing.",
+        "text": "1. Payload: Encodes the signing algorithm. 2. Header: Encodes user claims. 3. Signature: An optional checksum that most JWT libraries skip verifying by default -- the first two parts are swapped from their real roles.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "$$\\cos(\\theta) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{\\sum ui vi}{\\sqrt{\\sum ui^2} \\sqrt{\\sum vi^2}}$$",
+        "text": "1. Issuer: Identifies which server minted the token. 2. Audience: Identifies which service should accept it. 3. Nonce: A random value preventing replay -- JWTs only ever contain these three parts, without headers or signatures.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The Generational Hypothesis: \"Most objects die young.\" Newly allocated objects are placed in Generation 0 (collected frequently). Surviving objects are promoted to Gen 1 and Gen 2 (collected progressively less frequently), optimizing perfor",
+        "text": "The three parts are all independently encrypted ciphertext; a JWT can only be read by the exact server that issued it, since no other party holds the decryption key.",
         "is_correct": false
       }
     ],
@@ -162,7 +162,7 @@
       },
       {
         "id": "opt_1",
-        "text": "\"OPTIMAL\"",
+        "text": "\"optimal\"",
         "is_correct": false
       },
       {
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Raw int() call without try/except and without domain validation allows non-integer strings to crash the CLI with raw tracebacks and allows invalid negative priority levels.",
+        "text": "The JWT's exp claim was set using a Unix timestamp in seconds, but PyJWT's decode() function expects milliseconds, so every token's actual expiry is interpreted as roughly 1970 and always appears already-expired -- causing the opposite symptom, not indefinite acceptance.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When Python's main thread exits, all daemon=True threads are terminated instantly without running finally: blocks or flushing open file streams.",
+        "text": "The server's system clock has drifted several hours ahead of real time, so tokens that should have expired are still being evaluated as valid according to the server's own (incorrect) clock.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "datetime.fromisoformat(\"...\") without a UTC offset generates an offset-naive datetime. Python prevents comparing naive and timezone-aware datetimes to prevent subtle timezone bugs.",
+        "text": "Tokens were signed with the HS256 algorithm but verified with RS256, and PyJWT silently falls back to skipping expiry validation whenever there is an algorithm mismatch between signing and verification.",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "range(1, months) generates values from 1 up to months - 1, resulting in months - 1 total iterations.",
+        "text": "Python's hash() function is used to compare the two secrets instead of ==; hash collisions between different secrets are what leaks timing information to the attacker.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Defining transactionlog: list[str] = [] directly inside the class body creates a single class attribute shared across every instance.",
+        "text": "The vulnerability only exists because the secret is stored as a str instead of bytes; converting both sides to bytes before comparison eliminates any timing difference entirely.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Passing options={\"verifyexp\": False} instructs PyJWT to ignore the exp claim, allowing replayed expired tokens to authenticate indefinitely.",
+        "text": "The server compares password hashes computed with Bcrypt, and Bcrypt's own hashing step already takes a constant, randomized amount of time regardless of input, so no comparison-based timing leak is actually possible here.",
         "is_correct": false
       }
     ],

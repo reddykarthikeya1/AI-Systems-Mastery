@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "11574.07",
+        "text": "DriverStatus.AVAILABLE",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "28935.19",
+        "text": "DriverStatus.IN_TRIP",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "115740.74",
+        "text": "DriverStatus.OFFLINE",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A standard Bloom filter cannot resize dynamically. As items added exceed capacity, bit array density approaches 100%, and contains() returns True for almost every query. ---",
+        "text": "The dispatch service queried drivers using Euclidean distance on raw latitude/longitude degrees instead of Haversine distance, so nearby drivers near the poles or date line were ranked incorrectly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Financial ledgers must balance to the exact cent across every posting. Allowing unbalanced postings corrupts total balance sheets. ---",
+        "text": "The geohash precision was set too coarse, so a single cell spanned several kilometers and returned drivers who were technically inside the cell but too far away to dispatch.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Thread-local storage (or contextvars) does not automatically propagate to new OS threads or celery worker tasks unless explicitly passed. ---",
+        "text": "Driver location updates were only re-indexed into the geohash grid once a minute, so the search matched a driver's stale position from before they moved into range.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more dispatch service replicas to handle ride requests, without validating that each replica queries the same up-to-date driver location index.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed dispatch against the same nearest driver repeatedly, instead of checking whether a neighboring geohash cell has a closer available driver.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By falling back to the driver's home city coordinates whenever a live GPS ping is missing, without checking whether that fallback location is still accurate enough to dispatch on.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing geohash precision to as many characters as possible, on the assumption that finer cells alone guarantee every nearby driver is found.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By searching only the exact geohash cell a rider falls in, without checking whether nearby drivers sit just across a cell boundary.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching a driver's last known location indefinitely, without re-validating it against their most recent location ping.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more dispatch service replicas to handle ride requests, without validating that each replica queries the same up-to-date driver location index.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By retrying a failed dispatch against the same nearest driver repeatedly, instead of checking whether a neighboring geohash cell has a closer available driver.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By falling back to the driver's home city coordinates whenever a live GPS ping is missing, without checking whether that fallback location is still accurate enough to dispatch on.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By increasing geohash precision to as many characters as possible, on the assumption that finer cells alone guarantee every nearby driver is found.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By searching only the exact geohash cell a rider falls in, without checking whether nearby drivers sit just across a cell boundary.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By caching a driver's last known location indefinitely, without re-validating it against their most recent location ping.",
         "is_correct": false
       }
     ],

@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Re-instantiate a clean filesystem container for every individual benchmark task.",
+        "text": "add_memory() appends every turn to an unbounded list with no cap or eviction policy, so the store grows for the entire session lifetime.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": LLM renamed the parameter from query to querytext based on vague docstring instructions. -",
+        "text": "retrieve() ignores its own query argument and returns the entire memory list unranked, so relevant memories are buried among irrelevant ones.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Conditional edge logic failed to evaluate termination condition properly, causing infinite node ping-pong.",
+        "text": "Memories are stored keyed by conversation turn number instead of by content hash, so two memories from the same turn silently overwrite each other.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Non-serializable objects (sockets, class instances) stored in state channels. -",
+        "text": "Cap the memory store at a fixed size and evict the oldest entries once that cap is exceeded.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "text": "Score every stored memory against the incoming query and return only the top-k most relevant results instead of the full list.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "parseagentoutput raises ParseError: Could not find Action/Action Input block.",
+        "text": "Lower the decay factor's update frequency so it only recalculates recency scores once per day instead of every turn.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Ban getattr, setattr, and private attribute access (node.attr.startswith('')).",
+        "text": "The memory store grows without bound over a long session, and retrieve() returns the entire ever-growing history instead of the few memories relevant to the query.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "text": "The single relevant memory for a query is present in the store but always ends up last in the unranked list returned to the agent.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": ": LLM wrapped JSON inside code blocks with conversational preamble. -",
+        "text": "The agent correctly recalls a user's stated preference but attributes it to the wrong person in a multi-user conversation.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Tests leave leftover files or database rows in the execution sandbox. -",
+        "text": "retrieve() returns self.memories directly, ignoring the query entirely, so the single relevant memory competes unranked against hundreds of irrelevant ones.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Non-serializable objects (sockets, class instances) stored in state channels.",
+        "text": "add_memory() has no cap, eviction, or summarization step, so the store scales linearly with conversation length forever.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The AST visitor checked only ast.Name nodes rather than dynamic ast.Call on getattr.",
+        "text": "The importance score for a memory is computed once at write time and never recalculated, so a fact's importance can never be revised later.",
         "is_correct": false
       }
     ],

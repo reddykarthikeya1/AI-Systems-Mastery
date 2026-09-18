@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_react_thought_action_parser import react_thought_action_parser
-except ImportError:
-    from p01_react_thought_action_parser import react_thought_action_parser
+from p01_react_thought_action_parser import react_thought_action_parser
 
 
 def test_react_thought_action_parser():

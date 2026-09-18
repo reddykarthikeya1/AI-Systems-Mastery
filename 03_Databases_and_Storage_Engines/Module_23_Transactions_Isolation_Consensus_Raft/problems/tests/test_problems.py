@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_strict_two_phase_locking import strict_two_phase_locking
-except ImportError:
-    from p01_strict_two_phase_locking import strict_two_phase_locking
+from p01_strict_two_phase_locking import strict_two_phase_locking
 
 
 def test_strict_two_phase_locking():

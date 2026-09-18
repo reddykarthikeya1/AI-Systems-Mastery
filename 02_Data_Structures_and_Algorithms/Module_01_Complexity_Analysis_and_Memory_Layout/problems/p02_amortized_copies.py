@@ -15,13 +15,15 @@ Constraints
 - ``0 <= n <= 10**9`` — you cannot simulate element by element at the top end
 - ``initial_capacity >= 1``
 
-Example
-    total_copies_for_appends(5, 1) -> 7
-    (capacities 1,2,4,8; copies 1+2+4 = 7)
-
 This is the measurement behind the claim that append is amortised O(1): the
 total is O(n), so the per-append average is constant even though individual
 appends cost O(n).
+
+Example:
+    >>> total_copies_for_appends(5, 1)
+    7
+
+(capacities 1,2,4,8; copies 1+2+4 = 7)
 
 Hints — read one at a time, and try again between each.
 

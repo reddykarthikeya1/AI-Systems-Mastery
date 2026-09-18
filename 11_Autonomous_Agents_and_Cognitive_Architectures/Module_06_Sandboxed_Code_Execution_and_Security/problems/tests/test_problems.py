@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_ast_sandbox_validator import ast_sandbox_validator
-except ImportError:
-    from p01_ast_sandbox_validator import ast_sandbox_validator
+from p01_ast_sandbox_validator import ast_sandbox_validator
 
 
 def test_ast_sandbox_validator():

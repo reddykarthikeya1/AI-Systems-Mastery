@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_blelloch_prefix_scan import blelloch_prefix_scan
-except ImportError:
-    from p01_blelloch_prefix_scan import blelloch_prefix_scan
+from p01_blelloch_prefix_scan import blelloch_prefix_scan
 
 
 def test_blelloch_prefix_scan():

@@ -82,7 +82,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -107,12 +107,12 @@
       },
       {
         "id": "opt_2",
-        "text": "0",
+        "text": "-1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1",
+        "text": "2",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Uncoalesced bit-unpacking logic causes high register pressure ($> 64$ registers per thread), forcing register spills into local GPU DRAM.",
+        "text": "Continue verifying every remaining draft position after a mismatch, substituting in the target model's prediction at each position instead of stopping.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Loading 140 GB weights into VRAM takes 45 seconds. Kubernetes marks the pod as \"Ready\" before the vLLM engine finishes warm-up initialization.",
+        "text": "Increase the number of speculative tokens proposed per step so rejections happen less often on average.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "text": "Discard the entire KV cache and restart generation from the prompt whenever any speculative token is rejected.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Configure a custom HTTP readiness probe pointing to /health that returns 200 ONLY after model weights are loaded and warm-up dummy forward passes have succeeded.",
+        "text": "The model appends tokens from a target-model forward pass computed after the first draft/target mismatch, even though that conditioning context never actually occurred.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Server hangs when GPU memory reaches 99%; no new requests are admitted.",
+        "text": "The draft token acceptance rate silently drops to zero after a few thousand requests, even though the draft and target models are unchanged.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use FlashAttention varlen (variable-length) kernels with cuseqlens prefix-sum arrays, avoiding flattened padded masks altogether.",
+        "text": "Time-per-output-token increases steadily the longer a single generation runs, independent of how many speculative tokens are accepted.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": When adding or removing sequences from the active batch, position IDs or attention masks fail to account for differing sequence start offsets. -",
+        "text": "accept_draft_tokens keeps scanning past the first draft/target mismatch and appends target-model predictions conditioned on a draft continuation that was already rejected.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "GPU utilization remains at 100%, but server throughput drops; client timeouts spike.",
+        "text": "The draft model and target model use different tokenizers, so token IDs the draft model proposes do not map to the same subwords in the target model's vocabulary.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "All tree nodes have refcount > 0 because client requests are paused waiting for memory, creating a circular wait: the allocator waits for requests to finish to evict nodes, but requests wait for the allocator to assign new blocks!",
+        "text": "The draft and target forward passes run on different GPUs without synchronizing which KV cache version each one reads.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "When a client terminates an HTTP connection (e.g. browser tab closed or timeout), the serving engine continues generating tokens until maxtokens or <eos> is reached if cancellation signals are not propagated to the scheduler.",
+        "text": "The draft model proposes its next batch of tokens from a stale copy of the KV cache taken before the previous rejection was rolled back, reintroducing the same rejected tokens.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Custom INT4 kernel runs slower than unquantized FP16 PyTorch baseline.",
+        "text": "The block manager returns a rejected token's physical block to the free pool immediately, before the scheduler finishes writing the corrected token into that slot.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Verify query position offsets: $\\text{pos}q = \\text{offset}{\\text{chunk}} + i$.",
+        "text": "The target model verifies draft tokens in a separate forward pass per position instead of a single batched pass, so verification is correct but far slower than expected.",
         "is_correct": false
       }
     ],

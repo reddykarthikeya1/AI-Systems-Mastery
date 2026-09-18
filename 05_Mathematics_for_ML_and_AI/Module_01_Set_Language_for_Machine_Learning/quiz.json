@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{x for x in A if same_mod_3(x, 0)}",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{x for x in A if same_mod_3(x, 1)}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{x for x in A if not same_mod_3(x, 3)}",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{3}",
+        "text": "len(B)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "0.2",
+        "text": "len(set(f.values()))",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "1.0",
+        "text": "len(A) - 1",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "{\"a\", \"c\", \"d\", \"e\", \"f\"}",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{\"b\", \"d\"}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{\"a\", \"c\", \"e\"}",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "[1, 3, 7, 9]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{1, 1, 3, 7, 9}",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises KeyError",
+        "text": "{1, 3, 9}",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "all([]) is True. 'Every element satisfies P' cannot be falsified when there are no elements, so the quantifier reports success vacuously.",
+        "text": "The accumulator starts as `{}`, which Python parses as an empty dictionary rather than an empty set. It is falsy and has length 0 just like a real empty set, so the bug passes every check until a set-only method like `.add` is called.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "text": "The leakage check tests that the row indices in train and test are disjoint. A positional split always produces disjoint row indices, so the assertion passes even though the same patient's other rows appear in both splits.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "In Python {} is an empty dictionary. The empty set is set(). Both are falsy and both have length 0, so the mistake survives every truthiness and length check and only surfaces when a set method is called.",
+        "text": "Rows with a missing value in the grouping column are dropped by `groupby` before the per-group sums are taken. The individual group totals are each correct, but together they no longer account for every row in the full total.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.",
+        "text": "The leakage check tests that the row indices in train and test are disjoint. A positional split always produces disjoint row indices, so the assertion passes even though the same patient's other rows appear in both splits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The assertion is over row indices, which are disjoint by construction for any positional split. The unit of independence - patient, user, document - can still appear on both sides.",
+        "text": "Rows with a missing value in the grouping column are dropped by `groupby` before the per-group sums are taken. The individual group totals are each correct, but together they no longer account for every row in the full total.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "`np.intersect1d` always returns its result sorted, so using that result to index back into the original arrays silently reorders the rows relative to any parallel array that was not indexed the same way.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "The accumulator starts as `{}`, which Python parses as an empty dictionary rather than an empty set. It is falsy and has length 0 just like a real empty set, so the bug passes every check until a set-only method like `.add` is called.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A step reaching back three values needs three base cases. A single base only establishes 8, 11, 14, ... - every third value.",
+        "text": "The leakage check tests that the row indices in train and test are disjoint. A positional split always produces disjoint row indices, so the assertion passes even though the same patient's other rows appear in both splits.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Equivalence requires agreement on every assignment. The two rows checked were the ones where the expressions happen to coincide; they differ on the mixed rows.",
+        "text": "`np.intersect1d` always returns its result sorted, so using that result to index back into the original arrays silently reorders the rows relative to any parallel array that was not indexed the same way.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Returning True on the first success is the existential. A universal returns False on the first failure. The two agree on collections that are entirely passing or entirely failing, which is what hand-written test data usually looks like.",
+        "text": "The accumulator starts as `{}`, which Python parses as an empty dictionary rather than an empty set. It is falsy and has length 0 just like a real empty set, so the bug passes every check until a set-only method like `.add` is called.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "An implication is only false when the hypothesis holds and the conclusion fails. A case where the hypothesis fails sits in a row where the implication is vacuously true.",
+        "text": "Rows with a missing value in the grouping column are dropped by `groupby` before the per-group sums are taken. The individual group totals are each correct, but together they no longer account for every row in the full total.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "All of NumPy's set routines return sorted, deduplicated arrays. Using the result to index back into the original data reorders rows relative to every parallel array that was not reordered with it.",
+        "text": "`np.intersect1d` always returns its result sorted, so using that result to index back into the original arrays silently reorders the rows relative to any parallel array that was not indexed the same way.",
         "is_correct": false
       }
     ],

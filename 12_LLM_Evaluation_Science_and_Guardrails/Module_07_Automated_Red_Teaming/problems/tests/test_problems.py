@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_mutation_adversarial_fuzzer import mutation_adversarial_fuzzer
-except ImportError:
-    from p01_mutation_adversarial_fuzzer import mutation_adversarial_fuzzer
+from p01_mutation_adversarial_fuzzer import mutation_adversarial_fuzzer
 
 
 def test_mutation_adversarial_fuzzer():

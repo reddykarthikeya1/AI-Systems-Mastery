@@ -13,6 +13,11 @@ Constraints
 Example
     [1, 2, 3] -> [3, 2, 1]
 
+Example:
+    >>> from linked_list_common import from_list, to_list
+    >>> to_list(reverse_list(from_list([1, 2, 3])))
+    [3, 2, 1]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You need three pointers: previous, current, and the next node.

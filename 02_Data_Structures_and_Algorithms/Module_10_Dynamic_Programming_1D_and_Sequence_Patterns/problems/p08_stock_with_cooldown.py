@@ -15,6 +15,10 @@ Constraints
 Example
     stock_with_cooldown([1, 2, 3, 0, 2]) -> 3     (buy 1, sell 2, cooldown, buy 0, sell 2)
 
+Example:
+    >>> stock_with_cooldown([1, 2, 3, 0, 2])
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Anything with modes - holding, free to buy, cooling down - is a state machine, and the states ARE the DP.

@@ -23,6 +23,10 @@ reach by exploring from the source in the residual graph - the *source-minimal*
 cut - because that is the one the tests expect and the one the standard method
 produces.
 
+Example:
+    >>> min_cut_edges(4, [(0, 1, 10), (1, 3, 3), (0, 2, 5), (2, 3, 5)], 0, 3)
+    [(0, 2), (1, 3)]
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Run max flow first. The cut is read off the graph that is left behind.

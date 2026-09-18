@@ -17,6 +17,10 @@ Constraints
 Example
     count_min_estimate(["a","a","b"], ["a","b","c"]) -> [2, 1, 0 or more]
 
+Example:
+    >>> count_min_estimate(["a", "a", "b"], ["a", "b", "c"])
+    [2, 1, 0]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Use `depth` independent hash functions. Each item increments one counter per row.

@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "1",
+        "text": "(37, 55, 7077)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "[0xFFFFFFFF]",
+        "text": "(55, 37, 4791)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "(7, 5, 901)",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop.",
+        "text": "The kernel omits the boundary check `if (idx < n)`, so out-of-bounds threads read and write past the end of the array.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out. -",
+        "text": "A __syncthreads() call is missing after the compute loop, so fast threads overwrite shared memory that slower threads still need.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "text": "The grid is launched with zero blocks because the block count was computed with integer division that rounds down instead of up.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": ": Triton's code generator relies on binary power-of-two decompositions to generate efficient SIMD shuffle instructions and memory mask registers. -",
+        "text": "Always enforce the boundary check `if (idx < n)`, or use a grid-stride loop instead.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "text": "Add the missing __syncthreads() call after the compute loop so every thread finishes reading shared memory before it is overwritten.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Use --replay-mode application or filter profiling to specific kernel launches using cudaProfilerStart() and cudaProfilerStop().",
+        "text": "Compute the block count with ceiling division, (n + blockDim.x - 1) / blockDim.x, instead of truncating division.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Skip entire blocks where $j \\times Bc > (i + 1) \\times Br$. For strictly lower-triangular blocks, bypass the softmax causal mask entirely!",
+        "text": "Random NaNs or corrupted weights appear in deep neural network layers after training resumes.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Storing data as struct Particle { float x, y, z, mass; } particles[N];. - When threads read particles[i].x, Thread 0 reads byte 0, Thread 1 reads byte 16, Thread 2 reads byte 32. - Stride is 16 bytes, causing uncoalesced memory reads! -",
+        "text": "Only part of the output array is ever written, with the tail elements left at their uninitialized values.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "text": "The kernel produces correct results on small inputs but silently corrupts memory once the input size grows past a page boundary.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Triton compilation error: BLOCKSIZE must be a power of 2.",
+        "text": "The kernel omits the boundary check `if (idx < n)`, so out-of-bounds threads read and write past the end of the array.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": ": Having a syncthreads() after loading shared memory, but forgetting the second syncthreads() after the compute loop. - Fast threads from iteration $k+1$ start loading new data into sA while slow threads from iteration $k$ are still computi",
+        "text": "A __syncthreads() call is missing after the compute loop, so fast threads overwrite shared memory that slower threads still need.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Wrap kernel launches with synchronization during debugging:",
+        "text": "The grid is launched with zero blocks because the block count was computed with integer division that rounds down instead of up.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting cudaGetLastError() once at program exit instead of checking it after every kernel launch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a kernel that exits with code 0 has no illegal memory access anywhere in its execution.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping cuda-memcheck or compute-sanitizer runs once the kernel appears to produce correct output.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By letting a kernel launch return success on the host while an illegal memory access on the device goes unchecked.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping the boundary check on thread index so the last partial block reads past the end of the array.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By removing cudaDeviceSynchronize() from the hot path so errors from three launches ago surface on an unrelated call.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting cudaGetLastError() once at program exit instead of checking it after every kernel launch.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming a kernel that exits with code 0 has no illegal memory access anywhere in its execution.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping cuda-memcheck or compute-sanitizer runs once the kernel appears to produce correct output.",
         "is_correct": false
       }
     ],

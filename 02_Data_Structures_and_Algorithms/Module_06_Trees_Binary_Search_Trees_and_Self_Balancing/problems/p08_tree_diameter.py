@@ -14,6 +14,11 @@ Constraints
 Example
     from_level_order([1, 2, 3, 4, 5]) -> 3     (4 -> 2 -> 1 -> 3)
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> tree_diameter(from_level_order([1, 2, 3, 4, 5]))
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: For each node, the longest path THROUGH it is left_height + right_height, counted in edges.

@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Negative weights unpack as large positive integers (e.g. -1 becomes 15).",
+        "text": "The kernel produces a consistent, deterministic but wrong result on every run, not an intermittent one.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Sign-extend using bit arithmetic:",
+        "text": "The kernel hangs indefinitely with 0% SM activity.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Iterating over all $j$ blocks even when $c{\\text{start}} > r{\\text{end}}$ where attention is completely masked out.",
+        "text": "Output values near the tile boundary are wrong while interior tile elements are correct.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Storing data as struct Particle { float x, y, z, mass; } particles[N];.",
+        "text": "Pad the shared-memory tile's row stride by one element so column reads no longer collide on the same bank.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "text": "Guard every shared-memory load and store with a boundary check so the last partial tile never reads past the matrix edge.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Kernel executes at 50% or 25% of expected throughput with high active warp counts in Nsight Compute.",
+        "text": "Cache the entire input matrix in shared memory once, instead of streaming it in per-tile.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Loss becomes NaN within 50 iterations of LLM pre-training.",
+        "text": "The tile dimension does not evenly divide the matrix size, so the last tile reads uninitialized shared memory past the matrix boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kernel runs $20\\times$ slower under Nsight Compute than in production.",
+        "text": "The shared-memory tile is declared with a stride equal to its width, so column-wise access causes a 32-way bank conflict.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Always include two barriers per iteration:",
+        "text": "Threads compute their output index from blockIdx and threadIdx in the wrong order, transposing rows and columns of the result tile.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Sign-extend using bit arithmetic:",
+        "text": "The tile dimension does not evenly divide the matrix size, so the last tile reads uninitialized shared memory past the matrix boundary.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Kernel launches in CUDA are asynchronous. The CPU returns immediately before the GPU encounters an illegal memory access or segmentation fault.",
+        "text": "The shared-memory tile is declared with a stride equal to its width, so column-wise access causes a 32-way bank conflict.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Check smspwarpexecutionefficiency.pct in NCU. If it is below 80%, intra-warp branching is serializing execution.",
+        "text": "Threads compute their output index from blockIdx and threadIdx in the wrong order, transposing rows and columns of the result tile.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a GEMM kernel's output on one matrix size to guarantee correctness on every matrix size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming two __syncthreads() calls per iteration only matter for very large tile sizes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison against a reference GEMM implementation once the kernel compiles cleanly.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By caching the whole input matrix in shared memory once instead of streaming tiles, regardless of matrix size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By skipping the second __syncthreads() per iteration to shave a few cycles off the compute loop.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By assuming a tile size that divides one matrix size evenly will divide every matrix size evenly.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By trusting a GEMM kernel's output on one matrix size to guarantee correctness on every matrix size.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By assuming two __syncthreads() calls per iteration only matter for very large tile sizes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By skipping a numerical comparison against a reference GEMM implementation once the kernel compiles cleanly.",
         "is_correct": false
       }
     ],

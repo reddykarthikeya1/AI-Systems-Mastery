@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "If all nodes share the same election timeout, they become Candidates simultaneously upon leader failure, split votes, and repeat indefinitely. ---",
+        "text": "The rate limiter used a lock, but refilled tokens from a fixed wall-clock timestamp captured only once at startup, so the bucket never gained new tokens after the process began running.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Dynamic websites generate infinite valid URLs. Without URL normalization, path depth limits, and trap detection, crawlers get trapped. ---",
+        "text": "Each application instance kept an independent in-memory token count instead of sharing state through Redis, so the effective limit became the per-instance limit multiplied by the instance count.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Geohashes segment space into discrete rectangular buckets. Two points can be centimeters apart but have entirely different prefix strings if they straddle a boundary. ---",
+        "text": "The bucket capacity was set correctly, but tokens were decremented before checking tokens > 0, so the count could go negative without ever admitting an extra request.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By terminating TLS at the edge and forwarding all traffic to a single upstream, without checking whether that upstream connection pool is within its limits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching every response at the edge indefinitely, so origin capacity is never re-validated as traffic patterns shift.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting client-supplied rate-limit headers to self-report their own request budget instead of enforcing bounds at the proxy.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By adding more edge PoPs to spread load geographically, without validating that each PoP keeps its own connection and rate-limit state consistent.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By letting retried requests bypass the proxy rate limiter on the assumption that a retry is inherently safe to admit.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By failing open and forwarding every request to the origin whenever the edge health check times out.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "By allocating unboundedly growing memory buffers on every incoming request.",
+        "text": "By terminating TLS at the edge and forwarding all traffic to a single upstream, without checking whether that upstream connection pool is within its limits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "By executing synchronous blocking I/O inside tight hot compute loops.",
+        "text": "By caching every response at the edge indefinitely, so origin capacity is never re-validated as traffic patterns shift.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "By disabling error handlers and dropping unhandled exceptions silently.",
+        "text": "By trusting client-supplied rate-limit headers to self-report their own request budget instead of enforcing bounds at the proxy.",
         "is_correct": false
       }
     ],

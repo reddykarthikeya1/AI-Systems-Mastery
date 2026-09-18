@@ -16,6 +16,13 @@ Example
     cheapest_flights(4, [(0,1,100),(1,2,100),(2,0,100),(1,3,600),(2,3,200)], 0, 3, 1) -> 700
     same graph with k = 2 -> 400
 
+Example:
+    >>> flights = [(0, 1, 100), (1, 2, 100), (2, 0, 100), (1, 3, 600), (2, 3, 200)]
+    >>> cheapest_flights(4, flights, 0, 3, 1)
+    700
+    >>> cheapest_flights(4, flights, 0, 3, 2)
+    400
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Dijkstra is the wrong tool here even though all weights are non-negative. Its greedy invariant - once finalised, always optimal - does not hold when there is a hop limit, because a more expensive route with fewer hops can be the only feasible one.

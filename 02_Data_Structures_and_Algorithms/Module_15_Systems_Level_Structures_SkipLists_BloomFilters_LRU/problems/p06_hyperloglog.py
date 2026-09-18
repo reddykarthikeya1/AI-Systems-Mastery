@@ -20,6 +20,10 @@ An exact `set` costs O(distinct) memory. HyperLogLog costs a fixed few
 kilobytes regardless of cardinality — which is why Redis uses it to count
 unique visitors instead of storing them.
 
+Example:
+    >>> approx_distinct(["a"] * 1000 + ["b"] * 1000)
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The core observation: in a stream of uniformly random hashes, seeing a hash with k leading zeros suggests roughly 2^k distinct values.

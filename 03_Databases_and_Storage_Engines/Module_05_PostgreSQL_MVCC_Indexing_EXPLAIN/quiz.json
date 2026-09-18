@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It pools lightweight client connections and reuses a small set of persistent PostgreSQL backend processes, preventing memory exhaustion.",
+        "text": "Every UPDATE locks the existing tuple and modifies its fields in place, then writes the old values to a separate undo log that readers consult for older snapshots.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "RAISEAPPLICATIONERROR allows assigning custom error numbers (-20000 to -20999) and human-readable messages returned to client applications.",
+        "text": "PostgreSQL keeps a single copy of each row and uses row-level locks to block any transaction from reading a row while it is being updated, avoiding the need for multiple versions entirely.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Relational databases must compute expensive join tables on primary/foreign keys ($O(N \\log N)$), while graphs traverse pre-linked pointers ($O(K)$).",
+        "text": "Every UPDATE writes a new tuple version, but the old version is deleted immediately once the transaction commits, rather than being retained for older snapshots to see.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Standard CREATE INDEX locks the table against all writes; CONCURRENTLY runs two scans without blocking concurrent DML.",
+        "text": "It tracks which heap pages have been modified since the last checkpoint, so WAL replay during crash recovery can skip pages that were never touched.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The table's primary key forms the clustered index where leaf nodes store the actual row data. Secondary indexes store the primary key value as their pointer.",
+        "text": "It stores a bitmap of which rows have been deleted but not yet vacuumed, so autovacuum can jump directly to pages containing dead tuples without scanning the whole table.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+        "text": "It records which pages are currently held in the shared buffer cache, allowing the planner to prefer index scans over sequential scans when a table is mostly cached in memory.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+        "text": "Standard VACUUM rewrites the table into a new file to reclaim disk space without locking, while VACUUM FULL only updates statistics for the query planner without touching dead tuples at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Collections can enforce validation rules using JSON Schema ($jsonSchema) with strict or moderate enforcement levels.",
+        "text": "Standard VACUUM and VACUUM FULL both reclaim disk space identically; the only difference is that VACUUM FULL also runs ANALYZE afterward to refresh planner statistics.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Atomicity guarantees \"all-or-nothing\". If an error occurs midway, all preceding modifications made by that transaction are completely undone (rolled back) to leave the database in its exact pre-transaction state.",
+        "text": "Standard VACUUM deletes dead tuples permanently from the heap immediately, while VACUUM FULL merely marks them reusable for future inserts without shrinking the file.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It builds combined payload indices and integrates filter evaluation directly into the HNSW graph traversal loop.",
+        "text": "ANALYZE only re-estimates the planner's row count guesses more precisely using sampled statistics, without actually executing the query at all.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "MOVED indicates a slot migration is permanent; ASK indicates a slot is currently in the process of migrating to another node.",
+        "text": "BUFFERS reports the total size of the table and its indexes on disk, while ANALYZE shows which of several alternative query plans the optimizer considered.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It automatically replaces literal values in SQL with system-generated bind variables, converting hard parses into soft parses.",
+        "text": "Plain EXPLAIN already executes the query to get exact costs; ANALYZE and BUFFERS only add extra formatting to the same output, with no new information.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"SEQ SCAN\"",
+        "text": "\"Index Scan\"",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "\"Bitmap Heap Scan\"",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"Nested Loop\"",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DROP TABLE does not drop sequences. On :memory: this never surfaces because the whole database vanishes; on a file it surfaces the second time you run.",
+        "text": "A batch job runs VACUUM FULL on the table every night, but VACUUM FULL does not update the free space map, so the space it reclaims is never made available to new inserts.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Application repeatedly deleted expired queue items using CQL DELETE in a high-volume polling loop, generating millions of tombstones that choked subsequent range scans.",
+        "text": "autovacuum_vacuum_scale_factor is set far too high for this table's size, so the threshold of dead tuples needed to trigger autovacuum is never reached even though no transaction is blocking it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.",
+        "text": "A replication slot on a standby server was never advanced after the standby was decommissioned, so PostgreSQL retains WAL segments indefinitely, which is mistaken for dead tuple bloat in the same monitoring dashboard.",
         "is_correct": false
       }
     ],

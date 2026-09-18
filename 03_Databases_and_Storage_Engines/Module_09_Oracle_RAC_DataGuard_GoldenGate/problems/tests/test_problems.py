@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_two_phase_commit_coordinator import two_phase_commit_coordinator
-except ImportError:
-    from p01_two_phase_commit_coordinator import two_phase_commit_coordinator
+from p01_two_phase_commit_coordinator import two_phase_commit_coordinator
 
 
 def test_two_phase_commit_coordinator():

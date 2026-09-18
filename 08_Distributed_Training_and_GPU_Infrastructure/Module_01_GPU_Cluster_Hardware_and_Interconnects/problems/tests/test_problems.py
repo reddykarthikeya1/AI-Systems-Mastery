@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_nvlink_switch_bandwidth_sim import nvlink_switch_bandwidth_sim
-except ImportError:
-    from p01_nvlink_switch_bandwidth_sim import nvlink_switch_bandwidth_sim
+from p01_nvlink_switch_bandwidth_sim import nvlink_switch_bandwidth_sim
 
 
 def test_nvlink_switch_bandwidth_sim():

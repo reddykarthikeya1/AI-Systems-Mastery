@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_w3c_trace_context_propagation import w3c_trace_context_propagation
-except ImportError:
-    from p01_w3c_trace_context_propagation import w3c_trace_context_propagation
+from p01_w3c_trace_context_propagation import w3c_trace_context_propagation
 
 
 def test_w3c_trace_context_propagation():

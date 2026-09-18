@@ -13,6 +13,10 @@ Constraints
 Example
     min_jumps([2, 3, 1, 1, 4]) -> 2      (index 0 -> 1 -> 4)
 
+Example:
+    >>> min_jumps([2, 3, 1, 1, 4])
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A BFS over indices works and is the right intuition, but it can be O(n^2) if you enqueue every index.

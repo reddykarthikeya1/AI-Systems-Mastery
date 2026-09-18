@@ -20,6 +20,12 @@ Note the first example: Dijkstra returns ``[0, 4, 1]`` here — wrong, and
 without any error. Dijkstra finalises a node the first time it is reached, and a
 negative edge can improve a node after it has been finalised.
 
+Example:
+    >>> bellman_ford(3, [(0, 1, 4), (0, 2, 1), (2, 1, -2)], 0)
+    [0, -1, 1]
+    >>> bellman_ford(2, [(0, 1, 1), (1, 0, -3)], 0) is None
+    True
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A shortest path visits at most n-1 edges, so relaxing every edge n-1 times is enough to propagate all distances.

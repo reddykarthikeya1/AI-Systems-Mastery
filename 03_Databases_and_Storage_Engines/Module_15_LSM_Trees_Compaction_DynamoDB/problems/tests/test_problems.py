@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_lsm_leveled_compaction import lsm_leveled_compaction
-except ImportError:
-    from p01_lsm_leveled_compaction import lsm_leveled_compaction
+from p01_lsm_leveled_compaction import lsm_leveled_compaction
 
 
 def test_lsm_leveled_compaction():

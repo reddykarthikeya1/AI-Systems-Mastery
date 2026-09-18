@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "GCS tracks block ownership, locks, and cache states across all cluster instances to guarantee cluster-wide cache coherency.",
+        "text": "A raw CSV file must be fully decompressed into memory before any row can be read, whereas an indexed database streams compressed pages directly from disk, so the speed gain comes from compression, not the search algorithm.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Downstream systems become consistent after a short propagation delay; applications use read-after-write routing to primary for immediate feedback.",
+        "text": "Both a CSV scan and an indexed lookup examine every row; the database only appears faster because it caches the whole table in RAM after the first query, turning later O(N) scans into O(log N) memory reads.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It uses randomized heuristic algorithms rather than exhaustive enumeration when join count exceeds threshold (typically 12 relations).",
+        "text": "The operating system reads a CSV one byte at a time, while a database reads whole 4KB pages at once; the O(log N) figure reflects fewer disk pages touched per row, not a tree-based search structure.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Embed for 1:1 or bounded 1:N relationships accessed together atomically; Reference for unbounded 1:N or M:N relationships updated independently.",
+        "text": "Atomicity guarantees that once a transaction reports success, its effects survive any later crash or power loss, because the writes have already been flushed to non-volatile storage.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Keys are timestamps; ZREMRANGEBYSCORE removes timestamps older than window; ZCARD checks count; ZADD appends current timestamp.",
+        "text": "Atomicity guarantees that concurrent transactions cannot see each other's uncommitted intermediate writes, preventing one transaction's partial changes from being read by another before it finishes.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It operates entirely in RAM and uses non-blocking I/O multiplexing (epoll/kqueue), eliminating thread context switches and lock contention.",
+        "text": "Atomicity guarantees that a disk error is logged and the failed write is automatically retried up to three times before the transaction is aborted, so a single bad sector cannot corrupt data.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A dirty page cannot be written to disk until the WAL log record describing the modification has been flushed to disk (pagelsn <= flushedlsn).",
+        "text": "The database keeps two synchronized copies of every data file on separate physical disks; if power is lost mid-write, the mirrored copy is used to reconstruct the committed row on restart.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Expand: add new column/table while maintaining old; Contract: migrate application traffic to new structure, then drop old structure online.",
+        "text": "The database defers writing changes to disk until the operating system flushes its buffer cache on a clean shutdown; an abrupt power loss is instead absorbed by a capacitor-backed cache in the disk controller.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "PostgreSQL 32-bit transaction counters wrap around after 2 billion transactions. Autovacuum freeze runs freeze older tuples with FrozenXID to prevent them from appearing in the future.",
+        "text": "The COMMIT call blocks until the row has been copied to a replica server over the network; durability comes from the replica's in-memory copy, not from anything written to local disk.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "ClickHouse primary keys determine physical on-disk sort order; sorting by random UUIDs destroys data locality and compression ratios.",
+        "text": "- Tuple: The table itself (the full set of rows). - Relation: A single row within that table. - Attribute: The data type assigned to each relation, such as INTEGER or VARCHAR.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Two nodes simultaneously believing they are leader; quorum ($N/2 + 1$) guarantees no two disjoint subsets can both achieve majority.",
+        "text": "- Relation: A named column representing one domain of data. - Attribute: A single row or record in the table. - Tuple: The overall schema definition, including primary and foreign keys.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Flat compares query against every vector ($O(N)$); ANN traverses graph or clusters in sub-linear time ($O(\\log N)$) with slight recall trade-off.",
+        "text": "- Relation: The set of all tables in a database (the schema). - Tuple: A single table within that schema. - Attribute: A single row inside a given table.",
         "is_correct": false
       }
     ],
@@ -137,7 +137,7 @@
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "0",
         "is_correct": false
       },
       {
@@ -172,7 +172,7 @@
       },
       {
         "id": "opt_3",
-        "text": "2",
+        "text": "3",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"ALICE\"",
+        "text": "ALICE",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"\"",
+        "text": "Bob",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "None",
+        "text": "\"ALICE\"",
         "is_correct": false
       }
     ],
@@ -222,12 +222,12 @@
       },
       {
         "id": "opt_1",
-        "text": "{}",
+        "text": "[]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "{}",
         "is_correct": false
       },
       {
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Query filters on WHERE DATE(createdat) = '2026-01-01', blinding the query optimizer to the B-Tree index on createdat.",
+        "text": "Two concurrent processes read the same account balance before either writes back, so the second process's write silently overwrites the first process's increment instead of both being applied.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "text": "Power was lost mid-write of an 8KB database page split across two 4KB disk sectors, leaving a partially written page that the storage engine cannot parse on restart.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "commit() sends the write-ahead log record to the OS write buffer but never calls fsync(), so the acknowledged transaction can still be sitting in a volatile page cache when the crash occurs.",
         "is_correct": false
       }
     ],

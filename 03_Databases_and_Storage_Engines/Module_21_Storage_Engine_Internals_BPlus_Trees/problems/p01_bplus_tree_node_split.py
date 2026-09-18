@@ -5,10 +5,23 @@ Target: Production-grade implementation
 
 Insert key into B+ tree leaf node and split when exceeding capacity.
 
+Example:
+    >>> bplus_tree_node_split([10, 20, 30, 40], 25, max_capacity=4)
+    ([10, 20], 25, [25, 30, 40])
+
 Hints:
-    Hint 1: Review module invariants.
-    Hint 2: Handle boundary conditions and empty inputs cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: The insert step itself is trivial (sorted position); the actual
+        problem is deciding, after inserting, whether the leaf is now
+        overfull and needs to hand a key up to its parent.
+    Hint 2: Build the new sorted key list once (sorted(leaf_keys + [new_key])
+        works fine at this scale), then slice it at the midpoint into a left
+        half and a right half only if its length now exceeds max_capacity.
+    Hint 3: Unlike an internal-node split, a B+ tree LEAF split keeps the
+        promoted key inside the right leaf as real data (right = keys[mid:],
+        not keys[mid+1:]) — as shown above, 25 is both the promoted separator
+        AND the first element of the right list — because leaves must hold
+        every key for range scans, while only internal nodes drop the
+        promoted key.
 """
 
 from __future__ import annotations

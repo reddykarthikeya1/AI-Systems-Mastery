@@ -13,9 +13,11 @@ Constraints
 - ``1 <= len(tokens) <= 10**4``
 - integer operands, possibly negative
 
-Example
-    ["2", "1", "+", "3", "*"]  -> 9
-    ["4", "13", "5", "/", "+"] -> 6
+Example:
+    >>> eval_rpn(["2", "1", "+", "3", "*"])
+    9
+    >>> eval_rpn(["4", "13", "5", "/", "+"])
+    6
 
 Hints — read one at a time, and try again between each.
 

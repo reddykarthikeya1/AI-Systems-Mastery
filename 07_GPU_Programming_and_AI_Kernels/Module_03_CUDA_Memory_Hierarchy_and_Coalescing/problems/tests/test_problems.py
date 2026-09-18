@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_memory_coalescing_detector import memory_coalescing_detector
-except ImportError:
-    from p01_memory_coalescing_detector import memory_coalescing_detector
+from p01_memory_coalescing_detector import memory_coalescing_detector
 
 
 def test_memory_coalescing_detector():

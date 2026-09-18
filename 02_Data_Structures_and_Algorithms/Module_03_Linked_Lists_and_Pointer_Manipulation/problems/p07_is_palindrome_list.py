@@ -14,6 +14,13 @@ Example
     [1, 2, 2, 1] -> True
     [1, 2]       -> False
 
+Example:
+    >>> from linked_list_common import from_list
+    >>> is_palindrome_list(from_list([1, 2, 2, 1]))
+    True
+    >>> is_palindrome_list(from_list([1, 2]))
+    False
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You cannot walk a singly linked list backwards. But you can reverse half of it.

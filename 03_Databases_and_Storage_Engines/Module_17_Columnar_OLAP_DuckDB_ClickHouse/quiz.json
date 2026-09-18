@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A mechanism using Oracle Notification Service (ONS) to inform client connection pools immediately when a node crashes, rapidly redirecting sessions without TCP timeouts.",
+        "text": "Columnar stores compress every column with the same universal algorithm regardless of data type, and it is this uniform compression alone that produces the speedup, independent of which columns are read.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Partition Key determines which physical node in the token ring stores the row; Clustering Key determines the on-disk sorting order within that partition.",
+        "text": "Columnar stores keep a full row-oriented copy in memory at all times as a cache, and only fall back to the column-oriented disk layout when memory pressure is high.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "They execute once per row in the outer query ($O(N)$ execution), whereas a JOIN or window function executes in set-oriented batches.",
+        "text": "Columnar stores achieve their speed by pre-computing every possible aggregation (SUM, AVG, COUNT) at write time, so a query only ever looks up a cached result.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "volatile-lru evicts least recently used keys among those with an expire TTL; allkeys-lru evicts LRU keys across the entire database.",
+        "text": "It compiles each SQL query into native machine code ahead of time, avoiding an interpreter loop entirely, regardless of how many rows are processed at once.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "As a native C extension providing a vector type, operators (<-> L2, <=> Cosine), and IVFFlat / HNSW index access methods.",
+        "text": "It processes one entire column's full set of values as a single batch across the whole table, no matter how large the table is, rather than a small fixed-size chunk.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Size-Tiered merges SSTables of similar sizes into larger tables (optimal for writes); Leveled maintains non-overlapping key ranges per level (optimal for reads).",
+        "text": "It runs each query stage on a separate CPU core in parallel, and 'vectorized' refers to distributing rows across cores rather than to batching within a single core.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "DBWR asynchronously writes dirty blocks from the Database Buffer Cache to datafiles on disk during checkpoints or when free buffer space is low.",
+        "text": "It stores each inserted row immediately in its final sorted position within one single ever-growing file, updating that file in place on every insert.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Projection pushdown reads only requested columns; predicate pushdown uses row-group min/max statistics to skip entire chunks of data without decompression.",
+        "text": "It partitions data only by primary key range and never merges parts in the background; compaction is triggered exclusively by a manual OPTIMIZE TABLE command.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Configured by lua-time-limit (default 5,000 ms). After this, Redis accepts SCRIPT KILL (read-only) or SHUTDOWN NOSAVE.",
+        "text": "It keeps all data unsorted in insertion order and instead relies entirely on a secondary B-Tree index over the primary key for fast lookups.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Plain EXPLAIN shows planner estimates; ANALYZE actually executes the query and reports real runtime, while BUFFERS shows exact shared buffer cache hits and disk reads.",
+        "text": "Predicate pushdown reads only requested columns; projection pushdown uses row-group statistics to skip chunks without decompression, which is the reverse pairing of terms and functions.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "When reading with QUORUM, the coordinator compares data hashes; if a replica is stale, it sends the newest data in the background to update it.",
+        "text": "Both pushdown types only apply after the entire file has already been fully decompressed into memory, so they save CPU time but never save I/O.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It eliminates race conditions by reading and updating the document in a single atomic database operation.",
+        "text": "Projection pushdown filters rows using min/max statistics per row group, while predicate pushdown determines which columns to decompress from disk.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "(1, \"DUCKDB\")",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "(2, \"duckdb\")",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "(1, \"\")",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "[1, 3, 5, 10]",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "None",
+        "text": "[0, 1, 2, 3, 4]",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Raises IndexError: list index out of range",
+        "text": "[0, 1, 4, 9, 19]",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application constructs SQL dynamically using f-strings (SELECT FROM emp WHERE id = {empid}), creating 100,000 unique unsharable execution plans in the Library Cache.",
+        "text": "The table's ORDER BY key is set to a column with extremely high cardinality, and 'Too Many Parts' is actually a symptom of too many distinct sort-key values, not of insert frequency.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A previous BEGIN TRANSACTION was never committed or rolled back \u2014 usually because an exception escaped between the UPDATE and the INSERT without hitting the ROLLBACK.",
+        "text": "A single INSERT statement with 5,000,000 rows was issued, and ClickHouse splits any INSERT above 1,000,000 rows into one part per row before merging, regardless of how the insert was batched.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The security audit logging procedure was declared without PRAGMA AUTONOMOUSTRANSACTION. When the parent transfer rolls back due to insufficient funds, the audit record is rolled back with it.",
+        "text": "Background merges are disabled because the table was created with the Log engine instead of MergeTree, so parts accumulate because no merge process exists at all for this engine.",
         "is_correct": false
       }
     ],

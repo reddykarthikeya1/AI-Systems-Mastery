@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A raw CSV has no pre-sorted index structure; the operating system must sequentially read every single line from beginning to end ($O(N)$ linear scan). An indexed database organizes search keys into balanced tree structures (like B+ Trees) w",
+        "text": "It documents the exact SQL syntax differences between Snowflake and BigQuery for window functions, unrelated to this course's own pipeline design.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "The partition key is hashed to a 64-bit integer (Murmur3Partitioner) and placed on the first node whose assigned token range covers that value.",
+        "text": "It defines the on-call rotation schedule for the analytics engineering team, rather than any technical invariant of the pipeline itself.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "It builds a new minimal AOF file reflecting current memory state without redundant intermediate command history.",
+        "text": "It lists the module's prerequisite courses and estimated completion time, without describing any system invariant.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "In WAL mode, changes are appended to a separate -wal file, allowing concurrent readers to read from the main database while a writer appends frames.",
+        "text": "That normalized (3NF) schemas always outperform star schemas for analytical aggregation queries, so dimensional modeling is only needed for reporting UIs.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "A probabilistic cardinality estimation structure requiring at most 12KB RAM to count billions of unique elements with ~0.81% error rate.",
+        "text": "That a single denormalized table with every possible column is always preferable to separate fact and dimension tables.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Untested backups and failovers frequently fail in real emergencies due to configuration drift, permission errors, or capacity shortages.",
+        "text": "That dimensional modeling eliminates the need for primary keys, since star schemas rely entirely on natural keys for joins.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "It atomically writes application state and event intentions to the same relational database in one ACID transaction, solving dual-write inconsistency.",
+        "text": "That every dimension attribute should overwrite its previous value in place (Type 1), because keeping history is never useful for analytics.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Embedding only the most frequently read fields of a referenced document (e.g. customer name) while keeping the full entity in a referenced collection.",
+        "text": "That Slowly Changing Dimensions only apply to numeric measures, never to descriptive attributes like customer address or product category.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "For unit vectors, the dot product is mathematically identical to cosine similarity: $\\vec{u} \\cdot \\vec{v} = \\cos(\\theta)$.",
+        "text": "That a Type 2 SCD requires deleting the old row entirely once a new version is inserted, rather than keeping both with validity date ranges.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The node responds with a -MOVED <slot> <ip:port> redirection error instructing the client where to route the request.",
+        "text": "That materialized aggregates must always be fully recomputed from raw data on every refresh, since incremental updates can never be made consistent.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Physical copies raw page files on disk (fast restore, exact binary); Logical exports SQL DDL/DML statements (portable, slower).",
+        "text": "That incremental refresh only works for aggregates using SUM or COUNT, and MIN/MAX/AVG measures can never be updated incrementally.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "A unique identifier assigned to every committed transaction across a cluster, allowing seamless replica failover without parsing binlog file offsets.",
+        "text": "That a materialized aggregate should be refreshed synchronously inside the same transaction as the source table's writes, blocking all inserts until it completes.",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "first + 2",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "first - 1",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "first",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "[]",
+        "text": "date(2023",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "date(2025",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "{\"id\": 1, \"name\": \"Alice\", \"balance\": 500.0}",
+        "text": "datetime(2024",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A test created the aggregate table without dropping it first. Every test in this course must be idempotent, because they write to real databases \u2014 a suite that only passes on a virgin database is a suite that will fail in CI on the second c",
+        "text": "The SCD Type 2 table's validity end-date column defaults to NULL for open versions, but the query used to check for an open version filters on end_date = '9999-12-31' instead of end_date IS NULL, so a genuinely open row is never found.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "text": "customer_id 'C1' was loaded correctly, but the surrogate key generator assigned it a duplicate key already used by a different customer, so the version lookup returns the wrong customer's history instead of raising cleanly.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "DuckDB renders EXPLAIN as a box-drawing diagram using characters like \u2502 (U+2502). The Windows console's default code page is cp1252, which has no mapping for them, so print raises.",
+        "text": "The dimension load and the dimension change both ran, but in two separate uncommitted transactions, so each one's changes are invisible to the other and the change logic sees no rows at all rather than an out-of-date one.",
         "is_correct": false
       }
     ],
@@ -282,17 +282,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Application updates database and then updates Redis in two uncoordinated calls. Redis network glitch drops cache update, leaving stale data forever.",
+        "text": "Two test workers ran in parallel against the same DuckDB file without any locking, so both attempted to create the same materialized aggregate table at the same instant.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "text": "The materialized aggregate's CREATE TABLE AS statement was rerun after a schema change added a new column, and DuckDB refuses to CREATE TABLE AS over an existing table with a different column count.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Application constructs SQL dynamically using f-strings (SELECT FROM emp WHERE id = {empid}), creating 100,000 unique unsharable execution plans in the Library Cache.",
+        "text": "A previous test run crashed mid-transaction and left the database file locked, so the next run's CREATE TABLE succeeded against a stale catalog that still listed the table from the failed run.",
         "is_correct": false
       }
     ],
@@ -312,17 +312,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A timing assertion on a machine that is doing other work. At small row counts the raw join fits entirely in cache and the measurement is noise.",
+        "text": "The test suite writes its output to a log file opened in binary mode, and binary-mode files reject any character above the ASCII range regardless of platform.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Application updates multiple inventory rows in arbitrary order (Thread A updates Item 10 then 20; Thread B updates Item 20 then 10), triggering cyclic lock waits.",
+        "text": "DuckDB's EXPLAIN output is UTF-8 encoded correctly, but the terminal itself was resized mid-print, and Windows Terminal drops the current line's buffer on a resize.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Candidate node transitions to Leader after receiving 2 votes in a 5-node cluster, violating majority quorum ($N/2 + 1 = 3$).",
+        "text": "The query itself contains a Unicode column alias, and DuckDB fails to quote identifiers containing non-ASCII characters, raising the encoding error during parsing rather than printing.",
         "is_correct": false
       }
     ],
@@ -342,17 +342,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The view was constructed with supportsincremental=False, because its measure cannot be merged from deltas.",
+        "text": "The fact table's foreign key constraint to the dimension table was dropped during a migration, so out-of-order loads are no longer rejected by the database and this error is actually raised by application-level validation running redundantly.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "IoT readings appended continuously into a single document array without capping, eventually breaching the 16MB document size limit.",
+        "text": "The dimension table's surrogate key sequence wrapped around after reaching its maximum value, so a new version of customer 'C1' was assigned a surrogate key smaller than its predecessor's, which the loader misreads as out-of-order.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Microservice sends 5,000 single-row HTTP INSERT requests per second to ClickHouse MergeTree, exhausting background merge worker capacity.",
+        "text": "The pipeline correctly processes partitions in chronological order, but the system clock on the ETL worker node is set to the wrong timezone, so timestamps are compared incorrectly even though the actual load order is correct.",
         "is_correct": false
       }
     ],

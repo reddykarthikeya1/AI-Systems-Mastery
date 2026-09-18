@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_weighted_least_connections import weighted_least_connections
-except ImportError:
-    from p01_weighted_least_connections import weighted_least_connections
+from p01_weighted_least_connections import weighted_least_connections
 
 
 def test_weighted_least_connections():

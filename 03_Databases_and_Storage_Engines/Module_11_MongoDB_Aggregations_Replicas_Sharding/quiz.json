@@ -12,17 +12,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Restoring a base physical backup and replaying continuous Write-Ahead Logs (WAL/binlog) up to an exact specific microsecond timestamp.",
+        "text": "A single monolithic query compiled once into a query plan, where all stages ($match, $group, $sort) execute simultaneously against the whole collection in parallel.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Physical copies raw page files on disk (fast restore, exact binary); Logical exports SQL DDL/DML statements (portable, slower).",
+        "text": "Each stage in the pipeline runs to completion and materializes its full output to a temporary collection on disk before the next stage begins reading it.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "EXPLAIN shows planner operator estimates without running; PROFILE executes the query and reports actual DB hits, rows, and memory.",
+        "text": "The pipeline evaluates stages in reverse order, starting from the final $sort or $group stage and working backward to determine which documents $match needs to fetch.",
         "is_correct": false
       }
     ],
@@ -42,17 +42,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Each node maintains direct memory/disk pointers to its adjacent neighbor relationships, enabling $O(1)$ step traversals independent of total graph size.",
+        "text": "It matches documents whose _id in the source collection equals any field in the target collection, replacing the source document's fields with the matched target document's fields.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1NF mandates that all column values must be atomic (indivisible). Storing a comma-separated list of multiple values in a single cell violates 1NF. It should be decomposed into a separate related table (e.g. userhobbies with 1 hobby per row)",
+        "text": "It performs an inner join by default, only including source documents that have at least one match in the target collection, and drops any source document without a match.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Character Filters (strip HTML) $\\rightarrow$ Tokenizer (split into terms) $\\rightarrow$ Token Filters (lowercasing, stopwords, stemming).",
+        "text": "It requires both collections to be sharded on the same key so the join can be computed independently on each shard without any data movement.",
         "is_correct": false
       }
     ],
@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "For high-volume multi-node distributed systems, network file systems (NFS), or write workloads exceeding hundreds of concurrent writers.",
+        "text": "A Targeted Query is any query the application marks with a targeted: true flag; mongos does not actually inspect the filter to decide routing.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "SERIAL is a non-standard macro creating an underlying sequence susceptible to manual sequence permission drift; IDENTITY is SQL-standard.",
+        "text": "Scatter-Gather queries are always faster than Targeted queries for point lookups, because querying every shard in parallel amortizes the network round trip.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "RPO: maximum acceptable data loss measured in time; RTO: maximum acceptable downtime until service restoration.",
+        "text": "A Targeted Query includes the shard key but still queries all shards to double-check for stale routing table entries, while Scatter-Gather queries skip that verification step.",
         "is_correct": false
       }
     ],
@@ -102,17 +102,17 @@
       },
       {
         "id": "opt_1",
-        "text": "A hard parse completely compiles the SQL, analyzes syntax, and computes an execution plan; a soft parse reuses an already compiled plan from the Library Cache using identical SQL text/bind keys.",
+        "text": "It merges every element of an array field into a single concatenated string, replacing the array with one scalar value per document.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "text is analyzed and tokenized for full-text search; keyword is stored exact and un-tokenized for exact matching, sorting, and aggregations.",
+        "text": "It removes the array field from each document entirely, keeping the rest of the document unchanged and discarding the array's contents.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Yes. In property graphs, edges can store arbitrary key-value properties (e.g. since, weight, distance).",
+        "text": "It groups documents by the values found in an array field, producing one output document per distinct array value across the whole collection rather than per source document.",
         "is_correct": false
       }
     ],
@@ -137,7 +137,7 @@
       },
       {
         "id": "opt_2",
-        "text": "2",
+        "text": "0",
         "is_correct": false
       },
       {
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "3",
+        "text": "4",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "1",
+        "text": "0",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "4",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": "2",
-        "is_correct": false
-      },
-      {
-        "id": "opt_2",
         "text": "0",
         "is_correct": false
       },
       {
+        "id": "opt_2",
+        "text": "4",
+        "is_correct": false
+      },
+      {
         "id": "opt_3",
-        "text": "2",
+        "text": "5",
         "is_correct": false
       }
     ],
@@ -252,17 +252,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Migration script runs ALTER TABLE orders ADD COLUMN statuscode INT; without a locktimeout, blocking behind a slow query and queuing all incoming web requests.",
+        "text": "The collection is sharded on tenant_id using a hashed shard key, and hashed sharding always requires a scatter-gather for every query regardless of which fields are filtered.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Either a late-arriving dimension row, or reprocessing a partition out of chronological order.",
+        "text": "mongos caches an outdated routing table after a chunk migration, so even queries that do include tenant_id are routed to the wrong single shard and return zero results, forcing an application-level retry across all shards.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Application paginates search results using from: 50000, size: 50, exhausting coordinator node heap memory.",
+        "text": "The email field has a unique index defined on it, and mongos always scatter-gathers any query that touches a uniquely-indexed field to enforce the uniqueness constraint at query time.",
         "is_correct": false
       }
     ],

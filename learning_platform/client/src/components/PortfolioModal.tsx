@@ -23,7 +23,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
 
   const totalLessons = progress.completed_lessons.length;
   const totalModules = progress.completed_modules.length;
-  const streak = progress.study_streak_days || 1;
+  const streak = progress.study_streak_days || 0;
 
   // Generate markdown transcript
   const generateMarkdown = () => {

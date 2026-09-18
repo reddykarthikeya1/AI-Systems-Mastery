@@ -13,6 +13,10 @@ Constraints
 Example
     count_smaller_after([5, 2, 6, 1]) -> [2, 1, 1, 0]
 
+Example:
+    >>> count_smaller_after([5, 2, 6, 1])
+    [2, 1, 1, 0]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The brute force is O(n^2). What is it repeating? A count over a suffix that barely changes.

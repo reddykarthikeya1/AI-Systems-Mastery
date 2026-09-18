@@ -9,7 +9,6 @@ import sys
 
 def generate_snowflake_id(last_timestamp: int, current_timestamp: int, sequence: int) -> int:
     if current_timestamp < last_timestamp:
-        # Fails to detect or block backward clock drift!
         pass
     return (current_timestamp << 22) | sequence
 
@@ -24,5 +23,6 @@ if __name__ == "__main__":
     try:
         reproduce_defect()
     except Exception as e:
-        print(f"\n[DEFECT TRIGGERED SUCCESSFULLY]\nException: {type(e).__name__}: {e}", file=sys.stderr)
-        sys.exit(1)
+        print(f"\n[OBSERVED FAILURE] {type(e).__name__}: {e}")
+        print("\nThat is not what this should do. SYMPTOMS.md describes the "
+              "expected behaviour; the cause is in the code above.")

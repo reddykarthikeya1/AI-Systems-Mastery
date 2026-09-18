@@ -103,3 +103,53 @@ describe('Module Mastery Gate Logic', () => {
     expect(isCleared).toBe(false);
   });
 });
+
+import { calculateXp, getRankForXp } from '../useProgress';
+
+describe('Gamification & Engineering Rank Progression', () => {
+  it('calculates total XP correctly from lessons, quizzes, problems, modules, and streaks', () => {
+    const emptyProgress: any = {};
+    expect(calculateXp(emptyProgress)).toBe(0);
+
+    const activeProgress: any = {
+      completed_lessons: ['c01_01', 'c01_02'], // 2 * 25 = 50
+      quiz_scores: {
+        c01: { passed: true, score: 100 }, // 100
+        c02: { passed: false, score: 50 }, // 0
+      },
+      solved_problems: ['p1'], // 150
+      completed_modules: ['c01'], // 250
+      study_streak_days: 3, // 3 * 50 = 150
+    };
+
+    // Total = 50 + 100 + 150 + 250 + 150 = 700 XP
+    expect(calculateXp(activeProgress)).toBe(700);
+  });
+
+  it('accurately resolves rank tiers and level progress percentages', () => {
+    const baseRank = getRankForXp(0);
+    expect(baseRank.currentRank.level).toBe(1);
+    expect(baseRank.currentRank.title).toBe('Junior Systems Engineer');
+    expect(baseRank.nextRank?.level).toBe(2);
+    expect(baseRank.progressPercent).toBe(0);
+
+    const midRank = getRankForXp(250);
+    expect(midRank.currentRank.level).toBe(1);
+    expect(midRank.progressPercent).toBe(50); // 250 / 500 = 50%
+
+    const tier2Rank = getRankForXp(1000);
+    expect(tier2Rank.currentRank.level).toBe(2);
+    expect(tier2Rank.currentRank.title).toBe('Systems Apprentice');
+
+    const tier3Rank = getRankForXp(2000);
+    expect(tier3Rank.currentRank.level).toBe(3);
+    expect(tier3Rank.currentRank.title).toBe('Core Infrastructure Engineer');
+
+    const maxRank = getRankForXp(15000);
+    expect(maxRank.currentRank.level).toBe(6);
+    expect(maxRank.currentRank.title).toBe('Principal AI Systems Architect');
+    expect(maxRank.nextRank).toBeNull();
+    expect(maxRank.progressPercent).toBe(100);
+  });
+});
+

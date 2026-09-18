@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_triton_pointer_offset_math import triton_pointer_offset_math
-except ImportError:
-    from p01_triton_pointer_offset_math import triton_pointer_offset_math
+from p01_triton_pointer_offset_math import triton_pointer_offset_math
 
 
 def test_triton_pointer_offset_math():

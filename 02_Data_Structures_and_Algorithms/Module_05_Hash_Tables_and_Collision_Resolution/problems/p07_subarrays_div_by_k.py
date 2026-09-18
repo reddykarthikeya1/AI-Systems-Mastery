@@ -14,6 +14,10 @@ Constraints
 Example
     subarrays_div_by_k([4, 5, 0, -2, -3, 1], 5) -> 7
 
+Example:
+    >>> subarrays_div_by_k([4, 5, 0, -2, -3, 1], 5)
+    7
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: sum(i..j) is divisible by k exactly when prefix[j+1] and prefix[i] leave the same remainder mod k.

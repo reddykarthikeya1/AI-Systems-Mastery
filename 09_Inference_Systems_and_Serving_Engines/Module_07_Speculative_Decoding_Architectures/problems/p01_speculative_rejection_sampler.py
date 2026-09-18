@@ -5,10 +5,24 @@ Target: Production-grade implementation
 
 Determine accepted draft tokens comparing target model and draft model probabilities.
 
+Example:
+    >>> speculative_rejection_sampler([0.8, 0.8], [0.9, 0.4], [0.5, 0.6])
+    1
+
 Hints:
-    Hint 1: Review module invariants and algorithm specifications.
-    Hint 2: Handle edge cases, empty sequences, and format constraints cleanly.
-    Hint 3: Run pytest tests/ to verify.
+    Hint 1: A draft token is accepted only if it's at least as likely under
+        the target model as under the draft, and this is a strictly
+        sequential process — once one token is rejected, nothing after it
+        gets evaluated.
+    Hint 2: Iterate the three parallel sequences together (`zip`), compute
+        an acceptance ratio `min(1.0, target_probs[i] / draft_probs[i])` at
+        each step, compare it against `rand_draws[i]`, and `break` on the
+        first rejection.
+    Hint 3: A `draft_probs[i]` of 0.0 would divide by zero, so the ratio
+        must default to 1.0 (auto-accept) in that case; the ratio is also
+        clamped at 1.0 even when the target assigns higher probability than
+        the draft; and rejection is a hard stop, not a skip — later
+        would-be-accepted tokens must not be counted once one draw fails.
 """
 
 from __future__ import annotations

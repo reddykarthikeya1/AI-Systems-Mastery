@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_layer_norm_fused_moments import layer_norm_fused_moments
-except ImportError:
-    from p01_layer_norm_fused_moments import layer_norm_fused_moments
+from p01_layer_norm_fused_moments import layer_norm_fused_moments
 
 
 def test_layer_norm_fused_moments():

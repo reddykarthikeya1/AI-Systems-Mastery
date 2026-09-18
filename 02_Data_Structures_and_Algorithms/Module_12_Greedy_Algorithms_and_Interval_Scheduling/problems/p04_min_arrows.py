@@ -14,6 +14,10 @@ Constraints
 Example
     min_arrows([(10,16), (2,8), (1,6), (7,12)]) -> 2
 
+Example:
+    >>> min_arrows([(10, 16), (2, 8), (1, 6), (7, 12)])
+    2
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: Same family as the previous problem. Where should an arrow go to burst as much as possible?

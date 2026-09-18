@@ -11,8 +11,9 @@ Constraints
 - ``0 <= len(nums) <= 10**5``  -> O(n) required
 - values may repeat
 
-Example
-    next_greater([2, 1, 2, 4, 3]) -> [4, 2, 4, -1, -1]
+Example:
+    >>> next_greater([2, 1, 2, 4, 3])
+    [4, 2, 4, -1, -1]
 
 Hints — read one at a time, and try again between each.
 

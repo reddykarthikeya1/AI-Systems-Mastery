@@ -16,6 +16,12 @@ Example
     topological_order(4, [(0, 1), (1, 2), (2, 3)]) -> [0, 1, 2, 3]
     topological_order(2, [(0, 1), (1, 0)])         -> []
 
+Example:
+    >>> topological_order(4, [(0, 1), (1, 2), (2, 3)])
+    [0, 1, 2, 3]
+    >>> topological_order(2, [(0, 1), (1, 0)])
+    []
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: A node can be emitted once every prerequisite is already emitted - that is, once its in-degree reaches 0.

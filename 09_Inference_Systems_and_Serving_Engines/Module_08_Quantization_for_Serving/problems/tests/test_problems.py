@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_fp8_e4m3_dequantize import fp8_e4m3_dequantize
-except ImportError:
-    from p01_fp8_e4m3_dequantize import fp8_e4m3_dequantize
+from p01_fp8_e4m3_dequantize import fp8_e4m3_dequantize
 
 
 def test_fp8_e4m3_dequantize():

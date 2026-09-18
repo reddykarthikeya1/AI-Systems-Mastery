@@ -18,6 +18,12 @@ Example
 One number changes and the answer halves. That number is a capacity, and knowing
 *which* capacity encodes *which* rule is the whole skill this module teaches.
 
+Example:
+    >>> staff_shifts(2, 4, [(0, 0), (0, 1), (1, 2), (1, 3)], shifts_each=2)
+    4
+    >>> staff_shifts(2, 4, [(0, 0), (0, 1), (1, 2), (1, 3)], shifts_each=1)
+    2
+
 Hints - read one at a time, and try again between each.
 
     Hint 1: Start from the matching reduction in problem 03.

@@ -1,9 +1,54 @@
 import { useState, useEffect } from 'react';
-import { ProgressPayload, LastPosition, SrsCardReview } from '../types';
+import { ProgressPayload, LastPosition, SrsCardReview, EngineeringRank, ENGINEERING_RANKS } from '../types';
 import { fetchProgress, saveProgress } from '../services/api';
 import { soundService } from '../services/sound';
+import { fireConfettiBurst } from '../services/confetti';
 
 const STORAGE_KEY = 'study_progress_v2';
+
+/** Calculate total systems mastery experience points (XP) */
+export function calculateXp(progress: ProgressPayload): number {
+  let xp = 0;
+  xp += (progress.completed_lessons?.length || 0) * 25;
+  const quizzes = Object.values(progress.quiz_scores || {});
+  xp += quizzes.filter((q: any) => q && q.passed).length * 100;
+  xp += (progress.solved_problems?.length || 0) * 150;
+  xp += (progress.completed_modules?.length || 0) * 250;
+  xp += (progress.study_streak_days || 0) * 50;
+  return xp;
+}
+
+/** Determines learner's engineering title and progress to next level */
+export function getRankForXp(xp: number): { currentRank: EngineeringRank; nextRank: EngineeringRank | null; progressPercent: number } {
+  let currentRank = ENGINEERING_RANKS[0];
+  for (let i = ENGINEERING_RANKS.length - 1; i >= 0; i--) {
+    if (xp >= ENGINEERING_RANKS[i].minXp) {
+      currentRank = ENGINEERING_RANKS[i];
+      break;
+    }
+  }
+  const currentIndex = ENGINEERING_RANKS.findIndex((r) => r.level === currentRank.level);
+  const nextRank = currentIndex < ENGINEERING_RANKS.length - 1 ? ENGINEERING_RANKS[currentIndex + 1] : null;
+  const range = nextRank ? nextRank.minXp - currentRank.minXp : 1000;
+  const progressPercent = nextRank ? Math.min(100, Math.max(0, Math.round(((xp - currentRank.minXp) / range) * 100))) : 100;
+
+  return { currentRank, nextRank, progressPercent };
+}
+
+/** Advance the study streak, but only once per calendar day.
+ *
+ * Yesterday -> continue, today -> unchanged, anything older (or never) ->
+ * this is day one again. Returns the fields to merge into progress.
+ */
+function advanceStreak(prev: ProgressPayload): Partial<ProgressPayload> {
+  const today = new Date().toISOString().slice(0, 10);
+  const last = prev.last_study_date;
+  if (last === today) return {};
+
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const streak = last === yesterday ? (prev.study_streak_days || 0) + 1 : 1;
+  return { study_streak_days: streak, last_study_date: today };
+}
 
 export function useProgress() {
   const [progress, setProgress] = useState<ProgressPayload>(() => {
@@ -26,7 +71,8 @@ export function useProgress() {
       srs_custom_cards: [],
       mastery_gates: {},
       last_position: null,
-      study_streak_days: 1,
+      study_streak_days: 0,
+      last_study_date: null,
     };
   });
 
@@ -64,7 +110,12 @@ export function useProgress() {
       const completed_lessons = exists
         ? prev.completed_lessons.filter((id) => id !== lessonId)
         : [...prev.completed_lessons, lessonId];
-      return { ...prev, completed_lessons };
+      // Un-completing a lesson is not a study day, so the streak only moves
+      // when something is finished.
+      if (exists) {
+        return { ...prev, completed_lessons };
+      }
+      return { ...prev, completed_lessons, ...advanceStreak(prev) };
     });
   };
 
@@ -249,8 +300,28 @@ export function useProgress() {
     });
   };
 
+  const markProblemSolved = (problemId: string) => {
+    updateProgress((prev) => {
+      const solved = prev.solved_problems || [];
+      if (solved.includes(problemId)) return prev;
+      soundService.playFanfare();
+      fireConfettiBurst('medium');
+      const solved_problems = [...solved, problemId];
+      return {
+        ...prev,
+        solved_problems,
+        ...advanceStreak(prev),
+      };
+    });
+  };
+
+  const earnedXp = calculateXp(progress);
+  const rankInfo = getRankForXp(earnedXp);
+
   return {
     progress,
+    earnedXp,
+    rankInfo,
     toggleLesson,
     markLessonCompleted,
     setLastPosition,
@@ -263,6 +334,8 @@ export function useProgress() {
     saveNote,
     updateMasteryGate,
     addCustomSrsCard,
+    markProblemSolved,
+    isProblemSolved: (id: string) => Boolean(progress.solved_problems?.includes(id)),
     isLessonCompleted: (id: string) => progress.completed_lessons.includes(id),
     isBookmarked: (id: string) => Boolean(progress.bookmarks?.includes(id)),
   };

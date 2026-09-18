@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_megatron_column_row_parallel import megatron_column_row_parallel
-except ImportError:
-    from p01_megatron_column_row_parallel import megatron_column_row_parallel
+from p01_megatron_column_row_parallel import megatron_column_row_parallel
 
 
 def test_megatron_column_row_parallel():

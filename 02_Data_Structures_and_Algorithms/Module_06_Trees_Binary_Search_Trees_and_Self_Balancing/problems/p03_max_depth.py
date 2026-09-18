@@ -13,6 +13,11 @@ Constraints
 Example
     from_level_order([3, 9, 20, None, None, 15, 7]) -> 3
 
+Example:
+    >>> from tree_common import from_level_order
+    >>> max_depth(from_level_order([3, 9, 20, None, None, 15, 7]))
+    3
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: The depth of a tree is one more than the depth of its deeper subtree.

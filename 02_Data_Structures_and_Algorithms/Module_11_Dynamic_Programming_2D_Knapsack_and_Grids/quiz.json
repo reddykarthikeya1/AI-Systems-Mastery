@@ -72,17 +72,17 @@
       },
       {
         "id": "opt_1",
-        "text": "\"O(1)\"",
+        "text": "lcs(text, text)",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "\"O(n)\"",
+        "text": "reverse(text)",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "\"O(n^2)\"",
+        "text": "dp(text)",
         "is_correct": false
       }
     ],
@@ -112,7 +112,7 @@
       },
       {
         "id": "opt_3",
-        "text": "8",
+        "text": "6",
         "is_correct": false
       }
     ],
@@ -132,17 +132,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Fencepost issues on boundary intervals $[0, N-1]$.",
+        "text": "The subset-sum DP table is indexed from 1 to target inclusive, but the loop only runs through target - 1, so the exact target sum is never actually checked even when the total is even.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "text": "sum(nums) is computed before the array is deduplicated, so repeated values inflate the total and the target ends up larger than half of the array's true distinct-value sum.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Floyd's algorithm works because the two pointers move at different speeds: the gap between them shrinks by one node per iteration, so inside a cycle they must eventually coincide. Moving both by one keeps the gap constant forever, and they ",
+        "text": "The reachability table only marks a sum as reachable using the first item that can produce it, so a target reachable only by combining two later items is missed even when the total is even.",
         "is_correct": false
       }
     ],
@@ -162,17 +162,17 @@
       },
       {
         "id": "opt_1",
-        "text": "The single-pass scan is correct given that a solution exists \u2014 that is the precondition the whole argument rests on. Without the global feasibility check, the loop still terminates and still returns an index, which is a plausible answer to ",
+        "text": "The two strings are compared with case-sensitive equality, so 'A' and 'a' are never treated as a match even when the intended comparison should be case-insensitive.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "With a reachable negative cycle there is no shortest path at all: each additional lap lowers the cost without bound. Returning a finite number asserts an answer to a question that has none.",
+        "text": "The DP table is built with rows and columns swapped, so cur[j] actually reads from the position corresponding to a different pair of prefixes than the ones being compared.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The answer is correct; the method is O(n) when it should be O(log n). At the sizes in this report it merely feels slow, and at the documented upper bound of 10",
+        "text": "On a match, the recurrence adds 1 to prev[j] instead of prev[j - 1], so a matched pair of characters is credited to the wrong diagonal and the length is inflated instead of reduced.",
         "is_correct": false
       }
     ],
@@ -192,17 +192,17 @@
       },
       {
         "id": "opt_1",
-        "text": "Eight directions include the four diagonals, so cells that touch only at a corner get flood-filled together. The problem defines adjacency as horizontal or vertical only.",
+        "text": "The value array and weight array are indexed in reverse of each other, so each item's weight is checked against a different item's value when deciding whether it fits.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Integer division rounds an odd total down, so the function asks whether some subset reaches (total - 1) / 2 \u2014 a question with no bearing on whether the array splits evenly. When that smaller target happens to be reachable, it reports a part",
+        "text": "The capacity loop runs from 0 rather than from the item's own weight, so best[c - w] is read for negative c on the first few iterations and silently treated as zero, undercounting small capacities.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "Without path compression or union by size, merging a chain in order builds a degenerate tree one node deep per union. find then walks the whole chain, and the structure whose entire selling point is near-constant-time operations becomes lin",
+        "text": "Every item is considered against the full capacity in a single pass without an outer loop over items at all, so only the last item in the list is ever weighed against the knapsack.",
         "is_correct": false
       }
     ],
@@ -222,17 +222,17 @@
       },
       {
         "id": "opt_1",
-        "text": ">= shrinks the window as soon as it holds k distinct characters, but k distinct is exactly what the problem permits. The window is therefore capped at k - 1 distinct characters and every answer comes back short \u2014 for k=2 it reports 1 where ",
+        "text": "The last row and last column are initialized instead of the first row and first column, so paths are effectively computed as if the destination were the top-left corner instead of the bottom-right.",
         "is_correct": false
       },
       {
         "id": "opt_2",
-        "text": "Sorting by start guarantees the incoming interval begins no earlier, but says nothing about where it",
+        "text": "Each cell's cost is computed as the minimum of the cell above and to the left without ever adding the current cell's own value, so every reported path cost is missing exactly one cell's contribution per step.",
         "is_correct": false
       },
       {
         "id": "opt_3",
-        "text": "The method counts pairs of prefix sums differing by k. A subarray starting at index 0 pairs with the",
+        "text": "The grid is traversed column-by-column instead of row-by-row, so a cell's dependency on the cell above it reads a value that has not been computed yet and defaults to zero.",
         "is_correct": false
       }
     ],

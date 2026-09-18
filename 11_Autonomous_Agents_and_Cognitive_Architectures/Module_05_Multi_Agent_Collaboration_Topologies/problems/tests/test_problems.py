@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import pytest
-try:
-    from solutions.p01_supervisor_routing_consensus import supervisor_routing_consensus
-except ImportError:
-    from p01_supervisor_routing_consensus import supervisor_routing_consensus
+from p01_supervisor_routing_consensus import supervisor_routing_consensus
 
 
 def test_supervisor_routing_consensus():

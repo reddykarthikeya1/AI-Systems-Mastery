@@ -14,6 +14,10 @@ Constraints
 Example
     k_closest_points([(1, 3), (-2, 2)], 1) -> [(-2, 2)]
 
+Example:
+    >>> k_closest_points([(1, 3), (-2, 2)], 1)
+    [(-2, 2)]
+
 Hints — read one at a time, and try again between each.
 
     Hint 1: You never need the actual distance - only the ordering. So skip the square root and compare x*x + y*y, which also keeps everything in integers and avoids float error.
