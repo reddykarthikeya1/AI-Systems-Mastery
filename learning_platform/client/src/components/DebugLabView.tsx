@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle, GitCompare, Code } from 'lucide-react';
+import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle, GitCompare, Code, CheckSquare } from 'lucide-react';
 import { runInteractiveCode } from '../services/api';
 import { TestResult } from '../types';
 import confetti from 'canvas-confetti';
+import { soundService } from '../services/sound';
 
 interface DebugLabViewProps {
   moduleFolderPath: string;
@@ -23,6 +24,14 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [result, setResult] = useState<TestResult | null>(null);
+  const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
+
+  const handleCopyCmd = (cmd: string, id: string) => {
+    navigator.clipboard.writeText(cmd);
+    setCopiedCmd(id);
+    soundService.playClick();
+    setTimeout(() => setCopiedCmd(null), 2500);
+  };
   const [isResolved, setIsResolved] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'editor' | 'diff'>('editor');
 
@@ -157,14 +166,51 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
         </div>
       )}
 
+      {/* Dual-Mode IDE Workflow Bar */}
+      <div className="rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/30 p-3.5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="p-2 rounded-lg bg-rose-600 text-white shrink-0 shadow-xs">
+            <Bug className="w-4 h-4" />
+          </div>
+          <div className="space-y-0.5 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-rose-900 dark:text-rose-100">Dual-Mode Debugging:</span>
+              <span className="text-rose-700 dark:text-rose-300">Patch in-app or debug in VS Code with step-through breakpoints</span>
+            </div>
+            <p className="text-rose-600 dark:text-rose-400 font-mono text-[11px] truncate">
+              Target: <span className="font-semibold text-fg px-1.5 py-0.2 rounded bg-surface border border-rose-200 dark:border-rose-900/60">{moduleFolderPath}/debug_lab</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          <button
+            onClick={() => handleCopyCmd(`code "${moduleFolderPath}/debug_lab"`, 'code')}
+            className="px-2.5 py-1.5 rounded-lg border border-rose-300 dark:border-rose-800 bg-surface text-rose-700 dark:text-rose-300 hover:bg-rose-100/60 dark:hover:bg-rose-900/50 font-mono text-[11px] font-semibold flex items-center gap-1.5 transition shadow-xs"
+            title="Copy command to open this debug lab in VS Code"
+          >
+            {copiedCmd === 'code' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Terminal className="w-3.5 h-3.5 text-rose-500" />}
+            <span>{copiedCmd === 'code' ? 'Copied code command!' : 'Open in VS Code: code .'}</span>
+          </button>
+          <button
+            onClick={() => handleCopyCmd(`pytest "${moduleFolderPath}/debug_lab" -v`, 'pytest')}
+            className="px-2.5 py-1.5 rounded-lg border border-rose-300 dark:border-rose-800 bg-surface text-rose-700 dark:text-rose-300 hover:bg-rose-100/60 dark:hover:bg-rose-900/50 font-mono text-[11px] font-semibold flex items-center gap-1.5 transition shadow-xs"
+            title="Copy pytest command to run in your local terminal"
+          >
+            {copiedCmd === 'pytest' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <CheckSquare className="w-3.5 h-3.5 text-emerald-500" />}
+            <span>{copiedCmd === 'pytest' ? 'Copied CLI pytest!' : 'Run in Terminal: pytest'}</span>
+          </button>
+        </div>
+      </div>
+
       {/* Grid: Left Symptoms + Right Editor */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Symptoms Column (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
           <div className="rounded-xl bg-surface border border-border/80 p-5 shadow-sm space-y-3">
-            <div className="flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2">
+            <div className="flex items-center gap-2 border-b border-border pb-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
-              <span className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-mono font-semibold uppercase tracking-wider text-fg-muted">
                 Observed Defect Symptoms
               </span>
             </div>
@@ -180,7 +226,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
                 <span>{showSolution ? 'Hide Triage Guide' : 'Reveal Triage Guide & Root Cause'}</span>
               </button>
               {showSolution && (
-                <div className="mt-3 pt-3 border-t border-border text-xs font-mono text-zinc-400 leading-relaxed whitespace-pre-wrap">
+                <div className="mt-3 pt-3 border-t border-border text-xs font-mono text-fg-muted leading-relaxed whitespace-pre-wrap">
                   {answers}
                 </div>
               )}
@@ -190,25 +236,25 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
 
         {/* Editor Column (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="rounded-xl overflow-hidden border border-border bg-bg shadow-xl">
-            <div className="px-4 py-2 bg-surface-raised border-b border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+          <div className="rounded-xl overflow-hidden border border-border bg-surface shadow-xl">
+            <div className="px-4 py-2 bg-surface-raised border-b border-border flex items-center justify-between text-xs font-mono text-fg-muted">
               <div className="flex items-center gap-3">
-                <span className="text-rose-400 font-semibold flex items-center gap-1.5">
+                <span className="text-rose-500 dark:text-rose-400 font-semibold flex items-center gap-1.5">
                   <Bug className="w-3.5 h-3.5" /> Defect Patch Editor
                 </span>
-                <div className="flex items-center p-0.5 rounded-lg bg-zinc-800/90 border border-zinc-700/80">
+                <div className="flex items-center p-0.5 rounded-lg bg-surface border border-border">
                   <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
                       viewMode === 'editor'
-                        ? 'bg-zinc-700 text-white font-semibold shadow-xs'
-                        : 'text-zinc-400 hover:text-zinc-200'
+                        ? 'bg-surface-raised text-fg font-semibold shadow-xs'
+                        : 'text-fg-muted hover:text-fg'
                     }`} onClick={() => setViewMode('editor')} >
                     <Code className="w-3 h-3" />
                     <span>Editor</span>
                   </button>
                   <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-2 py-0.5 rounded text-xs transition-colors flex items-center gap-1 ${
                       viewMode === 'diff'
-                        ? 'bg-zinc-700 text-white font-semibold shadow-xs'
-                        : 'text-zinc-400 hover:text-zinc-200'
+                        ? 'bg-surface-raised text-fg font-semibold shadow-xs'
+                        : 'text-fg-muted hover:text-fg'
                     }`} onClick={() => setViewMode('diff')} >
                     <GitCompare className="w-3 h-3" />
                     <span>Diff View</span>

@@ -16,6 +16,7 @@ import { FlashcardsModal } from './components/FlashcardsModal';
 import { PortfolioModal } from './components/PortfolioModal';
 import { PrerequisiteMapModal } from './components/PrerequisiteMapModal';
 import { HardwareTopologyModal } from './components/HardwareTopologyModal';
+import { LocalIdeGuideModal } from './components/LocalIdeGuideModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LessonSkeleton } from './components/LessonSkeleton';
 import { McqQuestion } from './components/McqQuizView';
@@ -423,6 +424,7 @@ export const App: React.FC = () => {
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
   const [isPrereqMapOpen, setIsPrereqMapOpen] = useState(false);
   const [isHardwareModalOpen, setIsHardwareModalOpen] = useState(false);
+  const [isIdeModalOpen, setIsIdeModalOpen] = useState(false);
 
   // Keyboard shortcut: Escape to close modals
   useEffect(() => {
@@ -435,6 +437,7 @@ export const App: React.FC = () => {
         setIsPortfolioOpen(false);
         setIsPrereqMapOpen(false);
         setIsHardwareModalOpen(false);
+        setIsIdeModalOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -588,6 +591,7 @@ export const App: React.FC = () => {
         onOpenPortfolio={() => setIsPortfolioOpen(true)}
         onOpenPrereqMap={() => setIsPrereqMapOpen(true)}
         onOpenHardwareTopology={() => setIsHardwareModalOpen(true)}
+        onOpenIdeGuide={() => setIsIdeModalOpen(true)}
         onNavigateHome={() => navigate('/')}
       />
 
@@ -767,6 +771,12 @@ export const App: React.FC = () => {
       <HardwareTopologyModal
         isOpen={isHardwareModalOpen}
         onClose={() => setIsHardwareModalOpen(false)}
+      />
+
+      {/* Local IDE & Terminal Workflow Guide Modal */}
+      <LocalIdeGuideModal
+        isOpen={isIdeModalOpen}
+        onClose={() => setIsIdeModalOpen(false)}
       />
     </div>
   );

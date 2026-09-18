@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap, GitFork, Cpu } from 'lucide-react';
+import { BookOpen, Moon, Sun, Search, Award, CheckCircle, Flame, Bookmark, Volume2, VolumeX, Layers, GraduationCap, GitFork, Cpu, Terminal } from 'lucide-react';
 import { CourseSummary, ProgressPayload, EngineeringRank } from '../types';
 
 interface HeaderProps {
@@ -16,6 +16,7 @@ interface HeaderProps {
   onOpenPortfolio?: () => void;
   onOpenPrereqMap?: () => void;
   onOpenHardwareTopology?: () => void;
+  onOpenIdeGuide?: () => void;
   onToggleSound?: () => void;
 }
 
@@ -33,6 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenPortfolio,
   onOpenPrereqMap,
   onOpenHardwareTopology,
+  onOpenIdeGuide,
   onToggleSound,
 }) => {
   const isDark = progress.theme === 'dark';
@@ -184,6 +186,16 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Curriculum prerequisite roadmap" >
               <GitFork className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
               <span className="font-medium">Roadmap</span>
+            </button>
+          )}
+
+          {/* Local IDE Workflow Guide Button */}
+          {onOpenIdeGuide && (
+            <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300/90 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-mono transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/50 shadow-xs" onClick={onOpenIdeGuide}
+              title="VS Code & Local Terminal Setup Guide"
+              aria-label="Local IDE setup guide" >
+              <Terminal className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="font-medium">Local IDE</span>
             </button>
           )}
 

@@ -3,6 +3,7 @@ import { CheckCircle2, XCircle, HelpCircle, Award, RotateCcw, ArrowRight, FileTe
 import confetti from 'canvas-confetti';
 import { fetchModuleQuiz } from '../services/api';
 import { soundService } from '../services/sound';
+import { renderQuizMarkdown } from '../services/markdown';
 
 export interface McqQuestion {
   id: number;
@@ -450,9 +451,10 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                       </span>
                     )}
                   </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-fg leading-relaxed pt-1">
-                    {q.question}
-                  </h3>
+                  <h3 
+                    className="text-sm sm:text-base font-semibold text-fg leading-relaxed pt-1 [&_code]:font-mono [&_code]:text-xs [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-blue-50 dark:[&_code]:bg-blue-950/60 [&_code]:text-blue-700 dark:[&_code]:text-blue-300 [&_code]:border [&_code]:border-blue-200 dark:[&_code]:border-blue-800/60"
+                    dangerouslySetInnerHTML={{ __html: renderQuizMarkdown(q.question) }}
+                  />
                 </div>
 
                 {isChecked && (
@@ -506,7 +508,10 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                       }`}>
                         {letter}
                       </span>
-                      <span className="leading-relaxed flex-1 pt-0.5">{opt}</span>
+                      <span 
+                        className="leading-relaxed flex-1 pt-0.5 [&_code]:font-mono [&_code]:text-xs [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-blue-50 dark:[&_code]:bg-blue-950/60 [&_code]:text-blue-700 dark:[&_code]:text-blue-300 [&_code]:border [&_code]:border-blue-200 dark:[&_code]:border-blue-800/60"
+                        dangerouslySetInnerHTML={{ __html: renderQuizMarkdown(opt) }}
+                      />
                     </button>
                   );
                 })}
@@ -528,9 +533,10 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
                     <FileText className="w-3.5 h-3.5 text-blue-500" />
                     <span>Technical Explanation & Rationale:</span>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/90 text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal whitespace-pre-wrap">
-                    {q.explanation}
-                  </div>
+                  <div 
+                    className="p-3.5 rounded-xl bg-surface-raised border border-border text-fg-muted leading-relaxed font-normal [&_code]:font-mono [&_code]:text-xs [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-blue-50 dark:[&_code]:bg-blue-950/60 [&_code]:text-blue-700 dark:[&_code]:text-blue-300 [&_code]:border [&_code]:border-blue-200 dark:[&_code]:border-blue-800/60"
+                    dangerouslySetInnerHTML={{ __html: renderQuizMarkdown(q.explanation) }}
+                  />
                   {q.lessonRef && (
                     <div className="text-zinc-500 text-xs font-mono pt-1">
                       📖 Reference: <span className="underline">{q.lessonRef}</span>

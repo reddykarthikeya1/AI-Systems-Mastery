@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, Play, RotateCcw, Check, X, Clock, Copy, AlertCircle } from 'lucide-react';
+import { Layers, Play, RotateCcw, Check, X, Clock, Copy, AlertCircle, Terminal, Code2 } from 'lucide-react';
 import { LessonItem, TestResult } from '../../types';
 import { runInteractiveCode } from '../../services/api';
 import { soundService } from '../../services/sound';
@@ -24,6 +24,14 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
   const [runningCells, setRunningCells] = useState<Record<number, boolean>>({});
   const [cellResults, setCellResults] = useState<Record<number, TestResult>>({});
   const [isRunningAll, setIsRunningAll] = useState(false);
+  const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
+
+  const handleCopyCmd = (cmd: string, id: string) => {
+    navigator.clipboard.writeText(cmd);
+    setCopiedCmd(id);
+    soundService.playClick();
+    setTimeout(() => setCopiedCmd(null), 2500);
+  };
 
   const runCellInline = async (cIdx: number, source: string) => {
     setRunningCells((prev) => ({ ...prev, [cIdx]: true }));
@@ -85,6 +93,35 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
         </button>
       </div>
 
+      {/* Dual-Mode Notebook & IDE Freedom Banner */}
+      <div className="rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/30 p-3.5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="p-2 rounded-lg bg-blue-600 text-white shrink-0 shadow-xs">
+            <Code2 className="w-4 h-4" />
+          </div>
+          <div className="space-y-0.5 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-blue-900 dark:text-blue-100">Dual-Mode Notebook:</span>
+              <span className="text-blue-700 dark:text-blue-300 font-medium">Run cells inline with Live Runner &bull; Or open in VS Code</span>
+            </div>
+            <p className="text-blue-600 dark:text-blue-400 font-mono text-[11px] truncate">
+              File: <span className="font-semibold text-fg px-1.5 py-0.2 rounded bg-surface border border-blue-200 dark:border-blue-900/60">{currentLesson.file_path}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          <button
+            onClick={() => handleCopyCmd(`code "${currentLesson.file_path}"`, 'code')}
+            className="px-3 py-1.5 rounded-lg border border-blue-300 dark:border-blue-800 bg-surface text-blue-700 dark:text-blue-300 hover:bg-blue-100/60 dark:hover:bg-blue-900/50 font-mono text-xs font-semibold flex items-center gap-1.5 transition shadow-xs"
+            title="Open this Jupyter Notebook in VS Code"
+          >
+            {copiedCmd === 'code' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Terminal className="w-3.5 h-3.5 text-blue-500" />}
+            <span>{copiedCmd === 'code' ? 'Copied code command!' : 'Open in VS Code: code .'}</span>
+          </button>
+        </div>
+      </div>
+
       {/* Cells List */}
       <div className="space-y-6">
         {notebookCells.map((cell, cIdx) => {
@@ -92,7 +129,7 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
           const result = cellResults[cIdx];
 
           return (
-            <div key={cIdx} className="space-y-2">
+            <div key={cIdx} id={`notebook-cell-${cIdx}`} className="space-y-2 scroll-mt-24">
               {cell.type === 'markdown' ? (
                 <div
                   className="markdown-body text-fg text-sm leading-relaxed"

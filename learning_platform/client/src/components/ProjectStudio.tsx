@@ -70,6 +70,16 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
     m3: false,
   });
 
+  const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
+  const workspaceRelativePath = `user_workspaces/${moduleFolderPath}`;
+
+  const handleCopyCmd = (cmd: string, id: string) => {
+    navigator.clipboard.writeText(cmd);
+    setCopiedCmd(id);
+    soundService.playClick();
+    setTimeout(() => setCopiedCmd(null), 2500);
+  };
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Load project starter and solution files from server
@@ -453,6 +463,44 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         </div>
       </div>
 
+      {/* Dual-Mode IDE & Local Terminal Workflow Bar */}
+      <div className="rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/30 p-4 shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="p-2.5 rounded-xl bg-blue-600 text-white shrink-0 shadow-xs">
+            <Code2 className="w-4 h-4" />
+          </div>
+          <div className="space-y-0.5 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-blue-900 dark:text-blue-100 text-sm">Dual-Mode Workflow:</span>
+              <span className="text-blue-700 dark:text-blue-300 font-medium">Build in-app with Live Runner &bull; Or build in VS Code / external IDE</span>
+            </div>
+            <p className="text-blue-600 dark:text-blue-400 font-mono text-xs flex items-center gap-1.5 truncate">
+              <span>Local Workspace:</span>
+              <span className="font-semibold text-fg px-1.5 py-0.5 rounded bg-surface border border-blue-200 dark:border-blue-900/60">{workspaceRelativePath}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          <button
+            onClick={() => handleCopyCmd(`code "${workspaceRelativePath}"`, 'code')}
+            className="px-3 py-1.5 rounded-xl border border-blue-300 dark:border-blue-800 bg-surface text-blue-700 dark:text-blue-300 hover:bg-blue-100/60 dark:hover:bg-blue-900/50 font-mono text-xs font-semibold flex items-center gap-1.5 transition shadow-xs"
+            title="Copy command to open this project directory in VS Code"
+          >
+            {copiedCmd === 'code' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Terminal className="w-3.5 h-3.5 text-blue-500" />}
+            <span>{copiedCmd === 'code' ? 'Copied code command!' : 'Open in VS Code: code .'}</span>
+          </button>
+          <button
+            onClick={() => handleCopyCmd(`pytest "${workspaceRelativePath}" -v`, 'pytest')}
+            className="px-3 py-1.5 rounded-xl border border-blue-300 dark:border-blue-800 bg-surface text-blue-700 dark:text-blue-300 hover:bg-blue-100/60 dark:hover:bg-blue-900/50 font-mono text-xs font-semibold flex items-center gap-1.5 transition shadow-xs"
+            title="Copy pytest command to run in your local terminal"
+          >
+            {copiedCmd === 'pytest' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <CheckSquare className="w-3.5 h-3.5 text-emerald-500" />}
+            <span>{copiedCmd === 'pytest' ? 'Copied CLI pytest!' : 'Run in Terminal: pytest'}</span>
+          </button>
+        </div>
+      </div>
+
       {/* Main Studio Dual Pane */}
       <div className={`grid gap-6 items-start transition-all ${
         viewMode === 'split' 
@@ -652,9 +700,9 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                       ))}
                     </div>
                   ) : (
-                    <div className="p-4 rounded-xl bg-zinc-900/40 text-xs text-zinc-400 space-y-2">
-                      <p>Implement the architectural components requested in <code className="text-sky-300 font-mono">{activeFile?.filename}</code>.</p>
-                      <p>Run tests at any time with <span className="font-mono text-emerald-400 font-bold">Ctrl+Enter</span> to inspect current acceptance criteria.</p>
+                    <div className="p-4 rounded-xl bg-surface-raised border border-border text-xs text-fg-muted space-y-2">
+                      <p>Implement the architectural components requested in <code className="text-blue-600 dark:text-sky-300 font-mono font-bold">{activeFile?.filename}</code>.</p>
+                      <p>Run tests at any time with <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">Ctrl+Enter</span> to inspect current acceptance criteria.</p>
                     </div>
                   )}
                 </div>
@@ -722,9 +770,9 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         {(viewMode === 'split' || viewMode === 'editor') && (
           <div className={`${viewMode === 'split' ? 'xl:col-span-7' : 'w-full'} space-y-4`}>
             {/* Editor Container */}
-            <div className="rounded-2xl bg-bg border border-zinc-800 shadow-xl overflow-hidden flex flex-col">
+            <div className="rounded-2xl bg-surface border border-border shadow-card overflow-hidden flex flex-col">
               {/* File Tabs & Controls Header */}
-              <div className="flex items-center justify-between px-3 py-2 bg-surface-raised border-b border-zinc-800 overflow-x-auto gap-2 select-none">
+              <div className="flex items-center justify-between px-3 py-2 bg-surface-raised border-b border-border overflow-x-auto gap-2 select-none">
                 {/* File Tabs */}
                 <div className="flex items-center gap-1 min-w-0">
                   {files.map((file, idx) => (
@@ -733,18 +781,18 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                       onClick={() => setActiveFileIndex(idx)}
                       className={`px-3 py-1.5 text-xs rounded-lg font-mono flex items-center gap-2 transition-all shrink-0 ${
                         idx === activeFileIndex
-                          ? 'bg-bg text-white border border-zinc-700 shadow-sm font-semibold'
-                          : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+                          ? 'bg-surface text-blue-600 dark:text-blue-400 border border-border shadow-xs font-semibold'
+                          : 'text-fg-muted hover:text-fg hover:bg-surface/60'
                       }`}
                     >
-                      <FileCode className="w-3.5 h-3.5 text-blue-400" />
+                      <FileCode className="w-3.5 h-3.5 text-blue-500" />
                       <span>{file.filename}</span>
                       {file.is_modified && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400" title="Modified in workspace" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title="Modified in workspace" />
                       )}
                       {file.read_only && (
                         <span title="Reference File (Read Only)">
-                          <Lock className="w-3 h-3 text-zinc-500" />
+                          <Lock className="w-3 h-3 text-zinc-400" />
                         </span>
                       )}
                     </button>
@@ -754,16 +802,16 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                 {/* Right toolbar controls inside editor */}
                 <div className="flex items-center gap-2 shrink-0">
                   {/* Font Size Toggle */}
-                  <div className="flex items-center bg-zinc-900 rounded-lg p-0.5 border border-zinc-800 text-xs font-mono text-zinc-400">
+                  <div className="flex items-center bg-surface rounded-lg p-0.5 border border-border text-xs font-mono text-fg-muted">
                     <button
                       onClick={() => setFontSize('sm')}
-                      className={`px-1.5 py-0.5 rounded ${fontSize === 'sm' ? 'bg-zinc-800 text-zinc-200' : ''}`}
+                      className={`px-1.5 py-0.5 rounded ${fontSize === 'sm' ? 'bg-surface-raised text-fg font-semibold shadow-xs' : ''}`}
                     >
                       sm
                     </button>
                     <button
                       onClick={() => setFontSize('base')}
-                      className={`px-1.5 py-0.5 rounded ${fontSize === 'base' ? 'bg-zinc-800 text-zinc-200' : ''}`}
+                      className={`px-1.5 py-0.5 rounded ${fontSize === 'base' ? 'bg-surface-raised text-fg font-semibold shadow-xs' : ''}`}
                     >
                       md
                     </button>
@@ -778,8 +826,8 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                       }}
                       className={`px-2.5 py-1 text-xs rounded-lg border font-mono flex items-center gap-1.5 transition-all ${
                         showSolutionDiff
-                          ? 'bg-amber-500/10 text-amber-400 border-amber-500/40'
-                          : 'bg-zinc-800/80 text-zinc-400 border-zinc-700 hover:text-zinc-200'
+                          ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/40 font-semibold'
+                          : 'bg-surface text-fg-muted border-border hover:text-fg hover:bg-surface-raised'
                       }`}
                       title="Compare your code with the reference implementation"
                     >
@@ -799,7 +847,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   onKeyDown={handleKeyDown}
                   readOnly={activeFile?.read_only}
                   spellCheck={false}
-                  className={`w-full min-h-[520px] p-5 font-mono bg-bg text-zinc-100 focus:outline-none focus:ring-0 resize-y leading-relaxed selection:bg-blue-600/60 ${
+                  className={`w-full min-h-[520px] p-5 font-mono bg-surface text-fg dark:bg-[#0c1017] dark:text-[#e6edf3] focus:outline-none focus:ring-0 resize-y leading-relaxed selection:bg-blue-500/30 ${
                     fontSize === 'sm' ? 'text-xs' : 'text-sm'
                   }`}
                   placeholder="# Write your implementation here..."
@@ -807,7 +855,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
               </div>
 
               {/* Editor Footer Status Bar */}
-              <div className="flex items-center justify-between px-4 py-2 bg-surface-raised border-t border-zinc-800 text-xs font-mono text-zinc-400 select-none">
+              <div className="flex items-center justify-between px-4 py-2 bg-surface-raised border-t border-border text-xs font-mono text-fg-muted select-none">
                 <div className="flex items-center gap-3">
                   <span>Lines: {activeFile?.content.split('\n').length || 0}</span>
                   <span>Chars: {activeFile?.content.length || 0}</span>

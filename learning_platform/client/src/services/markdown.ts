@@ -141,4 +141,16 @@ export function annotateGlossaryTerms(html: string): string {
   }
 }
 
-
+/**
+ * Formats quiz text (questions, options, explanations) supporting KaTeX math and inline code tags.
+ */
+export function renderQuizMarkdown(raw: string): string {
+  if (!raw) return '';
+  const rendered = renderMarkdownWithMath(raw);
+  const trimmed = rendered.trim();
+  // Strip outer single <p> ... </p> tag for clean inline placement if applicable
+  if (trimmed.startsWith('<p>') && trimmed.endsWith('</p>') && trimmed.indexOf('<p>', 3) === -1) {
+    return trimmed.slice(3, -4);
+  }
+  return trimmed;
+}

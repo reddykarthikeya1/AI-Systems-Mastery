@@ -273,11 +273,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
         securityLevel: 'loose',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif',
+        themeVariables: {
+          fontSize: '14px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif',
+        },
         flowchart: {
           htmlLabels: true,
-          padding: 24,
-          nodeSpacing: 50,
-          rankSpacing: 50,
+          padding: 32,
+          nodeSpacing: 60,
+          rankSpacing: 60,
           curve: 'basis',
         },
       });
@@ -1275,6 +1279,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <aside aria-label="On this page quick reach" className="w-72 2xl:w-80 shrink-0 sticky top-20 hidden xl:block">
                 <TableOfContents
                   content={content}
+                  lessonFilePath={currentLesson.file_path}
+                  lessonTitle={currentLesson.title}
+                  lessonType={currentLesson.type}
+                  notebookCells={notebookCells}
                   isBookmarked={isBookmarked}
                   onToggleBookmark={onToggleBookmark}
                 />
