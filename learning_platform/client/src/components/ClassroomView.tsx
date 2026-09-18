@@ -306,6 +306,72 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           wrapper.innerHTML = svg;
           (preEl as any).dataset.mermaidRendered = 'true';
           preEl.replaceWith(wrapper);
+
+          // --- Post-render SVG patch: fix foreignObject height truncation ---
+          // SVG foreignObject clips to its height attribute regardless of CSS overflow.
+          // Mermaid sometimes under-computes node heights for multi-line <br> labels.
+          // We measure the actual rendered content and expand everything that's too short.
+          requestAnimationFrame(() => {
+            const svgEl = wrapper.querySelector('svg');
+            if (!svgEl) return;
+            const foreignObjects = svgEl.querySelectorAll('foreignObject');
+            let viewBoxNeedsUpdate = false;
+            foreignObjects.forEach((fo) => {
+              const foHeight = parseFloat(fo.getAttribute('height') || '0');
+              // Measure actual rendered content height
+              const innerDiv = fo.querySelector('div');
+              if (!innerDiv) return;
+              const actualHeight = innerDiv.scrollHeight;
+              const PADDING = 16; // extra breathing room
+              if (actualHeight + PADDING > foHeight) {
+                const newHeight = actualHeight + PADDING;
+                const heightDelta = newHeight - foHeight;
+                fo.setAttribute('height', String(newHeight));
+                // Also expand the sibling rect/polygon inside the same .node group
+                const nodeGroup = fo.closest('.node, .label, g');
+                if (nodeGroup) {
+                  const rect = nodeGroup.querySelector('rect');
+                  if (rect) {
+                    const rectH = parseFloat(rect.getAttribute('height') || '0');
+                    rect.setAttribute('height', String(rectH + heightDelta));
+                  }
+                  const polygon = nodeGroup.querySelector('polygon');
+                  if (polygon) {
+                    // For polygons (diamonds, etc.), adjust the points
+                    const points = polygon.getAttribute('points');
+                    if (points) {
+                      const pts = points.split(/[\s,]+/).map(Number);
+                      // Find max-y and expand downward
+                      for (let p = 1; p < pts.length; p += 2) {
+                        if (pts[p] > 0) pts[p] += heightDelta / 2;
+                        else pts[p] -= heightDelta / 2;
+                      }
+                      polygon.setAttribute('points', pts.join(','));
+                    }
+                  }
+                }
+                viewBoxNeedsUpdate = true;
+              }
+            });
+            // Expand the SVG viewBox if any nodes grew
+            if (viewBoxNeedsUpdate) {
+              const vb = svgEl.getAttribute('viewBox');
+              if (vb) {
+                const parts = vb.split(/[\s,]+/).map(Number);
+                if (parts.length === 4) {
+                  // Add extra vertical space to accommodate expanded nodes
+                  parts[3] += 60;
+                  svgEl.setAttribute('viewBox', parts.join(' '));
+                }
+              }
+              // Also bump the SVG element's own height style
+              const svgHeight = svgEl.getAttribute('height');
+              if (svgHeight) {
+                const h = parseFloat(svgHeight);
+                if (!isNaN(h)) svgEl.setAttribute('height', String(h + 60));
+              }
+            }
+          });
         } catch (err) {
           console.warn('Failed to render Mermaid diagram in lesson:', err);
         }

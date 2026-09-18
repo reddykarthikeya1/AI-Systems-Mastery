@@ -147,6 +147,48 @@ export const ArchitectureCanvasView: React.FC<ArchitectureCanvasViewProps> = ({ 
     renderDiagram(code);
   }, [code]);
 
+  // Post-render SVG patch: fix foreignObject height truncation for live diagrams
+  useEffect(() => {
+    if (!canvasRef.current || !svgContent) return;
+    requestAnimationFrame(() => {
+      const svgEl = canvasRef.current?.querySelector('svg');
+      if (!svgEl) return;
+      const foreignObjects = svgEl.querySelectorAll('foreignObject');
+      let viewBoxNeedsUpdate = false;
+      foreignObjects.forEach((fo) => {
+        const foHeight = parseFloat(fo.getAttribute('height') || '0');
+        const innerDiv = fo.querySelector('div');
+        if (!innerDiv) return;
+        const actualHeight = innerDiv.scrollHeight;
+        const PADDING = 16;
+        if (actualHeight + PADDING > foHeight) {
+          const newHeight = actualHeight + PADDING;
+          const heightDelta = newHeight - foHeight;
+          fo.setAttribute('height', String(newHeight));
+          const nodeGroup = fo.closest('.node, .label, g');
+          if (nodeGroup) {
+            const rect = nodeGroup.querySelector('rect');
+            if (rect) {
+              const rectH = parseFloat(rect.getAttribute('height') || '0');
+              rect.setAttribute('height', String(rectH + heightDelta));
+            }
+          }
+          viewBoxNeedsUpdate = true;
+        }
+      });
+      if (viewBoxNeedsUpdate) {
+        const vb = svgEl.getAttribute('viewBox');
+        if (vb) {
+          const parts = vb.split(/[\s,]+/).map(Number);
+          if (parts.length === 4) {
+            parts[3] += 60;
+            svgEl.setAttribute('viewBox', parts.join(' '));
+          }
+        }
+      }
+    });
+  }, [svgContent]);
+
   const handleSelectBlueprint = (bp: Blueprint) => {
     soundService.playClick();
     setSelectedBlueprint(bp.id);
