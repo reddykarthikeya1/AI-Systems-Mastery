@@ -1,5 +1,5 @@
-import React from 'react';
-import { Terminal as TerminalIcon, CheckCircle2, XCircle, Clock, RotateCw } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Terminal as TerminalIcon, CheckCircle2, XCircle, Clock, RotateCw, Play, Sparkles } from 'lucide-react';
 import { TestResult } from '../types';
 
 interface TerminalRunnerProps {
@@ -17,6 +17,19 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
   onRunDemo,
   hasDemo,
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (!isRunning) {
+          onRunTest();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isRunning, onRunTest]);
+
   return (
     <div className="rounded-xl border border-border bg-bg text-zinc-100 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
       {/* Terminal Title Bar */}
@@ -40,9 +53,13 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
             </button>
           )}
 
-          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs font-mono px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5" onClick={onRunTest}
+          <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-xs font-mono px-3 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 transition-colors flex items-center gap-1.5 shadow-xs" onClick={onRunTest}
             disabled={isRunning} >
-            {isRunning ? <RotateCw className="w-3 h-3 animate-spin" /> : '▶'} Run Pytest
+            {isRunning ? <RotateCw className="w-3 h-3 animate-spin" /> : '▶'}
+            <span>Run Pytest</span>
+            <kbd className="hidden sm:inline-block text-[10px] font-mono px-1 py-0.2 rounded bg-blue-700/80 text-blue-200">
+              Ctrl+↵
+            </kbd>
           </button>
         </div>
       </div>
@@ -79,8 +96,16 @@ export const TerminalRunner: React.FC<TerminalRunnerProps> = ({
             </pre>
           </div>
         ) : (
-          <div className="text-zinc-500 text-center py-10 font-mono text-xs">
-            Select <strong className="text-zinc-300 font-semibold">"Run Pytest"</strong> or <strong className="text-zinc-300 font-semibold">"Quickstart Demo"</strong> above to execute live against Python test suites.
+          <div className="text-center py-8 px-4 font-mono text-xs space-y-2">
+            <div className="inline-flex p-2.5 rounded-full bg-zinc-800/80 text-blue-400 mb-1 border border-zinc-700/60">
+              <TerminalIcon className="w-5 h-5" />
+            </div>
+            <p className="text-zinc-300 font-medium">
+              Automated Pytest & Subprocess Runner
+            </p>
+            <p className="text-zinc-500 max-w-md mx-auto leading-relaxed text-[11px]">
+              Click <strong className="text-blue-400">"Run Pytest"</strong> or press <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">Ctrl+Enter</kbd> to execute this module's verification suite against the Python runtime.
+            </p>
           </div>
         )}
       </div>

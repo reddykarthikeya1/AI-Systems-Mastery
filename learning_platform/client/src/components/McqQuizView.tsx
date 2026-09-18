@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { CheckCircle2, XCircle, HelpCircle, Award, RotateCcw, ArrowRight, FileText, Check, AlertCircle, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { fetchModuleQuiz } from '../services/api';
 import { soundService } from '../services/sound';
 import { renderQuizMarkdown } from '../services/markdown';
+import { useMermaid } from '../hooks/useMermaid';
 
 export interface McqQuestion {
   id: number;
@@ -56,6 +57,9 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [autoCapturedCount, setAutoCapturedCount] = useState<number>(0);
   const [score, setScore] = useState<number>(savedScore?.score || 0);
+
+  const quizContainerRef = useRef<HTMLDivElement>(null);
+  useMermaid(quizContainerRef, [questions, selectedAnswers, checkedQuestions]);
 
   // Load and shuffle structured questions from API or local JSON
   const loadQuestions = useCallback(async () => {
@@ -409,7 +413,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
       )}
 
       {/* Questions List */}
-      <div className="space-y-6">
+      <div ref={quizContainerRef} className="space-y-6">
         {questions.map((q, qIndex) => {
           const isAnswered = selectedAnswers[q.id] !== undefined;
           const isChecked = checkedQuestions[q.id] || isSubmitted;

@@ -29,12 +29,16 @@ import { fetchDsaProblems, runDsaTest, formatCode, fetchModuleProblems, runProbl
 import { renderMarkdownWithMath } from '../services/markdown';
 import { soundService } from '../services/sound';
 import { fireConfettiBurst } from '../services/confetti';
+import { useMermaid } from '../hooks/useMermaid';
+import { handleMarkdownLinkClick } from '../services/linkInterceptor';
 
 interface DsaArenaViewProps {
   moduleTitle: string;
   moduleFolderPath: string;
   onBackToLesson?: () => void;
   onCompleteProblem?: (problemId: string) => void;
+  currentLessonTitle?: string;
+  isTheoryCompleted?: boolean;
 }
 
 export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
@@ -42,6 +46,8 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   moduleFolderPath,
   onBackToLesson,
   onCompleteProblem,
+  currentLessonTitle,
+  isTheoryCompleted = true,
 }) => {
   const [problems, setProblems] = useState<DsaProblem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,6 +65,10 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
   const [solvedSet, setSolvedSet] = useState<Set<string>>(new Set());
   const [renderedDescription, setRenderedDescription] = useState('');
   const [renderedExplanation, setRenderedExplanation] = useState('');
+  const [dismissedGate, setDismissedGate] = useState(false);
+
+  const arenaRef = useRef<HTMLDivElement>(null);
+  useMermaid(arenaRef, [currentIndex, renderedDescription, renderedExplanation]);
 
   const isDraggingConsole = useRef(false);
 
@@ -656,6 +666,34 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
         </div>
       </div>
 
+      {/* Soft Gating Signpost: Connects Arena back to lesson if not completed */}
+      {!isTheoryCompleted && !dismissedGate && (
+        <div className="mx-6 my-2.5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>
+              <strong>Recommended Learning Path:</strong> This challenge assumes foundational concepts from {currentLessonTitle ? `"${currentLessonTitle}"` : 'the module lessons'}.
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {onBackToLesson && (
+              <button
+                onClick={onBackToLesson}
+                className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold transition flex items-center gap-1"
+              >
+                ← Read Lesson First
+              </button>
+            )}
+            <button
+              onClick={() => setDismissedGate(true)}
+              className="px-2 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition"
+            >
+              Continue Practice
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Dual-Pane Workspace */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Column: Problem Description & Invariants */}
@@ -701,8 +739,10 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
               </div>
             </div>
 
-            {/* Rendered Description (with KaTeX formulas) */}
+            {/* Rendered Description (with KaTeX formulas and Mermaid diagrams) */}
             <div
+              ref={arenaRef}
+              onClick={(e) => handleMarkdownLinkClick(e, { moduleFolderPath })}
               className="prose prose-invert prose-slate max-w-none text-sm text-slate-300 leading-relaxed font-sans"
               dangerouslySetInnerHTML={{ __html: renderedDescription }}
             />

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import mermaid from 'mermaid';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
   Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
@@ -9,7 +8,8 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ModuleItem, LessonItem, TestResult, RunnerMode, LastPosition } from '../types';
-import { fetchFileContent, runTestCommand, runInteractiveCode } from '../services/api';
+import { fetchFileContent, fetchModuleGuide, runTestCommand, runInteractiveCode } from '../services/api';
+import { useMermaid } from '../hooks/useMermaid';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { TerminalRunner } from './TerminalRunner';
 import { SideCodeRunner, PageSnippet } from './SideCodeRunner';
@@ -262,128 +262,24 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   // Ref for theory content container to hydrate Mermaid diagrams
   const theoryContentRef = useRef<HTMLDivElement>(null);
+  useMermaid(theoryContentRef, [content, activeTab, notebookCells]);
 
-  // Automatic Mermaid Diagram Hydration for lesson prose and notebooks
+  // Project architectural guide loaded directly from /api/module-guide
+  const [moduleGuideMarkdown, setModuleGuideMarkdown] = useState<string>('');
+
   useEffect(() => {
-    if (activeTab !== 'theory') return;
-
-    try {
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
-        securityLevel: 'loose',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif',
-        themeVariables: {
-          fontSize: '14px',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif',
-        },
-        flowchart: {
-          htmlLabels: true,
-          padding: 32,
-          nodeSpacing: 60,
-          rankSpacing: 60,
-          curve: 'basis',
-        },
-      });
-    } catch {
-      // ignore init race
-    }
-
-    const renderMermaidBlocks = async () => {
-      if (!theoryContentRef.current) return;
-      const codeBlocks = theoryContentRef.current.querySelectorAll('pre code.language-mermaid, pre.language-mermaid');
-      for (let i = 0; i < codeBlocks.length; i++) {
-        const codeEl = codeBlocks[i];
-        const preEl = codeEl.tagName === 'PRE' ? codeEl : codeEl.parentElement;
-        if (!preEl || (preEl as any).dataset?.mermaidRendered) continue;
-        const rawCode = codeEl.textContent || '';
-        if (!rawCode.trim()) continue;
-        const renderId = `mermaid-lesson-${Date.now()}-${i}`;
-        try {
-          const { svg } = await mermaid.render(renderId, rawCode.trim());
-          const wrapper = document.createElement('div');
-          wrapper.className = 'mermaid-diagram-card my-6 p-6 rounded-2xl bg-surface border border-border shadow-card flex justify-center items-center overflow-x-auto transition-all';
-          wrapper.innerHTML = svg;
-          (preEl as any).dataset.mermaidRendered = 'true';
-          preEl.replaceWith(wrapper);
-
-          // --- Post-render SVG patch: fix foreignObject height truncation ---
-          // SVG foreignObject clips to its height attribute regardless of CSS overflow.
-          // Mermaid sometimes under-computes node heights for multi-line <br> labels.
-          // We measure the actual rendered content and expand everything that's too short.
-          requestAnimationFrame(() => {
-            const svgEl = wrapper.querySelector('svg');
-            if (!svgEl) return;
-            const foreignObjects = svgEl.querySelectorAll('foreignObject');
-            let viewBoxNeedsUpdate = false;
-            foreignObjects.forEach((fo) => {
-              const foHeight = parseFloat(fo.getAttribute('height') || '0');
-              // Measure actual rendered content height
-              const innerDiv = fo.querySelector('div');
-              if (!innerDiv) return;
-              const actualHeight = innerDiv.scrollHeight;
-              const PADDING = 16; // extra breathing room
-              if (actualHeight + PADDING > foHeight) {
-                const newHeight = actualHeight + PADDING;
-                const heightDelta = newHeight - foHeight;
-                fo.setAttribute('height', String(newHeight));
-                // Also expand the sibling rect/polygon inside the same .node group
-                const nodeGroup = fo.closest('.node, .label, g');
-                if (nodeGroup) {
-                  const rect = nodeGroup.querySelector('rect');
-                  if (rect) {
-                    const rectH = parseFloat(rect.getAttribute('height') || '0');
-                    rect.setAttribute('height', String(rectH + heightDelta));
-                  }
-                  const polygon = nodeGroup.querySelector('polygon');
-                  if (polygon) {
-                    // For polygons (diamonds, etc.), adjust the points
-                    const points = polygon.getAttribute('points');
-                    if (points) {
-                      const pts = points.split(/[\s,]+/).map(Number);
-                      // Find max-y and expand downward
-                      for (let p = 1; p < pts.length; p += 2) {
-                        if (pts[p] > 0) pts[p] += heightDelta / 2;
-                        else pts[p] -= heightDelta / 2;
-                      }
-                      polygon.setAttribute('points', pts.join(','));
-                    }
-                  }
-                }
-                viewBoxNeedsUpdate = true;
-              }
-            });
-            // Expand the SVG viewBox if any nodes grew
-            if (viewBoxNeedsUpdate) {
-              const vb = svgEl.getAttribute('viewBox');
-              if (vb) {
-                const parts = vb.split(/[\s,]+/).map(Number);
-                if (parts.length === 4) {
-                  // Add extra vertical space to accommodate expanded nodes
-                  parts[3] += 60;
-                  svgEl.setAttribute('viewBox', parts.join(' '));
-                }
-              }
-              // Also bump the SVG element's own height style
-              const svgHeight = svgEl.getAttribute('height');
-              if (svgHeight) {
-                const h = parseFloat(svgHeight);
-                if (!isNaN(h)) svgEl.setAttribute('height', String(h + 60));
-              }
-            }
-          });
-        } catch (err) {
-          console.warn('Failed to render Mermaid diagram in lesson:', err);
+    let active = true;
+    if (module?.folder_path) {
+      fetchModuleGuide(module.folder_path).then((data) => {
+        if (active && data?.content) {
+          setModuleGuideMarkdown(data.content);
         }
-      }
+      });
+    }
+    return () => {
+      active = false;
     };
-
-    const timer = setTimeout(() => {
-      renderMermaidBlocks();
-    }, 40);
-
-    return () => clearTimeout(timer);
-  }, [content, activeTab, notebookCells]);
+  }, [module?.folder_path]);
 
   // Reading time and complexity badge estimation
   const { readingMinutes, complexityBadge } = useMemo(() => {
@@ -1151,6 +1047,31 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </button>
       </div>
 
+      {/* Persistent Back-to-Lesson Affordance for all interactive activities */}
+      {activeTab !== 'theory' && (
+        <div className="mb-4 flex items-center justify-between px-4 py-2.5 rounded-xl bg-surface border border-border shadow-xs">
+          <button
+            onClick={() => setActiveTab('theory')}
+            className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+            <span>← Back to Lesson: {currentLesson.title}</span>
+          </button>
+          <span className="text-xs font-mono text-fg-subtle">
+            Module {module.module_num} · {
+              activeTab === 'project' ? 'Project Studio' :
+              activeTab === 'arena' ? 'Practice Arena' :
+              activeTab === 'debug' ? 'Bug Hunter Lab' :
+              activeTab === 'quiz' ? 'MCQ Assessment' :
+              activeTab === 'test' ? 'Pytest Console' :
+              activeTab === 'notes' ? 'Engineering Notes' :
+              activeTab === 'sql' ? 'SQL Playground' :
+              activeTab === 'arch' ? 'Architecture Canvas' : 'Interactive Lab'
+            }
+          </span>
+        </div>
+      )}
+
       {/* Main Content Stage */}
       {activeTab === 'sql' ? (
         <div className="w-full h-[750px]">
@@ -1166,9 +1087,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             moduleFolderPath={module.folder_path}
             moduleTitle={module.title}
             courseTitle={courseTitle}
-            guideMarkdown={content}
+            guideMarkdown={moduleGuideMarkdown || content}
             onCompleteProject={handleCompleteClick}
             isProjectCompleted={isCompleted}
+            onBackToLesson={() => setActiveTab('theory')}
+            currentLessonTitle={currentLesson.title}
+            module={module}
           />
         </div>
       ) : activeTab === 'arena' ? (
@@ -1177,6 +1101,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             moduleTitle={module.title}
             moduleFolderPath={module.folder_path}
             onBackToLesson={() => setActiveTab('theory')}
+            currentLessonTitle={currentLesson.title}
+            isTheoryCompleted={isCompleted}
           />
         </div>
       ) : (
@@ -1219,6 +1145,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       setScratchpadMode('python');
                       setIsScratchpadOpen(true);
                     }}
+                    onSelectLesson={onSelectLesson}
+                    onNavigateTab={(tab) => setActiveTab(tab as any)}
+                    moduleFolderPath={module.folder_path}
+                    allLessons={allLessons}
                   />
                 ) : (
                   <MarkdownViewer
@@ -1241,6 +1171,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     onCompleteAndNext={handleCompleteAndNext}
                     onOpenMasteryGate={onOpenMasteryGate}
                     getLessonBadge={getLessonBadge}
+                    onSelectLesson={onSelectLesson}
+                    onNavigateTab={(tab) => setActiveTab(tab as any)}
+                    courseId={courseId}
+                    moduleFolderPath={module.folder_path}
                   />
                 )}
               </div>
@@ -1276,6 +1210,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 <DebugLabView
                   moduleFolderPath={module.folder_path}
                   moduleTitle={module.title}
+                  onBackToLesson={() => setActiveTab('theory')}
+                  currentLessonTitle={currentLesson?.title}
+                  isTheoryCompleted={isCompleted}
                   onPassLab={() => {
                     confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
                     if (onPassLab) {

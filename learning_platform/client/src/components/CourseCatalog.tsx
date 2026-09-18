@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { BookOpen, Clock, ArrowRight, Play, CheckCircle2, Flame, Bookmark, Sparkles, Compass } from 'lucide-react';
 import { CourseSummary, ProgressPayload } from '../types';
 import { soundService } from '../services/sound';
 import { WelcomeGuide } from './WelcomeGuide';
 import { renderMarkdownWithMath } from '../services/markdown';
+import { useMermaid } from '../hooks/useMermaid';
 
 interface CourseCatalogProps {
   courses: CourseSummary[];
@@ -28,6 +29,8 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
   onOpenFlashcards,
   onOpenPortfolio,
 }) => {
+  const catalogRef = useRef<HTMLDivElement>(null);
+  useMermaid(catalogRef, [courses]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const categories = ['All', ...Array.from(new Set(courses.map((c) => c.category)))];
@@ -259,7 +262,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
       </div>
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div ref={catalogRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => {
           return (
             <div

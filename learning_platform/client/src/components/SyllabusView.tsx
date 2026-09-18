@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { 
   ArrowLeft, BookOpen, CheckCircle, Clock, ChevronRight, ChevronDown, Play, Terminal, 
   Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain, ShieldCheck 
 } from 'lucide-react';
 import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types';
 import { renderMarkdownWithMath } from '../services/markdown';
+import { useMermaid } from '../hooks/useMermaid';
+import { handleMarkdownLinkClick } from '../services/linkInterceptor';
 
 interface SyllabusViewProps {
   course: CourseSummary;
@@ -25,6 +27,8 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   onOpenMasteryGate,
   onRunCourseDemo,
 }) => {
+  const syllabusRef = useRef<HTMLDivElement>(null);
+  useMermaid(syllabusRef, [course]);
   // Calculate aggregate course progress
   const allCourseLessons: LessonItem[] = modules.flatMap((m) => m.lessons);
   const totalLessons = allCourseLessons.length;
@@ -149,6 +153,8 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             {course.title}
           </h1>
           <div
+            ref={syllabusRef}
+            onClick={(e) => handleMarkdownLinkClick(e, { courseId: course.id, onSelectLesson })}
             className="text-sm text-zinc-600 dark:text-zinc-400 max-w-4xl leading-relaxed mt-2 [&>p]:inline [&>p]:m-0"
             dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(course.description) }}
           />

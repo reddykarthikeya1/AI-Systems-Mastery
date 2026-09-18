@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle, GitCompare, Code, CheckSquare } from 'lucide-react';
+import { Bug, Play, CheckCircle2, RotateCcw, HelpCircle, Terminal, Check, AlertTriangle, GitCompare, Code, CheckSquare, ChevronLeft, Sparkles } from 'lucide-react';
 import { runInteractiveCode } from '../services/api';
 import { TestResult } from '../types';
 import confetti from 'canvas-confetti';
@@ -9,18 +9,25 @@ interface DebugLabViewProps {
   moduleFolderPath: string;
   moduleTitle: string;
   onPassLab: () => void;
+  onBackToLesson?: () => void;
+  currentLessonTitle?: string;
+  isTheoryCompleted?: boolean;
 }
 
 export const DebugLabView: React.FC<DebugLabViewProps> = ({
   moduleFolderPath,
   moduleTitle,
   onPassLab,
+  onBackToLesson,
+  currentLessonTitle,
+  isTheoryCompleted = false,
 }) => {
   const [symptoms, setSymptoms] = useState<string>('');
   const [code, setCode] = useState<string>('');
   const [starterCode, setStarterCode] = useState<string>('');
   const [answers, setAnswers] = useState<string>('');
   const [showSolution, setShowSolution] = useState<boolean>(false);
+  const [dismissedGate, setDismissedGate] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [result, setResult] = useState<TestResult | null>(null);
@@ -115,6 +122,34 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Soft Gating Banner */}
+      {!isTheoryCompleted && !dismissedGate && (
+        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>
+              <strong>Recommended Learning Path:</strong> This debugging drill tests invariants from {currentLessonTitle ? `"${currentLessonTitle}"` : 'the module lessons'}.
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {onBackToLesson && (
+              <button
+                onClick={onBackToLesson}
+                className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold transition flex items-center gap-1"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" /> Read Lesson First
+              </button>
+            )}
+            <button
+              onClick={() => setDismissedGate(true)}
+              className="px-2 py-1 rounded-lg text-zinc-400 hover:text-zinc-200 transition"
+            >
+              Continue Debugging
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header Banner */}
       <div className="rounded-xl p-5 bg-gradient-to-r from-rose-500/10 via-zinc-50 to-zinc-50 dark:from-rose-950/30 dark:via-surface dark:to-surface border border-rose-500/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
@@ -134,9 +169,18 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {onBackToLesson && (
+            <button
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1 text-fg-muted hover:text-fg"
+              onClick={onBackToLesson}
+              title="Return to lesson theory"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" /> Lesson
+            </button>
+          )}
+
           <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5" onClick={handleReset}
-            
             title="Reset to broken starter" >
             <RotateCcw className="w-3.5 h-3.5" /> Reset Broken Code
           </button>
@@ -147,6 +191,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
             disabled={isRunning} >
             <Play className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin' : 'fill-current'}`} />
             <span>{isRunning ? 'Diagnosing...' : 'Test & Verify Patch'}</span>
+            <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-mono rounded bg-rose-700/60 text-rose-100 border border-rose-400/30">Ctrl+↵</kbd>
           </button>
         </div>
       </div>

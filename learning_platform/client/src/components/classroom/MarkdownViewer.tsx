@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, CheckCircle2, Activity } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronRight, ChevronLeft, CheckCircle2, Activity, Copy, Check } from 'lucide-react';
 import { LessonItem } from '../../types';
 import { LessonSkeleton } from '../LessonSkeleton';
 import { MasteryChecklist } from '../MasteryChecklist';
 import { AlgorithmTraceScrubber } from '../AlgorithmTraceScrubber';
 import { fetchModuleTrace } from '../../services/api';
+import { useMermaid } from '../../hooks/useMermaid';
+import { handleMarkdownLinkClick } from '../../services/linkInterceptor';
 
 interface MarkdownViewerProps {
   isLoading: boolean;
@@ -26,6 +28,10 @@ interface MarkdownViewerProps {
   onCompleteAndNext: () => void;
   onOpenMasteryGate?: () => void;
   getLessonBadge: (type: string) => React.ReactNode;
+  onSelectLesson?: (filePath: string, lessonId: string, initialTab?: string) => void;
+  onNavigateTab?: (tab: string) => void;
+  courseId?: string;
+  moduleFolderPath?: string;
 }
 
 export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
@@ -48,9 +54,18 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
   onCompleteAndNext,
   onOpenMasteryGate,
   getLessonBadge,
+  onSelectLesson,
+  onNavigateTab,
+  courseId,
+  moduleFolderPath,
 }) => {
   const [showScrubber, setShowScrubber] = useState<boolean>(false);
   const [moduleTrace, setModuleTrace] = useState<any | null>(null);
+  const [notice, setNotice] = useState<{ msg: string; cmd?: string } | null>(null);
+  const [copiedCmd, setCopiedCmd] = useState(false);
+
+  const markdownRef = useRef<HTMLDivElement>(null);
+  useMermaid(markdownRef, [content]);
 
   const currentLesson = allLessons[currentLessonIndex];
 
@@ -92,8 +107,48 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
     lessonId.toLowerCase().includes('algorithm') ||
     lessonId.toLowerCase().includes('dsa');
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    handleMarkdownLinkClick(e, {
+      currentFilePath: currentLesson?.file_path,
+      moduleFolderPath,
+      courseId,
+      allLessons,
+      onSelectLesson,
+      onNavigateTab,
+      onShowNotice: (msg, cmd) => {
+        setNotice({ msg, cmd });
+        setCopiedCmd(false);
+        setTimeout(() => setNotice(null), 4000);
+      },
+    });
+  };
+
+  const handleCopyNoticeCmd = () => {
+    if (notice?.cmd) {
+      navigator.clipboard.writeText(notice.cmd);
+      setCopiedCmd(true);
+      setTimeout(() => setCopiedCmd(false), 2000);
+    }
+  };
+
   return (
-    <div className="rounded-2xl bg-surface border border-border p-8 sm:p-10 shadow-sm">
+    <div className="rounded-2xl bg-surface border border-border p-8 sm:p-10 shadow-sm relative">
+      {/* Dynamic Link Interception Toast/Notice */}
+      {notice && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-zinc-900 text-zinc-100 border border-zinc-700 shadow-2xl animate-in slide-in-from-bottom-2 duration-200">
+          <span className="text-xs font-mono">{notice.msg}</span>
+          {notice.cmd && (
+            <button
+              onClick={handleCopyNoticeCmd}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-sky-400 border border-zinc-600 transition-colors"
+            >
+              {copiedCmd ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copiedCmd ? 'Copied' : 'Copy CLI'}</span>
+            </button>
+          )}
+        </div>
+      )}
+
       {isLoading ? (
         <LessonSkeleton />
       ) : (
@@ -128,6 +183,8 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
           )}
 
           <div
+            ref={markdownRef}
+            onClick={handleLinkClick}
             className={`markdown-body text-fg mx-auto transition-all ${measureClass} ${fontSizeClass} ${fontFamilyClass}`}
             dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(content) }}
           />

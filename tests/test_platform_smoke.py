@@ -164,6 +164,17 @@ class TestPlatformSmoke(unittest.TestCase):
         self.assertIn("exit_code", res)
         self.assertIn("stdout", res)
 
+    def test_12_module_guide_endpoint(self):
+        """Verify /api/module-guide serves PROJECT_GUIDE.md across modules."""
+        resp = self.client.get("/api/module-guide?module_path=01_Advanced_Python/Module_01_Python_Fundamentals")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertIn("path", data)
+        self.assertIn("content", data)
+        self.assertIn("PROJECT_GUIDE", data["path"])
+        self.assertIn("3-Tier Progressive Learning Path", data["content"])
+
 
 if __name__ == "__main__":
     unittest.main()
+

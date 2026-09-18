@@ -524,6 +524,42 @@ def get_file_content(path: str = Query(..., description="Relative path from repo
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@app.get("/api/module-guide")
+def get_module_guide(module_path: str = Query(..., description="Relative path of the module folder from repo root")):
+    """Finds and serves the PROJECT_GUIDE.md for the requested module."""
+    safe_dir = (BASE_DIR / module_path).resolve()
+    if not safe_dir.is_relative_to(BASE_DIR):
+        raise HTTPException(status_code=403, detail="Access denied: Path traversal detected")
+    if not safe_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Module directory not found")
+
+    # Search for PROJECT_GUIDE.md variants (e.g. 09_PROJECT_GUIDE.md, 12_PROJECT_GUIDE.md, PROJECT_GUIDE.md)
+    seen = set()
+    candidates = []
+    for pattern in ["*PROJECT_GUIDE*.md", "*project_guide*.md", "PROJECT_GUIDE.md"]:
+        for p in safe_dir.glob(pattern):
+            if p.is_file() and p.resolve() not in seen:
+                seen.add(p.resolve())
+                candidates.append(p)
+
+    candidates.sort(key=lambda p: p.name)
+
+    if not candidates:
+        raise HTTPException(status_code=404, detail="Project guide not found for this module")
+
+    guide_path = candidates[0]
+    try:
+        content = guide_path.read_text(encoding="utf-8", errors="replace")
+        return {
+            "path": guide_path.relative_to(BASE_DIR).as_posix(),
+            "filename": guide_path.name,
+            "content": content,
+            "size_bytes": guide_path.stat().st_size,
+        }
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 def _parse_pytest_output(stdout: str, stderr: str) -> dict:
     tests = []
     test_line_regex = re.compile(r'([^\s:]+\.py)::([^\s]+)\s+(PASSED|FAILED|ERROR|SKIPPED)')

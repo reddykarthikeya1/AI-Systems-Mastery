@@ -3,13 +3,15 @@ import {
   Play, Save, RotateCcw, CheckCircle2, XCircle, AlertCircle, FileCode, CheckSquare, 
   Eye, Terminal, Clock, Folder, ChevronRight, ChevronDown, Lock, Check, Columns, Maximize2, 
   FileText, Sparkles, Sliders, Split, Code2, AlertTriangle, BookOpen, Compass, ShieldCheck,
-  Lightbulb, Layers, Flame, ArrowRight, RefreshCw
+  Lightbulb, Layers, Flame, ArrowRight, RefreshCw, ArrowLeft, Copy
 } from 'lucide-react';
 import { fetchFileContent, runTestCommand, formatCode } from '../services/api';
-import { TestResult, SingleTestCaseResult } from '../types';
+import { TestResult, SingleTestCaseResult, ModuleItem } from '../types';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { soundService } from '../services/sound';
 import { fireConfettiBurst } from '../services/confetti';
+import { useMermaid } from '../hooks/useMermaid';
+import { handleMarkdownLinkClick } from '../services/linkInterceptor';
 
 interface ProjectStudioProps {
   moduleFolderPath: string;
@@ -18,6 +20,9 @@ interface ProjectStudioProps {
   guideMarkdown: string;
   onCompleteProject: () => void;
   isProjectCompleted: boolean;
+  onBackToLesson?: () => void;
+  currentLessonTitle?: string;
+  module?: ModuleItem;
 }
 
 interface StudioFile {
@@ -30,7 +35,7 @@ interface StudioFile {
 }
 
 type ViewMode = 'split' | 'editor' | 'spec';
-type LeftTab = 'roadmap' | 'guide' | 'tests';
+type LeftTab = 'orientation' | 'roadmap' | 'guide' | 'tests';
 
 interface ExtractedItem {
   name: string;
@@ -46,6 +51,9 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
   guideMarkdown,
   onCompleteProject,
   isProjectCompleted,
+  onBackToLesson,
+  currentLessonTitle,
+  module,
 }) => {
   const [files, setFiles] = useState<StudioFile[]>([]);
   const [activeFileIndex, setActiveFileIndex] = useState<number>(0);
@@ -59,10 +67,14 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
   const [fontSize, setFontSize] = useState<'sm' | 'base'>('sm');
   const [activeTerminalTab, setActiveTerminalTab] = useState<'breakdown' | 'tests' | 'diff'>('breakdown');
   const [testScope, setTestScope] = useState<'workspace' | 'solution'>('workspace');
-  const [leftTab, setLeftTab] = useState<LeftTab>('roadmap');
+  const [leftTab, setLeftTab] = useState<LeftTab>('orientation');
+  const [orientationSubTab, setOrientationSubTab] = useState<'delta' | 'manifest' | 'phases'>('delta');
   const [showResetConfirm, setShowResetConfirm] = useState<boolean>(false);
   const [expandedTestIdx, setExpandedTestIdx] = useState<number | null>(null);
   const [openHintIndex, setOpenHintIndex] = useState<number | null>(null);
+
+  const guideContainerRef = useRef<HTMLDivElement>(null);
+  useMermaid(guideContainerRef, [guideMarkdown, leftTab]);
 
   const [milestones, setMilestones] = useState<Record<string, boolean>>({
     m1: false,
@@ -510,8 +522,19 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
         {/* Left Column: Guided Direction, Roadmap & Specifications */}
         {(viewMode === 'split' || viewMode === 'spec') && (
           <div className={`${viewMode === 'split' ? 'xl:col-span-5' : 'w-full'} space-y-4`}>
-            {/* Left Navigation Tabs: Roadmap | Specification | Test Plan */}
+            {/* Left Navigation Tabs: Orientation | Milestones | Project Guide | Test Plan */}
             <div className="rounded-2xl bg-surface border border-border/80 p-2 shadow-sm flex items-center gap-1">
+              <button
+                onClick={() => setLeftTab('orientation')}
+                className={`flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
+                  leftTab === 'orientation'
+                    ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
+                    : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
+                }`}
+              >
+                <Compass className="w-4 h-4" />
+                <span>Orientation</span>
+              </button>
               <button
                 onClick={() => setLeftTab('roadmap')}
                 className={`flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
@@ -520,8 +543,8 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                     : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
                 }`}
               >
-                <Compass className="w-4 h-4" />
-                <span>Roadmap</span>
+                <CheckSquare className="w-4 h-4" />
+                <span>Milestones</span>
               </button>
               <button
                 onClick={() => setLeftTab('guide')}
@@ -532,7 +555,7 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Architectural Specs</span>
+                <span>Project Guide</span>
               </button>
               <button
                 onClick={() => setLeftTab('tests')}
@@ -546,6 +569,127 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                 <span>Test Plan</span>
               </button>
             </div>
+
+            {/* TAB 0: ARCHITECTURAL ORIENTATION & CAPSTONE BRIDGE */}
+            {leftTab === 'orientation' && (
+              <div className="rounded-2xl bg-surface border border-border/80 p-5 shadow-sm space-y-4 max-h-[720px] overflow-y-auto">
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <div className="flex items-center gap-2">
+                    <Compass className="w-4 h-4 text-emerald-500" />
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-fg">
+                      Architectural Blueprint & Bridge
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+                    Mental Model Bridge
+                  </span>
+                </div>
+
+                {/* Sub-tab pills */}
+                <div className="flex items-center gap-1.5 p-1 rounded-xl bg-surface-raised border border-border text-xs">
+                  <button
+                    onClick={() => setOrientationSubTab('delta')}
+                    className={`flex-1 py-1.5 rounded-lg font-medium transition ${
+                      orientationSubTab === 'delta'
+                        ? 'bg-emerald-500 text-white shadow-xs'
+                        : 'text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    Model Delta
+                  </button>
+                  <button
+                    onClick={() => setOrientationSubTab('manifest')}
+                    className={`flex-1 py-1.5 rounded-lg font-medium transition ${
+                      orientationSubTab === 'manifest'
+                        ? 'bg-emerald-500 text-white shadow-xs'
+                        : 'text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    Directory Tour
+                  </button>
+                  <button
+                    onClick={() => setOrientationSubTab('phases')}
+                    className={`flex-1 py-1.5 rounded-lg font-medium transition ${
+                      orientationSubTab === 'phases'
+                        ? 'bg-emerald-500 text-white shadow-xs'
+                        : 'text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    3 Tiers
+                  </button>
+                </div>
+
+                {orientationSubTab === 'delta' && (
+                  <div className="space-y-3 text-xs leading-relaxed">
+                    <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300">
+                      <strong>The Pedagogical Bridge:</strong> The beginner playground simplifies external realities so you grasp the core invariant. The production implementation wraps that same invariant in real-world concurrency, durability, and fault tolerance.
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div className="p-3.5 rounded-xl bg-surface-raised border border-border space-y-2">
+                        <span className="font-bold text-amber-600 dark:text-amber-400 uppercase text-[11px] block">
+                          Beginner Playground (Mental Model)
+                        </span>
+                        <ul className="space-y-1.5 text-fg-muted">
+                          <li>• In-memory primitives (dict, list) with no disk sync</li>
+                          <li>• Synchronous single-threaded function execution</li>
+                          <li>• Self-validating print blocks to observe state</li>
+                        </ul>
+                      </div>
+                      <div className="p-3.5 rounded-xl bg-surface-raised border border-border space-y-2">
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-[11px] block">
+                          Production Implementation (System Reality)
+                        </span>
+                        <ul className="space-y-1.5 text-fg-muted">
+                          <li>• Write-Ahead Logs (WAL), atomic fsync, and binary serialization</li>
+                          <li>• Concurrency locks, thread-safe channels, and race protection</li>
+                          <li>• Automated pytest invariant suites and property-based tests</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {orientationSubTab === 'manifest' && (
+                  <div className="space-y-2.5 text-xs">
+                    <p className="text-fg-muted">
+                      Standard module layout for hands-on project engineering:
+                    </p>
+                    <div className="p-3 rounded-xl bg-surface-raised border border-border font-mono text-[11px] space-y-1.5 text-fg">
+                      <div>📁 <strong>starter/</strong> — Unimplemented scaffolds with type signatures & docstrings.</div>
+                      <div>📁 <strong>project_solution/</strong> — Fully implemented reference solution with production tests.</div>
+                      <div>📄 <strong>PROJECT_GUIDE.md</strong> — Architectural specification & 3-tier milestone roadmap.</div>
+                    </div>
+                  </div>
+                )}
+
+                {orientationSubTab === 'phases' && (
+                  <div className="space-y-2 text-xs">
+                    <div className="p-3 rounded-xl bg-surface-raised border border-border space-y-1">
+                      <strong className="text-blue-600 dark:text-blue-400">Tier 1: Guided Implementation</strong>
+                      <p className="text-fg-muted">Follow function signatures and inline hints to establish baseline behavior.</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-surface-raised border border-border space-y-1">
+                      <strong className="text-amber-600 dark:text-amber-400">Tier 2: Boundary Invariants & Hardening</strong>
+                      <p className="text-fg-muted">Add validation for zero, negative, and invalid inputs with proper exceptions.</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-surface-raised border border-border space-y-1">
+                      <strong className="text-emerald-600 dark:text-emerald-400">Tier 3: Full Verification & Mastery</strong>
+                      <p className="text-fg-muted">Pass all automated assertions and compare against the production solution.</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-2 border-t border-border flex justify-end">
+                  <button
+                    onClick={() => setLeftTab('guide')}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5 transition shadow-xs"
+                  >
+                    <span>Proceed to Project Guide</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* TAB 1: STEP-BY-STEP GUIDED ROADMAP */}
             {leftTab === 'roadmap' && (
@@ -721,7 +865,14 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
                   </span>
                 </div>
                 <div
-                  className="markdown-body text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed space-y-4"
+                  ref={guideContainerRef}
+                  onClick={(e) =>
+                    handleMarkdownLinkClick(e, {
+                      moduleFolderPath,
+                      onNavigateTab: (tab) => setLeftTab(tab as any),
+                    })
+                  }
+                  className="markdown-body text-xs sm:text-sm text-fg leading-relaxed space-y-4"
                   dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(guideMarkdown) }}
                 />
               </div>
@@ -771,6 +922,19 @@ export const ProjectStudio: React.FC<ProjectStudioProps> = ({
           <div className={`${viewMode === 'split' ? 'xl:col-span-7' : 'w-full'} space-y-4`}>
             {/* Editor Container */}
             <div className="rounded-2xl bg-surface border border-border shadow-card overflow-hidden flex flex-col">
+              {/* In-App Workflow & Shortcut Guide */}
+              <div className="flex items-center justify-between px-4 py-2 bg-blue-50/70 dark:bg-blue-950/30 border-b border-blue-200/60 dark:border-blue-900/40 text-xs text-blue-900 dark:text-blue-300">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span>
+                    <strong>In-App Workflow:</strong> 1. Review <strong>Orientation & Guide</strong> on left · 2. Complete the functions below · 3. Click <strong>Run Project Tests</strong>
+                  </span>
+                </div>
+                <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800/60">
+                  Ctrl+Enter to test
+                </span>
+              </div>
+
               {/* File Tabs & Controls Header */}
               <div className="flex items-center justify-between px-3 py-2 bg-surface-raised border-b border-border overflow-x-auto gap-2 select-none">
                 {/* File Tabs */}

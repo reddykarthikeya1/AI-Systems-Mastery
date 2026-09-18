@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Layers, Play, RotateCcw, Check, X, Clock, Copy, AlertCircle, Terminal, Code2 } from 'lucide-react';
 import { LessonItem, TestResult } from '../../types';
 import { runInteractiveCode } from '../../services/api';
 import { soundService } from '../../services/sound';
+import { useMermaid } from '../../hooks/useMermaid';
+import { handleMarkdownLinkClick } from '../../services/linkInterceptor';
 
 interface NotebookCell {
   type: 'markdown' | 'code';
@@ -14,13 +16,23 @@ interface NotebookViewerProps {
   notebookCells: NotebookCell[];
   renderMarkdownWithMath: (text: string) => string;
   onRunCode?: (code: string) => void;
+  onSelectLesson?: (filePath: string, lessonId: string, initialTab?: string) => void;
+  onNavigateTab?: (tab: string) => void;
+  moduleFolderPath?: string;
+  allLessons?: LessonItem[];
 }
 
 export const NotebookViewer: React.FC<NotebookViewerProps> = ({
   currentLesson,
   notebookCells,
   renderMarkdownWithMath,
+  onSelectLesson,
+  onNavigateTab,
+  moduleFolderPath,
+  allLessons,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useMermaid(containerRef, [notebookCells]);
   const [runningCells, setRunningCells] = useState<Record<number, boolean>>({});
   const [cellResults, setCellResults] = useState<Record<number, TestResult>>({});
   const [isRunningAll, setIsRunningAll] = useState(false);
@@ -67,7 +79,7 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
   };
 
   return (
-    <div className="rounded-2xl bg-surface border border-border p-6 sm:p-8 shadow-card space-y-6">
+    <div ref={containerRef} className="rounded-2xl bg-surface border border-border p-6 sm:p-8 shadow-card space-y-6">
       <div className="flex items-center justify-between border-b border-border pb-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
@@ -133,6 +145,15 @@ export const NotebookViewer: React.FC<NotebookViewerProps> = ({
               {cell.type === 'markdown' ? (
                 <div
                   className="markdown-body text-fg text-sm leading-relaxed"
+                  onClick={(e) =>
+                    handleMarkdownLinkClick(e, {
+                      currentFilePath: currentLesson.file_path,
+                      moduleFolderPath,
+                      allLessons,
+                      onSelectLesson,
+                      onNavigateTab,
+                    })
+                  }
                   dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(cell.source) }}
                 />
               ) : (

@@ -43,6 +43,16 @@ export async function fetchFileContent(path: string): Promise<{ content: string;
   return res.json();
 }
 
+export async function fetchModuleGuide(modulePath: string): Promise<{ path: string; filename: string; content: string } | null> {
+  try {
+    const res = await fetch(`${API_BASE}/module-guide?module_path=${encodeURIComponent(modulePath)}`);
+    if (res.ok) return res.json();
+  } catch (e) {
+    console.warn('Could not fetch module project guide', e);
+  }
+  return null;
+}
+
 export async function runTestCommand(
   targetPath: string,
   commandType: 'pytest' | 'python' = 'pytest',
