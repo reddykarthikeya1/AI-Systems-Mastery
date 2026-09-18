@@ -174,6 +174,13 @@ class TestPlatformSmoke(unittest.TestCase):
         self.assertIn("PROJECT_GUIDE", data["path"])
         self.assertIn("3-Tier Progressive Learning Path", data["content"])
 
+    def test_13_shutdown_endpoint(self):
+        """Verify /api/shutdown endpoint returns status shutting_down."""
+        resp = self.client.post("/api/shutdown")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data.get("status"), "shutting_down")
+
 
 if __name__ == "__main__":
     unittest.main()

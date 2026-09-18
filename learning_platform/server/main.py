@@ -90,6 +90,22 @@ def client_disconnect():
     return {"status": "shutdown_scheduled"}
 
 
+@app.post("/api/shutdown")
+def server_shutdown():
+    """Immediately and gracefully shuts down the backend server on launcher window close."""
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return {"status": "shutting_down"}
+
+    def _do_exit():
+        time.sleep(0.3)
+        print("\n[*] Shutdown signal received from application window. Stopping backend...")
+        os._exit(0)
+
+    import threading
+    threading.Thread(target=_do_exit, daemon=True).start()
+    return {"status": "shutting_down"}
+
+
 # -----------------------------------------------------------------------------
 # Models
 # -----------------------------------------------------------------------------

@@ -904,6 +904,46 @@ def clean_stale_browser_locks(profile_dir: Path) -> None:
             pass
 
 
+def focus_existing_academy_window() -> bool:
+    """Attempts to find and focus an already-open Academy window on Windows desktop."""
+    if sys.platform != "win32":
+        return False
+    try:
+        import ctypes
+        user32 = ctypes.windll.user32
+        candidates = [
+            "AI & Systems Engineering Academy — Karthikeya Reddy",
+            "AI & Systems Academy — Karthikeya Reddy",
+            "AI & Systems Academy - Karthikeya Reddy",
+            "AI & Systems Academy",
+            "AI AND SYSTEMS ENGINEERING ACADEMY",
+        ]
+        for title in candidates:
+            hwnd = user32.FindWindowW(None, title)
+            if hwnd:
+                SW_RESTORE = 9
+                user32.ShowWindow(hwnd, SW_RESTORE)
+                user32.SetForegroundWindow(hwnd)
+                return True
+    except Exception:
+        pass
+    return False
+
+
+def request_server_shutdown(port: int, host: str = "127.0.0.1") -> None:
+    """Requests graceful shutdown of the backend server."""
+    import urllib.request
+    try:
+        req = urllib.request.Request(f"http://{host}:{port}/api/shutdown", data=b"", method="POST")
+        urllib.request.urlopen(req, timeout=1.0)
+    except Exception:
+        try:
+            req = urllib.request.Request(f"http://{host}:{port}/api/client-disconnect", data=b"", method="POST")
+            urllib.request.urlopen(req, timeout=1.0)
+        except Exception:
+            pass
+
+
 def log_launcher_event(msg: str) -> None:
     """Appends diagnostic events to .academy_launcher.log for zero-friction debugging."""
     try:
@@ -932,7 +972,6 @@ def launch_interface(
         print(f"[!] Notice: Waiting for server to initialize on port {port}...")
         time.sleep(1.5)
     else:
-        # Brief 0.3s delay to ensure static files and routes are warm
         time.sleep(0.3)
 
     if force_browser:
@@ -946,6 +985,19 @@ def launch_interface(
         profile_dir = ROOT_DIR / ".academy_app_profile"
         profile_dir.mkdir(exist_ok=True)
         clean_stale_browser_locks(profile_dir)
+
+        # Check if lockfile is actively locked by another process
+        lock_file = profile_dir / "lockfile"
+        if lock_file.is_file():
+            try:
+                with open(lock_file, "r+b"):
+                    pass
+            except OSError:
+                # Profile is locked; use clean alternate directory
+                profile_dir = ROOT_DIR / ".academy_app_profile_alt"
+                profile_dir.mkdir(exist_ok=True)
+                clean_stale_browser_locks(profile_dir)
+
         cmd = [
             app_browser,
             f"--app={url}",
@@ -955,15 +1007,31 @@ def launch_interface(
             "--no-first-run",
             "--no-default-browser-check",
             "--disable-background-mode",
+            "--disable-background-networking",
             "--disable-features=TranslateUI,msEdgeStartupBoost",
             "--no-service-autorun",
         ]
         try:
-            proc = subprocess.Popen(cmd)
+            creationflags = 0
+            if sys.platform == "win32":
+                creationflags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+
+            proc = subprocess.Popen(cmd, creationflags=creationflags)
             browser_name = Path(app_browser).stem.replace(".exe", "")
             print(f"\n[+] Dedicated Desktop Application Window launched via {browser_name} (PID: {proc.pid}).")
             print("[*] Running as standalone desktop application. Close window or press Ctrl+C to exit.")
             log_launcher_event(f"Dedicated desktop window launched via {browser_name} (PID: {proc.pid}) at {url}")
+
+            # Verify the process doesn't immediately crash / exit
+            time.sleep(1.2)
+            if proc.poll() is not None and proc.returncode != 0:
+                exit_code = proc.returncode
+                log_launcher_event(f"Dedicated desktop window exited prematurely with code {exit_code}.")
+                print(f"[!] Dedicated window exited prematurely (code {exit_code}). Opening in default browser...")
+                webbrowser.open(url)
+                log_launcher_event(f"Opened default browser fallback at {url}")
+                return None
+
             return proc
         except Exception as exc:
             print(f"[!] Failed to launch dedicated app window ({exc}). Falling back to browser...")
@@ -987,11 +1055,36 @@ def main() -> None:
     log_launcher_event(f"Launcher invoked with port={req_port}, browser={args.browser}, headless={args.headless}")
 
     # 1. Check if an Academy instance is already running on requested port
-    if is_academy_server_running(req_port):
+    # Or if the port is in use and an Academy instance is warming up
+    is_running = is_academy_server_running(req_port)
+    if not is_running and is_port_in_use(req_port):
+        is_running = wait_for_http_ready(req_port, timeout=2.0)
+
+    if is_running:
         print(f"\n[*] AI & Systems Academy is already running on http://127.0.0.1:{req_port}!")
-        print("[+] Opening Academy window now...")
         log_launcher_event(f"Re-attaching to existing Academy server on port {req_port}")
-        launch_interface(f"http://127.0.0.1:{req_port}", port=req_port, force_browser=args.browser, headless=args.headless)
+
+        if args.headless:
+            print("[*] Server is already active in headless mode.")
+            return
+
+        # Check if an existing Academy window can be brought to foreground
+        if not args.browser and focus_existing_academy_window():
+            print("[+] Brought active Academy window to the foreground.")
+            log_launcher_event("Focused existing Academy window.")
+            return
+
+        print("[+] Opening Academy window now...")
+        re_proc = launch_interface(f"http://127.0.0.1:{req_port}", port=req_port, force_browser=args.browser, headless=args.headless)
+        if re_proc is not None:
+            try:
+                log_launcher_event("Supervising re-attached Academy window...")
+                re_proc.wait()
+                print("\n[*] Academy window closed. Terminating background server...")
+                log_launcher_event("Re-attached window closed by user. Terminating server.")
+                request_server_shutdown(req_port)
+            except Exception as e:
+                log_launcher_event(f"Re-attach supervisor notice: {e}")
         return
 
     # 2. Check if the port is busy with another service; if so, allocate an open port
@@ -1012,11 +1105,27 @@ def main() -> None:
 
     def start_ui_supervisor() -> None:
         nonlocal window_proc
+        launch_start = time.time()
         window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
         if window_proc is not None:
             try:
                 window_proc.wait()
-                log_launcher_event("Browser window launcher finished handoff. Server remains active and responsive.")
+                elapsed = time.time() - launch_start
+                # If window was open for more than 2 seconds, user used and closed the application
+                if elapsed >= 2.0:
+                    print("\n[*] Application window closed by user. Terminating Academy server...")
+                    log_launcher_event("Application window closed by user. Terminating server.")
+                    if "uvicorn" in server_holder:
+                        server_holder["uvicorn"].should_exit = True
+                    if "httpd" in server_holder:
+                        try:
+                            server_holder["httpd"].shutdown()
+                        except Exception:
+                            pass
+                    time.sleep(0.5)
+                    os._exit(0)
+                else:
+                    log_launcher_event("Browser window launcher finished handoff. Server remains active and responsive.")
             except Exception as e:
                 log_launcher_event(f"UI supervisor notice: {e}")
                 pass
