@@ -15,6 +15,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import shutil
 from pathlib import Path
 from typing import Any, List, Optional
 
@@ -27,6 +28,8 @@ from pydantic import BaseModel
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 PROGRESS_FILE = BASE_DIR / ".study_progress.json"
 CLIENT_DIST = Path(__file__).resolve().parent.parent / "client" / "dist"
+USER_WORKSPACES_DIR = BASE_DIR / "user_workspaces"
+USER_WORKSPACES_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title="Karthikeya Reddy's AI & Systems Academy",
@@ -134,6 +137,7 @@ class CourseSummary(BaseModel):
 class RunTestRequest(BaseModel):
     target_path: str
     command_type: str = "pytest"  # 'pytest' or 'python'
+    scope: Optional[str] = "workspace"  # 'workspace' or 'solution'
 
 
 class RunCodeRequest(BaseModel):
@@ -520,6 +524,50 @@ def get_file_content(path: str = Query(..., description="Relative path from repo
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+def _parse_pytest_output(stdout: str, stderr: str) -> dict:
+    tests = []
+    test_line_regex = re.compile(r'([^\s:]+\.py)::([^\s]+)\s+(PASSED|FAILED|ERROR|SKIPPED)')
+    for line in stdout.splitlines():
+        m = test_line_regex.search(line)
+        if m:
+            file_name, test_name, status = m.groups()
+            tests.append({
+                "name": test_name,
+                "file": file_name,
+                "status": status.lower(),
+            })
+
+    failures = {}
+    if "FAILURES" in stdout or "ERRORS" in stdout:
+        parts = re.split(r'={3,}\s*(?:FAILURES|ERRORS)\s*={3,}', stdout)
+        if len(parts) > 1:
+            fail_section = parts[1].split('short test summary info')[0]
+            fail_blocks = re.split(r'_{3,}\s*([^\s_]+)\s*_{3,}', fail_section)
+            for i in range(1, len(fail_blocks), 2):
+                t_name = fail_blocks[i]
+                t_err = fail_blocks[i + 1].strip()
+                failures[t_name] = t_err
+
+    for t in tests:
+        if t["name"] in failures:
+            t["error"] = failures[t["name"]]
+
+    total = len(tests)
+    passed = sum(1 for t in tests if t["status"] == "passed")
+    failed = sum(1 for t in tests if t["status"] in ("failed", "error"))
+    skipped = sum(1 for t in tests if t["status"] == "skipped")
+    percent = round((passed / total * 100), 1) if total > 0 else (100 if passed > 0 else 0)
+
+    return {
+        "tests": tests,
+        "total": total,
+        "passed": passed,
+        "failed": failed,
+        "skipped": skipped,
+        "percent": percent,
+    }
+
+
 @app.post("/api/run-test")
 def run_test_command(req: RunTestRequest):
     """Executes pytest or python demo and returns execution output."""
@@ -527,8 +575,50 @@ def run_test_command(req: RunTestRequest):
     if not safe_target.is_relative_to(BASE_DIR):
         raise HTTPException(status_code=403, detail="Access denied")
 
+    starter_dir = safe_target / "starter" if safe_target.is_dir() else None
+    solution_dir = safe_target / "project_solution" if safe_target.is_dir() else None
+    exec_cwd = str(BASE_DIR)
+    exec_env = os.environ.copy()
+
     if req.command_type == "pytest":
-        cmd = [sys.executable, "-m", "pytest", str(safe_target), "-v", "--tb=short"]
+        # Check if targeting a guided project module
+        if (starter_dir and starter_dir.is_dir()) or (solution_dir and solution_dir.is_dir()):
+            if req.scope == "solution" and solution_dir and solution_dir.is_dir():
+                exec_cwd = str(solution_dir)
+                exec_env["PYTHONPATH"] = str(solution_dir) + os.pathsep + exec_env.get("PYTHONPATH", "")
+                cmd = [sys.executable, "-m", "pytest", str(solution_dir), "-v", "--tb=short"]
+            else:
+                # Workspace overlay: test user's implementation
+                workspace_dir = (USER_WORKSPACES_DIR / req.target_path).resolve()
+                workspace_dir.mkdir(parents=True, exist_ok=True)
+
+                # Copy support and test files from starter/
+                if starter_dir and starter_dir.is_dir():
+                    for item in starter_dir.iterdir():
+                        if item.name.startswith(".") or item.name == "__pycache__":
+                            continue
+                        dest = workspace_dir / item.name
+                        if not dest.exists():
+                            if item.is_file():
+                                shutil.copy2(item, dest)
+                            elif item.is_dir():
+                                shutil.copytree(item, dest, dirs_exist_ok=True)
+
+                # Ensure test_*.py exists in workspace; if not in starter, check solution
+                ws_tests = list(workspace_dir.glob("test_*.py"))
+                if not ws_tests and solution_dir and solution_dir.is_dir():
+                    for item in solution_dir.glob("test_*.py"):
+                        dest = workspace_dir / item.name
+                        if not dest.exists():
+                            shutil.copy2(item, dest)
+                    if (solution_dir / "conftest.py").is_file() and not (workspace_dir / "conftest.py").exists():
+                        shutil.copy2(solution_dir / "conftest.py", workspace_dir / "conftest.py")
+
+                exec_cwd = str(workspace_dir)
+                exec_env["PYTHONPATH"] = str(workspace_dir) + os.pathsep + exec_env.get("PYTHONPATH", "")
+                cmd = [sys.executable, "-m", "pytest", str(workspace_dir), "-o", f"pythonpath={workspace_dir}", "-v", "--tb=short"]
+        else:
+            cmd = [sys.executable, "-m", "pytest", str(safe_target), "-v", "--tb=short"]
     else:
         cmd = [sys.executable, str(safe_target)]
 
@@ -536,18 +626,27 @@ def run_test_command(req: RunTestRequest):
     try:
         proc = subprocess.run(
             cmd,
-            cwd=str(BASE_DIR),
+            cwd=exec_cwd,
+            env=exec_env,
             capture_output=True,
             text=True,
             timeout=60,
         )
         duration = time.perf_counter() - start_time
+        parsed = _parse_pytest_output(proc.stdout, proc.stderr)
         return {
             "exit_code": proc.returncode,
             "stdout": proc.stdout,
             "stderr": proc.stderr,
             "duration_sec": round(duration, 3),
             "status": "passed" if proc.returncode == 0 else "failed",
+            "scope": req.scope or "workspace",
+            "total_tests": parsed["total"],
+            "passed_tests": parsed["passed"],
+            "failed_tests": parsed["failed"],
+            "skipped_tests": parsed["skipped"],
+            "percent": parsed["percent"],
+            "tests": parsed["tests"],
         }
     except subprocess.TimeoutExpired:
         return {
@@ -556,6 +655,13 @@ def run_test_command(req: RunTestRequest):
             "stderr": "Execution timed out after 60 seconds.",
             "duration_sec": 60.0,
             "status": "timeout",
+            "scope": req.scope or "workspace",
+            "total_tests": 0,
+            "passed_tests": 0,
+            "failed_tests": 0,
+            "skipped_tests": 0,
+            "percent": 0,
+            "tests": [],
         }
     except Exception as exc:
         return {
@@ -564,6 +670,13 @@ def run_test_command(req: RunTestRequest):
             "stderr": str(exc),
             "duration_sec": 0.0,
             "status": "error",
+            "scope": req.scope or "workspace",
+            "total_tests": 0,
+            "passed_tests": 0,
+            "failed_tests": 0,
+            "skipped_tests": 0,
+            "percent": 0,
+            "tests": [],
         }
 
 
@@ -768,7 +881,7 @@ def run_problem_test_endpoint(req: ProblemRunRequest):
     if not problems_dir.is_dir():
         raise HTTPException(status_code=404, detail="Problems directory not found")
 
-    user_ws = BASE_DIR / ".user_workspaces" / req.module_path / "problems"
+    user_ws = USER_WORKSPACES_DIR / req.module_path / "problems"
     user_ws.mkdir(parents=True, exist_ok=True)
     (user_ws / req.problem_filename).write_text(req.code, encoding="utf-8")
 
@@ -861,7 +974,7 @@ def get_project_files(module_path: str = Query(..., description="Module folder p
 
     starter_dir = safe_mod / "starter"
     solution_dir = safe_mod / "project_solution"
-    workspace_dir = BASE_DIR / ".user_workspaces" / module_path
+    workspace_dir = USER_WORKSPACES_DIR / module_path
 
     files = []
     if starter_dir.is_dir():
@@ -916,7 +1029,7 @@ def save_project_file(payload: SaveFilePayload):
     if not safe_mod.is_relative_to(BASE_DIR):
         raise HTTPException(status_code=403, detail="Access denied")
 
-    target_dir = BASE_DIR / ".user_workspaces" / payload.module_path
+    target_dir = USER_WORKSPACES_DIR / payload.module_path
     target_dir.mkdir(parents=True, exist_ok=True)
     target_file = target_dir / Path(payload.filename).name
     target_file.write_text(payload.content, encoding="utf-8")

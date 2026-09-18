@@ -43,11 +43,15 @@ export async function fetchFileContent(path: string): Promise<{ content: string;
   return res.json();
 }
 
-export async function runTestCommand(targetPath: string, commandType: 'pytest' | 'python' = 'pytest'): Promise<TestResult> {
+export async function runTestCommand(
+  targetPath: string,
+  commandType: 'pytest' | 'python' = 'pytest',
+  scope: 'workspace' | 'solution' = 'workspace'
+): Promise<TestResult> {
   const res = await fetch(`${API_BASE}/run-test`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ target_path: targetPath, command_type: commandType }),
+    body: JSON.stringify({ target_path: targetPath, command_type: commandType, scope }),
   });
   if (!res.ok) throw new Error('Test execution failed to dispatch');
   return res.json();

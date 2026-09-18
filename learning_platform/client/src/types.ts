@@ -117,6 +117,14 @@ export interface ProgressPayload {
 
 export type RunnerMode = 'python' | 'powershell' | 'shell';
 
+export interface SingleTestCaseResult {
+  name: string;
+  file?: string;
+  status: 'passed' | 'failed' | 'error' | 'skipped';
+  duration_ms?: number;
+  error?: string;
+}
+
 export interface TestResult {
   exit_code: number;
   stdout: string;
@@ -125,6 +133,13 @@ export interface TestResult {
   status: 'passed' | 'failed' | 'timeout' | 'error';
   cwd?: string;
   mode?: RunnerMode;
+  scope?: 'workspace' | 'solution';
+  total_tests?: number;
+  passed_tests?: number;
+  failed_tests?: number;
+  skipped_tests?: number;
+  percent?: number;
+  tests?: SingleTestCaseResult[];
 }
 
 export interface DsaTestCase {

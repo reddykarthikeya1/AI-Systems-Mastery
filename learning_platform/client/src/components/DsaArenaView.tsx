@@ -360,6 +360,12 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
     const start = ta.selectionStart;
     const end = ta.selectionEnd;
 
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      handleRunCode();
+      return;
+    }
+
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       if (e.shiftKey) {
@@ -439,6 +445,24 @@ export const DsaArenaView: React.FC<DsaArenaViewProps> = ({
       }
     }
   };
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        handleRunCode();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (e.shiftKey) {
+          handleSubmitCode();
+        } else {
+          handleRunCode();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [userCode, currentProblem]);
 
   const lineCount = Math.max(userCode.split('\n').length, 25);
   const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1);

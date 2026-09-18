@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  ArrowLeft, BookOpen, CheckCircle, Clock, ChevronRight, Play, Terminal, 
+  ArrowLeft, BookOpen, CheckCircle, Clock, ChevronRight, ChevronDown, Play, Terminal, 
   Hammer, CheckSquare, Bug, Award, Sparkles, Layers, Zap, Brain, ShieldCheck 
 } from 'lucide-react';
 import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types';
@@ -35,6 +35,40 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   const totalProjects = modules.filter((m) => m.has_starter || m.has_solution || m.lessons.some((l) => l.type === 'project')).length;
   const totalQuizzes = modules.filter((m) => (m.quiz_question_count ?? 0) > 0 || m.lessons.some((l) => l.type === 'quiz') || true).length;
   const totalDebugLabs = modules.filter((m) => m.has_debug_lab).length;
+
+  // Track collapsed/expanded state for each module card
+  // By default, expand the first incomplete module (or the first module if all are completed)
+  const [expandedModules, setExpandedModules] = React.useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    if (modules.length > 0) {
+      const firstIncomplete = modules.find((m) => {
+        const completed = m.lessons.filter((l) => progress.completed_lessons.includes(l.id)).length;
+        return m.lessons.length > 0 && completed < m.lessons.length;
+      });
+      const activeId = firstIncomplete ? firstIncomplete.id : modules[0].id;
+      initial[activeId] = true;
+    }
+    return initial;
+  });
+
+  const toggleModule = (modId: string) => {
+    setExpandedModules((prev) => ({
+      ...prev,
+      [modId]: !prev[modId],
+    }));
+  };
+
+  const expandAll = () => {
+    const all: Record<string, boolean> = {};
+    modules.forEach((m) => {
+      all[m.id] = true;
+    });
+    setExpandedModules(all);
+  };
+
+  const collapseAll = () => {
+    setExpandedModules({});
+  };
 
   const getLessonTypeBadge = (type: string) => {
     switch (type) {
@@ -97,7 +131,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
       <div className="rounded-xl bg-surface border border-border/80 p-8 shadow-[0_1px_3px_rgba(0,0,0,0.02)] space-y-6">
         <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-zinc-700">
-            Track {course.course_num.toString().padStart(2, '0')}
+            Track {(course.course_num ?? 1).toString().padStart(2, '0')}
           </span>
           <span className="text-xs font-mono px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
             {course.category}
@@ -186,10 +220,30 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
       {/* Modules List */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
-            Curriculum Modules <span className="font-normal text-zinc-400">({modules.length} Total)</span>
-          </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
+              Curriculum Modules <span className="font-normal text-zinc-400">({modules.length} Total)</span>
+            </h2>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={expandAll}
+                className="text-[11px] font-mono px-2.5 py-0.5 rounded-md border border-border bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors shadow-xs"
+                title="Expand all module cards"
+              >
+                Expand All
+              </button>
+              <button
+                type="button"
+                onClick={collapseAll}
+                className="text-[11px] font-mono px-2.5 py-0.5 rounded-md border border-border bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors shadow-xs"
+                title="Collapse all module cards"
+              >
+                Collapse All
+              </button>
+            </div>
+          </div>
           <span className="text-xs text-zinc-400 font-mono">
             {completedCourseLessons}/{totalLessons} Lessons Finished
           </span>
@@ -197,6 +251,7 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
         <div className="space-y-4">
           {modules.map((mod) => {
+            const isExpanded = Boolean(expandedModules[mod.id]);
             const completedCount = mod.lessons.filter((l) => progress.completed_lessons.includes(l.id)).length;
             const isCompleted = mod.lessons.length > 0 && completedCount === mod.lessons.length;
             const modPercentage = mod.lessons.length > 0 ? Math.round((completedCount / mod.lessons.length) * 100) : 0;
@@ -223,10 +278,20 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                 key={mod.id}
                 className="rounded-xl bg-surface border border-border/80 overflow-hidden transition-all hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
               >
-                {/* Module Header Card */}
-                <div className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/70 bg-gradient-to-r from-transparent via-transparent to-zinc-50/50 dark:to-zinc-950/30">
+                {/* Module Header Card - Accordion Toggle */}
+                <div 
+                  onClick={() => toggleModule(mod.id)}
+                  className={`p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-colors ${
+                    isExpanded 
+                      ? 'border-b border-zinc-100 dark:border-zinc-800/70 bg-gradient-to-r from-transparent via-transparent to-zinc-50/50 dark:to-zinc-950/30' 
+                      : 'hover:bg-zinc-50/60 dark:hover:bg-zinc-900/30'
+                  }`}
+                >
                   <div className="space-y-2 max-w-2xl">
                     <div className="flex flex-wrap items-center gap-2">
+                      <span className="p-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-500 mr-0.5 inline-flex items-center justify-center">
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-sky-500' : 'text-zinc-400'}`} />
+                      </span>
                       <span className="text-xs font-mono font-semibold text-zinc-500 uppercase tracking-wider">
                         Module {mod.module_num.toString().padStart(2, '0')}
                       </span>
@@ -285,101 +350,151 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       <span className="text-xs font-mono text-zinc-500">
                         {completedCount}/{mod.lessons.length} completed ({modPercentage}%)
                       </span>
+                      <span className="text-xs font-mono text-sky-600 dark:text-sky-400 font-medium">
+                        {isExpanded ? '• Collapse' : `• ${mod.lessons.length} Lessons`}
+                      </span>
                     </div>
                   </div>
 
                   {/* Module Direct Action Launchers */}
                   <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
                     {modHasProject && (projectLesson || firstLesson) && (
-                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson((projectLesson || firstLesson).file_path, (projectLesson || firstLesson).id, 'project')}
-                        
-                        title="Jump straight into Guided Project Studio" >
+                      <button 
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-colors flex items-center gap-1.5" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectLesson((projectLesson || firstLesson).file_path, (projectLesson || firstLesson).id, 'project');
+                        }}
+                        title="Jump straight into Guided Project Studio" 
+                      >
                         <Hammer className="w-3 h-3" />
                         <span>Studio</span>
                       </button>
                     )}
 
                     {modHasQuiz && firstLesson && (
-                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson((quizLesson || firstLesson).file_path, (quizLesson || firstLesson).id, 'quiz')}
-                        
-                        title="Take Graded MCQ Assessment" >
+                      <button 
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors flex items-center gap-1.5" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectLesson((quizLesson || firstLesson).file_path, (quizLesson || firstLesson).id, 'quiz');
+                        }}
+                        title="Take Graded MCQ Assessment" 
+                      >
                         <CheckSquare className="w-3 h-3" />
                         <span>Quiz</span>
                       </button>
                     )}
 
                     {modHasDebug && firstLesson && (
-                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5" onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id, 'debug')}
-                        
-                        title="Diagnose planted production defect in Bug Hunter Lab" >
+                      <button 
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectLesson(firstLesson.file_path, firstLesson.id, 'debug');
+                        }}
+                        title="Diagnose planted production defect in Bug Hunter Lab" 
+                      >
                         <Bug className="w-3.5 h-3.5 text-rose-500" />
                         <span>Bug Lab</span>
                       </button>
                     )}
 
                     {modHasLeetcode && (leetcodeLesson || firstLesson) && (
-                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm" onClick={() => onSelectLesson((leetcodeLesson || firstLesson).file_path, (leetcodeLesson || firstLesson).id, 'arena')}
-                        
-                        title="Solve LeetCode problems with hidden testcases" >
+                      <button 
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-400/80 dark:border-amber-600 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 transition-colors flex items-center gap-1.5 shadow-sm" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectLesson((leetcodeLesson || firstLesson).file_path, (leetcodeLesson || firstLesson).id, 'arena');
+                        }}
+                        title="Solve LeetCode problems with hidden testcases" 
+                      >
                         <Brain className="w-3.5 h-3.5" />
                         <span>Arena</span>
                       </button>
                     )}
 
                     {onOpenMasteryGate && (
-                      <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
+                      <button 
+                        className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
                           Boolean(progress.mastery_gates?.[mod.id]?.cleared || progress.completed_modules?.includes(mod.id))
                             ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
                             : 'border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-                        }`} onClick={() => onOpenMasteryGate(mod)}
-                        
-                        title="View Module Mastery Gate Requirements" >
+                        }`} 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpenMasteryGate(mod);
+                        }}
+                        title="View Module Mastery Gate Requirements" 
+                      >
                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Gate</span>
                       </button>
                     )}
 
                     {firstLesson && (
-                      <button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-1.5 shadow-sm" onClick={() => onSelectLesson(firstLesson.file_path, firstLesson.id)} >
+                      <button 
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-colors flex items-center gap-1.5 shadow-sm" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectLesson(firstLesson.file_path, firstLesson.id);
+                        }} 
+                      >
                         <Play className="w-3 h-3 fill-current" />
                         <span>{completedCount > 0 ? 'Continue' : 'Open Module'}</span>
                       </button>
                     )}
+
+                    {/* Explicit Expand / Collapse Pill */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleModule(mod.id);
+                      }}
+                      className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-border bg-surface hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition flex items-center gap-1.5 shadow-xs"
+                      title={isExpanded ? 'Collapse lessons' : 'Expand lessons'}
+                    >
+                      <span>{isExpanded ? 'Collapse' : `${mod.lessons.length} Lessons`}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                    </button>
                   </div>
                 </div>
 
                 {/* Sub-lessons list with detailed type badges and durations */}
-                <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60 bg-zinc-50/40 dark:bg-zinc-900/30">
-                  {mod.lessons.map((lesson) => {
-                    const done = progress.completed_lessons.includes(lesson.id);
-                    return (
-                      <div
-                        key={lesson.id}
-                        onClick={() => onSelectLesson(lesson.file_path, lesson.id)}
-                        className="px-5 sm:px-6 py-3.5 flex items-center justify-between hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors group"
-                      >
-                        <div className="flex items-center gap-3 min-w-0 pr-4">
-                          <div className={`w-2 h-2 rounded-full shrink-0 ${done ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
-                          <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-blue-600 transition-colors">
-                            {lesson.title}
-                          </span>
-                        </div>
+                {isExpanded && (
+                  <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60 bg-zinc-50/40 dark:bg-zinc-900/30 animate-in fade-in duration-200">
+                    {mod.lessons.map((lesson) => {
+                      const done = progress.completed_lessons.includes(lesson.id);
+                      return (
+                        <div
+                          key={lesson.id}
+                          onClick={() => onSelectLesson(lesson.file_path, lesson.id)}
+                          className="px-5 sm:px-6 py-3.5 flex items-center justify-between hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors group"
+                        >
+                          <div className="flex items-center gap-3 min-w-0 pr-4">
+                            <div className={`w-2 h-2 rounded-full shrink-0 ${done ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
+                            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                              {lesson.title}
+                            </span>
+                          </div>
 
-                        <div className="flex items-center gap-3 shrink-0">
-                          {getLessonTypeBadge(lesson.type)}
-                          <span className="text-xs font-mono text-zinc-400 hidden sm:inline">
-                            {getEstimatedLessonTime(lesson.type)}
-                          </span>
-                          {done ? (
-                            <CheckCircle className="w-4 h-4 text-emerald-500" />
-                          ) : (
-                            <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                          )}
+                          <div className="flex items-center gap-3 shrink-0">
+                            {getLessonTypeBadge(lesson.type)}
+                            <span className="text-xs font-mono text-zinc-400 hidden sm:inline">
+                              {getEstimatedLessonTime(lesson.type)}
+                            </span>
+                            {done ? (
+                              <CheckCircle className="w-4 h-4 text-emerald-500" />
+                            ) : (
+                              <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}

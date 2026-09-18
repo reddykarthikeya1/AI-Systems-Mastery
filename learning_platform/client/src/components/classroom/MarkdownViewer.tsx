@@ -207,7 +207,7 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({
                   </span>
                 </div>
                 <h3 className="text-base font-semibold text-fg">
-                  All lessons cleared for Module {moduleNum.toString().padStart(2, '0')}
+                  All lessons cleared for Module {(moduleNum ?? 0).toString().padStart(2, '0')}
                 </h3>
                 <p className="text-xs text-fg-subtle">
                   Ready to test your comprehension in the Module Mastery Gate?

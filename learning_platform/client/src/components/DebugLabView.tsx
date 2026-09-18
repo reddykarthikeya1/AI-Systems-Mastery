@@ -61,7 +61,7 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
     try {
       const res = await runInteractiveCode(code, 'python', moduleFolderPath);
       setResult(res);
-      if (res.exit_code === 0 && !res.stderr) {
+      if (res.exit_code === 0) {
         setIsResolved(true);
         confetti({
           particleCount: 90,
@@ -88,6 +88,17 @@ export const DebugLabView: React.FC<DebugLabViewProps> = ({
     setResult(null);
     setIsResolved(false);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key.toLowerCase() === 's')) {
+        e.preventDefault();
+        handleRunDiagnosis();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [code, moduleFolderPath]);
 
   if (loading) {
     return <div className="p-8 text-center text-xs font-mono text-zinc-500">Loading Bug Hunter Lab...</div>;

@@ -44,26 +44,15 @@ BANNER = r"""
 """
 
 
-def ensure_client_built() -> None:
+def ensure_client_built(force_rebuild: bool = False) -> None:
     """Ensures the React client is built into dist/ before starting server.
-    Rebuilds if dist/index.html is missing or if any source file under client/src/ is newer.
+    Rebuilds if dist/index.html is missing or if force_rebuild is requested.
     """
     dist_index = DIST_DIR / "index.html"
-    needs_build = not dist_index.is_file()
-
-    if not needs_build:
-        dist_mtime = dist_index.stat().st_mtime
-        src_candidates = [CLIENT_DIR / "index.html", CLIENT_DIR / "package.json"]
-        src_dir = CLIENT_DIR / "src"
-        if src_dir.is_dir():
-            src_candidates.extend(src_dir.rglob("*"))
-        for p in src_candidates:
-            if p.is_file() and p.stat().st_mtime > dist_mtime:
-                needs_build = True
-                break
+    needs_build = not dist_index.is_file() or force_rebuild
 
     if needs_build:
-        print("[*] Client production build is missing or stale. Building frontend...")
+        print("[*] Client production build is missing or rebuild requested. Building frontend...")
         try:
             subprocess.run(["npm", "run", "build"], cwd=str(CLIENT_DIR), check=True, shell=(sys.platform == "win32"))
             print("[OK] Frontend successfully built.")
@@ -990,6 +979,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="AI & Systems Engineering Academy Platform Launcher")
     parser.add_argument("--browser", action="store_true", help="Launch in default browser tab instead of standalone app window")
     parser.add_argument("--headless", action="store_true", help="Run server without launching any GUI window or browser")
+    parser.add_argument("--rebuild", action="store_true", help="Force rebuild client production bundle before launch")
     parser.add_argument("--port", type=int, default=8000, help="Port to bind server (default: 8000)")
     args = parser.parse_args()
 
@@ -1013,7 +1003,7 @@ def main() -> None:
         port = alt_port
 
     print(BANNER.format(port=port))
-    ensure_client_built()
+    ensure_client_built(force_rebuild=args.rebuild)
 
     has_uvicorn = ensure_dependencies()
     url = f"http://127.0.0.1:{port}"
@@ -1022,36 +1012,13 @@ def main() -> None:
 
     def start_ui_supervisor() -> None:
         nonlocal window_proc
-        launch_start = time.time()
         window_proc = launch_interface(url=url, port=port, force_browser=args.browser, headless=args.headless)
         if window_proc is not None:
             try:
                 window_proc.wait()
-                elapsed = time.time() - launch_start
-                # Protection against premature exit: Chromium process handoff terminates in <3.5s!
-                if elapsed < 3.5:
-                    log_launcher_event(f"Browser process returned early ({elapsed:.2f}s) via process handoff. Server remains active.")
-                    print(f"[*] Standalone browser process detached in {elapsed:.1f}s. Server remains active at {url}.")
-                    # Ensure browser window opened
-                    webbrowser.open(url)
-                    # Keep thread running to avoid killing the server
-                    while True:
-                        time.sleep(1.0)
-                else:
-                    print("\n[*] Application window closed by user. Terminating server...")
-                    log_launcher_event("Application window closed by user. Terminating server.")
-                    if "uvicorn" in server_holder:
-                        server_holder["uvicorn"].should_exit = True
-                    if "httpd" in server_holder:
-                        try:
-                            server_holder["httpd"].shutdown()
-                        except Exception:
-                            pass
-                    # Enforce clean, unconditional removal from Windows Task Manager
-                    time.sleep(1.0)
-                    os._exit(0)
+                log_launcher_event("Browser window launcher finished handoff. Server remains active and responsive.")
             except Exception as e:
-                log_launcher_event(f"UI supervisor exception: {e}")
+                log_launcher_event(f"UI supervisor notice: {e}")
                 pass
 
     ui_thread = threading.Thread(target=start_ui_supervisor, daemon=True)

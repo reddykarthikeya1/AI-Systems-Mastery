@@ -52,7 +52,7 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [checkedQuestions, setCheckedQuestions] = useState<Record<number, boolean>>({});
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(Boolean(savedScore?.passed));
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [autoCapturedCount, setAutoCapturedCount] = useState<number>(0);
   const [score, setScore] = useState<number>(savedScore?.score || 0);
 
@@ -359,6 +359,13 @@ export const McqQuizView: React.FC<McqQuizViewProps> = ({
 
         {/* Score Pill & Retake */}
         <div className="flex items-center gap-3">
+          {!isSubmitted && savedScore?.passed && (
+            <div className="px-3.5 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-mono text-xs font-semibold shadow-xs">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Previously Cleared ({savedScore.score}%)</span>
+            </div>
+          )}
+
           {isSubmitted && (
             <div className={`px-4 py-2 rounded-xl border flex items-center gap-2 font-mono text-xs ${
               score >= 70
