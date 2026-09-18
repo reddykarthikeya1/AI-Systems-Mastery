@@ -115,28 +115,6 @@ Traditional replication tracked binary log filenames and byte offsets (`mysql-bi
 - Every transaction globally has a unique sequential ID. Replicas automatically negotiate missed transactions without offset math!
 
 ---
-
----
-
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of this module:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[00_try_it_yourself.py](00_try_it_yourself.py)** | Run in terminal (`python 00_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[02_interactive_mysql_innodb.ipynb](02_interactive_mysql_innodb.ipynb)** | Open in Jupyter/VS Code to run interactive visual experiments and benchmarks. |
-| **5** | **[03_innodb_clustered_index_and_binlog_demo.py](03_innodb_clustered_index_and_binlog_demo.py)** | Run in terminal (`python 03_innodb_clustered_index_and_binlog_demo.py`) to explore 03 Innodb Clustered Index And Binlog Demo code patterns. |
-| **6** | **[06_TROUBLESHOOTING_AND_EDGE_CASES.md](06_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **7** | **[05_SELF_ASSESSMENT_AND_CHALLENGES.md](05_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **8** | **[04_PROJECT_GUIDE.md](04_PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
-| **9** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
-| **10** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
-
----
-
 ## 5. Dual-Track Curriculum: Track A (Simulation) vs Track B (Real Operations)
 
 This module implements a rigorous **dual-track architecture** guaranteeing both first-principles mechanistic understanding and battle-tested production operational skills:

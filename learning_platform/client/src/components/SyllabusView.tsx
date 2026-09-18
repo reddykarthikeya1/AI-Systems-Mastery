@@ -463,25 +463,26 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
 
                 {/* Sub-lessons list with detailed type badges and durations */}
                 {isExpanded && (
-                  <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60 bg-zinc-50/40 dark:bg-zinc-900/30 animate-in fade-in duration-200">
+                  <div className="divide-y divide-border bg-slate-100/60 dark:bg-slate-900/60 border-t border-border animate-in fade-in duration-150">
                     {mod.lessons.map((lesson) => {
                       const done = progress.completed_lessons.includes(lesson.id);
                       return (
                         <div
                           key={lesson.id}
                           onClick={() => onSelectLesson(lesson.file_path, lesson.id)}
-                          className="px-5 sm:px-6 py-3.5 flex items-center justify-between hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors group"
+                          title={lesson.title}
+                          className="px-5 sm:px-6 py-3.5 flex items-center justify-between hover:bg-white dark:hover:bg-slate-800/70 cursor-pointer transition-colors group"
                         >
                           <div className="flex items-center gap-3 min-w-0 pr-4">
-                            <div className={`w-2 h-2 rounded-full shrink-0 ${done ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-700'}`} />
-                            <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                            <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${done ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'}`} />
+                            <span className="text-xs font-medium text-fg line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                               {lesson.title}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-3 shrink-0">
                             {getLessonTypeBadge(lesson.type)}
-                            <span className="text-xs font-mono text-zinc-400 hidden sm:inline">
+                            <span className="text-xs font-mono text-fg-subtle hidden sm:inline">
                               {getEstimatedLessonTime(lesson.type)}
                             </span>
                             {done ? (

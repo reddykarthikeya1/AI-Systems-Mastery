@@ -8,27 +8,6 @@ Welcome! If you are completely new to programming or modern developer tooling, *
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of Module 00:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_BEGINNER_ZERO_TO_ONE.md](04_BEGINNER_ZERO_TO_ONE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
-| **5** | **[05_setup_and_verify.ps1](05_setup_and_verify.ps1)** | Run verification and environment bootstrap script. |
-| **6** | **[06_interactive_walkthrough.ipynb](06_interactive_walkthrough.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **7** | **[07_environment_diagnostics.py](07_environment_diagnostics.py)** | Run in terminal (`python 07_environment_diagnostics.py`) to explore Environment Diagnostics.Py code patterns. |
-| **8** | **[08_ruff_demo_broken.py](08_ruff_demo_broken.py)** | Run in terminal (`python 08_ruff_demo_broken.py`) to explore Ruff Demo Broken.Py code patterns. |
-| **9** | **[09_ruff_demo_clean.py](09_ruff_demo_clean.py)** | Run in terminal (`python 09_ruff_demo_clean.py`) to explore Ruff Demo Clean.Py code patterns. |
-| **10** | **[10_TROUBLESHOOTING_AND_EDGE_CASES.md](10_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **11** | **[11_SELF_ASSESSMENT_AND_CHALLENGES.md](11_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **12** | **[12_PROJECT_GUIDE.md](12_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 0. The Absolute Basics: What is All This Stuff?
 
 Before we look at commands and files, let's understand the core concepts.

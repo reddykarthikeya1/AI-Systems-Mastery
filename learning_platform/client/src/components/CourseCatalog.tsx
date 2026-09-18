@@ -244,12 +244,12 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
           </h2>
         </div>
 
-        <div className="inline-flex flex-wrap gap-1 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200/70 dark:border-zinc-800">
+        <div className="inline-flex flex-wrap gap-1.5 p-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-border shadow-xs">
           {categories.map((cat) => (
-            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-md text-xs transition-colors font-medium ${
+            <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs transition-all font-medium ${
                 selectedCategory === cat
-                  ? 'bg-surface text-fg shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                  : 'text-fg-muted hover:text-fg hover:bg-white/80 dark:hover:bg-zinc-700/60'
               }`} key={cat}
               onClick={() => setSelectedCategory(cat)} >
               {cat}
@@ -259,18 +259,18 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
       </div>
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => {
           return (
             <div
               key={course.id}
               onClick={() => onSelectCourse(course.id)}
-              className="group cursor-pointer rounded-xl bg-surface border border-border/80 hover:border-zinc-400 dark:hover:border-zinc-700 p-6 transition-all flex flex-col justify-between shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
+              className="group cursor-pointer rounded-2xl bg-surface border border-border hover:border-blue-500/60 dark:hover:border-blue-400/60 p-6 transition-all flex flex-col justify-between shadow-card hover:shadow-card-hover"
             >
               <div className="space-y-3.5">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700/60">
+                    <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-border">
                       Track {course.course_num.toString().padStart(2, '0')}
                     </span>
                     {course.depth_badge && (
@@ -285,22 +285,22 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                       </span>
                     )}
                   </div>
-                  <span className="text-xs text-fg-muted font-medium">
+                  <span className="text-xs text-fg-subtle font-medium">
                     {course.difficulty}
                   </span>
                 </div>
 
-                <h3 className="font-semibold text-base text-fg group-hover:text-blue-600 transition-colors leading-snug">
+                <h3 className="font-bold text-base text-fg group-hover:text-blue-600 transition-colors leading-snug">
                   {course.title}
                 </h3>
 
                 <div
-                  className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed [&>p]:inline [&>p]:m-0"
+                  className="text-xs text-fg-muted line-clamp-3 leading-relaxed [&>p]:inline [&>p]:m-0"
                   dangerouslySetInnerHTML={{ __html: renderMarkdownWithMath(course.description) }}
                 />
               </div>
 
-              <div className="pt-5 mt-6 border-t border-zinc-100 dark:border-zinc-800/70 flex items-center justify-between text-xs text-zinc-500">
+              <div className="pt-4 mt-5 border-t border-border flex items-center justify-between text-xs text-fg-subtle">
                 <div className="flex flex-wrap items-center gap-2.5">
                   <span className="flex items-center gap-1 font-mono text-xs" title={`${course.module_count} Modules across track`}>
                     <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
@@ -316,7 +316,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                     </span>
                   ) : null}
                   {course.debug_lab_count !== undefined && course.debug_lab_count > 0 ? (
-                    <span className="font-mono text-xs text-rose-500/90 dark:text-rose-400">
+                    <span className="font-mono text-xs text-rose-500 dark:text-rose-400 font-semibold">
                       {course.debug_lab_count} labs
                     </span>
                   ) : null}
@@ -325,7 +325,7 @@ export const CourseCatalog: React.FC<CourseCatalogProps> = ({
                 <button
                   type="button"
                   aria-label={`View syllabus for ${course.title}`}
-                  className="text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 font-medium flex items-center gap-1 transition-colors text-xs shrink-0 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
+                  className="text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-xs shrink-0 bg-transparent border-0 p-0 cursor-pointer focus:outline-none"
                 >
                   View Syllabus <ArrowRight className="w-3.5 h-3.5" />
                 </button>

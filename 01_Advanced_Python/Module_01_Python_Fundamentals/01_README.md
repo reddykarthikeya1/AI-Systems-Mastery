@@ -4,24 +4,6 @@ Welcome to **Module 01**! This guide is written from **first principles** for ab
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of Module 01:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_fundamentals.ipynb](04_interactive_fundamentals.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_syntax_and_types_demo.py](05_syntax_and_types_demo.py)** | Run in terminal (`python 05_syntax_and_types_demo.py`) to explore Syntax And Types code patterns. |
-| **6** | **[06_control_flow_and_loops_demo.py](06_control_flow_and_loops_demo.py)** | Run in terminal (`python 06_control_flow_and_loops_demo.py`) to explore Control Flow And Loops code patterns. |
-| **7** | **[07_TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **8** | **[08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **9** | **[09_PROJECT_GUIDE.md](09_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. How Python Runs: The Chef & Recipe Analogy
 
 When you write a Python program, how does your computer actually execute it?

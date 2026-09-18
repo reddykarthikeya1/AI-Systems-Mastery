@@ -7,23 +7,6 @@ This module confronts Python's execution model head-on: the **Global Interpreter
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_concurrency.ipynb](04_interactive_concurrency.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_threading_and_locks_demo.py](05_threading_and_locks_demo.py)** | Run in terminal (`python 05_threading_and_locks_demo.py`) to explore Threading And Locks code patterns. |
-| **6** | **[06_multiprocessing_and_pools_demo.py](06_multiprocessing_and_pools_demo.py)** | Run in terminal (`python 06_multiprocessing_and_pools_demo.py`) to explore Multiprocessing And Pools code patterns. |
-| **7** | **[07_benchmark_sequential_vs_threads_vs_processes.py](07_benchmark_sequential_vs_threads_vs_processes.py)** | Run in terminal (`python 07_benchmark_sequential_vs_threads_vs_processes.py`) to explore Benchmark Sequential Vs Threads Vs Processes.Py code patterns. |
-| **8** | **[08_TROUBLESHOOTING_AND_EDGE_CASES.md](08_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **9** | **[09_SELF_ASSESSMENT_AND_CHALLENGES.md](09_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **10** | **[10_PROJECT_GUIDE.md](10_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Mental Model
 
 ### Threads vs Processes: Shared Memory vs Isolated Address Spaces

@@ -62,7 +62,7 @@ export function useProgress() {
       completed_lessons: [],
       completed_modules: [],
       last_updated: Date.now(),
-      theme: 'dark',
+      theme: 'light',
       sound_enabled: true,
       quiz_scores: {},
       bookmarks: [],

@@ -7,21 +7,6 @@ This capstone is the culmination of the entire curriculum. You will architect, i
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_capstone_tour.ipynb](04_interactive_capstone_tour.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_ARCHITECTURE_AND_SPECS.md](05_ARCHITECTURE_AND_SPECS.md)** | Inspect the complete production architecture, component diagrams, and specifications. |
-| **6** | **[06_TROUBLESHOOTING_AND_EDGE_CASES.md](06_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **7** | **[07_SELF_ASSESSMENT_AND_CHALLENGES.md](07_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **8** | **[08_PROJECT_GUIDE.md](08_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Mental Model
 
 ### The End-to-End Enterprise Architecture

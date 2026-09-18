@@ -9,9 +9,15 @@ import { GLOSSARY } from '../data/glossary';
 export function renderMarkdownWithMath(raw: string): string {
   if (!raw) return '';
 
+  // 0. Clean redundant "Recommended Step-by-Step Learning Path" section (tracked in interactive syllabus rail)
+  const cleanedRaw = raw.replace(
+    /(?:^|\n)(?:---\s*\n+)?##\s*🗺️?\s*Recommended Step-by-Step Learning Path[\s\S]*?(?=(?:\n##\s|\n#\s|$))/gi,
+    '\n'
+  ).replace(/\n---\s*\n+\s*---/g, '\n---');
+
   // 1. Protect code blocks (```...``` and `...`) so math regex won't touch code
   const codeBlocks: string[] = [];
-  let protectedText = raw.replace(/(```[\s\S]*?```|`[^`\n]+`)/g, (match) => {
+  let protectedText = cleanedRaw.replace(/(```[\s\S]*?```|`[^`\n]+`)/g, (match) => {
     codeBlocks.push(match);
     return `%%%MATH_CODEBLOCK_${codeBlocks.length - 1}%%%`;
   });

@@ -171,7 +171,7 @@ class ProgressPayload(BaseModel):
     current_course: Optional[str] = None
     current_lesson: Optional[str] = None
     last_updated: float = 0.0
-    theme: str = "dark"
+    theme: str = "light"
     quiz_scores: dict = {}
     bookmarks: List[str] = []
     notes: dict = {}

@@ -88,7 +88,7 @@ export async function fetchProgress(): Promise<ProgressPayload> {
     completed_lessons: [],
     completed_modules: [],
     last_updated: Date.now(),
-    theme: 'dark',
+    theme: 'light',
   };
 }
 

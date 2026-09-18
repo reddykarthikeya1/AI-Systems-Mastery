@@ -7,24 +7,6 @@ This module tackles the core abstractions Python provides for metaprogramming, s
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_BEGINNER_TO_ADVANCED_FEATURES_GUIDE.md](04_BEGINNER_TO_ADVANCED_FEATURES_GUIDE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
-| **5** | **[05_interactive_advanced_features.ipynb](05_interactive_advanced_features.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **6** | **[06_decorators_deep_dive_demo.py](06_decorators_deep_dive_demo.py)** | Run in terminal (`python 06_decorators_deep_dive_demo.py`) to explore Decorators Deep Dive code patterns. |
-| **7** | **[07_generators_and_iterators_demo.py](07_generators_and_iterators_demo.py)** | Run in terminal (`python 07_generators_and_iterators_demo.py`) to explore Generators And Iterators code patterns. |
-| **8** | **[08_context_managers_demo.py](08_context_managers_demo.py)** | Run in terminal (`python 08_context_managers_demo.py`) to explore Context Managers code patterns. |
-| **9** | **[09_TROUBLESHOOTING_AND_EDGE_CASES.md](09_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **10** | **[10_SELF_ASSESSMENT_AND_CHALLENGES.md](10_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **11** | **[11_PROJECT_GUIDE.md](11_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Mental Model
 
 ### Decorators: The Transparent Wrapping Layer

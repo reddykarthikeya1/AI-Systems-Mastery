@@ -4,26 +4,6 @@ Welcome to **Module 03**! In this module, we will demystify how Python stores, o
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact order to achieve 100% mastery of Module 03:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_BEGINNER_TO_DATA_STRUCTURES_GUIDE.md](04_BEGINNER_TO_DATA_STRUCTURES_GUIDE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
-| **5** | **[05_interactive_data_structures.ipynb](05_interactive_data_structures.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **6** | **[06_lists_and_tuples_internals_demo.py](06_lists_and_tuples_internals_demo.py)** | Run in terminal (`python 06_lists_and_tuples_internals_demo.py`) to explore Lists And Tuples Internals code patterns. |
-| **7** | **[07_dicts_and_sets_hash_demo.py](07_dicts_and_sets_hash_demo.py)** | Run in terminal (`python 07_dicts_and_sets_hash_demo.py`) to explore Dicts And Sets Hash code patterns. |
-| **8** | **[08_collections_and_heapq_demo.py](08_collections_and_heapq_demo.py)** | Run in terminal (`python 08_collections_and_heapq_demo.py`) to explore Collections And Heapq code patterns. |
-| **9** | **[09_TROUBLESHOOTING_AND_EDGE_CASES.md](09_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **10** | **[10_SELF_ASSESSMENT_AND_CHALLENGES.md](10_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **11** | **[11_PROJECT_GUIDE.md](11_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. What is a Data Structure? The Kitchen Storage Analogy
 
 Imagine you are organizing a commercial kitchen:

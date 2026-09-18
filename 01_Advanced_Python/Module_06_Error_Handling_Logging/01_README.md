@@ -4,24 +4,6 @@ Welcome to **Module 06**! In production engineering, software crashes cost money
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact order to achieve 100% mastery of Module 06:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_error_handling.ipynb](04_interactive_error_handling.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_exceptions_deep_dive_demo.py](05_exceptions_deep_dive_demo.py)** | Run in terminal (`python 05_exceptions_deep_dive_demo.py`) to explore Exceptions Deep Dive code patterns. |
-| **6** | **[06_structured_logging_demo.py](06_structured_logging_demo.py)** | Run in terminal (`python 06_structured_logging_demo.py`) to explore Structured Logging code patterns. |
-| **7** | **[07_TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **8** | **[08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **9** | **[09_PROJECT_GUIDE.md](09_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. Error Handling: The Circuit Breaker Analogy
 
 In a building, electrical circuit breakers protect appliances. If a sudden power surge occurs, the circuit breaker trips safely, preventing the entire house from catching fire.

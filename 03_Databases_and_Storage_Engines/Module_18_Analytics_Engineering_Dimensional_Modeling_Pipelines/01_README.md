@@ -6,32 +6,6 @@
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of this module:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[00_try_it_yourself.py](00_try_it_yourself.py)** | Run in terminal (`python 00_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[02_interactive_dimensional_modeling.ipynb](02_interactive_dimensional_modeling.ipynb)** | Open in Jupyter/VS Code to run interactive visual experiments and benchmarks. |
-| **5** | **[03_scd2_and_pipeline_demo.py](03_scd2_and_pipeline_demo.py)** | Run in terminal (`python 03_scd2_and_pipeline_demo.py`) to explore 03 Scd2 And Pipeline Demo code patterns. |
-| **6** | **[06_TROUBLESHOOTING_AND_EDGE_CASES.md](06_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **7** | **[05_SELF_ASSESSMENT_AND_CHALLENGES.md](05_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **8** | **[04_PROJECT_GUIDE.md](04_PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
-| **9** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
-| **10** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
-
----
-
-
-> **Prerequisite:** [Module 17 — Columnar OLAP, DuckDB & ClickHouse](../Module_17_Columnar_OLAP_DuckDB_ClickHouse/01_README.md).
-> Module 17 taught you how an analytical *engine* stores and scans data. This
-> module is about what you put in it, and how the data gets there every night.
-
----
-
 ## 🧭 Why This Module Exists
 
 Modules 01–17 build engines. This one builds the thing engines are *for*.

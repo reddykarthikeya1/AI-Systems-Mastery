@@ -5,30 +5,6 @@
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of this module:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[README.md](README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[01_A_Linear_Layer_Is_a_Matrix_Multiply.md](lessons/01_A_Linear_Layer_Is_a_Matrix_Multiply.md)** | Complete deep-dive curriculum lesson on 01 A Linear Layer Is A Matrix Multiply. |
-| **5** | **[02_Batching_as_Extra_Tensor_Dimensions.md](lessons/02_Batching_as_Extra_Tensor_Dimensions.md)** | Complete deep-dive curriculum lesson on 02 Batching As Extra Tensor Dimensions. |
-| **6** | **[03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md](lessons/03_Broadcasting_Rules_and_the_Silent_Bugs_They_Cause.md)** | Complete deep-dive curriculum lesson on 03 Broadcasting Rules And The Silent Bugs They Cause. |
-| **7** | **[04_Weight_Initialization_and_Spectral_Norm.md](lessons/04_Weight_Initialization_and_Spectral_Norm.md)** | Complete deep-dive curriculum lesson on 04 Weight Initialization And Spectral Norm. |
-| **8** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **9** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **10** | **[PROJECT_GUIDE.md](PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
-| **11** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
-| **12** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
-
----
-
-
----
-
 
 ## Linear Algebra in Machine Learning: Normal Equations & Ridge
 

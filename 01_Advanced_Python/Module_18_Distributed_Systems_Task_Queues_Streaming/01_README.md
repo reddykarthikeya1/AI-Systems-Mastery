@@ -7,22 +7,6 @@ Monoliths fail when heavy operations stall web requests. This module is the **de
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Master the full theoretical, architectural, and production tuning foundations. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_distributed_queues.ipynb](04_interactive_distributed_queues.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_task_queue_worker_demo.py](05_task_queue_worker_demo.py)** | Run in terminal (`python 05_task_queue_worker_demo.py`) to explore Task Queue Worker code patterns. |
-| **6** | **[06_event_streaming_and_dlq_demo.py](06_event_streaming_and_dlq_demo.py)** | Run in terminal (`python 06_event_streaming_and_dlq_demo.py`) to explore Event Streaming And Dlq code patterns. |
-| **7** | **[07_TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **8** | **[08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **9** | **[09_PROJECT_GUIDE.md](09_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Core Architecture: Why Task Queues Exist
 
 ### The HTTP Latency Trap

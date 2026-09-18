@@ -8,21 +8,6 @@ Welcome to **Module 02**! In this module, you will transform from writing basic 
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[README.md](01_README.md)** *(Current File)* | Read the theory, Join Venn diagrams, CTE tree models, and Window Function frames. |
-| **2** | **[01_joins_and_subqueries_demo.py](03_joins_and_subqueries_demo.py)** | Run in terminal (`python 01_joins_and_subqueries_demo.py`) to see Inner, Left, and Self Joins on real datasets. |
-| **3** | **[02_window_functions_and_ctes_demo.py](04_window_functions_and_ctes_demo.py)** | Run in terminal to compute rolling 7-day moving averages and hierarchical org charts with recursive CTEs. |
-| **4** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Review common traps: Cartesian product explosion, NULL comparisons (`NULL = NULL`), and Window partitioning traps. |
-| **5** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](06_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test yourself with the 10-question quiz and solve the 2 hands-on coding challenges. |
-| **6** | **[PROJECT_GUIDE.md](05_PROJECT_GUIDE.md)** | Build the **Financial Analytics Engine with CTEs & Windows** in **[project_solution/](project_solution)**! |
-
----
-
----
-
 ## 0. The True Physical Lifecycle of a SQL Query
 
 To write advanced SQL without confusing yourself, you must unlearn the order in which SQL is *written* and understand the exact order in which the database query engine physically *executes* it:

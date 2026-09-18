@@ -8,22 +8,6 @@ Welcome to **Module 01** of the Database Specialist Course! In this foundational
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of Module 01:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[README.md](01_README.md)** *(Current File)* | Read the theory, mental models (Filing Cabinet vs Spreadsheets, ACID Bank Transfer), and Relational Algebra. |
-| **2** | **[00_interactive_storage_theory.ipynb](02_interactive_storage_theory.ipynb)** | Open in VS Code/Jupyter and test file corruption, binary struct packing, and schema validation interactively. |
-| **3** | **[01_csv_concurrency_race_condition_demo.py](03_csv_concurrency_race_condition_demo.py)** | Run in terminal (`python 01_csv_concurrency_race_condition_demo.py`) to watch concurrent threads corrupt a flat CSV file. |
-| **4** | **[02_wal_crash_recovery_demo.py](04_wal_crash_recovery_demo.py)** | Run in terminal to see how a Write-Ahead Log (WAL) allows instant data recovery after sudden process crashes. |
-| **5** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](08_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Review common traps: partial file writes, torn pages, dirty reads, and normalization anomalies. |
-| **6** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](07_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test yourself with the 10-question quiz and solve the 2 hands-on coding challenges. |
-| **7** | **[PROJECT_GUIDE.md](06_PROJECT_GUIDE.md)** | Build the **Transactional CSV Engine with WAL** in **[project_solution/](project_solution)**! |
-
----
-
 ## 1. The Historical Crisis: Why Not Just Use CSV Files?
 
 Imagine an e-commerce website that saves orders in a simple CSV file: `orders.csv`.

@@ -5,30 +5,6 @@
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of this module:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[README.md](README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[01_Populations_Samples_and_Estimators.md](lessons/01_Populations_Samples_and_Estimators.md)** | Complete deep-dive curriculum lesson on 01 Populations Samples And Estimators. |
-| **5** | **[02_Bias_Variance_and_Mean_Squared_Error.md](lessons/02_Bias_Variance_and_Mean_Squared_Error.md)** | Complete deep-dive curriculum lesson on 02 Bias Variance And Mean Squared Error. |
-| **6** | **[03_Consistency_and_Efficiency.md](lessons/03_Consistency_and_Efficiency.md)** | Complete deep-dive curriculum lesson on 03 Consistency And Efficiency. |
-| **7** | **[04_The_Sampling_Distribution.md](lessons/04_The_Sampling_Distribution.md)** | Complete deep-dive curriculum lesson on 04 The Sampling Distribution. |
-| **8** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **9** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **10** | **[PROJECT_GUIDE.md](PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
-| **11** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
-| **12** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
-
----
-
-
----
-
 
 ## Statistical Estimation: MLE vs MAP
 

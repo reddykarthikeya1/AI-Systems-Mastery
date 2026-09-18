@@ -6,25 +6,6 @@
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-Follow this exact sequence to achieve complete mastery of this module:
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[00_try_it_yourself.py](00_try_it_yourself.py)** | Run in terminal (`python 00_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[02_interactive_snowflake_generator.ipynb](02_interactive_snowflake_generator.ipynb)** | Open in Jupyter/VS Code to run interactive visual experiments and benchmarks. |
-| **5** | **[03_snowflake_bit_manipulation_demo.py](03_snowflake_bit_manipulation_demo.py)** | Run in terminal (`python 03_snowflake_bit_manipulation_demo.py`) to explore 03 Snowflake Bit Manipulation Demo code patterns. |
-| **6** | **[06_TROUBLESHOOTING_AND_EDGE_CASES.md](06_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **7** | **[05_SELF_ASSESSMENT_AND_CHALLENGES.md](05_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **8** | **[04_PROJECT_GUIDE.md](04_PROJECT_GUIDE.md)** | Follow guided project implementation for `starter/` and `project_solution/`. |
-| **9** | **[problems/](problems/)** | Solve hands-on problem bank challenges and verify with `pytest problems/tests`. |
-| **10** | **[debug_lab/](debug_lab/)** | Diagnose and fix silent production bugs in the Bug Hunter Drill. |
-
----
-
 
 ## 🎯 Executive Overview & Production Relevance
 Twitter Snowflake generates 64-bit, time-sortable, monotonic unique IDs across distributed nodes without centralized database locks or coordination bottlenecks.

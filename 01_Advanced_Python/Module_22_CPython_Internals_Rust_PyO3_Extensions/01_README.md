@@ -9,24 +9,6 @@ You will not take that on faith. Every claim here is measured by a script you ru
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_BEGINNER_TO_RUST_EXTENSIONS_GUIDE.md](04_BEGINNER_TO_RUST_EXTENSIONS_GUIDE.md)** | Read the beginner conceptual bridge guide before diving into advanced mechanics. |
-| **5** | **[05_interactive_cpython_and_native_extensions.ipynb](05_interactive_cpython_and_native_extensions.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **6** | **[06_ctypes_honest_demo.py](06_ctypes_honest_demo.py)** | Run in terminal (`python 06_ctypes_honest_demo.py`) to explore Ctypes Honest code patterns. |
-| **7** | **[07_gil_release_parallelism_demo.py](07_gil_release_parallelism_demo.py)** | Run in terminal (`python 07_gil_release_parallelism_demo.py`) to explore Gil Release Parallelism code patterns. |
-| **8** | **[08_pyo3_rust_architecture_demo.md](08_pyo3_rust_architecture_demo.md)** | Run in terminal (`python 08_pyo3_rust_architecture_demo.md`) to explore Pyo3 Rust Architecture code patterns. |
-| **9** | **[09_TROUBLESHOOTING_AND_EDGE_CASES.md](09_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **10** | **[10_SELF_ASSESSMENT_AND_CHALLENGES.md](10_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **11** | **[11_PROJECT_GUIDE.md](11_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Mental Model: Why an Integer Costs 28 Bytes
 
 A C `int64_t` is 8 bytes of memory and nothing else. A Python `int` is an *object*, and every object carries a header.

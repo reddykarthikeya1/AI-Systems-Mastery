@@ -8,19 +8,6 @@ Welcome to **Module 03**! SQLite is the most widely deployed database engine on 
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[README.md](01_README.md)** *(Current File)* | Read the theory, Rollback Journal vs WAL, and SQLite B-Tree file format. |
-| **2** | **[01_sqlite_wal_benchmarking_demo.py](03_sqlite_wal_benchmarking_demo.py)** | Run in terminal (`python 01_sqlite_wal_benchmarking_demo.py`) to benchmark standard Rollback Journal vs WAL mode. |
-| **3** | **[02_custom_python_sql_functions_demo.py](04_custom_python_sql_functions_demo.py)** | Run in terminal to see how Python regex and hashing algorithms can be executed directly inside SQL queries. |
-| **4** | **[TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Review SQLite concurrency traps: `database is locked`, busy timeouts, and multi-thread limits. |
-| **5** | **[SELF_ASSESSMENT_AND_CHALLENGES.md](06_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test yourself with the 10-question quiz and solve the 2 hands-on coding challenges. |
-| **6** | **[PROJECT_GUIDE.md](05_PROJECT_GUIDE.md)** | Build the **High-Concurrency WAL Engine with Custom SQL** in **[project_solution/](project_solution)**! |
-
----
-
 ## 1. What is an Embedded Database?
 
 In client-server databases (like PostgreSQL or Oracle), your application sends network packets over TCP/IP to an external database server process.

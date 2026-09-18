@@ -7,16 +7,16 @@
  * Semantic Design Tokens (WCAG AA compliant light & dark themes)
  * --------------------------------------------------------------------------- */
 :root {
-  --bg: #FAFAFA;
-  --bg-subtle: #F4F4F5;
+  --bg: #F8FAFC;
+  --bg-subtle: #F1F5F9;
   --surface: #FFFFFF;
   --surface-raised: #FFFFFF;
-  --surface-overlay: rgba(255, 255, 255, 0.96);
-  --fg: #09090B;
-  --fg-muted: #52525B;
-  --fg-subtle: #71717A;
-  --border: #E4E4E7;
-  --border-subtle: #F4F4F5;
+  --surface-overlay: rgba(255, 255, 255, 0.98);
+  --fg: #0F172A;
+  --fg-muted: #334155;
+  --fg-subtle: #64748B;
+  --border: #E2E8F0;
+  --border-subtle: #F1F5F9;
   --accent: #2563EB;
   --accent-hover: #1D4ED8;
   --accent-subtle: #EFF6FF;
@@ -30,26 +30,26 @@
 }
 
 .dark {
-  --bg: #0B0F17;
-  --bg-subtle: #0F141F;
-  --surface: #111622;
-  --surface-raised: #161C2A;
-  --surface-overlay: rgba(17, 22, 34, 0.96);
+  --bg: #090D16;
+  --bg-subtle: #0E1424;
+  --surface: #131B2E;
+  --surface-raised: #1A243B;
+  --surface-overlay: rgba(19, 27, 46, 0.98);
   --fg: #F8FAFC;
-  --fg-muted: #94A3B8;
-  --fg-subtle: #64748B;
-  --border: #1E293B;
-  --border-subtle: #141A26;
+  --fg-muted: #CBD5E1;
+  --fg-subtle: #94A3B8;
+  --border: #26354D;
+  --border-subtle: #192236;
   --accent: #3B82F6;
   --accent-hover: #60A5FA;
-  --accent-subtle: rgba(59, 130, 246, 0.12);
+  --accent-subtle: rgba(59, 130, 246, 0.15);
   --accent-fg: #FFFFFF;
   --success: #10B981;
-  --success-subtle: rgba(16, 185, 129, 0.12);
+  --success-subtle: rgba(16, 185, 129, 0.15);
   --warning: #F59E0B;
-  --warning-subtle: rgba(245, 158, 11, 0.12);
+  --warning-subtle: rgba(245, 158, 11, 0.15);
   --danger: #EF4444;
-  --danger-subtle: rgba(239, 68, 68, 0.12);
+  --danger-subtle: rgba(239, 68, 68, 0.15);
 }
 
 @layer base {
@@ -266,3 +266,66 @@ select:focus-visible,
 .font-mono-reading {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
 }
+
+/* ---------------------------------------------------------------------------
+ * Elevation Micro-Shadow Utilities (Clean Light & Dark Depth)
+ * --------------------------------------------------------------------------- */
+.shadow-card {
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+}
+.dark .shadow-card {
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.35), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.shadow-card-hover {
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+.dark .shadow-card-hover {
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------------------------------------------------------------------------
+ * Mermaid Diagrams: High-Contrast & Zero-Truncation Layout
+ * --------------------------------------------------------------------------- */
+.mermaid-diagram-card {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1.75rem 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
+}
+
+.mermaid,
+.mermaid svg,
+[id^="mermaid-"] {
+  line-height: 1.3 !important;
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid text,
+.mermaid tspan,
+.mermaid .node,
+.mermaid .label,
+.mermaid foreignObject,
+.mermaid foreignObject div {
+  line-height: 1.35 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif !important;
+  overflow: visible !important;
+  word-break: normal !important;
+  white-space: normal !important;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon {
+  rx: 6px !important;
+  ry: 6px !important;
+}
+

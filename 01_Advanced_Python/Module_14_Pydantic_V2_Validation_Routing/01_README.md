@@ -7,22 +7,6 @@ Pydantic V2 is rewritten from scratch with a Rust core engine (`pydantic-core`),
 
 ---
 
-## 🗺️ Recommended Step-by-Step Learning Path
-
-| Step | File to Open | What You Will Do |
-| :---: | :--- | :--- |
-| **1** | **[01_README.md](01_README.md)** | Read conceptual overview, architectural foundations, and mental models. |
-| **2** | **[02_FOUNDATIONS_PLAYGROUND.md](02_FOUNDATIONS_PLAYGROUND.md)** | Practice beginner spoonfed micro-drills and line-by-line syntax breakdowns. |
-| **3** | **[03_try_it_yourself.py](03_try_it_yourself.py)** | Run in terminal (`python 03_try_it_yourself.py`) for an interactive zero-dependency sandbox. |
-| **4** | **[04_interactive_pydantic_v2.ipynb](04_interactive_pydantic_v2.ipynb)** | Open in VS Code/Jupyter to run interactive visual experiments. |
-| **5** | **[05_pydantic_validators_demo.py](05_pydantic_validators_demo.py)** | Run in terminal (`python 05_pydantic_validators_demo.py`) to explore Pydantic Validators code patterns. |
-| **6** | **[06_discriminated_unions_and_polymorphism_demo.py](06_discriminated_unions_and_polymorphism_demo.py)** | Run in terminal (`python 06_discriminated_unions_and_polymorphism_demo.py`) to explore Discriminated Unions And Polymorphism code patterns. |
-| **7** | **[07_TROUBLESHOOTING_AND_EDGE_CASES.md](07_TROUBLESHOOTING_AND_EDGE_CASES.md)** | Study forensic runbooks, edge cases, and real-world failure post-mortems. |
-| **8** | **[08_SELF_ASSESSMENT_AND_CHALLENGES.md](08_SELF_ASSESSMENT_AND_CHALLENGES.md)** | Test your knowledge with self-assessment quizzes, challenges, and diagnostic scenarios. |
-| **9** | **[09_PROJECT_GUIDE.md](09_PROJECT_GUIDE.md)** | Follow the 3-tier guided project implementation for starter/ and project_solution/. |
-
----
-
 ## 1. The Mental Model
 
 ### The Pydantic V2 Validation Pipeline

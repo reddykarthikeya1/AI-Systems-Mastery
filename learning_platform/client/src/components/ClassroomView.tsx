@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ModuleItem, LessonItem, TestResult, RunnerMode, LastPosition } from '../types';
-import { fetchFileContent, runTestCommand } from '../services/api';
+import { fetchFileContent, runTestCommand, runInteractiveCode } from '../services/api';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { TerminalRunner } from './TerminalRunner';
 import { SideCodeRunner, PageSnippet } from './SideCodeRunner';
@@ -272,7 +272,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         startOnLoad: false,
         theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
         securityLevel: 'loose',
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif',
+        flowchart: {
+          htmlLabels: true,
+          padding: 24,
+          nodeSpacing: 50,
+          rankSpacing: 50,
+          curve: 'basis',
+        },
       });
     } catch {
       // ignore init race
@@ -280,10 +287,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
     const renderMermaidBlocks = async () => {
       if (!theoryContentRef.current) return;
-      const codeBlocks = theoryContentRef.current.querySelectorAll('pre code.language-mermaid');
+      const codeBlocks = theoryContentRef.current.querySelectorAll('pre code.language-mermaid, pre.language-mermaid');
       for (let i = 0; i < codeBlocks.length; i++) {
         const codeEl = codeBlocks[i];
-        const preEl = codeEl.parentElement;
+        const preEl = codeEl.tagName === 'PRE' ? codeEl : codeEl.parentElement;
         if (!preEl || (preEl as any).dataset?.mermaidRendered) continue;
         const rawCode = codeEl.textContent || '';
         if (!rawCode.trim()) continue;
@@ -291,7 +298,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         try {
           const { svg } = await mermaid.render(renderId, rawCode.trim());
           const wrapper = document.createElement('div');
-          wrapper.className = 'my-6 p-4 rounded-2xl bg-surface border border-border/80 flex justify-center items-center overflow-x-auto shadow-sm transition-all';
+          wrapper.className = 'mermaid-diagram-card my-6 p-6 rounded-2xl bg-surface border border-border shadow-card flex justify-center items-center overflow-x-auto transition-all';
           wrapper.innerHTML = svg;
           (preEl as any).dataset.mermaidRendered = 'true';
           preEl.replaceWith(wrapper);
@@ -303,7 +310,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
     const timer = setTimeout(() => {
       renderMermaidBlocks();
-    }, 60);
+    }, 40);
 
     return () => clearTimeout(timer);
   }, [content, activeTab, notebookCells]);
@@ -498,28 +505,67 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       const preElements = container.querySelectorAll('pre');
       preElements.forEach((pre) => {
         if (pre.getAttribute('data-enhanced')) return;
-        pre.setAttribute('data-enhanced', 'true');
 
         const codeEl = pre.querySelector('code');
+        // Do not process or wrap Mermaid diagrams in code block wrappers
+        if (
+          codeEl?.classList.contains('language-mermaid') ||
+          pre.classList.contains('language-mermaid') ||
+          (pre as any).dataset?.mermaidRendered
+        ) {
+          return;
+        }
+
+        pre.setAttribute('data-enhanced', 'true');
         const codeText = codeEl ? codeEl.innerText : pre.innerText;
 
         let lang = 'Code';
-        let detectedMode: RunnerMode = 'python';
+        let detectedMode: RunnerMode | null = null;
+        let isRunnable = false;
 
         if (codeEl) {
-          const match = codeEl.className.match(/language-(\w+)/);
+          const match = codeEl.className.match(/language-([a-zA-Z0-9_-]+)/);
           if (match) lang = match[1].toUpperCase();
         }
 
-        if (lang === 'BASH' || lang === 'SH' || codeText.startsWith('$') || codeText.includes('pytest') || codeText.includes('pip install')) {
-          lang = 'BASH / CMD';
-          detectedMode = 'shell';
-        } else if (lang === 'POWERSHELL' || lang === 'PS1' || codeText.startsWith('PS >')) {
-          lang = 'POWERSHELL';
-          detectedMode = 'powershell';
-        } else if (lang === 'PYTHON' || lang === 'PY' || codeText.includes('def ') || codeText.includes('import ') || codeText.includes('class ') || codeText.includes('print(')) {
-          lang = 'PYTHON';
-          detectedMode = 'python';
+        const rawUpper = lang.toUpperCase();
+        const nonRunnableLangs = ['TEXT', 'TXT', 'PLAINTEXT', 'OUTPUT', 'CONSOLE', 'LOG', 'LOGS', 'DIFF', 'MARKDOWN', 'MD', 'JSON', 'YAML', 'YML', 'TOML', 'ENV', 'INI', 'MERMAID', 'ASCII'];
+
+        if (!nonRunnableLangs.includes(rawUpper)) {
+          if (rawUpper === 'BASH' || rawUpper === 'SH' || rawUpper === 'SHELL' || rawUpper === 'ZSH' || rawUpper === 'CMD') {
+            lang = 'BASH / CMD';
+            detectedMode = 'shell';
+            isRunnable = true;
+          } else if (rawUpper === 'POWERSHELL' || rawUpper === 'PS1' || rawUpper === 'PWSH') {
+            lang = 'POWERSHELL';
+            detectedMode = 'powershell';
+            isRunnable = true;
+          } else if (rawUpper === 'PYTHON' || rawUpper === 'PY' || rawUpper === 'PY3') {
+            // Check if it's non-executable pseudocode or diagram text
+            if (!codeText.includes('❌') && !codeText.includes('✅') && !codeText.includes('-->') && !codeText.includes('──>')) {
+              lang = 'PYTHON';
+              detectedMode = 'python';
+              isRunnable = true;
+            }
+          } else if (lang === 'Code') {
+            // Untagged block - check for strong syntax cues
+            if (codeText.startsWith('$ ') || codeText.includes('pytest ') || codeText.includes('pip install ') || codeText.includes('git clone ') || codeText.includes('curl ')) {
+              lang = 'BASH / CMD';
+              detectedMode = 'shell';
+              isRunnable = true;
+            } else if (codeText.startsWith('PS >') || codeText.startsWith('PS>') || codeText.includes('Get-ChildItem') || codeText.includes('Install-Module')) {
+              lang = 'POWERSHELL';
+              detectedMode = 'powershell';
+              isRunnable = true;
+            } else if (
+              (codeText.includes('def ') || codeText.includes('import ') || codeText.includes('class ') || codeText.includes('async def ')) &&
+              !codeText.includes('❌') && !codeText.includes('✅') && !codeText.includes('-->') && !codeText.includes('──>')
+            ) {
+              lang = 'PYTHON';
+              detectedMode = 'python';
+              isRunnable = true;
+            }
+          }
         }
 
         let executableCode = codeText;
@@ -530,37 +576,134 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         }
 
         const header = document.createElement('div');
-        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-surface-raised border-b border-zinc-800 text-xs font-mono text-zinc-400 select-none';
+        header.className = 'flex items-center justify-between px-3.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/90 border-b border-border text-xs font-mono text-zinc-600 dark:text-zinc-400 select-none';
 
         const label = document.createElement('span');
-        label.className = 'font-semibold text-zinc-300';
+        label.className = 'font-semibold text-fg';
         label.innerText = lang;
 
         const btnGroup = document.createElement('div');
         btnGroup.className = 'flex items-center gap-2';
 
-        const runSnippetBtn = document.createElement('button');
-        runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-400 font-semibold text-xs border border-emerald-500/30';
-        const runLabel = detectedMode === 'python' ? '▶ Run' : detectedMode === 'powershell' ? '▶ Run PS' : '▶ Run Shell';
-        runSnippetBtn.innerHTML = `<span>${runLabel}</span>`;
-        runSnippetBtn.title = `Execute snippet in Page-Aware ${detectedMode.toUpperCase()} Runner`;
-        runSnippetBtn.onclick = () => {
-          window.dispatchEvent(new CustomEvent('open-scratchpad-with-code', { 
-            detail: { code: executableCode, mode: detectedMode } 
-          }));
-        };
-        btnGroup.appendChild(runSnippetBtn);
+        if (isRunnable && detectedMode) {
+          const runSnippetBtn = document.createElement('button');
+          runSnippetBtn.className = 'hover:text-emerald-300 px-2 py-0.5 rounded hover:bg-emerald-950/60 transition-colors flex items-center gap-1 text-emerald-500 dark:text-emerald-400 font-semibold text-xs border border-emerald-500/30';
+          const defaultLabel = detectedMode === 'python' ? '▶ Run' : detectedMode === 'powershell' ? '▶ Run PS' : '▶ Run Shell';
+          runSnippetBtn.innerHTML = `<span>${defaultLabel}</span>`;
+          runSnippetBtn.title = `Execute snippet inline (Results appear directly below)`;
+          const activeMode = detectedMode;
+
+          runSnippetBtn.onclick = async () => {
+            if (runSnippetBtn.dataset.running === 'true') return;
+            runSnippetBtn.dataset.running = 'true';
+            runSnippetBtn.innerHTML = `<span>⏳ Running...</span>`;
+            soundService.playClick();
+
+            let drawer = wrapper.querySelector('.inline-snippet-drawer') as HTMLElement | null;
+            if (!drawer) {
+              drawer = document.createElement('div');
+              drawer.className = 'inline-snippet-drawer border-t border-zinc-800 bg-zinc-950 text-zinc-200 font-mono text-xs animate-in fade-in duration-150';
+              wrapper.appendChild(drawer);
+            }
+            drawer.innerHTML = `<div class="p-3 text-zinc-400 text-xs font-mono flex items-center gap-2"><span class="animate-spin">⏳</span> Executing in local sandbox...</div>`;
+
+            const startTime = performance.now();
+            try {
+              const res = await runInteractiveCode(executableCode, activeMode);
+              const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+
+              if (res.exit_code === 0) {
+                soundService.playSuccess();
+              } else {
+                soundService.playError();
+              }
+
+              drawer.innerHTML = '';
+
+              // Header of drawer
+              const drawerHeader = document.createElement('div');
+              drawerHeader.className = 'flex items-center justify-between px-3.5 py-1.5 bg-zinc-900 border-b border-zinc-800 text-[11px] font-mono text-zinc-400 select-none';
+
+              const statusBadge = document.createElement('span');
+              statusBadge.className = `px-1.5 py-0.5 rounded font-bold ${
+                res.exit_code === 0
+                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                  : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+              }`;
+              statusBadge.innerText = `Exit: ${res.exit_code} ${res.exit_code === 0 ? '(Success)' : '(Error)'} · ${elapsed}s`;
+
+              const drawerActions = document.createElement('div');
+              drawerActions.className = 'flex items-center gap-2';
+
+              const copyOutputBtn = document.createElement('button');
+              copyOutputBtn.className = 'hover:text-white px-1.5 py-0.5 rounded hover:bg-zinc-800 transition-colors text-[11px]';
+              copyOutputBtn.innerText = 'Copy';
+              copyOutputBtn.onclick = () => {
+                const out = [res.stdout, res.stderr].filter(Boolean).join('\n');
+                navigator.clipboard.writeText(out);
+                copyOutputBtn.innerText = '✓';
+                setTimeout(() => { copyOutputBtn.innerText = 'Copy'; }, 1500);
+              };
+
+              const closeDrawerBtn = document.createElement('button');
+              closeDrawerBtn.className = 'hover:text-rose-400 px-1.5 py-0.5 rounded hover:bg-zinc-800 transition-colors text-xs font-bold';
+              closeDrawerBtn.innerText = '✕';
+              closeDrawerBtn.title = 'Close Result';
+              closeDrawerBtn.onclick = () => {
+                drawer?.remove();
+              };
+
+              drawerActions.appendChild(copyOutputBtn);
+              drawerActions.appendChild(closeDrawerBtn);
+
+              drawerHeader.appendChild(statusBadge);
+              drawerHeader.appendChild(drawerActions);
+              drawer.appendChild(drawerHeader);
+
+              // Content of drawer
+              const drawerContent = document.createElement('div');
+              drawerContent.className = 'p-3.5 max-h-60 overflow-y-auto leading-relaxed select-text';
+
+              if (res.stdout) {
+                const outPre = document.createElement('pre');
+                outPre.className = 'text-emerald-400 whitespace-pre-wrap font-mono';
+                outPre.innerText = res.stdout;
+                drawerContent.appendChild(outPre);
+              }
+              if (res.stderr) {
+                const errPre = document.createElement('pre');
+                errPre.className = 'text-rose-400 whitespace-pre-wrap font-mono mt-1';
+                errPre.innerText = res.stderr;
+                drawerContent.appendChild(errPre);
+              }
+              if (!res.stdout && !res.stderr) {
+                const emptySpan = document.createElement('span');
+                emptySpan.className = 'text-zinc-500 italic';
+                emptySpan.innerText = '(Process completed with no output)';
+                drawerContent.appendChild(emptySpan);
+              }
+              drawer.appendChild(drawerContent);
+            } catch (err: any) {
+              soundService.playError();
+              drawer.innerHTML = `<div class="p-3 text-rose-400 text-xs font-mono">Execution failed: ${err?.message || 'Unknown error'}</div>`;
+            } finally {
+              runSnippetBtn.dataset.running = 'false';
+              runSnippetBtn.innerHTML = `<span>${defaultLabel}</span>`;
+            }
+          };
+          btnGroup.appendChild(runSnippetBtn);
+        }
 
         const copyBtn = document.createElement('button');
-        copyBtn.className = 'hover:text-white px-2 py-0.5 rounded hover:bg-zinc-800/80 transition-colors flex items-center gap-1';
+        copyBtn.className = 'hover:text-fg px-2 py-0.5 rounded hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors flex items-center gap-1 text-fg-muted';
         copyBtn.innerText = 'Copy';
         copyBtn.onclick = () => {
           navigator.clipboard.writeText(codeText);
           copyBtn.innerText = '✓ Copied';
-          copyBtn.classList.add('text-emerald-400');
+          copyBtn.classList.add('text-emerald-500');
           setTimeout(() => {
             copyBtn.innerText = 'Copy';
-            copyBtn.classList.remove('text-emerald-400');
+            copyBtn.classList.remove('text-emerald-500');
           }, 2000);
         };
 
@@ -574,7 +717,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         pre.style.borderTopRightRadius = '0';
 
         const wrapper = document.createElement('div');
-        wrapper.className = 'my-5 rounded-xl border border-zinc-300 dark:border-zinc-800 overflow-hidden shadow-sm bg-bg';
+        wrapper.className = 'my-5 rounded-xl border border-border overflow-hidden shadow-card bg-surface';
 
         pre.parentNode?.insertBefore(wrapper, pre);
         wrapper.appendChild(header);
