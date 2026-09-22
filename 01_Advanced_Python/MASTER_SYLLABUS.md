@@ -9,6 +9,7 @@ Every module is rigorously engineered with a standardized **10-step pedagogical 
 
 ## 🧭 Master Quicklinks & Orientation
 
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
 - 👶 **New to programming or setup?** Start with the **[Beginner's Zero-to-One Guide](START_HERE_BEGINNER_GUIDE.md)** (One-command install & starter loop).
 - ⏱️ **Need a study schedule?** Check out the **[Study Plans & Pacing Guide](STUDY_PLANS_AND_PACING_GUIDE.md)** (4-Week, 8-Week, and 16-Week tracks).
 - 🐛 **Stuck on an error or traceback?** Consult the **[Global Debugging Playbook](GLOBAL_DEBUGGING_PLAYBOOK.md)**.

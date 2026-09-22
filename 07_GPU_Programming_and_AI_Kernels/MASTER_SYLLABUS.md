@@ -5,7 +5,12 @@
 ## Course Curriculum Matrix
 
 | # | Module | Core Concepts & Systems Covered | Deliverables & Code |
-|---|---|---|---|
+|---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+|---|---|---|
 | **01** | [GPU Microarchitecture & Execution Model](Module_01_GPU_Microarchitecture_and_Execution_Model/01_README.md) | Streaming Multiprocessors (SMs), Warp Schedulers, Tensor Cores, Register Files, Shared Memory vs HBM3e, and Warp Divergence | [Playground](Module_01_GPU_Microarchitecture_and_Execution_Model/00_FOUNDATIONS_PLAYGROUND.md) · [Reference Engine](Module_01_GPU_Microarchitecture_and_Execution_Model/02_PROJECT_GUIDE.md) |
 | **02** | [CUDA C++ Programming Fundamentals](Module_02_CUDA_Cpp_Programming_Fundamentals/01_README.md) | Kernel Launches, 3D Grid/Block/Thread Hierarchy, Thread Indexing Calculations, and Vector Addition | [Playground](Module_02_CUDA_Cpp_Programming_Fundamentals/00_FOUNDATIONS_PLAYGROUND.md) · [Reference Engine](Module_02_CUDA_Cpp_Programming_Fundamentals/02_PROJECT_GUIDE.md) |
 | **03** | [CUDA Memory Hierarchy & Coalescing](Module_03_CUDA_Memory_Hierarchy_and_Coalescing/01_README.md) | Global Memory Coalescing Rules, Shared Memory Bank Conflicts, __syncthreads(), and Cache Bypass with LDG | [Playground](Module_03_CUDA_Memory_Hierarchy_and_Coalescing/00_FOUNDATIONS_PLAYGROUND.md) · [Reference Engine](Module_03_CUDA_Memory_Hierarchy_and_Coalescing/02_PROJECT_GUIDE.md) |

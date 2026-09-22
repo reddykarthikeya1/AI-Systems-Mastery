@@ -1,0 +1,1640 @@
+{
+  "Astral uv python package manager tutorial": {
+    "id": "AMdG7IjgSPM",
+    "url": "https://www.youtube.com/watch?v=AMdG7IjgSPM",
+    "title": "Python Tutorial: UV - A Faster, All-in-One Package Manager to Replace Pip and Venv",
+    "author": "Corey Schafer"
+  },
+  "Corey Schafer Python Tutorial Integers and Floats Working with Numeric Data": {
+    "id": "khKv-8q7YmY",
+    "url": "https://www.youtube.com/watch?v=khKv-8q7YmY",
+    "title": "Python Tutorial for Beginners 3: Integers and Floats - Working with Numeric Data",
+    "author": "Corey Schafer"
+  },
+  "Corey Schafer Python Tutorial Variable Scope LEGB rule": {
+    "id": "QVdf0LgmICw",
+    "url": "https://www.youtube.com/watch?v=QVdf0LgmICw",
+    "title": "Python Tutorial: Variable Scope - Understanding the LEGB rule and global/nonlocal statements",
+    "author": "Corey Schafer"
+  },
+  "mCoding How dictionaries work in Python": {
+    "id": "vBH6GRJ1REM",
+    "url": "https://www.youtube.com/watch?v=vBH6GRJ1REM",
+    "title": "Python dataclasses will save you HOURS, also featuring attrs",
+    "author": "mCoding"
+  },
+  "Corey Schafer Python OOP Tutorial 6 Property Decorators": {
+    "id": "jCzT9XFZ5bw",
+    "url": "https://www.youtube.com/watch?v=jCzT9XFZ5bw",
+    "title": "Python OOP Tutorial 6: Property Decorators - Getters, Setters, and Deleters",
+    "author": "Corey Schafer"
+  },
+  "Corey Schafer Python Tutorial Decorators Dynamically Alter": {
+    "id": "FsAPt_9Bf3U",
+    "url": "https://www.youtube.com/watch?v=FsAPt_9Bf3U",
+    "title": "Python Tutorial: Decorators - Dynamically Alter The Functionality Of Your Functions",
+    "author": "Corey Schafer"
+  },
+  "Corey Schafer Python Logging Basics Advanced": {
+    "id": "-ARI4Cz-awo",
+    "url": "https://www.youtube.com/watch?v=-ARI4Cz-awo",
+    "title": "Python Tutorial: Logging Basics - Logging to Files, Setting Levels, and Formatting",
+    "author": "Corey Schafer"
+  },
+  "Corey Schafer Python Tutorial Working with JSON Data": {
+    "id": "9N6a-VLBa2I",
+    "url": "https://www.youtube.com/watch?v=9N6a-VLBa2I",
+    "title": "Python Tutorial: Working with JSON Data using the json Module",
+    "author": "Corey Schafer"
+  },
+  "ArjanCodes How to test your code with pytest": {
+    "id": "n1nqgMtWRwg",
+    "url": "https://www.youtube.com/watch?v=n1nqgMtWRwg",
+    "title": "How to Test Asynchronous Code in Python",
+    "author": "ArjanCodes"
+  },
+  "Corey Schafer Python Multiprocessing Tutorial": {
+    "id": "fKl2JW_qrso",
+    "url": "https://www.youtube.com/watch?v=fKl2JW_qrso",
+    "title": "Python Multiprocessing Tutorial: Run Code in Parallel Using the Multiprocessing Module",
+    "author": "Corey Schafer"
+  },
+  "ArjanCodes Next Level Asyncio in Python": {
+    "id": "GpqAQxH1Afc",
+    "url": "https://www.youtube.com/watch?v=GpqAQxH1Afc",
+    "title": "Next-Level Concurrent Programming In Python With Asyncio",
+    "author": "ArjanCodes"
+  },
+  "Corey Schafer Python Socket Programming Tutorial": {
+    "id": "YYXdXT2l-Gg",
+    "url": "https://www.youtube.com/watch?v=YYXdXT2l-Gg",
+    "title": "Python Tutorial for Beginners 1: Install and Setup for Mac and Windows",
+    "author": "Corey Schafer"
+  },
+  "mCoding What is Python bytecode": {
+    "id": "qUeud6DvOWI",
+    "url": "https://www.youtube.com/watch?v=qUeud6DvOWI",
+    "title": "25 nooby Python habits you need to ditch",
+    "author": "mCoding"
+  },
+  "freeCodeCamp FastAPI Course for Beginners": {
+    "id": "tLKKmouUams",
+    "url": "https://www.youtube.com/watch?v=tLKKmouUams",
+    "title": "FastAPI Course for Beginners",
+    "author": "freeCodeCamp.org"
+  },
+  "ArjanCodes Pydantic V2 The New Standard for Data Validation": {
+    "id": "502XOB0u8OY",
+    "url": "https://www.youtube.com/watch?v=502XOB0u8OY",
+    "title": "Why Python Needs Pydantic for Real Applications",
+    "author": "ArjanCodes"
+  },
+  "ArjanCodes Modern Database Access with SQLAlchemy 2.0": {
+    "id": "aAy-B6KPld8",
+    "url": "https://www.youtube.com/watch?v=aAy-B6KPld8",
+    "title": "SQLAlchemy: The BEST SQL Database Library in Python",
+    "author": "ArjanCodes"
+  },
+  "FastAPI JWT Authentication Amigoscode": {
+    "id": "GN6ICac3OXY",
+    "url": "https://www.youtube.com/watch?v=GN6ICac3OXY",
+    "title": "FastAPI Tutorial - Building RESTful APIs with Python",
+    "author": "Amigoscode"
+  },
+  "ArjanCodes Dependency Injection in Python": {
+    "id": "DpMGEhwuuyA",
+    "url": "https://www.youtube.com/watch?v=DpMGEhwuuyA",
+    "title": "Dependency Injection Makes Code Easier to Change and Test",
+    "author": "ArjanCodes"
+  },
+  "ArjanCodes Celery Redis Task Queue Python": {
+    "id": "0gtdUkEzzn4",
+    "url": "https://www.youtube.com/watch?v=0gtdUkEzzn4",
+    "title": "Professional Task Queues in Python with Celery, RabbitMQ & Redis",
+    "author": "NeuralNine"
+  },
+  "TechWorld with Nana Docker Tutorial for Beginners": {
+    "id": "3c-iBn73dDE",
+    "url": "https://www.youtube.com/watch?v=3c-iBn73dDE",
+    "title": "Docker Tutorial for Beginners [FULL COURSE in 3 Hours]",
+    "author": "TechWorld with Nana"
+  },
+  "mCoding How to profile Python code cProfile": {
+    "id": "m_a0fN48Alw",
+    "url": "https://www.youtube.com/watch?v=m_a0fN48Alw",
+    "title": "Diagnose slow Python code. (Feat. async/await)",
+    "author": "mCoding"
+  },
+  "James Powell So you want to be a Python expert": {
+    "id": "cKPlPJyQrt4",
+    "url": "https://www.youtube.com/watch?v=cKPlPJyQrt4",
+    "title": "James Powell: So you want to be a Python expert? | PyData Seattle 2017",
+    "author": "PyData"
+  },
+  "mCoding Rust inside Python using PyO3": {
+    "id": "7Swu5X1HiNk",
+    "url": "https://www.youtube.com/watch?v=7Swu5X1HiNk",
+    "title": "Importing Python in Rust with pyo3",
+    "author": "Pragmatic AI Labs"
+  },
+  "ArjanCodes Type Hints in Python": {
+    "id": "0oBLMwHdZ2Y",
+    "url": "https://www.youtube.com/watch?v=0oBLMwHdZ2Y",
+    "title": "The REAL Reason You Should Use Type Hints in Python",
+    "author": "ArjanCodes"
+  },
+  "Polars Python tutorial Data Analysis faster than Pandas": {
+    "id": "dwmqpQ40LKI",
+    "url": "https://www.youtube.com/watch?v=dwmqpQ40LKI",
+    "title": "Will Polars replace Pandas for Data Science?",
+    "author": "Rob Mulla"
+  },
+  "Andrej Karpathy Intro to Large Language Models": {
+    "id": "zjkBMFhNj_g",
+    "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+    "title": "[1hr Talk] Intro to Large Language Models",
+    "author": "Andrej Karpathy"
+  },
+  "ArjanCodes Software Architecture in Python Clean Architecture": {
+    "id": "IdwdqdywNOM",
+    "url": "https://www.youtube.com/watch?v=IdwdqdywNOM",
+    "title": "This Design Pattern Replaces an Entire Class Hierarchy",
+    "author": "ArjanCodes"
+  },
+  "Abdul Bari Asymptotic Notations Big Oh Omega Theta": {
+    "id": "A03oI0znAoc",
+    "url": "https://www.youtube.com/watch?v=A03oI0znAoc",
+    "title": "1.8.1 Asymptotic Notations Big Oh - Omega - Theta #1",
+    "author": "Abdul Bari"
+  },
+  "NeetCode Two Sum Two Pointers LeetCode": {
+    "id": "_d0T_2Lk2qA",
+    "url": "https://www.youtube.com/watch?v=_d0T_2Lk2qA",
+    "title": "Reverse String - 3 Ways - Leetcode 344 - Python",
+    "author": "NeetCode"
+  },
+  "Abdul Bari Linked List Operations Insertion Deletion": {
+    "id": "z8e3zsEUhg4",
+    "url": "https://www.youtube.com/watch?v=z8e3zsEUhg4",
+    "title": "11.8 : Insert in Sorted Linked List (Theory + Code) | DSA [Abdul Bari]",
+    "author": "Hacktrickz"
+  },
+  "ArjanCodes Pydantic V2 Python tutorial": {
+    "id": "502XOB0u8OY",
+    "url": "https://www.youtube.com/watch?v=502XOB0u8OY",
+    "title": "Why Python Needs Pydantic for Real Applications",
+    "author": "ArjanCodes",
+    "views": "123,659 views",
+    "published": "2 years ago",
+    "duration": "13:56"
+  },
+  "Amigoscode SQLAlchemy 2.0 tutorial python": {
+    "id": "aAy-B6KPld8",
+    "url": "https://www.youtube.com/watch?v=aAy-B6KPld8",
+    "title": "SQLAlchemy: The BEST SQL Database Library in Python",
+    "author": "ArjanCodes",
+    "views": "192,930 views",
+    "published": "2 yr ago",
+    "duration": "16:39"
+  },
+  "ArjanCodes FastAPI tutorial modern python": {
+    "id": "SORiTsvnU28",
+    "url": "https://www.youtube.com/watch?v=SORiTsvnU28",
+    "title": "How to Use FastAPI: A Detailed Python Tutorial",
+    "author": "ArjanCodes",
+    "views": "375,848 views",
+    "published": "3 yr ago",
+    "duration": "20:38"
+  },
+  "FastAPI WebSockets tutorial python": {
+    "id": "ADVsjLHevtY",
+    "url": "https://www.youtube.com/watch?v=ADVsjLHevtY",
+    "title": "Real Time Chat Room Made Easy! | FastAPI Tutorial",
+    "author": "Eric Roby",
+    "views": "53,187 views",
+    "published": "2 years ago",
+    "duration": "11:32"
+  },
+  "ArjanCodes Python API security JWT authentication": {
+    "id": "xJA8tP74KD0",
+    "url": "https://www.youtube.com/watch?v=xJA8tP74KD0",
+    "title": "API Authentication: JWT, OAuth2, and More",
+    "author": "ByteMonk",
+    "views": "377,960 views",
+    "published": "1 yr ago",
+    "duration": "6:12"
+  },
+  "ArjanCodes Celery Redis task queue python": {
+    "id": "0gtdUkEzzn4",
+    "url": "https://www.youtube.com/watch?v=0gtdUkEzzn4",
+    "title": "Professional Task Queues in Python with Celery, RabbitMQ & Redis",
+    "author": "NeuralNine",
+    "views": "32,072 views",
+    "published": "11 mo ago",
+    "duration": "26:48"
+  },
+  "Docker Python tutorial deployment freeCodeCamp": {
+    "id": "rjjES5IsPdg",
+    "url": "https://www.youtube.com/watch?v=rjjES5IsPdg",
+    "title": "Learn Docker \u2013 Full DevOps Course for Deploying Containerized Apps",
+    "author": "freeCodeCamp.org",
+    "views": "231,389 views",
+    "published": "3 months ago",
+    "duration": "7:29:48"
+  },
+  "mCoding Python profiling speed optimization": {
+    "id": "m_a0fN48Alw",
+    "url": "https://www.youtube.com/watch?v=m_a0fN48Alw",
+    "title": "Diagnose slow Python code. (Feat. async/await)",
+    "author": "mCoding",
+    "views": "220,695 views",
+    "published": "5 years ago",
+    "duration": "9:57"
+  },
+  "Rust PyO3 Python native extensions tutorial": {
+    "id": "lyG6AKzu4ew",
+    "url": "https://www.youtube.com/watch?v=lyG6AKzu4ew",
+    "title": "Combining Rust and Python: The Best of Both Worlds?",
+    "author": "ArjanCodes",
+    "views": "97,660 views",
+    "published": "2 years ago",
+    "duration": "11:08"
+  },
+  "mCoding Python descriptors explained": {
+    "id": "mMbVs17Vmo4",
+    "url": "https://www.youtube.com/watch?v=mMbVs17Vmo4",
+    "title": "8 things in Python you didn't realize are descriptors",
+    "author": "mCoding",
+    "views": "90,162 views",
+    "published": "3 yr ago",
+    "duration": "14:21"
+  },
+  "ArjanCodes Python type hints mypy typing": {
+    "id": "0oBLMwHdZ2Y",
+    "url": "https://www.youtube.com/watch?v=0oBLMwHdZ2Y",
+    "title": "The REAL Reason You Should Use Type Hints in Python",
+    "author": "ArjanCodes",
+    "views": "38,192 views",
+    "published": "1 yr ago",
+    "duration": "13:01"
+  },
+  "Polars Python tutorial high performance dataframe": {
+    "id": "MwHotQBaHcQ",
+    "url": "https://www.youtube.com/watch?v=MwHotQBaHcQ",
+    "title": "This One Word Makes Polars So Efficient | Python Tutorial",
+    "author": "TechnicallyRipped",
+    "views": "8,397 views",
+    "published": "1 year ago",
+    "duration": "0:54"
+  },
+  "Building LLM applications Python LangChain OpenAI": {
+    "id": "xTmU8ZImUO8",
+    "url": "https://www.youtube.com/watch?v=xTmU8ZImUO8",
+    "title": "LangChain Explained in 10 Minutes (Components Breakdown + Build Your First AI Chatbot)",
+    "author": "KodeKloud",
+    "views": "247,268 views",
+    "published": "1 year ago",
+    "duration": "12:28"
+  },
+  "Abdul Bari Big O notation time complexity": {
+    "id": "A03oI0znAoc",
+    "url": "https://www.youtube.com/watch?v=A03oI0znAoc",
+    "title": "1.8.1 Asymptotic Notations Big Oh - Omega - Theta #1",
+    "author": "Abdul Bari",
+    "views": "2,526,055 views",
+    "published": "8 yr ago",
+    "duration": "15:46"
+  },
+  "NeetCode Dynamic Array design leetcode": {
+    "id": "xT70mHdAM74",
+    "url": "https://www.youtube.com/watch?v=xT70mHdAM74",
+    "title": "Design a Dynamic Array (Resizable Array)",
+    "author": "NeetCodeIO",
+    "views": "79,340 views",
+    "published": "3 years ago",
+    "duration": "11:17"
+  },
+  "Full stack Python microservices architecture enterprise": {
+    "id": "lTAcCNbJ7KE",
+    "url": "https://www.youtube.com/watch?v=lTAcCNbJ7KE",
+    "title": "What Are Microservices Really All About? (And When Not To Use It)",
+    "author": "ByteByteGo",
+    "views": "938,866 views",
+    "published": "3 yr ago",
+    "duration": "4:45"
+  },
+  "Abdul Bari Linked List data structure tutorial": {
+    "id": "akErwS16DUg",
+    "url": "https://www.youtube.com/watch?v=akErwS16DUg",
+    "title": "11.1 : Linked List Introduction & Concepts | DSA [Abdul Bari]",
+    "author": "Hacktrickz",
+    "views": "7,065 views",
+    "published": "7 mo ago",
+    "duration": "27:07"
+  },
+  "NeetCode Monotonic Stack Next Greater Element": {
+    "id": "68a1Dc_qVq4",
+    "url": "https://www.youtube.com/watch?v=68a1Dc_qVq4",
+    "title": "Next Greater Element I - Leetcode 496 - Python",
+    "author": "NeetCode",
+    "views": "128,591 views",
+    "published": "4 years ago",
+    "duration": "14:53"
+  },
+  "Abdul Bari Hashing technique collision resolution": {
+    "id": "mFY0J5W8Udk",
+    "url": "https://www.youtube.com/watch?v=mFY0J5W8Udk",
+    "title": "Hashing Technique - Simplified",
+    "author": "Abdul Bari",
+    "views": "914,482 views",
+    "published": "11 years ago",
+    "duration": "17:04"
+  },
+  "Abdul Bari AVL Tree insertion rotation": {
+    "id": "jDM6_TnYIqE",
+    "url": "https://www.youtube.com/watch?v=jDM6_TnYIqE",
+    "title": "10.1 AVL Tree - Insertion and Rotations",
+    "author": "Abdul Bari",
+    "views": "1,711,796 views",
+    "published": "8 years ago",
+    "duration": "43:08"
+  },
+  "Abdul Bari Graph traversal BFS DFS": {
+    "id": "pcKY4hjDrxk",
+    "url": "https://www.youtube.com/watch?v=pcKY4hjDrxk",
+    "title": "5.1 Graph Traversals - BFS & DFS -Breadth First Search and Depth First Search",
+    "author": "Abdul Bari",
+    "views": "5,043,079 views",
+    "published": "8 yr ago",
+    "duration": "18:31"
+  },
+  "Abdul Bari Heap Sort insertion deletion": {
+    "id": "HqPJF2L5h9U",
+    "url": "https://www.youtube.com/watch?v=HqPJF2L5h9U",
+    "title": "2.6.3 Heap - Heap Sort - Heapify - Priority Queues",
+    "author": "Abdul Bari",
+    "views": "2,935,502 views",
+    "published": "7 yr ago",
+    "duration": "51:08"
+  },
+  "Abdul Bari Dijkstra algorithm shortest path": {
+    "id": "XB4MIexjvY0",
+    "url": "https://www.youtube.com/watch?v=XB4MIexjvY0",
+    "title": "3.6 Dijkstra Algorithm - Single Source Shortest Path - Greedy Method",
+    "author": "Abdul Bari",
+    "views": "4,885,961 views",
+    "published": "8 yr ago",
+    "duration": "18:35"
+  },
+  "NeetCode Dynamic Programming 1D pattern": {
+    "id": "_i4Yxeh5ceQ",
+    "url": "https://www.youtube.com/watch?v=_i4Yxeh5ceQ",
+    "title": "Dynamic Programming 1D - Full Course - Python",
+    "author": "NeetCode",
+    "views": "340,965 views",
+    "published": "4 years ago",
+    "duration": "2:59:19"
+  },
+  "Abdul Bari Greedy Method Knapsack Job Sequencing": {
+    "id": "zPtI8q9gvX8",
+    "url": "https://www.youtube.com/watch?v=zPtI8q9gvX8",
+    "title": "3.2 Job Sequencing with Deadlines - Greedy Method",
+    "author": "Abdul Bari",
+    "views": "1,939,488 views",
+    "published": "8 yr ago",
+    "duration": "13:29"
+  },
+  "Abdul Bari 0/1 Knapsack Problem Dynamic Programming": {
+    "id": "nLmhmB6NzcM",
+    "url": "https://www.youtube.com/watch?v=nLmhmB6NzcM",
+    "title": "4.5 0/1 Knapsack - Two Methods - Dynamic Programming",
+    "author": "Abdul Bari",
+    "views": "4,189,998 views",
+    "published": "8 years ago",
+    "duration": "28:24"
+  },
+  "Abdul Bari N Queen Problem Backtracking": {
+    "id": "xFv_Hl4B83A",
+    "url": "https://www.youtube.com/watch?v=xFv_Hl4B83A",
+    "title": "6.1 N Queens Problem using Backtracking",
+    "author": "Abdul Bari",
+    "views": "2,946,184 views",
+    "published": "8 yr ago",
+    "duration": "13:41"
+  },
+  "NeetCode Trie data structure design add search": {
+    "id": "BTf05gs_8iU",
+    "url": "https://www.youtube.com/watch?v=BTf05gs_8iU",
+    "title": "Design Add and Search Words Data Structure - Leetcode 211 - Python",
+    "author": "NeetCode",
+    "views": "163,116 views",
+    "published": "5 years ago",
+    "duration": "19:50"
+  },
+  "Abdul Bari KMP algorithm substring pattern matching": {
+    "id": "V5-7GzOfADQ",
+    "url": "https://www.youtube.com/watch?v=V5-7GzOfADQ",
+    "title": "9.1 Knuth-Morris-Pratt KMP String Matching Algorithm",
+    "author": "Abdul Bari",
+    "views": "2,455,470 views",
+    "published": "8 years ago",
+    "duration": "18:56"
+  },
+  "ByteByteGo Bloom Filter system design": {
+    "id": "V3pzxngeLqw",
+    "url": "https://www.youtube.com/watch?v=V3pzxngeLqw",
+    "title": "Bloom Filters | Algorithms You Should Know #2 | Real-world Examples",
+    "author": "ByteByteGo",
+    "views": "300,445 views",
+    "published": "4 years ago",
+    "duration": "5:40"
+  },
+  "William Fiset Ford Fulkerson max flow network flow": {
+    "id": "Tl90tNtKvxs",
+    "url": "https://www.youtube.com/watch?v=Tl90tNtKvxs",
+    "title": "Ford-Fulkerson in 5 minutes",
+    "author": "Michael Sambol",
+    "views": "1,232,245 views",
+    "published": "11 yr ago",
+    "duration": "5:15"
+  },
+  "Hussein Nasser Database ACID properties isolation levels": {
+    "id": "pomxJOFVcQs",
+    "url": "https://www.youtube.com/watch?v=pomxJOFVcQs",
+    "title": "Relational Database ACID Transactions (Explained by Example)",
+    "author": "Hussein Nasser",
+    "views": "162,559 views",
+    "published": "7 years ago",
+    "duration": "42:43"
+  },
+  "Hussein Nasser Advanced SQL window functions CTEs": {
+    "id": "o666k19mZwE",
+    "url": "https://www.youtube.com/watch?v=o666k19mZwE",
+    "title": "SQL Window Functions Basics (Visually Explained) | PARTITION BY, ORDER BY, FRAME | #SQL Course 22",
+    "author": "Data with Baraa",
+    "views": "244,166 views",
+    "published": "2 yr ago",
+    "duration": "57:19"
+  },
+  "Hussein Nasser SQLite architecture Write Ahead Log WAL": {
+    "id": "uHvR7nOu5m4",
+    "url": "https://www.youtube.com/watch?v=uHvR7nOu5m4",
+    "title": "Redo, Undo and WAL logs | The Backend Engineering Show",
+    "author": "Hussein Nasser",
+    "views": "11,870 views",
+    "published": "4 years ago",
+    "duration": "40:41"
+  },
+  "Hussein Nasser PostgreSQL Architecture processes memory": {
+    "id": "Q56kljmIN14",
+    "url": "https://www.youtube.com/watch?v=Q56kljmIN14",
+    "title": "PostgreSQL Internal Architecture Explained",
+    "author": "Hussein Nasser",
+    "views": "217,957 views",
+    "published": "3 years ago",
+    "duration": "33:16"
+  },
+  "Hussein Nasser Postgres MVCC EXPLAIN ANALYZE index": {
+    "id": "-qNSXK7s7_w",
+    "url": "https://www.youtube.com/watch?v=-qNSXK7s7_w",
+    "title": "Database Indexing Explained (with PostgreSQL)",
+    "author": "Hussein Nasser",
+    "views": "400,823 views",
+    "published": "5 yr ago",
+    "duration": "18:19"
+  },
+  "Hussein Nasser MySQL InnoDB engine architecture replication": {
+    "id": "aE2UPg3Ckck",
+    "url": "https://www.youtube.com/watch?v=aE2UPg3Ckck",
+    "title": "All Types of Database Replication Discussed",
+    "author": "Hussein Nasser",
+    "views": "17,896 views",
+    "published": "5 yr ago",
+    "duration": "19:01"
+  },
+  "Oracle Database architecture SGA PGA memory background processes": {
+    "id": "uni59ARMAO8",
+    "url": "https://www.youtube.com/watch?v=uni59ARMAO8",
+    "title": "Oracle Database Memory Architecture Explained | SGA, PGA, Background Processes",
+    "author": "saptech",
+    "views": "766 views",
+    "published": "1 yr ago",
+    "duration": "1:01:52"
+  },
+  "Oracle PL SQL tutorial packages stored procedures triggers": {
+    "id": "pfLtGDJcdm4",
+    "url": "https://www.youtube.com/watch?v=pfLtGDJcdm4",
+    "title": "Stored Procedures in PL/SQL | Oracle PL/SQL Tutorial Videos | Mr.Vijay Kumar",
+    "author": "Naresh i Technologies",
+    "views": "271,761 views",
+    "published": "9 years ago",
+    "duration": "18:54"
+  },
+  "Oracle Data Guard RAC GoldenGate high availability architecture": {
+    "id": "1-dCb4bqo_E",
+    "url": "https://www.youtube.com/watch?v=1-dCb4bqo_E",
+    "title": "Oracle GoldenGate Microservices Hub Setup on RAC - Step-by-Step Guide",
+    "author": "DBNexus Training & Consulting",
+    "views": "2,992 views",
+    "published": "1 yr ago",
+    "duration": "40:13"
+  },
+  "Hussein Nasser MongoDB document modeling BSON schema": {
+    "id": "ONzdr4SmOng",
+    "url": "https://www.youtube.com/watch?v=ONzdr4SmOng",
+    "title": "MongoDB Internal Architecture",
+    "author": "Hussein Nasser",
+    "views": "118,246 views",
+    "published": "3 years ago",
+    "duration": "43:25"
+  },
+  "Hussein Nasser MongoDB replication sharding architecture": {
+    "id": "ONzdr4SmOng",
+    "url": "https://www.youtube.com/watch?v=ONzdr4SmOng",
+    "title": "MongoDB Internal Architecture",
+    "author": "Hussein Nasser",
+    "views": "118,246 views",
+    "published": "3 years ago",
+    "duration": "43:25"
+  },
+  "Hussein Nasser Redis architecture data structures persistence RDB AOF": {
+    "id": "V7FPk4J10KI",
+    "url": "https://www.youtube.com/watch?v=V7FPk4J10KI",
+    "title": "Redis In-Memory Database Crash Course",
+    "author": "Hussein Nasser",
+    "views": "65,009 views",
+    "published": "5 years ago",
+    "duration": "50:01"
+  },
+  "Hussein Nasser Redis Cluster Sentinel replication": {
+    "id": "p8mK8GBCARE",
+    "url": "https://www.youtube.com/watch?v=p8mK8GBCARE",
+    "title": "Replication and Clustering in Redis",
+    "author": "Hussein Nasser",
+    "views": "12,801 views",
+    "published": "6 yr ago",
+    "duration": "3:21"
+  },
+  "Hussein Nasser Apache Cassandra architecture masterless ring consistent hashing": {
+    "id": "p6wwj0ozifw",
+    "url": "https://www.youtube.com/watch?v=p6wwj0ozifw",
+    "title": "Consistent Hashing | The Backend Engineering Show",
+    "author": "Hussein Nasser",
+    "views": "48,191 views",
+    "published": "4 yr ago",
+    "duration": "23:54"
+  },
+  "Hussein Nasser LSM Tree vs B-Tree database storage engine": {
+    "id": "UzHl2VzyZS4",
+    "url": "https://www.youtube.com/watch?v=UzHl2VzyZS4",
+    "title": "B-tree vs B+ tree in Database Systems",
+    "author": "Hussein Nasser",
+    "views": "66,031 views",
+    "published": "5 years ago",
+    "duration": "31:50"
+  },
+  "Neo4j graph database architecture Cypher tutorial": {
+    "id": "8jNPelugC2s",
+    "url": "https://www.youtube.com/watch?v=8jNPelugC2s",
+    "title": "Neo4j (Graph Database) Crash Course",
+    "author": "Laiture",
+    "views": "377,647 views",
+    "published": "4 yr ago",
+    "duration": "1:23:08"
+  },
+  "Hussein Nasser Columnar databases OLAP ClickHouse DuckDB": {
+    "id": "Vw1fCeD06YI",
+    "url": "https://www.youtube.com/watch?v=Vw1fCeD06YI",
+    "title": "Column vs Row Oriented Databases Explained",
+    "author": "Hussein Nasser",
+    "views": "89,205 views",
+    "published": "5 yr ago",
+    "duration": "34:16"
+  },
+  "Hussein Nasser Elasticsearch Apache Lucene inverted index BM25": {
+    "id": "iHHqnyThrqE",
+    "url": "https://www.youtube.com/watch?v=iHHqnyThrqE",
+    "title": "Inverted Index - The Data Structure Behind Search Engines",
+    "author": "Arpit Bhayani",
+    "views": "47,891 views",
+    "published": "1 yr ago",
+    "duration": "14:45"
+  },
+  "Dimensional Modeling data warehouse star schema Kimbal": {
+    "id": "hQvCOBv_-LE",
+    "url": "https://www.youtube.com/watch?v=hQvCOBv_-LE",
+    "title": "What is STAR schema | Star vs Snowflake Schema | Fact vs Dimension Table",
+    "author": "codebasics",
+    "views": "385,144 views",
+    "published": "3 yr ago",
+    "duration": "6:59"
+  },
+  "Hussein Nasser B-tree vs B+ tree in Database Systems": {
+    "id": "UzHl2VzyZS4",
+    "url": "https://www.youtube.com/watch?v=UzHl2VzyZS4",
+    "title": "B-tree vs B+ tree in Database Systems",
+    "author": "Hussein Nasser",
+    "views": "66,031 views",
+    "published": "5 years ago",
+    "duration": "31:50"
+  },
+  "Hussein Nasser Vector databases pgvector embeddings HNSW": {
+    "id": "gl1r1XV0SLw",
+    "url": "https://www.youtube.com/watch?v=gl1r1XV0SLw",
+    "title": "What is a Vector Database? Powering Semantic Search & AI Applications",
+    "author": "IBM Technology",
+    "views": "964,521 views",
+    "published": "1 year ago",
+    "duration": "9:49"
+  },
+  "Andy Pavlo Query Optimization CMU Database": {
+    "id": "62cAdANFhBg",
+    "url": "https://www.youtube.com/watch?v=62cAdANFhBg",
+    "title": "#02 - History of Query Optimizers ft. IBM System R (CMU Optimize!)",
+    "author": "CMU Database Group",
+    "views": "5,691 views",
+    "published": "1 yr ago",
+    "duration": "1:10:40"
+  },
+  "Hussein Nasser Zero Downtime Database Migrations": {
+    "id": "iQU39VQfy3s",
+    "url": "https://www.youtube.com/watch?v=iQU39VQfy3s",
+    "title": "Zero-downtime restarts are hard to get right",
+    "author": "Hussein Nasser",
+    "views": "7,539 views",
+    "published": "5 years ago",
+    "duration": "13:58"
+  },
+  "Hussein Nasser Two Phase Commit 2PC distributed transactions": {
+    "id": "eltn4x788UM",
+    "url": "https://www.youtube.com/watch?v=eltn4x788UM",
+    "title": "Distributed Transactions are Hard (How Two-Phase Commit works)",
+    "author": "Hussein Nasser",
+    "views": "39,872 views",
+    "published": "4 years ago",
+    "duration": "16:24"
+  },
+  "ByteByteGo System Design interview framework": {
+    "id": "i7twT3x5yv8",
+    "url": "https://www.youtube.com/watch?v=i7twT3x5yv8",
+    "title": "System Design Interview: A Step-By-Step Guide",
+    "author": "ByteByteGo",
+    "views": "1,099,788 views",
+    "published": "3 yr ago",
+    "duration": "9:54"
+  },
+  "ByteByteGo Polyglot Persistence microservices database design": {
+    "id": "lTAcCNbJ7KE",
+    "url": "https://www.youtube.com/watch?v=lTAcCNbJ7KE",
+    "title": "What Are Microservices Really All About? (And When Not To Use It)",
+    "author": "ByteByteGo",
+    "views": "938,866 views",
+    "published": "3 yr ago",
+    "duration": "4:45"
+  },
+  "ByteByteGo Latency numbers every programmer should know": {
+    "id": "FqR5vESuKe0",
+    "url": "https://www.youtube.com/watch?v=FqR5vESuKe0",
+    "title": "Latency Numbers Programmer Should Know: Crash Course System Design #1",
+    "author": "ByteByteGo",
+    "views": "372,013 views",
+    "published": "3 years ago",
+    "duration": "6:22"
+  },
+  "Hussein Nasser REST vs gRPC vs GraphQL vs WebSockets": {
+    "id": "2Nt-ZrNP22A",
+    "url": "https://www.youtube.com/watch?v=2Nt-ZrNP22A",
+    "title": "WebSockets Crash Course - Handshake, Use-cases, Pros & Cons and more",
+    "author": "Hussein Nasser",
+    "views": "332,408 views",
+    "published": "7 yr ago",
+    "duration": "47:33"
+  },
+  "ByteByteGo Load Balancers system design": {
+    "id": "LQuuoHTyYz8",
+    "url": "https://www.youtube.com/watch?v=LQuuoHTyYz8",
+    "title": "What is a LOAD BALANCER really about?",
+    "author": "ByteByteGo",
+    "views": "96,918 views",
+    "published": "1 year ago",
+    "duration": "6:45"
+  },
+  "ArjanCodes Design patterns in Python Gang of Four": {
+    "id": "vzTrLpxPF54",
+    "url": "https://www.youtube.com/watch?v=vzTrLpxPF54",
+    "title": "Why Use Design Patterns When Python Has Functions?",
+    "author": "ArjanCodes",
+    "views": "148,566 views",
+    "published": "2 yr ago",
+    "duration": "23:23"
+  },
+  "ArjanCodes SOLID principles in Python software architecture": {
+    "id": "pTB30aXS77U",
+    "url": "https://www.youtube.com/watch?v=pTB30aXS77U",
+    "title": "Uncle Bob\u2019s SOLID Principles Made Easy \ud83c\udf40 - In Python!",
+    "author": "ArjanCodes",
+    "views": "356,995 views",
+    "published": "5 yr ago",
+    "duration": "19:09"
+  },
+  "Hussein Nasser Reverse Proxy vs Forward Proxy API Gateway": {
+    "id": "SqqrOspasag",
+    "url": "https://www.youtube.com/watch?v=SqqrOspasag",
+    "title": "Proxy vs Reverse Proxy Server Explained",
+    "author": "Hussein Nasser",
+    "views": "147,267 views",
+    "published": "6 yr ago",
+    "duration": "14:18"
+  },
+  "Gaurav Sen Rate Limiter system design Leaky Token Bucket": {
+    "id": "YXkOdWBwqaA",
+    "url": "https://www.youtube.com/watch?v=YXkOdWBwqaA",
+    "title": "Rate Limiter System Design: Token Bucket, Leaky Bucket, Scaling",
+    "author": "ByteByteGo",
+    "views": "87,302 views",
+    "published": "11 months ago",
+    "duration": "7:46"
+  },
+  "ByteByteGo Consistent Hashing system design": {
+    "id": "UF9Iqmg94tk",
+    "url": "https://www.youtube.com/watch?v=UF9Iqmg94tk",
+    "title": "Consistent Hashing | Algorithms You Should Know #1",
+    "author": "ByteByteGo",
+    "views": "429,855 views",
+    "published": "4 years ago",
+    "duration": "8:04"
+  },
+  "ByteByteGo Caching strategies cache stampede cache penetration": {
+    "id": "wh98s0XhMmQ",
+    "url": "https://www.youtube.com/watch?v=wh98s0XhMmQ",
+    "title": "Caching Pitfalls Every Developer Should Know",
+    "author": "ByteByteGo",
+    "views": "173,814 views",
+    "published": "2 years ago",
+    "duration": "6:41"
+  },
+  "ByteByteGo Distributed ID generator Twitter Snowflake": {
+    "id": "SnyFRsPtoy4",
+    "url": "https://www.youtube.com/watch?v=SnyFRsPtoy4",
+    "title": "Generating Unique IDs at Scale: Inside Twitter\u2019s Snowflake System Design",
+    "author": "Ultimate System Design",
+    "views": "1,607 views",
+    "published": "10 months ago",
+    "duration": "8:48"
+  },
+  "Gaurav Sen Elevator System Design low level design": {
+    "id": "gktZsX9Z8Kw",
+    "url": "https://www.youtube.com/watch?v=gktZsX9Z8Kw",
+    "title": "Design Tic Tac Toe: Low Level Design Coding Interview Question",
+    "author": "Gaurav Sen",
+    "views": "350,056 views",
+    "published": "7 years ago",
+    "duration": "15:35"
+  },
+  "ByteByteGo Kafka vs RabbitMQ message queue commit log": {
+    "id": "x4k1XEjNzYQ",
+    "url": "https://www.youtube.com/watch?v=x4k1XEjNzYQ",
+    "title": "Kafka vs. RabbitMQ vs. Messaging Middleware vs. Pulsar",
+    "author": "ByteByteGo",
+    "views": "211,539 views",
+    "published": "2 yr ago",
+    "duration": "4:31"
+  },
+  "ByteByteGo Bloom filter HyperLogLog Count Min Sketch": {
+    "id": "V3pzxngeLqw",
+    "url": "https://www.youtube.com/watch?v=V3pzxngeLqw",
+    "title": "Bloom Filters | Algorithms You Should Know #2 | Real-world Examples",
+    "author": "ByteByteGo",
+    "views": "300,445 views",
+    "published": "4 years ago",
+    "duration": "5:40"
+  },
+  "ByteByteGo Design TinyURL URL shortener system design": {
+    "id": "HHUi8F_qAXM",
+    "url": "https://www.youtube.com/watch?v=HHUi8F_qAXM",
+    "title": "How Does a URL Shortener Work?",
+    "author": "ByteByteGo",
+    "views": "188,560 views",
+    "published": "1 year ago",
+    "duration": "6:44"
+  },
+  "ByteByteGo Design Twitter News Feed system design": {
+    "id": "jWRW2xGMqSw",
+    "url": "https://www.youtube.com/watch?v=jWRW2xGMqSw",
+    "title": "System Design: Design YouTube",
+    "author": "ByteByteGo",
+    "views": "64,488 views",
+    "published": "1 yr ago",
+    "duration": "7:13"
+  },
+  "ByteByteGo Design Discord chat app system design": {
+    "id": "okrR1KXNLtA",
+    "url": "https://www.youtube.com/watch?v=okrR1KXNLtA",
+    "title": "FAANG System Design Interview: Design A Chat System (WhatsApp, Facebook Messenger, Discord, Slack)",
+    "author": "ByteByteGo",
+    "views": "95,509 views",
+    "published": "11 months ago",
+    "duration": "8:45"
+  },
+  "ByteByteGo Design Uber ride sharing geospatial H3 QuadTree": {
+    "id": "M4lR_Va97cQ",
+    "url": "https://www.youtube.com/watch?v=M4lR_Va97cQ",
+    "title": "FAANG System Design Interview: Design A Location Based Service (Yelp, Google Places)",
+    "author": "ByteByteGo",
+    "views": "590,826 views",
+    "published": "4 yr ago",
+    "duration": "24:41"
+  },
+  "ByteByteGo Design YouTube or Netflix video streaming CDN": {
+    "id": "RI9np1LWzqw",
+    "url": "https://www.youtube.com/watch?v=RI9np1LWzqw",
+    "title": "What Is A CDN? How Does It Work?",
+    "author": "ByteByteGo",
+    "views": "378,494 views",
+    "published": "3 years ago",
+    "duration": "4:24"
+  },
+  "ByteByteGo Design Web Crawler system design": {
+    "id": "6u25GckPhLU",
+    "url": "https://www.youtube.com/watch?v=6u25GckPhLU",
+    "title": "Design a Web Crawler: FAANG Interview Question",
+    "author": "ByteByteGo",
+    "views": "49,470 views",
+    "published": "10 mo ago",
+    "duration": "5:41"
+  },
+  "ByteByteGo Flash Sale system design concurrency inventory": {
+    "id": "RlM9AfWf1WU",
+    "url": "https://www.youtube.com/watch?v=RlM9AfWf1WU",
+    "title": "Concurrency Vs Parallelism!",
+    "author": "ByteByteGo",
+    "views": "210,598 views",
+    "published": "2 yr ago",
+    "duration": "4:13"
+  },
+  "ByteByteGo Vector Search HNSW system design": {
+    "id": "uq-JpclPQV4",
+    "url": "https://www.youtube.com/watch?v=uq-JpclPQV4",
+    "title": "20 System Design Concepts You Must Know - Final Part",
+    "author": "ByteByteGo",
+    "views": "99,560 views",
+    "published": "1 year ago",
+    "duration": "9:25"
+  },
+  "ByteByteGo Saga pattern transactional outbox distributed transactions": {
+    "id": "nH4qjmP2KEE",
+    "url": "https://www.youtube.com/watch?v=nH4qjmP2KEE",
+    "title": "Top 7 Most-Used Distributed System Patterns",
+    "author": "ByteByteGo",
+    "views": "373,687 views",
+    "published": "3 yr ago",
+    "duration": "6:14"
+  },
+  "vLLM PagedAttention LLM serving architecture": {
+    "id": "6uPnLkCiy5g",
+    "url": "https://www.youtube.com/watch?v=6uPnLkCiy5g",
+    "title": "PagedAttention: Behind vLLM's Insane Speed",
+    "author": "Tales Of Tensors",
+    "views": "12,514 views",
+    "published": "9 mo ago",
+    "duration": "6:53"
+  },
+  "Raft consensus algorithm visual explanation": {
+    "id": "uXEYuDwm7e4",
+    "url": "https://www.youtube.com/watch?v=uXEYuDwm7e4",
+    "title": "Distributed Systems 6.2: Raft",
+    "author": "Martin Kleppmann",
+    "views": "51,377 views",
+    "published": "4 years ago",
+    "duration": "38:09"
+  },
+  "ByteByteGo Distributed Tracing OpenTelemetry metrics logs traces": {
+    "id": "hLvwoow3XTk",
+    "url": "https://www.youtube.com/watch?v=hLvwoow3XTk",
+    "title": "OpenTelemetry: Simplifying Hybrid Cloud Monitoring",
+    "author": "IBM Technology",
+    "views": "91,602 views",
+    "published": "1 yr ago",
+    "duration": "5:40"
+  },
+  "3Blue1Brown probability set theory intuition": {
+    "id": "zeJD6dqJ5lo",
+    "url": "https://www.youtube.com/watch?v=zeJD6dqJ5lo",
+    "title": "But what is the Central Limit Theorem?",
+    "author": "3Blue1Brown",
+    "views": "4,530,404 views",
+    "published": "3 years ago",
+    "duration": "31:15"
+  },
+  "3Blue1Brown Linear transformations and matrices Chapter 3": {
+    "id": "kYB8IZa5AuE",
+    "url": "https://www.youtube.com/watch?v=kYB8IZa5AuE",
+    "title": "Linear transformations and matrices | Chapter 3, Essence of linear algebra",
+    "author": "3Blue1Brown",
+    "views": "7,128,453 views",
+    "published": "10 years ago",
+    "duration": "10:59"
+  },
+  "Propositional logic predicate logic computer science Stanford": {
+    "id": "UroprmQHTLc",
+    "url": "https://www.youtube.com/watch?v=UroprmQHTLc",
+    "title": "1.5.1 Predicate Logic 1: Video",
+    "author": "MIT OpenCourseWare",
+    "views": "46,341 views",
+    "published": "10 yr ago",
+    "duration": "12:35"
+  },
+  "3Blue1Brown Span and basis vectors Essence of linear algebra Chapter 2": {
+    "id": "k7RM-ot2NWY",
+    "url": "https://www.youtube.com/watch?v=k7RM-ot2NWY",
+    "title": "Linear combinations, span, and basis vectors | Chapter 2, Essence of linear algebra",
+    "author": "3Blue1Brown",
+    "views": "7,425,984 views",
+    "published": "10 yr ago",
+    "duration": "9:59"
+  },
+  "3Blue1Brown Eigenvectors and eigenvalues Chapter 14": {
+    "id": "PFDu9oVAE-g",
+    "url": "https://www.youtube.com/watch?v=PFDu9oVAE-g",
+    "title": "Eigenvectors and eigenvalues | Chapter 14, Essence of linear algebra",
+    "author": "3Blue1Brown",
+    "views": "6,316,607 views",
+    "published": "10 yr ago",
+    "duration": "17:16"
+  },
+  "ByteByteGo Design Payment System idempotency Stripe": {
+    "id": "XS8ACikD2qs",
+    "url": "https://www.youtube.com/watch?v=XS8ACikD2qs",
+    "title": "Scan To Pay in 2 Minutes",
+    "author": "ByteByteGo",
+    "views": "146,433 views",
+    "published": "4 years ago",
+    "duration": "2:20"
+  },
+  "Gilbert Strang Orthogonal Vectors and Subspaces MIT 18.06": {
+    "id": "YzZUIYRCE38",
+    "url": "https://www.youtube.com/watch?v=YzZUIYRCE38",
+    "title": "14. Orthogonal Vectors and Subspaces",
+    "author": "MIT OpenCourseWare",
+    "views": "644,674 views",
+    "published": "17 years ago",
+    "duration": "49:48"
+  },
+  "Steve Brunton Singular Value Decomposition SVD": {
+    "id": "nbBvuuNVfco",
+    "url": "https://www.youtube.com/watch?v=nbBvuuNVfco",
+    "title": "Singular Value Decomposition (SVD): Mathematical Overview",
+    "author": "Steve Brunton",
+    "views": "514,686 views",
+    "published": "6 yr ago",
+    "duration": "12:51"
+  },
+  "StatQuest Principal Component Analysis PCA step by step": {
+    "id": "FgakZw6K1QQ",
+    "url": "https://www.youtube.com/watch?v=FgakZw6K1QQ",
+    "title": "StatQuest: Principal Component Analysis (PCA), Step-by-Step",
+    "author": "StatQuest with Josh Starmer",
+    "views": "3,714,908 views",
+    "published": "8 yr ago",
+    "duration": "21:58"
+  },
+  "3Blue1Brown Gradient descent how neural networks learn Chapter 2": {
+    "id": "IHZwWFHWa-w",
+    "url": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
+    "title": "Gradient descent, how neural networks learn | Deep Learning Chapter 2",
+    "author": "3Blue1Brown",
+    "views": "9,561,324 views",
+    "published": "8 yr ago",
+    "duration": "20:33"
+  },
+  "3Blue1Brown Bayes theorem visual guide": {
+    "id": "HZGCoVF3YvM",
+    "url": "https://www.youtube.com/watch?v=HZGCoVF3YvM",
+    "title": "Bayes theorem, the geometry of changing beliefs",
+    "author": "3Blue1Brown",
+    "views": "5,890,052 views",
+    "published": "6 yr ago",
+    "duration": "15:11"
+  },
+  "StatQuest Maximum Likelihood clearly explained": {
+    "id": "XepXtl9YKwc",
+    "url": "https://www.youtube.com/watch?v=XepXtl9YKwc",
+    "title": "Maximum Likelihood, clearly explained!!!",
+    "author": "StatQuest with Josh Starmer",
+    "views": "1,781,168 views",
+    "published": "9 yr ago",
+    "duration": "6:12"
+  },
+  "StatQuest Covariance and Correlation clearly explained": {
+    "id": "qtaqvPAeEJY",
+    "url": "https://www.youtube.com/watch?v=qtaqvPAeEJY",
+    "title": "Covariance, Clearly Explained!!!",
+    "author": "StatQuest with Josh Starmer",
+    "views": "666,570 views",
+    "published": "7 yr ago",
+    "duration": "22:23"
+  },
+  "3Blue1Brown Neural networks calculus backpropagation Chapter 3": {
+    "id": "Ilg3gGewQ5U",
+    "url": "https://www.youtube.com/watch?v=Ilg3gGewQ5U",
+    "title": "Backpropagation, intuitively | Deep Learning Chapter 3",
+    "author": "3Blue1Brown",
+    "views": "6,258,300 views",
+    "published": "8 yr ago",
+    "duration": "12:47"
+  },
+  "freeCodeCamp PyTorch for Deep Learning Bootcamp full course Daniel Bourke": {
+    "id": "V_xro1bcAuA",
+    "url": "https://www.youtube.com/watch?v=V_xro1bcAuA",
+    "title": "PyTorch for Deep Learning & Machine Learning \u2013 Full Course",
+    "author": "freeCodeCamp.org",
+    "views": "3,570,925 views",
+    "published": "3 yr ago",
+    "duration": "25:37:26"
+  },
+  "Andrej Karpathy What is a neural network Intro to Large Language Models": {
+    "id": "zjkBMFhNj_g",
+    "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+    "title": "[1hr Talk] Intro to Large Language Models",
+    "author": "Andrej Karpathy",
+    "views": "4,117,805 views",
+    "published": "2 yr ago",
+    "duration": "59:48"
+  },
+  "freeCodeCamp TensorFlow 2.0 Complete Course Python": {
+    "id": "tPYj3fFJGjk",
+    "url": "https://www.youtube.com/watch?v=tPYj3fFJGjk",
+    "title": "TensorFlow 2.0 Complete Course - Python Neural Networks for Beginners Tutorial",
+    "author": "freeCodeCamp.org",
+    "views": "3,493,226 views",
+    "published": "6 yr ago",
+    "duration": "6:52:08"
+  },
+  "Andrej Karpathy Building micrograd neural network from scratch": {
+    "id": "VMj-3S1tku0",
+    "url": "https://www.youtube.com/watch?v=VMj-3S1tku0",
+    "title": "The spelled-out intro to neural networks and backpropagation: building micrograd",
+    "author": "Andrej Karpathy",
+    "views": "4,133,788 views",
+    "published": "4 years ago",
+    "duration": "2:25:52"
+  },
+  "3Blue1Brown Attention in transformers step by step Chapter 6": {
+    "id": "eMlx5fFNoYc",
+    "url": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
+    "title": "Attention in transformers, step-by-step | Deep Learning Chapter 6",
+    "author": "3Blue1Brown",
+    "views": "4,617,988 views",
+    "published": "2 yr ago",
+    "duration": "26:10"
+  },
+  "Andrej Karpathy Deep Reinforcement Learning Pong from Pixels": {
+    "id": "36OBX5lQjGc",
+    "url": "https://www.youtube.com/watch?v=36OBX5lQjGc",
+    "title": "Reinforcement learning is terrible \u2013 Andrej Karpathy",
+    "author": "Dwarkesh Clips",
+    "views": "134,622 views",
+    "published": "11 mo ago",
+    "duration": "4:10"
+  },
+  "Andrew Ng How to read and write research papers AI machine learning": {
+    "id": "zOI6Oll1Zrg",
+    "url": "https://www.youtube.com/watch?v=zOI6Oll1Zrg",
+    "title": "(PART#01) Artificial Intelligence for Everyone - Complete Tutorial by Andrew Ng powered by Coursera",
+    "author": "Tuitions Tonight",
+    "views": "82,993 views",
+    "published": "7 years ago",
+    "duration": "1:41:53"
+  },
+  "Andrej Karpathy Let's build GPT from scratch spelled out": {
+    "id": "kCc8FmEb1nY",
+    "url": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+    "title": "Let's build GPT: from scratch, in code, spelled out.",
+    "author": "Andrej Karpathy",
+    "views": "7,891,972 views",
+    "published": "3 years ago",
+    "duration": "1:56:20"
+  },
+  "Umar Jamil LoRA Low Rank Adaptation of Large Language Models": {
+    "id": "PXWYUTMt-AU",
+    "url": "https://www.youtube.com/watch?v=PXWYUTMt-AU",
+    "title": "LoRA: Low-Rank Adaptation of Large Language Models - Explained visually + PyTorch code from scratch",
+    "author": "Umar Jamil",
+    "views": "57,281 views",
+    "published": "3 years ago",
+    "duration": "26:55"
+  },
+  "freeCodeCamp MLOps Course Machine Learning Operations": {
+    "id": "-dJPoLm_gtE",
+    "url": "https://www.youtube.com/watch?v=-dJPoLm_gtE",
+    "title": "MLOps Course \u2013 Build Machine Learning Production Grade Projects",
+    "author": "freeCodeCamp.org",
+    "views": "542,163 views",
+    "published": "2 years ago",
+    "duration": "3:01:03"
+  },
+  "Andrej Karpathy State of GPT Microsoft Build": {
+    "id": "kCc8FmEb1nY",
+    "url": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
+    "title": "Let's build GPT: from scratch, in code, spelled out.",
+    "author": "Andrej Karpathy",
+    "views": "7,891,972 views",
+    "published": "3 yr ago",
+    "duration": "1:56:20"
+  },
+  "Stanford CS149 GPU architecture SIMD warps Kayvon Fatahalian": {
+    "id": "V1tINV2-9p4",
+    "url": "https://www.youtube.com/watch?v=V1tINV2-9p4",
+    "title": "Stanford CS149 I Parallel Computing I 2023 I Lecture 1 - Why Parallelism? Why Efficiency?",
+    "author": "Stanford Online",
+    "views": "134,611 views",
+    "published": "2 years ago",
+    "duration": "1:12:22"
+  },
+  "CUDA Crash Course GPU programming CoffeeBeforeArch": {
+    "id": "Sdjn9FOkhnA",
+    "url": "https://www.youtube.com/watch?v=Sdjn9FOkhnA",
+    "title": "Accelerating Applications with Parallel Algorithms | CUDA C++ Class Part 1",
+    "author": "NVIDIA Developer",
+    "views": "62,192 views",
+    "published": "10 months ago",
+    "duration": "2:05:27"
+  },
+  "CUDA Memory hierarchy shared memory coalescing CoffeeBeforeArch": {
+    "id": "LieS0bBgy0w",
+    "url": "https://www.youtube.com/watch?v=LieS0bBgy0w",
+    "title": "CUDA Memory Hierarchy: Coalescing, Shared Memory, Bank Conflicts \u2014 GPU Programming in C/CUDA | Ep 5",
+    "author": "Glass Box Computing",
+    "views": "39 views",
+    "published": "1 month ago",
+    "duration": "27:39"
+  },
+  "Mark Harris Optimizing Parallel Reduction in CUDA NVIDIA": {
+    "id": "ftI48A8K5Vg",
+    "url": "https://www.youtube.com/watch?v=ftI48A8K5Vg",
+    "title": "CUDA Live: Your Parallel Programming Guide",
+    "author": "NVIDIA Developer",
+    "views": "6,813 views",
+    "published": "Streamed 7 mo ago",
+    "duration": "57:38"
+  },
+  "CUDA Tiled Matrix Multiplication shared memory CoffeeBeforeArch": {
+    "id": "VHsxF8lxpWw",
+    "url": "https://www.youtube.com/watch?v=VHsxF8lxpWw",
+    "title": "Tiled Matrix Multiplication on GPU | 16\u00d7 Faster with Shared Memory",
+    "author": "Sagar Tripathy",
+    "views": "797 views",
+    "published": "8 months ago",
+    "duration": "3:55"
+  },
+  "OpenAI Triton GPU programming tutorial GPU MODE": {
+    "id": "DdTsX6DQk24",
+    "url": "https://www.youtube.com/watch?v=DdTsX6DQk24",
+    "title": "Lecture 14: Practitioners Guide to Triton",
+    "author": "GPU MODE",
+    "views": "23,357 views",
+    "published": "2 yr ago",
+    "duration": "1:21:43"
+  },
+  "GPU MODE LayerNorm Softmax Triton kernel optimization": {
+    "id": "7c3c3bCGzKU",
+    "url": "https://www.youtube.com/watch?v=7c3c3bCGzKU",
+    "title": "Lecture 34: Low Bit Triton Kernels",
+    "author": "GPU MODE",
+    "views": "3,104 views",
+    "published": "1 yr ago",
+    "duration": "1:45:31"
+  },
+  "Umar Jamil FlashAttention explained step by step": {
+    "id": "zy8ChVd_oTM",
+    "url": "https://www.youtube.com/watch?v=zy8ChVd_oTM",
+    "title": "Flash Attention derived and coded from first principles with Triton (Python)",
+    "author": "Umar Jamil",
+    "views": "High Viewership",
+    "published": "Active",
+    "duration": "Full Lecture"
+  },
+  "Tri Dao FlashAttention 3 Hopper TMA Tensor Cores": {
+    "id": "hQ9GPnV0-50",
+    "url": "https://www.youtube.com/watch?v=hQ9GPnV0-50",
+    "title": "Lecture 23: Tensor Cores",
+    "author": "GPU MODE",
+    "views": "15,922 views",
+    "published": "2 yr ago",
+    "duration": "1:47:50"
+  },
+  "NVIDIA Nsight Compute tutorial kernel profiling": {
+    "id": "Iuy_RAvguBM",
+    "url": "https://www.youtube.com/watch?v=Iuy_RAvguBM",
+    "title": "Intro to NVIDIA Nsight Compute | CUDA Developer Tools",
+    "author": "NVIDIA Developer",
+    "views": "29,889 views",
+    "published": "2 years ago",
+    "duration": "7:09"
+  },
+  "Tim Dettmers Quantization FP8 INT4 LLM GPU": {
+    "id": "37g8S71LfmQ",
+    "url": "https://www.youtube.com/watch?v=37g8S71LfmQ",
+    "title": "\ud83d\udce6 LLM Quantization Explained: FP32, FP16, INT8, INT4, GPTQ, AWQ & GGUF",
+    "author": "Liv4IT",
+    "views": "339 views",
+    "published": "1 month ago",
+    "duration": "20:52"
+  },
+  "NVIDIA InfiniBand NVLink GPU cluster architecture explained": {
+    "id": "xXXrX1CcuBw",
+    "url": "https://www.youtube.com/watch?v=xXXrX1CcuBw",
+    "title": "NVIDIA Networking: Introduction to ConnectX Network Interface Cards",
+    "author": "NVIDIA Developer",
+    "views": "46,252 views",
+    "published": "3 yr ago",
+    "duration": "5:02"
+  },
+  "Ring AllReduce NCCL collective communication distributed deep learning": {
+    "id": "T22e3fgit-A",
+    "url": "https://www.youtube.com/watch?v=T22e3fgit-A",
+    "title": "Lecture 17: NCCL",
+    "author": "GPU MODE",
+    "views": "19,841 views",
+    "published": "2 yr ago",
+    "duration": "59:43"
+  },
+  "PyTorch Distributed Data Parallel DDP tutorial explained": {
+    "id": "Cvdhwx-OBBo",
+    "url": "https://www.youtube.com/watch?v=Cvdhwx-OBBo",
+    "title": "Part 2: What is Distributed Data Parallel (DDP)",
+    "author": "PyTorch",
+    "views": "54,315 views",
+    "published": "4 yr ago",
+    "duration": "3:16"
+  },
+  "DeepSpeed ZeRO explained memory optimization distributed training": {
+    "id": "4pIpM0QvEtg",
+    "url": "https://www.youtube.com/watch?v=4pIpM0QvEtg",
+    "title": "How to Train Billion-Parameter Models: DeepSpeed ZeRO vs. PyTorch FSDP",
+    "author": "SH AI Academy",
+    "views": "676 views",
+    "published": "3 mo ago",
+    "duration": "23:20"
+  },
+  "Tensor Parallelism Megatron LM Shoeybi explained": {
+    "id": "hc0u4avAkuM",
+    "url": "https://www.youtube.com/watch?v=hc0u4avAkuM",
+    "title": "Ultimate Guide To Scaling ML Models - Megatron-LM | ZeRO | DeepSpeed | Mixed Precision",
+    "author": "Aleksa Gordi\u0107 - The AI Epiphany",
+    "views": "37,535 views",
+    "published": "4 yr ago",
+    "duration": "1:22:58"
+  },
+  "Pipeline Parallelism 1F1B schedule GPipe Megatron": {
+    "id": "jAcPgbw_39w",
+    "url": "https://www.youtube.com/watch?v=jAcPgbw_39w",
+    "title": "GPipe: Micro-batch Pipeline Parallelism for Scaling NeuralNetworks",
+    "author": "AI Focus",
+    "views": "100 views",
+    "published": "10 mo ago",
+    "duration": "4:29"
+  },
+  "Ring Attention long context distributed training explained": {
+    "id": "XoGvCBRnwLs",
+    "url": "https://www.youtube.com/watch?v=XoGvCBRnwLs",
+    "title": "Building a distributed training framework from first principles",
+    "author": "Umar Jamil",
+    "views": "39,328 views",
+    "published": "1 month ago",
+    "duration": "19:34:45"
+  },
+  "3D Parallelism DP TP PP Megatron DeepSpeed": {
+    "id": "DdmgD5RMe1U",
+    "url": "https://www.youtube.com/watch?v=DdmgD5RMe1U",
+    "title": "LLM Inference Optimization #2: Tensor, Data & Expert Parallelism (TP, DP, EP, MoE)",
+    "author": "Faradawn Yang",
+    "views": "7,816 views",
+    "published": "11 months ago",
+    "duration": "20:18"
+  },
+  "Chinchilla scaling laws Kaplan OpenAI deep learning": {
+    "id": "PZXN7jm9IC0",
+    "url": "https://www.youtube.com/watch?v=PZXN7jm9IC0",
+    "title": "Chinchilla Explained: Compute-Optimal Massive Language Models",
+    "author": "Edan Meyer",
+    "views": "23,603 views",
+    "published": "4 yr ago",
+    "duration": "32:46"
+  },
+  "PyTorch Distributed Checkpoint DCP fault tolerance": {
+    "id": "B-BXSRwAVdE",
+    "url": "https://www.youtube.com/watch?v=B-BXSRwAVdE",
+    "title": "Sponsored Session: PyTorch Distributed and Fault Tolerance - Tristan Rice, Meta",
+    "author": "PyTorch",
+    "views": "339 views",
+    "published": "10 mo ago",
+    "duration": "24:07"
+  },
+  "LLM inference latency vs throughput TTFT TPOT explained": {
+    "id": "DW-mo65DJ-Q",
+    "url": "https://www.youtube.com/watch?v=DW-mo65DJ-Q",
+    "title": "LLM Inference Performance: Latency and Throughput Metrics",
+    "author": "Ready Tensor",
+    "views": "888 views",
+    "published": "8 months ago",
+    "duration": "15:28"
+  },
+  "PagedAttention vLLM architecture paper explained": {
+    "id": "6uPnLkCiy5g",
+    "url": "https://www.youtube.com/watch?v=6uPnLkCiy5g",
+    "title": "PagedAttention: Behind vLLM's Insane Speed",
+    "author": "Tales Of Tensors",
+    "views": "12,514 views",
+    "published": "9 months ago",
+    "duration": "6:53"
+  },
+  "KV Cache LLM inference memory explained": {
+    "id": "Mn_9W1nCFLo",
+    "url": "https://www.youtube.com/watch?v=Mn_9W1nCFLo",
+    "title": "LLaMA explained: KV-Cache, Rotary Positional Embedding, RMS Norm, Grouped Query Attention, SwiGLU",
+    "author": "Umar Jamil",
+    "views": "127,208 views",
+    "published": "3 yr ago",
+    "duration": "1:10:55"
+  },
+  "SGLang RadixAttention prefix caching LLM serving": {
+    "id": "TWbrz5rSfFI",
+    "url": "https://www.youtube.com/watch?v=TWbrz5rSfFI",
+    "title": "SGLang Deep Dive: RadixAttention, KV Cache & High-Throughput Serving #OpenSource #LLMOps #SGLang",
+    "author": "AI Learning Hub",
+    "views": "53 views",
+    "published": "3 months ago",
+    "duration": "7:02"
+  },
+  "Continuous batching cellular batching LLM serving TGI vLLM": {
+    "id": "MxOBZ-E2J8w",
+    "url": "https://www.youtube.com/watch?v=MxOBZ-E2J8w",
+    "title": "Deploying Fine\u2011Tuned Models on Hugging Face, VLLM, Text\u2011Generation\u2011Inference (TGI)",
+    "author": "SH AI Academy",
+    "views": "148 views",
+    "published": "2 mo ago",
+    "duration": "16:03"
+  },
+  "Chunked prefill disaggregated prefill decode LLM serving": {
+    "id": "BaD3CTYf6V0",
+    "url": "https://www.youtube.com/watch?v=BaD3CTYf6V0",
+    "title": "Why Separating Prefill and Decode Makes LLMs Faster | vLLM, LLM-D and NIXL",
+    "author": "The Cef Experience",
+    "views": "985 views",
+    "published": "1 mo ago",
+    "duration": "19:29"
+  },
+  "Speculative decoding for faster LLM inference explained": {
+    "id": "VkWlLSTdHs8",
+    "url": "https://www.youtube.com/watch?v=VkWlLSTdHs8",
+    "title": "Faster LLMs: Accelerate Inference with Speculative Decoding",
+    "author": "IBM Technology",
+    "views": "34,893 views",
+    "published": "1 yr ago",
+    "duration": "9:39"
+  },
+  "AWQ Activation aware Weight Quantization for LLM serving": {
+    "id": "0VdNflU08yA",
+    "url": "https://www.youtube.com/watch?v=0VdNflU08yA",
+    "title": "Quantization explained with PyTorch - Post-Training Quantization, Quantization-Aware Training",
+    "author": "Umar Jamil",
+    "views": "59,892 views",
+    "published": "2 yr ago",
+    "duration": "50:55"
+  },
+  "Benchmarking and autoscaling LLM inference in production": {
+    "id": "XQ_xjS53IpM",
+    "url": "https://www.youtube.com/watch?v=XQ_xjS53IpM",
+    "title": "Expert talk on LLM Inference - Part 2",
+    "author": "AI Paatshal",
+    "views": "115 views",
+    "published": "3 wk ago",
+    "duration": "9:47"
+  },
+  "Advanced chunking strategies RAG document parsing LangChain": {
+    "id": "SEWS9P4ODmc",
+    "url": "https://www.youtube.com/watch?v=SEWS9P4ODmc",
+    "title": "Text Splitters in LangChain | Generative AI using LangChain | Video 11 | CampusX",
+    "author": "CampusX",
+    "views": "139,217 views",
+    "published": "1 yr ago",
+    "duration": "59:01"
+  },
+  "Anthropic Contextual Retrieval RAG architecture explained": {
+    "id": "tmiBae2goJM",
+    "url": "https://www.youtube.com/watch?v=tmiBae2goJM",
+    "title": "The Best RAG Technique Yet? Anthropic\u2019s Contextual Retrieval Explained!",
+    "author": "Prompt Engineering",
+    "views": "138,586 views",
+    "published": "1 yr ago",
+    "duration": "16:14"
+  },
+  "HNSW Vector search index hierarchical navigable small world explained": {
+    "id": "77QH0Y2PYKg",
+    "url": "https://www.youtube.com/watch?v=77QH0Y2PYKg",
+    "title": "Vector Database Search - Hierarchical Navigable Small Worlds (HNSW) Explained",
+    "author": "DataMListic",
+    "views": "56,956 views",
+    "published": "2 yr ago",
+    "duration": "8:03"
+  },
+  "Hybrid search dense sparse reciprocal rank fusion RRF": {
+    "id": "CK0ExcCWDP4",
+    "url": "https://www.youtube.com/watch?v=CK0ExcCWDP4",
+    "title": "Hybrid Search RAG With Langchain And Pinecone Vector DB",
+    "author": "Krish Naik",
+    "views": "83,474 views",
+    "published": "2 yr ago",
+    "duration": "42:35"
+  },
+  "Cross Encoder reranking RAG multi stage retrieval": {
+    "id": "ZFbaA9eM0uo",
+    "url": "https://www.youtube.com/watch?v=ZFbaA9eM0uo",
+    "title": "Advanced RAG 04 - Reranking with Cross Encoders, and Cohere API",
+    "author": "Sunny Savita",
+    "views": "9,236 views",
+    "published": "2 years ago",
+    "duration": "19:21"
+  },
+  "ColBERT late interaction multi vector retrieval explained": {
+    "id": "xTzUn3G9YA0",
+    "url": "https://www.youtube.com/watch?v=xTzUn3G9YA0",
+    "title": "Supercharge Your RAG with Contextualized Late Interactions",
+    "author": "Prompt Engineering",
+    "views": "19,229 views",
+    "published": "2 years ago",
+    "duration": "17:45"
+  },
+  "Query rewriting expansion Hyde Agentic RAG LangChain": {
+    "id": "SaDzIVkYqyY",
+    "url": "https://www.youtube.com/watch?v=SaDzIVkYqyY",
+    "title": "RAG from scratch: Part 9 (Query Translation -- HyDE)",
+    "author": "LangChain",
+    "views": "26,471 views",
+    "published": "2 yr ago",
+    "duration": "4:47"
+  },
+  "Microsoft GraphRAG knowledge graph RAG explained": {
+    "id": "vX3A96_F3FU",
+    "url": "https://www.youtube.com/watch?v=vX3A96_F3FU",
+    "title": "Graph RAG: Improving RAG with Knowledge Graphs",
+    "author": "Prompt Engineering",
+    "views": "144,756 views",
+    "published": "2 yr ago",
+    "duration": "15:58"
+  },
+  "Needle In A Haystack test LLM long context evaluation Greg Kamradt": {
+    "id": "KwRRuiCCdmc",
+    "url": "https://www.youtube.com/watch?v=KwRRuiCCdmc",
+    "title": "Needle In A Haystack (GPT-4 128K)",
+    "author": "Greg Kamradt",
+    "views": "25,607 views",
+    "published": "2 yr ago",
+    "duration": "7:47"
+  },
+  "Harrison Chase LangGraph tutorial stateful multi agent": {
+    "id": "B_0TNuYi56w",
+    "url": "https://www.youtube.com/watch?v=B_0TNuYi56w",
+    "title": "Hierarchical multi-agent systems with LangGraph",
+    "author": "LangChain",
+    "views": "55,713 views",
+    "published": "1 year ago",
+    "duration": "11:55"
+  },
+  "ReAct Reason and Act LLM agents explained": {
+    "id": "Eug2clsLtFs",
+    "url": "https://www.youtube.com/watch?v=Eug2clsLtFs",
+    "title": "Understanding ReACT with LangChain",
+    "author": "Sam Witteveen",
+    "views": "74,535 views",
+    "published": "3 yr ago",
+    "duration": "21:10"
+  },
+  "OpenAI Function Calling Tool Use tutorial python": {
+    "id": "nQMLAO20QTg",
+    "url": "https://www.youtube.com/watch?v=nQMLAO20QTg",
+    "title": "How to Use OpenAI Function Calling with Python (Full Demo & Explanation)",
+    "author": "datageekrj",
+    "views": "109 views",
+    "published": "1 year ago",
+    "duration": "32:34"
+  },
+  "LLM Agent Memory short term long term episodic semantic memory": {
+    "id": "3Yp-hIEcWXk",
+    "url": "https://www.youtube.com/watch?v=3Yp-hIEcWXk",
+    "title": "Build Agents that Never Forget: LangMem Semantic Memory Tutorial",
+    "author": "LangChain",
+    "views": "29,250 views",
+    "published": "1 year ago",
+    "duration": "7:40"
+  },
+  "Securing LLM code execution sandboxing Docker E2B": {
+    "id": "csT16BaTHwY",
+    "url": "https://www.youtube.com/watch?v=csT16BaTHwY",
+    "title": "Running AI Agents in Secure Sandboxes with E2B & Docker MCP | Docker\u2019s AI Guide to the Galaxy",
+    "author": "Docker",
+    "views": "8,741 views",
+    "published": "9 months ago",
+    "duration": "25:27"
+  },
+  "Multi-agent collaboration LangGraph CrewAI AutoGen": {
+    "id": "qAF1NjEVHhY",
+    "url": "https://www.youtube.com/watch?v=qAF1NjEVHhY",
+    "title": "LangChain vs LangGraph: A Tale of Two Frameworks",
+    "author": "IBM Technology",
+    "views": "644,849 views",
+    "published": "1 yr ago",
+    "duration": "9:55"
+  },
+  "LangGraph Human in the loop breakpoints time travel": {
+    "id": "Za8CrPqQxpA",
+    "url": "https://www.youtube.com/watch?v=Za8CrPqQxpA",
+    "title": "LangGraph Agents - Human-In-The-Loop Breakpoints",
+    "author": "LangChain",
+    "views": "9,045 views",
+    "published": "2 years ago",
+    "duration": "5:24"
+  },
+  "LLM evaluation metrics RAGAS BLEU ROUGE DeepLearningAI": {
+    "id": "7_LTU0LA374",
+    "url": "https://www.youtube.com/watch?v=7_LTU0LA374",
+    "title": "RAG Evaluation: Precision, Recall, Faithfulness, RAGAS Explained Clearly",
+    "author": "Logical Lenses",
+    "views": "26,811 views",
+    "published": "9 mo ago",
+    "duration": "12:19"
+  },
+  "Evaluating LLM agents in production benchmarks DeepLearningAI": {
+    "id": "FDVdLrloFOw",
+    "url": "https://www.youtube.com/watch?v=FDVdLrloFOw",
+    "title": "Observability and Evals for AI Agents: A Simple Breakdown",
+    "author": "LangChain",
+    "views": "21,769 views",
+    "published": "7 months ago",
+    "duration": "14:45"
+  },
+  "MMLU GSM8K HumanEval LLM benchmark harnesses evaluation": {
+    "id": "7t1RdmiW3fc",
+    "url": "https://www.youtube.com/watch?v=7t1RdmiW3fc",
+    "title": "How We Test AI: Benchmark Datasets Explained (MMLU, GSM8K & More)",
+    "author": "CodeLucky",
+    "views": "197 views",
+    "published": "8 mo ago",
+    "duration": "4:12"
+  },
+  "LLM as a judge evaluation calibration position bias": {
+    "id": "zaNR3WaPTfo",
+    "url": "https://www.youtube.com/watch?v=zaNR3WaPTfo",
+    "title": "Building a LLM Judge with Weights & Biases",
+    "author": "Microsoft Reactor",
+    "views": "1,583 views",
+    "published": "Streamed 1 yr ago",
+    "duration": "1:00:39"
+  },
+  "Guardrails AI production validation LLM security": {
+    "id": "7V1w5gnZ-kw",
+    "url": "https://www.youtube.com/watch?v=7V1w5gnZ-kw",
+    "title": "Guardrails for LLM Applications | Complete Tutorial for AI Developers WIth Guardrails AI",
+    "author": "Sunny Savita",
+    "views": "19,612 views",
+    "published": "11 mo ago",
+    "duration": "1:26:12"
+  },
+  "NVIDIA NeMo Guardrails Llama Guard tutorial": {
+    "id": "Hg2KibOvnLM",
+    "url": "https://www.youtube.com/watch?v=Hg2KibOvnLM",
+    "title": "Building Safe and Secure LLM Applications Using NVIDIA NeMo Guardrails",
+    "author": "NVIDIA Developer",
+    "views": "22,387 views",
+    "published": "3 years ago",
+    "duration": "3:10"
+  },
+  "OWASP Top 10 for LLMs prompt injection jailbreaking": {
+    "id": "gUNXZMcd2jU",
+    "url": "https://www.youtube.com/watch?v=gUNXZMcd2jU",
+    "title": "OWASP's Top 10 Ways to Attack LLMs: AI Vulnerabilities Exposed",
+    "author": "IBM Technology",
+    "views": "305,489 views",
+    "published": "6 mo ago",
+    "duration": "25:12"
+  },
+  "Red teaming LLMs automated prompt security PyRIT Microsoft": {
+    "id": "cEHTxmpAgjA",
+    "url": "https://www.youtube.com/watch?v=cEHTxmpAgjA",
+    "title": "Episode 8: Automating AI Red Teaming with PyRIT | AI Red Teaming 101",
+    "author": "Microsoft Developer",
+    "views": "4,155 views",
+    "published": "1 year ago",
+    "duration": "8:12"
+  },
+  "OpenInference Arize Phoenix OpenTelemetry LLM observability tracing": {
+    "id": "fHGSxOhWO-g",
+    "url": "https://www.youtube.com/watch?v=fHGSxOhWO-g",
+    "title": "Ultimate OpenTelemetry Guide for Tracing AI Applications",
+    "author": "Arize AI",
+    "views": "8,198 views",
+    "published": "7 months ago",
+    "duration": "1:19:06"
+  }
+}

@@ -5,7 +5,12 @@
 ## Course Curriculum Matrix
 
 | # | Module | Core Architectural Topics | Hands-on Project Deliverable |
-|---|---|---|---|
+|---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+|---|---|---|
 | **01** | [Parsing & Hierarchical Chunking](Module_01_Parsing_and_Hierarchical_Chunking/01_README.md) | AST parsing, table preservation, parent-child chunk hierarchy | [Hierarchical Chunker](Module_01_Parsing_and_Hierarchical_Chunking/02_PROJECT_GUIDE.md) |
 | **02** | [Contextual Retrieval Architecture](Module_02_Contextual_Retrieval_Architecture/01_README.md) | Anthropic contextual pre-headers, dual dense+sparse index enrichment | [Contextual Augmenter](Module_02_Contextual_Retrieval_Architecture/02_PROJECT_GUIDE.md) |
 | **03** | [Vector Database Internals](Module_03_Vector_Database_Internals/01_README.md) | HNSW multi-layer graphs, greedy routing, product quantization | [HNSW Graph Simulator](Module_03_Vector_Database_Internals/02_PROJECT_GUIDE.md) |

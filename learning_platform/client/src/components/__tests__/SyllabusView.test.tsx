@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { SyllabusView } from '../SyllabusView';
 import { CourseSummary, ModuleItem, ProgressPayload } from '../../types';
 
@@ -137,4 +137,26 @@ describe('SyllabusView Collapsible Module Cards', () => {
     expect(screen.queryByText('Theoretical Foundations & Architecture')).toBeNull();
     expect(screen.queryByText('Deep-Dive Object Internals')).toBeNull();
   });
+
+  it('renders the Curated Video Lectures button and opens modal when clicked', () => {
+    render(
+      <SyllabusView
+        course={mockCourse}
+        modules={mockModules}
+        progress={mockProgress}
+        onBack={() => {}}
+        onSelectLesson={() => {}}
+      />
+    );
+
+    const videoBtn = screen.getByText('Curated Video Lectures');
+    expect(videoBtn).toBeDefined();
+
+    act(() => {
+      fireEvent.click(videoBtn);
+    });
+    expect(screen.getByText('Curated Video Masterclasses')).toBeDefined();
+    expect(screen.getByText('✓ 100% Verified Working Links')).toBeDefined();
+  });
 });
+

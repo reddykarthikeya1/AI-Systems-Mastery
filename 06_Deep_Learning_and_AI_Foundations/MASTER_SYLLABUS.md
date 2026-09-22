@@ -5,7 +5,12 @@
 ## Module index
 
 | # | Module | Lessons | Materials | Status |
-| :--- | :--- | :---: | :--- | :---: |
+| :---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+ | :--- | :---: | :--- | :---: |
 | **[Module 01](Module_01_Math_Fundamentals/README.md)** | Math Fundamentals | 15 | [Lessons](Module_01_Math_Fundamentals/README.md) · [Project](Module_01_Math_Fundamentals/PROJECT_GUIDE.md) · [Quiz](Module_01_Math_Fundamentals/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_01_Math_Fundamentals/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_01_Math_Fundamentals/debug_lab/SYMPTOMS.md) | 🔴 |
 | **[Module 02](Module_02_Core_AI_Intuitions/README.md)** | Core AI Intuitions | 4 | [Lessons](Module_02_Core_AI_Intuitions/README.md) · [Project](Module_02_Core_AI_Intuitions/PROJECT_GUIDE.md) · [Quiz](Module_02_Core_AI_Intuitions/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_02_Core_AI_Intuitions/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_02_Core_AI_Intuitions/debug_lab/SYMPTOMS.md) | 🔴 |
 | **[Module 03](Module_03_PyTorch_Fundamentals/README.md)** | PyTorch Fundamentals | 9 | [Lessons](Module_03_PyTorch_Fundamentals/README.md) · [Project](Module_03_PyTorch_Fundamentals/PROJECT_GUIDE.md) · [Quiz](Module_03_PyTorch_Fundamentals/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_03_PyTorch_Fundamentals/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_03_PyTorch_Fundamentals/debug_lab/SYMPTOMS.md) | 🔴 |

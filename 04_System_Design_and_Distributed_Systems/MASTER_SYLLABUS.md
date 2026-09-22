@@ -4,6 +4,11 @@ Welcome to the **System Design Mastery Course** — the definitive zero-to-100 c
 
 ---
 
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+
+
 ---
 
 ## 📚 Scope: what this course deliberately does not cover

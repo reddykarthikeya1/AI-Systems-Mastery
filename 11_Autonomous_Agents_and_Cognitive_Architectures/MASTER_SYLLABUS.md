@@ -1,3 +1,5 @@
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
 # Course 11: Master Syllabus & Learning Outcomes
 
 ## Detailed Module Breakdown

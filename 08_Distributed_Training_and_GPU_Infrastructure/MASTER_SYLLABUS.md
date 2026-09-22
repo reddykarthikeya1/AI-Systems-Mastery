@@ -5,7 +5,12 @@
 ## Course Curriculum Matrix
 
 | # | Module | Core Concepts & Systems Covered | Hands-on Project Deliverable |
-|---|---|---|---|
+|---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+|---|---|---|
 | **01** | [GPU Cluster Hardware & Interconnect Topologies](Module_01_GPU_Cluster_Hardware_and_Interconnects/01_README.md) | NVLink, NVSwitch (900 GB/s inter-GPU), InfiniBand HDR/NDR (400/800 Gbps), RoCE v2, Rail-Optimized Cluster Fabrics, and Oversubscription | [GPU Cluster Hardware & Interconnect Topologies Reference Engine](Module_01_GPU_Cluster_Hardware_and_Interconnects/02_PROJECT_GUIDE.md) |
 | **02** | [Collective Communications (NCCL)](Module_02_NCCL_Collective_Communication_Primitives/01_README.md) | Ring AllReduce, Tree AllReduce, AllGather, ReduceScatter, AllToAll, and Balancing Bandwidth vs Latency Overheads | [Collective Communications (NCCL) Reference Engine](Module_02_NCCL_Collective_Communication_Primitives/02_PROJECT_GUIDE.md) |
 | **03** | [Distributed Data Parallel (DDP)](Module_03_Distributed_Data_Parallel_DDP/01_README.md) | Gradient Bucketing, Ring AllReduce Synchronization, and Overlapping Communication with Backward Pass Computation | [Distributed Data Parallel (DDP) Reference Engine](Module_03_Distributed_Data_Parallel_DDP/02_PROJECT_GUIDE.md) |

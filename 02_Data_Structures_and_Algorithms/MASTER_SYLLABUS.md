@@ -5,7 +5,12 @@
 ## Course Overview Matrix
 
 | Module | Title | Core Topics | Project Focus |
-|---|---|---|---|
+|---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+|---|---|---|
 | **01** | [Complexity Analysis & Memory Layout](Module_01_Complexity_Analysis_and_Memory_Layout/01_README.md) | Big-O, Big-Omega, Amortized Analysis, CPU Cache Locality, and Branch Prediction | [Complexity Analysis & Memory Layout Engine](Module_01_Complexity_Analysis_and_Memory_Layout/04_PROJECT_GUIDE.md) |
 | **02** | [Arrays, Dynamic Arrays & Strings](Module_02_Arrays_Dynamic_Arrays_and_Strings/01_README.md) | Memory Reallocation, Resizing Amortization, Two-Pointers, and Sliding Window | [Arrays, Dynamic Arrays & Strings Engine](Module_02_Arrays_Dynamic_Arrays_and_Strings/07_PROJECT_GUIDE.md) |
 | **03** | [Linked Lists & Node Structures](Module_03_Linked_Lists_and_Pointer_Manipulation/01_README.md) | Singly/Doubly Linked Lists, Fast & Slow Pointers, Cycle Detection, and Reverse Operations | [Linked Lists & Node Structures Engine](Module_03_Linked_Lists_and_Pointer_Manipulation/04_PROJECT_GUIDE.md) |

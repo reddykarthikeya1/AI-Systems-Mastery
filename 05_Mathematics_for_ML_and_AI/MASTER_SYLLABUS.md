@@ -5,7 +5,12 @@
 ## Module index
 
 | # | Module | Lessons | Materials | Status |
-| :--- | :--- | :---: | :--- | :---: |
+| :---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+ | :--- | :---: | :--- | :---: |
 | **[Module 01](Module_01_Set_Language_for_Machine_Learning/README.md)** | Set Language for Machine Learning | 25 | [Lessons](Module_01_Set_Language_for_Machine_Learning/README.md) · [Project](Module_01_Set_Language_for_Machine_Learning/PROJECT_GUIDE.md) · [Quiz](Module_01_Set_Language_for_Machine_Learning/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_01_Set_Language_for_Machine_Learning/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_01_Set_Language_for_Machine_Learning/debug_lab/SYMPTOMS.md) | 🔴 |
 | **[Module 02](Module_02_Logic_for_Precise_Reasoning/README.md)** | Logic for Precise Reasoning | 19 | [Lessons](Module_02_Logic_for_Precise_Reasoning/README.md) · [Project](Module_02_Logic_for_Precise_Reasoning/PROJECT_GUIDE.md) · [Quiz](Module_02_Logic_for_Precise_Reasoning/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_02_Logic_for_Precise_Reasoning/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_02_Logic_for_Precise_Reasoning/debug_lab/SYMPTOMS.md) | 🔴 |
 | **[Module 03](Module_03_Linear_Systems_and_Geometric_Maps/README.md)** | Linear Systems and Geometric Maps | 35 | [Lessons](Module_03_Linear_Systems_and_Geometric_Maps/README.md) · [Project](Module_03_Linear_Systems_and_Geometric_Maps/PROJECT_GUIDE.md) · [Quiz](Module_03_Linear_Systems_and_Geometric_Maps/SELF_ASSESSMENT_AND_CHALLENGES.md) · [Troubleshoot](Module_03_Linear_Systems_and_Geometric_Maps/TROUBLESHOOTING_AND_EDGE_CASES.md) · [Debug Lab](Module_03_Linear_Systems_and_Geometric_Maps/debug_lab/SYMPTOMS.md) | 🔴 |

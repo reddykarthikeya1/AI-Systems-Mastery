@@ -5,7 +5,12 @@
 ## Course Curriculum Matrix
 
 | # | Module | Core Systems Covered | Hands-on Project Deliverable |
-|---|---|---|---|
+|---
+
+## 📺 Video Curriculum
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
+
+|---|---|---|
 | **01** | [Inference Latency & Throughput Trade-offs](Module_01_Inference_Latency_Throughput_Tradeoffs/01_README.md) | TTFT vs TPOT, Compute-bound Prefill vs Memory-bound Decode, Roofline Analysis | [Inference Metrics Simulator](Module_01_Inference_Latency_Throughput_Tradeoffs/02_PROJECT_GUIDE.md) |
 | **02** | [KV-Cache Memory Management](Module_02_KV_Cache_Memory_Management/01_README.md) | Memory footprint formulas, MHA vs GQA vs MQA, Internal/External Fragmentation | [KV Cache Allocator](Module_02_KV_Cache_Memory_Management/02_PROJECT_GUIDE.md) |
 | **03** | [PagedAttention Architecture (vLLM)](Module_03_PagedAttention_Architecture_vLLM/01_README.md) | Block tables, Physical block manager, Copy-on-Write parallel sampling | [PagedAttention Block Manager](Module_03_PagedAttention_Architecture_vLLM/02_PROJECT_GUIDE.md) |

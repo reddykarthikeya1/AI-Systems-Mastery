@@ -11,6 +11,7 @@ Both **Track A (mechanistic pure-Python simulations)** and **Track B (real produ
 
 ## 🧭 Master Quicklinks & Orientation
 
+- 📺 **Curated Video Lectures:** Watch verified, high-viewership masterclasses for every module in **[Curated Video Lectures](CURATED_VIDEO_LECTURES.md)**.
 - ⚡ **Spin up the environment:** Follow the [Beginner's Zero-to-One Guide](START_HERE_BEGINNER_GUIDE.md) to launch `make up` and run queries.
 - 🌟 **Need complete architectural clarity?** Read the [When to Use What Database Guide](WHEN_TO_USE_WHAT_DATABASE_GUIDE.md).
 - ⏱️ **Need a study schedule?** Check out the [Study Plans & Pacing Guide](STUDY_PLANS_AND_PACING_GUIDE.md) (10-Day Sprint, 4-Week, 10-Week, and 20-Week tracks).
