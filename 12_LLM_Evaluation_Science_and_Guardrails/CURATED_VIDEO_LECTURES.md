@@ -32,6 +32,8 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `26,811 views` • `9 mo ago` • Length: `12:19`
 - **Core Architecture Focus**: Faithfulness, Answer Relevance, Context Precision, and semantic similarity bounds.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=7_LTU0LA374`
+- **Supplementary Lectures**:
+  - [Ground Truth: The Foundation of Accurate AI & Machine Learning Models](https://www.youtube.com/watch?v=ya92bJbl0jc) | **IBM Technology** | Covers: Ground Truth
 
 ### Module 02: LLM-as-a-Judge Calibration & Bias Mitigation
 
@@ -80,6 +82,8 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `4,155 views` • `1 year ago` • Length: `8:12`
 - **Core Architecture Focus**: Adversarial prompt generation, multi-turn jailbreaking, and vulnerability discovery automation.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=cEHTxmpAgjA`
+- **Supplementary Lectures**:
+  - [AI Model Penetration: Testing LLMs for Prompt Injection & Jailbreaks](https://www.youtube.com/watch?v=xOQW_qMZdlc) | **IBM Technology** | Covers: Jailbreak Testing
 
 ### Module 08: Production AI Observability & OpenTelemetry Tracing
 

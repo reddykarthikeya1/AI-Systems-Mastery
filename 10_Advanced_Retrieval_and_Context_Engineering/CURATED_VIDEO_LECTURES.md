@@ -49,6 +49,8 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `56,956 views` • `2 yr ago` • Length: `8:03`
 - **Core Architecture Focus**: Multi-layer skip-graph connectivity, vector quantization, and trade-offs between memory and recall.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=77QH0Y2PYKg`
+- **Supplementary Lectures**:
+  - [Product quantization in Faiss and from scratch](https://www.youtube.com/watch?v=PNVJvZEkuXo) | **mildlyoverfitted** | Covers: Product Quantization
 
 ### Module 04: Hybrid Search & Reciprocal Rank Fusion (RRF)
 
@@ -57,6 +59,9 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `83,474 views` • `2 yr ago` • Length: `42:35`
 - **Core Architecture Focus**: Combining BM25 keyword matching with dense embeddings using parameter-free RRF scoring.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=CK0ExcCWDP4`
+- **Supplementary Lectures**:
+  - [The Complete Guide to Hybrid Search in RAG (BM25 + Embeddings + Reranker)](https://www.youtube.com/watch?v=XvKiTfd6Xvo) | **Dave Ebbelaar** | Covers: Reciprocal Rank Fusion
+  - [Understanding Reciprocal Rank Fusion in Hybrid Search [Advanced RAG]](https://www.youtube.com/watch?v=6dDvfGrxFns) | **TechViz - The Data Science Guy** | Covers: RRF
 
 ### Module 05: Multi-Stage Retrieval & Cross-Encoder Reranking
 

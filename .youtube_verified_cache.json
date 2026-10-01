@@ -236,7 +236,7 @@
   "Docker Python tutorial deployment freeCodeCamp": {
     "id": "rjjES5IsPdg",
     "url": "https://www.youtube.com/watch?v=rjjES5IsPdg",
-    "title": "Learn Docker \u2013 Full DevOps Course for Deploying Containerized Apps",
+    "title": "Learn Docker – Full DevOps Course for Deploying Containerized Apps",
     "author": "freeCodeCamp.org",
     "views": "231,389 views",
     "published": "3 months ago",
@@ -731,7 +731,7 @@
   "ArjanCodes SOLID principles in Python software architecture": {
     "id": "pTB30aXS77U",
     "url": "https://www.youtube.com/watch?v=pTB30aXS77U",
-    "title": "Uncle Bob\u2019s SOLID Principles Made Easy \ud83c\udf40 - In Python!",
+    "title": "Uncle Bob’s SOLID Principles Made Easy 🍀 - In Python!",
     "author": "ArjanCodes",
     "views": "356,995 views",
     "published": "5 yr ago",
@@ -776,7 +776,7 @@
   "ByteByteGo Distributed ID generator Twitter Snowflake": {
     "id": "SnyFRsPtoy4",
     "url": "https://www.youtube.com/watch?v=SnyFRsPtoy4",
-    "title": "Generating Unique IDs at Scale: Inside Twitter\u2019s Snowflake System Design",
+    "title": "Generating Unique IDs at Scale: Inside Twitter’s Snowflake System Design",
     "author": "Ultimate System Design",
     "views": "1,607 views",
     "published": "10 months ago",
@@ -1046,7 +1046,7 @@
   "freeCodeCamp PyTorch for Deep Learning Bootcamp full course Daniel Bourke": {
     "id": "V_xro1bcAuA",
     "url": "https://www.youtube.com/watch?v=V_xro1bcAuA",
-    "title": "PyTorch for Deep Learning & Machine Learning \u2013 Full Course",
+    "title": "PyTorch for Deep Learning & Machine Learning – Full Course",
     "author": "freeCodeCamp.org",
     "views": "3,570,925 views",
     "published": "3 yr ago",
@@ -1091,7 +1091,7 @@
   "Andrej Karpathy Deep Reinforcement Learning Pong from Pixels": {
     "id": "36OBX5lQjGc",
     "url": "https://www.youtube.com/watch?v=36OBX5lQjGc",
-    "title": "Reinforcement learning is terrible \u2013 Andrej Karpathy",
+    "title": "Reinforcement learning is terrible – Andrej Karpathy",
     "author": "Dwarkesh Clips",
     "views": "134,622 views",
     "published": "11 mo ago",
@@ -1127,7 +1127,7 @@
   "freeCodeCamp MLOps Course Machine Learning Operations": {
     "id": "-dJPoLm_gtE",
     "url": "https://www.youtube.com/watch?v=-dJPoLm_gtE",
-    "title": "MLOps Course \u2013 Build Machine Learning Production Grade Projects",
+    "title": "MLOps Course – Build Machine Learning Production Grade Projects",
     "author": "freeCodeCamp.org",
     "views": "542,163 views",
     "published": "2 years ago",
@@ -1163,7 +1163,7 @@
   "CUDA Memory hierarchy shared memory coalescing CoffeeBeforeArch": {
     "id": "LieS0bBgy0w",
     "url": "https://www.youtube.com/watch?v=LieS0bBgy0w",
-    "title": "CUDA Memory Hierarchy: Coalescing, Shared Memory, Bank Conflicts \u2014 GPU Programming in C/CUDA | Ep 5",
+    "title": "CUDA Memory Hierarchy: Coalescing, Shared Memory, Bank Conflicts — GPU Programming in C/CUDA | Ep 5",
     "author": "Glass Box Computing",
     "views": "39 views",
     "published": "1 month ago",
@@ -1181,7 +1181,7 @@
   "CUDA Tiled Matrix Multiplication shared memory CoffeeBeforeArch": {
     "id": "VHsxF8lxpWw",
     "url": "https://www.youtube.com/watch?v=VHsxF8lxpWw",
-    "title": "Tiled Matrix Multiplication on GPU | 16\u00d7 Faster with Shared Memory",
+    "title": "Tiled Matrix Multiplication on GPU | 16× Faster with Shared Memory",
     "author": "Sagar Tripathy",
     "views": "797 views",
     "published": "8 months ago",
@@ -1235,7 +1235,7 @@
   "Tim Dettmers Quantization FP8 INT4 LLM GPU": {
     "id": "37g8S71LfmQ",
     "url": "https://www.youtube.com/watch?v=37g8S71LfmQ",
-    "title": "\ud83d\udce6 LLM Quantization Explained: FP32, FP16, INT8, INT4, GPTQ, AWQ & GGUF",
+    "title": "📦 LLM Quantization Explained: FP32, FP16, INT8, INT4, GPTQ, AWQ & GGUF",
     "author": "Liv4IT",
     "views": "339 views",
     "published": "1 month ago",
@@ -1281,7 +1281,7 @@
     "id": "hc0u4avAkuM",
     "url": "https://www.youtube.com/watch?v=hc0u4avAkuM",
     "title": "Ultimate Guide To Scaling ML Models - Megatron-LM | ZeRO | DeepSpeed | Mixed Precision",
-    "author": "Aleksa Gordi\u0107 - The AI Epiphany",
+    "author": "Aleksa Gordić - The AI Epiphany",
     "views": "37,535 views",
     "published": "4 yr ago",
     "duration": "1:22:58"
@@ -1370,7 +1370,7 @@
   "Continuous batching cellular batching LLM serving TGI vLLM": {
     "id": "MxOBZ-E2J8w",
     "url": "https://www.youtube.com/watch?v=MxOBZ-E2J8w",
-    "title": "Deploying Fine\u2011Tuned Models on Hugging Face, VLLM, Text\u2011Generation\u2011Inference (TGI)",
+    "title": "Deploying Fine‑Tuned Models on Hugging Face, VLLM, Text‑Generation‑Inference (TGI)",
     "author": "SH AI Academy",
     "views": "148 views",
     "published": "2 mo ago",
@@ -1424,7 +1424,7 @@
   "Anthropic Contextual Retrieval RAG architecture explained": {
     "id": "tmiBae2goJM",
     "url": "https://www.youtube.com/watch?v=tmiBae2goJM",
-    "title": "The Best RAG Technique Yet? Anthropic\u2019s Contextual Retrieval Explained!",
+    "title": "The Best RAG Technique Yet? Anthropic’s Contextual Retrieval Explained!",
     "author": "Prompt Engineering",
     "views": "138,586 views",
     "published": "1 yr ago",
@@ -1532,7 +1532,7 @@
   "Securing LLM code execution sandboxing Docker E2B": {
     "id": "csT16BaTHwY",
     "url": "https://www.youtube.com/watch?v=csT16BaTHwY",
-    "title": "Running AI Agents in Secure Sandboxes with E2B & Docker MCP | Docker\u2019s AI Guide to the Galaxy",
+    "title": "Running AI Agents in Secure Sandboxes with E2B & Docker MCP | Docker’s AI Guide to the Galaxy",
     "author": "Docker",
     "views": "8,741 views",
     "published": "9 months ago",
@@ -1636,5 +1636,768 @@
     "views": "8,198 views",
     "published": "7 months ago",
     "duration": "1:19:06"
+  },
+  "Networking sockets TCP client server Python tutorial": {
+    "id": "BlQbUV_W954",
+    "url": "https://www.youtube.com/watch?v=BlQbUV_W954",
+    "title": "Python Socket Programming Tutorial 7 - TCP/IP Client and Server",
+    "author": "ProgrammingKnowledge",
+    "verified_live_on": "2026-09-22"
+  },
+  "Polars tutorial fast exploratory data analysis Python": {
+    "id": "ps_KKM6upeQ",
+    "url": "https://www.youtube.com/watch?v=ps_KKM6upeQ",
+    "title": "Polars Tutorial: Blazingly Fast Exploratory Data Analysis in Python",
+    "author": "Anton T. Ruberts",
+    "verified_live_on": "2026-09-22"
+  },
+  "Linked list design singly NeetCode": {
+    "id": "xqAvQsy5KkI",
+    "url": "https://www.youtube.com/watch?v=xqAvQsy5KkI",
+    "title": "Design a Singly Linked List",
+    "author": "NeetCodeIO",
+    "verified_live_on": "2026-09-22"
+  },
+  "Skip list randomized data structure explained": {
+    "id": "zO5NJ8xiwTM",
+    "url": "https://www.youtube.com/watch?v=zO5NJ8xiwTM",
+    "title": "Skip List: Randomized Data Structure",
+    "author": "Priya Bhatia",
+    "verified_live_on": "2026-09-22"
+  },
+  "MongoDB sharding and replication Percona": {
+    "id": "1sMZ455i1PU",
+    "url": "https://www.youtube.com/watch?v=1sMZ455i1PU",
+    "title": "MongoDB Sharding and Replication 101",
+    "author": "Percona",
+    "verified_live_on": "2026-09-22"
+  },
+  "LSM tree secret sauce NoSQL ByteByteGo": {
+    "id": "I6jB0nM9SKU",
+    "url": "https://www.youtube.com/watch?v=I6jB0nM9SKU",
+    "title": "The Secret Sauce Behind NoSQL: LSM Tree",
+    "author": "ByteByteGo",
+    "verified_live_on": "2026-09-22"
+  },
+  "Distributed SQL vs polyglot persistence Linux Foundation": {
+    "id": "xG-NtcH0IJY",
+    "url": "https://www.youtube.com/watch?v=xG-NtcH0IJY",
+    "title": "Distributed SQL vs Polyglot Persistence: Which Database Architecture for Cloud Native Microservices?",
+    "author": "The Linux Foundation",
+    "verified_live_on": "2026-09-22"
+  },
+  "Flash sale system design interview TechPrep": {
+    "id": "U2Acfwcah80",
+    "url": "https://www.youtube.com/watch?v=U2Acfwcah80",
+    "title": "Flash Sale System: System Design Interview (Stripe & Amazon Offers)",
+    "author": "TechPrep",
+    "verified_live_on": "2026-09-22"
+  },
+  "HNSW vector search 100 million vectors explained visually": {
+    "id": "BvYW2ISbqGA",
+    "url": "https://www.youtube.com/watch?v=BvYW2ISbqGA",
+    "title": "Searching 100 Million Vectors in 50ms | HNSW Explained Visually",
+    "author": "CodeCraft Academy",
+    "verified_live_on": "2026-09-22"
+  },
+  "vLLM explained how to serve LLMs at scale": {
+    "id": "RT5Z-CjvWjc",
+    "url": "https://www.youtube.com/watch?v=RT5Z-CjvWjc",
+    "title": "vLLM Explained: How to Serve LLMs at Scale",
+    "author": "YanAITalk",
+    "verified_live_on": "2026-09-22"
+  },
+  "Saga pattern distributed transactions microservices ByteMonk": {
+    "id": "d2z78guUR4g",
+    "url": "https://www.youtube.com/watch?v=d2z78guUR4g",
+    "title": "Saga Pattern | Distributed Transactions | Microservices",
+    "author": "ByteMonk",
+    "verified_live_on": "2026-09-22"
+  },
+  "Policy gradient methods REINFORCE A2C A3C deep dive": {
+    "id": "007EvVofBC0",
+    "url": "https://www.youtube.com/watch?v=007EvVofBC0",
+    "title": "Policy Gradient Methods in Reinforcement Learning: Deep Dive into REINFORCE, A2C, A3C & More",
+    "author": "Professor Rahul Jain",
+    "verified_live_on": "2026-09-22"
+  },
+  "How to read AI research papers effectively DeepLearningAI": {
+    "id": "K6Wui3mn-uI",
+    "url": "https://www.youtube.com/watch?v=K6Wui3mn-uI",
+    "title": "How To Read AI Research Papers Effectively",
+    "author": "DeepLearningAI",
+    "verified_live_on": "2026-09-22"
+  },
+  "State of AI 2026 Lex Fridman scaling laws agents": {
+    "id": "EV7WhVT270Q",
+    "url": "https://www.youtube.com/watch?v=EV7WhVT270Q",
+    "title": "State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | Lex Fridman Podcast #490",
+    "author": "Lex Fridman",
+    "verified_live_on": "2026-09-22"
+  },
+  "Kernel fusion RMSNorm Softmax GPU memory bottleneck Qooba": {
+    "id": "FD_xre7abZU",
+    "url": "https://www.youtube.com/watch?v=FD_xre7abZU",
+    "title": "JUST FUSE IT: Fixing GPU Memory Bottlenecks with kernel fusion (RMSNorm & Softmax)",
+    "author": "Qooba",
+    "verified_live_on": "2026-09-22"
+  },
+  "BigScience BLOOM 3D parallelism explained AI Epiphany": {
+    "id": "pTChDs5uD8I",
+    "url": "https://www.youtube.com/watch?v=pTChDs5uD8I",
+    "title": "BigScience BLOOM | 3D Parallelism Explained | Large Language Models | ML Coding Series",
+    "author": "Aleksa Gordić - The AI Epiphany",
+    "verified_live_on": "2026-09-22"
+  },
+  "Continuous batching optimize LLM serving throughput latency": {
+    "id": "iiyu86UZwGg",
+    "url": "https://www.youtube.com/watch?v=iiyu86UZwGg",
+    "title": "Continuous Batching: Optimize LLM Serving Throughput and Latency",
+    "author": "Ready Tensor",
+    "verified_live_on": "2026-09-22"
+  },
+  "Autoscaling LLM inference Kubernetes CNCF": {
+    "id": "TSEGAh1bs4A",
+    "url": "https://www.youtube.com/watch?v=TSEGAh1bs4A",
+    "title": "Optimizing Load Balancing and Autoscaling for Large Language Model (LLM) Inference on Kubernetes",
+    "author": "CNCF",
+    "verified_live_on": "2026-09-22"
+  },
+  "Elevator low level design LOOK scheduling Hello Interview": {
+    "id": "fODT0ldeBiU",
+    "url": "https://www.youtube.com/watch?v=fODT0ldeBiU",
+    "title": "Low-Level Design Interview: Design an Elevator w/ a Ex-Meta Staff Engineer",
+    "author": "Hello Interview",
+    "verified_live_on": "2026-09-22"
+  },
+  "CUDA sum reduction crash course CoffeeBeforeArch": {
+    "id": "bpbit8SPMxU",
+    "url": "https://www.youtube.com/watch?v=bpbit8SPMxU",
+    "title": "CUDA Crash Course: Sum Reduction Part 1",
+    "author": "CoffeeBeforeArch",
+    "verified_live_on": "2026-09-22"
+  },
+  "FlashAttention-3 is here Fahd Mirza": {
+    "id": "mbmVHvk4-xA",
+    "url": "https://www.youtube.com/watch?v=mbmVHvk4-xA",
+    "title": "FlashAttention-3 is Here",
+    "author": "Fahd Mirza",
+    "verified_live_on": "2026-09-22"
+  },
+  "PipeDream 1F1B pipeline parallelism Mark Saroufim": {
+    "id": "BZrL_jy4Pp8",
+    "url": "https://www.youtube.com/watch?v=BZrL_jy4Pp8",
+    "title": "PipeDream: Model, Data & Pipeline Parallelism",
+    "author": "Mark Saroufim",
+    "verified_live_on": "2026-09-22"
+  },
+  "supp 01 M0 ruff as a unified linter and formatter": {
+    "id": "828S-DMQog8",
+    "url": "https://www.youtube.com/watch?v=828S-DMQog8",
+    "title": "Python Tutorial: Ruff - A Fast Linter & Formatter to Replace Multiple Tools and Improve Code Quality",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M1 if/elif/else branching and boolean logic": {
+    "id": "DZwmZ8Usvnk",
+    "url": "https://www.youtube.com/watch?v=DZwmZ8Usvnk",
+    "title": "Python Tutorial for Beginners 6: Conditionals and Booleans - If, Else, and Elif Statements",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M1 for-loops, while-loops, break/continue": {
+    "id": "6iF8Xb7Z3wQ",
+    "url": "https://www.youtube.com/watch?v=6iF8Xb7Z3wQ",
+    "title": "Python Tutorial for Beginners 7: Loops and Iterations - For/While Loops",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M2 defining functions, positional/keyword a": {
+    "id": "9Os0o3wzS_I",
+    "url": "https://www.youtube.com/watch?v=9Os0o3wzS_I",
+    "title": "Python Tutorial for Beginners 8: Functions",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M3 the collections module's specialized con": {
+    "id": "lHS8FToa02Q",
+    "url": "https://www.youtube.com/watch?v=lHS8FToa02Q",
+    "title": "Collections module in Python, namedtuple, deque, Counter, OrderedDict, defaultdict, and ChainMap",
+    "author": "Asim Code",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M3 hash table internals, hashing, and colli": {
+    "id": "sfWyugl4JWA",
+    "url": "https://www.youtube.com/watch?v=sfWyugl4JWA",
+    "title": "Introduction to Hash Tables and Dictionaries (Data Structures & Algorithms #13)",
+    "author": "CS Dojo",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M4 inheritance, subclassing, and method res": {
+    "id": "RSl87lqOXDE",
+    "url": "https://www.youtube.com/watch?v=RSl87lqOXDE",
+    "title": "Python OOP Tutorial 4: Inheritance - Creating Subclasses",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M4 dunder protocols such as __repr__, __str": {
+    "id": "3ohzBxoFHAY",
+    "url": "https://www.youtube.com/watch?v=3ohzBxoFHAY",
+    "title": "Python OOP Tutorial 5: Special (Magic/Dunder) Methods",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M5 generator functions, yield, and lazy ite": {
+    "id": "bD05uGo_sVI",
+    "url": "https://www.youtube.com/watch?v=bD05uGo_sVI",
+    "title": "Python Tutorial: Generators - How to use them and the benefits you receive",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M5 the with-statement protocol and __enter_": {
+    "id": "-aKFBoZpiqA",
+    "url": "https://www.youtube.com/watch?v=-aKFBoZpiqA",
+    "title": "Python Tutorial: Context Managers - Efficiently Managing Resources",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M6 try/except/else/finally and exception hi": {
+    "id": "NIWwJbo-9_8",
+    "url": "https://www.youtube.com/watch?v=NIWwJbo-9_8",
+    "title": "Python Tutorial: Using Try/Except Blocks for Error Handling",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M7 opening files, read/write modes, and fil": {
+    "id": "Uh2ebFW8OYM",
+    "url": "https://www.youtube.com/watch?v=Uh2ebFW8OYM",
+    "title": "Python Tutorial: File Objects - Reading and Writing to Files",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M9 the threading module, thread pools, and ": {
+    "id": "IEEhzQoKtQU",
+    "url": "https://www.youtube.com/watch?v=IEEhzQoKtQU",
+    "title": "Python Threading Tutorial: Run Code Concurrently Using the Threading Module",
+    "author": "Corey Schafer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M10 asyncio.TaskGroup and structured-concurr": {
+    "id": "8KyIK7srLds",
+    "url": "https://www.youtube.com/watch?v=8KyIK7srLds",
+    "title": "How To Use TASK GROUPS In Python 3.11 (NEW FEATURE!)",
+    "author": "Indently",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M11 HTTP protocol semantics, versions, and r": {
+    "id": "0OrmKCB0UrQ",
+    "url": "https://www.youtube.com/watch?v=0OrmKCB0UrQ",
+    "title": "Hyper Text Transfer Protocol Crash Course - HTTP 1.0, 1.1, HTTP/2, HTTP/3",
+    "author": "Hussein Nasser",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M12 CPython bytecode, the dis module, and op": {
+    "id": "cSSpnq362Bk",
+    "url": "https://www.youtube.com/watch?v=cSSpnq362Bk",
+    "title": "James Bennett - A Bit about Bytes: Understanding Python Bytecode - PyCon 2018",
+    "author": "PyCon 2018",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M12 CPython memory architecture, reference c": {
+    "id": "F6u5rhUQ6dU",
+    "url": "https://www.youtube.com/watch?v=F6u5rhUQ6dU",
+    "title": "Nina Zakharenko - Memory Management in Python - The Basics - PyCon 2016",
+    "author": "PyCon 2016",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 01 M13 the ASGI protocol, how it differs from W": {
+    "id": "weO0AgQQalM",
+    "url": "https://www.youtube.com/watch?v=weO0AgQQalM",
+    "title": "WSGI vs ASGI",
+    "author": "Awesome Python TV",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M1 memory layout - cache lines, spatial loc": {
+    "id": "E6QATWzjWZU",
+    "url": "https://www.youtube.com/watch?v=E6QATWzjWZU",
+    "title": "L-3.11: Locality of Reference in Cache Memory | Spatial Vs Temporal Locality | Computer Organization",
+    "author": "Gate Smashers",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M2 two-pointer pattern - converging pointer": {
+    "id": "QzZ7nmouLTI",
+    "url": "https://www.youtube.com/watch?v=QzZ7nmouLTI",
+    "title": "Two Pointers in 7 minutes | LeetCode Pattern",
+    "author": "AlgoMasterIO",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M4 queues - FIFO order, enqueue/dequeue, an": {
+    "id": "jvSdGoNnQo4",
+    "url": "https://www.youtube.com/watch?v=jvSdGoNnQo4",
+    "title": "Lec-47: Enqueue(), Dequeue() & other Operations on Queue | Data Structure",
+    "author": "Gate Smashers",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M6 BST search/insertion invariants and in/p": {
+    "id": "sXABdGalFNg",
+    "url": "https://www.youtube.com/watch?v=sXABdGalFNg",
+    "title": "Lec-53: Binary Search Tree in Data Structure | Insertion and Traversal in BST",
+    "author": "Gate Smashers",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M6 Red-Black tree coloring rules and rebala": {
+    "id": "tvY0Xv5dVuc",
+    "url": "https://www.youtube.com/watch?v=tvY0Xv5dVuc",
+    "title": "Lec-63: Insertion in Red Black Tree | Data Structure for Beginners",
+    "author": "Gate Smashers",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M7 Top-K pattern - heap-based and quicksele": {
+    "id": "XEmy13g1Qxc",
+    "url": "https://www.youtube.com/watch?v=XEmy13g1Qxc",
+    "title": "Kth Largest Element in an Array - Quick Select - Leetcode 215 - Python",
+    "author": "NeetCode",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M8 topological sort - Kahn's BFS-based orde": {
+    "id": "Akt3glAwyfY",
+    "url": "https://www.youtube.com/watch?v=Akt3glAwyfY",
+    "title": "Course Schedule II - Topological Sort - Leetcode 210",
+    "author": "NeetCode",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M9 Bellman-Ford - relaxation over negative ": {
+    "id": "FtN3BYH2Zes",
+    "url": "https://www.youtube.com/watch?v=FtN3BYH2Zes",
+    "title": "4.4 Bellman Ford Algorithm - Single Source Shortest Path - Dynamic Programming",
+    "author": "Abdul Bari",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M9 Minimum Spanning Tree via Prim's and Kru": {
+    "id": "4ZlRH0eK-qQ",
+    "url": "https://www.youtube.com/watch?v=4ZlRH0eK-qQ",
+    "title": "3.5 Prims and Kruskals Algorithms - Greedy Method",
+    "author": "Abdul Bari",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M11 grid path DP - counting paths with a 2D ": {
+    "id": "IlEsdxuD4lY",
+    "url": "https://www.youtube.com/watch?v=IlEsdxuD4lY",
+    "title": "Unique Paths - Dynamic Programming - Leetcode 62",
+    "author": "NeetCode",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M12 classic interval scheduling - greedy sel": {
+    "id": "nONCGxWoUfM",
+    "url": "https://www.youtube.com/watch?v=nONCGxWoUfM",
+    "title": "Non-Overlapping Intervals - Leetcode 435 - Python",
+    "author": "NeetCode",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 02 M13 constraint satisfaction - row/column/box": {
+    "id": "JzONv5kaPJM",
+    "url": "https://www.youtube.com/watch?v=JzONv5kaPJM",
+    "title": "Implement A Sudoku Solver - Sudoku Solving Backtracking Algorithm (\"Sudoku Solver\" on LeetCode)",
+    "author": "Back To Back SWE",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M1 storage theory - disk-resident files, pa": {
+    "id": "PRLXdIMJhOg",
+    "url": "https://www.youtube.com/watch?v=PRLXdIMJhOg",
+    "title": "#03 - Database Storage: Files, Pages, Tuples (CMU Intro to Database Systems)",
+    "author": "CMU Database Group",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M1 relational foundation - Codd's relationa": {
+    "id": "7NPIENPr-zk",
+    "url": "https://www.youtube.com/watch?v=7NPIENPr-zk",
+    "title": "#01 - Relational Model & Algebra (CMU Intro to Database Systems)",
+    "author": "CMU Database Group",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M2 CTEs, including the recursive form": {
+    "id": "5x1uodxEIaM",
+    "url": "https://www.youtube.com/watch?v=5x1uodxEIaM",
+    "title": "SQL CTE (Common Table Expression) Visually Explained | Full Guide WITH Clause | #SQL Course 28",
+    "author": "Data with Baraa",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M2 join algorithms - inner, left, right, fu": {
+    "id": "aY7z4HcHm5M",
+    "url": "https://www.youtube.com/watch?v=aY7z4HcHm5M",
+    "title": "SQL Joins Basics (Visually Explained) | INNER, LEFT, RIGHT, FULL | #SQL Course 8",
+    "author": "Data with Baraa",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M3 SQLite's single-file, serverless, embedd": {
+    "id": "XsQlSXyTJr4",
+    "url": "https://www.youtube.com/watch?v=XsQlSXyTJr4",
+    "title": "SQLite: The Most Important Software Component That Many People Have Never Heard Of (Part 1)",
+    "author": "Percona",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M4 advanced types - JSONB storage internals": {
+    "id": "lEJWFhtLeUI",
+    "url": "https://www.youtube.com/watch?v=lEJWFhtLeUI",
+    "title": "5mins of Postgres E3: Postgres performance cliffs with large JSONB values and TOAST",
+    "author": "pganalyze",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M5 Multi-Version Concurrency Control - row ": {
+    "id": "gAE_MSQtqnQ",
+    "url": "https://www.youtube.com/watch?v=gAE_MSQtqnQ",
+    "title": "MVCC Unmasked",
+    "author": "Postgres Conference",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M5 reading EXPLAIN ANALYZE query plans and ": {
+    "id": "P7EUFtjeAmI",
+    "url": "https://www.youtube.com/watch?v=P7EUFtjeAmI",
+    "title": "Postgres Explain Explained - How Databases Prepare Optimal Query Plans to Execute SQL",
+    "author": "Hussein Nasser",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M6 InnoDB's clustered index (index-organize": {
+    "id": "uFbMtOdjEOE",
+    "url": "https://www.youtube.com/watch?v=uFbMtOdjEOE",
+    "title": "Table Clustering in MySQL and Postgres - The pros and cons",
+    "author": "Hussein Nasser",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M7 physical storage subsystem - tablespaces": {
+    "id": "kV6z8gOKJ94",
+    "url": "https://www.youtube.com/watch?v=kV6z8gOKJ94",
+    "title": "Oracle Database Architecture || Memory Structure || Background Process || Storage Structures",
+    "author": "Vismo Technologies",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M8 explicit cursors and cursor-based row it": {
+    "id": "HEhaAay0tXU",
+    "url": "https://www.youtube.com/watch?v=HEhaAay0tXU",
+    "title": "Cursors in PL/SQL | Oracle PL/SQL Tutorial Videos | Mr.Vijay Kumar",
+    "author": "Naresh i Technologies",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M8 triggers - row/statement-level firing an": {
+    "id": "JKOIDnm-X6Q",
+    "url": "https://www.youtube.com/watch?v=JKOIDnm-X6Q",
+    "title": "Oracle PL/SQL Tutorials | Triggers in Oracle | by Mr.Vaman Deshmukh",
+    "author": "Naresh i Technologies",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M9 RAC cache fusion, Global Resource Direct": {
+    "id": "RQ_DV48Qvh0",
+    "url": "https://www.youtube.com/watch?v=RQ_DV48Qvh0",
+    "title": "What is Cache Fusion in RAC? || GRD (Global Resource Directory) || GCS and GES Background Process",
+    "author": "Vismo Technologies",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 03 M9 Data Guard physical/logical standby repl": {
+    "id": "HqB3uEvDzyQ",
+    "url": "https://www.youtube.com/watch?v=HqB3uEvDzyQ",
+    "title": "What is Oracle Data Guard? | Detailed Explanation by Ankush Sir",
+    "author": "Learnomate Technologies",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M1 the \"physics of scalability\" half of the": {
+    "id": "dvRFHG2-uYs",
+    "url": "https://www.youtube.com/watch?v=dvRFHG2-uYs",
+    "title": "Vertical Vs Horizontal Scaling: Key Differences You Should Know",
+    "author": "ByteByteGo",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M2 HTTP/2 multiplexing and how it fixes TCP": {
+    "id": "UMwQjFzTQXw",
+    "url": "https://www.youtube.com/watch?v=UMwQjFzTQXw",
+    "title": "HTTP 1 Vs HTTP 2 Vs HTTP 3!",
+    "author": "ByteByteGo",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M2 gRPC and its Protobuf binary encoding": {
+    "id": "u4LWEXDP7_M",
+    "url": "https://www.youtube.com/watch?v=u4LWEXDP7_M",
+    "title": "This is why gRPC was invented",
+    "author": "Hussein Nasser",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M3 CDN edge caching, PoPs, and content dist": {
+    "id": "Bsq5cKkS33I",
+    "url": "https://www.youtube.com/watch?v=Bsq5cKkS33I",
+    "title": "What is a Content Delivery Network (CDN)?",
+    "author": "IBM Technology",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M3 API Gateway request routing, auth, and r": {
+    "id": "6ULyxuHKxg8",
+    "url": "https://www.youtube.com/watch?v=6ULyxuHKxg8",
+    "title": "What is API Gateway?",
+    "author": "ByteByteGo",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M5 the Clean Architecture layered pattern -": {
+    "id": "1OLSE6tX71Y",
+    "url": "https://www.youtube.com/watch?v=1OLSE6tX71Y",
+    "title": "Understand Clean Architecture in 7 Minutes",
+    "author": "Amichai Mantinband",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M8 the debt simplification graph algorithm ": {
+    "id": "6UeDb7ORVPI",
+    "url": "https://www.youtube.com/watch?v=6UeDb7ORVPI",
+    "title": "Splitwise Simplify Debt Algorithm | LLD of Splitwise | Optimal Account Balancing",
+    "author": "Concept && Coding - by Shrayansh",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M11 distributed cache architecture and topol": {
+    "id": "zw7VwIlkPPc",
+    "url": "https://www.youtube.com/watch?v=zw7VwIlkPPc",
+    "title": "Caching in distributed systems: A friendly introduction",
+    "author": "Gaurav Sen",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M12 HyperLogLog cardinality estimation - cou": {
+    "id": "eV1haPUt0NU",
+    "url": "https://www.youtube.com/watch?v=eV1haPUt0NU",
+    "title": "Hyperloglog: Facebook's algorithm to count distinct elements",
+    "author": "Gaurav Sen",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M12 Count-Min Sketch frequency estimation": {
+    "id": "ibxXO-b14j4",
+    "url": "https://www.youtube.com/watch?v=ibxXO-b14j4",
+    "title": "Count min sketch | Efficient algorithm for counting stream of data",
+    "author": "Tech Dummies - Narendra Lakshmana Gowda",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M13 how the commit log is split into partiti": {
+    "id": "y9BStKvVzSs",
+    "url": "https://www.youtube.com/watch?v=y9BStKvVzSs",
+    "title": "Apache Kafka 101: Partitioning",
+    "author": "Confluent",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 04 M13 log compaction - key-based retention and": {
+    "id": "VAkhYxu1qII",
+    "url": "https://www.youtube.com/watch?v=VAkhYxu1qII",
+    "title": "Apache Kafka® Topic Compaction",
+    "author": "Confluent",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M1 set language - unions, intersections, su": {
+    "id": "oaOm2pnKkyY",
+    "url": "https://www.youtube.com/watch?v=oaOm2pnKkyY",
+    "title": "Mod-01 Lec-01 Introduction to the theory of sets",
+    "author": "NPTEL (nptelhrd)",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M1 sample spaces, events, and the axioms of": {
+    "id": "j9WZyLZCBzs",
+    "url": "https://www.youtube.com/watch?v=j9WZyLZCBzs",
+    "title": "1. Probability Models and Axioms",
+    "author": "MIT OpenCourseWare",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M3 solving linear systems Ax=b via Gaussian": {
+    "id": "QVKj3LADCnA",
+    "url": "https://www.youtube.com/watch?v=QVKj3LADCnA",
+    "title": "2. Elimination with Matrices.",
+    "author": "MIT OpenCourseWare",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M4 the vector space axioms this module's pl": {
+    "id": "draqOOUoWQM",
+    "url": "https://www.youtube.com/watch?v=draqOOUoWQM",
+    "title": "Oxford Linear Algebra: What is a Vector Space?",
+    "author": "Tom Rocks Maths (Oxford)",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M4 rank as dim(column space), and the rank-": {
+    "id": "F40D7DKNuo4",
+    "url": "https://www.youtube.com/watch?v=F40D7DKNuo4",
+    "title": "Column space, null space and rank of a matrix",
+    "author": "NPTEL-NOC IITM",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M6 projection matrices, projecting a vector": {
+    "id": "Y_Ac6KiQ1t0",
+    "url": "https://www.youtube.com/watch?v=Y_Ac6KiQ1t0",
+    "title": "15. Projections onto Subspaces",
+    "author": "MIT OpenCourseWare",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M6 the Gram-Schmidt process for turning a b": {
+    "id": "0MtwqhIwdrI",
+    "url": "https://www.youtube.com/watch?v=0MtwqhIwdrI",
+    "title": "17. Orthogonal Matrices and Gram-Schmidt",
+    "author": "MIT OpenCourseWare",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M7 quadratic forms x^TSx, positive/semidefi": {
+    "id": "xsP-S7yKaRA",
+    "url": "https://www.youtube.com/watch?v=xsP-S7yKaRA",
+    "title": "5. Positive Definite and Semidefinite Matrices",
+    "author": "MIT OpenCourseWare",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M9 partial derivatives and how they build t": {
+    "id": "AXqhWeUEtQU",
+    "url": "https://www.youtube.com/watch?v=AXqhWeUEtQU",
+    "title": "Partial derivatives, introduction",
+    "author": "Khan Academy",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 05 M9 the Hessian matrix of second partial der": {
+    "id": "LbBcuZukCAw",
+    "url": "https://www.youtube.com/watch?v=LbBcuZukCAw",
+    "title": "The Hessian matrix",
+    "author": "Khan Academy",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M1 actual GPU microarchitecture and executi": {
+    "id": "lTmYrKwjSOU",
+    "url": "https://www.youtube.com/watch?v=lTmYrKwjSOU",
+    "title": "Lecture 4: Compute and Memory Basics",
+    "author": "GPU MODE",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M8 FlashAttention-2's specific advance over": {
+    "id": "IoMSGuiwV3g",
+    "url": "https://www.youtube.com/watch?v=IoMSGuiwV3g",
+    "title": "Flash Attention 2.0 with Tri Dao (author)! | Discord server talks",
+    "author": "Aleksa Gordić - The AI Epiphany",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M9 the actual Hopper hardware internals — T": {
+    "id": "JwUcZwPOCpA",
+    "url": "https://www.youtube.com/watch?v=JwUcZwPOCpA",
+    "title": "Lecture 36: CUTLASS and Flash Attention 3",
+    "author": "GPU MODE",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M10 FP8 numerics and GEMM specifics across H": {
+    "id": "SBO2PmUKfUA",
+    "url": "https://www.youtube.com/watch?v=SBO2PmUKfUA",
+    "title": "Fp8 Training From Hopper To Blackwell - Luca Wehrstedt, Meta",
+    "author": "PyTorch",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M10 writing the actual Triton/CUDA quantizat": {
+    "id": "1u9xUK3G4VM",
+    "url": "https://www.youtube.com/watch?v=1u9xUK3G4VM",
+    "title": "Lecture 7: Advanced Quantization",
+    "author": "GPU MODE",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 07 M11 Nsight Systems (NSYS) — the system-wide ": {
+    "id": "TGChXcFm-Yo",
+    "url": "https://www.youtube.com/watch?v=TGChXcFm-Yo",
+    "title": "Performance Analysis with NVIDIA Nsight Systems Timeline | CUDA Developer Tools",
+    "author": "NVIDIA Developer",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 08 M1 NVLink crossbar links and NVSwitch topol": {
+    "id": "7U8_uV8k8zo",
+    "url": "https://www.youtube.com/watch?v=7U8_uV8k8zo",
+    "title": "Lec 4: Interconnects - PCIe, NVLink and NVSwitch",
+    "author": "NPTEL IIT Guwahati",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M2 KV-cache memory hierarchy - GPU HBM vs. ": {
+    "id": "-kiOWUJQk6w",
+    "url": "https://www.youtube.com/watch?v=-kiOWUJQk6w",
+    "title": "KV Cache Explained | LLM Inference System Design and GPU Memory",
+    "author": "Think Software",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M6 chunked prefill - splitting long prefill": {
+    "id": "qeUnnH41jg0",
+    "url": "https://www.youtube.com/watch?v=qeUnnH41jg0",
+    "title": "What is Chunked Prefill?",
+    "author": "Standarity",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M7 Medusa - multiple decoding heads and tre": {
+    "id": "Jjjn-J9SJ1s",
+    "url": "https://www.youtube.com/watch?v=Jjjn-J9SJ1s",
+    "title": "How Medusa Works",
+    "author": "Oxen",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M8 AWQ - protecting salient weights via act": {
+    "id": "dcINVsqxQgQ",
+    "url": "https://www.youtube.com/watch?v=dcINVsqxQgQ",
+    "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration [MLSys'24 Best Paper]",
+    "author": "MIT HAN Lab",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M8 FP8 serving formats and hardware-aware q": {
+    "id": "_hhbzZeQ8sY",
+    "url": "https://www.youtube.com/watch?v=_hhbzZeQ8sY",
+    "title": "Deep Dive: LLM Quantization, part 3 - FP8, FP4",
+    "author": "Julien Simon",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 09 M9 production benchmarking methodology - re": {
+    "id": "otCouSz64Z8",
+    "url": "https://www.youtube.com/watch?v=otCouSz64Z8",
+    "title": "Learn How to Run an LLM Inference Performance Benchmark on NVIDIA GPUs - DevConf.US 2025",
+    "author": "DevConf",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M1 Reflexion-style self-reflection loop - a": {
+    "id": "v5ymBTXNqtk",
+    "url": "https://www.youtube.com/watch?v=v5ymBTXNqtk",
+    "title": "Reflection Agents",
+    "author": "LangChain",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M1 Plan-and-Execute cognitive loop - upfron": {
+    "id": "uRya4zRrRx4",
+    "url": "https://www.youtube.com/watch?v=uRya4zRrRx4",
+    "title": "LangGraph: Planning Agents",
+    "author": "LangChain",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M2 state schema, channels, and reducer func": {
+    "id": "jGg_1h0qzaM",
+    "url": "https://www.youtube.com/watch?v=jGg_1h0qzaM",
+    "title": "LangGraph Complete Course for Beginners – Complex AI Agents with Python",
+    "author": "freeCodeCamp.org",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M2 conditional edges that create cyclic/bra": {
+    "id": "DF_dZcguV84",
+    "url": "https://www.youtube.com/watch?v=DF_dZcguV84",
+    "title": "Conditional Edges in LangGraph",
+    "author": "Analytics Vidhya",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M4 short-term, thread-scoped buffer memory ": {
+    "id": "k3FUWWEwgfc",
+    "url": "https://www.youtube.com/watch?v=k3FUWWEwgfc",
+    "title": "Short-Term Memory with LangGraph",
+    "author": "Redis",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M5 collaboration topologies - network, supe": {
+    "id": "4nZl32FwU-o",
+    "url": "https://www.youtube.com/watch?v=4nZl32FwU-o",
+    "title": "Conceptual Guide: Multi Agent Architectures",
+    "author": "LangChain",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M5 swarm architecture - dynamic hand-off be": {
+    "id": "JeyDrn1dSUQ",
+    "url": "https://www.youtube.com/watch?v=JeyDrn1dSUQ",
+    "title": "Multi-agent swarms with LangGraph",
+    "author": "LangChain",
+    "verified_live_on": "2026-09-30"
+  },
+  "supp 11 M7 time travel - checkpoint history, replay": {
+    "id": "_IPP7_Bi8uA",
+    "url": "https://www.youtube.com/watch?v=_IPP7_Bi8uA",
+    "title": "Persistence in LangGraph | Time Travel in LangGraph",
+    "author": "CampusX",
+    "verified_live_on": "2026-09-30"
   }
 }

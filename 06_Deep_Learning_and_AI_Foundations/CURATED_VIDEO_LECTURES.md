@@ -18,12 +18,12 @@ This master reference guide curates **100% verified, live, high-viewership video
 | **Module 04** | TensorFlow & Keras Foundations | [TensorFlow 2.0 Complete Course - Python Neural Networks for Beginners Tutorial](https://www.youtube.com/watch?v=tPYj3fFJGjk) | **freeCodeCamp.org** | `3,493,226 views` | `6:52:08` |
 | **Module 05** | Building Neural Networks from Scratch (Micrograd) | [The spelled-out intro to neural networks and backpropagation: building micrograd](https://www.youtube.com/watch?v=VMj-3S1tku0) | **Andrej Karpathy** | `4,133,788 views` | `2:25:52` |
 | **Module 06** | Transformers & Self-Attention Explained | [Attention in transformers, step-by-step - Deep Learning Chapter 6](https://www.youtube.com/watch?v=eMlx5fFNoYc) | **3Blue1Brown** | `4,617,988 views` | `26:10` |
-| **Module 07** | Reinforcement Learning & Policy Gradients | [Reinforcement learning is terrible – Andrej Karpathy](https://www.youtube.com/watch?v=36OBX5lQjGc) | **Dwarkesh Clips** | `134,622 views` | `4:10` |
+| **Module 07** | Reinforcement Learning & Policy Gradients | [Policy Gradient Methods in Reinforcement Learning: Deep Dive into REINFORCE, A2C, A3C & More](https://www.youtube.com/watch?v=007EvVofBC0) | **Professor Rahul Jain** | `Verified Live` | `Full Lecture` |
 | **Module 08** | Building GPT from Scratch (Karpathy Masterclass) | [Let's build GPT: from scratch, in code, spelled out.](https://www.youtube.com/watch?v=kCc8FmEb1nY) | **Andrej Karpathy** | `7,891,972 views` | `1:56:20` |
-| **Module 09** | Reading & Writing Frontier AI Research Papers | [(PART#01) Artificial Intelligence for Everyone - Complete Tutorial by Andrew Ng powered by Coursera](https://www.youtube.com/watch?v=zOI6Oll1Zrg) | **Tuitions Tonight** | `82,993 views` | `1:41:53` |
+| **Module 09** | Reading & Writing Frontier AI Research Papers | [How To Read AI Research Papers Effectively](https://www.youtube.com/watch?v=K6Wui3mn-uI) | **DeepLearningAI** | `Verified Live` | `Full Lecture` |
 | **Module 10** | Parameter-Efficient Fine-Tuning (PEFT & LoRA) | [LoRA: Low-Rank Adaptation of Large Language Models - Explained visually + PyTorch code from scratch](https://www.youtube.com/watch?v=PXWYUTMt-AU) | **Umar Jamil** | `57,281 views` | `26:55` |
 | **Module 11** | Machine Learning Operations (MLOps) in Production | [MLOps Course – Build Machine Learning Production Grade Projects](https://www.youtube.com/watch?v=-dJPoLm_gtE) | **freeCodeCamp.org** | `542,163 views` | `3:01:03` |
-| **Module 12** | Frontier LLM Trends & State of the Art | [Let's build GPT: from scratch, in code, spelled out.](https://www.youtube.com/watch?v=kCc8FmEb1nY) | **Andrej Karpathy** | `7,891,972 views` | `1:56:20` |
+| **Module 12** | Frontier LLM Trends & State of the Art | [State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI (Lex Fridman Podcast #490)](https://www.youtube.com/watch?v=EV7WhVT270Q) | **Lex Fridman** | `Verified Live` | `Full Lecture` |
 
 ---
 
@@ -52,6 +52,8 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `3,570,925 views` • `3 yr ago` • Length: `25:37:26`
 - **Core Architecture Focus**: Tensor operations, autograd backward pass, nn.Module, and optimizer loops.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=V_xro1bcAuA`
+- **Supplementary Lectures**:
+  - [Pytorch Bootcamp for Beginners - 1 | Installing Pytorch |  Tensors Operations](https://www.youtube.com/watch?v=AU_5ouQ0PoE) | **OpenCV University** | Covers: PyTorch Bootcamp
 
 ### Module 04: TensorFlow & Keras Foundations
 
@@ -76,14 +78,16 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `4,617,988 views` • `2 yr ago` • Length: `26:10`
 - **Core Architecture Focus**: Queries, Keys, Values, Softmax scaling, and multi-head attention visual mechanics.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=eMlx5fFNoYc`
+- **Supplementary Lectures**:
+  - [Self-Attention Explained: How Transformers Actually Work (Full Visual Breakdown)](https://www.youtube.com/watch?v=vkhPtpUiLd8) | **Visual AI** | Covers: Self-Attention Explained
 
 ### Module 07: Reinforcement Learning & Policy Gradients
 
-- **Recommended Lecture**: [Reinforcement learning is terrible – Andrej Karpathy](https://www.youtube.com/watch?v=36OBX5lQjGc)
-- **Instructor / Channel**: **Dwarkesh Clips**
-- **Viewership & Recency**: `134,622 views` • `11 mo ago` • Length: `4:10`
-- **Core Architecture Focus**: Markov Decision Processes, rewards, discounted returns, and REINFORCE policy gradients.
-- **Direct Watch URL**: `https://www.youtube.com/watch?v=36OBX5lQjGc`
+- **Recommended Lecture**: [Policy Gradient Methods in Reinforcement Learning: Deep Dive into REINFORCE, A2C, A3C & More](https://www.youtube.com/watch?v=007EvVofBC0)
+- **Instructor / Channel**: **Professor Rahul Jain**
+- **Viewership & Recency**: `Verified Live` • `Active` • Length: `Full Lecture`
+- **Core Architecture Focus**: Deriving REINFORCE from the policy gradient theorem, and how A2C/A3C reduce its variance with a learned baseline.
+- **Direct Watch URL**: `https://www.youtube.com/watch?v=007EvVofBC0`
 
 ### Module 08: Building GPT from Scratch (Karpathy Masterclass)
 
@@ -95,11 +99,11 @@ This master reference guide curates **100% verified, live, high-viewership video
 
 ### Module 09: Reading & Writing Frontier AI Research Papers
 
-- **Recommended Lecture**: [(PART#01) Artificial Intelligence for Everyone - Complete Tutorial by Andrew Ng powered by Coursera](https://www.youtube.com/watch?v=zOI6Oll1Zrg)
-- **Instructor / Channel**: **Tuitions Tonight**
-- **Viewership & Recency**: `82,993 views` • `7 years ago` • Length: `1:41:53`
-- **Core Architecture Focus**: Navigating arXiv, literature synthesis, experimental ablation methodology, and academic writing.
-- **Direct Watch URL**: `https://www.youtube.com/watch?v=zOI6Oll1Zrg`
+- **Recommended Lecture**: [How To Read AI Research Papers Effectively](https://www.youtube.com/watch?v=K6Wui3mn-uI)
+- **Instructor / Channel**: **DeepLearningAI**
+- **Viewership & Recency**: `Verified Live` • `Active` • Length: `Full Lecture`
+- **Core Architecture Focus**: A repeatable pass structure (abstract, figures, conclusion, then methods) for reading a paper for the result you actually need.
+- **Direct Watch URL**: `https://www.youtube.com/watch?v=K6Wui3mn-uI`
 
 ### Module 10: Parameter-Efficient Fine-Tuning (PEFT & LoRA)
 
@@ -108,6 +112,8 @@ This master reference guide curates **100% verified, live, high-viewership video
 - **Viewership & Recency**: `57,281 views` • `3 years ago` • Length: `26:55`
 - **Core Architecture Focus**: Freezing base weights, low-rank matrix decomposition (A and B), and adapter merging.
 - **Direct Watch URL**: `https://www.youtube.com/watch?v=PXWYUTMt-AU`
+- **Supplementary Lectures**:
+  - [LoRA & QLoRA Fine-tuning Explained In-Depth](https://www.youtube.com/watch?v=t1caDsMzWBk) | **Mark Hennings** | Covers: Parameter-Efficient Fine-Tuning
 
 ### Module 11: Machine Learning Operations (MLOps) in Production
 
@@ -119,9 +125,9 @@ This master reference guide curates **100% verified, live, high-viewership video
 
 ### Module 12: Frontier LLM Trends & State of the Art
 
-- **Recommended Lecture**: [Let's build GPT: from scratch, in code, spelled out.](https://www.youtube.com/watch?v=kCc8FmEb1nY)
-- **Instructor / Channel**: **Andrej Karpathy**
-- **Viewership & Recency**: `7,891,972 views` • `3 yr ago` • Length: `1:56:20`
-- **Core Architecture Focus**: RLHF, DPO, instruction fine-tuning, reasoning models, and the road to AGI.
-- **Direct Watch URL**: `https://www.youtube.com/watch?v=kCc8FmEb1nY`
+- **Recommended Lecture**: [State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI (Lex Fridman Podcast #490)](https://www.youtube.com/watch?v=EV7WhVT270Q)
+- **Instructor / Channel**: **Lex Fridman**
+- **Viewership & Recency**: `Verified Live` • `Active` • Length: `Full Lecture`
+- **Core Architecture Focus**: Where scaling laws, agentic tool-use, and coding-model capability stand across today's frontier labs.
+- **Direct Watch URL**: `https://www.youtube.com/watch?v=EV7WhVT270Q`
 
