@@ -11,6 +11,8 @@ import {
   ModuleProblem,
   ModuleProblemsResponse,
   ProblemRunResult,
+  ModuleVideo,
+  ModuleReading,
 } from '../types';
 
 const API_BASE = '/api';
@@ -49,6 +51,26 @@ export async function fetchModuleGuide(modulePath: string): Promise<{ path: stri
     if (res.ok) return res.json();
   } catch (e) {
     console.warn('Could not fetch module project guide', e);
+  }
+  return null;
+}
+
+export async function fetchModuleReading(modulePath: string): Promise<ModuleReading | null> {
+  try {
+    const res = await fetch(`${API_BASE}/module-reading?module_path=${encodeURIComponent(modulePath)}`);
+    if (res.ok) return res.json();
+  } catch (e) {
+    console.warn('Could not fetch module reading list', e);
+  }
+  return null;
+}
+
+export async function fetchModuleVideo(modulePath: string): Promise<ModuleVideo | null> {
+  try {
+    const res = await fetch(`${API_BASE}/module-video?module_path=${encodeURIComponent(modulePath)}`);
+    if (res.ok) return res.json();
+  } catch (e) {
+    console.warn('Could not fetch module video lecture', e);
   }
   return null;
 }

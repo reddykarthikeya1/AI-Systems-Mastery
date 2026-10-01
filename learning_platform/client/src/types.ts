@@ -218,10 +218,49 @@ export interface ModuleProblemsResponse {
   problems: ModuleProblem[];
 }
 
+/** One additional video pinned to a specific concept the primary lecture
+ * doesn't cover - how a module whose topic names several ideas still gets
+ * full video coverage instead of just one. */
+export interface SupplementaryVideo {
+  title: string;
+  url: string;
+  id: string;
+  channel: string;
+  covers: string;
+  embed_url: string;
+}
+
+/** The curated video(s) for a single module - not the whole course. */
+export interface ModuleVideo {
+  module_path: string;
+  topic: string;
+  title: string;
+  url: string;
+  id: string;
+  channel: string;
+  focus: string;
+  embed_url: string;
+  supplementary: SupplementaryVideo[];
+}
+
 export interface ProblemRunResult {
   status: 'passed' | 'failed' | 'timeout' | 'error';
   exit_code: number;
   stdout: string;
   stderr: string;
   duration_ms: number;
+}
+
+export interface ReadingPage {
+  title: string;
+  url: string;
+  host: string;
+  covers: string[];
+}
+
+export interface ModuleReading {
+  module_path: string;
+  topic: string;
+  pages: ReadingPage[];
+  uncovered: string[];
 }

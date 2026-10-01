@@ -3,12 +3,15 @@ import { useSearchParams } from 'react-router-dom';
 import { 
   ArrowLeft, CheckCircle2, ChevronRight, ChevronLeft, BookOpen, Terminal as TermIcon, 
   Terminal, Bookmark, FileText, Bug, Hammer, CheckSquare, Sparkles, MessageSquare, Save,
-  Play, Code2, Copy, Check, FileCode, ExternalLink, Layers, Eye, Brain, Database,
-  ArrowUp, PanelLeftClose, PanelLeftOpen, Compass
+  Play, Code2, Copy, Check, FileCode, Layers, Eye, Brain, Database,
+  ArrowUp, PanelLeftClose, PanelLeftOpen, Compass, Film, Newspaper
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ModuleItem, LessonItem, TestResult, RunnerMode, LastPosition } from '../types';
-import { fetchFileContent, fetchModuleGuide, runTestCommand, runInteractiveCode } from '../services/api';
+import { fetchFileContent, fetchModuleGuide, fetchModuleVideo, fetchModuleReading, runTestCommand, runInteractiveCode } from '../services/api';
+import { ModuleVideo, ModuleReading } from '../types';
+import { ReadingList } from './ReadingList';
+import { VideoPlaylistPlayer } from './VideoPlaylistPlayer';
 import { useMermaid } from '../hooks/useMermaid';
 import { renderMarkdownWithMath } from '../services/markdown';
 import { TerminalRunner } from './TerminalRunner';
@@ -86,11 +89,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   onSrsReview,
 }) => {
   const [searchParams] = useSearchParams();
-  const requestedTab = searchParams.get('tab') as 'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch' | null;
+  const requestedTab = searchParams.get('tab') as 'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch' | 'video' | 'reading' | null;
 
   // Determine initial tab based on lesson type or URL parameter
-  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(() => {
-    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+  const defaultTab = useMemo<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch' | 'video' | 'reading'>(() => {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch', 'video', 'reading'].includes(requestedTab)) {
       return requestedTab;
     }
     if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) return 'arena';
@@ -99,7 +102,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     return 'theory';
   }, [requestedTab, currentLesson.id, currentLesson.type, currentLesson.title, currentLesson.file_path]);
 
-  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch'>(defaultTab);
+  const [activeTab, setActiveTab] = useState<'theory' | 'project' | 'quiz' | 'debug' | 'test' | 'notes' | 'arena' | 'sql' | 'arch' | 'video' | 'reading'>(defaultTab);
   const [content, setContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -204,14 +207,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
   // Sync tab if URL search parameter changes
   useEffect(() => {
-    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch', 'video', 'reading'].includes(requestedTab)) {
       setActiveTab(requestedTab);
     }
   }, [requestedTab]);
 
   // Update tab if lesson type switches directly
   useEffect(() => {
-    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch'].includes(requestedTab)) {
+    if (requestedTab && ['theory', 'project', 'quiz', 'debug', 'test', 'notes', 'arena', 'sql', 'arch', 'video', 'reading'].includes(requestedTab)) {
       return;
     }
     if (currentLesson.type === 'challenge' || currentLesson.title.toLowerCase().includes('leetcode') || currentLesson.file_path.toLowerCase().includes('leetcode')) {
@@ -274,6 +277,40 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         if (active && data?.content) {
           setModuleGuideMarkdown(data.content);
         }
+      });
+    }
+    return () => {
+      active = false;
+    };
+  }, [module?.folder_path]);
+
+  // This module's curated video - a watch-instead-of-read path through the
+  // same material. Fetched once per module, not per lesson, since the video
+  // covers the whole module rather than one lesson within it.
+  const [moduleVideo, setModuleVideo] = useState<ModuleVideo | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    setModuleVideo(null);
+    if (module?.folder_path) {
+      fetchModuleVideo(module.folder_path).then((v) => {
+        if (active) setModuleVideo(v);
+      });
+    }
+    return () => {
+      active = false;
+    };
+  }, [module?.folder_path]);
+
+  // Verified written explainers for the same module (docs, notes, blogs).
+  const [moduleReading, setModuleReading] = useState<ModuleReading | null | undefined>(undefined);
+
+  useEffect(() => {
+    let active = true;
+    setModuleReading(undefined);
+    if (module?.folder_path) {
+      fetchModuleReading(module.folder_path).then((r) => {
+        if (active) setModuleReading(r);
       });
     }
     return () => {
@@ -1036,6 +1073,27 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           </button>
         )}
 
+        {/* Watch This Module - the same material as a curated video, played
+            in-place rather than sending the reader to the syllabus for it. */}
+        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors ${
+            activeTab === 'video'
+              ? 'bg-rose-600 text-white shadow-sm font-bold'
+              : 'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30'
+          }`} onClick={() => setActiveTab('video')} >
+          <Film className="w-3.5 h-3.5" />
+          <span>Watch Video</span>
+        </button>
+
+        {/* Read More - verified docs/notes/blogs that name each module concept. */}
+        <button className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors ${
+            activeTab === 'reading'
+              ? 'bg-sky-600 text-white shadow-sm font-bold'
+              : 'text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/30'
+          }`} onClick={() => setActiveTab('reading')} >
+          <Newspaper className="w-3.5 h-3.5" />
+          <span>Read More</span>
+        </button>
+
         {/* Capstone Architecture Blueprint & Bridge Modal Trigger */}
         <button
           className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-colors text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-emerald-500/20"
@@ -1066,7 +1124,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               activeTab === 'test' ? 'Pytest Console' :
               activeTab === 'notes' ? 'Engineering Notes' :
               activeTab === 'sql' ? 'SQL Playground' :
-              activeTab === 'arch' ? 'Architecture Canvas' : 'Interactive Lab'
+              activeTab === 'arch' ? 'Architecture Canvas' :
+              activeTab === 'video' ? 'Watch Video' :
+              activeTab === 'reading' ? 'Read More' : 'Interactive Lab'
             }
           </span>
         </div>
@@ -1080,6 +1140,26 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       ) : activeTab === 'arch' ? (
         <div className="w-full h-[750px]">
           <ArchitectureCanvasView onClose={() => setActiveTab('theory')} />
+        </div>
+      ) : activeTab === 'video' ? (
+        <div className="w-full max-w-3xl mx-auto">
+          {moduleVideo ? (
+            <VideoPlaylistPlayer video={moduleVideo} />
+          ) : (
+            <div className="aspect-video rounded-2xl overflow-hidden bg-black border border-border shadow-card flex items-center justify-center text-xs font-mono text-zinc-500">
+              Loading curated lecture...
+            </div>
+          )}
+        </div>
+      ) : activeTab === 'reading' ? (
+        <div className="w-full max-w-3xl mx-auto">
+          {moduleReading === undefined ? (
+            <div className="text-xs font-mono text-zinc-500">Loading reading list...</div>
+          ) : moduleReading ? (
+            <ReadingList reading={moduleReading} />
+          ) : (
+            <div className="text-xs text-zinc-500">No reading list for this module yet. Use the lesson text.</div>
+          )}
         </div>
       ) : activeTab === 'project' ? (
         <div className="w-full">

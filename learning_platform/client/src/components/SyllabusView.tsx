@@ -8,6 +8,7 @@ import { CourseSummary, ModuleItem, ProgressPayload, LessonItem } from '../types
 import { renderMarkdownWithMath } from '../services/markdown';
 import { useMermaid } from '../hooks/useMermaid';
 import { handleMarkdownLinkClick } from '../services/linkInterceptor';
+import { ModuleVideoModal } from './ModuleVideoModal';
 
 interface SyllabusViewProps {
   course: CourseSummary;
@@ -59,7 +60,12 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   const [videoContent, setVideoContent] = React.useState<string | null>(null);
   const [loadingVideos, setLoadingVideos] = React.useState(false);
-  const [selectedModuleFilter, setSelectedModuleFilter] = React.useState<string | null>(null);
+  // The per-module "Video" button opens this instead of the whole-course
+  // modal above - it was previously wired to setSelectedModuleFilter, a
+  // state nothing ever read, so clicking "Video" on any module opened the
+  // same course-wide document at the top (module 00's video) regardless of
+  // which module's button was actually clicked.
+  const [videoModuleTarget, setVideoModuleTarget] = React.useState<{ path: string; title: string } | null>(null);
 
   React.useEffect(() => {
     if (isVideoModalOpen && !videoContent && course.folder_name) {
@@ -249,11 +255,8 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
           )}
           <button 
             className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 px-4 py-2 rounded-lg text-xs font-semibold border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors flex items-center gap-2 shadow-sm"
-            onClick={() => {
-              setSelectedModuleFilter(null);
-              setIsVideoModalOpen(true);
-            }}
-            title="Open Curated Video Lectures for all modules in this course"
+            onClick={() => setIsVideoModalOpen(true)}
+            title="Browse curated video lectures for every module in this course"
           >
             <Play className="w-3.5 h-3.5 fill-current text-rose-500" /> Curated Video Lectures
           </button>
@@ -478,10 +481,9 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
                       className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex items-center gap-1.5 shadow-sm" 
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedModuleFilter(mod.id);
-                        setIsVideoModalOpen(true);
+                        setVideoModuleTarget({ path: mod.folder_path, title: mod.title });
                       }}
-                      title="Watch curated video lecture for this module" 
+                      title="Watch curated video lecture for this module"
                     >
                       <Play className="w-3 h-3 fill-current" />
                       <span>Video</span>
@@ -635,6 +637,14 @@ export const SyllabusView: React.FC<SyllabusViewProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {videoModuleTarget && (
+        <ModuleVideoModal
+          modulePath={videoModuleTarget.path}
+          moduleTitle={videoModuleTarget.title}
+          onClose={() => setVideoModuleTarget(null)}
+        />
       )}
     </div>
   );

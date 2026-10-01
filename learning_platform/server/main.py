@@ -576,6 +576,191 @@ def get_module_guide(module_path: str = Query(..., description="Relative path of
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+# One course's CURATED_VIDEO_LECTURES.md holds every module's video in a
+# single file, so a per-module lookup means parsing it once and slicing out
+# the block the caller asked for - not shipping the whole document to the
+# client and having it regex the answer out, which is what the syllabus
+# page's video modal used to do (and why it always showed module 00's video
+# regardless of which module's "Video" button was clicked).
+_VIDEO_LECTURE_CACHE: dict[str, tuple[float, dict]] = {}
+
+_VIDEO_HEADING_RE = re.compile(r"^### (Module (\d+)): (.+)$")
+_VIDEO_LECTURE_RE = re.compile(
+    r"^- \*\*Recommended Lecture\*\*: \[(.+)\]\((https://www\.youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}))\)$"
+)
+_VIDEO_CHANNEL_RE = re.compile(r"^- \*\*Instructor / Channel\*\*: \*\*(.+)\*\*$")
+_VIDEO_FOCUS_RE = re.compile(r"^- \*\*Core Architecture Focus\*\*: (.+)$")
+# A short list of further videos, each pinned to the specific named concept
+# the primary lecture doesn't cover - a module whose topic names 3-4 ideas
+# ("Vector Spaces, Span, Bases & Rank") is not fully taught by one video, so
+# this is how a video-only learner still reaches every concept the lesson
+# text does.
+_VIDEO_SUPP_ITEM_RE = re.compile(
+    r"^\s*- \[(.+)\]\((https://www\.youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}))\) \| \*\*(.+)\*\* \| Covers: (.+)$"
+)
+
+
+def _parse_curated_videos(path: Path) -> dict:
+    """Module number -> {topic, title, url, id, channel, focus, supplementary} for one course."""
+    by_module: dict[str, dict] = {}
+    cur_num = cur_topic = None
+    pending: Optional[dict] = None
+
+    def commit():
+        if cur_num is not None and pending is not None:
+            by_module[cur_num] = pending
+
+    for line in path.read_text(encoding="utf-8", errors="replace").split("\n"):
+        hm = _VIDEO_HEADING_RE.match(line)
+        if hm:
+            commit()
+            # "00" and "0" must key the same entry - the folder name never
+            # zero-pads ("Module_0_...") while the heading always does.
+            cur_num, cur_topic = str(int(hm.group(2))), hm.group(3).strip()
+            pending = None
+            continue
+        lm = _VIDEO_LECTURE_RE.match(line)
+        if lm and cur_num:
+            pending = {
+                "topic": cur_topic,
+                "title": lm.group(1).strip(),
+                "url": lm.group(2),
+                "id": lm.group(3),
+                "supplementary": [],
+            }
+            continue
+        cm = _VIDEO_CHANNEL_RE.match(line)
+        if cm and pending is not None:
+            pending["channel"] = cm.group(1).strip()
+            continue
+        fm = _VIDEO_FOCUS_RE.match(line)
+        if fm and pending is not None:
+            pending["focus"] = fm.group(1).strip()
+            continue
+        sm = _VIDEO_SUPP_ITEM_RE.match(line)
+        if sm and pending is not None:
+            pending["supplementary"].append({
+                "title": sm.group(1).strip(),
+                "url": sm.group(2),
+                "id": sm.group(3),
+                "channel": sm.group(4).strip(),
+                "covers": sm.group(5).strip(),
+            })
+            continue
+    commit()  # the last module in the file never sees a following heading
+    return by_module
+
+
+@app.get("/api/module-video")
+def get_module_video(module_path: str = Query(..., description="Relative path of the module folder from repo root")):
+    """Returns the one curated video for this specific module, not the course."""
+    safe_dir = (BASE_DIR / module_path).resolve()
+    if not safe_dir.is_relative_to(BASE_DIR):
+        raise HTTPException(status_code=403, detail="Access denied: Path traversal detected")
+    if not safe_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Module directory not found")
+
+    parts = safe_dir.relative_to(BASE_DIR).parts
+    if not parts:
+        raise HTTPException(status_code=404, detail="No course folder in path")
+    course_dir = BASE_DIR / parts[0]
+    lectures_file = course_dir / "CURATED_VIDEO_LECTURES.md"
+    if not lectures_file.is_file():
+        raise HTTPException(status_code=404, detail="No curated video lectures for this course")
+
+    mod_match = re.search(r"Module_(\d+)", safe_dir.name)
+    if not mod_match:
+        raise HTTPException(status_code=404, detail="Could not determine module number from folder name")
+    mod_num = str(int(mod_match.group(1)))  # "00" -> "0" to match the parser's un-padded key
+
+    mtime = lectures_file.stat().st_mtime
+    cached = _VIDEO_LECTURE_CACHE.get(str(lectures_file))
+    if cached and cached[0] == mtime:
+        by_module = cached[1]
+    else:
+        by_module = _parse_curated_videos(lectures_file)
+        _VIDEO_LECTURE_CACHE[str(lectures_file)] = (mtime, by_module)
+
+    entry = by_module.get(mod_num)
+    if not entry:
+        raise HTTPException(status_code=404, detail="No curated video found for this module")
+
+    supplementary = [
+        {**s, "embed_url": f"https://www.youtube-nocookie.com/embed/{s['id']}"}
+        for s in entry.get("supplementary", [])
+    ]
+
+    return {
+        "module_path": module_path,
+        "embed_url": f"https://www.youtube-nocookie.com/embed/{entry['id']}",
+        **{**entry, "supplementary": supplementary},
+    }
+
+
+# RECOMMENDED_READING.md sits beside CURATED_VIDEO_LECTURES.md and lists, per
+# module, written explainers whose text was checked to name each concept.
+_READING_CACHE: dict[str, tuple[float, dict]] = {}
+_READING_ITEM_RE = re.compile(r"^- \[(.+)\]\((https?://[^)\s]+)\) \| \*\*(.+?)\*\* \| Covers: (.+)$")
+_READING_MISSING_RE = re.compile(r"^- _Not yet backed by a verified page: (.+)_$")
+
+
+def _parse_recommended_reading(path: Path) -> dict:
+    """Module number -> {topic, pages:[{title,url,host,covers[]}], uncovered[]} for one course."""
+    by_module: dict[str, dict] = {}
+    cur: Optional[dict] = None
+    for line in path.read_text(encoding="utf-8", errors="replace").split("\n"):
+        hm = _VIDEO_HEADING_RE.match(line)
+        if hm:
+            cur = {"topic": hm.group(3).strip(), "pages": [], "uncovered": []}
+            by_module[str(int(hm.group(2)))] = cur
+            continue
+        if cur is None:
+            continue
+        im = _READING_ITEM_RE.match(line)
+        if im:
+            cur["pages"].append({
+                "title": im.group(1).strip(),
+                "url": im.group(2),
+                "host": im.group(3).strip(),
+                "covers": [c.strip() for c in im.group(4).split(",") if c.strip()],
+            })
+            continue
+        mm = _READING_MISSING_RE.match(line)
+        if mm:
+            cur["uncovered"] = [c.strip() for c in mm.group(1).split(",") if c.strip()]
+    return by_module
+
+
+@app.get("/api/module-reading")
+def get_module_reading(module_path: str = Query(..., description="Relative path of the module folder from repo root")):
+    """Returns the verified written explainers (docs, notes, blogs) for this module."""
+    safe_dir = (BASE_DIR / module_path).resolve()
+    if not safe_dir.is_relative_to(BASE_DIR):
+        raise HTTPException(status_code=403, detail="Access denied: Path traversal detected")
+    if not safe_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Module directory not found")
+    parts = safe_dir.relative_to(BASE_DIR).parts
+    if not parts:
+        raise HTTPException(status_code=404, detail="No course folder in path")
+    reading_file = BASE_DIR / parts[0] / "RECOMMENDED_READING.md"
+    if not reading_file.is_file():
+        raise HTTPException(status_code=404, detail="No recommended reading for this course")
+    mod_match = re.search(r"Module_(\d+)", safe_dir.name)
+    if not mod_match:
+        raise HTTPException(status_code=404, detail="Could not determine module number from folder name")
+    mtime = reading_file.stat().st_mtime
+    cached = _READING_CACHE.get(str(reading_file))
+    if cached and cached[0] == mtime:
+        by_module = cached[1]
+    else:
+        by_module = _parse_recommended_reading(reading_file)
+        _READING_CACHE[str(reading_file)] = (mtime, by_module)
+    entry = by_module.get(str(int(mod_match.group(1))))
+    if not entry:
+        raise HTTPException(status_code=404, detail="No recommended reading for this module")
+    return {"module_path": module_path, **entry}
+
+
 def _parse_pytest_output(stdout: str, stderr: str) -> dict:
     tests = []
     test_line_regex = re.compile(r'([^\s:]+\.py)::([^\s]+)\s+(PASSED|FAILED|ERROR|SKIPPED)')
