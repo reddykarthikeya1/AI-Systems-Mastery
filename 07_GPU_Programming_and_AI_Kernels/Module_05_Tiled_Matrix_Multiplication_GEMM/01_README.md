@@ -4,88 +4,121 @@
 
 ---
 
+## Why this module matters
 
-## Warp Shuffle Butterfly Reduction Topology
+General matrix multiply (GEMM), `C = A x B`, is where almost all the FLOPs of a Transformer go: attention projections, MLP layers, the LM head. A GEMM kernel is the cleanest example of the central GPU idea: **do not fetch from HBM what you can reuse on chip**. The optimisation ladder in this module (naive, shared-memory tiles, register tiles, double buffering, Tensor Cores) is the same ladder that CUTLASS, cuBLAS and Triton climb, and it is the template for FlashAttention in Module 08.
+
+## Mental model: carry the groceries in bulk
+
+Computing one output element `C[i][j]` needs a whole row of A and a whole column of B. A naive kernel assigns one thread per output and each thread walks to the warehouse (HBM) for all of its inputs, even though neighbouring outputs need almost the same rows and columns. Tiling means a block of threads *together* fetches a small tile of A and a small tile of B into shared memory once, and every thread uses it many times before fetching the next tile.
 
 ```mermaid
-flowchart TD
-    subgraph S1["Step 1: __shfl_xor_sync(mask, val, 16)"]
-        T0_16["Threads [0..15] combine with Threads [16..31]"]
-    end
-    subgraph S2["Step 2: __shfl_xor_sync(mask, val, 8)"]
-        T0_8["Threads [0..7] combine with Threads [8..15]"]
-    end
-    subgraph S3["Step 3: __shfl_xor_sync(mask, val, 4)"]
-        T0_4["Threads [0..3] combine with Threads [4..7]"]
-    end
-    subgraph S4["Step 4: __shfl_xor_sync(mask, val, 2)"]
-        T0_2["Threads [0..1] combine with Threads [2..3]"]
-    end
-    subgraph S5["Step 5: __shfl_xor_sync(mask, val, 1)"]
-        T0_final["Thread 0 holds Full Warp Sum in exactly 5 clock cycles!"]
-    end
-
-    S1 --> S2 --> S3 --> S4 --> S5
+flowchart LR
+    A["A tile (BM x BK)"] --> S["Shared memory"]
+    B["B tile (BK x BN)"] --> S
+    S --> R["Registers: each thread owns a TM x TN micro-tile of C"]
+    R --> C["Write C tile once at the end"]
 ```
 
----
+## 1. Count the traffic (arithmetic intensity)
 
-## 1. The Naive GEMM Memory Wall
+For `M = N = K` and FP32:
 
-Computing matrix multiplication $C = A \times B$ for $M \times K$ and $K \times N$ matrices:
-$$C_{ij} = \sum_{k=0}^{K-1} A_{ik} B_{kj}$$
+- **Naive:** each output does `2K` FLOPs and loads `2K` words (8K bytes). Intensity `= 2K / 8K = 0.25 FLOP/B`. On a GPU with a ridge point near 10 FLOP/B (FP32), this is memory-bound, even though GEMM is the poster child for compute-bound work. (Caches rescue some reuse, but not enough.)
+- **Shared-memory tiling with a `T x T` tile:** every element loaded into the tile is used by `T` threads, so global traffic drops by a factor `T`. Intensity rises to about `T / 4 FLOP/B`: `T = 32` gives ~8 FLOP/B.
+- **Register tiling (each thread computes a `TM x TN` patch):** one value loaded from shared memory into a register feeds `TN` (or `TM`) multiply-adds. With a block tile of `128 x 128` the global intensity is about `128 / 4 = 32 FLOP/B` for FP32 and shared-memory traffic per FLOP falls by another large factor.
 
-In naive global memory GEMM:
-- Each thread computes 1 element of $C_{ij}$.
-- To compute $C_{ij}$, the thread reads $K$ elements from row $i$ of $A$ and $K$ elements from column $j$ of $B$.
-- **Total FLOPs**: $2 M N K$.
-- **Total DRAM Reads**: $2 M N K \times 4 \text{ bytes}$.
-- **Arithmetic Intensity**:
-  $$I_{\text{naive}} = \frac{2 M N K}{2 M N K \times 4} = 0.25 \text{ FLOPs/Byte}$$
-On an NVIDIA A100 (Peak Compute = $19.5 \text{ TFLOPs}$ FP32, Memory Bandwidth = $2{,}000 \text{ GB/s}$):
-$$\text{Attainable Performance} = 0.25 \times 2{,}000 \text{ GB/s} = 500 \text{ GFLOPs/s}$$
-Your GPU runs at **2.5% of its hardware capacity**! The GPU is starved for memory bandwidth.
+Rule: a bigger tile means more reuse, but it costs shared memory and registers, and lowers occupancy. GEMM kernels are tuned for the best compromise on each architecture.
 
----
+## 2. Step 1: shared-memory tiling
 
-## 2. 2D Shared Memory Block Tiling ($B_M \times B_N \times B_K$)
-
-Instead of streaming elements from slow DRAM independently:
-1. Divide matrix $C$ into tiles of size $B_M \times B_N$ (e.g. $32 \times 32$).
-2. Assign each block of threads to compute one $C$-tile.
-3. In outer loop across $K$ with step $B_K$:
-   - Threads load a $B_M \times B_K$ slice of $A$ into `__shared__ float sA[BM][BK]`.
-   - Threads load a $B_K \times B_N$ slice of $B$ into `__shared__ float sB[BK][BN]`.
-   - Call `__syncthreads()` to ensure SRAM is fully written.
-   - Accumulate partial matrix multiplication using ultra-fast SRAM!
-   - Call `__syncthreads()` before loading the next phase.
-
-```
-+-----------------------------------------------------------------------------------------------+
-| TILED GEMM MEMORY TRAFFIC REUSE                                                               |
-+-----------------------------------------------------------------------------------------------+
-| Global Memory (DRAM): Read each tile of A (N / BN) times, each tile of B (M / BM) times      |
-| Memory Traffic:       Reduced by a factor of Tile Size!                                       |
-| Arithmetic Intensity: I_tiled = (Tile_Size / 4) FLOPs/Byte                                    |
-| For Tile_Size = 32:   I_tiled = 8.0 FLOPs/Byte (32x improvement over naive GEMM!)             |
-+-----------------------------------------------------------------------------------------------+
+```cpp
+#define T 32
+__global__ void gemm_tiled(const float* A, const float* B, float* C, int M, int N, int K) {
+    __shared__ float As[T][T], Bs[T][T];
+    int row = blockIdx.y * T + threadIdx.y;
+    int col = blockIdx.x * T + threadIdx.x;
+    float acc = 0.f;
+    for (int k0 = 0; k0 < K; k0 += T) {
+        As[threadIdx.y][threadIdx.x] = (row < M && k0 + threadIdx.x < K) ? A[row * K + k0 + threadIdx.x] : 0.f;
+        Bs[threadIdx.y][threadIdx.x] = (k0 + threadIdx.y < K && col < N) ? B[(k0 + threadIdx.y) * N + col] : 0.f;
+        __syncthreads();                               // tile fully loaded
+        #pragma unroll
+        for (int k = 0; k < T; ++k) acc += As[threadIdx.y][k] * Bs[k][threadIdx.x];
+        __syncthreads();                               // everyone done before overwriting
+    }
+    if (row < M && col < N) C[row * N + col] = acc;
+}
 ```
 
+Notes: both global loads are coalesced (`threadIdx.x` indexes the contiguous dimension); `As[threadIdx.y][k]` is a broadcast within a warp; `Bs[k][threadIdx.x]` is stride-1 and conflict-free; the zero-fill handles ragged edges; the two barriers are both required.
+
+## 3. Step 2: register micro-tiling
+
+In the kernel above each multiply-add needs two shared-memory reads, so the kernel is limited by shared-memory bandwidth. Give each thread a `TM x TN` (for example `8 x 8`) block of outputs held in registers:
+
+```cpp
+// inner loop over k, per thread, accumulators float acc[TM][TN]
+float a_reg[TM], b_reg[TN];
+for (int i = 0; i < TM; ++i) a_reg[i] = As[ty * TM + i][k];
+for (int j = 0; j < TN; ++j) b_reg[j] = Bs[k][tx * TN + j];
+for (int i = 0; i < TM; ++i)
+    for (int j = 0; j < TN; ++j) acc[i][j] += a_reg[i] * b_reg[j];   // TM*TN FMAs per TM+TN loads
+```
+
+For `8 x 8`: 64 FMAs for 16 shared loads, a 4x better compute-to-load ratio, with the 64 accumulators living in registers. A block tile of `128 x 128 x 8` with 256 threads (each thread `8 x 8`) is a classic starting configuration.
+
+## 4. Step 3: hide latency with double buffering
+
+While threads compute on tile `k`, the next tile `k+1` can already be on its way. Allocate **two** shared-memory buffers and alternate: compute from buffer 0 while loading into buffer 1. On Ampere and later, asynchronous copies (`cp.async`, or `cuda::memcpy_async`) move data from global to shared memory **without passing through registers**, and on Hopper the Tensor Memory Accelerator (Module 09) generalises this. The cost is double the shared memory, which again trades against occupancy.
+
+## 5. Bank conflicts and swizzling
+
+If threads of a warp read a column of a shared tile whose row length is a multiple of 32 words, they all hit one bank (Module 03). Pad (`[T][T+1]`) or **swizzle** the column index (for example XOR it with the row), which keeps the data layout compact and conflict-free. Tensor Core fragment loads (`ldmatrix`) require particular swizzles; libraries handle them for you.
+
+## 6. Tensor Cores
+
+Tensor Cores execute small matrix-multiply-accumulate operations on whole fragments (for example 16x8x16 in FP16 on Ampere) and are an order of magnitude faster than FP32 lanes. From CUDA you reach them through WMMA (`nvcuda::wmma`), PTX `mma.sync`, or, in practice, CUTLASS and cuBLAS; Triton emits them automatically for `tl.dot`. Everything above still applies: Tensor Cores shift the ridge point to a much higher intensity (Module 01), so tiling matters *more*, not less.
+
+## Worked example: how much does each step buy?
+
+Illustrative numbers for a 4096 x 4096 x 4096 FP32 GEMM on a GPU with ~19.5 TFLOP/s FP32 peak:
+
+| Kernel | Typical fraction of peak | Why |
+|---|---|---|
+| Naive | ~1-5% | memory-bound, ~0.25 FLOP/B |
+| Shared-memory tiling (32x32) | ~10-20% | traffic cut ~32x, but shared-memory bound |
+| + register tiling (8x8 per thread) | ~50-70% | far fewer shared loads per FMA |
+| + double buffering, vectorised loads, tuned tiles | ~80-95% | latency hidden, instruction overhead trimmed |
+| cuBLAS / CUTLASS (with Tensor Cores for FP16/TF32) | at or near hardware limit | architecture-specific tiling and swizzles |
+
+Treat the percentages as order-of-magnitude guides and measure on your own device. The shape is what matters: each step removes the bottleneck exposed by the last.
+
+## Common pitfalls
+
+1. **Missing the second `__syncthreads()`**: a fast warp overwrites the tile while a slow warp is still reading it.
+2. **Barrier inside a conditional** that some threads skip: deadlock.
+3. **Tiles that do not divide the matrix**: handle edges with guards and zero-fill, never by reading out of bounds.
+4. **Too many registers**: the compiler spills accumulators to local memory (slow); inspect with `--ptxas-options=-v`.
+5. **Benchmarking only square powers of two.** Real shapes (batch x hidden x vocabulary, skinny matrices) behave differently; prefer the library for production.
+6. **Comparing FP32 kernels against TF32/FP16 library kernels** without saying so.
+
+## How this connects
+
+- **Module 03** supplies coalescing and bank-conflict rules used here.
+- **Module 06** shows the same algorithm in a dozen lines of Triton.
+- **Module 08** tiles attention's `Q K^T` and `P V` the same way, with an extra trick to avoid materialising the score matrix.
+- **Course 08** splits GEMMs across GPUs (tensor parallelism).
+
+## Go further
+
+- roadmap.sh: *Inference Engineering* nodes **GPU architecture**, **kernel selection / fusion**, **roofline model**.
+- Simon Boehm, *How to Optimize a CUDA Matmul Kernel for cuBLAS-like Performance* (siboehm.com).
+- NVIDIA *Matrix Multiplication Background* (deep learning performance guide) and CUTLASS documentation.
+
 ---
 
-## 3. Register Micro-Tiling & Double Buffering
-
-Production libraries like NVIDIA CUTLASS and cuBLAS take tiling to the register level:
-1. **Register Micro-Tiling**: Each thread in the block does not compute 1 element; each thread holds a small $m_m \times n_n$ matrix (e.g. $8 \times 8$) in **registers**.
-   - Threads load elements from Shared Memory into registers, achieving another $8\times$ reuse!
-2. **Double Buffering (Software Pipelining)**:
-   - Allocate two sets of shared memory buffers: `sA[2][BM][BK]` and `sB[2][BK][BN]`.
-   - While Tensor Cores/ALUs compute on buffer 0, memory hardware loads buffer 1 asynchronously from DRAM!
-   - Latency of DRAM loads is **100% hidden** behind compute.
-
----
-
-## 4. Module Study Progression
+## Module Study Progression
 1. **Beginner Playground**: Read [00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md).
 2. **Architecture Theory**: Study this [01_README.md](01_README.md).
 3. **Hands-on Project**: Follow [02_PROJECT_GUIDE.md](02_PROJECT_GUIDE.md).

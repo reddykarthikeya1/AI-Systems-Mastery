@@ -1,82 +1,105 @@
-# Module 01: Inference Latency, Throughput & TTFT/TPOT Trade-offs
+# Module 01: Inference Latency, TTFT & TPOT Trade-offs
 
+> **Architectural Scope**: The two phases of LLM inference (prefill and decode), the metrics that matter (TTFT, TPOT/ITL, end-to-end latency, throughput, goodput), why decode is memory-bound, and how batching trades latency for throughput.
 
-## LLM Inference Latency Breakdown (Prefill vs Decode)
+---
+
+## Why this module matters
+
+Training is about throughput over weeks. Serving is about **latency under load for real users**, at a cost per token you can afford. An LLM request is not one computation but two very different ones, and the metrics, bottlenecks and optimisations differ for each. If you cannot say whether a slow chat reply is a *time-to-first-token* problem or a *time-per-token* problem, you cannot fix it. Every technique in the rest of this course (KV-cache management, PagedAttention, continuous batching, chunked prefill, speculative decoding, quantisation) is aimed at one of the quantities defined here.
+
+## Mental model: reading the question, then writing the answer one word at a time
+
+When you ask a question, the model first **reads the whole prompt at once** (fast per token, because all tokens are processed in parallel, but it must finish before anything appears) and then **writes the answer one token at a time**, each token requiring a full pass through the model that re-reads every weight. The first phase decides how long you wait before the first word; the second decides how fast the words stream.
 
 ```mermaid
-flowchart LR
-    subgraph TTFT["Time To First Token (Prefill Phase)"]
-        Prompt["Input Prompt: 2048 Tokens"] --> GEMM["Parallel Matrix Multiply (GEMM)"]
-        GEMM --> HighCompute["Compute-Bound (High Arithmetic Intensity)<br/>Tensor Cores 100% Saturated"]
+sequenceDiagram
+    participant U as User
+    participant S as Server
+    U->>S: request (prompt of P tokens)
+    Note over S: Prefill: process all P tokens in parallel (compute-bound), build KV cache
+    S-->>U: first token (end of TTFT)
+    loop each output token
+        Note over S: Decode step: 1 new token per sequence, reads all weights + KV cache (memory-bound)
+        S-->>U: next token (one TPOT / ITL later)
     end
-
-    subgraph TPOT["Time Per Output Token (Decode Phase)"]
-        TokenGen["Autoregressive Generation (1 Token at a time)"] --> GEMV["Matrix-Vector Multiply (GEMV)"]
-        GEMV --> LowCompute["Memory-Bound (Low Arithmetic Intensity)<br/>Bottlenecked by HBM Memory Bandwidth!"]
-    end
-
-    TTFT --> TPOT
 ```
+
+## 1. The metrics
+
+| Metric | Meaning | What drives it |
+|---|---|---|
+| **TTFT** (time to first token) | request arrival until the first output token | queueing + prompt length (prefill compute) |
+| **TPOT** / **ITL** (time per output token / inter-token latency) | average gap between successive output tokens | decode step time, which depends on batch size and memory traffic |
+| **E2E latency** | arrival until the last token | `TTFT + (n_out - 1) x TPOT` |
+| **Throughput** | total tokens (or requests) per second the system produces | batch size, GPU efficiency |
+| **Goodput** | requests per second that **meet their SLOs** (for example TTFT < 500 ms and TPOT < 50 ms) | the number that matters commercially |
+
+Always report **percentiles** (p50, p95, p99) rather than averages: tail latency is what users remember, and queueing makes tails grow quickly as load approaches capacity. Typical human-facing targets: TTFT well under a second, TPOT under about 50 ms (faster than reading speed, roughly 20 tokens/s or more); batch or offline jobs care only about throughput.
+
+## 2. Prefill: compute-bound
+
+All `P` prompt tokens go through the model in parallel as large matrix multiplications, so the GPU's Tensor Cores are busy. Cost is about `2 x N_params x P` FLOPs.
+
+**Worked example.** An 8B model, a 2,000-token prompt: `2 x 8e9 x 2000 = 3.2e13` FLOPs. At an effective 400 TFLOP/s that is about **80 ms** of pure compute. A 32,000-token prompt is 16x more (about 1.3 s) plus the quadratic attention term, which is why long prompts dominate TTFT.
+
+## 3. Decode: memory-bound
+
+Each decode step produces **one token per sequence** but must read **all model weights** (and each sequence's KV cache, Module 02) from HBM. The arithmetic per byte is tiny, so speed is set by bandwidth:
+
+`step time ~ (weight bytes + KV bytes read) / memory bandwidth`.
+
+**Worked example.** 8B model in FP16 is 16 GB; on an H100 (3.35 TB/s): `16 / 3350 = 4.8 ms` per step, i.e. an upper bound of about 200 tokens/s for a *single* sequence, regardless of how much compute the GPU has. A 70B FP16 model (140 GB) needs at least two GPUs; split with tensor parallelism it is about 21 ms per step on two H100s by this bound (real systems lose some to communication and overheads).
+
+Decode **arithmetic intensity** at batch size `B` with FP16 weights is about `2B FLOPs / 2 bytes per parameter = B FLOP/B`, far below an H100's ridge point of roughly 300 FLOP/B (course 07, Module 01). So at small batches the GPU is mostly idle waiting for memory.
+
+## 4. Batching: the central trade-off
+
+Serving `B` sequences in the same decode step reads the weights **once** and applies them to `B` tokens. Throughput therefore rises almost linearly with `B` while the step time barely changes, until you reach the compute ridge (`B` of a few hundred for dense models; the KV cache read also grows with `B`, eventually dominating).
+
+| Batch size B | Step time (illustrative, 8B FP16, H100) | Tokens/s (all users) | Per-user TPOT |
+|---|---|---|---|
+| 1 | ~5 ms | ~200 | ~5 ms |
+| 32 | ~6 ms | ~5,300 | ~6 ms |
+| 256 | ~12 ms (KV reads and compute start to bite) | ~21,000 | ~12 ms |
+
+So **larger batches buy throughput (lower cost per token) at the price of somewhat higher TPOT and, because requests wait to be batched, higher TTFT.** The operating point is a business decision expressed through SLOs: choose the largest batch that keeps p95 TTFT and TPOT within target. Memory limits the maximum batch: the **KV cache** of every running sequence must fit (Module 02), which is why KV management is the real bottleneck of high-throughput serving.
+
+## 5. Where the knobs are
+
+- **Reduce TTFT:** prefix caching (Module 04), chunked prefill (Module 06), prompt compression, scheduling short prompts first, more GPUs/TP for prefill, disaggregated prefill (Module 06).
+- **Reduce TPOT:** quantised weights (fewer bytes per step, Module 08), speculative decoding (several tokens per weight read, Module 07), faster attention kernels, tensor parallelism (more bandwidth), smaller batches or priority scheduling for latency-sensitive traffic.
+- **Increase throughput/cost efficiency:** continuous batching (Module 05), PagedAttention for larger batches (Module 03), quantisation of weights and KV cache, FP8 compute.
+- **Protect tails:** admission control, queue limits, autoscaling (Module 09).
+
+## Common pitfalls
+
+1. **Reporting only average latency** or only throughput; always give percentiles and the load at which they were measured.
+2. **Mixing TTFT and TPOT** when diagnosing: long prompts hurt TTFT, heavy batching hurts TPOT.
+3. **Benchmarking at batch 1 and extrapolating to production**, or the reverse.
+4. **Assuming compute is the bottleneck in decode**; it is bandwidth and KV capacity.
+5. **Ignoring output length**: E2E latency is dominated by `n_out x TPOT` for long answers.
+6. **Comparing systems on different prompt/output length distributions**, which makes throughput numbers meaningless.
+7. **Optimising throughput past the SLO knee** and wrecking p99.
+
+## How this connects
+
+- **Course 07, Module 01** (roofline) explains why decode is memory-bound and prefill compute-bound.
+- **Module 02** onward address the KV cache, the batching and the scheduling that determine these metrics.
+- **Module 09** turns the metrics into benchmarks, SLAs and autoscaling rules.
+- **Course 08, Module 10** applies the same unit-economics thinking to training.
+
+## Go further
+
+- roadmap.sh: *Inference Engineering* nodes **time to first token**, **inter token latency**, **tokens per second**, **latency vs throughput**, **latency percentiles**, **prefill / decode phases**, **bottleneck analysis**.
+- NVIDIA NIM "LLM benchmarking metrics" documentation; Anyscale, *Reproducible performance metrics for LLM inference*; Hugging Face TGI benchmarking guide.
+- Pope et al., *Efficiently Scaling Transformer Inference* (2022); Kipply, *Transformer Inference Arithmetic*.
 
 ---
 
-## 1. Architectural Foundations of LLM Inference
-
-Unlike classical deep learning inference where input tensors undergo a single static forward pass, autoregressive decoder Transformer inference is a sequential, state-dependent process.
-
-### 1.1 Metrics Taxonomy & User Experience
-Let an inference request $R$ submit a prompt of length $S_{\text{prompt}}$ and generate $S_{\text{gen}}$ completion tokens.
-1. **Time to First Token (TTFT)**:
-   $$\text{TTFT} = t_{\text{first\_token}} - t_{\text{arrival}}$$
-   Measures system responsiveness; dominated by prompt prefill computation and queue wait time.
-2. **Time Per Output Token (TPOT)**:
-   $$\text{TPOT} = \frac{t_{\text{finish}} - t_{\text{first\_token}}}{S_{\text{gen}} - 1}$$
-   Measures conversational streaming smoothness.
-3. **Inter-Token Latency (ITL)**:
-   $$\text{ITL}_i = t_{i} - t_{i-1} \quad \forall i \in \{2, \dots, S_{\text{gen}}\}$$
-   Per-token latency distribution; spikes in ITL create perceptible jitter.
-4. **Normalized Latency (E2E / Output Tokens)**:
-   $$\text{Latency}_{\text{norm}} = \frac{t_{\text{finish}} - t_{\text{arrival}}}{S_{\text{gen}}}$$
-
----
-
-## 2. Computational Regimes: Prefill vs. Decode
-
-### 2.1 The Roofline Model Analysis
-The operational performance of GPU execution is governed by the Williams et al. Roofline Model:
-$$\text{Attainable Performance} = \min(\text{Peak Compute [FLOP/s]}, \text{Operational Intensity [FLOP/byte]} \times \text{Memory Bandwidth [byte/s]})$$
-
-```
-Performance
-  ^
-  |                  Peak Compute Limit (Compute-Bound: Prefill)
-  |                 /-------------------------------------------
-  |                /
-  |               /
-  |              /   Memory Bandwidth Limit (Memory-Bound: Decode)
-  |             /
-  |            /
-  +-----------+-------------------------------------------------->
-  0       Ridge Point                               Intensity (FLOP/byte)
-```
-
-### 2.2 Operational Intensity Calculations
-Let $\Phi$ denote parameter count, $b$ denote batch size, $s$ denote sequence length, and $h$ denote hidden dimension.
-- **Prefill Phase (GEMM)**:
-  $$\text{FLOPs} = 2 b s \Phi, \quad \text{Bytes} = 2\Phi + 2 b s h$$
-  When $b s \gg 1$:
-  $$I_{\text{prefill}} = \frac{2 b s \Phi}{2\Phi + 2 b s h} \approx b s \text{ FLOP/byte}$$
-  Easily exceeds the H100 ridge point ($\approx 295 \text{ FLOP/byte}$), fully saturating Tensor Cores.
-- **Decode Phase (GEMV)**:
-  At each decode step, each request generates 1 token ($s=1$):
-  $$I_{\text{decode}} = \frac{2 b \Phi}{2\Phi + 2 b h} \approx b \text{ FLOP/byte}$$
-  For small batch sizes ($b=1$ to $b=8$), $I_{\text{decode}} \ll 295$, locking execution into the bandwidth-bound regime.
-
----
-
-## 3. The Pareto Frontier: Throughput vs. Latency
-
-As concurrency increases:
-- **Throughput (tokens/sec)** scales linearly until memory bandwidth is saturated or KV cache capacity is exhausted.
-- **TPOT & TTFT** degrade as batching increases queuing delays and memory contention.
-High-performance serving architectures (e.g. vLLM, TensorRT-LLM, SGLang) optimize operations along this Pareto frontier.
+## Module Study Progression
+1. **Beginner Playground**: Read [00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md).
+2. **Architecture Theory**: Study this [01_README.md](01_README.md).
+3. **Hands-on Project**: Follow [02_PROJECT_GUIDE.md](02_PROJECT_GUIDE.md).
+4. **Staff Interview Challenges**: Check [03_SELF_ASSESSMENT_AND_CHALLENGES.md](03_SELF_ASSESSMENT_AND_CHALLENGES.md).
+5. **Production Debugging**: Review [04_TROUBLESHOOTING_AND_EDGE_CASES.md](04_TROUBLESHOOTING_AND_EDGE_CASES.md).

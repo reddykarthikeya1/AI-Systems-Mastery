@@ -4,137 +4,154 @@
 
 ---
 
+## Why this module matters
 
-## GPU Hardware Execution Hierarchy
+Every later module in this course (CUDA, Triton, FlashAttention, quantization kernels, distributed training) is an argument about **where bytes live and how fast they move**. A GPU is not "a faster CPU". It is a machine built to keep thousands of threads in flight so that the time spent waiting on memory is hidden behind other threads' work. If you understand the hardware hierarchy, the SIMT execution model, and the roofline, you can predict whether a kernel will be fast *before* you profile it.
+
+By the end you should be able to:
+
+1. Name the parts of an SM and say what each is for.
+2. Explain why a warp is the unit of execution and what happens when its threads disagree on a branch.
+3. Use Little's Law to explain why a GPU needs tens of thousands of threads in flight.
+4. Compute a kernel's arithmetic intensity and say, with a number, whether it is memory-bound or compute-bound.
+
+## Mental model: a factory with a tiny loading dock
+
+Picture a factory (the GPU) made of ~100 independent workshops (SMs). Each workshop has many workers (CUDA cores and Tensor Cores), a few shelves right next to the workers (registers and shared memory), and one small door to a giant warehouse across the road (HBM). Walking to the warehouse takes a long time, but the road is wide: lots of trucks can travel at once. The workshop stays busy only if there are always other jobs ready to run while some jobs wait for their delivery. That is the whole design philosophy: **throughput over latency**.
 
 ```mermaid
 flowchart TD
-    subgraph Device["NVIDIA GPU (e.g. H100 SXM5)"]
-        HBM["High-Bandwidth Memory (HBM3, 3.35 TB/s, 80 GB)"]
-        L2["Shared L2 Cache (50 MB)"]
-        
-        subgraph SM1["Streaming Multiprocessor 0 (SM)"]
-            WarpSched1["4x Warp Schedulers"]
-            RegFile1["64K x 32-bit Register File"]
-            SRAM1["228 KB Shared Memory / L1 Data Cache"]
-            TensorCores1["4x 4th-Gen Tensor Cores"]
-            CUDACores1["128x FP32 CUDA Cores"]
-        end
-
-        subgraph SM2["Streaming Multiprocessor 131 (SM)"]
-            WarpSched2["4x Warp Schedulers"]
-            RegFile2["Register File"]
-            SRAM2["Shared Memory / L1"]
-            TensorCores2["Tensor Cores"]
-        end
+    HBM["HBM (off-chip DRAM): tens of GB, TB/s, hundreds of cycles"] --> L2["L2 cache (shared by all SMs, tens of MB)"]
+    L2 --> SM0["SM 0"]
+    L2 --> SM1["SM 1"]
+    L2 --> SMn["... SM N"]
+    subgraph Inside["Inside one SM"]
+        SCH["4 warp schedulers"] --> EXE["FP32/INT32 lanes + Tensor Cores"]
+        REG["Register file (256 KB)"] --> EXE
+        SMEM["Shared memory / L1 (up to ~228 KB on H100)"] --> EXE
     end
-
-    HBM <--> L2
-    L2 <--> SM1
-    L2 <--> SM2
+    SM0 --- Inside
 ```
 
----
+## 1. Anatomy of a Streaming Multiprocessor
 
-## 1. Physical Hardware Microarchitecture of an SM
+A modern NVIDIA GPU is an array of **Streaming Multiprocessors (SMs)** connected through a crossbar to a shared **L2 cache** and off-chip **HBM**. The numbers below are for data-center parts; always check the datasheet for your exact SKU because enabled-SM counts, clocks and memory sizes vary.
 
-Modern NVIDIA GPUs (Ampere A100, Hopper H100, Blackwell B200) are arrays of independent hardware processors called **Streaming Multiprocessors (SMs)** connected via a high-bandwidth crossbar network to a shared Level 2 (L2) Cache and High Bandwidth Memory (HBM3e).
+| Resource | A100 (Ampere) | H100 SXM (Hopper) | Notes |
+|---|---|---|---|
+| SMs | 108 | 132 | B200 (Blackwell) has on the order of 148 enabled SMs across two dies |
+| Warp schedulers per SM | 4 | 4 | Each issues one warp instruction per cycle to its sub-partition |
+| FP32 lanes per SM | 64 | 128 | Counted as "CUDA cores" in marketing |
+| Tensor Cores per SM | 4 (3rd gen) | 4 (4th gen) | Matrix-multiply-accumulate units; Blackwell adds 5th gen |
+| Register file per SM | 64K x 32-bit = 256 KB | 256 KB | Per-thread private storage |
+| Shared memory + L1 per SM | up to 192 KB | up to 228 KB | Software-managed shared memory is carved out of this |
+| L2 cache | 40 MB | 50 MB | Shared by every SM |
+| HBM | 40/80 GB, ~1.6-2.0 TB/s | 80 GB, ~3.35 TB/s | Blackwell HBM3e is roughly 8 TB/s |
 
-```
-+--------------------------------------------------------------------------------------------------+
-|                                    NVIDIA SM MICROARCHITECTURE                                   |
-+--------------------------------------------------------------------------------------------------+
-|  Warp Scheduler 0          Warp Scheduler 1          Warp Scheduler 2          Warp Scheduler 3  |
-|  [Dispatch Unit]           [Dispatch Unit]           [Dispatch Unit]           [Dispatch Unit]   |
-+--------------------------+-------------------------+-------------------------+-------------------+
-|  Sub-Core 0              |  Sub-Core 1             |  Sub-Core 2             |  Sub-Core 3       |
-|  - 16 FP32 Cores         |  - 16 FP32 Cores        |  - 16 FP32 Cores        |  - 16 FP32 Cores  |
-|  - 16 INT32 Cores        |  - 16 INT32 Cores       |  - 16 INT32 Cores       |  - 16 INT32 Cores |
-|  - 8 FP64 Cores          |  - 8 FP64 Cores         |  - 8 FP64 Cores         |  - 8 FP64 Cores   |
-|  - 1 Tensor Core (4th/5th)| - 1 Tensor Core        |  - 1 Tensor Core        |  - 1 Tensor Core  |
-|  - 16K 32-bit Registers  |  - 16K 32-bit Registers |  - 16K 32-bit Registers |  - 16K Registers  |
-+--------------------------+-------------------------+-------------------------+-------------------+
-|               UNIFIED REGISTER FILE: 65,536 x 32-bit Registers (256 KB per SM)                   |
-+--------------------------------------------------------------------------------------------------+
-|               CONFIGURABLE L1 DATA CACHE & SHARED MEMORY (SRAM: 192 KB - 228 KB)                 |
-+--------------------------------------------------------------------------------------------------+
-```
+Key limits that show up constantly in kernels:
 
-### Key Hardware Specifications
-- **Streaming Multiprocessors (SMs)**: 108 on A100 SXM4, 132 on H100 SXM5, 148 on B200.
-- **Warp Schedulers**: Exactly 4 warp schedulers per SM. Each scheduler can issue instructions to its dedicated sub-core every clock cycle.
-- **Register File**: 65,536 32-bit registers ($256 \text{ KB}$) per SM. Registers provide zero-latency access (~0 clock cycles).
-- **Shared Memory (SRAM)**: Software-managed cache directly adjacent to the compute units. Latency: ~19 to 30 clock cycles. Bandwidth: $>15 \text{ TB/s}$ aggregate on-chip.
-- **High Bandwidth Memory (HBM3e)**: Off-chip DRAM. Latency: ~400 to 800 clock cycles. Bandwidth: $2{,}000 \text{ GB/s}$ (A100) to $3{,}350 \text{ GB/s}$ (H100) to $8{,}000 \text{ GB/s}$ (B200).
+- **Warp size = 32 threads.**
+- **Max 1,024 threads per block**, and **max 2,048 resident threads (64 warps) per SM** on A100/H100.
+- **Max 255 registers per thread.** Registers are split across all resident threads, so using more registers per thread means fewer threads fit (lower *occupancy*).
+- Shared memory is **per block** and is allocated from the SM's pool, so a block that asks for a lot of it limits how many blocks share the SM.
 
----
+### The memory hierarchy, by cost
 
-## 2. The SIMT Execution Model & Warp Divergence
+| Level | Scope | Typical latency | Who manages it |
+|---|---|---|---|
+| Registers | one thread | ~1 cycle | compiler |
+| Shared memory | one block | ~20-30 cycles | you (explicit) |
+| L1 / L2 cache | SM / whole GPU | ~30 / ~200 cycles | hardware |
+| HBM (global memory) | whole GPU | ~400-800 cycles | you (access pattern matters) |
 
-### Single Instruction, Multiple Threads (SIMT)
-In SIMT, instructions are not issued to single threads. Instructions are issued to **Warps** of **32 consecutive threads**:
-- Threads in a warp share the **Instruction Pointer (IP)**.
-- Each thread has its own private register state and can compute on distinct data.
+The ratio matters more than any single number: **an HBM access costs roughly a hundred registers' worth of time**. Good GPU code moves data from HBM to on-chip memory once, reuses it many times, and writes results back once.
 
-### The Penalty of Warp Divergence
-When conditional code causes threads in the same warp to take different execution branches:
+## 2. SIMT: how threads actually execute
+
+You write code for one thread. The hardware groups 32 consecutive threads (by linearized thread index within a block) into a **warp** and issues one instruction for the whole warp at a time. This is **Single Instruction, Multiple Threads (SIMT)**.
+
+Each thread still has its own registers and, since Volta, its own program counter, but the scheduler issues instructions to the warp as a unit. Lanes that are not on the issued path are *masked off* for that instruction.
+
+### Warp divergence
+
 ```cpp
 if (threadIdx.x < 16) {
-    path_A(); // First half of warp
+    path_A();   // lanes 0-15
 } else {
-    path_B(); // Second half of warp
+    path_B();   // lanes 16-31
 }
 ```
-The GPU **cannot** execute both branches simultaneously. The hardware handles this via the **Active Mask**:
-1. **Pass 1**: The warp scheduler sets active mask `0x0000FFFF`. Threads 0-15 execute `path_A()`. Threads 16-31 are hardware-masked (clock cycles wasted).
-2. **Pass 2**: The warp scheduler sets active mask `0xFFFF0000`. Threads 16-31 execute `path_B()`. Threads 0-15 are masked.
-3. **Execution Time**: The total time is $T_{\text{path\_A}} + T_{\text{path\_B}}$. Throughput is halved!
 
-> **Architectural Invariant**: Avoid branch divergence within the same warp. If branching is required, organize work so that entire warps (multiples of 32 threads) evaluate the branch identically.
+The warp cannot run both paths at once. The hardware runs path A with lanes 16-31 masked, then path B with lanes 0-15 masked. Total time is `T(A) + T(B)` and half the lanes are idle in each pass.
+
+Rules of thumb:
+
+- Divergence is only a problem **within a warp**. If whole warps take the same branch (`if (blockIdx.x == 0)`, or a condition that is uniform across each group of 32 threads), there is no penalty.
+- Short, cheap divergent branches are fine; the compiler often turns them into predicated instructions.
+- If you must branch on data, try to **sort or bucket the work** so that neighbouring threads follow the same path.
+
+## 3. Hiding latency: occupancy and Little's Law
+
+A CPU hides memory latency with big caches, branch prediction and out-of-order execution. A GPU hides it by **switching between warps for free**: while warp 0 waits ~500 cycles for HBM, the scheduler issues instructions from warps 1, 2, 3... There is no context-switch cost because every resident warp already owns its registers.
+
+**Little's Law** gives the amount of work you must keep in flight:
+
+`concurrency = throughput x latency`
+
+Example. To keep a 2 TB/s memory system busy when each request takes about 500 ns:
+
+`2e12 B/s x 500e-9 s = 1,000,000 B` (about 1 MB in flight across the whole GPU).
+
+Divided over 108 SMs that is roughly 9 KB per SM, which is several hundred independent 32-byte sectors outstanding per SM at any moment. You get there with **many resident warps** (high occupancy) or with **each thread issuing several independent loads** (instruction-level parallelism, e.g. `float4` loads).
+
+**Occupancy** = resident warps / maximum warps per SM. It is limited by three budgets: registers per thread, shared memory per block, and threads per block. High occupancy helps hide latency, but it is not a goal in itself: a kernel with plenty of independent loads per thread can reach peak bandwidth at 25-50% occupancy.
+
+## 4. The roofline model
+
+For a kernel that performs `F` floating-point operations and moves `B` bytes to and from HBM, its **arithmetic intensity** is `I = F / B` (FLOP per byte). The attainable performance is:
+
+`P = min(P_peak, I x BW_peak)`
+
+The **ridge point** `I_ridge = P_peak / BW_peak` separates the two regimes. Below it the kernel is **memory-bound** (faster ALUs do nothing); above it the kernel is **compute-bound**.
+
+| Device and datatype | Peak compute | HBM bandwidth | Ridge point |
+|---|---|---|---|
+| A100, FP32 (non-tensor) | 19.5 TFLOP/s | ~2.0 TB/s | ~10 FLOP/B |
+| A100, FP16 Tensor Core (dense) | 312 TFLOP/s | ~2.0 TB/s | ~156 FLOP/B |
+| H100 SXM, FP16 Tensor Core (dense) | ~990 TFLOP/s | ~3.35 TB/s | ~295 FLOP/B |
+
+### Worked example: two kernels, two answers
+
+**Vector add** `c[i] = a[i] + b[i]` in FP32: 1 FLOP per element, 12 bytes moved (read 8, write 4). `I = 1/12 = 0.083 FLOP/B`. At 2 TB/s the bound is `0.083 x 2e12 = 167 GFLOP/s`, under 1% of the 19.5 TFLOP/s peak. It is hopelessly memory-bound; the only optimisation that matters is moving fewer bytes or fusing it with a neighbour.
+
+**Square matrix multiply** `N x N` in FP16: `F = 2N^3`, minimum traffic `B = 3 x N^2 x 2` bytes, so `I = N/3`. For `N = 4096`, `I ~ 1,365 FLOP/B`, far above the ridge point: compute-bound, so Tensor Cores are what matter.
+
+This is why Transformers behave the way they do: large GEMMs (prefill, training) are compute-bound; elementwise ops, normalisation, softmax and decode-time attention are memory-bound. Fusion (Module 07) and FlashAttention (Module 08) exist to move kernels to the right of the ridge point by cutting HBM traffic.
+
+## Common pitfalls
+
+1. **Optimising the wrong bound.** Rewriting arithmetic in a memory-bound kernel changes nothing. Compute `I` first.
+2. **Confusing peak with achievable.** Real kernels reach perhaps 60-90% of peak bandwidth; Tensor Core peaks assume ideal tile shapes and data layouts.
+3. **Assuming divergence is always costly.** It is costly only when lanes in a *warp* diverge on expensive paths.
+4. **Chasing 100% occupancy.** Past the point where latency is hidden, more occupancy often forces register spilling and gets slower.
+5. **Counting "CUDA cores" across generations.** The FP32 lane counts changed (A100 64/SM, H100 128/SM); compare TFLOP/s, not core counts.
+
+## How this connects
+
+- **Next:** Module 02 turns this hierarchy into code: grids, blocks, threads and how indices map to warps.
+- **Module 03** is about the cost of the HBM and shared-memory levels (coalescing, bank conflicts).
+- **Module 05 and 08** are direct applications of the roofline: tiling raises `I` for GEMM; FlashAttention raises `I` for attention.
+- **Course 09 (inference)** uses the same reasoning to explain why decoding is memory-bound.
+
+## Go further
+
+- roadmap.sh: *Inference Engineering* roadmap nodes **GPU architecture**, **compute**, **memory**, **roofline model**, **arithmetic intensity**, **opsbyte ratio**.
+- NVIDIA Hopper architecture in depth (developer.nvidia.com blog) and the CUDA C++ Programming Guide chapter "Programming Model".
+- Williams, Waterman, Patterson, *Roofline: an insightful visual performance model* (CACM 2009).
 
 ---
 
-## 3. Latency Hiding & Little's Law for GPUs
-
-CPUs hide memory latency using massive hardware caches (L1/L2/L3) and branch prediction.
-GPUs hide memory latency through **Hardware Multithreading & High Occupancy**.
-
-When Warp 0 issues a global memory read (stalling for ~500 cycles), the Warp Scheduler performs a **zero-cycle context switch** to Warp 1, Warp 2, etc.
-By the time the scheduler cycles through all active warps, Warp 0's data has arrived.
-
-### Little's Law
-$$\text{Concurrency (Active Threads)} = \text{Throughput} \times \text{Latency}$$
-
-To saturate a memory bus of $2{,}000 \text{ GB/s}$ with an average latency of $500 \text{ ns}$:
-$$\text{Required In-Flight Bytes} = 2{,}000 \times 10^9 \text{ B/s} \times 500 \times 10^{-9} \text{ s} = 1{,}000{,}000 \text{ Bytes (1 MB)}$$
-Each thread must have independent memory requests in flight, requiring hundreds of active warps across the SMs.
-
----
-
-## 4. The Roofline Model: Arithmetic Intensity
-
-Every kernel's attainable performance $P$ (TFLOPs/s) is bounded by:
-$$P = \min\left(P_{\text{peak}},\; I \times B_{\text{peak}}\right)$$
-
-Where:
-- $P_{\text{peak}}$: Theoretical peak compute of the hardware (TFLOPs/s).
-- $B_{\text{peak}}$: Peak memory bandwidth (GB/s).
-- $I$: **Arithmetic Intensity** in FLOPs per Byte:
-  $$I = \frac{\text{Total Operations (FLOPs)}}{\text{Total Global Memory Loaded & Stored (Bytes)}}$$
-
-### The Ridge Point ($I_{\text{ridge}}$)
-$$I_{\text{ridge}} = \frac{P_{\text{peak}}}{B_{\text{peak}}}$$
-
-- **On NVIDIA A100 (FP32)**:
-  $$I_{\text{ridge}} = \frac{19{,}500 \text{ GFLOPs/s}}{2{,}000 \text{ GB/s}} = 9.75 \text{ FLOPs/Byte}$$
-- **On NVIDIA A100 (Tensor Core FP16)**:
-  $$I_{\text{ridge}} = \frac{312{,}000 \text{ GFLOPs/s}}{2{,}000 \text{ GB/s}} = 156 \text{ FLOPs/Byte}$$
-
-If your kernel has $I < I_{\text{ridge}}$, it is **Memory-Bound**. Optimizing ALUs or using Tensor Cores will yield **0% speedup**. You must reduce memory traffic using SRAM tiling or kernel fusion!
-
----
-
-## 5. Module Study Progression
+## Module Study Progression
 1. **Beginner Playground**: Read [00_FOUNDATIONS_PLAYGROUND.md](00_FOUNDATIONS_PLAYGROUND.md) for intuitive analogies.
 2. **Architecture Theory**: Study this [01_README.md](01_README.md).
 3. **Hands-on Project**: Follow [02_PROJECT_GUIDE.md](02_PROJECT_GUIDE.md).
