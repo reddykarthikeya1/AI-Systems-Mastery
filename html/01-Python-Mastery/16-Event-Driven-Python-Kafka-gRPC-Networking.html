@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>16: Event-Driven Kafka & gRPC | PBC 2026 Master Preparation Guide</title>
+  <style>
+    pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*!
+  Theme: GitHub Dark
+  Description: Dark theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: #ff7b72
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: #d2a8ff
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: #79c0ff
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: #a5d6ff
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: #ffa657
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: #8b949e
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: #7ee787
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: #c9d1d9
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: #1f6feb;
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: #f2cc60
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: #c9d1d9;
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: #c9d1d9;
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: #aff5b4;
+  background-color: #033a16
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: #ffdcd7;
+  background-color: #67060c
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+    
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-surface: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-light: #e0f2fe;
+  --code-bg: #0d1117;
+  --sidebar-width: 310px;
+  --toc-width: 250px;
+  --header-height: 64px;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-surface: #172033;
+  --border-color: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --accent-light: rgba(56, 189, 248, 0.12);
+  --code-bg: #090d16;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.top-nav {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #0284c7, #6366f1);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-input-wrap {
+  position: relative;
+}
+
+.search-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.45rem 1rem 0.45rem 2.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  width: 240px;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  width: 320px;
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.btn-icon {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-pdf {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-pdf:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  scrollbar-width: thin;
+}
+
+.track-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.track-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  line-height: 1.35;
+}
+
+.nav-link:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+}
+
+.content-container {
+  max-width: 1060px;
+  width: 100%;
+  padding: 2.5rem 2.5rem;
+}
+
+/* Right TOC */
+.toc-sidebar {
+  width: var(--toc-width);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  border-left: 1px solid var(--border-color);
+  font-size: 0.825rem;
+  scrollbar-width: thin;
+}
+
+.toc-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-size: 0.725rem;
+  margin-bottom: 0.75rem;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toc-item.level-3 {
+  padding-left: 0.85rem;
+}
+
+.toc-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+  display: block;
+}
+
+.toc-link:hover {
+  color: var(--accent);
+}
+
+/* Markdown Content Typography */
+.markdown-body h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.25;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.4rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body li {
+  margin-bottom: 0.4rem;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.markdown-body th, .markdown-body td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-body tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2.5rem 0;
+}
+
+.header-anchor {
+  margin-right: 0.4rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+h2:hover .header-anchor, h3:hover .header-anchor {
+  opacity: 1;
+}
+
+/* Callouts */
+.callout {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+}
+
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.callout-body p {
+  margin-bottom: 0;
+}
+
+.callout-note { background: rgba(2, 132, 199, 0.08); border-color: #0284c7; color: var(--text-primary); }
+.callout-note .callout-title { color: #0284c7; }
+
+.callout-tip { background: rgba(16, 185, 129, 0.08); border-color: #10b981; color: var(--text-primary); }
+.callout-tip .callout-title { color: #10b981; }
+
+.callout-important { background: rgba(99, 102, 241, 0.08); border-color: #6366f1; color: var(--text-primary); }
+.callout-important .callout-title { color: #6366f1; }
+
+.callout-warning { background: rgba(245, 158, 11, 0.08); border-color: #f59e0b; color: var(--text-primary); }
+.callout-warning .callout-title { color: #f59e0b; }
+
+.callout-caution { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; color: var(--text-primary); }
+.callout-caution .callout-title { color: #ef4444; }
+
+/* Code Blocks */
+.code-block-wrapper {
+  background: var(--code-bg);
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.4rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-lang {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: monospace;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.copy-btn.copied {
+  color: #10b981;
+}
+
+.markdown-body pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+:not(pre) > code {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+/* Images & Lightbox */
+.img-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  cursor: zoom-in;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.markdown-body img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--accent);
+}
+
+.img-expand-btn {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.img-container:hover .img-expand-btn {
+  opacity: 1;
+}
+
+.img-expand-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Mermaid Diagrams Container & Controls */
+.mermaid-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.diagram-toolbar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.diagram-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.diagram-btn:hover {
+  background: var(--border-color);
+  color: var(--accent);
+}
+
+.diagram-btn-expand {
+  border-left: 1px solid var(--border-color);
+  padding-left: 0.5rem;
+  margin-left: 0.2rem;
+  color: var(--accent);
+}
+
+.diagram-zoom-level {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.mermaid-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 2.2rem 0.5rem 0.5rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+.mermaid {
+  display: inline-block;
+  min-width: fit-content;
+  text-align: center;
+  transform-origin: top center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mermaid svg {
+  max-width: none !important;
+  height: auto !important;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Fullscreen High-Resolution Modal */
+.pv-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.pv-modal.open {
+  display: flex !important;
+}
+
+.pv-modal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  width: 95vw;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+}
+
+.pv-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.pv-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.pv-modal-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pv-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.pv-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pv-zoom-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-width: 44px;
+  text-align: center;
+  user-select: none;
+}
+
+.pv-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  margin-left: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.pv-close-btn:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.pv-modal-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-surface);
+  cursor: grab;
+}
+
+.pv-modal-viewport:active {
+  cursor: grabbing;
+}
+
+.pv-modal-content {
+  transform-origin: center center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.pv-modal-content svg {
+  max-width: none !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Prev / Next Pagination */
+.page-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.nav-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.nav-card.next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.nav-direction {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.nav-page-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+/* Reading Progress Bar */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0284c7, #6366f1);
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .toc-sidebar { display: none; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .search-input { width: 140px; }
+  .search-input:focus { width: 180px; }
+}
+
+/* Progress Tracker & Mark as Read */
+.progress-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.progress-mini-bar {
+  width: 50px;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: #10b981;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.btn-mark-read {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-mark-read:hover {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.btn-mark-read.is-read {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.bottom-completion-wrap {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+}
+
+.btn-mark-read-large {
+  padding: 0.65rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+.sidebar-check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  font-size: 9px;
+  color: transparent;
+  flex-shrink: 0;
+  margin-left: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link.is-read .sidebar-check-icon {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-label-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script src="../assets/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Initialize Mermaid FIRST on untouched raw diagram blocks
+      if (window.mermaid) {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'neutral',
+          securityLevel: 'loose',
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          flowchart: {
+            curve: 'basis',
+            useMaxWidth: false,
+            htmlLabels: true
+          },
+          sequence: {
+            useMaxWidth: false,
+            showSequenceNumbers: true,
+            actorMargin: 50,
+            boxMargin: 10,
+            boxTextMargin: 5,
+            noteMargin: 10,
+            messageMargin: 35
+          },
+          er: { useMaxWidth: false },
+          class: { useMaxWidth: false },
+          state: { useMaxWidth: false }
+        });
+      }
+
+      // 2. Render KaTeX ONLY on article prose, strictly excluding .mermaid and code blocks
+      function initKatex() {
+        if (typeof renderMathInElement === 'function') {
+          const target = document.querySelector('.article-content') || document.querySelector('.markdown-body');
+          if (target) {
+            renderMathInElement(target, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+              ],
+              ignoredClasses: ['mermaid', 'code-block-wrapper', 'hljs', 'katex-ignore', 'mermaid-viewport'],
+              ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'svg'],
+              throwOnError: false
+            });
+          }
+        } else {
+          setTimeout(initKatex, 100);
+        }
+      }
+      initKatex();
+    });
+  </script>
+</head>
+<body>
+  <div id="progress-bar" class="reading-progress"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <a href="../index.html" class="brand">
+      <span class="brand-badge">PBC 2026</span>
+      <span>Master Preparation Guide</span>
+    </a>
+    <div class="header-controls">
+      <div class="progress-stat-badge" title="Master Curriculum Progress">
+        <span id="header-progress-text">0/88 (0%)</span>
+        <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
+      </div>
+      <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+        <span>Mark as Read</span>
+      </button>
+      <div class="search-input-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
+      </div>
+      <a href="../../pdfs/01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Open PDF</span>
+      </a>
+      <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="track-group">
+      <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html"><span class="nav-label-text">07: Type System & Typing</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">08: Core Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">09: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">10: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">11: Debugging & Memory Leaks Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">12: Legacy Code Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">13: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">14: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">15: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link active" data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-link " data-rel="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html"><span class="nav-label-text">17: Async Mocking & ASGI Internals</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 5: DSA Interview Playbook</div><a href="../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a></div>
+    </aside>
+
+    <!-- Main Content Reader -->
+    <main class="main-wrapper">
+      <div class="content-container">
+        <article class="markdown-body">
+          <h1 id="chapter-16-event-driven-python-apache-kafka-grpc-networking-internals"><a href="#chapter-16-event-driven-python-apache-kafka-grpc-networking-internals" class="header-anchor">#</a>Chapter 16: Event-Driven Python, Apache Kafka, gRPC, & Networking Internals</h1><blockquote>
+<p><strong>Beyond REST and HTTP/1.1</strong>
+In high-scale distributed architectures and agentic AI platforms, simple JSON-over-HTTP/1.1 REST endpoints are often too slow, un-typed, and inefficient. Inter-service microservice communication demands ultra-fast, binary-serialized <strong>gRPC over HTTP/2</strong>, non-blocking <strong>low-level OS sockets</strong>, and decoupled, event-driven streaming with <strong>Apache Kafka</strong>.</p>
+<p>This chapter covers low-level network I/O, Protocol Buffers wire mechanics, production gRPC services with streaming, and enterprise Apache Kafka pipelines in Python.</p>
+</blockquote>
+<hr>
+<h2 id="1-network-sockets-non-blocking-i-o-selectors-epoll"><a href="#1-network-sockets-non-blocking-i-o-selectors-epoll" class="header-anchor">#</a>1. Network Sockets & Non-Blocking I/O (`selectors` & `epoll`)</h2><p>Every web framework (<code>FastAPI</code>, <code>Uvicorn</code>, <code>Node.js</code>, <code>Go net/http</code>) is fundamentally an abstraction over the operating system&#39;s <strong>BSD Socket API</strong> and <strong>I/O Multiplexing</strong>.</p>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    subgraph Kernel_Space ["Linux Kernel Space"]
+        epoll["epoll Event Table (O(1) Kernel Queue)"]
+        NIC["Network Interface Card (Packets Arrive)"]
+        NIC --&gt; epoll
+    end
+
+    subgraph User_Space ["Python Process (asyncio / selectors)"]
+        Loop["Event Loop (selectors.DefaultSelector)"]
+        Registered["Registered Socket Descriptors (FD 4, FD 5, FD 6)"]
+        
+        Registered -. "epoll_ctl(EPOLLIN)" .-&gt; epoll
+        Loop -- "epoll_wait() (Zero CPU until packets arrive)" --&gt; epoll
+        epoll -- "Returns ONLY active ready sockets" --&gt; Loop
+        Loop --&gt; Handler["Execute Python Coroutine / Callback"]
+    end
+</div>
+      </div>
+    </div><h3 id="the-non-blocking-event-loop-from-scratch"><a href="#the-non-blocking-event-loop-from-scratch" class="header-anchor">#</a>The Non-Blocking Event Loop from Scratch</h3><p>Here is how Python&#39;s <code>asyncio</code> works under the hood using <code>selectors.DefaultSelector</code> (which automatically selects <code>epoll</code> on Linux, <code>kqueue</code> on macOS, and <code>select</code> on Windows):</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># raw_event_loop.py</span>
+<span class="hljs-keyword">import</span> socket
+<span class="hljs-keyword">import</span> selectors
+
+<span class="hljs-comment"># Automatically binds to epoll on Linux, kqueue on macOS</span>
+selector = selectors.DefaultSelector()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">accept_connection</span>(<span class="hljs-params">server_sock: socket.socket</span>):
+    client_sock, client_addr = server_sock.accept()
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[TCP] New incoming connection from <span class="hljs-subst">{client_addr}</span>&quot;</span>)
+    client_sock.setblocking(<span class="hljs-literal">False</span>) <span class="hljs-comment"># Non-blocking socket!</span>
+    
+    <span class="hljs-comment"># Register client socket for READ events</span>
+    selector.register(client_sock, selectors.EVENT_READ, read_client_data)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">read_client_data</span>(<span class="hljs-params">client_sock: socket.socket</span>):
+    data = client_sock.recv(<span class="hljs-number">4096</span>)
+    <span class="hljs-keyword">if</span> data:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[RECV <span class="hljs-subst">{client_sock.getpeername()}</span>] <span class="hljs-subst">{data.decode().strip()}</span>&quot;</span>)
+        <span class="hljs-comment"># Echo data back</span>
+        client_sock.sendall(<span class="hljs-string">b&quot;HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello Socket!&quot;</span>)
+    <span class="hljs-comment"># Close connection</span>
+    selector.unregister(client_sock)
+    client_sock.close()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_low_level_server</span>(<span class="hljs-params">port: <span class="hljs-built_in">int</span> = <span class="hljs-number">9000</span></span>):
+    server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="hljs-number">1</span>)
+    server_sock.bind((<span class="hljs-string">&quot;0.0.0.0&quot;</span>, port))
+    server_sock.listen(<span class="hljs-number">128</span>)
+    server_sock.setblocking(<span class="hljs-literal">False</span>)
+
+    selector.register(server_sock, selectors.EVENT_READ, accept_connection)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;High-concurrency non-blocking socket server listening on port <span class="hljs-subst">{port}</span>...&quot;</span>)
+
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-comment"># Blocks in kernel space with 0% CPU until socket events occur!</span>
+        events = selector.select(timeout=<span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">for</span> key, mask <span class="hljs-keyword">in</span> events:
+            callback = key.data
+            sock = key.fileobj
+            callback(sock)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    run_low_level_server()</code></pre>
+  </div><hr>
+<h2 id="2-high-performance-rpc-with-grpc-and-protocol-buffers"><a href="#2-high-performance-rpc-with-grpc-and-protocol-buffers" class="header-anchor">#</a>2. High-Performance RPC with gRPC and Protocol Buffers</h2><p>REST over HTTP/1.1 transfers human-readable JSON strings. For high-throughput services, JSON is catastrophic:</p>
+<ol>
+<li><strong>Inefficient Wire Size:</strong> Field names (<code>&quot;transaction_id&quot;</code>, <code>&quot;timestamp&quot;</code>) are repeated in every single packet.</li>
+<li><strong>Serialization Overhead:</strong> CPU spends huge cycles parsing strings into floats and numbers.</li>
+<li><strong>HTTP/1.1 Head-of-Line Blocking:</strong> A single slow HTTP request blocks the TCP connection.</li>
+</ol>
+<h3 id="the-grpc-http-2-advantage"><a href="#the-grpc-http-2-advantage" class="header-anchor">#</a>The gRPC & HTTP/2 Advantage</h3><ul>
+<li><strong>Protocol Buffers:</strong> Data is serialized into compact, strongly-typed binary wire formats using <strong>Varints</strong> and <strong>Field Tags</strong> (saving up to 80% bandwidth).</li>
+<li><strong>HTTP/2 Multiplexing:</strong> Multiple bidirectional RPC calls share a <strong>single persistent TCP connection</strong> without blocking each other.</li>
+</ul>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant Client as Python gRPC Client
+    participant HTTP2 as Single Multiplexed TCP Connection
+    participant Server as Python gRPC Server
+
+    Client-&gt;&gt;HTTP2: Stream 1 (Header Frame: /OrderService/CreateOrder)
+    Client-&gt;&gt;HTTP2: Stream 3 (Data Frame: Heartbeat)
+    Client-&gt;&gt;HTTP2: Stream 1 (Binary Protobuf Data: 24 bytes)
+    HTTP2-&gt;&gt;Server: De-multiplexes frames concurrently
+    Server--&gt;&gt;HTTP2: Stream 1 (Return Binary Receipt: 16 bytes)
+    Server--&gt;&gt;HTTP2: Stream 3 (Return Ack)
+</div>
+      </div>
+    </div><h3 id="1-the-protocol-buffer-contract-order-service-proto"><a href="#1-the-protocol-buffer-contract-order-service-proto" class="header-anchor">#</a>1. The Protocol Buffer Contract (`order_service.proto`)</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">protobuf</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-protobuf">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;
+
+<span class="hljs-keyword">package</span> enterprise.order;
+
+<span class="hljs-keyword">message </span><span class="hljs-title class_">OrderItem</span> {
+  <span class="hljs-type">string</span> sku = <span class="hljs-number">1</span>;
+  <span class="hljs-type">double</span> price = <span class="hljs-number">2</span>;
+  <span class="hljs-type">int32</span> quantity = <span class="hljs-number">3</span>;
+}
+
+<span class="hljs-keyword">message </span><span class="hljs-title class_">OrderRequest</span> {
+  <span class="hljs-type">string</span> user_id = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">repeated</span> OrderItem items = <span class="hljs-number">2</span>;
+  <span class="hljs-type">int64</span> timestamp_epoch_ms = <span class="hljs-number">3</span>;
+}
+
+<span class="hljs-keyword">message </span><span class="hljs-title class_">OrderResponse</span> {
+  <span class="hljs-type">string</span> order_id = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">enum </span><span class="hljs-title class_">Status</span> {
+    PENDING = <span class="hljs-number">0</span>;
+    SUCCESS = <span class="hljs-number">1</span>;
+    FAILED = <span class="hljs-number">2</span>;
+  }
+  Status status = <span class="hljs-number">2</span>;
+  <span class="hljs-type">double</span> total_amount = <span class="hljs-number">3</span>;
+}
+
+<span class="hljs-keyword">service </span><span class="hljs-title class_">OrderService</span> {
+  <span class="hljs-comment">// Unary RPC</span>
+  <span class="hljs-function"><span class="hljs-keyword">rpc</span> CreateOrder (OrderRequest) <span class="hljs-keyword">returns</span> (OrderResponse)</span>;
+  
+  <span class="hljs-comment">// Server-Streaming RPC (Live Order Tracking Telemetry)</span>
+  <span class="hljs-function"><span class="hljs-keyword">rpc</span> TrackOrderStream (OrderResponse) <span class="hljs-keyword">returns</span> (stream OrderStatusUpdate)</span>;
+}
+
+<span class="hljs-keyword">message </span><span class="hljs-title class_">OrderStatusUpdate</span> {
+  <span class="hljs-type">string</span> order_id = <span class="hljs-number">1</span>;
+  <span class="hljs-type">string</span> step = <span class="hljs-number">2</span>;
+  <span class="hljs-type">int64</span> updated_at = <span class="hljs-number">3</span>;
+}</code></pre>
+  </div><h3 id="2-high-throughput-python-grpc-server-implementation"><a href="#2-high-throughput-python-grpc-server-implementation" class="header-anchor">#</a>2. High-Throughput Python gRPC Server Implementation</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># grpc_server.py</span>
+<span class="hljs-keyword">import</span> grpc
+<span class="hljs-keyword">from</span> concurrent <span class="hljs-keyword">import</span> futures
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> structlog
+
+<span class="hljs-comment"># Generated protobuf classes:</span>
+<span class="hljs-comment"># python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. order_service.proto</span>
+<span class="hljs-keyword">import</span> order_service_pb2 <span class="hljs-keyword">as</span> pb2
+<span class="hljs-keyword">import</span> order_service_pb2_grpc <span class="hljs-keyword">as</span> pb2_grpc
+
+logger = structlog.get_logger()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderServiceImpl</span>(pb2_grpc.OrderServiceServicer):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">CreateOrder</span>(<span class="hljs-params">self, request: pb2.OrderRequest, context: grpc.ServicerContext</span>) -&gt; pb2.OrderResponse:
+        logger.info(<span class="hljs-string">&quot;grpc_order_received&quot;</span>, user_id=request.user_id, item_count=<span class="hljs-built_in">len</span>(request.items))
+        
+        <span class="hljs-comment"># Metadata / Auth check from headers</span>
+        metadata = <span class="hljs-built_in">dict</span>(context.invocation_metadata())
+        auth_token = metadata.get(<span class="hljs-string">&quot;authorization&quot;</span>)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> auth_token:
+            context.abort(grpc.StatusCode.UNAUTHENTICATED, <span class="hljs-string">&quot;Missing bearer authentication token&quot;</span>)
+
+        <span class="hljs-comment"># Fast business logic calculation</span>
+        total = <span class="hljs-built_in">sum</span>(item.price * item.quantity <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> request.items)
+        order_id = <span class="hljs-string">f&quot;ord_<span class="hljs-subst">{<span class="hljs-built_in">int</span>(time.time() * <span class="hljs-number">1000</span>)}</span>&quot;</span>
+
+        <span class="hljs-keyword">return</span> pb2.OrderResponse(
+            order_id=order_id,
+            status=pb2.OrderResponse.Status.SUCCESS,
+            total_amount=total
+        )
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">TrackOrderStream</span>(<span class="hljs-params">self, request: pb2.OrderResponse, context: grpc.ServicerContext</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Server-side streaming RPC: push updates over open HTTP/2 stream.&quot;&quot;&quot;</span>
+        stages = [<span class="hljs-string">&quot;PAYMENT_VERIFIED&quot;</span>, <span class="hljs-string">&quot;INVENTORY_ALLOCATED&quot;</span>, <span class="hljs-string">&quot;DISPATCHED_TO_COURIER&quot;</span>, <span class="hljs-string">&quot;DELIVERED&quot;</span>]
+        <span class="hljs-keyword">for</span> stage <span class="hljs-keyword">in</span> stages:
+            time.sleep(<span class="hljs-number">1.0</span>) <span class="hljs-comment"># Simulate asynchronous background progress</span>
+            <span class="hljs-keyword">yield</span> pb2.OrderStatusUpdate(
+                order_id=request.order_id,
+                step=stage,
+                updated_at=<span class="hljs-built_in">int</span>(time.time())
+            )
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">serve</span>():
+    <span class="hljs-comment"># Thread pool for servicing concurrent gRPC calls</span>
+    server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=<span class="hljs-number">50</span>),
+        options=[
+            (<span class="hljs-string">&quot;grpc.max_send_message_length&quot;</span>, <span class="hljs-number">16</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>),
+            (<span class="hljs-string">&quot;grpc.max_receive_message_length&quot;</span>, <span class="hljs-number">16</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>),
+            (<span class="hljs-string">&quot;grpc.http2.min_ping_interval_without_data_ms&quot;</span>, <span class="hljs-number">5000</span>),
+        ]
+    )
+    pb2_grpc.add_OrderServiceServicer_to_server(OrderServiceImpl(), server)
+    server.add_insecure_port(<span class="hljs-string">&quot;[::]:50051&quot;</span>)
+    server.start()
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Production gRPC Server listening on port 50051...&quot;</span>)
+    server.wait_for_termination()
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    serve()</code></pre>
+  </div><hr>
+<h2 id="3-event-driven-python-with-apache-kafka"><a href="#3-event-driven-python-with-apache-kafka" class="header-anchor">#</a>3. Event-Driven Python with Apache Kafka</h2><h3 id="0-zero-prerequisite-foundations-why-do-we-need-kafka"><a href="#0-zero-prerequisite-foundations-why-do-we-need-kafka" class="header-anchor">#</a>0. Zero-Prerequisite Foundations: Why Do We Need Kafka?</h3><blockquote>
+<p><strong>The &quot;Airport Flight Status Board &amp; Endless Tape Recorder&quot; Metaphor</strong>
+Why did LinkedIn and the open-source community create Apache Kafka instead of using traditional queues or REST APIs?</p>
+<p>Imagine an order is placed on an e-commerce platform (<code>Order #992 Placed for $50</code>):</p>
+<ul>
+<li><p><strong>The Failure of Direct REST APIs:</strong>
+The Checkout server must synchronously call the Payment Service, then the Warehouse Service, then the Fraud Service, then the Email Service, then the Analytics Database. If the Warehouse server is rebooting, Checkout fails! If Fraud takes 3 seconds, the user&#39;s browser hangs.</p>
+</li>
+<li><p><strong>The Failure of Traditional Queues (RabbitMQ / Redis Lists):</strong>
+In a standard queue (like a line of people waiting for a bank teller), once a message is pulled, <strong>it is popped and deleted forever</strong>. Only one single worker gets to see it. How do all 5 departments get the event? You would have to duplicate the message into 5 separate queues!</p>
+</li>
+<li><p><strong>The Kafka Superpower (The Endless Tape Recorder):</strong>
+Kafka is not a destructive queue. Kafka is an <strong>immutable, append-only disk log</strong> (like an endless cassette tape recorder):</p>
+<ol>
+<li>The Checkout service writes an event to the end of the tape: <code>[Offset 42: Order #992 placed by User 10]</code>. It takes <strong>1 millisecond</strong>, and Checkout is done!</li>
+<li>The event <strong>stays on disk</strong> for 7 days (or years). It is never deleted when read!</li>
+<li><strong>Payment</strong> reads the tape at its own speed, keeping track of its own bookmark (<strong>Offset 42</strong>).</li>
+<li><strong>Warehouse</strong> reads the tape with its own bookmark.</li>
+<li><strong>Analytics</strong> can read the entire tape from the beginning of the month.</li>
+<li>If the <strong>Email Service</strong> crashes for 4 hours, it restarts, checks its bookmark, and resumes reading right where it left off with <strong>zero lost events</strong>!</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    Producer["Producer (Checkout Service)"] --&gt;|Appends event to end of log| Topic["Kafka Log Tape: Topic orders.v1&lt;br/&gt;Event 100 to Event 101 to Event 102 to Event 103"]
+    
+    Topic -.-&gt;|Bookmark: Offset 103| ConsumerA["Billing Service (Real-time)"]
+    Topic -.-&gt;|Bookmark: Offset 103| ConsumerB["Warehouse Dispatch (Real-time)"]
+    Topic -.-&gt;|Bookmark: Offset 95 - Catching up| ConsumerC["Email Service"]
+    Topic -.-&gt;|Bookmark: Offset 0 - Replaying history| ConsumerD["Analytics Machine Learning"]
+</div>
+      </div>
+    </div><h3 id="core-kafka-concepts-demystified"><a href="#core-kafka-concepts-demystified" class="header-anchor">#</a>Core Kafka Concepts Demystified:</h3><ul>
+<li><strong>Event (Record):</strong> A simple statement of historical fact with a timestamp, key, and value (e.g. <code>{&quot;order_id&quot;: 992, &quot;amount&quot;: 50}</code>).</li>
+<li><strong>Topic:</strong> A named category or feed of events (like a table in SQL or a channel in Slack, e.g. <code>orders.v1</code>).</li>
+<li><strong>Partition:</strong> To handle millions of events per second across multiple hard drives, Kafka slices a topic into parallel sub-logs called <strong>Partitions</strong> (e.g. Partition 0, 1, 2). Events with the same key (e.g. <code>user_id=42</code>) always route to the <strong>same partition</strong>, guaranteeing strict chronological order per user.</li>
+<li><strong>Offset:</strong> A monotonically increasing integer (0, 1, 2, 3...) assigned to each event in a partition. It is simply the line number in the notebook.</li>
+<li><strong>Consumer Group:</strong> A coordinated cluster of workers that divide partitions among themselves so a high-volume topic is consumed in parallel without duplicate processing.</li>
+</ul>
+<hr>
+<h3 id="the-architecture-of-a-partitioned-topic"><a href="#the-architecture-of-a-partitioned-topic" class="header-anchor">#</a>The Architecture of a Partitioned Topic</h3><p>Apache Kafka provides strict ordering guarantees per partition, horizontal scalability across clusters, and disk durability via sequential zero-copy disk I/O.</p>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+graph TD
+    subgraph Producers ["Python Producers (FastAPI Web Fleet)"]
+        P1["Producer Node 1"]
+        P2["Producer Node 2"]
+    end
+
+    subgraph Kafka_Topic ["Kafka Topic: 'orders.v1' (3 Partitions)"]
+        P_0["Partition 0 (Key: user_id % 3 == 0)"]
+        P_1["Partition 1 (Key: user_id % 3 == 1)"]
+        P_2["Partition 2 (Key: user_id % 3 == 2)"]
+    end
+
+    subgraph Consumer_Group ["Consumer Group: 'billing-workers'"]
+        C1["Consumer Worker A (Assigned P0 &amp; P1)"]
+        C2["Consumer Worker B (Assigned P2)"]
+    end
+
+    P1 -- "Produce with Murmur2 Key Hash" --&gt; P_0
+    P1 --&gt; P_1
+    P2 --&gt; P_2
+
+    P_0 --&gt; C1
+    P_1 --&gt; C1
+    P_2 --&gt; C2
+</div>
+      </div>
+    </div><h3 id="1-high-throughput-production-kafka-producer"><a href="#1-high-throughput-production-kafka-producer" class="header-anchor">#</a>1. High-Throughput Production Kafka Producer</h3><p>In Python, always use <code>confluent-kafka</code> (which wraps high-performance native C <code>librdkafka</code>), rather than pure-Python libraries:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># kafka_producer.py</span>
+<span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Producer
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> socket
+<span class="hljs-keyword">import</span> structlog
+
+logger = structlog.get_logger()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">delivery_report</span>(<span class="hljs-params">err, msg</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Callback invoked by librdkafka when message is acknowledged by cluster.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> err <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+        logger.error(<span class="hljs-string">&quot;kafka_message_delivery_failed&quot;</span>, error=<span class="hljs-built_in">str</span>(err))
+    <span class="hljs-keyword">else</span>:
+        logger.info(
+            <span class="hljs-string">&quot;kafka_message_delivered&quot;</span>,
+            topic=msg.topic(),
+            partition=msg.partition(),
+            offset=msg.offset()
+        )
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ProductionKafkaProducer</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, bootstrap_servers: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;localhost:9092&quot;</span></span>):
+        conf = {
+            <span class="hljs-string">&quot;bootstrap.servers&quot;</span>: bootstrap_servers,
+            <span class="hljs-string">&quot;client.id&quot;</span>: socket.gethostname(),
+            
+            <span class="hljs-comment"># CRITICAL RELIABILITY TUNING</span>
+            <span class="hljs-string">&quot;acks&quot;</span>: <span class="hljs-string">&quot;all&quot;</span>,                 <span class="hljs-comment"># Wait for full in-sync replica (ISR) quorum</span>
+            <span class="hljs-string">&quot;enable.idempotence&quot;</span>: <span class="hljs-literal">True</span>,    <span class="hljs-comment"># Prevents duplicate messages on network retries</span>
+            <span class="hljs-string">&quot;retries&quot;</span>: <span class="hljs-number">1000000</span>,
+            
+            <span class="hljs-comment"># HIGH THROUGHPUT BATCHING</span>
+            <span class="hljs-string">&quot;compression.type&quot;</span>: <span class="hljs-string">&quot;zstd&quot;</span>,    <span class="hljs-comment"># High compression ratio with low CPU cost</span>
+            <span class="hljs-string">&quot;batch.size&quot;</span>: <span class="hljs-number">65536</span>,           <span class="hljs-comment"># 64 KB batch buffer</span>
+            <span class="hljs-string">&quot;linger.ms&quot;</span>: <span class="hljs-number">20</span>,               <span class="hljs-comment"># Wait up to 20ms to aggregate batches</span>
+        }
+        <span class="hljs-variable language_">self</span>.producer = Producer(conf)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">publish_event</span>(<span class="hljs-params">self, topic: <span class="hljs-built_in">str</span>, partition_key: <span class="hljs-built_in">str</span>, payload: <span class="hljs-built_in">dict</span></span>):
+        value_bytes = json.dumps(payload).encode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+        key_bytes = partition_key.encode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+        
+        <span class="hljs-comment"># Partition key guarantees that all events for the SAME user arrive</span>
+        <span class="hljs-comment"># on the SAME partition in strict chronological order!</span>
+        <span class="hljs-variable language_">self</span>.producer.produce(
+            topic=topic,
+            key=key_bytes,
+            value=value_bytes,
+            on_delivery=delivery_report
+        )
+        <span class="hljs-comment"># Serve delivery callbacks from previous batches without blocking</span>
+        <span class="hljs-variable language_">self</span>.producer.poll(<span class="hljs-number">0</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">flush_and_close</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># Flush all internal buffers before process shutdown</span>
+        <span class="hljs-variable language_">self</span>.producer.flush(timeout=<span class="hljs-number">10</span>)</code></pre>
+  </div><h3 id="2-resilient-consumer-with-manual-offset-commit"><a href="#2-resilient-consumer-with-manual-offset-commit" class="header-anchor">#</a>2. Resilient Consumer with Manual Offset Commit</h3><p>Never use automatic offset commits (<code>enable.auto.commit = True</code>) for mission-critical events. If your consumer crashes while processing a message, automatic commits cause <strong>silent data loss</strong>!</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># kafka_consumer.py</span>
+<span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Consumer, KafkaError, KafkaException
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> sys
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_resilient_consumer</span>(<span class="hljs-params">topic: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;orders.v1&quot;</span></span>):
+    conf = {
+        <span class="hljs-string">&quot;bootstrap.servers&quot;</span>: <span class="hljs-string">&quot;localhost:9092&quot;</span>,
+        <span class="hljs-string">&quot;group.id&quot;</span>: <span class="hljs-string">&quot;order-processing-service-group&quot;</span>,
+        <span class="hljs-string">&quot;auto.offset.reset&quot;</span>: <span class="hljs-string">&quot;earliest&quot;</span>,
+        
+        <span class="hljs-comment"># CRITICAL RELIABILITY: Disable auto-commit!</span>
+        <span class="hljs-string">&quot;enable.auto.commit&quot;</span>: <span class="hljs-literal">False</span>,
+        <span class="hljs-string">&quot;max.poll.interval.ms&quot;</span>: <span class="hljs-number">300000</span>, <span class="hljs-comment"># 5 minutes before broker considers consumer dead</span>
+    }
+
+    consumer = Consumer(conf)
+    consumer.subscribe([topic])
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Subscribed to topic: <span class="hljs-subst">{topic}</span>. Listening for events...&quot;</span>)
+
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            msg = consumer.poll(timeout=<span class="hljs-number">1.0</span>)
+            <span class="hljs-keyword">if</span> msg <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> msg.error():
+                <span class="hljs-keyword">if</span> msg.error().code() == KafkaError._PARTITION_EOF:
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-keyword">raise</span> KafkaException(msg.error())
+
+            <span class="hljs-comment"># Decode payload</span>
+            event_data = json.loads(msg.value().decode(<span class="hljs-string">&quot;utf-8&quot;</span>))
+            key = msg.key().decode(<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">if</span> msg.key() <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+
+            <span class="hljs-keyword">try</span>:
+                <span class="hljs-comment"># Execute business logic (e.g. charge ledger)</span>
+                process_order_event(key, event_data)
+
+                <span class="hljs-comment"># COMMIT OFFSET ONLY AFTER SUCCESSFUL PROCESSING!</span>
+                <span class="hljs-comment"># Asynchronous commit prevents blocking the polling loop</span>
+                consumer.commit(message=msg, asynchronous=<span class="hljs-literal">False</span>)
+            <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[ERROR] Failed to process message at offset <span class="hljs-subst">{msg.offset()}</span>: <span class="hljs-subst">{e}</span>&quot;</span>)
+                <span class="hljs-comment"># Route to Dead Letter Queue (DLQ) topic or alert on-call</span>
+                route_to_dlq(msg)
+                consumer.commit(message=msg, asynchronous=<span class="hljs-literal">False</span>)
+
+    <span class="hljs-keyword">except</span> KeyboardInterrupt:
+        <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-comment"># Leave consumer group cleanly to trigger fast rebalance</span>
+        consumer.close()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">process_order_event</span>(<span class="hljs-params">key, data</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[CONSUMER SUCCESS] Processed event for key: <span class="hljs-subst">{key}</span>&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">route_to_dlq</span>(<span class="hljs-params">msg</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[DLQ] Routed poisoned message <span class="hljs-subst">{msg.offset()}</span> to DLQ topic&quot;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    run_resilient_consumer()</code></pre>
+  </div><hr>
+<h2 id="4-architecture-selection-guide-when-to-use-what"><a href="#4-architecture-selection-guide-when-to-use-what" class="header-anchor">#</a>4. Architecture Selection Guide: When to Use What</h2><table>
+<thead>
+<tr>
+<th align="left">Communication Layer</th>
+<th align="left">Protocol</th>
+<th align="left">Latency Profile</th>
+<th align="left">Best Use Case</th>
+<th align="left">Anti-Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>REST / JSON</strong></td>
+<td align="left">HTTP/1.1 or HTTP/2</td>
+<td align="left">15ms – 50ms</td>
+<td align="left">Public customer APIs, frontend web/mobile clients</td>
+<td align="left">High-volume internal microservice RPC</td>
+</tr>
+<tr>
+<td align="left"><strong>gRPC / Protobuf</strong></td>
+<td align="left">HTTP/2 Multiplexed</td>
+<td align="left">1ms – 5ms</td>
+<td align="left">Low-latency internal microservice communication, AI model serving</td>
+<td align="left">Direct browser clients without gRPC-Web proxy</td>
+</tr>
+<tr>
+<td align="left"><strong>Redis Tasks (Celery)</strong></td>
+<td align="left">Redis In-Memory</td>
+<td align="left">&lt; 5ms dispatch</td>
+<td align="left">Fast background task dispatch, delayed jobs, scheduled cron</td>
+<td align="left">Long-term event replay, multi-consumer broadcast</td>
+</tr>
+<tr>
+<td align="left"><strong>Apache Kafka</strong></td>
+<td align="left">TCP Commit Log</td>
+<td align="left">5ms – 20ms</td>
+<td align="left">Event-driven choreography, real-time analytics, event sourcing, multi-consumer data streaming</td>
+<td align="left">Synchronous request-response queries</td>
+</tr>
+</tbody></table>
+
+        </article>
+        <div class="bottom-completion-wrap">
+          <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+            <span>Mark as Read</span>
+          </button>
+        </div>
+        <div class="page-navigation">
+    <a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-card prev">
+      <span class="nav-direction">← Previous Chapter</span>
+      <span class="nav-page-title">15: High-Performance Computing (HPC)</span>
+    </a>
+    <a href="../01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-card next">
+      <span class="nav-direction">Next Chapter →</span>
+      <span class="nav-page-title">17: Async Mocking & ASGI Internals</span>
+    </a></div>
+      </div>
+    </main>
+
+    <!-- Right Table of Contents -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-network-sockets-non-blocking-i-o-selectors-epoll" class="toc-link">1. Network Sockets & Non-Blocking I/O (`selectors` & `epoll`)</a></li><li class="toc-item level-3"><a href="#the-non-blocking-event-loop-from-scratch" class="toc-link">The Non-Blocking Event Loop from Scratch</a></li><li class="toc-item level-2"><a href="#2-high-performance-rpc-with-grpc-and-protocol-buffers" class="toc-link">2. High-Performance RPC with gRPC and Protocol Buffers</a></li><li class="toc-item level-3"><a href="#the-grpc-http-2-advantage" class="toc-link">The gRPC & HTTP/2 Advantage</a></li><li class="toc-item level-3"><a href="#1-the-protocol-buffer-contract-order-service-proto" class="toc-link">1. The Protocol Buffer Contract (`order_service.proto`)</a></li><li class="toc-item level-3"><a href="#2-high-throughput-python-grpc-server-implementation" class="toc-link">2. High-Throughput Python gRPC Server Implementation</a></li><li class="toc-item level-2"><a href="#3-event-driven-python-with-apache-kafka" class="toc-link">3. Event-Driven Python with Apache Kafka</a></li><li class="toc-item level-3"><a href="#0-zero-prerequisite-foundations-why-do-we-need-kafka" class="toc-link">0. Zero-Prerequisite Foundations: Why Do We Need Kafka?</a></li><li class="toc-item level-3"><a href="#core-kafka-concepts-demystified" class="toc-link">Core Kafka Concepts Demystified:</a></li><li class="toc-item level-3"><a href="#the-architecture-of-a-partitioned-topic" class="toc-link">The Architecture of a Partitioned Topic</a></li><li class="toc-item level-3"><a href="#1-high-throughput-production-kafka-producer" class="toc-link">1. High-Throughput Production Kafka Producer</a></li><li class="toc-item level-3"><a href="#2-resilient-consumer-with-manual-offset-commit" class="toc-link">2. Resilient Consumer with Manual Offset Commit</a></li><li class="toc-item level-2"><a href="#4-architecture-selection-guide-when-to-use-what" class="toc-link">4. Architecture Selection Guide: When to Use What</a></li></ul>
+    </aside>
+  </div>
+
+  <!-- High-Resolution Fullscreen Diagram & Image Modal -->
+  <div id="pv-modal" class="pv-modal" onclick="closePvModal(event)">
+    <div class="pv-modal-card" onclick="event.stopPropagation()">
+      <div class="pv-modal-header">
+        <span class="pv-modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span id="pv-modal-title-text">High-Resolution Architecture Viewer</span>
+        </span>
+        <div class="pv-modal-tools">
+          <button class="pv-btn" onclick="modalZoomStep(-0.25)" title="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <span id="pv-zoom-val" class="pv-zoom-val">100%</span>
+          <button class="pv-btn" onclick="modalZoomStep(0.25)" title="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <button class="pv-btn" onclick="modalReset()" title="Reset to Fit (100%)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+          </button>
+          <button class="pv-close-btn" onclick="closePvModal()" title="Close Viewer (Esc)">&times;</button>
+        </div>
+      </div>
+      <div class="pv-modal-viewport" id="pv-modal-viewport">
+        <div id="pv-modal-content" class="pv-modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>window.CURRENT_PAGE = "01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html";</script>
+  <script>
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+// Init theme
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// Reading Progress Bar at page top
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  const el = document.getElementById('progress-bar');
+  if (el) el.style.width = scrolled + '%';
+});
+
+// Copy Code
+function copyCode(btn) {
+  const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.classList.add('copied');
+    btn.querySelector('span').innerText = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('span').innerText = 'Copy';
+    }, 2000);
+  });
+}
+
+// Client search filter in sidebar
+function filterNav(query) {
+  const q = query.toLowerCase().trim();
+  const links = document.querySelectorAll('.sidebar .nav-link');
+  links.forEach(link => {
+    const text = link.innerText.toLowerCase();
+    if (!q || text.includes(q)) {
+      link.style.display = 'flex';
+    } else {
+      link.style.display = 'none';
+    }
+  });
+}
+
+// Master Course Completion Progress Tracker
+const TOTAL_CHAPTERS = 88;
+
+function getCompletedList() {
+  try {
+    return JSON.parse(localStorage.getItem('pbc_read_chapters') || '[]');
+  } catch(e) {
+    return [];
+  }
+}
+
+function toggleCurrentChapterRead() {
+  if (!window.CURRENT_PAGE) return;
+  let list = getCompletedList();
+  const idx = list.indexOf(window.CURRENT_PAGE);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push(window.CURRENT_PAGE);
+  }
+  localStorage.setItem('pbc_read_chapters', JSON.stringify(list));
+  refreshProgressUI();
+}
+
+function refreshProgressUI() {
+  const list = getCompletedList();
+  const count = list.length;
+  const pct = Math.round((count / TOTAL_CHAPTERS) * 100);
+
+  // Update header text and mini bar
+  const textEl = document.getElementById('header-progress-text');
+  const barEl = document.getElementById('header-progress-bar');
+  if (textEl) textEl.innerText = `${count}/${TOTAL_CHAPTERS} (${pct}%)`;
+  if (barEl) barEl.style.width = pct + '%';
+
+  // Update Mark as Read buttons on this page
+  const isRead = window.CURRENT_PAGE && list.includes(window.CURRENT_PAGE);
+  const btns = [document.getElementById('header-mark-read-btn'), document.getElementById('bottom-mark-read-btn')];
+  btns.forEach(btn => {
+    if (!btn) return;
+    if (isRead) {
+      btn.classList.add('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Completed ✓</span>`;
+    } else {
+      btn.classList.remove('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg><span>Mark as Read</span>`;
+    }
+  });
+
+  // Update sidebar checkmarks
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const rel = link.getAttribute('data-rel');
+    if (rel && list.includes(rel)) {
+      link.classList.add('is-read');
+    } else {
+      link.classList.remove('is-read');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', refreshProgressUI);
+
+// Diagram Zoom & Pan Controller
+function zoomDiagram(btn, delta) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  let currentZoom = parseFloat(target.getAttribute('data-zoom') || '1');
+  currentZoom = Math.max(0.4, Math.min(3.0, currentZoom + delta));
+  target.setAttribute('data-zoom', currentZoom);
+  target.style.transform = 'scale(' + currentZoom + ')';
+  if (label) label.innerText = Math.round(currentZoom * 100) + '%';
+}
+
+function resetDiagramZoom(btn) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  target.setAttribute('data-zoom', '1');
+  target.style.transform = 'scale(1)';
+  if (label) label.innerText = '100%';
+}
+
+// Fullscreen Modal for Diagrams and Images
+let modalScale = 1;
+
+function openDiagramFullscreen(btn) {
+  const container = btn.closest('.mermaid-container');
+  if (!container) return;
+  const svg = container.querySelector('.mermaid svg') || container.querySelector('.mermaid-viewport svg');
+  if (!svg) {
+    console.warn('No diagram SVG found in container');
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = 'High-Resolution Architecture Viewer';
+
+  const clonedSvg = svg.cloneNode(true);
+  clonedSvg.style.maxWidth = '90vw';
+  clonedSvg.style.maxHeight = '75vh';
+  clonedSvg.style.width = 'auto';
+  clonedSvg.style.height = 'auto';
+
+  if (content) {
+    content.innerHTML = '';
+    content.appendChild(clonedSvg);
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openImageModal(target) {
+  let img = target;
+  if (target && target.tagName !== 'IMG') {
+    img = target.closest('.img-container')?.querySelector('img') || target.closest('.img-wrapper')?.querySelector('img');
+  }
+  if (!img) return;
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = img.getAttribute('title') || img.getAttribute('alt') || 'High-Resolution Image Viewer';
+  if (content) {
+    content.innerHTML = '<img src="' + img.src + '" style="max-height: 75vh; max-width: 90vw; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" />';
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePvModal(e) {
+  if (e && e.target && e.target.closest('.pv-modal-card') && !e.target.classList.contains('pv-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function modalZoomStep(delta) {
+  modalScale = Math.max(0.3, Math.min(4.0, modalScale + delta));
+  updateModalScale();
+}
+
+function modalReset() {
+  modalScale = 1;
+  updateModalScale();
+}
+
+function updateModalScale() {
+  const content = document.getElementById('pv-modal-content');
+  const label = document.getElementById('pv-zoom-val');
+  if (content) content.style.transform = 'scale(' + modalScale + ')';
+  if (label) label.innerText = Math.round(modalScale * 100) + '%';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePvModal();
+});
+</script>
+</body>
+</html>

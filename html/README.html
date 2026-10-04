@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Master Curriculum & Scorecard | PBC 2026 Master Preparation Guide</title>
+  <style>
+    pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*!
+  Theme: GitHub Dark
+  Description: Dark theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: #ff7b72
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: #d2a8ff
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: #79c0ff
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: #a5d6ff
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: #ffa657
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: #8b949e
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: #7ee787
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: #c9d1d9
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: #1f6feb;
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: #f2cc60
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: #c9d1d9;
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: #c9d1d9;
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: #aff5b4;
+  background-color: #033a16
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: #ffdcd7;
+  background-color: #67060c
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+    
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-surface: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-light: #e0f2fe;
+  --code-bg: #0d1117;
+  --sidebar-width: 310px;
+  --toc-width: 250px;
+  --header-height: 64px;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-surface: #172033;
+  --border-color: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --accent-light: rgba(56, 189, 248, 0.12);
+  --code-bg: #090d16;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.top-nav {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #0284c7, #6366f1);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-input-wrap {
+  position: relative;
+}
+
+.search-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.45rem 1rem 0.45rem 2.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  width: 240px;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  width: 320px;
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.btn-icon {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-pdf {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-pdf:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  scrollbar-width: thin;
+}
+
+.track-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.track-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  line-height: 1.35;
+}
+
+.nav-link:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+}
+
+.content-container {
+  max-width: 1060px;
+  width: 100%;
+  padding: 2.5rem 2.5rem;
+}
+
+/* Right TOC */
+.toc-sidebar {
+  width: var(--toc-width);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  border-left: 1px solid var(--border-color);
+  font-size: 0.825rem;
+  scrollbar-width: thin;
+}
+
+.toc-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-size: 0.725rem;
+  margin-bottom: 0.75rem;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toc-item.level-3 {
+  padding-left: 0.85rem;
+}
+
+.toc-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+  display: block;
+}
+
+.toc-link:hover {
+  color: var(--accent);
+}
+
+/* Markdown Content Typography */
+.markdown-body h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.25;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.4rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body li {
+  margin-bottom: 0.4rem;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.markdown-body th, .markdown-body td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-body tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2.5rem 0;
+}
+
+.header-anchor {
+  margin-right: 0.4rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+h2:hover .header-anchor, h3:hover .header-anchor {
+  opacity: 1;
+}
+
+/* Callouts */
+.callout {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+}
+
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.callout-body p {
+  margin-bottom: 0;
+}
+
+.callout-note { background: rgba(2, 132, 199, 0.08); border-color: #0284c7; color: var(--text-primary); }
+.callout-note .callout-title { color: #0284c7; }
+
+.callout-tip { background: rgba(16, 185, 129, 0.08); border-color: #10b981; color: var(--text-primary); }
+.callout-tip .callout-title { color: #10b981; }
+
+.callout-important { background: rgba(99, 102, 241, 0.08); border-color: #6366f1; color: var(--text-primary); }
+.callout-important .callout-title { color: #6366f1; }
+
+.callout-warning { background: rgba(245, 158, 11, 0.08); border-color: #f59e0b; color: var(--text-primary); }
+.callout-warning .callout-title { color: #f59e0b; }
+
+.callout-caution { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; color: var(--text-primary); }
+.callout-caution .callout-title { color: #ef4444; }
+
+/* Code Blocks */
+.code-block-wrapper {
+  background: var(--code-bg);
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.4rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-lang {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: monospace;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.copy-btn.copied {
+  color: #10b981;
+}
+
+.markdown-body pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+:not(pre) > code {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+/* Images & Lightbox */
+.img-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  cursor: zoom-in;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.markdown-body img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--accent);
+}
+
+.img-expand-btn {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.img-container:hover .img-expand-btn {
+  opacity: 1;
+}
+
+.img-expand-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Mermaid Diagrams Container & Controls */
+.mermaid-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.diagram-toolbar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.diagram-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.diagram-btn:hover {
+  background: var(--border-color);
+  color: var(--accent);
+}
+
+.diagram-btn-expand {
+  border-left: 1px solid var(--border-color);
+  padding-left: 0.5rem;
+  margin-left: 0.2rem;
+  color: var(--accent);
+}
+
+.diagram-zoom-level {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.mermaid-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 2.2rem 0.5rem 0.5rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+.mermaid {
+  display: inline-block;
+  min-width: fit-content;
+  text-align: center;
+  transform-origin: top center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mermaid svg {
+  max-width: none !important;
+  height: auto !important;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Fullscreen High-Resolution Modal */
+.pv-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.pv-modal.open {
+  display: flex !important;
+}
+
+.pv-modal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  width: 95vw;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+}
+
+.pv-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.pv-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.pv-modal-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pv-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.pv-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pv-zoom-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-width: 44px;
+  text-align: center;
+  user-select: none;
+}
+
+.pv-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  margin-left: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.pv-close-btn:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.pv-modal-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-surface);
+  cursor: grab;
+}
+
+.pv-modal-viewport:active {
+  cursor: grabbing;
+}
+
+.pv-modal-content {
+  transform-origin: center center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.pv-modal-content svg {
+  max-width: none !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Prev / Next Pagination */
+.page-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.nav-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.nav-card.next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.nav-direction {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.nav-page-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+/* Reading Progress Bar */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0284c7, #6366f1);
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .toc-sidebar { display: none; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .search-input { width: 140px; }
+  .search-input:focus { width: 180px; }
+}
+
+/* Progress Tracker & Mark as Read */
+.progress-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.progress-mini-bar {
+  width: 50px;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: #10b981;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.btn-mark-read {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-mark-read:hover {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.btn-mark-read.is-read {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.bottom-completion-wrap {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+}
+
+.btn-mark-read-large {
+  padding: 0.65rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+.sidebar-check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  font-size: 9px;
+  color: transparent;
+  flex-shrink: 0;
+  margin-left: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link.is-read .sidebar-check-icon {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-label-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script src="./assets/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Initialize Mermaid FIRST on untouched raw diagram blocks
+      if (window.mermaid) {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'neutral',
+          securityLevel: 'loose',
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          flowchart: {
+            curve: 'basis',
+            useMaxWidth: false,
+            htmlLabels: true
+          },
+          sequence: {
+            useMaxWidth: false,
+            showSequenceNumbers: true,
+            actorMargin: 50,
+            boxMargin: 10,
+            boxTextMargin: 5,
+            noteMargin: 10,
+            messageMargin: 35
+          },
+          er: { useMaxWidth: false },
+          class: { useMaxWidth: false },
+          state: { useMaxWidth: false }
+        });
+      }
+
+      // 2. Render KaTeX ONLY on article prose, strictly excluding .mermaid and code blocks
+      function initKatex() {
+        if (typeof renderMathInElement === 'function') {
+          const target = document.querySelector('.article-content') || document.querySelector('.markdown-body');
+          if (target) {
+            renderMathInElement(target, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+              ],
+              ignoredClasses: ['mermaid', 'code-block-wrapper', 'hljs', 'katex-ignore', 'mermaid-viewport'],
+              ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'svg'],
+              throwOnError: false
+            });
+          }
+        } else {
+          setTimeout(initKatex, 100);
+        }
+      }
+      initKatex();
+    });
+  </script>
+</head>
+<body>
+  <div id="progress-bar" class="reading-progress"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <a href="./index.html" class="brand">
+      <span class="brand-badge">PBC 2026</span>
+      <span>Master Preparation Guide</span>
+    </a>
+    <div class="header-controls">
+      <div class="progress-stat-badge" title="Master Curriculum Progress">
+        <span id="header-progress-text">0/88 (0%)</span>
+        <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
+      </div>
+      <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+        <span>Mark as Read</span>
+      </button>
+      <div class="search-input-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
+      </div>
+      <a href="./../pdfs/README.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Open PDF</span>
+      </a>
+      <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="track-group">
+      <div class="track-title">Master Roadmap & Scorecard</div><a href="./README.html" class="nav-link active" data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="./01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html"><span class="nav-label-text">07: Type System & Typing</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">08: Core Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">09: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">10: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">11: Debugging & Memory Leaks Lab</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">12: Legacy Code Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">13: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">14: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">15: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="./01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-link " data-rel="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html"><span class="nav-label-text">17: Async Mocking & ASGI Internals</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="./02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="./02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="./03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="./03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 4: Agentic AI Engineering</div><a href="./04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="./04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 5: DSA Interview Playbook</div><a href="./05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="./05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a></div>
+    </aside>
+
+    <!-- Main Content Reader -->
+    <main class="main-wrapper">
+      <div class="content-container">
+        <article class="markdown-body">
+          <h1 id="the-pbc-2026-master-preparation-guide"><a href="#the-pbc-2026-master-preparation-guide" class="header-anchor">#</a>The PBC 2026 Master Preparation Guide</h1><h3 id="complete-zero-to-one-hundred-engineering-curriculum-python-lld-hld-agentic-ai-dsa"><a href="#complete-zero-to-one-hundred-engineering-curriculum-python-lld-hld-agentic-ai-dsa" class="header-anchor">#</a>Complete Zero-to-One Hundred Engineering Curriculum: Python, LLD, HLD, Agentic AI & DSA</h3><blockquote>
+<p><strong>Guiding Principle:</strong> Zero prerequisites assumed. Zero videos required. Zero dollars spent.<br>Every concept is explained from fundamental first principles (&quot;spoon-fed&quot; with concrete mental models), then elevated directly to production-grade, Staff/Principal-level rigor and Product-Based Company (Google, Meta, Amazon, Uber, Microsoft, Stripe) interview standards.</p>
+<p><strong>Zero Gaps Guarantee:</strong> This curriculum covers not only theoretical blueprints, but also live execution feedback loops: dependency hell diagnostics, post-mortem chaos engineering, multi-threaded race condition reproductions, automated CI/CD evaluation harnesses, and 45-minute ticking-clock interview simulations.</p>
+</blockquote>
+<hr>
+<h2 id="master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions"><a href="#master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions" class="header-anchor">#</a>Master Scorecard & Confidence Matrix (Genuine 10 / 10 Across All Dimensions)</h2><table>
+<thead>
+<tr>
+<th align="left">Track</th>
+<th align="center">Beginner Friendliness</th>
+<th align="center">Technical Depth</th>
+<th align="center">Production Realism &amp; Mastery</th>
+<th align="center">Curated Materials</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Track</td>
+<td align="center">Beginner Friendliness</td>
+<td align="center">Technical Depth</td>
+<td align="center">Production Realism &amp; Mastery</td>
+<td align="center">Curated Materials</td>
+</tr>
+<tr>
+<td align="left">:---</td>
+<td align="center">:---:</td>
+<td align="center">:---:</td>
+<td align="center">:---:</td>
+<td align="center">:---:</td>
+</tr>
+<tr>
+<td align="left"><strong>Track 1: Python Engineering Mastery</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center">18 Chapters + Distributed/HPC/SQL/ASGI + PDFs</td>
+</tr>
+<tr>
+<td align="left"><strong>Track 2: Low-Level Design (LLD)</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center">23 Books (14 Systems + Concurrency Labs) + PDFs</td>
+</tr>
+<tr>
+<td align="left"><strong>Track 3: High-Level Design (HLD)</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center">24 Books (13 Systems + Chaos/FinOps/SRE) + PDFs</td>
+</tr>
+<tr>
+<td align="left"><strong>Track 4: Agentic AI Engineering</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center">16 Chapters + Vector DBs/LoRA/Security + PDFs</td>
+</tr>
+<tr>
+<td align="left"><strong>Track 5: DSA Interview Playbook</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center"><strong>10 / 10</strong></td>
+<td align="center">7 Playbooks + Segment Trees/Bitmask DP + PDFs</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="curriculum-architecture-blueprint"><a href="#curriculum-architecture-blueprint" class="header-anchor">#</a>Curriculum Architecture & Blueprint</h2>
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    T1["Track 1: Python Engineering Mastery&lt;br/&gt;18 Deep Chapters&lt;br/&gt;(CPython Internals, Memory, Concurrency, Celery, SQL, HPC, Kafka)"]
+    T2["Track 2: Low-Level Design (LLD)&lt;br/&gt;23 Industrial Books&lt;br/&gt;(OOP, SOLID, Design Patterns, Thread-Safety, 14 Complete Systems)"]
+    T3["Track 3: High-Level Design (HLD)&lt;br/&gt;24 Distributed Books&lt;br/&gt;(Foundations, Sharding, Caching, Sagas, Chaos, SRE, 13 Systems)"]
+    T4["Track 4: Agentic AI Engineering&lt;br/&gt;16 Production Books&lt;br/&gt;(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, Vector DBs, Security)"]
+    T5["Track 5: DSA Interview Playbook&lt;br/&gt;7 Strategic Books&lt;br/&gt;(Core 75 Visual Dry-Runs, 45-Min Mock Drills, Whiteboard Discipline)"]
+
+    PBC["Staff / Principal Engineer&lt;br/&gt;Product-Based Company (PBC) Standard&lt;br/&gt;Google | Meta | Uber | Amazon | Stripe"]
+
+    T1 --&gt;|Foundation for Systems &amp; AI| T2
+    T2 --&gt;|Component Design to Architecture| T3
+    T1 --&gt;|Python Backbone for AI Agents| T4
+    T3 --&gt;|Distributed Scale for AI Workloads| T4
+    T1 --&gt;|Algorithmic Fluency| T5
+    
+    T3 --&gt; PBC
+    T4 --&gt; PBC
+    T5 --&gt; PBC
+</div>
+      </div>
+    </div><hr>
+<h2 id="detailed-track-syllabus"><a href="#detailed-track-syllabus" class="header-anchor">#</a>Detailed Track Syllabus</h2><h3 id="track-1-python-engineering-mastery-01-python-mastery"><a href="#track-1-python-engineering-mastery-01-python-mastery" class="header-anchor">#</a>[Track 1: Python Engineering Mastery](01-Python-Mastery/)</h3><ul>
+<li><strong><a href="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html">00-The-Python-Mental-Model-Visual-Map.md</a>:</strong> The Storage Tray and Sticky Nametag mental model, master visual map, and 10-question self-diagnostic.</li>
+<li><strong><a href="01-Python-Mastery/01-Foundations-Syntax-Primitives.html">01-Foundations-Syntax-Primitives.md</a>:</strong> Bytecode execution pipeline, names vs values, dynamic typing, mutability vs immutability, pass-by-assignment.</li>
+<li><strong><a href="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html">02-Data-Structures-Under-The-Hood.md</a>:</strong> How CPython implements <code>list</code>, <code>dict</code> (compact hash tables), <code>set</code>, and <code>tuple</code> in C. LRU Cache from scratch.</li>
+<li><strong><a href="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html">03-Functions-Functional-Closures-Decorators.md</a>:</strong> First-class functions, LEGB scope rules, cell objects, lexical closures, exponential backoff and rate limiter decorators.</li>
+<li><strong><a href="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html">04-OOP-Dunder-Metaprogramming.md</a>:</strong> <code>__new__</code> vs <code>__init__</code>, MRO (C3 linearization algorithm), descriptors (<code>__get__</code>, <code>__set__</code>), and metaclasses.</li>
+<li><strong><a href="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html">05-Memory-Management-GIL-Garbage-Collection.md</a>:</strong> Reference counting, cyclical GC (generations 0, 1, 2), PyMalloc memory pools, <code>__slots__</code> ($&gt;68%$ memory reduction), and the GIL.</li>
+<li><strong><a href="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html">06-Concurrency-Asyncio-Threading-Multiprocessing.md</a>:</strong> Preemptive OS threads vs cooperative coroutines. Event loop mechanics, <code>asyncio.TaskGroup</code>, process communication, and thread-safe producer-consumer pipelines.</li>
+<li><strong><a href="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html">07-Type-System-Modern-Python-Packaging.md</a>:</strong> Static type checking with <code>mypy</code>, Generics, Protocols (Duck Typing), Dataclasses, and Exception Groups.</li>
+<li><strong><a href="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html">08-Interview-Practice-Problems-Solutions.md</a>:</strong> Bounded Blocking Queue from scratch, Async Batcher, Fluent API Client, and Re-entrant Memory Profiler.</li>
+<li><strong><a href="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html">09-Scenario-Based-Interview-Questions-And-Answers.md</a>:</strong> Production crisis scenarios: Celery memory leaks, asyncio event loop starvation, CPU multithreading slowdowns, and tricky CPython edge cases.</li>
+<li><strong><a href="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html">10-Environment-Dependency-Hell-And-Packaging-Mastery.md</a>:</strong> <code>pyvenv.cfg</code> mechanics, <code>sys.path</code> resolution order, diamond dependencies, SAT solvers, binary wheels vs sdists, and modern <code>pyproject.toml</code> standards.</li>
+<li><strong><a href="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html">11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.md</a>:</strong> Post-mortem debugging with <code>pdb.pm()</code>, CPU profiling with <code>cProfile</code>/<code>pstats</code>, leak hunting with <code>tracemalloc</code> and <code>weakref</code>, and deadlock dumps via <code>faulthandler</code>.</li>
+<li><strong><a href="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html">12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.md</a>:</strong> Pinning tests with <code>pytest</code>, dissecting hazardous monolithic code, and modern refactoring with Protocols and Dataclasses.</li>
+<li><strong><a href="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html">13-Distributed-Task-Queues-Celery-Redis.md</a>:</strong> Redis single-threaded event loop, Lua atomic distributed locks, Celery worker prefetch tuning, Canvas workflows (Chains, Chords), and idempotency keys.</li>
+<li><strong><a href="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html">14-Production-SQL-And-Database-Internals.md</a>:</strong> PostgreSQL MVCC (<code>xmin</code>/<code>xmax</code>), B-Tree/GIN/BRIN indexes, <code>EXPLAIN (ANALYZE, BUFFERS)</code>, Window Functions, Recursive CTEs, <code>SELECT ... FOR UPDATE SKIP LOCKED</code>, and Async SQLAlchemy 2.0.</li>
+<li><strong><a href="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html">15-High-Performance-Computing-HPC-Python.md</a>:</strong> CPU cache hierarchy, NumPy strides, Numba LLVM JIT parallelism (<code>prange</code>), Cython with <code>nogil</code> GIL release, inter-process shared memory, Python 3.13 free-threaded no-GIL, and GPU CUDA acceleration.</li>
+<li><strong><a href="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html">16-Event-Driven-Python-Kafka-gRPC-Networking.md</a>:</strong> Non-blocking BSD sockets with <code>selectors</code>/<code>epoll</code>, Protocol Buffers wire encoding, high-concurrency gRPC server streaming, and high-throughput Apache Kafka pipelines with manual commit and dead-letter queues.</li>
+<li><strong><a href="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html">17-Testing-Async-Mocking-And-ASGI-Internals.md</a>:</strong> Pytest fixture scopes, the import lookup mocking trap (<code>unittest.mock.patch</code>), <code>AsyncMock</code> coroutine testing, property-based testing with <code>Hypothesis</code>, and raw ASGI web protocol from scratch.</li>
+</ul>
+<hr>
+<h3 id="track-2-low-level-design-lld-02-low-level-design"><a href="#track-2-low-level-design-lld-02-low-level-design" class="header-anchor">#</a>[Track 2: Low-Level Design (LLD)](02-Low-Level-Design/)</h3><ul>
+<li><strong><a href="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html">00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md</a>:</strong> The 4-step Lego framework, the Visual Pattern Decision Tree, and the 11 Systems comparison matrix.</li>
+<li><strong><a href="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html">01-OOP-Fundamentals-And-SOLID-Principles.md</a>:</strong> OOP principles, DRY/KISS, SOLID anti-patterns and Python refactors.</li>
+<li><strong><a href="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html">02-UML-Modeling-Class-Sequence-State-Diagrams.md</a>:</strong> Class diagrams, sequence diagrams, state-machine diagrams, and the 5-minute drawing strategy.</li>
+<li><strong><a href="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html">03-Design-Patterns-Catalog-Python-Implementations.md</a>:</strong> Creational, Structural, and Behavioral patterns implemented in modern Python.</li>
+<li><strong><a href="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html">04-Concurrency-Patterns-ThreadSafety-Locking.md</a>:</strong> Complete Readers-Writer Lock (RWLock) implementation from scratch, double-checked locking, and deadlock elimination.</li>
+<li><strong><a href="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html">05-Curveball-Requirement-Evolution-Mastery.md</a>:</strong> How to handle mid-interview requirement pivots (Surge pricing, temporary seat holds, firefighter elevator emergency modes) without rewriting code.</li>
+<li><strong><a href="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html">06-Legacy-Code-Refactoring-To-Design-Patterns.md</a>:</strong> Decomposing a 500-line monolithic checkout God-class using Strategy, Factory, and Observer patterns.</li>
+<li><strong><a href="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html">07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md</a>:</strong> Hands-on multi-threaded race condition reproduction (double-booking bugs) and comparing Pessimistic Locks vs Optimistic Concurrency Control (OCC).</li>
+<li><strong>The 14 Industrial Core Systems:</strong><ol>
+<li><a href="02-Low-Level-Design/systems/01-distributed-job-scheduler.html">systems/01-distributed-job-scheduler.md</a> <em>(Strategy, Command, Observer)</em></li>
+<li><a href="02-Low-Level-Design/systems/02-library-management-system.html">systems/02-library-management-system.md</a> <em>(Observer, State, Association/Aggregation)</em></li>
+<li><a href="02-Low-Level-Design/systems/03-movie-booking-system.html">systems/03-movie-booking-system.md</a> <em>(Concurrency, State Machine, Factory, Payment)</em></li>
+<li><a href="02-Low-Level-Design/systems/04-car-rental-system.html">systems/04-car-rental-system.md</a> <em>(Strategy, State, Factory)</em></li>
+<li><a href="02-Low-Level-Design/systems/05-parking-lot.html">systems/05-parking-lot.md</a> <em>(Factory, Abstract Factory, Strategy, Singleton)</em></li>
+<li><a href="02-Low-Level-Design/systems/06-inventory-management-system.html">systems/06-inventory-management-system.md</a> <em>(Observer, Strategy, State)</em></li>
+<li><a href="02-Low-Level-Design/systems/07-ride-sharing-application.html">systems/07-ride-sharing-application.md</a> <em>(Strategy, Observer, State, Pricing Engine)</em></li>
+<li><a href="02-Low-Level-Design/systems/08-rate-limiter.html">systems/08-rate-limiter.md</a> <em>(Token Bucket, Leaky Bucket, Sliding Window Log)</em></li>
+<li><a href="02-Low-Level-Design/systems/09-snake-and-ladders.html">systems/09-snake-and-ladders.md</a> <em>(Factory, Strategy, State)</em></li>
+<li><a href="02-Low-Level-Design/systems/10-elevator-system.html">systems/10-elevator-system.md</a> <em>(State, Strategy, Command)</em></li>
+<li><a href="02-Low-Level-Design/systems/11-vending-machine.html">systems/11-vending-machine.md</a> <em>(State Pattern, State Transition Engine)</em></li>
+<li><a href="02-Low-Level-Design/systems/12-in-memory-file-system.html">systems/12-in-memory-file-system.md</a> <em>(Composite Pattern, Trie path resolution, RLock)</em></li>
+<li><a href="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html">systems/13-high-throughput-logging-framework.md</a> <em>(Producer-Consumer, Strategy formatters/sinks, non-blocking queue)</em></li>
+<li><a href="02-Low-Level-Design/systems/14-pub-sub-message-broker.html">systems/14-pub-sub-message-broker.md</a> <em>(Kafka Lite, Topic partitions, Consumer groups, offset commits)</em></li>
+</ol>
+</li>
+<li><strong><a href="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html">12-Scenario-Based-LLD-Interview-Questions-And-Grills.md</a>:</strong> Strategy vs State justification, deadlocks in seat booking, 10,000 QPS spot grabs, Undo/Redo, and mock testing.</li>
+</ul>
+<hr>
+<h3 id="track-3-high-level-design-hld-03-high-level-design"><a href="#track-3-high-level-design-hld-03-high-level-design" class="header-anchor">#</a>[Track 3: High-Level Design (HLD)](03-High-Level-Design/)</h3><ul>
+<li><strong><a href="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html">00-Intuitive-Mental-Models-And-Visual-Glossary.md</a>:</strong> The Real-World Metaphor Dictionary, 10-system comparative matrix, and 45-minute printable interview template.</li>
+<li><strong><a href="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html">01-Distributed-Systems-Core-Prerequisites.md</a>:</strong> Hardware latency numbers, CAP &amp; PACELC theorems, TCP/UDP/HTTP3/gRPC/WebSockets, and Raft consensus.</li>
+<li><strong><a href="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html">02-Back-Of-The-Envelope-Calculations-Guide.md</a>:</strong> The $10^5$ rule, QPS formulas, 5-year storage, bandwidth, and the 80/20 cache rule.</li>
+<li><strong><a href="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html">03-Databases-Storage-Replication-Partitioning.md</a>:</strong> B-Trees vs LSM-Trees, Quorum ($R + W &gt; N$), and Consistent Hash Ring implementation in Python.</li>
+<li><strong><a href="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html">04-Caching-Load-Balancing-CDNs-Proxies.md</a>:</strong> The 4 write policies, Cache Stampede/Penetration/Avalanche defenses, L4 vs L7 load balancers, and Anycast CDN routing.</li>
+<li><strong><a href="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html">05-Distributed-Transactions-Sagas-Coordination.md</a>:</strong> Fall of 2PC, Saga Orchestration vs Choreography, Transactional Outbox Pattern, and Idempotency keys.</li>
+<li><strong><a href="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html">06-HLD-Interview-Framework-And-Communication.md</a>:</strong> The 45-minute interview playbook and behavioral scoring strategies.</li>
+<li><strong><a href="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html">07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.md</a>:</strong> Post-mortems of the Cache Stampede / Thundering Herd, Kafka Rebalance Storms, AWS AZ Blackouts, and blameless post-mortem writing.</li>
+<li><strong><a href="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html">08-Cloud-Cost-Engineering-And-FinOps-Architecture.md</a>:</strong> Data egress costs, NAT gateway traps, S3 lifecycle transitions (Standard -&gt; Glacier Instant -&gt; Deep Archive), reducing a $390k/mo cloud spend to $31k/mo.</li>
+<li><strong><a href="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html">09-Load-Testing-Benchmarking-And-SRE-Playbook.md</a>:</strong> Google SRE Four Golden Signals, runnable Locust load test scripts, $p99$ tail latency analysis, socket exhaustion, and CFS CPU throttling.</li>
+<li><strong>The 13 Production Core Systems:</strong><ol>
+<li><a href="03-High-Level-Design/systems/01-messaging-app.html">systems/01-messaging-app.md</a> <em>(WebSockets, delivery receipts, Cassandra)</em></li>
+<li><a href="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html">systems/02-ticketing-system-hotel-reservation.md</a> <em>(Distributed locking, Redis Redlock, zero double-booking)</em></li>
+<li><a href="03-High-Level-Design/systems/03-instagram.html">systems/03-instagram.md</a> <em>(Hybrid fan-out, feed cache, S3 upload pipeline)</em></li>
+<li><a href="03-High-Level-Design/systems/04-distributed-task-scheduler.html">systems/04-distributed-task-scheduler.md</a> <em>(Timing wheel $O(1)$, leader election, heartbeats)</em></li>
+<li><a href="03-High-Level-Design/systems/05-video-streaming-youtube.html">systems/05-video-streaming-youtube.md</a> <em>(Transcoding DAG, HLS Adaptive Bitrate, CDN edge)</em></li>
+<li><a href="03-High-Level-Design/systems/06-ecommerce-platform.html">systems/06-ecommerce-platform.md</a> <em>(Atomic Redis Lua inventory, checkout Saga orchestrator)</em></li>
+<li><a href="03-High-Level-Design/systems/07-proximity-service.html">systems/07-proximity-service.md</a> <em>(Uber H3 hexagons, nearest-neighbor query)</em></li>
+<li><a href="03-High-Level-Design/systems/08-tinder.html">systems/08-tinder.md</a> <em>(Sub-10ms mutual match detection, 2-stage recommendation)</em></li>
+<li><a href="03-High-Level-Design/systems/09-uber.html">systems/09-uber.md</a> <em>(1.25M GPS pings/sec, H3 spatial grid dispatch)</em></li>
+<li><a href="03-High-Level-Design/systems/10-twitter.html">systems/10-twitter.md</a> <em>(Snowflake 64-bit IDs, celebrity fan-out solution)</em></li>
+<li><a href="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html">systems/11-distributed-cache-redis-cluster.md</a> <em>(16,384 Hash slots, Gossip protocol, Approximated LRU)</em></li>
+<li><a href="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html">systems/12-distributed-search-engine-elasticsearch.md</a> <em>(Inverted index, BM25 scoring, Sharded prefix trie typeahead)</em></li>
+<li><a href="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html">systems/13-time-series-metrics-monitoring-prometheus.md</a> <em>(Gorilla XOR float compression, Delta-of-delta timestamps, TSDB downsampling)</em></li>
+</ol>
+</li>
+<li><strong><a href="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html">11-Scenario-Based-HLD-Interview-Questions-And-Grills.md</a>:</strong> Cassandra zombie data resurrects, Redis 100% CPU lockouts, NTP clock drift in Snowflake IDs, and multi-region active-active conflicts.</li>
+</ul>
+<hr>
+<h3 id="track-4-agentic-ai-engineering-04-agentic-ai"><a href="#track-4-agentic-ai-engineering-04-agentic-ai" class="header-anchor">#</a>[Track 4: Agentic AI Engineering](04-Agentic-AI/)</h3><ul>
+<li><strong><a href="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html">01-LLM-Foundations-Tokenization-Inference.md</a>:</strong> BPE tokenization, transformer decoder stack, KV-Cache memory bandwidth limits, and temperature/top-p sampling.</li>
+<li><strong><a href="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html">02-Prompt-Engineering-To-Tool-Calling.md</a>:</strong> Tool Calling loop from scratch using JSONSchema and Pydantic v2 structured output validation.</li>
+<li><strong><a href="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html">03-RAG-And-Vectorless-RAG-Deep-Dive.md</a>:</strong> Hybrid Search (BM25 + Dense RRF), Cross-Encoder Re-ranking, PageIndex, and GraphRAG.</li>
+<li><strong><a href="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html">04-Agent-Architectures-ReAct-PlanSolve-StateMachines.md</a>:</strong> Full Python ReAct loop, Plan-and-Solve task DAGs, and Reflexion self-correction.</li>
+<li><strong><a href="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html">05-LangChain-And-LangGraph-Mastery.md</a>:</strong> Cyclic StateGraphs, typed state schemas, conditional edges, persistence checkpoints, and Human-in-the-Loop workflows.</li>
+<li><strong><a href="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html">06-Memory-Guardrails-Evaluation-Gateways.md</a>:</strong> Fact-extraction long-term memory, prompt injection guardrails, LiteLLM gateway failover, and the RAG Evaluation Triad.</li>
+<li><strong><a href="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html">07-Multi-Agent-Collaboration-And-Production.md</a>:</strong> Supervisor-Worker swarms, Server-Sent Events (SSE) token streaming, and OpenTelemetry/LangSmith tracing.</li>
+<li><strong><a href="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html">08-Capstone-Project-Autonomous-Research-And-Code-Agent.md</a>:</strong> Complete, runnable 5-stage Autonomous Technical Research &amp; Code Generation Agent in pure Python.</li>
+<li><strong><a href="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html">09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.md</a>:</strong> Breaking infinite tool loops, indirect prompt injection defense via privilege separation, and token inflation reduction via prompt caching.</li>
+<li><strong><a href="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html">10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.md</a>:</strong> Self-healing schema validation with Pydantic/Instructor, exponential backoff with full jitter, provider fallback cascades, and execution circuit breakers.</li>
+<li><strong><a href="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html">11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.md</a>:</strong> Unit testing probabilistic code, RAG Triad (Faithfulness, Relevance, Recall, Precision), LLM-as-a-judge pipelines, and GitHub Actions CI/CD gates.</li>
+<li><strong><a href="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html">12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.md</a>:</strong> FastAPI Server-Sent Events (SSE) streaming engine, durable checkpointing across pod crashes, and human approval gates for high-risk actions.</li>
+<li><strong><a href="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html">13-Vector-Database-Internals-And-HNSW-Math.md</a>:</strong> High-dimensional geometry, HNSW skip-graph beam search, Product Quantization (IVF-PQ), and single-stage filtered vector search.</li>
+<li><strong><a href="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html">14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.md</a>:</strong> RAG vs Fine-Tuning decision tree, LoRA matrix factorization math ($\Delta W = BA$), QLoRA 4-bit NormalFloat, and Direct Preference Optimization (DPO).</li>
+<li><strong><a href="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html">15-Multimodal-Agents-And-AI-Red-Teaming-Security.md</a>:</strong> Vision-Language Models (ViT patches), Document AI, indirect prompt injection, ASCII smuggling, and the Dual-LLM quarantine defense.</li>
+</ul>
+<hr>
+<h3 id="track-5-dsa-interview-playbook-05-dsa-interview-playbook"><a href="#track-5-dsa-interview-playbook-05-dsa-interview-playbook" class="header-anchor">#</a>[Track 5: DSA Interview Playbook](05-DSA-Interview-Playbook/)</h3><ul>
+<li><strong><a href="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html">01-Interview-Tactics-Dry-Run-Communication.md</a>:</strong> The 5-step communication strategy and universal dry-run trace table template.</li>
+<li><strong><a href="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html">02-Essential-Patterns-Cheat-Sheet.md</a>:</strong> The 15 master reusable coding pattern templates (Two Pointers, Sliding Window, Monotonic Stack, Top K, Topological Sort, etc.).</li>
+<li><strong><a href="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html">03-The-Core-75-Mastery-Walkthroughs.md</a>:</strong> Deep, visual problem walkthroughs (Trapping Rain Water, Longest Substring Without Repeating Characters, Course Schedule) with step-by-step dry-run tables.</li>
+<li><strong><a href="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html">04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.md</a>:</strong> Minute-by-minute timeline (0-5m Constraints, 5-15m Brute Force, 15-30m Coding, 30-40m Dry Run, 40-45m Complexity), and scripts for handling silent, aggressive, and helpful interviewers.</li>
+<li><strong><a href="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html">05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md</a>:</strong> The 7 unsticking techniques (Inversion, $N=3$ simulation, sorting trade-offs, DP 3-question formulation) and the pre-flight edge case checklist.</li>
+<li><strong><a href="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html">06-Whiteboard-And-Google-Doc-Coding-Discipline.md</a>:</strong> Whiteboard 3-zone partitioning, mental compilation routines, and catching the top 10 compiler bugs manually without an IDE.</li>
+<li><strong><a href="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html">07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md</a>:</strong> Segment Trees with $O(\log N)$ range queries, Fenwick Trees (<code>i &amp; (-i)</code>), Disjoint Set Union ($O(\alpha(N))$), and Bitmask DP for TSP.</li>
+</ul>
+<hr>
+<h2 id="automated-pdf-web-portal-generation-engine"><a href="#automated-pdf-web-portal-generation-engine" class="header-anchor">#</a>Automated PDF & Web Portal Generation Engine</h2>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash"><span class="hljs-comment"># Compile all 88 books and labs into interactive HTML Web Portal</span>
+npm run build:html
+
+<span class="hljs-comment"># Compile all 88 tracks and labs into print-ready PDFs</span>
+npm run build:pdf</code></pre>
+  </div><p>All <strong>88 compiled PDFs</strong> are saved in the <code>pdfs/</code> directory, and all <strong>89 interactive HTML pages</strong> are saved in the <code>html/</code> directory.</p>
+
+        </article>
+        <div class="bottom-completion-wrap">
+          <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+            <span>Mark as Read</span>
+          </button>
+        </div>
+        <div class="page-navigation"><div></div>
+    <a href="./01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-card next">
+      <span class="nav-direction">Next Chapter →</span>
+      <span class="nav-page-title">00: Mental Model & Visual Map</span>
+    </a></div>
+      </div>
+    </main>
+
+    <!-- Right Table of Contents -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-3"><a href="#complete-zero-to-one-hundred-engineering-curriculum-python-lld-hld-agentic-ai-dsa" class="toc-link">Complete Zero-to-One Hundred Engineering Curriculum: Python, LLD, HLD, Agentic AI & DSA</a></li><li class="toc-item level-2"><a href="#master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions" class="toc-link">Master Scorecard & Confidence Matrix (Genuine 10 / 10 Across All Dimensions)</a></li><li class="toc-item level-2"><a href="#curriculum-architecture-blueprint" class="toc-link">Curriculum Architecture & Blueprint</a></li><li class="toc-item level-2"><a href="#detailed-track-syllabus" class="toc-link">Detailed Track Syllabus</a></li><li class="toc-item level-3"><a href="#track-1-python-engineering-mastery-01-python-mastery" class="toc-link">[Track 1: Python Engineering Mastery](01-Python-Mastery/)</a></li><li class="toc-item level-3"><a href="#track-2-low-level-design-lld-02-low-level-design" class="toc-link">[Track 2: Low-Level Design (LLD)](02-Low-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-3-high-level-design-hld-03-high-level-design" class="toc-link">[Track 3: High-Level Design (HLD)](03-High-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-4-agentic-ai-engineering-04-agentic-ai" class="toc-link">[Track 4: Agentic AI Engineering](04-Agentic-AI/)</a></li><li class="toc-item level-3"><a href="#track-5-dsa-interview-playbook-05-dsa-interview-playbook" class="toc-link">[Track 5: DSA Interview Playbook](05-DSA-Interview-Playbook/)</a></li><li class="toc-item level-2"><a href="#automated-pdf-web-portal-generation-engine" class="toc-link">Automated PDF & Web Portal Generation Engine</a></li></ul>
+    </aside>
+  </div>
+
+  <!-- High-Resolution Fullscreen Diagram & Image Modal -->
+  <div id="pv-modal" class="pv-modal" onclick="closePvModal(event)">
+    <div class="pv-modal-card" onclick="event.stopPropagation()">
+      <div class="pv-modal-header">
+        <span class="pv-modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span id="pv-modal-title-text">High-Resolution Architecture Viewer</span>
+        </span>
+        <div class="pv-modal-tools">
+          <button class="pv-btn" onclick="modalZoomStep(-0.25)" title="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <span id="pv-zoom-val" class="pv-zoom-val">100%</span>
+          <button class="pv-btn" onclick="modalZoomStep(0.25)" title="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <button class="pv-btn" onclick="modalReset()" title="Reset to Fit (100%)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+          </button>
+          <button class="pv-close-btn" onclick="closePvModal()" title="Close Viewer (Esc)">&times;</button>
+        </div>
+      </div>
+      <div class="pv-modal-viewport" id="pv-modal-viewport">
+        <div id="pv-modal-content" class="pv-modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>window.CURRENT_PAGE = "README.html";</script>
+  <script>
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+// Init theme
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// Reading Progress Bar at page top
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  const el = document.getElementById('progress-bar');
+  if (el) el.style.width = scrolled + '%';
+});
+
+// Copy Code
+function copyCode(btn) {
+  const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.classList.add('copied');
+    btn.querySelector('span').innerText = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('span').innerText = 'Copy';
+    }, 2000);
+  });
+}
+
+// Client search filter in sidebar
+function filterNav(query) {
+  const q = query.toLowerCase().trim();
+  const links = document.querySelectorAll('.sidebar .nav-link');
+  links.forEach(link => {
+    const text = link.innerText.toLowerCase();
+    if (!q || text.includes(q)) {
+      link.style.display = 'flex';
+    } else {
+      link.style.display = 'none';
+    }
+  });
+}
+
+// Master Course Completion Progress Tracker
+const TOTAL_CHAPTERS = 88;
+
+function getCompletedList() {
+  try {
+    return JSON.parse(localStorage.getItem('pbc_read_chapters') || '[]');
+  } catch(e) {
+    return [];
+  }
+}
+
+function toggleCurrentChapterRead() {
+  if (!window.CURRENT_PAGE) return;
+  let list = getCompletedList();
+  const idx = list.indexOf(window.CURRENT_PAGE);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push(window.CURRENT_PAGE);
+  }
+  localStorage.setItem('pbc_read_chapters', JSON.stringify(list));
+  refreshProgressUI();
+}
+
+function refreshProgressUI() {
+  const list = getCompletedList();
+  const count = list.length;
+  const pct = Math.round((count / TOTAL_CHAPTERS) * 100);
+
+  // Update header text and mini bar
+  const textEl = document.getElementById('header-progress-text');
+  const barEl = document.getElementById('header-progress-bar');
+  if (textEl) textEl.innerText = `${count}/${TOTAL_CHAPTERS} (${pct}%)`;
+  if (barEl) barEl.style.width = pct + '%';
+
+  // Update Mark as Read buttons on this page
+  const isRead = window.CURRENT_PAGE && list.includes(window.CURRENT_PAGE);
+  const btns = [document.getElementById('header-mark-read-btn'), document.getElementById('bottom-mark-read-btn')];
+  btns.forEach(btn => {
+    if (!btn) return;
+    if (isRead) {
+      btn.classList.add('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Completed ✓</span>`;
+    } else {
+      btn.classList.remove('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg><span>Mark as Read</span>`;
+    }
+  });
+
+  // Update sidebar checkmarks
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const rel = link.getAttribute('data-rel');
+    if (rel && list.includes(rel)) {
+      link.classList.add('is-read');
+    } else {
+      link.classList.remove('is-read');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', refreshProgressUI);
+
+// Diagram Zoom & Pan Controller
+function zoomDiagram(btn, delta) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  let currentZoom = parseFloat(target.getAttribute('data-zoom') || '1');
+  currentZoom = Math.max(0.4, Math.min(3.0, currentZoom + delta));
+  target.setAttribute('data-zoom', currentZoom);
+  target.style.transform = 'scale(' + currentZoom + ')';
+  if (label) label.innerText = Math.round(currentZoom * 100) + '%';
+}
+
+function resetDiagramZoom(btn) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  target.setAttribute('data-zoom', '1');
+  target.style.transform = 'scale(1)';
+  if (label) label.innerText = '100%';
+}
+
+// Fullscreen Modal for Diagrams and Images
+let modalScale = 1;
+
+function openDiagramFullscreen(btn) {
+  const container = btn.closest('.mermaid-container');
+  if (!container) return;
+  const svg = container.querySelector('.mermaid svg') || container.querySelector('.mermaid-viewport svg');
+  if (!svg) {
+    console.warn('No diagram SVG found in container');
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = 'High-Resolution Architecture Viewer';
+
+  const clonedSvg = svg.cloneNode(true);
+  clonedSvg.style.maxWidth = '90vw';
+  clonedSvg.style.maxHeight = '75vh';
+  clonedSvg.style.width = 'auto';
+  clonedSvg.style.height = 'auto';
+
+  if (content) {
+    content.innerHTML = '';
+    content.appendChild(clonedSvg);
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openImageModal(target) {
+  let img = target;
+  if (target && target.tagName !== 'IMG') {
+    img = target.closest('.img-container')?.querySelector('img') || target.closest('.img-wrapper')?.querySelector('img');
+  }
+  if (!img) return;
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = img.getAttribute('title') || img.getAttribute('alt') || 'High-Resolution Image Viewer';
+  if (content) {
+    content.innerHTML = '<img src="' + img.src + '" style="max-height: 75vh; max-width: 90vw; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" />';
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePvModal(e) {
+  if (e && e.target && e.target.closest('.pv-modal-card') && !e.target.classList.contains('pv-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function modalZoomStep(delta) {
+  modalScale = Math.max(0.3, Math.min(4.0, modalScale + delta));
+  updateModalScale();
+}
+
+function modalReset() {
+  modalScale = 1;
+  updateModalScale();
+}
+
+function updateModalScale() {
+  const content = document.getElementById('pv-modal-content');
+  const label = document.getElementById('pv-zoom-val');
+  if (content) content.style.transform = 'scale(' + modalScale + ')';
+  if (label) label.innerText = Math.round(modalScale * 100) + '%';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePvModal();
+});
+</script>
+</body>
+</html>
