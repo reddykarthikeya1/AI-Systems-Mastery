@@ -1,4 +1,4 @@
-# Chapter 13: Distributed Task Queues & Asynchronous Background Processing with Celery & Redis
+# Chapter 15: Distributed Task Queues (Celery & Redis Architecture)
 
 > **The Enterprise Asynchronous Tier**
 > In modern production systems, web servers (FastAPI, Django, Flask) must never perform heavy computation, external third-party API calls, PDF generation, email dispatch, or large database mutations synchronously within the HTTP request-response cycle. Blocking a web worker thread for 5 seconds destroys your server's concurrency and cascades into gateway timeouts.

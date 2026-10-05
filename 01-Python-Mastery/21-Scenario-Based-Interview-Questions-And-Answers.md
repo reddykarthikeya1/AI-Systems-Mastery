@@ -1,4 +1,4 @@
-# Chapter 9: Python Scenario-Based Interview Questions & Staff-Level Grills
+# Chapter 21: Production Crisis Scenarios & Staff-Level Architectural Grills
 
 > **Core Learning Objective:** Master the tough, scenario-driven interview questions asked by FAANG and top Product-Based Companies. Learn how to diagnose real-world production outages, explain CPython runtime edge cases, and articulate senior engineering trade-offs under pressure.
 

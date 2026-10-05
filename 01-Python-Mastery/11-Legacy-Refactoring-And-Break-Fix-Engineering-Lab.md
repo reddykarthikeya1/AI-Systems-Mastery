@@ -1,4 +1,4 @@
-# Chapter 12: Legacy Code Refactoring & Break-Fix Engineering Lab
+# Chapter 11: Legacy Monolith Refactoring & Break-Fix Engineering Lab
 
 > **Brownfield vs. Greenfield**
 > In school and online tutorials, you always start with an empty `main.py`. In an enterprise role, you will almost never touch an empty file. You will inherit a 1,500-line function written four years ago by an engineer who left the company, full of mutable defaults, hidden global mutations, unhandled exception swallows, and zero unit tests.

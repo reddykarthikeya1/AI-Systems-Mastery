@@ -1,4 +1,4 @@
-# Chapter 11: Production Debugging, Profiling, & Memory Leaks Lab
+# Chapter 10: Production Debugging, Profiling & Memory Leaks Lab
 
 > **The Difference Between Junior and Principal Engineers**
 > Anyone can write code that works under ideal conditions. A senior engineer shines when code is burning in production: CPU usage is pegged at 100%, memory consumption creeps steadily toward an Out-Of-Memory (OOM) kernel kill, or worker threads mysteriously freeze in an undetectable deadlock.

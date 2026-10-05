@@ -14,7 +14,7 @@
 | :--- | :---: | :---: | :---: | :---: |
 | Track | Beginner Friendliness | Technical Depth | Production Realism & Mastery | Curated Materials |
 | :--- | :---: | :---: | :---: | :---: |
-| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 18 Chapters + Distributed/HPC/SQL/ASGI + PDFs |
+| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters + Distributed/HPC/SQL/FastAPI/Rust/Polars + Videos + PDFs |
 | **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Books (14 Systems + Concurrency Labs) + PDFs |
 | **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 24 Books (13 Systems + Chaos/FinOps/SRE) + PDFs |
 | **Track 4: Agentic AI Engineering** | **10 / 10** | **10 / 10** | **10 / 10** | 16 Chapters + Vector DBs/LoRA/Security + PDFs |
@@ -26,7 +26,7 @@
 
 ```mermaid
 flowchart TD
-    T1["Track 1: Python Engineering Mastery<br/>18 Deep Chapters<br/>(CPython Internals, Memory, Concurrency, Celery, SQL, HPC, Kafka)"]
+    T1["Track 1: Python Engineering Mastery<br/>23 Deep Chapters<br/>(CPython Internals, Memory, Concurrency, Testing, SQL, FastAPI, Security, Celery, Kafka, Polars, HPC, Rust PyO3)"]
     T2["Track 2: Low-Level Design (LLD)<br/>23 Industrial Books<br/>(OOP, SOLID, Design Patterns, Thread-Safety, 14 Complete Systems)"]
     T3["Track 3: High-Level Design (HLD)<br/>24 Distributed Books<br/>(Foundations, Sharding, Caching, Sagas, Chaos, SRE, 13 Systems)"]
     T4["Track 4: Agentic AI Engineering<br/>16 Production Books<br/>(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, Vector DBs, Security)"]
@@ -50,24 +50,29 @@ flowchart TD
 ## Detailed Track Syllabus
 
 ### [Track 1: Python Engineering Mastery](01-Python-Mastery/)
-* **[00-The-Python-Mental-Model-Visual-Map.md](01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.md):** The Storage Tray and Sticky Nametag mental model, master visual map, and 10-question self-diagnostic.
+* **[00-The-Python-Mental-Model-Visual-Map.md](01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.md):** The Storage Tray and Sticky Nametag mental model, master visual map, Stack vs Heap, and 10-question self-diagnostic.
 * **[01-Foundations-Syntax-Primitives.md](01-Python-Mastery/01-Foundations-Syntax-Primitives.md):** Bytecode execution pipeline, names vs values, dynamic typing, mutability vs immutability, pass-by-assignment.
 * **[02-Data-Structures-Under-The-Hood.md](01-Python-Mastery/02-Data-Structures-Under-The-Hood.md):** How CPython implements `list`, `dict` (compact hash tables), `set`, and `tuple` in C. LRU Cache from scratch.
 * **[03-Functions-Functional-Closures-Decorators.md](01-Python-Mastery/03-Functions-Functional-Closures-Decorators.md):** First-class functions, LEGB scope rules, cell objects, lexical closures, exponential backoff and rate limiter decorators.
 * **[04-OOP-Dunder-Metaprogramming.md](01-Python-Mastery/04-OOP-Dunder-Metaprogramming.md):** `__new__` vs `__init__`, MRO (C3 linearization algorithm), descriptors (`__get__`, `__set__`), and metaclasses.
 * **[05-Memory-Management-GIL-Garbage-Collection.md](01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.md):** Reference counting, cyclical GC (generations 0, 1, 2), PyMalloc memory pools, `__slots__` ($>68\%$ memory reduction), and the GIL.
 * **[06-Concurrency-Asyncio-Threading-Multiprocessing.md](01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.md):** Preemptive OS threads vs cooperative coroutines. Event loop mechanics, `asyncio.TaskGroup`, process communication, and thread-safe producer-consumer pipelines.
-* **[07-Type-System-Modern-Python-Packaging.md](01-Python-Mastery/07-Type-System-Modern-Python-Packaging.md):** Static type checking with `mypy`, Generics, Protocols (Duck Typing), Dataclasses, and Exception Groups.
-* **[08-Interview-Practice-Problems-Solutions.md](01-Python-Mastery/08-Interview-Practice-Problems-Solutions.md):** Bounded Blocking Queue from scratch, Async Batcher, Fluent API Client, and Re-entrant Memory Profiler.
-* **[09-Scenario-Based-Interview-Questions-And-Answers.md](01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.md):** Production crisis scenarios: Celery memory leaks, asyncio event loop starvation, CPU multithreading slowdowns, and tricky CPython edge cases.
-* **[10-Environment-Dependency-Hell-And-Packaging-Mastery.md](01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.md):** `pyvenv.cfg` mechanics, `sys.path` resolution order, diamond dependencies, SAT solvers, binary wheels vs sdists, and modern `pyproject.toml` standards.
-* **[11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.md](01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.md):** Post-mortem debugging with `pdb.pm()`, CPU profiling with `cProfile`/`pstats`, leak hunting with `tracemalloc` and `weakref`, and deadlock dumps via `faulthandler`.
-* **[12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.md](01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.md):** Pinning tests with `pytest`, dissecting hazardous monolithic code, and modern refactoring with Protocols and Dataclasses.
-* **[13-Distributed-Task-Queues-Celery-Redis.md](01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.md):** Redis single-threaded event loop, Lua atomic distributed locks, Celery worker prefetch tuning, Canvas workflows (Chains, Chords), and idempotency keys.
-* **[14-Production-SQL-And-Database-Internals.md](01-Python-Mastery/14-Production-SQL-And-Database-Internals.md):** PostgreSQL MVCC (`xmin`/`xmax`), B-Tree/GIN/BRIN indexes, `EXPLAIN (ANALYZE, BUFFERS)`, Window Functions, Recursive CTEs, `SELECT ... FOR UPDATE SKIP LOCKED`, and Async SQLAlchemy 2.0.
-* **[15-High-Performance-Computing-HPC-Python.md](01-Python-Mastery/15-High-Performance-Computing-HPC-Python.md):** CPU cache hierarchy, NumPy strides, Numba LLVM JIT parallelism (`prange`), Cython with `nogil` GIL release, inter-process shared memory, Python 3.13 free-threaded no-GIL, and GPU CUDA acceleration.
+* **[07-Type-System-Modern-Python-Architecture.md](01-Python-Mastery/07-Type-System-Modern-Python-Architecture.md):** Static type checking with `mypy`, Generics, Protocols (Structural Subtyping), Dataclasses, and Exception Groups.
+* **[08-Environment-Dependency-Hell-And-Packaging-Mastery.md](01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.md):** `pyvenv.cfg` mechanics, `sys.path` resolution order, diamond dependencies, SAT solvers, UV package manager, binary wheels vs sdists, and modern `pyproject.toml` standards.
+* **[09-Enterprise-Testing-Async-Mocking-And-QA.md](01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.md):** Pytest fixture scopes, Test doubles (Dummy/Stub/Spy/Mock/Fake), the import lookup mocking trap (`unittest.mock.patch`), `AsyncMock` coroutine testing, and property-based testing with `Hypothesis`.
+* **[10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.md](01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.md):** Post-mortem debugging with `pdb.pm()`, CPU profiling with `cProfile`/`pstats`, leak hunting with `tracemalloc` and `weakref`, and deadlock dumps via `faulthandler`.
+* **[11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.md](01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.md):** Pinning tests with `pytest`, dissecting hazardous monolithic code, and modern refactoring with Protocols and Dataclasses.
+* **[12-Production-SQL-And-Database-Internals.md](01-Python-Mastery/12-Production-SQL-And-Database-Internals.md):** PostgreSQL MVCC (`xmin`/`xmax`), B-Tree/GIN/BRIN indexes, `EXPLAIN (ANALYZE, BUFFERS)`, Window Functions, Recursive CTEs, `SELECT ... FOR UPDATE SKIP LOCKED`, and Async SQLAlchemy 2.0.
+* **[13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.md](01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.md):** Raw ASGI web protocol specification, Onion middleware chains, Rust-powered `pydantic-core` validation engine, FastAPI Dependency Injection DAG, `async def` vs `def` threadpool traps, and post-fork safe Lifespan handlers.
+* **[14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.md](01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.md):** Password hashing with salted Argon2id/PBKDF2, stateless JWT lifecycles, constant-time verification against timing attacks, Refresh Token Rotation with family invalidation, and declarative RBAC/ABAC middleware.
+* **[15-Distributed-Task-Queues-Celery-Redis.md](01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.md):** Redis single-threaded event loop, Lua atomic distributed locks, Celery worker prefetch tuning, Canvas workflows (Chains, Chords), and idempotency keys.
 * **[16-Event-Driven-Python-Kafka-gRPC-Networking.md](01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.md):** Non-blocking BSD sockets with `selectors`/`epoll`, Protocol Buffers wire encoding, high-concurrency gRPC server streaming, and high-throughput Apache Kafka pipelines with manual commit and dead-letter queues.
-* **[17-Testing-Async-Mocking-And-ASGI-Internals.md](01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.md):** Pytest fixture scopes, the import lookup mocking trap (`unittest.mock.patch`), `AsyncMock` coroutine testing, property-based testing with `Hypothesis`, and raw ASGI web protocol from scratch.
+* **[17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.md](01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.md):** Apache Arrow columnar memory format, SIMD vectorization, Polars LazyFrame query optimization (predicate and projection pushdowns), out-of-core streaming without OOM crashes, and in-process analytical SQL with DuckDB.
+* **[18-High-Performance-Computing-HPC-Python.md](01-Python-Mastery/18-High-Performance-Computing-HPC-Python.md):** CPU cache hierarchy, NumPy strides, Numba LLVM JIT parallelism (`prange`), Cython with `nogil` GIL release, inter-process shared memory, Python 3.13 free-threaded no-GIL, and GPU CUDA acceleration.
+* **[19-Rust-Extensions-PyO3-And-CPython-C-ABI.md](01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.md):** CPython C-API, `PyObject` heap structure, building native compiled Rust extensions with PyO3 and Maturin, releasing the GIL with `Python::allow_threads` for Rayon multicore saturation, and the Python Buffer Protocol for zero-copy memory sharing.
+* **[20-Interview-Practice-Problems-Solutions.md](01-Python-Mastery/20-Interview-Practice-Problems-Solutions.md):** Bounded Blocking Queue from scratch, Async Batcher, Fluent API Client, and Re-entrant Memory Profiler.
+* **[21-Scenario-Based-Interview-Questions-And-Answers.md](01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.md):** Production crisis scenarios: Celery memory leaks, asyncio event loop starvation, CPU multithreading slowdowns, and tricky CPython edge cases.
+* **[22-Curated-Video-Masterclasses.md](01-Python-Mastery/22-Curated-Video-Masterclasses.md):** Hand-curated, 100% active, high-viewership video masterclasses from legendary Python core developers (Raymond Hettinger, David Beazley, ArjanCodes, Corey Schafer, mCoding) mapped 1:1 to every chapter.
 
 ---
 

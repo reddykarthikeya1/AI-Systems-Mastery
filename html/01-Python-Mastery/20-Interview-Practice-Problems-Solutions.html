@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>05: The Stuck Diagnostic Tree | PBC 2026 Master Preparation Guide</title>
+  <title>20: Staff Coding Practice Problems | PBC 2026 Master Preparation Guide</title>
   <style>
     pre code.hljs {
   display: block;
@@ -1124,7 +1124,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
       </div>
-      <a href="../../pdfs/05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+      <a href="../../pdfs/01-Python-Mastery/20-Interview-Practice-Problems-Solutions.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         <span>Open PDF</span>
       </a>
@@ -1139,24 +1139,123 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <aside class="sidebar">
       <div class="track-group">
       <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
-      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Curated-Video-Masterclasses.html" class="nav-link " data-rel="01-Python-Mastery/22-Curated-Video-Masterclasses.html"><span class="nav-label-text">22: Curated Video Masterclasses</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link active" data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Curated-Video-Masterclasses.html" class="nav-link " data-rel="01-Python-Mastery/22-Curated-Video-Masterclasses.html"><span class="nav-label-text">22: Curated Video Masterclasses</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
-      <div class="track-title">Track 5: DSA Interview Playbook</div><a href="../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link active" data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a></div>
+      <div class="track-title">Track 5: DSA Interview Playbook</div><a href="../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a></div>
     </aside>
 
     <!-- Main Content Reader -->
     <main class="main-wrapper">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="chapter-05-the-stuck-engineer-s-diagnostic-decision-tree"><a href="#chapter-05-the-stuck-engineer-s-diagnostic-decision-tree" class="header-anchor">#</a>Chapter 05: The Stuck Engineer's Diagnostic Decision Tree</h1><blockquote>
-<p><strong>The Blank Brain Phenomenon</strong>
-Every engineer has experienced the nightmare: you read the problem description, your mind goes completely blank, and panic sets in. You have no idea what pattern applies, your heart rate spikes, and every second of silence feels like an eternity.</p>
-<p>When intuition fails, you must switch to an <strong>Algorithmic Diagnostic Tree</strong>. This chapter provides a deterministic, 7-step triage system to unstick your brain and extract the optimal solution methodically.</p>
+          <h1 id="chapter-20-staff-python-engineering-interview-challenges-deep-solutions"><a href="#chapter-20-staff-python-engineering-interview-challenges-deep-solutions" class="header-anchor">#</a>Chapter 20: Staff Python Engineering Interview Challenges & Deep Solutions</h1><blockquote>
+<p><strong>Core Learning Objective:</strong> Test, solidify, and demonstrate mastery through real-world Product-Based Company (Google, Meta, Uber, Stripe) advanced Python interview problems. Every solution includes architectural commentary, common pitfalls, and complete runnable code.</p>
 </blockquote>
 <hr>
-<h2 id="1-the-7-step-unsticking-decision-tree"><a href="#1-the-7-step-unsticking-decision-tree" class="header-anchor">#</a>1. The 7-Step Unsticking Decision Tree</h2>
+<h2 id="challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="header-anchor">#</a>Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Implement a bounded FIFO queue supporting <code>put(item, timeout)</code> and <code>get(timeout)</code>.</p>
+<ul>
+<li>If the queue is full, <code>put()</code> must block until a slot becomes free or timeout expires.</li>
+<li>If the queue is empty, <code>get()</code> must block until an item is available or timeout expires.</li>
+<li><strong>Constraint:</strong> You <strong>cannot</strong> use <code>queue.Queue</code>. You must build it using only <code>threading.Lock</code> and <code>threading.Condition</code>.</li>
+</ul>
+<h3 id="common-pitfalls"><a href="#common-pitfalls" class="header-anchor">#</a>Common Pitfalls</h3><ul>
+<li>Using <code>if</code> instead of <code>while</code> when checking conditions (susceptible to spurious wakeups!).</li>
+<li>Not releasing locks during wait timeouts.</li>
+</ul>
+<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Generic</span>, TypeVar, <span class="hljs-type">Optional</span>
+
+T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BoundedBlockingQueue</span>(<span class="hljs-type">Generic</span>[T]):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, capacity: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-keyword">if</span> capacity &lt;= <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;Capacity must be greater than 0&quot;</span>)
+        <span class="hljs-variable language_">self</span>.capacity = capacity
+        <span class="hljs-variable language_">self</span>.queue: <span class="hljs-built_in">list</span>[T] = []
+        <span class="hljs-variable language_">self</span>.lock = threading.Lock()
+        
+        <span class="hljs-comment"># Conditions tied to the single mutex</span>
+        <span class="hljs-variable language_">self</span>.not_full = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
+        <span class="hljs-variable language_">self</span>.not_empty = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, item: T, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Pushes an item into the queue. Blocks if full.
+        Returns True on success, False if timed out.
+        &quot;&quot;&quot;</span>
+        deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+
+        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
+            <span class="hljs-comment"># MUST use &#x27;while&#x27; to guard against spurious wakeups</span>
+            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) &gt;= <span class="hljs-variable language_">self</span>.capacity:
+                <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                    remaining = deadline - time.monotonic()
+                    <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Timed out</span>
+                    <span class="hljs-variable language_">self</span>.not_full.wait(timeout=remaining)
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-variable language_">self</span>.not_full.wait()
+
+            <span class="hljs-variable language_">self</span>.queue.append(item)
+            <span class="hljs-comment"># Notify waiting consumers that an item is now ready</span>
+            <span class="hljs-variable language_">self</span>.not_empty.notify()
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-type">Optional</span>[T]:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Pops the oldest item from the queue. Blocks if empty.
+        Returns the item, or None if timed out.
+        &quot;&quot;&quot;</span>
+        deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+
+        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
+            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                    remaining = deadline - time.monotonic()
+                    <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-comment"># Timed out</span>
+                    <span class="hljs-variable language_">self</span>.not_empty.wait(timeout=remaining)
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-variable language_">self</span>.not_empty.wait()
+
+            item = <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)
+            <span class="hljs-comment"># Notify waiting producers that a slot has freed up</span>
+            <span class="hljs-variable language_">self</span>.not_full.notify()
+            <span class="hljs-keyword">return</span> item
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
+
+<span class="hljs-comment"># Verification Test</span>
+bq = BoundedBlockingQueue[<span class="hljs-built_in">str</span>](capacity=<span class="hljs-number">2</span>)
+bq.put(<span class="hljs-string">&quot;Message 1&quot;</span>)
+bq.put(<span class="hljs-string">&quot;Message 2&quot;</span>)
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.2</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Blocked &amp; timed out</span>
+<span class="hljs-keyword">assert</span> bq.get() == <span class="hljs-string">&quot;Message 1&quot;</span>                   <span class="hljs-comment"># Freed slot</span>
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.1</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Succeeded!</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;BoundedBlockingQueue passed all concurrency verifications!&quot;</span>)</code></pre>
+  </div><hr>
+<h2 id="challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="header-anchor">#</a>Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>In high-throughput microservices, writing single events to a database or Kafka causes network bottlenecking.
+Implement an <code>AsyncBatcher</code> that collects incoming items and automatically flushes them in batches whenever:</p>
+<ol>
+<li><code>max_batch_size</code> items have accumulated, <strong>OR</strong></li>
+<li><code>max_wait_seconds</code> have elapsed since the earliest buffered item.</li>
+</ol>
+
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1176,124 +1275,221 @@ Every engineer has experienced the nightmare: you read the problem description, 
       </div>
       <div class="mermaid-viewport">
         <div class="mermaid">
-flowchart TD
-    Blank["Brain Goes Blank"] --&gt; Step1["Step 1: Hand-Simulate Tiny Example (N = 3)"]
-    Step1 --&gt; Step2["Step 2: Try Inversion (Solve Backwards from Target)"]
-    Step2 --&gt; Step3["Step 3: Can We Sort First? O(N log N)"]
-    Step3 --&gt; Step4["Step 4: Data Structure Matchmaker"]
-    Step4 --&gt; Step5["Step 5: Simplify Constraints (1D before 2D)"]
-    Step5 --&gt; Step6["Step 6: Monotonic or Sliding Window Signals?"]
-    Step6 --&gt; Step7["Step 7: Formalize DP State: dp[i] = optimal of ?"]
+sequenceDiagram
+    participant Producer as Concurrent Request Coroutines
+    participant Batcher as AsyncBatcher
+    participant DB as Database / Downstream API
+
+    Producer-&gt;&gt;Batcher: push("event_1")
+    Producer-&gt;&gt;Batcher: push("event_2")
+    Note over Batcher: Timer expires (max_wait_seconds) OR batch size reached
+    Batcher-&gt;&gt;DB: flush_batch(["event_1", "event_2"])
 </div>
       </div>
-    </div><h3 id="technique-1-hand-simulate-a-tiny-example-n-3"><a href="#technique-1-hand-simulate-a-tiny-example-n-3" class="header-anchor">#</a>Technique 1: Hand-Simulate a Tiny Example ($N = 3$)</h3><p>When an array has 50 elements, patterns are obscured. Shrink the problem to $N = 3$ or $N = 4$ and manually trace your own subconscious logic on paper:</p>
-<ul>
-<li><em>Ask yourself:</em> &quot;How did my human brain know that 7 was the answer?&quot;</li>
-<li>Did you scan left to right? Did you skip certain items? Whatever your human brain did intuitively can be turned into an algorithm!</li>
-</ul>
-<h3 id="technique-2-inversion-solve-backwards"><a href="#technique-2-inversion-solve-backwards" class="header-anchor">#</a>Technique 2: Inversion (Solve Backwards)</h3><p>If finding a path from $Start \rightarrow Target$ has an explosive branching factor of 5 choices per step, reverse the problem:</p>
-<ul>
-<li>Can you start at $Target$ and work backwards towards $Start$?</li>
-<li><em>Classic Example:</em> Jump Game. Checking if index 0 can reach index $N-1$ is messy. But starting at $N-1$ and checking if the previous index can reach it collapses the problem to a trivial greedy $O(N)$ sweep!</li>
-</ul>
-<h3 id="technique-3-the-sorting-trade-off-o-n-log-n"><a href="#technique-3-the-sorting-trade-off-o-n-log-n" class="header-anchor">#</a>Technique 3: The Sorting Trade-Off ($O(N \log N)$)</h3><p>If the array is unsorted and brute force is $O(N^2)$, ask:</p>
-<blockquote>
-<p><em>&quot;Does the order of elements matter?&quot;</em></p>
-</blockquote>
-<ul>
-<li>If you are finding pairs, triplets, intervals, or frequencies, <strong>order usually does not matter</strong>.</li>
-<li>Sorting takes $O(N \log N)$ and immediately unlocks <strong>Binary Search</strong> ($O(\log N)$) or <strong>Two Pointers</strong> ($O(N)$)!</li>
-</ul>
-<hr>
-<h2 id="2-the-data-structure-matchmaker-matrix"><a href="#2-the-data-structure-matchmaker-matrix" class="header-anchor">#</a>2. The Data Structure Matchmaker Matrix</h2><p>When you can&#39;t think of an algorithm, match the problem&#39;s core requirement to its dedicated data structure:</p>
-<table>
-<thead>
-<tr>
-<th align="left">If the problem requires...</th>
-<th align="left">The Dedicated Data Structure is...</th>
-<th align="left">Time Complexity</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Tracking the <strong>Top $K$</strong> largest or smallest elements</td>
-<td align="left"><strong>Min-Heap / Max-Heap</strong> (<code>heapq</code>)</td>
-<td align="left">$O(N \log K)$</td>
-</tr>
-<tr>
-<td align="left">Finding the <strong>Next Greater / Smaller Element</strong></td>
-<td align="left"><strong>Monotonic Stack</strong></td>
-<td align="left">$O(N)$</td>
-</tr>
-<tr>
-<td align="left">Dynamic <strong>Prefix / Autocomplete Search</strong></td>
-<td align="left"><strong>Trie (Prefix Tree)</strong></td>
-<td align="left">$O(L)$ where $L$ is word length</td>
-</tr>
-<tr>
-<td align="left">Checking <strong>Connected Components / Cycle Detection</strong></td>
-<td align="left"><strong>Disjoint Set Union (Union-Find)</strong></td>
-<td align="left">$O(\alpha(N)) \approx O(1)$</td>
-</tr>
-<tr>
-<td align="left">Finding the <strong>Shortest Path in an Unweighted Graph</strong></td>
-<td align="left"><strong>Breadth-First Search (BFS)</strong> with <code>deque</code></td>
-<td align="left">$O(V + E)$</td>
-</tr>
-<tr>
-<td align="left">Finding the <strong>Shortest Path in a Weighted Graph</strong></td>
-<td align="left"><strong>Dijkstra&#39;s Algorithm</strong> with Priority Queue</td>
-<td align="left">$O(E \log V)$</td>
-</tr>
-<tr>
-<td align="left">Fast <strong>Range Sum Queries with Updates</strong></td>
-<td align="left"><strong>Binary Indexed Tree (Fenwick) / Segment Tree</strong></td>
-<td align="left">$O(\log N)$</td>
-</tr>
-<tr>
-<td align="left">Longest contiguous subarray satisfying a condition</td>
-<td align="left"><strong>Sliding Window</strong> (Two Pointers)</td>
-<td align="left">$O(N)$</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="3-dynamic-programming-the-3-question-formulation"><a href="#3-dynamic-programming-the-3-question-formulation" class="header-anchor">#</a>3. Dynamic Programming: The 3-Question Formulation</h2><p>If a problem asks for <strong>&quot;Maximum&quot;</strong>, <strong>&quot;Minimum&quot;</strong>, <strong>&quot;Total Number of Ways&quot;</strong>, or <strong>&quot;Is it possible to reach...&quot;</strong>, it is almost always Dynamic Programming.</p>
-<p>Stop trying to guess the whole code. Answer these 3 specific questions:</p>
-<ol>
-<li><strong>What is the State?</strong> What variables uniquely define where we are? <ul>
-<li><em>Example:</em> <code>dp(i, remaining_weight)</code></li>
-</ul>
-</li>
-<li><strong>What is the Base Case?</strong> What is the simplest possible input that has an obvious answer?<ul>
-<li><em>Example:</em> If <code>remaining_weight == 0</code>, return <code>0</code>. If <code>i == len(items)</code>, return <code>0</code>.</li>
-</ul>
-</li>
-<li><strong>What is the Transition Choice?</strong> At state <code>i</code>, what are our possible actions?<ul>
-<li><em>Choice A:</em> Skip item <code>i</code> $\rightarrow <code>dp(i + 1, remaining_weight)</code></li>
-<li><em>Choice B:</em> Take item <code>i</code> $\rightarrow <code>value[i] + dp(i + 1, remaining_weight - weight[i])</code></li>
-<li><em>The Equation:</em> Take <code>max(Choice A, Choice B)</code>.</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h2 id="4-the-pre-flight-edge-case-checklist"><a href="#4-the-pre-flight-edge-case-checklist" class="header-anchor">#</a>4. The Pre-Flight Edge Case Checklist</h2><p>Before telling your interviewer your code is ready, run through this mental checklist:</p>
-
+    </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
   <div class="code-block-wrapper">
     <div class="code-header">
-      <span class="code-lang">text</span>
+      <span class="code-lang">python</span>
       <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-text">[ ] 1. Empty Input: Does the function crash on [] or &quot;&quot; or None?
-[ ] 2. Single Element: Does [1] trigger an IndexError in your pointer arithmetic?
-[ ] 3. Two Elements: Does [1, 2] handle odd vs. even length logic?
-[ ] 4. All Duplicates: Does [5, 5, 5, 5] cause an infinite loop in while (nums[l] &lt; nums[r])?
-[ ] 5. Negative Numbers: Does your math assume positive integers (e.g., modulo or sliding window sums)?
-[ ] 6. Large Boundary Extremes: Does target exceed the sum of all elements?
-[ ] 7. Cycles / Visited Sets: In graph or tree traversal, did you guard against infinite loops with a visited set?</code></pre>
-  </div><p>Running through this checklist out loud demonstrates true principal-level engineering rigor.</p>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Generic</span>, TypeVar, <span class="hljs-type">Callable</span>, Awaitable, <span class="hljs-type">List</span>
 
+T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">AsyncBatcher</span>(<span class="hljs-type">Generic</span>[T]):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
+        self,
+        batch_size: <span class="hljs-built_in">int</span>,
+        wait_seconds: <span class="hljs-built_in">float</span>,
+        flush_handler: <span class="hljs-type">Callable</span>[[<span class="hljs-type">List</span>[T]], Awaitable[<span class="hljs-literal">None</span>]]
+    </span>):
+        <span class="hljs-variable language_">self</span>.batch_size = batch_size
+        <span class="hljs-variable language_">self</span>.wait_seconds = wait_seconds
+        <span class="hljs-variable language_">self</span>.flush_handler = flush_handler
+        
+        <span class="hljs-variable language_">self</span>._buffer: <span class="hljs-type">List</span>[T] = []
+        <span class="hljs-variable language_">self</span>._lock = asyncio.Lock()
+        <span class="hljs-variable language_">self</span>._flush_event = asyncio.Event()
+        <span class="hljs-variable language_">self</span>._timer_task: asyncio.Task | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
+        <span class="hljs-variable language_">self</span>._running = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Starts the background timer loop.&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>._timer_task = asyncio.create_task(<span class="hljs-variable language_">self</span>._timer_loop())
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_timer_loop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>._running:
+            <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-variable language_">self</span>.wait_seconds)
+            <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._buffer:
+                    <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, item: T</span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+            <span class="hljs-variable language_">self</span>._buffer.append(item)
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._buffer) &gt;= <span class="hljs-variable language_">self</span>.batch_size:
+                <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_flush_internal</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._buffer:
+            <span class="hljs-keyword">return</span>
+        to_flush = <span class="hljs-variable language_">self</span>._buffer[:]
+        <span class="hljs-variable language_">self</span>._buffer.clear()
+        <span class="hljs-comment"># Execute handler without holding lock on subsequent pushes</span>
+        asyncio.create_task(<span class="hljs-variable language_">self</span>.flush_handler(to_flush))
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>._running = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._timer_task:
+            <span class="hljs-variable language_">self</span>._timer_task.cancel()
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+            <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
+
+<span class="hljs-comment"># Verification Test</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">db_writer</span>(<span class="hljs-params">batch: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[DB Flush] Flushed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(batch)}</span> items: <span class="hljs-subst">{batch}</span>&quot;</span>)
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">run_batcher_test</span>():
+    batcher = AsyncBatcher[<span class="hljs-built_in">str</span>](batch_size=<span class="hljs-number">3</span>, wait_seconds=<span class="hljs-number">0.5</span>, flush_handler=db_writer)
+    <span class="hljs-keyword">await</span> batcher.start()
+
+    <span class="hljs-comment"># Rapid push: should trigger size-based flush</span>
+    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e1&quot;</span>)
+    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e2&quot;</span>)
+    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e3&quot;</span>) <span class="hljs-comment"># 3 items -&gt; Flushes immediately</span>
+
+    <span class="hljs-comment"># Slow push: should trigger timer-based flush</span>
+    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e4&quot;</span>)
+    <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">0.7</span>) <span class="hljs-comment"># Exceeds 0.5s -&gt; Flushes e4</span>
+
+    <span class="hljs-keyword">await</span> batcher.shutdown()
+
+asyncio.run(run_batcher_test())</code></pre>
+  </div><hr>
+<h2 id="challenge-3-metaprogramming-fluent-dynamic-http-api-client"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="header-anchor">#</a>Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Construct an SDK client such that dynamic chained method calls automatically format and route REST requests without defining hardcoded methods:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># Desired interface:</span>
+client.users(<span class="hljs-number">123</span>).orders.get(status=<span class="hljs-string">&quot;active&quot;</span>)
+<span class="hljs-comment"># Translates to: GET /users/123/orders?status=active</span></code></pre>
+  </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> urlencode
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">APIEndpoint</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span>, segments: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>):
+        <span class="hljs-variable language_">self</span>._base_url = base_url.rstrip(<span class="hljs-string">&quot;/&quot;</span>)
+        <span class="hljs-variable language_">self</span>._segments = segments
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
+        <span class="hljs-comment"># Chain URL path segments</span>
+        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + [name])
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, *args</span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
+        <span class="hljs-comment"># Supports path parameters like .users(123)</span>
+        str_args = [<span class="hljs-built_in">str</span>(arg) <span class="hljs-keyword">for</span> arg <span class="hljs-keyword">in</span> args]
+        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + str_args)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, **params</span>) -&gt; <span class="hljs-built_in">dict</span>:
+        path = <span class="hljs-string">&quot;/&quot;</span>.join(<span class="hljs-variable language_">self</span>._segments)
+        query = <span class="hljs-string">f&quot;?<span class="hljs-subst">{urlencode(params)}</span>&quot;</span> <span class="hljs-keyword">if</span> params <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
+        full_url = <span class="hljs-string">f&quot;<span class="hljs-subst">{self._base_url}</span>/<span class="hljs-subst">{path}</span><span class="hljs-subst">{query}</span>&quot;</span>
+        
+        <span class="hljs-comment"># Simulate execution</span>
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;GET&quot;</span>,
+            <span class="hljs-string">&quot;url&quot;</span>: full_url,
+            <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,
+            <span class="hljs-string">&quot;simulated_response&quot;</span>: <span class="hljs-string">f&quot;Payload from <span class="hljs-subst">{full_url}</span>&quot;</span>
+        }
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DynamicAPIClient</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.base_url = base_url
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; APIEndpoint:
+        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>.base_url, [name])
+
+client = DynamicAPIClient(<span class="hljs-string">&quot;https://api.cloudplatform.com/v1&quot;</span>)
+res1 = client.users(<span class="hljs-number">42</span>).profiles.get(fields=<span class="hljs-string">&quot;email,name&quot;</span>)
+<span class="hljs-built_in">print</span>(res1)
+<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/users/42/profiles?fields=email%2Cname&#x27;, ...}</span>
+
+res2 = client.billing.invoices(<span class="hljs-string">&quot;2026-Q1&quot;</span>).download.get()
+<span class="hljs-built_in">print</span>(res2)
+<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/billing/invoices/2026-Q1/download&#x27;, ...}</span></code></pre>
+  </div><hr>
+<h2 id="challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="header-anchor">#</a>Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Create a context manager <code>@profile_scope</code> that measures:</p>
+<ol>
+<li>Exact wall-clock elapsed time (using <code>time.perf_counter_ns</code>).</li>
+<li>Net RAM allocated during the block (using <code>tracemalloc</code>).</li>
+<li>Supports both <code>with</code> block syntax AND <code>@decorator</code> syntax seamlessly.</li>
+</ol>
+<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> tracemalloc
+<span class="hljs-keyword">import</span> functools
+<span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> ContextDecorator
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">profile_scope</span>(<span class="hljs-title class_ inherited__">ContextDecorator</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;Block&quot;</span></span>):
+        <span class="hljs-variable language_">self</span>.name = name
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__enter__</span>(<span class="hljs-params">self</span>):
+        tracemalloc.start()
+        <span class="hljs-variable language_">self</span>.start_snapshot = tracemalloc.take_snapshot()
+        <span class="hljs-variable language_">self</span>.start_time = time.perf_counter_ns()
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__exit__</span>(<span class="hljs-params">self, exc_type, exc_val, exc_tb</span>):
+        elapsed_ns = time.perf_counter_ns() - <span class="hljs-variable language_">self</span>.start_time
+        elapsed_ms = elapsed_ns / <span class="hljs-number">1_000_000</span>
+
+        end_snapshot = tracemalloc.take_snapshot()
+        stats = end_snapshot.compare_to(<span class="hljs-variable language_">self</span>.start_snapshot, <span class="hljs-string">&#x27;lineno&#x27;</span>)
+        total_memory_diff_kb = <span class="hljs-built_in">sum</span>(stat.size_diff <span class="hljs-keyword">for</span> stat <span class="hljs-keyword">in</span> stats) / <span class="hljs-number">1024</span>
+        tracemalloc.stop()
+
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{self.name}</span>] Wall-clock: <span class="hljs-subst">{elapsed_ms:<span class="hljs-number">.3</span>f}</span> ms | Net Memory: <span class="hljs-subst">{total_memory_diff_kb:+<span class="hljs-number">.2</span>f}</span> KB&quot;</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Do not suppress exceptions</span>
+
+<span class="hljs-comment"># Usage as Context Manager:</span>
+<span class="hljs-keyword">with</span> profile_scope(<span class="hljs-string">&quot;Heavy Allocation Block&quot;</span>):
+    data = [x ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">200_000</span>)]
+
+<span class="hljs-comment"># Usage as Function Decorator:</span>
+<span class="hljs-meta">@profile_scope(<span class="hljs-params"><span class="hljs-string">&quot;Compute Function&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_cube_sum</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span></span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(x ** <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+
+compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
+  </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1302,20 +1498,20 @@ flowchart TD
           </button>
         </div>
         <div class="page-navigation">
-    <a href="../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-card prev">
+    <a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-card prev">
       <span class="nav-direction">← Previous Chapter</span>
-      <span class="nav-page-title">04: 45-Min Timed Interview Drills</span>
+      <span class="nav-page-title">19: Rust Extensions & PyO3</span>
     </a>
-    <a href="../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-card next">
+    <a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-card next">
       <span class="nav-direction">Next Chapter →</span>
-      <span class="nav-page-title">06: Whiteboard & No-IDE Discipline</span>
+      <span class="nav-page-title">21: Production Crisis Scenarios</span>
     </a></div>
       </div>
     </main>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-7-step-unsticking-decision-tree" class="toc-link">1. The 7-Step Unsticking Decision Tree</a></li><li class="toc-item level-3"><a href="#technique-1-hand-simulate-a-tiny-example-n-3" class="toc-link">Technique 1: Hand-Simulate a Tiny Example ($N = 3$)</a></li><li class="toc-item level-3"><a href="#technique-2-inversion-solve-backwards" class="toc-link">Technique 2: Inversion (Solve Backwards)</a></li><li class="toc-item level-3"><a href="#technique-3-the-sorting-trade-off-o-n-log-n" class="toc-link">Technique 3: The Sorting Trade-Off ($O(N \log N)$)</a></li><li class="toc-item level-2"><a href="#2-the-data-structure-matchmaker-matrix" class="toc-link">2. The Data Structure Matchmaker Matrix</a></li><li class="toc-item level-2"><a href="#3-dynamic-programming-the-3-question-formulation" class="toc-link">3. Dynamic Programming: The 3-Question Formulation</a></li><li class="toc-item level-2"><a href="#4-the-pre-flight-edge-case-checklist" class="toc-link">4. The Pre-Flight Edge Case Checklist</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="toc-link">Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#common-pitfalls" class="toc-link">Common Pitfalls</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="toc-link">Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="toc-link">Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="toc-link">Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li></ul>
     </aside>
   </div>
 
@@ -1347,7 +1543,7 @@ flowchart TD
     </div>
   </div>
 
-  <script>window.CURRENT_PAGE = "05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html";</script>
+  <script>window.CURRENT_PAGE = "01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html";</script>
   <script>
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';

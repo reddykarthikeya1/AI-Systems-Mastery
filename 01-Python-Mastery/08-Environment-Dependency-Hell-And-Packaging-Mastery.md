@@ -1,4 +1,4 @@
-# Chapter 10: Environment, Dependency Hell, & Packaging Mastery
+# Chapter 08: Modern Environments, Dependency Hell & Packaging Mastery
 
 > **The Reality of Production Python**
 > Most Python tutorials assume an idyllic world where `pip install package` runs smoothly and your script executes cleanly. In real-world enterprise engineering, at least 30% of critical incidents and onboarding friction stem from environment corruption, diamond dependency collisions, C-extension ABI incompatibilities, and operating system discrepancies. 

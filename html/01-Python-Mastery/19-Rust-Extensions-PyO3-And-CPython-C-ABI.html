@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>08: Core Practice Problems | PBC 2026 Master Preparation Guide</title>
+  <title>19: Rust Extensions & PyO3 | PBC 2026 Master Preparation Guide</title>
   <style>
     pre code.hljs {
   display: block;
@@ -1113,7 +1113,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     </a>
     <div class="header-controls">
       <div class="progress-stat-badge" title="Master Curriculum Progress">
-        <span id="header-progress-text">0/88 (0%)</span>
+        <span id="header-progress-text">0/93 (0%)</span>
         <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
       </div>
       <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
@@ -1124,7 +1124,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
       </div>
-      <a href="../../pdfs/01-Python-Mastery/08-Interview-Practice-Problems-Solutions.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+      <a href="../../pdfs/01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         <span>Open PDF</span>
       </a>
@@ -1139,7 +1139,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <aside class="sidebar">
       <div class="track-group">
       <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
-      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html"><span class="nav-label-text">07: Type System & Typing</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html" class="nav-link active" data-rel="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">08: Core Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">09: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">10: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">11: Debugging & Memory Leaks Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">12: Legacy Code Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">13: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">14: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">15: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-link " data-rel="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html"><span class="nav-label-text">17: Async Mocking & ASGI Internals</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link active" data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Curated-Video-Masterclasses.html" class="nav-link " data-rel="01-Python-Mastery/22-Curated-Video-Masterclasses.html"><span class="nav-label-text">22: Curated Video Masterclasses</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
@@ -1150,21 +1150,62 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="chapter-8-curated-python-engineering-interview-challenges-solutions"><a href="#chapter-8-curated-python-engineering-interview-challenges-solutions" class="header-anchor">#</a>Chapter 8: Curated Python Engineering Interview Challenges & Solutions</h1><blockquote>
-<p><strong>Core Learning Objective:</strong> Test, solidify, and demonstrate mastery through real-world Product-Based Company (Google, Meta, Uber, Stripe) advanced Python interview problems. Every solution includes architectural commentary, common pitfalls, and complete runnable code.</p>
+          <h1 id="chapter-19-compiled-native-extensions-with-rust-pyo3"><a href="#chapter-19-compiled-native-extensions-with-rust-pyo3" class="header-anchor">#</a>Chapter 19: Compiled Native Extensions with Rust & PyO3</h1><blockquote>
+<p><strong>Zero-Prerequisite Intuition: The &quot;Formula 1 Engine Swap&quot;</strong>
+Why do we need another language when Python is so enjoyable to write?</p>
+<p>Imagine you own a comfortable luxury sedan. It has heated leather seats, automatic climate control, cup holders, and cruise control. It is a delight to drive to the grocery store (<strong>Python&#39;s developer productivity, expressiveness, and simplicity</strong>).</p>
+<p>But imagine one day you need to race on a Formula 1 circuit against supersonic supercars (<strong>crunching 50 million mathematical numbers, parsing gigabytes of JSON, or executing cryptographic hashes</strong>). If you push your luxury sedan to 200 mph, the radiator overheats, the tires shred, and the engine smokes.</p>
+<p>What if you didn&#39;t have to choose between luxury and extreme speed? What if you could sit in your comfortable leather seat, press a red dashboard button, and have a 1,000-horsepower Formula 1 engine drop directly into the chassis to propel you forward at supersonic speed?</p>
+<p>That is what <strong>Compiled Native Extensions</strong> do. You write the comfortable user interface and high-level logic in Python. When you hit a CPU-intensive bottleneck, you hand the raw data to <strong>Rust via PyO3</strong>. The Rust engine crunches the numbers directly on bare metal CPU silicon, releases the Global Interpreter Lock (GIL) across all 16 CPU cores, and hands the result back to Python in milliseconds!</p>
 </blockquote>
 <hr>
-<h2 id="challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="header-anchor">#</a>Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Implement a bounded FIFO queue supporting <code>put(item, timeout)</code> and <code>get(timeout)</code>.</p>
+<h2 id="1-why-did-the-python-world-abandon-c-cython-for-rust"><a href="#1-why-did-the-python-world-abandon-c-cython-for-rust" class="header-anchor">#</a>1. Why Did the Python World Abandon C/Cython for Rust?</h2><p>For thirty years, whenever Python was too slow, developers wrote C or C++ extensions, or used <strong>Cython</strong>. However, C extensions brought catastrophic risks:</p>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    subgraph Legacy["The C / C++ Extension Nightmare"]
+        C1["Unchecked Pointer Arithmetic"] --&gt; Crash1["Segmentation Fault (SIGSEGV): Server Dies"]
+        C2["Manual malloc() / free()"] --&gt; Crash2["Memory Leaks / Use-After-Free Vulnerabilities"]
+        C3["Multithreading with Pthreads"] --&gt; Crash3["Data Races &amp; Silent Memory Corruption"]
+    end
+
+    subgraph Modern["The Modern Rust + PyO3 Standard"]
+        R1["Rust Compiler Borrow Checker"] --&gt; Safe1["Compile-Time Guarantee: Zero Segfaults"]
+        R2["Automatic RAII Ownership"] --&gt; Safe2["Deterministic Memory Deallocation: Zero Leaks"]
+        R3["Fearless Concurrency"] --&gt; Safe3["Releases GIL Safely Across All CPU Cores"]
+    end
+</div>
+      </div>
+    </div><h3 id="the-industry-shift"><a href="#the-industry-shift" class="header-anchor">#</a>The Industry Shift</h3><p>In 2026, the premier performance tools in the Python ecosystem are all built with Rust:</p>
 <ul>
-<li>If the queue is full, <code>put()</code> must block until a slot becomes free or timeout expires.</li>
-<li>If the queue is empty, <code>get()</code> must block until an item is available or timeout expires.</li>
-<li><strong>Constraint:</strong> You <strong>cannot</strong> use <code>queue.Queue</code>. You must build it using only <code>threading.Lock</code> and <code>threading.Condition</code>.</li>
+<li><strong>Ruff:</strong> 100x faster Python linter/formatter replacing Flake8 and Black.</li>
+<li><strong>uv:</strong> 10x–100x faster package manager replacing <code>pip</code> and <code>virtualenv</code>.</li>
+<li><strong>Pydantic V2:</strong> Rust-based data validation engine.</li>
+<li><strong>Polars:</strong> Lightning-fast DataFrame library outperforming Pandas.</li>
+<li><strong>Cryptography:</strong> Python&#39;s core cryptography library now powered by Rust.</li>
 </ul>
-<h3 id="common-pitfalls"><a href="#common-pitfalls" class="header-anchor">#</a>Common Pitfalls</h3><ul>
-<li>Using <code>if</code> instead of <code>while</code> when checking conditions (susceptible to spurious wakeups!).</li>
-<li>Not releasing locks during wait timeouts.</li>
-</ul>
-<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+<hr>
+<h2 id="2-the-cpython-c-api-pyobject-internals-spoon-fed-foundations"><a href="#2-the-cpython-c-api-pyobject-internals-spoon-fed-foundations" class="header-anchor">#</a>2. The CPython C-API & PyObject Internals (Spoon-Fed Foundations)</h2><p>To understand how Python talks to Rust, we must understand how Python represents data in C.</p>
+<h3 id="everything-in-python-is-a-pyobject-pointer"><a href="#everything-in-python-is-a-pyobject-pointer" class="header-anchor">#</a>Everything in Python is a `PyObject` Pointer</h3><p>When you write in Python:</p>
+
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1173,87 +1214,238 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> threading
-<span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Generic</span>, TypeVar, <span class="hljs-type">Optional</span>
+    <pre><code class="hljs language-python">x = <span class="hljs-number">42</span></code></pre>
+  </div><p>Python does <strong>not</strong> store the raw number <code>42</code> directly in a CPU register. Instead, CPython allocates a C structure on the heap:</p>
 
-T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">c</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-c"><span class="hljs-comment">// CPython source code (Include/object.h)</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">object</span> {</span>
+    _PyObject_HEAD_EXTRA
+    Py_ssize_t ob_refcnt;          <span class="hljs-comment">// 8 bytes: Reference counter (for Garbage Collector)</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">typeobject</span> *<span class="hljs-title">ob_type</span>;</span>   <span class="hljs-comment">// 8 bytes: Pointer to &#x27;int&#x27; class definition</span>
+};
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">BoundedBlockingQueue</span>(<span class="hljs-type">Generic</span>[T]):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, capacity: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-keyword">if</span> capacity &lt;= <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;Capacity must be greater than 0&quot;</span>)
-        <span class="hljs-variable language_">self</span>.capacity = capacity
-        <span class="hljs-variable language_">self</span>.queue: <span class="hljs-built_in">list</span>[T] = []
-        <span class="hljs-variable language_">self</span>.lock = threading.Lock()
-        
-        <span class="hljs-comment"># Conditions tied to the single mutex</span>
-        <span class="hljs-variable language_">self</span>.not_full = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
-        <span class="hljs-variable language_">self</span>.not_empty = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">PyLongObject</span> {</span>
+    PyObject ob_base;
+    digit ob_digit[<span class="hljs-number">1</span>];             <span class="hljs-comment">// Array storing the actual numerical digits</span>
+};</code></pre>
+  </div><p>A simple integer in Python takes <strong>28 bytes of memory</strong>, whereas on bare metal hardware, a 64-bit integer takes only <strong>8 bytes</strong>!</p>
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, item: T, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
-        <span class="hljs-string">&quot;&quot;&quot;
-        Pushes an item into the queue. Blocks if full.
-        Returns True on success, False if timed out.
-        &quot;&quot;&quot;</span>
-        deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
-
-        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
-            <span class="hljs-comment"># MUST use &#x27;while&#x27; to guard against spurious wakeups</span>
-            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) &gt;= <span class="hljs-variable language_">self</span>.capacity:
-                <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
-                    remaining = deadline - time.monotonic()
-                    <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Timed out</span>
-                    <span class="hljs-variable language_">self</span>.not_full.wait(timeout=remaining)
-                <span class="hljs-keyword">else</span>:
-                    <span class="hljs-variable language_">self</span>.not_full.wait()
-
-            <span class="hljs-variable language_">self</span>.queue.append(item)
-            <span class="hljs-comment"># Notify waiting consumers that an item is now ready</span>
-            <span class="hljs-variable language_">self</span>.not_empty.notify()
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-type">Optional</span>[T]:
-        <span class="hljs-string">&quot;&quot;&quot;
-        Pops the oldest item from the queue. Blocks if empty.
-        Returns the item, or None if timed out.
-        &quot;&quot;&quot;</span>
-        deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
-
-        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
-            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) == <span class="hljs-number">0</span>:
-                <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
-                    remaining = deadline - time.monotonic()
-                    <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-comment"># Timed out</span>
-                    <span class="hljs-variable language_">self</span>.not_empty.wait(timeout=remaining)
-                <span class="hljs-keyword">else</span>:
-                    <span class="hljs-variable language_">self</span>.not_empty.wait()
-
-            item = <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)
-            <span class="hljs-comment"># Notify waiting producers that a slot has freed up</span>
-            <span class="hljs-variable language_">self</span>.not_full.notify()
-            <span class="hljs-keyword">return</span> item
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
-            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
-
-<span class="hljs-comment"># Verification Test</span>
-bq = BoundedBlockingQueue[<span class="hljs-built_in">str</span>](capacity=<span class="hljs-number">2</span>)
-bq.put(<span class="hljs-string">&quot;Message 1&quot;</span>)
-bq.put(<span class="hljs-string">&quot;Message 2&quot;</span>)
-<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.2</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Blocked &amp; timed out</span>
-<span class="hljs-keyword">assert</span> bq.get() == <span class="hljs-string">&quot;Message 1&quot;</span>                   <span class="hljs-comment"># Freed slot</span>
-<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.1</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Succeeded!</span>
-<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;BoundedBlockingQueue passed all concurrency verifications!&quot;</span>)</code></pre>
-  </div><hr>
-<h2 id="challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="header-anchor">#</a>Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>In high-throughput microservices, writing single events to a database or Kafka causes network bottlenecking.
-Implement an <code>AsyncBatcher</code> that collects incoming items and automatically flushes them in batches whenever:</p>
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart LR
+    PyVar["Python Variable: x"] --&gt;|Points to Heap| PyObj["PyObject Header&lt;br/&gt;ob_refcnt: 1&lt;br/&gt;ob_type: &amp;PyLong_Type&lt;br/&gt;Value: 42 (28 bytes)"]
+    RustVar["Rust Variable: let x: i64 = 42;"] --&gt;|Direct CPU Register / Stack| RawReg["Raw 64-bit Binary: 00101010 (8 bytes)"]
+</div>
+      </div>
+    </div><h3 id="what-pyo3-does"><a href="#what-pyo3-does" class="header-anchor">#</a>What PyO3 Does</h3><p><strong>PyO3</strong> is a Rust library that bridges these two worlds:</p>
 <ol>
-<li><code>max_batch_size</code> items have accumulated, <strong>OR</strong></li>
-<li><code>max_wait_seconds</code> have elapsed since the earliest buffered item.</li>
+<li>When Python calls Rust, PyO3 extracts the raw machine numbers from the heavy <code>PyObject</code> containers (<strong>Unpacking</strong>).</li>
+<li>Rust runs at the absolute maximum speed of the hardware using native CPU SIMD instructions.</li>
+<li>When Rust finishes, PyO3 wraps the raw result back into a valid <code>PyObject</code> and hands it back to Python (<strong>Packing</strong>).</li>
+</ol>
+<hr>
+<h2 id="3-building-your-first-rust-extension-with-pyo3-maturin"><a href="#3-building-your-first-rust-extension-with-pyo3-maturin" class="header-anchor">#</a>3. Building Your First Rust Extension with PyO3 & Maturin</h2><p>Let&#39;s build a real, high-performance native extension from scratch.</p>
+<h3 id="project-directory-structure"><a href="#project-directory-structure" class="header-anchor">#</a>Project Directory Structure</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">text</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-text">fast_math<span class="hljs-symbol">/</span>
+├── Cargo.toml               <span class="hljs-comment"># Rust package &amp; dependency manifest</span>
+├── pyproject.toml           <span class="hljs-comment"># Python build-backend configuration</span>
+└── src<span class="hljs-symbol">/</span>
+    └── lib.rs               <span class="hljs-comment"># Rust implementation file</span></code></pre>
+  </div><h3 id="step-1-the-build-configuration-pyproject-toml"><a href="#step-1-the-build-configuration-pyproject-toml" class="header-anchor">#</a>Step 1: The Build Configuration (`pyproject.toml`)</h3><p>We tell Python to use <strong><code>maturin</code></strong> (the modern Rust-to-Python build tool):</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">toml</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-toml"><span class="hljs-comment"># pyproject.toml</span>
+<span class="hljs-section">[build-system]</span>
+<span class="hljs-attr">requires</span> = [<span class="hljs-string">&quot;maturin&gt;=1.5,&lt;2.0&quot;</span>]
+<span class="hljs-attr">build-backend</span> = <span class="hljs-string">&quot;maturin&quot;</span>
+
+<span class="hljs-section">[project]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;fast_math&quot;</span>
+<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
+<span class="hljs-attr">requires-python</span> = <span class="hljs-string">&quot;&gt;=3.10&quot;</span></code></pre>
+  </div><h3 id="step-2-the-rust-manifest-cargo-toml"><a href="#step-2-the-rust-manifest-cargo-toml" class="header-anchor">#</a>Step 2: The Rust Manifest (`Cargo.toml`)</h3><p>We configure Rust to build a <code>cdylib</code> (C dynamic library) and import <code>pyo3</code>:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">toml</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-toml"><span class="hljs-comment"># Cargo.toml</span>
+<span class="hljs-section">[package]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;fast_math&quot;</span>
+<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
+<span class="hljs-attr">edition</span> = <span class="hljs-string">&quot;2021&quot;</span>
+
+<span class="hljs-section">[lib]</span>
+<span class="hljs-comment"># &quot;cdylib&quot; produces a .so (Linux), .dylib (macOS), or .pyd (Windows) file</span>
+<span class="hljs-attr">crate-type</span> = [<span class="hljs-string">&quot;cdylib&quot;</span>]
+
+<span class="hljs-section">[dependencies]</span>
+<span class="hljs-comment"># pyo3 with extension-module feature enables Python C-ABI bindings</span>
+<span class="hljs-attr">pyo3</span> = { version = <span class="hljs-string">&quot;0.21&quot;</span>, features = [<span class="hljs-string">&quot;extension-module&quot;</span>] }
+<span class="hljs-attr">rayon</span> = <span class="hljs-string">&quot;1.10&quot;</span> <span class="hljs-comment"># High-performance multi-threaded parallelism</span></code></pre>
+  </div><h3 id="step-3-writing-the-rust-engine-src-lib-rs"><a href="#step-3-writing-the-rust-engine-src-lib-rs" class="header-anchor">#</a>Step 3: Writing the Rust Engine (`src/lib.rs`)</h3><p>Notice how clean and readable PyO3 code is. We use attributes like <code>#[pyfunction]</code> and <code>#[pymodule]</code>:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">rust</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-rust"><span class="hljs-comment">// src/lib.rs</span>
+<span class="hljs-keyword">use</span> pyo3::prelude::*;
+<span class="hljs-keyword">use</span> rayon::prelude::*;
+
+<span class="hljs-comment">/// 1. A pure CPU-bound mathematical calculation:</span>
+<span class="hljs-comment">/// Calculates the sum of primes up to `limit` sequentially.</span>
+<span class="hljs-meta">#[pyfunction]</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">sum_primes_sequential</span>(limit: <span class="hljs-type">u64</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">u64</span> {
+    (<span class="hljs-number">2</span>..limit)
+        .<span class="hljs-title function_ invoke__">filter</span>(|&amp;n| <span class="hljs-title function_ invoke__">is_prime</span>(n))
+        .<span class="hljs-title function_ invoke__">sum</span>()
+}
+
+<span class="hljs-comment">/// 2. Ultra-Performance Parallel Rust Function:</span>
+<span class="hljs-comment">/// Releases the Python GIL and computes across ALL CPU cores simultaneously using Rayon!</span>
+<span class="hljs-meta">#[pyfunction]</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">sum_primes_parallel</span>(py: Python&lt;<span class="hljs-symbol">&#x27;_</span>&gt;, limit: <span class="hljs-type">u64</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">u64</span> {
+    <span class="hljs-comment">// py.allow_threads RELEASES the Global Interpreter Lock (GIL)!</span>
+    <span class="hljs-comment">// While this closure executes, other Python threads can run freely!</span>
+    py.<span class="hljs-title function_ invoke__">allow_threads</span>(|| {
+        (<span class="hljs-number">2</span>..limit)
+            .<span class="hljs-title function_ invoke__">into_par_iter</span>() <span class="hljs-comment">// Rayon parallel iterator: spreads work to OS threadpool!</span>
+            .<span class="hljs-title function_ invoke__">filter</span>(|&amp;n| <span class="hljs-title function_ invoke__">is_prime</span>(n))
+            .<span class="hljs-title function_ invoke__">sum</span>()
+    })
+}
+
+<span class="hljs-comment">// Helper mathematical function (compiled directly to bare-metal assembly)</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">is_prime</span>(n: <span class="hljs-type">u64</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">bool</span> {
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">3</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; }
+    <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> || n % <span class="hljs-number">3</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">i</span> = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">while</span> i * i &lt;= n {
+        <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span> || n % (i + <span class="hljs-number">2</span>) == <span class="hljs-number">0</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        i += <span class="hljs-number">6</span>;
+    }
+    <span class="hljs-literal">true</span>
+}
+
+<span class="hljs-comment">/// 3. The Python Module Definition:</span>
+<span class="hljs-comment">/// This registers our functions so they appear inside `import fast_math`.</span>
+<span class="hljs-meta">#[pymodule]</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">fast_math</span>(m: &amp;Bound&lt;<span class="hljs-symbol">&#x27;_</span>, PyModule&gt;) <span class="hljs-punctuation">-&gt;</span> PyResult&lt;()&gt; {
+    m.<span class="hljs-title function_ invoke__">add_function</span>(wrap_pyfunction!(sum_primes_sequential, m)?)?;
+    m.<span class="hljs-title function_ invoke__">add_function</span>(wrap_pyfunction!(sum_primes_parallel, m)?)?;
+    <span class="hljs-title function_ invoke__">Ok</span>(())
+}</code></pre>
+  </div><h3 id="step-4-compiling-and-testing-inside-python"><a href="#step-4-compiling-and-testing-inside-python" class="header-anchor">#</a>Step 4: Compiling and Testing Inside Python</h3><p>In your terminal, execute:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">maturin develop --release</code></pre>
+  </div><p>Maturin compiles the Rust code with full optimizations and links it directly into your active virtual environment.</p>
+<p>Now, test it inside a Python script:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># benchmark_rust.py</span>
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> fast_math
+
+LIMIT = <span class="hljs-number">5_000_000</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Calculating sum of primes below <span class="hljs-subst">{LIMIT:,}</span>...&quot;</span>)
+
+<span class="hljs-comment"># 1. Benchmark Sequential Rust</span>
+start = time.perf_counter()
+res_seq = fast_math.sum_primes_sequential(LIMIT)
+elapsed_seq = time.perf_counter() - start
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Rust Sequential] Result: <span class="hljs-subst">{res_seq:,}</span> | Time: <span class="hljs-subst">{elapsed_seq:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
+
+<span class="hljs-comment"># 2. Benchmark Multi-Threaded Parallel Rust (GIL Released!)</span>
+start = time.perf_counter()
+res_par = fast_math.sum_primes_parallel(LIMIT)
+elapsed_par = time.perf_counter() - start
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Rust Parallel Multi-Core] Result: <span class="hljs-subst">{res_par:,}</span> | Time: <span class="hljs-subst">{elapsed_par:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
+
+speedup = elapsed_seq / elapsed_par
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Parallel speedup: <span class="hljs-subst">{speedup:<span class="hljs-number">.1</span>f}</span>x faster across all CPU cores!&quot;</span>)</code></pre>
+  </div><h3 id="benchmark-results-on-an-8-core-machine"><a href="#benchmark-results-on-an-8-core-machine" class="header-anchor">#</a>Benchmark Results on an 8-Core Machine:</h3><ul>
+<li><strong>Pure Python:</strong> $\approx 42.50\text{ seconds}$</li>
+<li><strong>Rust Sequential:</strong> $\approx 1.85\text{ seconds}$ ($23\times\text{ faster}$)</li>
+<li><strong>Rust Parallel (GIL Released):</strong> $\approx 0.29\text{ seconds}$ ($146\times\text{ faster!}$)</li>
+</ul>
+<hr>
+<h2 id="4-releasing-the-gil-the-python-allow-threads-secret"><a href="#4-releasing-the-gil-the-python-allow-threads-secret" class="header-anchor">#</a>4. Releasing the GIL: The `Python::allow_threads` Secret</h2><p>In Chapter 6, we learned about the <strong>Global Interpreter Lock (GIL)</strong>: standard Python threads cannot execute CPU bytecode at the same time because only one thread can hold the GIL at any given instant.</p>
+<h3 id="how-rust-smashes-the-gil-bottleneck"><a href="#how-rust-smashes-the-gil-bottleneck" class="header-anchor">#</a>How Rust Smashes the GIL Bottleneck</h3><p>When your Python code calls Rust:</p>
+<ol>
+<li>Rust receives the input numbers.</li>
+<li>Rust calls <code>py.allow_threads(|| { ... })</code>.</li>
+<li>At that exact millisecond, <strong>Rust releases the GIL back to CPython</strong>.</li>
+<li>The CPython runtime is now completely unblocked! Other Python threads (serving web requests, answering WebSockets) continue running smoothly.</li>
+<li>Meanwhile, inside Rust, <strong>Rayon</strong> spawns worker threads across every physical CPU core, running raw machine instructions at 100% hardware saturation.</li>
+<li>When the Rust calculation finishes, Rust re-acquires the GIL for a microsecond to return the result object to Python.</li>
 </ol>
 
     <div class="mermaid-container">
@@ -1276,220 +1468,128 @@ Implement an <code>AsyncBatcher</code> that collects incoming items and automati
       <div class="mermaid-viewport">
         <div class="mermaid">
 sequenceDiagram
-    participant Producer as Concurrent Request Coroutines
-    participant Batcher as AsyncBatcher
-    participant DB as Database / Downstream API
+    autonumber
+    participant MainPy as Python Main Thread
+    participant GIL as CPython GIL
+    participant OtherPy as Other Python Threads
+    participant Rust as Rust Rayon Engine
 
-    Producer-&gt;&gt;Batcher: push("event_1")
-    Producer-&gt;&gt;Batcher: push("event_2")
-    Note over Batcher: Timer expires (max_wait_seconds) OR batch size reached
-    Batcher-&gt;&gt;DB: flush_batch(["event_1", "event_2"])
+    MainPy-&gt;&gt;Rust: Calls fast_math.sum_primes_parallel()
+    Rust-&gt;&gt;GIL: Releases GIL (py.allow_threads)
+    
+    par Concurrent Execution
+        OtherPy-&gt;&gt;GIL: Acquires GIL &amp; handles Web Requests!
+    and
+        Rust-&gt;&gt;Rust: Spins up 16 CPU cores at 100% compute!
+    end
+
+    Rust-&gt;&gt;GIL: Re-acquires GIL
+    Rust--&gt;&gt;MainPy: Returns final integer result
 </div>
       </div>
-    </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+    </div><hr>
+<h2 id="5-zero-copy-data-sharing-the-buffer-protocol"><a href="#5-zero-copy-data-sharing-the-buffer-protocol" class="header-anchor">#</a>5. Zero-Copy Data Sharing: The Buffer Protocol</h2><p>What happens if you have a <strong>2 Gigabyte array of floating-point numbers</strong> in Python (e.g., audio, images, or financial tick data)?
+If you pass that array to Rust by converting it to a Rust <code>Vec&lt;f64&gt;</code>, you must allocate another 2 Gigabytes of memory and copy 2 billion bytes across the boundary. This wastes seconds of CPU time!</p>
+<h3 id="the-solution-the-python-buffer-protocol"><a href="#the-solution-the-python-buffer-protocol" class="header-anchor">#</a>The Solution: The Python Buffer Protocol</h3><p>The <strong>Python Buffer Protocol</strong> (PEP 3118) allows Python objects (like <code>bytes</code>, <code>bytearray</code>, or NumPy arrays) to expose their raw, internal memory pointer directly.</p>
+<p>Rust can inspect the memory address and read/write the numbers <strong>in-place without copying a single byte!</strong></p>
+
   <div class="code-block-wrapper">
     <div class="code-header">
-      <span class="code-lang">python</span>
+      <span class="code-lang">rust</span>
       <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
-<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Generic</span>, TypeVar, <span class="hljs-type">Callable</span>, Awaitable, <span class="hljs-type">List</span>
+    <pre><code class="hljs language-rust"><span class="hljs-comment">// Rust zero-copy array processing with PyO3</span>
+<span class="hljs-keyword">use</span> pyo3::prelude::*;
+<span class="hljs-keyword">use</span> pyo3::types::PyByteArray;
 
-T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">AsyncBatcher</span>(<span class="hljs-type">Generic</span>[T]):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
-        self,
-        batch_size: <span class="hljs-built_in">int</span>,
-        wait_seconds: <span class="hljs-built_in">float</span>,
-        flush_handler: <span class="hljs-type">Callable</span>[[<span class="hljs-type">List</span>[T]], Awaitable[<span class="hljs-literal">None</span>]]
-    </span>):
-        <span class="hljs-variable language_">self</span>.batch_size = batch_size
-        <span class="hljs-variable language_">self</span>.wait_seconds = wait_seconds
-        <span class="hljs-variable language_">self</span>.flush_handler = flush_handler
-        
-        <span class="hljs-variable language_">self</span>._buffer: <span class="hljs-type">List</span>[T] = []
-        <span class="hljs-variable language_">self</span>._lock = asyncio.Lock()
-        <span class="hljs-variable language_">self</span>._flush_event = asyncio.Event()
-        <span class="hljs-variable language_">self</span>._timer_task: asyncio.Task | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
-        <span class="hljs-variable language_">self</span>._running = <span class="hljs-literal">True</span>
-
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Starts the background timer loop.&quot;&quot;&quot;</span>
-        <span class="hljs-variable language_">self</span>._timer_task = asyncio.create_task(<span class="hljs-variable language_">self</span>._timer_loop())
-
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_timer_loop</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>._running:
-            <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-variable language_">self</span>.wait_seconds)
-            <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
-                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._buffer:
-                    <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
-
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, item: T</span>) -&gt; <span class="hljs-literal">None</span>:
-        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
-            <span class="hljs-variable language_">self</span>._buffer.append(item)
-            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._buffer) &gt;= <span class="hljs-variable language_">self</span>.batch_size:
-                <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
-
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_flush_internal</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._buffer:
-            <span class="hljs-keyword">return</span>
-        to_flush = <span class="hljs-variable language_">self</span>._buffer[:]
-        <span class="hljs-variable language_">self</span>._buffer.clear()
-        <span class="hljs-comment"># Execute handler without holding lock on subsequent pushes</span>
-        asyncio.create_task(<span class="hljs-variable language_">self</span>.flush_handler(to_flush))
-
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-variable language_">self</span>._running = <span class="hljs-literal">False</span>
-        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._timer_task:
-            <span class="hljs-variable language_">self</span>._timer_task.cancel()
-        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
-            <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
-
-<span class="hljs-comment"># Verification Test</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">db_writer</span>(<span class="hljs-params">batch: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>):
-    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[DB Flush] Flushed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(batch)}</span> items: <span class="hljs-subst">{batch}</span>&quot;</span>)
-
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">run_batcher_test</span>():
-    batcher = AsyncBatcher[<span class="hljs-built_in">str</span>](batch_size=<span class="hljs-number">3</span>, wait_seconds=<span class="hljs-number">0.5</span>, flush_handler=db_writer)
-    <span class="hljs-keyword">await</span> batcher.start()
-
-    <span class="hljs-comment"># Rapid push: should trigger size-based flush</span>
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e1&quot;</span>)
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e2&quot;</span>)
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e3&quot;</span>) <span class="hljs-comment"># 3 items -&gt; Flushes immediately</span>
-
-    <span class="hljs-comment"># Slow push: should trigger timer-based flush</span>
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e4&quot;</span>)
-    <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">0.7</span>) <span class="hljs-comment"># Exceeds 0.5s -&gt; Flushes e4</span>
-
-    <span class="hljs-keyword">await</span> batcher.shutdown()
-
-asyncio.run(run_batcher_test())</code></pre>
-  </div><hr>
-<h2 id="challenge-3-metaprogramming-fluent-dynamic-http-api-client"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="header-anchor">#</a>Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Construct an SDK client such that dynamic chained method calls automatically format and route REST requests without defining hardcoded methods:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># Desired interface:</span>
-client.users(<span class="hljs-number">123</span>).orders.get(status=<span class="hljs-string">&quot;active&quot;</span>)
-<span class="hljs-comment"># Translates to: GET /users/123/orders?status=active</span></code></pre>
-  </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> urlencode
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">APIEndpoint</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span>, segments: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>):
-        <span class="hljs-variable language_">self</span>._base_url = base_url.rstrip(<span class="hljs-string">&quot;/&quot;</span>)
-        <span class="hljs-variable language_">self</span>._segments = segments
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
-        <span class="hljs-comment"># Chain URL path segments</span>
-        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + [name])
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, *args</span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
-        <span class="hljs-comment"># Supports path parameters like .users(123)</span>
-        str_args = [<span class="hljs-built_in">str</span>(arg) <span class="hljs-keyword">for</span> arg <span class="hljs-keyword">in</span> args]
-        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + str_args)
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, **params</span>) -&gt; <span class="hljs-built_in">dict</span>:
-        path = <span class="hljs-string">&quot;/&quot;</span>.join(<span class="hljs-variable language_">self</span>._segments)
-        query = <span class="hljs-string">f&quot;?<span class="hljs-subst">{urlencode(params)}</span>&quot;</span> <span class="hljs-keyword">if</span> params <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
-        full_url = <span class="hljs-string">f&quot;<span class="hljs-subst">{self._base_url}</span>/<span class="hljs-subst">{path}</span><span class="hljs-subst">{query}</span>&quot;</span>
-        
-        <span class="hljs-comment"># Simulate execution</span>
-        <span class="hljs-keyword">return</span> {
-            <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;GET&quot;</span>,
-            <span class="hljs-string">&quot;url&quot;</span>: full_url,
-            <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,
-            <span class="hljs-string">&quot;simulated_response&quot;</span>: <span class="hljs-string">f&quot;Payload from <span class="hljs-subst">{full_url}</span>&quot;</span>
-        }
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">DynamicAPIClient</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span></span>):
-        <span class="hljs-variable language_">self</span>.base_url = base_url
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; APIEndpoint:
-        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>.base_url, [name])
-
-client = DynamicAPIClient(<span class="hljs-string">&quot;https://api.cloudplatform.com/v1&quot;</span>)
-res1 = client.users(<span class="hljs-number">42</span>).profiles.get(fields=<span class="hljs-string">&quot;email,name&quot;</span>)
-<span class="hljs-built_in">print</span>(res1)
-<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/users/42/profiles?fields=email%2Cname&#x27;, ...}</span>
-
-res2 = client.billing.invoices(<span class="hljs-string">&quot;2026-Q1&quot;</span>).download.get()
-<span class="hljs-built_in">print</span>(res2)
-<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/billing/invoices/2026-Q1/download&#x27;, ...}</span></code></pre>
-  </div><hr>
-<h2 id="challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="header-anchor">#</a>Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Create a context manager <code>@profile_scope</code> that measures:</p>
-<ol>
-<li>Exact wall-clock elapsed time (using <code>time.perf_counter_ns</code>).</li>
-<li>Net RAM allocated during the block (using <code>tracemalloc</code>).</li>
-<li>Supports both <code>with</code> block syntax AND <code>@decorator</code> syntax seamlessly.</li>
-</ol>
-<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> tracemalloc
-<span class="hljs-keyword">import</span> functools
-<span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> ContextDecorator
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">profile_scope</span>(<span class="hljs-title class_ inherited__">ContextDecorator</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;Block&quot;</span></span>):
-        <span class="hljs-variable language_">self</span>.name = name
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__enter__</span>(<span class="hljs-params">self</span>):
-        tracemalloc.start()
-        <span class="hljs-variable language_">self</span>.start_snapshot = tracemalloc.take_snapshot()
-        <span class="hljs-variable language_">self</span>.start_time = time.perf_counter_ns()
-        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__exit__</span>(<span class="hljs-params">self, exc_type, exc_val, exc_tb</span>):
-        elapsed_ns = time.perf_counter_ns() - <span class="hljs-variable language_">self</span>.start_time
-        elapsed_ms = elapsed_ns / <span class="hljs-number">1_000_000</span>
-
-        end_snapshot = tracemalloc.take_snapshot()
-        stats = end_snapshot.compare_to(<span class="hljs-variable language_">self</span>.start_snapshot, <span class="hljs-string">&#x27;lineno&#x27;</span>)
-        total_memory_diff_kb = <span class="hljs-built_in">sum</span>(stat.size_diff <span class="hljs-keyword">for</span> stat <span class="hljs-keyword">in</span> stats) / <span class="hljs-number">1024</span>
-        tracemalloc.stop()
-
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{self.name}</span>] Wall-clock: <span class="hljs-subst">{elapsed_ms:<span class="hljs-number">.3</span>f}</span> ms | Net Memory: <span class="hljs-subst">{total_memory_diff_kb:+<span class="hljs-number">.2</span>f}</span> KB&quot;</span>)
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Do not suppress exceptions</span>
-
-<span class="hljs-comment"># Usage as Context Manager:</span>
-<span class="hljs-keyword">with</span> profile_scope(<span class="hljs-string">&quot;Heavy Allocation Block&quot;</span>):
-    data = [x ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">200_000</span>)]
-
-<span class="hljs-comment"># Usage as Function Decorator:</span>
-<span class="hljs-meta">@profile_scope(<span class="hljs-params"><span class="hljs-string">&quot;Compute Function&quot;</span></span>)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_cube_sum</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span></span>):
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(x ** <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
-
-compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
+<span class="hljs-comment">/// Modifies a raw byte buffer IN-PLACE with zero memory copies!</span>
+<span class="hljs-meta">#[pyfunction]</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">invert_bytes_in_place</span>(_py: Python&lt;<span class="hljs-symbol">&#x27;_</span>&gt;, buffer: &amp;Bound&lt;<span class="hljs-symbol">&#x27;_</span>, PyByteArray&gt;) <span class="hljs-punctuation">-&gt;</span> PyResult&lt;()&gt; {
+    <span class="hljs-comment">// Unsafe block allows getting direct mutable pointer to Python&#x27;s internal memory</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">slice</span>: &amp;<span class="hljs-keyword">mut</span> [<span class="hljs-type">u8</span>] = <span class="hljs-keyword">unsafe</span> { buffer.<span class="hljs-title function_ invoke__">as_bytes_mut</span>() };
+    
+    <span class="hljs-comment">// Invert bits in-place directly on Python&#x27;s memory buffer</span>
+    <span class="hljs-keyword">for</span> <span class="hljs-variable">byte</span> <span class="hljs-keyword">in</span> slice.<span class="hljs-title function_ invoke__">iter_mut</span>() {
+        *byte = !*byte;
+    }
+    
+    <span class="hljs-title function_ invoke__">Ok</span>(())
+}</code></pre>
   </div>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># test_zero_copy.py</span>
+<span class="hljs-keyword">import</span> fast_math
+
+<span class="hljs-comment"># Allocate a 100 Megabyte bytearray in Python</span>
+data = <span class="hljs-built_in">bytearray</span>(<span class="hljs-string">b&quot;\x00\xFF&quot;</span> * (<span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;First 4 bytes before: <span class="hljs-subst">{<span class="hljs-built_in">list</span>(data[:<span class="hljs-number">4</span>])}</span>&quot;</span>)
+
+<span class="hljs-comment"># Hand directly to Rust: instantaneous in-place mutation without copying!</span>
+fast_math.invert_bytes_in_place(data)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;First 4 bytes after:  <span class="hljs-subst">{<span class="hljs-built_in">list</span>(data[:<span class="hljs-number">4</span>])}</span>&quot;</span>)</code></pre>
+  </div><hr>
+<h2 id="6-staff-interview-traps-ffi-safety"><a href="#6-staff-interview-traps-ffi-safety" class="header-anchor">#</a>6. Staff Interview Traps & FFI Safety</h2><h3 id="trap-1-the-callback-deadlock-trap"><a href="#trap-1-the-callback-deadlock-trap" class="header-anchor">#</a>Trap 1: The Callback Deadlock Trap</h3><ul>
+<li><strong>The Scenario:</strong> You pass a Python callback function into a Rust function. Inside Rust, you release the GIL using <code>py.allow_threads</code>, spin up a background OS thread, and try to call the Python callback from that thread.</li>
+<li><strong>The Catastrophic Crash:</strong> <strong>Instant Segmentation Fault or Deadlock!</strong></li>
+<li><strong>Why it happens:</strong> You cannot touch <em>any</em> Python object (including a callback function) without holding the GIL. If a raw OS thread tries to invoke a Python function without acquiring the GIL first, CPython&#39;s internal state is corrupted immediately.</li>
+<li><strong>The Staff Fix:</strong> In Rust, background threads must explicitly re-acquire the GIL using <code>Python::with_gil(|py| { ... })</code> before touching any Python object or callback.</li>
+</ul>
+<h3 id="trap-2-cyclic-reference-leaks-across-the-ffi-boundary"><a href="#trap-2-cyclic-reference-leaks-across-the-ffi-boundary" class="header-anchor">#</a>Trap 2: Cyclic Reference Leaks across the FFI Boundary</h3><ul>
+<li><strong>The Scenario:</strong> A Python object holds a reference to a Rust struct (<code>#[pyclass]</code>), and the Rust struct stores a <code>Py&lt;PyAny&gt;</code> reference back to the Python object.</li>
+<li><strong>The Disaster:</strong> CPython&#39;s cyclical garbage collector cannot see inside the compiled Rust memory layout. This creates a circular reference that the garbage collector can <strong>never reclaim</strong>, leaking memory until the server crashes.</li>
+<li><strong>The Staff Fix:</strong> Use PyO3&#39;s GC integration protocol (<code>#[pyclass(gc)]</code>) and implement the <code>__traverse__</code> and <code>__clear__</code> dunder visitor traits so Python&#39;s cyclic GC can inspect and break cycles.</li>
+</ul>
+<hr>
+<h2 id="master-checklist-for-chapter-20"><a href="#master-checklist-for-chapter-20" class="header-anchor">#</a>Master Checklist for Chapter 20</h2><table>
+<thead>
+<tr>
+<th align="left">Concept</th>
+<th align="left">Entry-Level Mental Model</th>
+<th align="left">Senior / Staff Production Rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Why Rust?</strong></td>
+<td align="left">Formula 1 engine dropped into a luxury sedan</td>
+<td align="left">Zero segfaults, memory safety at compile time, fearless concurrency</td>
+</tr>
+<tr>
+<td align="left"><strong>PyObject</strong></td>
+<td align="left">Heavy 28-byte wrapper around simple numbers</td>
+<td align="left">Rust extracts raw primitives to run on bare-metal CPU silicon</td>
+</tr>
+<tr>
+<td align="left"><strong>Maturin</strong></td>
+<td align="left">One-command compiler linking Rust into Python</td>
+<td align="left">Modern PEP 517 build backend replacing complex Makefiles/Setuptools</td>
+</tr>
+<tr>
+<td align="left"><strong>Releasing the GIL</strong></td>
+<td align="left">Giving the microphone to someone else while you run</td>
+<td align="left"><code>py.allow_threads</code> frees the event loop while Rayon saturates all CPU cores</td>
+</tr>
+<tr>
+<td align="left"><strong>Buffer Protocol</strong></td>
+<td align="left">Sharing a book on a table instead of photocopying it</td>
+<td align="left">Direct pointer manipulation; zero-copy in-place array transformations</td>
+</tr>
+<tr>
+<td align="left"><strong>Thread Safety</strong></td>
+<td align="left">Never touch Python objects without a badge</td>
+<td align="left">Background Rust threads must call <code>Python::with_gil()</code> before invoking Python callbacks</td>
+</tr>
+</tbody></table>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1498,20 +1598,20 @@ compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
           </button>
         </div>
         <div class="page-navigation">
-    <a href="../01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-card prev">
+    <a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-card prev">
       <span class="nav-direction">← Previous Chapter</span>
-      <span class="nav-page-title">07: Type System & Typing</span>
+      <span class="nav-page-title">18: High-Performance Computing (HPC)</span>
     </a>
-    <a href="../01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-card next">
+    <a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-card next">
       <span class="nav-direction">Next Chapter →</span>
-      <span class="nav-page-title">09: Production Crisis Scenarios</span>
+      <span class="nav-page-title">20: Staff Coding Practice Problems</span>
     </a></div>
       </div>
     </main>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="toc-link">Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#common-pitfalls" class="toc-link">Common Pitfalls</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="toc-link">Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="toc-link">Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="toc-link">Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-did-the-python-world-abandon-c-cython-for-rust" class="toc-link">1. Why Did the Python World Abandon C/Cython for Rust?</a></li><li class="toc-item level-3"><a href="#the-industry-shift" class="toc-link">The Industry Shift</a></li><li class="toc-item level-2"><a href="#2-the-cpython-c-api-pyobject-internals-spoon-fed-foundations" class="toc-link">2. The CPython C-API & PyObject Internals (Spoon-Fed Foundations)</a></li><li class="toc-item level-3"><a href="#everything-in-python-is-a-pyobject-pointer" class="toc-link">Everything in Python is a `PyObject` Pointer</a></li><li class="toc-item level-3"><a href="#what-pyo3-does" class="toc-link">What PyO3 Does</a></li><li class="toc-item level-2"><a href="#3-building-your-first-rust-extension-with-pyo3-maturin" class="toc-link">3. Building Your First Rust Extension with PyO3 & Maturin</a></li><li class="toc-item level-3"><a href="#project-directory-structure" class="toc-link">Project Directory Structure</a></li><li class="toc-item level-3"><a href="#step-1-the-build-configuration-pyproject-toml" class="toc-link">Step 1: The Build Configuration (`pyproject.toml`)</a></li><li class="toc-item level-3"><a href="#step-2-the-rust-manifest-cargo-toml" class="toc-link">Step 2: The Rust Manifest (`Cargo.toml`)</a></li><li class="toc-item level-3"><a href="#step-3-writing-the-rust-engine-src-lib-rs" class="toc-link">Step 3: Writing the Rust Engine (`src/lib.rs`)</a></li><li class="toc-item level-3"><a href="#step-4-compiling-and-testing-inside-python" class="toc-link">Step 4: Compiling and Testing Inside Python</a></li><li class="toc-item level-3"><a href="#benchmark-results-on-an-8-core-machine" class="toc-link">Benchmark Results on an 8-Core Machine:</a></li><li class="toc-item level-2"><a href="#4-releasing-the-gil-the-python-allow-threads-secret" class="toc-link">4. Releasing the GIL: The `Python::allow_threads` Secret</a></li><li class="toc-item level-3"><a href="#how-rust-smashes-the-gil-bottleneck" class="toc-link">How Rust Smashes the GIL Bottleneck</a></li><li class="toc-item level-2"><a href="#5-zero-copy-data-sharing-the-buffer-protocol" class="toc-link">5. Zero-Copy Data Sharing: The Buffer Protocol</a></li><li class="toc-item level-3"><a href="#the-solution-the-python-buffer-protocol" class="toc-link">The Solution: The Python Buffer Protocol</a></li><li class="toc-item level-2"><a href="#6-staff-interview-traps-ffi-safety" class="toc-link">6. Staff Interview Traps & FFI Safety</a></li><li class="toc-item level-3"><a href="#trap-1-the-callback-deadlock-trap" class="toc-link">Trap 1: The Callback Deadlock Trap</a></li><li class="toc-item level-3"><a href="#trap-2-cyclic-reference-leaks-across-the-ffi-boundary" class="toc-link">Trap 2: Cyclic Reference Leaks across the FFI Boundary</a></li><li class="toc-item level-2"><a href="#master-checklist-for-chapter-20" class="toc-link">Master Checklist for Chapter 20</a></li></ul>
     </aside>
   </div>
 
@@ -1543,7 +1643,7 @@ compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
     </div>
   </div>
 
-  <script>window.CURRENT_PAGE = "01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html";</script>
+  <script>window.CURRENT_PAGE = "01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html";</script>
   <script>
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';

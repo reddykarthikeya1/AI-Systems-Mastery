@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>14: Production SQL & DB Internals | PBC 2026 Master Preparation Guide</title>
+  <title>14: Enterprise Security, JWT & RBAC | PBC 2026 Master Preparation Guide</title>
   <style>
     pre code.hljs {
   display: block;
@@ -1113,7 +1113,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     </a>
     <div class="header-controls">
       <div class="progress-stat-badge" title="Master Curriculum Progress">
-        <span id="header-progress-text">0/88 (0%)</span>
+        <span id="header-progress-text">0/93 (0%)</span>
         <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
       </div>
       <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
@@ -1124,7 +1124,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
       </div>
-      <a href="../../pdfs/01-Python-Mastery/14-Production-SQL-And-Database-Internals.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+      <a href="../../pdfs/01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         <span>Open PDF</span>
       </a>
@@ -1139,7 +1139,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <aside class="sidebar">
       <div class="track-group">
       <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
-      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html"><span class="nav-label-text">07: Type System & Typing</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">08: Core Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">09: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">10: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">11: Debugging & Memory Leaks Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">12: Legacy Code Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">13: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-link active" data-rel="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">14: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">15: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-link " data-rel="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html"><span class="nav-label-text">17: Async Mocking & ASGI Internals</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link active" data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Curated-Video-Masterclasses.html" class="nav-link " data-rel="01-Python-Mastery/22-Curated-Video-Masterclasses.html"><span class="nav-label-text">22: Curated Video Masterclasses</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
@@ -1150,34 +1150,113 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="chapter-14-production-sql-database-internals-for-python-engineers"><a href="#chapter-14-production-sql-database-internals-for-python-engineers" class="header-anchor">#</a>Chapter 14: Production SQL & Database Internals for Python Engineers</h1><blockquote>
-<p><strong>The Database is the Bottleneck</strong>
-In 95% of web application performance crises, the slowdown is not Python—it is an unindexed database query, an exhausted connection pool, an insidious $N+1$ ORM pattern, or lock contention inside a database transaction.</p>
-<p>A senior backend engineer must not treat SQL as an opaque abstraction. You must understand how relational database engines (specifically PostgreSQL) store data on disk, execute transactions, navigate indexes, and lock rows under high concurrency.</p>
+          <h1 id="chapter-14-enterprise-security-oauth2-jwt-cryptographic-rbac"><a href="#chapter-14-enterprise-security-oauth2-jwt-cryptographic-rbac" class="header-anchor">#</a>Chapter 14: Enterprise Security, OAuth2, JWT & Cryptographic RBAC</h1><blockquote>
+<p><strong>Zero-Prerequisite Intuition: The &quot;Airport Security &amp; Boarding Pass Token System&quot;</strong>
+Why don&#39;t web applications ask you to type your password on every single click?</p>
+<p>Imagine if you went to an airport, and every single time you wanted to buy a bottle of water, enter the restroom, or board the plane, the security guards forced you to pull out your birth certificate, passport, and call your local police station to verify your identity. The airport would grind to a halt within five minutes!</p>
+<p>Instead, airports use a two-step token system:</p>
+<ol>
+<li><strong>Authentication (Passport Control):</strong> You show your official government passport <strong>once</strong> at the check-in desk. The agent verifies your face, confirms your identity, and validates your booking.</li>
+<li><strong>The Token (The Boarding Pass):</strong> The agent hands you a piece of paper: the <strong>Boarding Pass</strong>. It states: <em>&quot;Alice, Flight 404, Seat 12A, Zone 2. Expires at 3:15 PM.&quot;</em> Most importantly, it is stamped with a <strong>cryptographic holographic seal</strong> that only the airline can generate.</li>
+<li><strong>Authorization (The Gate Agent):</strong> When you board the plane, the flight attendant doesn&#39;t call government headquarters. They look at your boarding pass, check that the holographic seal hasn&#39;t been tampered with, verify that the time is before 3:15 PM, and let you board!</li>
+<li><strong>Role-Based Access (First Class vs Economy):</strong> If your boarding pass says &quot;Economy&quot;, you cannot walk into the First-Class Lounge. If you attempt to enter the Cockpit, you are detained—your token does not carry the &quot;Pilot&quot; role.</li>
+</ol>
+<p>In modern software, a <strong>JSON Web Token (JWT)</strong> is your digital boarding pass, <strong>Argon2/Bcrypt</strong> is how we protect passwords in the vault, and <strong>RBAC (Role-Based Access Control)</strong> is the security guard checking your permissions at every doorway.</p>
 </blockquote>
 <hr>
-<h2 id="0-zero-prerequisite-foundations-why-do-we-need-sql-and-relational-databases"><a href="#0-zero-prerequisite-foundations-why-do-we-need-sql-and-relational-databases" class="header-anchor">#</a>0. Zero-Prerequisite Foundations: Why Do We Need SQL and Relational Databases?</h2><blockquote>
-<p><strong>The &quot;Filing Cabinet &amp; Accounting Ledger&quot; Metaphor</strong>
-Why did computer scientists invent complex database engines instead of just writing data into a regular file like <code>users.json</code>?</p>
-<p>Imagine you run a high-volume commercial bank:</p>
-<ul>
-<li><p><strong>The Broken File Approach (<code>users.json</code>):</strong></p>
-<ol>
-<li><strong>Concurrency Disaster:</strong> If 50 ATM machines attempt to open and write to <code>balances.json</code> at the exact same millisecond, the operating system file locks clash, and one customer&#39;s deposit silently overwrites another&#39;s withdrawal!</li>
-<li><strong>The Power Cut Catastrophe:</strong> If your server loses electrical power halfway through saving a 10 GB JSON file, the file is corrupted. Your bank records are permanently lost.</li>
-<li><strong>The Search Slowness:</strong> To look up the balance of account <code>#98124</code> in a 50 GB JSON file, Python has to read all 50 GB off the disk into RAM, parsing every character line-by-line (taking 45 seconds per search!).</li>
-</ol>
-</li>
-<li><p><strong>The Relational Database Approach (RDBMS &amp; SQL):</strong>
-A database like PostgreSQL is a dedicated, crash-proof vault engineered over 30 years to solve these exact three problems:</p>
-<ol>
-<li><strong>B-Tree Indexes:</strong> Like the alphabetical thumb-tabs on a physical encyclopedia, finding 1 user out of 100,000,000 records takes <strong>3 disk page reads (0.5 milliseconds)</strong> instead of scanning the entire disk!</li>
-<li><strong>The Write-Ahead Log (WAL):</strong> Like an accountant&#39;s carbon-copy receipt book. Every change is jotted down to an append-only transaction journal <em>before</em> touching the main data pages. Even if someone pulls the computer&#39;s power plug out of the wall mid-query, the database reboots, replays the journal, and recovers with <strong>zero data corruption</strong>.</li>
-<li><strong>ACID Guarantees:</strong> Ensures transactions are Atomic (all-or-nothing), Consistent (rules enforced), Isolated (no race conditions), and Durable (permanent).</li>
-</ol>
-</li>
+<h2 id="1-passwords-done-right-cryptographic-hashing-vs-encryption"><a href="#1-passwords-done-right-cryptographic-hashing-vs-encryption" class="header-anchor">#</a>1. Passwords Done Right: Cryptographic Hashing vs Encryption</h2><h3 id="why-plaintext-passwords-are-a-crime"><a href="#why-plaintext-passwords-are-a-crime" class="header-anchor">#</a>Why Plaintext Passwords Are a Crime</h3><p>If an attacker breaches your database and you stored passwords as plain text (e.g., <code>hunter2</code>), the attacker steals every user&#39;s credentials immediately. Because humans reuse passwords across multiple sites, you compromise your users across the entire internet.</p>
+<h3 id="encryption-vs-hashing-spoon-fed-clarity"><a href="#encryption-vs-hashing-spoon-fed-clarity" class="header-anchor">#</a>Encryption vs Hashing (Spoon-Fed Clarity)</h3><ul>
+<li><strong>Encryption is Two-Way:</strong> You take a message, scramble it with a key, and someone with the key can <strong>unscramble</strong> it back to the original text. (Example: sending private messages over WhatsApp).</li>
+<li><strong>Hashing is One-Way:</strong> You take a message and put it through a mathematical meat grinder. You get a unique scrambled fingerprint. <strong>It is mathematically impossible to reverse the grinder and turn hamburger back into a cow!</strong></li>
 </ul>
-</blockquote>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart LR
+    subgraph Encryption["Two-Way Encryption (Reversible)"]
+        Plain1["Password: 'secret'"] --&gt;|Encrypt with Secret Key| Cipher["'#$9xL!2@'"]
+        Cipher --&gt;|Decrypt with Secret Key| Plain1
+    end
+
+    subgraph Hashing["One-Way Cryptographic Hashing (Irreversible)"]
+        Plain2["Password: 'secret'"] --&gt;|Hash + Salt| HashVal["'$argon2id$v=19$m=65536...8f9c'"]
+        HashVal -.-&gt;|IMPOSSIBLE TO REVERSE| NoGo["❌ Original Text Cannot Be Reconstructed"]
+    end
+</div>
+      </div>
+    </div><h3 id="why-md5-and-sha-256-are-dead-for-passwords"><a href="#why-md5-and-sha-256-are-dead-for-passwords" class="header-anchor">#</a>Why MD5 and SHA-256 Are Dead for Passwords</h3><p>Standard hashing algorithms like MD5 or SHA-256 were designed to be <strong>ultra-fast</strong> (for checksumming files). Modern GPUs can compute <strong>over 100 billion SHA-256 hashes per second</strong>. An attacker with a cheap gaming PC can crack an 8-character password in less than 30 seconds using brute-force rainbow tables!</p>
+<h3 id="the-modern-standard-argon2id-bcrypt-memory-hard-hashing"><a href="#the-modern-standard-argon2id-bcrypt-memory-hard-hashing" class="header-anchor">#</a>The Modern Standard: Argon2id & Bcrypt (Memory-Hard Hashing)</h3><p>To protect passwords, we use <strong>slow, memory-hard algorithms</strong>:</p>
+<ol>
+<li><strong>Salt:</strong> A random, unique string generated for every user (e.g., <code>x7K#9!</code>). Even if two users choose the password <code>password123</code>, their resulting hashes are completely different, defeating rainbow tables.</li>
+<li><strong>Work Factor / Memory Hardness:</strong> Algorithms like <strong>Argon2id</strong> force the computer to allocate 64 megabytes of RAM and iterate hundreds of times to compute a single hash. This makes GPU brute-forcing economically impossible.</li>
+</ol>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># password_security.py</span>
+<span class="hljs-keyword">import</span> secrets
+<span class="hljs-keyword">import</span> hmac
+<span class="hljs-keyword">import</span> hashlib
+
+<span class="hljs-comment"># Python 3.12+ standard library implementation of salted PBKDF2 with SHA-256</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hash_password</span>(<span class="hljs-params">password: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Generates a cryptographically secure salted password hash.&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># 1. Generate 16 bytes of cryptographically secure random salt</span>
+    salt = secrets.token_bytes(<span class="hljs-number">16</span>)
+    
+    <span class="hljs-comment"># 2. Derive a 32-byte key using 600,000 iterations of HMAC-SHA256 (OWASP standard)</span>
+    derived_key = hashlib.pbkdf2_hmac(
+        hash_name=<span class="hljs-string">&quot;sha256&quot;</span>,
+        password=password.encode(<span class="hljs-string">&quot;utf-8&quot;</span>),
+        salt=salt,
+        iterations=<span class="hljs-number">600_000</span>
+    )
+    
+    <span class="hljs-comment"># 3. Store salt and derived hash together formatted in hex</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{salt.<span class="hljs-built_in">hex</span>()}</span>:<span class="hljs-subst">{derived_key.<span class="hljs-built_in">hex</span>()}</span>&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">verify_password</span>(<span class="hljs-params">stored_record: <span class="hljs-built_in">str</span>, provided_password: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Verifies a password attempt in constant time to prevent timing attacks.&quot;&quot;&quot;</span>
+    salt_hex, original_hash_hex = stored_record.split(<span class="hljs-string">&quot;:&quot;</span>)
+    salt = <span class="hljs-built_in">bytes</span>.fromhex(salt_hex)
+    original_hash = <span class="hljs-built_in">bytes</span>.fromhex(original_hash_hex)
+    
+    <span class="hljs-comment"># Re-compute hash using the exact same salt and iteration count</span>
+    candidate_hash = hashlib.pbkdf2_hmac(
+        hash_name=<span class="hljs-string">&quot;sha256&quot;</span>,
+        password=provided_password.encode(<span class="hljs-string">&quot;utf-8&quot;</span>),
+        salt=salt,
+        iterations=<span class="hljs-number">600_000</span>
+    )
+    
+    <span class="hljs-comment"># CRITICAL: hmac.compare_digest compares in CONSTANT TIME (prevents timing attacks)</span>
+    <span class="hljs-keyword">return</span> hmac.compare_digest(candidate_hash, original_hash)</code></pre>
+  </div><hr>
+<h2 id="2-the-anatomy-of-a-json-web-token-jwt"><a href="#2-the-anatomy-of-a-json-web-token-jwt" class="header-anchor">#</a>2. The Anatomy of a JSON Web Token (JWT)</h2><p>A <strong>JSON Web Token (JWT)</strong> is a compact, URL-safe string divided into three sections separated by periods (<code>.</code>):</p>
+<p>$$\text{JWT} = \underbrace{\text{Header}}<em>{\text{Algorithm &amp; Type}} ,., \underbrace{\text{Payload}}</em>{\text{Claims / Identity}} ,., \underbrace{\text{Signature}}_{\text{Cryptographic Seal}}$$</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1199,201 +1278,40 @@ A database like PostgreSQL is a dedicated, crash-proof vault engineered over 30 
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    subgraph Imperative_Python ["Python: Imperative ('HOW to do it')"]
-        PyCode["for user in users:&lt;br/&gt;&amp;nbsp;&amp;nbsp;if user['age'] &gt; 18:&lt;br/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;results.append(user)&lt;br/&gt;(You write the exact loops &amp; memory operations)"]
-    end
-
-    subgraph Declarative_SQL ["SQL: Declarative ('WHAT you want')"]
-        SqlCode["SELECT * FROM users WHERE age &gt; 18;&lt;br/&gt;(You declare desired output; Database Query Planner finds optimal path)"]
-    end
-
-    subgraph Engine_Internals ["Database Execution Engine"]
-        Planner["Cost-Based Query Planner&lt;br/&gt;(Chooses between Index Scan vs Bitmap Scan vs Seq Scan)"]
-        Buffer["Buffer Pool in RAM (8 KB Pages)"]
-        StorageEngine["Disk Storage Engine (WAL + Table Heap)"]
-        
-        SqlCode --&gt; Planner --&gt; Buffer --&gt; StorageEngine
-    end
+    Raw["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJyb2xlIjoiYWRtaW4ifQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"]
+    
+    H["Part 1: Header (Base64Url)&lt;br/&gt;{'alg': 'HS256', 'typ': 'JWT'}"]
+    P["Part 2: Payload / Claims (Base64Url)&lt;br/&gt;{'sub': '123456', 'role': 'admin', 'exp': 1718000000}"]
+    S["Part 3: Cryptographic Signature&lt;br/&gt;HMAC-SHA256(Header + '.' + Payload, SECRET_KEY)"]
+    
+    Raw --&gt; H
+    Raw --&gt; P
+    Raw --&gt; S
 </div>
       </div>
-    </div><h3 id="declarative-vs-imperative-the-core-philosophy-of-sql"><a href="#declarative-vs-imperative-the-core-philosophy-of-sql" class="header-anchor">#</a>Declarative vs. Imperative: The Core Philosophy of SQL</h3><ul>
-<li><strong>Imperative Programming (Python, C++):</strong> You tell the computer <em>step-by-step how</em> to do the work: <em>&quot;Create a list, iterate from index 0 to N, check each element, append matches.&quot;</em></li>
-<li><strong>Declarative Programming (SQL):</strong> You tell the database <em>what</em> you want, not <em>how</em> to get it. The SQL engine parses your query, calculates statistical costs across billions of possible execution paths, and automatically selects the fastest physical path!</li>
-</ul>
-<hr>
-<h2 id="1-postgresql-storage-engine-mvcc-internals"><a href="#1-postgresql-storage-engine-mvcc-internals" class="header-anchor">#</a>1. PostgreSQL Storage Engine & MVCC Internals</h2><p>PostgreSQL does not update rows in place. It uses <strong>Multi-Version Concurrency Control (MVCC)</strong> to ensure readers never block writers and writers never block readers.</p>
-
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-graph TD
-    subgraph Table_Heap ["PostgreSQL Table Heap (8 KB Pages)"]
-        T1["Tuple v1 (xmin=100, xmax=105)&lt;br&gt;Status: Dead (Updated)"]
-        T2["Tuple v2 (xmin=105, xmax=0)&lt;br&gt;Status: Live (Current)"]
-        T3["Tuple v3 (xmin=106, xmax=0)&lt;br&gt;Status: Live (Inserted)"]
-    end
-
-    WAL["Write-Ahead Log (WAL Buffer)"] --&gt; DiskWAL["WAL File on NVMe SSD (fsync)"]
-    DiskWAL -. "Checkpointer Flush" .-&gt; Table_Heap
-    Table_Heap -. "VACUUM Worker" .-&gt; Cleaned["Dead Space Reclaimed into Free Space Map (FSM)"]
-</div>
-      </div>
-    </div><h3 id="mvcc-header-anatomy"><a href="#mvcc-header-anatomy" class="header-anchor">#</a>MVCC Header Anatomy</h3><p>Every row (tuple) in PostgreSQL contains hidden system metadata columns:</p>
+    </div><h3 id="the-1-beginner-misconception-jwts-are-encrypted"><a href="#the-1-beginner-misconception-jwts-are-encrypted" class="header-anchor">#</a>The #1 Beginner Misconception: "JWTs Are Encrypted"</h3><blockquote>
+<p><strong>CRITICAL FACT:</strong> Standard JWTs are <strong>NOT</strong> encrypted! They are merely <strong>Base64URL encoded</strong>.</p>
+<p>Anyone who intercepts a JWT can paste it into <code>jwt.io</code> and read every field inside the payload in plain English.</p>
 <ul>
-<li><strong><code>xmin</code>:</strong> The Transaction ID ($XID$) that inserted this row version.</li>
-<li><strong><code>xmax</code>:</strong> The Transaction ID that deleted or updated this row version (0 if currently alive).</li>
-<li><strong><code>ctid</code>:</strong> The physical disk address (<code>(page_number, tuple_index)</code>) of the row.</li>
+<li><strong>What a JWT guarantees:</strong> It guarantees <strong>Integrity</strong> (nobody has tampered with or altered the data), NOT confidentiality.</li>
+<li><strong>Rule of Law:</strong> Never put secret API keys, passwords, credit card numbers, or sensitive PII inside a JWT payload!</li>
 </ul>
-<p>When you execute:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-keyword">UPDATE</span> accounts <span class="hljs-keyword">SET</span> balance <span class="hljs-operator">=</span> <span class="hljs-number">500</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</code></pre>
-  </div><p>PostgreSQL <strong>does not mutate the existing row</strong>. Instead, it:</p>
-<ol>
-<li>Sets <code>xmax = current_xid</code> on the old tuple version (marking it dead for future transactions).</li>
-<li>Appends an entirely <strong>new tuple version</strong> with <code>xmin = current_xid</code> and <code>xmax = 0</code>.</li>
-<li>Updates the <code>ctid</code> pointer of the old row to point to the new row.</li>
-</ol>
-<div class="callout callout-warning">
-        <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> <span>WARNING</span></div>
-        <div class="callout-body"><p><strong>Table Bloat &amp; Autovacuum:</strong> Dead tuples occupy disk space until cleaned up by the background <strong><code>VACUUM</code></strong> worker. If a runaway transaction remains open for 12 hours, <code>VACUUM</code> cannot reclaim any dead tuples created after that transaction started, resulting in massive table bloat and degraded query performance!</p>
-</div>
-      </div>
-<hr>
-<h2 id="2-reading-explain-analyze-buffers"><a href="#2-reading-explain-analyze-buffers" class="header-anchor">#</a>2. Reading `EXPLAIN (ANALYZE, BUFFERS)`</h2><p>Never guess how a database executes a query. Always prepend <code>EXPLAIN (ANALYZE, BUFFERS)</code>:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql">EXPLAIN (ANALYZE, BUFFERS)
-<span class="hljs-keyword">SELECT</span> u.id, u.email, <span class="hljs-built_in">COUNT</span>(o.id) <span class="hljs-keyword">as</span> order_count
-<span class="hljs-keyword">FROM</span> users u
-<span class="hljs-keyword">JOIN</span> orders o <span class="hljs-keyword">ON</span> o.user_id <span class="hljs-operator">=</span> u.id
-<span class="hljs-keyword">WHERE</span> u.created_at <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2026-01-01&#x27;</span>
-<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> u.id, u.email
-<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> order_count <span class="hljs-keyword">DESC</span>
-LIMIT <span class="hljs-number">10</span>;</code></pre>
-  </div><h3 id="interpreting-the-execution-plan"><a href="#interpreting-the-execution-plan" class="header-anchor">#</a>Interpreting the Execution Plan</h3>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">text</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-text">Limit  (cost=1250.40..1250.42 rows=10 width=48) (actual time=8.412..8.415 rows=10 loops=1)
-  Buffers: shared hit=420 read=15
-  -&gt;  Sort  (cost=1250.40..1255.40 rows=2000 width=48) (actual time=8.410..8.412 rows=10 loops=1)
-        Sort Key: (count(o.id)) DESC
-        Sort Method: top-N heapsort  Memory: 25kB
-        -&gt;  HashAggregate  (cost=1150.00..1170.00 rows=2000 width=48) (actual time=6.210..7.110 rows=2000 loops=1)
-              Group Key: u.id
-              Batches: 1  Memory Usage: 321kB
-              -&gt;  Hash Join  (cost=120.00..950.00 rows=15000 width=40) (actual time=1.100..4.800 rows=14800 loops=1)
-                    Hash Cond: (o.user_id = u.id)
-                    -&gt;  Seq Scan on orders o  (cost=0.00..600.00 rows=25000 width=16) (actual time=0.015..1.800 rows=25000 loops=1)
-                    -&gt;  Hash  (cost=95.00..95.00 rows=2000 width=36) (actual time=1.050..1.050 rows=2000 loops=1)
-                          Buckets: 2048  Batches: 1  Memory Usage: 145kB
-                          -&gt;  Index Scan using idx_users_created_at on users u  (cost=0.29..95.00 rows=2000 width=36) (actual time=0.020..0.750 rows=2000 loops=1)
-                                Index Cond: (created_at &gt;= &#x27;2026-01-01&#x27;::date)
-                                Buffers: shared hit=85
-Planning Time: 0.280 ms
-Execution Time: 8.520 ms</code></pre>
-  </div><h3 id="critical-metrics-to-scrutinize"><a href="#critical-metrics-to-scrutinize" class="header-anchor">#</a>Critical Metrics to Scrutinize:</h3><ol>
-<li><strong><code>shared hit</code> vs <code>read</code>:</strong> <code>shared hit=420</code> means 420 8KB memory pages were fetched from RAM (PostgreSQL shared buffers / Linux page cache). <code>read=15</code> means 15 pages required physical disk I/O.</li>
-<li><strong><code>Sort Method</code>:</strong> If you see <code>Sort Method: external merge Disk: 14200kB</code>, the query ran out of RAM (<code>work_mem</code>) and spilled sort operations to temporary files on disk! Increasing <code>work_mem</code> for that session eliminates this disk bottleneck.</li>
-<li><strong>Scan Types:</strong><ul>
-<li><strong><code>Index Scan</code>:</strong> Navigates B-tree directly to heap tuples. Ideal for high selectivity (&lt; 5% of rows).</li>
-<li><strong><code>Bitmap Index Scan</code>:</strong> Gathers row pointers into an in-memory bitmap, then scans table pages sequentially. Ideal for medium selectivity.</li>
-<li><strong><code>Seq Scan</code>:</strong> Reads the entire table from start to finish. Catastrophic on tables with millions of rows unless a large percentage of data is returned.</li>
+</blockquote>
+<h3 id="standard-jwt-claims-rfc-7519"><a href="#standard-jwt-claims-rfc-7519" class="header-anchor">#</a>Standard JWT Claims (RFC 7519)</h3><ul>
+<li><strong><code>sub</code> (Subject):</strong> The unique identifier of the user (e.g., <code>user_9872</code>).</li>
+<li><strong><code>exp</code> (Expiration Time):</strong> Unix timestamp after which the token is strictly invalid.</li>
+<li><strong><code>iat</code> (Issued At):</strong> Unix timestamp when the token was created.</li>
+<li><strong><code>iss</code> (Issuer):</strong> Who created the token (e.g., <code>https://auth.company.com</code>).</li>
+<li><strong><code>jti</code> (JWT ID):</strong> A unique random UUID for this specific token (used for blacklisting and preventing replay attacks).</li>
 </ul>
-</li>
-</ol>
+<h3 id="symmetric-hs256-vs-asymmetric-rs256-signing"><a href="#symmetric-hs256-vs-asymmetric-rs256-signing" class="header-anchor">#</a>Symmetric (HS256) vs Asymmetric (RS256) Signing</h3><ul>
+<li><strong>HS256 (Shared Secret):</strong> Both the authorization server and the API server share the exact same password (<code>SECRET_KEY</code>). If a microservice needs to verify the token, it must know the secret key. If one service gets hacked, the attacker can forge tokens for the entire company!</li>
+<li><strong>RS256 (Public / Private Keypair):</strong> The Auth Server holds a <strong>Private Key</strong> (kept in a secure vault) to sign tokens. Every microservice has the <strong>Public Key</strong> to verify signatures. Even if an attacker hacks 5 microservices, they cannot forge a single valid token because they don&#39;t have the private key!</li>
+</ul>
 <hr>
-<h2 id="3-advanced-sql-window-functions-recursive-ctes"><a href="#3-advanced-sql-window-functions-recursive-ctes" class="header-anchor">#</a>3. Advanced SQL: Window Functions & Recursive CTEs</h2><h3 id="1-window-functions-rolling-averages-lead-lag"><a href="#1-window-functions-rolling-averages-lead-lag" class="header-anchor">#</a>1. Window Functions: Rolling Averages & Lead/Lag</h3><p>Window functions perform calculations across a set of table rows related to the current row without collapsing them into a single row like <code>GROUP BY</code>:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-comment">-- Calculate 7-day rolling revenue average and detect churn drops</span>
-<span class="hljs-keyword">SELECT</span> 
-    sale_date,
-    daily_revenue,
-    <span class="hljs-comment">-- Moving average across previous 6 rows + current row</span>
-    <span class="hljs-built_in">AVG</span>(daily_revenue) <span class="hljs-keyword">OVER</span> (
-        <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> sale_date 
-        <span class="hljs-keyword">ROWS</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">6</span> PRECEDING <span class="hljs-keyword">AND</span> <span class="hljs-keyword">CURRENT</span> <span class="hljs-type">ROW</span>
-    ) <span class="hljs-keyword">as</span> rolling_7d_avg,
-    <span class="hljs-comment">-- Compare today with yesterday&#x27;s revenue</span>
-    <span class="hljs-built_in">LAG</span>(daily_revenue, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> sale_date) <span class="hljs-keyword">as</span> yesterday_revenue,
-    <span class="hljs-comment">-- Rank revenue days within each month</span>
-    <span class="hljs-built_in">DENSE_RANK</span>() <span class="hljs-keyword">OVER</span> (
-        <span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> DATE_TRUNC(<span class="hljs-string">&#x27;month&#x27;</span>, sale_date) 
-        <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> daily_revenue <span class="hljs-keyword">DESC</span>
-    ) <span class="hljs-keyword">as</span> monthly_revenue_rank
-<span class="hljs-keyword">FROM</span> daily_sales_metrics;</code></pre>
-  </div><h3 id="2-recursive-common-table-expressions-ctes-graph-tree-traversal"><a href="#2-recursive-common-table-expressions-ctes-graph-tree-traversal" class="header-anchor">#</a>2. Recursive Common Table Expressions (CTEs): Graph/Tree Traversal</h3><p>Relational models struggle with hierarchical trees (e.g. organizational manager-employee hierarchies or nested category trees). Recursive CTEs solve this natively in single-roundtrip SQL:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">RECURSIVE</span> OrgHierarchy <span class="hljs-keyword">AS</span> (
-    <span class="hljs-comment">-- Anchor member: Start at the CEO</span>
-    <span class="hljs-keyword">SELECT</span> id, name, manager_id, <span class="hljs-number">1</span> <span class="hljs-keyword">as</span> depth, <span class="hljs-keyword">ARRAY</span>[name] <span class="hljs-keyword">as</span> path
-    <span class="hljs-keyword">FROM</span> employees
-    <span class="hljs-keyword">WHERE</span> manager_id <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
-
-    <span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span>
-
-    <span class="hljs-comment">-- Recursive member: Find all direct reports</span>
-    <span class="hljs-keyword">SELECT</span> e.id, e.name, e.manager_id, o.depth <span class="hljs-operator">+</span> <span class="hljs-number">1</span>, o.path <span class="hljs-operator">||</span> e.name
-    <span class="hljs-keyword">FROM</span> employees e
-    <span class="hljs-keyword">JOIN</span> OrgHierarchy o <span class="hljs-keyword">ON</span> e.manager_id <span class="hljs-operator">=</span> o.id
-)
-<span class="hljs-keyword">SELECT</span> depth, name, ARRAY_TO_STRING(path, <span class="hljs-string">&#x27; -&gt; &#x27;</span>) <span class="hljs-keyword">as</span> reporting_chain
-<span class="hljs-keyword">FROM</span> OrgHierarchy
-<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> path;</code></pre>
-  </div><hr>
-<h2 id="4-high-concurrency-row-locking-zero-collision-job-queues"><a href="#4-high-concurrency-row-locking-zero-collision-job-queues" class="header-anchor">#</a>4. High-Concurrency Row Locking: Zero-Collision Job Queues</h2><p>A common distributed engineering requirement is building a task queue backed by PostgreSQL. Multiple worker processes query the database for pending jobs.</p>
+<h2 id="3-the-enterprise-token-lifecycle-access-refresh-rotation"><a href="#3-the-enterprise-token-lifecycle-access-refresh-rotation" class="header-anchor">#</a>3. The Enterprise Token Lifecycle: Access + Refresh Rotation</h2><p>Stateless tokens have one glaring problem: <strong>You cannot easily revoke a stateless JWT.</strong>
+If an employee is fired, but their JWT has an expiration time 8 hours from now, their token remains valid across all servers until 8 hours expire!</p>
+<h3 id="the-two-token-defense-system"><a href="#the-two-token-defense-system" class="header-anchor">#</a>The Two-Token Defense System</h3><p>To solve this, modern production architectures use two separate tokens:</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1416,132 +1334,314 @@ Execution Time: 8.520 ms</code></pre>
         <div class="mermaid">
 sequenceDiagram
     autonumber
-    participant W1 as Worker 1
-    participant DB as PostgreSQL
-    participant W2 as Worker 2
+    actor User as Client (App)
+    participant Auth as Auth Server
+    participant Redis as Redis Blacklist
+    participant API as Resource API
 
-    W1-&gt;&gt;DB: SELECT * FROM jobs WHERE status='PENDING' FOR UPDATE SKIP LOCKED LIMIT 1
-    DB--&gt;&gt;W1: Returns Job 101 (Locked exclusively by Worker 1)
+    User-&gt;&gt;Auth: POST /login (username + password)
+    Auth-&gt;&gt;User: Returns Access Token (15 min) + Refresh Token (7 days)
     
-    W2-&gt;&gt;DB: SELECT * FROM jobs WHERE status='PENDING' FOR UPDATE SKIP LOCKED LIMIT 1
-    Note over DB: Job 101 is locked! SKIP LOCKED skips it instantly without blocking!
-    DB--&gt;&gt;W2: Returns Job 102 (Locked exclusively by Worker 2)
+    loop Every API Call
+        User-&gt;&gt;API: GET /orders (Bearer Access Token)
+        API-&gt;&gt;API: Verifies signature &amp; expiration in-memory (0.01ms)
+        API--&gt;&gt;User: Returns data
+    end
+
+    Note over User,API: 15 minutes pass... Access Token expires!
+    User-&gt;&gt;API: GET /orders (Expired Token)
+    API--&gt;&gt;User: 401 Unauthorized (Token Expired)
+
+    User-&gt;&gt;Auth: POST /refresh (Send Refresh Token)
+    Auth-&gt;&gt;Redis: Check if Refresh Token is blacklisted or already used
+    Auth-&gt;&gt;Redis: Invalidate old Refresh Token
+    Auth-&gt;&gt;User: Returns NEW Access Token (15 min) + NEW Refresh Token (7 days)
 </div>
       </div>
-    </div><h3 id="the-magic-of-for-update-skip-locked"><a href="#the-magic-of-for-update-skip-locked" class="header-anchor">#</a>The Magic of `FOR UPDATE SKIP LOCKED`</h3><p>If you use standard <code>SELECT ... FOR UPDATE</code>, Worker 2 will freeze and wait until Worker 1 commits. 
-Using <strong><code>SKIP LOCKED</code></strong> instructs PostgreSQL: <em>&quot;If a row is currently locked by another transaction, skip it entirely and give me the next available unlocked row.&quot;</em></p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-comment">-- Atomic, non-blocking job claim in PostgreSQL</span>
-<span class="hljs-keyword">UPDATE</span> jobs
-<span class="hljs-keyword">SET</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;PROCESSING&#x27;</span>,
-    locked_by <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;worker_node_42&#x27;</span>,
-    locked_at <span class="hljs-operator">=</span> NOW()
-<span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> (
-    <span class="hljs-keyword">SELECT</span> id
-    <span class="hljs-keyword">FROM</span> jobs
-    <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;PENDING&#x27;</span>
-    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> priority <span class="hljs-keyword">DESC</span>, created_at <span class="hljs-keyword">ASC</span>
-    <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">SKIP</span> LOCKED
-    LIMIT <span class="hljs-number">1</span>
-)
-RETURNING <span class="hljs-operator">*</span>;</code></pre>
-  </div><p>This guarantees <strong>zero lock contention</strong> and <strong>zero double-processing</strong> across 100 concurrent workers!</p>
-<hr>
-<h2 id="5-modern-python-orm-mastery-async-sqlalchemy-2-0"><a href="#5-modern-python-orm-mastery-async-sqlalchemy-2-0" class="header-anchor">#</a>5. Modern Python ORM Mastery: Async SQLAlchemy 2.0</h2><p>Modern high-concurrency Python backends use SQLAlchemy 2.0 in async mode with <code>asyncpg</code>.</p>
-<h3 id="eliminating-the-infamous-n-1-query-trap"><a href="#eliminating-the-infamous-n-1-query-trap" class="header-anchor">#</a>Eliminating the Infamous $N+1$ Query Trap</h3><p>The $N+1$ problem happens when querying a list of $N$ parent entities, and then lazily fetching child records in a loop, generating $N+1$ roundtrips to the database:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># THE DISASTER: Generates 1 initial query + 500 subsequent queries!</span>
-users = <span class="hljs-keyword">await</span> session.scalars(select(User).limit(<span class="hljs-number">500</span>))
-<span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users:
-    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">len</span>(user.orders)) <span class="hljs-comment"># Triggers a separate SELECT query for every user!</span></code></pre>
-  </div><h3 id="the-production-solution-explicit-eager-loading-strategies"><a href="#the-production-solution-explicit-eager-loading-strategies" class="header-anchor">#</a>The Production Solution: Explicit Eager Loading Strategies</h3>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># async_db_pipeline.py</span>
-<span class="hljs-keyword">import</span> asyncio
-<span class="hljs-keyword">from</span> sqlalchemy.ext.asyncio <span class="hljs-keyword">import</span> create_async_engine, async_sessionmaker, AsyncSession
-<span class="hljs-keyword">from</span> sqlalchemy.orm <span class="hljs-keyword">import</span> DeclarativeBase, Mapped, mapped_column, relationship, selectinload, joinedload
-<span class="hljs-keyword">from</span> sqlalchemy <span class="hljs-keyword">import</span> select, String, Integer, ForeignKey
-<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>(<span class="hljs-title class_ inherited__">DeclarativeBase</span>):
-    <span class="hljs-keyword">pass</span>
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span>(<span class="hljs-title class_ inherited__">Base</span>):
-    __tablename__ = <span class="hljs-string">&quot;users&quot;</span>
-    <span class="hljs-built_in">id</span>: Mapped[<span class="hljs-built_in">int</span>] = mapped_column(primary_key=<span class="hljs-literal">True</span>)
-    username: Mapped[<span class="hljs-built_in">str</span>] = mapped_column(String(<span class="hljs-number">50</span>), index=<span class="hljs-literal">True</span>)
-    orders: Mapped[<span class="hljs-type">List</span>[<span class="hljs-string">&quot;Order&quot;</span>]] = relationship(<span class="hljs-string">&quot;Order&quot;</span>, back_populates=<span class="hljs-string">&quot;user&quot;</span>)
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span>(<span class="hljs-title class_ inherited__">Base</span>):
-    __tablename__ = <span class="hljs-string">&quot;orders&quot;</span>
-    <span class="hljs-built_in">id</span>: Mapped[<span class="hljs-built_in">int</span>] = mapped_column(primary_key=<span class="hljs-literal">True</span>)
-    user_id: Mapped[<span class="hljs-built_in">int</span>] = mapped_column(ForeignKey(<span class="hljs-string">&quot;users.id&quot;</span>), index=<span class="hljs-literal">True</span>)
-    amount: Mapped[<span class="hljs-built_in">int</span>] = mapped_column(Integer)
-    user: Mapped[User] = relationship(<span class="hljs-string">&quot;User&quot;</span>, back_populates=<span class="hljs-string">&quot;orders&quot;</span>)
-
-DATABASE_URL = <span class="hljs-string">&quot;postgresql+asyncpg://postgres:secret@localhost:5432/enterprise_db&quot;</span>
-
-engine = create_async_engine(
-    DATABASE_URL,
-    pool_size=<span class="hljs-number">20</span>,          <span class="hljs-comment"># Persistent connection pool</span>
-    max_overflow=<span class="hljs-number">10</span>,       <span class="hljs-comment"># Headroom for traffic bursts</span>
-    pool_pre_ping=<span class="hljs-literal">True</span>,    <span class="hljs-comment"># Tests connections before checkout (drops dead connections)</span>
-    pool_recycle=<span class="hljs-number">1800</span>,     <span class="hljs-comment"># Recycles connection every 30 minutes</span>
-)
-
-AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=<span class="hljs-literal">False</span>)
-
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_users_with_eager_loading</span>():
-    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> AsyncSessionLocal() <span class="hljs-keyword">as</span> session:
-        <span class="hljs-comment"># OPTIMIZATION: selectinload uses 2 efficient queries:</span>
-        <span class="hljs-comment"># 1. SELECT * FROM users LIMIT 100</span>
-        <span class="hljs-comment"># 2. SELECT * FROM orders WHERE user_id IN (1, 2, 3...)</span>
-        stmt = (
-            select(User)
-            .options(selectinload(User.orders))
-            .order_by(User.<span class="hljs-built_in">id</span>)
-            .limit(<span class="hljs-number">100</span>)
-        )
-        result = <span class="hljs-keyword">await</span> session.scalars(stmt)
-        users = result.<span class="hljs-built_in">all</span>()
-        
-        <span class="hljs-comment"># Zero additional queries executed during iteration!</span>
-        <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users:
-            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;User <span class="hljs-subst">{user.username}</span> has <span class="hljs-subst">{<span class="hljs-built_in">len</span>(user.orders)}</span> orders.&quot;</span>)
-
-<span class="hljs-comment"># Eager Loading Cheat Sheet:</span>
-<span class="hljs-comment"># - joinedload: Uses SQL LEFT JOIN. Best for One-to-One relationships.</span>
-<span class="hljs-comment"># - selectinload: Uses WHERE id IN (...). Best for One-to-Many collections (prevents cartesian product explosions).</span></code></pre>
-  </div><hr>
-<h2 id="6-summary-senior-engineer-database-optimization-checklist"><a href="#6-summary-senior-engineer-database-optimization-checklist" class="header-anchor">#</a>6. Summary: Senior Engineer Database Optimization Checklist</h2><ol>
-<li><strong>Index Foreign Keys:</strong> PostgreSQL does not automatically index foreign key columns. If you omit an index on <code>orders.user_id</code>, cascading deletes will lock the entire <code>orders</code> table!</li>
-<li><strong>Watch for Implicit Type Conversions:</strong> Querying <code>WHERE phone_number = 1234567890</code> on a <code>VARCHAR</code> column forces PostgreSQL to cast every row to integer, bypassing the B-Tree index entirely!</li>
-<li><strong>Use <code>selectinload</code> for 1-to-Many Collections:</strong> Eliminates $N+1$ queries while preventing the quadratic data explosion of SQL <code>JOIN</code> cartesian products.</li>
-<li><strong>Tune <code>work_mem</code> and <code>shared_buffers</code>:</strong> Default PostgreSQL settings are tuned for 1990s hardware. Increase <code>shared_buffers</code> to 25% of system RAM and configure <code>work_mem</code> appropriately to prevent sort spills to disk.</li>
+    </div><h3 id="the-refresh-token-rotation-trap-replay-attack-defense"><a href="#the-refresh-token-rotation-trap-replay-attack-defense" class="header-anchor">#</a>The Refresh Token Rotation Trap (Replay Attack Defense)</h3><p>What happens if a hacker steals the refresh token?</p>
+<ol>
+<li>Every time a refresh token is used, the server <strong>immediately revokes it</strong> and issues a brand-new refresh token (Refresh Token Rotation).</li>
+<li>If the auth server detects that an <strong>already-used refresh token</strong> is presented a second time, it triggers a security alarm: <strong>it assumes a theft took place, and immediately revokes all refresh tokens belonging to that user&#39;s entire token family!</strong></li>
 </ol>
+<hr>
+<h2 id="4-declarative-rbac-abac-in-fastapi"><a href="#4-declarative-rbac-abac-in-fastapi" class="header-anchor">#</a>4. Declarative RBAC & ABAC in FastAPI</h2><h3 id="what-is-rbac-and-abac"><a href="#what-is-rbac-and-abac" class="header-anchor">#</a>What is RBAC and ABAC?</h3><ul>
+<li><strong>RBAC (Role-Based Access Control):</strong> Permissions are assigned to roles (e.g., <code>ADMIN</code>, <code>MODERATOR</code>, <code>USER</code>). You check: <em>&quot;Does the user have the ADMIN role?&quot;</em></li>
+<li><strong>ABAC (Attribute-Based Access Control):</strong> Permissions consider dynamic attributes: time of day, user location, or resource ownership. You check: <em>&quot;Is the user an ADMIN, OR is this user the original author of the document?&quot;</em></li>
+</ul>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+graph TD
+    Req["Request: DELETE /documents/42"] --&gt; TokenCheck["Validate JWT Signature &amp; Expiration"]
+    TokenCheck --&gt; RoleCheck{"Has 'ADMIN' Role?"}
+    RoleCheck --&gt;|Yes| Allow["Permit Action"]
+    RoleCheck --&gt;|No| OwnershipCheck{"Is document.author_id == token.sub?"}
+    OwnershipCheck --&gt;|Yes| Allow
+    OwnershipCheck --&gt;|No| Deny["403 Forbidden: Insufficient Permissions"]
+</div>
+      </div>
+    </div><hr>
+<h2 id="5-industrial-security-engine-complete-implementation"><a href="#5-industrial-security-engine-complete-implementation" class="header-anchor">#</a>5. Industrial Security Engine: Complete Implementation</h2><p>Here is an end-to-end, runnable security architecture featuring password hashing, cryptographic JWT creation, token decoding, dependency injection, and declarative RBAC enforcement:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># enterprise_auth_engine.py</span>
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> uuid
+<span class="hljs-keyword">import</span> hmac
+<span class="hljs-keyword">import</span> hashlib
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Annotated
+<span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+<span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Depends, HTTPException, status, Security
+<span class="hljs-keyword">from</span> fastapi.security <span class="hljs-keyword">import</span> HTTPBearer, HTTPAuthorizationCredentials
+<span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel, Field
+
+<span class="hljs-comment"># Secret configuration (in production, loaded from environment variables or AWS KMS)</span>
+JWT_SECRET_KEY = <span class="hljs-string">&quot;SUPER_SECRET_PRODUCTION_SIGNING_KEY_CHANGE_ME&quot;</span>
+ALGORITHM = <span class="hljs-string">&quot;HS256&quot;</span>
+ACCESS_TOKEN_EXPIRE_SECONDS = <span class="hljs-number">900</span>  <span class="hljs-comment"># 15 minutes</span>
+
+app = FastAPI(title=<span class="hljs-string">&quot;Cryptographic Auth Service&quot;</span>, version=<span class="hljs-string">&quot;1.0.0&quot;</span>)
+security_scheme = HTTPBearer()
+
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-comment"># 1. Role Definitions</span>
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRole</span>(<span class="hljs-built_in">str</span>, Enum):
+    USER = <span class="hljs-string">&quot;USER&quot;</span>
+    EDITOR = <span class="hljs-string">&quot;EDITOR&quot;</span>
+    ADMIN = <span class="hljs-string">&quot;ADMIN&quot;</span>
+
+<span class="hljs-comment"># Role hierarchy: higher roles inherit privileges of lower roles</span>
+ROLE_HIERARCHY = {
+    UserRole.ADMIN: {UserRole.ADMIN, UserRole.EDITOR, UserRole.USER},
+    UserRole.EDITOR: {UserRole.EDITOR, UserRole.USER},
+    UserRole.USER: {UserRole.USER}
+}
+
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-comment"># 2. Pure Python Standard Library JWT Engine (No External C-Libs)</span>
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">base64url_encode</span>(<span class="hljs-params">data: <span class="hljs-built_in">bytes</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Encodes bytes into a URL-safe Base64 string without trailing &#x27;=&#x27; padding.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> base64.urlsafe_b64encode(data).rstrip(<span class="hljs-string">b&quot;=&quot;</span>).decode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">base64url_decode</span>(<span class="hljs-params">data: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bytes</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Decodes a URL-safe Base64 string, restoring required &#x27;=&#x27; padding.&quot;&quot;&quot;</span>
+    padding = <span class="hljs-string">b&quot;=&quot;</span> * (<span class="hljs-number">4</span> - (<span class="hljs-built_in">len</span>(data) % <span class="hljs-number">4</span>))
+    <span class="hljs-keyword">return</span> base64.urlsafe_b64decode(data.encode(<span class="hljs-string">&quot;utf-8&quot;</span>) + padding)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TokenPayload</span>(<span class="hljs-title class_ inherited__">BaseModel</span>):
+    sub: <span class="hljs-built_in">str</span>                  <span class="hljs-comment"># User ID</span>
+    email: <span class="hljs-built_in">str</span>
+    role: UserRole
+    exp: <span class="hljs-built_in">int</span>                  <span class="hljs-comment"># Expiration timestamp</span>
+    iat: <span class="hljs-built_in">int</span>                  <span class="hljs-comment"># Issued-at timestamp</span>
+    jti: <span class="hljs-built_in">str</span>                  <span class="hljs-comment"># Unique Token ID</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">create_access_token</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span>, email: <span class="hljs-built_in">str</span>, role: UserRole</span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Assembles and signs a cryptographic JWT token.&quot;&quot;&quot;</span>
+    now = <span class="hljs-built_in">int</span>(time.time())
+    header = {<span class="hljs-string">&quot;alg&quot;</span>: ALGORITHM, <span class="hljs-string">&quot;typ&quot;</span>: <span class="hljs-string">&quot;JWT&quot;</span>}
+    payload = {
+        <span class="hljs-string">&quot;sub&quot;</span>: user_id,
+        <span class="hljs-string">&quot;email&quot;</span>: email,
+        <span class="hljs-string">&quot;role&quot;</span>: role.value,
+        <span class="hljs-string">&quot;iat&quot;</span>: now,
+        <span class="hljs-string">&quot;exp&quot;</span>: now + ACCESS_TOKEN_EXPIRE_SECONDS,
+        <span class="hljs-string">&quot;jti&quot;</span>: <span class="hljs-built_in">str</span>(uuid.uuid4())
+    }
+    
+    encoded_header = base64url_encode(json.dumps(header).encode(<span class="hljs-string">&quot;utf-8&quot;</span>))
+    encoded_payload = base64url_encode(json.dumps(payload).encode(<span class="hljs-string">&quot;utf-8&quot;</span>))
+    signing_input = <span class="hljs-string">f&quot;<span class="hljs-subst">{encoded_header}</span>.<span class="hljs-subst">{encoded_payload}</span>&quot;</span>.encode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+    
+    <span class="hljs-comment"># Generate cryptographic HMAC-SHA256 signature</span>
+    signature = hmac.new(JWT_SECRET_KEY.encode(<span class="hljs-string">&quot;utf-8&quot;</span>), signing_input, hashlib.sha256).digest()
+    encoded_signature = base64url_encode(signature)
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{encoded_header}</span>.<span class="hljs-subst">{encoded_payload}</span>.<span class="hljs-subst">{encoded_signature}</span>&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">decode_and_verify_token</span>(<span class="hljs-params">token: <span class="hljs-built_in">str</span></span>) -&gt; TokenPayload:
+    <span class="hljs-string">&quot;&quot;&quot;Verifies signature, expiration, and format. Rejects tampered tokens.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        parts = token.split(<span class="hljs-string">&quot;.&quot;</span>)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(parts) != <span class="hljs-number">3</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;Token must have exactly 3 parts&quot;</span>)
+        
+        encoded_header, encoded_payload, encoded_signature = parts
+        signing_input = <span class="hljs-string">f&quot;<span class="hljs-subst">{encoded_header}</span>.<span class="hljs-subst">{encoded_payload}</span>&quot;</span>.encode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+        
+        <span class="hljs-comment"># 1. Verify Signature in constant time</span>
+        expected_sig = hmac.new(JWT_SECRET_KEY.encode(<span class="hljs-string">&quot;utf-8&quot;</span>), signing_input, hashlib.sha256).digest()
+        provided_sig = base64url_decode(encoded_signature)
+        
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> hmac.compare_digest(expected_sig, provided_sig):
+            <span class="hljs-keyword">raise</span> HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=<span class="hljs-string">&quot;Invalid token signature (Tampering detected!)&quot;</span>
+            )
+            
+        <span class="hljs-comment"># 2. Check Expiration</span>
+        payload_data = json.loads(base64url_decode(encoded_payload).decode(<span class="hljs-string">&quot;utf-8&quot;</span>))
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">int</span>(time.time()) &gt; payload_data[<span class="hljs-string">&quot;exp&quot;</span>]:
+            <span class="hljs-keyword">raise</span> HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=<span class="hljs-string">&quot;Token has expired. Please refresh your session.&quot;</span>
+            )
+            
+        <span class="hljs-keyword">return</span> TokenPayload(**payload_data)
+        
+    <span class="hljs-keyword">except</span> HTTPException:
+        <span class="hljs-keyword">raise</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> exc:
+        <span class="hljs-keyword">raise</span> HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=<span class="hljs-string">f&quot;Malformed security credentials: <span class="hljs-subst">{<span class="hljs-built_in">str</span>(exc)}</span>&quot;</span>
+        )
+
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-comment"># 3. Authentication &amp; RBAC Dependencies</span>
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_current_user</span>(<span class="hljs-params">
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(<span class="hljs-params">security_scheme</span>)]
+</span>) -&gt; TokenPayload:
+    <span class="hljs-string">&quot;&quot;&quot;Extracts bearer token and validates cryptographic integrity.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> decode_and_verify_token(credentials.credentials)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RequireRole</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Declarative Role Requirement Dependency Factory.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, minimum_role: UserRole</span>):
+        <span class="hljs-variable language_">self</span>.minimum_role = minimum_role
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, user: Annotated[TokenPayload, Depends(<span class="hljs-params">get_current_user</span>)]</span>) -&gt; TokenPayload:
+        allowed_roles = ROLE_HIERARCHY.get(<span class="hljs-variable language_">self</span>.minimum_role, <span class="hljs-built_in">set</span>())
+        <span class="hljs-keyword">if</span> user.role <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> allowed_roles:
+            <span class="hljs-keyword">raise</span> HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=<span class="hljs-string">f&quot;Access denied: Requires role &#x27;<span class="hljs-subst">{self.minimum_role.value}</span>&#x27;. You have &#x27;<span class="hljs-subst">{user.role.value}</span>&#x27;.&quot;</span>
+            )
+        <span class="hljs-keyword">return</span> user
+
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-comment"># 4. Protected Endpoints with Role Enforcement</span>
+<span class="hljs-comment"># -------------------------------------------------------------</span>
+<span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/auth/demo-token&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_demo_token</span>(<span class="hljs-params">role: UserRole = UserRole.USER</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Utility endpoint to mint test tokens with different privilege levels.&quot;&quot;&quot;</span>
+    token = create_access_token(user_id=<span class="hljs-string">&quot;user_8831&quot;</span>, email=<span class="hljs-string">&quot;engineer@enterprise.com&quot;</span>, role=role)
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;access_token&quot;</span>: token, <span class="hljs-string">&quot;token_type&quot;</span>: <span class="hljs-string">&quot;Bearer&quot;</span>, <span class="hljs-string">&quot;expires_in&quot;</span>: ACCESS_TOKEN_EXPIRE_SECONDS}
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/api/dashboard&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">general_user_dashboard</span>(<span class="hljs-params">user: Annotated[TokenPayload, Depends(<span class="hljs-params">RequireRole(<span class="hljs-params">UserRole.USER</span>)</span>)]</span>):
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Welcome, <span class="hljs-subst">{user.email}</span>! You have basic USER privileges.&quot;</span>}
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/api/admin/metrics&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">admin_only_metrics</span>(<span class="hljs-params">admin_user: Annotated[TokenPayload, Depends(<span class="hljs-params">RequireRole(<span class="hljs-params">UserRole.ADMIN</span>)</span>)]</span>):
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;HEALTHY&quot;</span>,
+        <span class="hljs-string">&quot;financial_volume_usd&quot;</span>: <span class="hljs-number">12845000</span>,
+        <span class="hljs-string">&quot;unlocked_by&quot;</span>: admin_user.email
+    }</code></pre>
+  </div><hr>
+<h2 id="6-staff-interview-traps-exploit-defense"><a href="#6-staff-interview-traps-exploit-defense" class="header-anchor">#</a>6. Staff Interview Traps & Exploit Defense</h2><h3 id="trap-1-the-infamous-algorithm-none-exploit"><a href="#trap-1-the-infamous-algorithm-none-exploit" class="header-anchor">#</a>Trap 1: The Infamous "Algorithm: none" Exploit</h3><ul>
+<li><strong>The Vulnerability:</strong> In the early days of JWT libraries, the JWT RFC permitted an algorithm named <code>&quot;none&quot;</code> for unsecured tokens.</li>
+<li><strong>The Attack:</strong> An attacker took a valid token payload, changed <code>&quot;sub&quot;: &quot;regular_user&quot;</code> to <code>&quot;sub&quot;: &quot;admin&quot;</code>, changed <code>&quot;alg&quot;: &quot;HS256&quot;</code> in the header to <code>&quot;alg&quot;: &quot;none&quot;</code>, stripped off the signature, and sent the token. In poorly written libraries, the server saw <code>&quot;alg&quot;: &quot;none&quot;</code>, skipped signature verification entirely, and granted full root admin rights!</li>
+<li><strong>The Staff Defense:</strong> <strong>Hardcode the accepted algorithms on the server.</strong> Never trust the algorithm declared inside the incoming JWT header! If the server expects <code>HS256</code>, reject any token that declares anything else.</li>
+</ul>
+<h3 id="trap-2-cryptographic-timing-attacks"><a href="#trap-2-cryptographic-timing-attacks" class="header-anchor">#</a>Trap 2: Cryptographic Timing Attacks</h3><ul>
+<li><strong>The Vulnerability:</strong> Suppose you verify an API key using standard Python equality:
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">if</span> user_token == REAL_TOKEN: <span class="hljs-comment"># ❌ VULNERABLE TO TIMING ATTACKS!</span>
+    allow_access()</code></pre>
+  </div></li>
+<li><strong>The Attack:</strong> Python&#39;s string equality operator <code>==</code> compares strings <strong>character by character from left to right</strong> and returns <code>False</code> the exact microsecond a character doesn&#39;t match. An attacker with a high-precision timer can send thousands of requests:<ul>
+<li>If the first character is wrong, it returns in $1.2\mu\text{s}$.</li>
+<li>If the first character is correct, it returns in $1.4\mu\text{s}$.</li>
+<li>By measuring response times, the attacker determines character #1, then character #2, cracking a 32-character secret key without ever knowing it!</li>
+</ul>
+</li>
+<li><strong>The Staff Defense:</strong> Always use <strong><code>secrets.compare_digest()</code></strong> or <strong><code>hmac.compare_digest()</code></strong>. These functions compare every single byte regardless of where differences occur, taking constant execution time.</li>
+</ul>
+<h3 id="trap-3-refresh-token-storage-localstorage-vs-httponly-cookies"><a href="#trap-3-refresh-token-storage-localstorage-vs-httponly-cookies" class="header-anchor">#</a>Trap 3: Refresh Token Storage: LocalStorage vs HttpOnly Cookies</h3><ul>
+<li><strong>The Senior Architectural Debate:</strong> Where should frontend web applications store authentication tokens?<ul>
+<li><strong><code>localStorage</code>:</strong> Vulnerable to <strong>XSS (Cross-Site Scripting)</strong>. If any third-party npm package has a vulnerability, malicious JavaScript can run <code>localStorage.getItem(&quot;token&quot;)</code> and exfiltrate your credentials.</li>
+<li><strong><code>HttpOnly, Secure, SameSite=Strict</code> Cookie:</strong> Inaccessible to JavaScript. Even if malicious script runs on the page, it cannot read the cookie. This is the gold standard for browser session tokens.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="master-checklist-for-chapter-19"><a href="#master-checklist-for-chapter-19" class="header-anchor">#</a>Master Checklist for Chapter 19</h2><table>
+<thead>
+<tr>
+<th align="left">Concept</th>
+<th align="left">Entry-Level Mental Model</th>
+<th align="left">Senior / Staff Production Rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Password Storage</strong></td>
+<td align="left">Mathematical meat grinder</td>
+<td align="left">Never encrypt; hash with salted <strong>Argon2id</strong> or PBKDF2 ($&gt;600,000$ iterations)</td>
+</tr>
+<tr>
+<td align="left"><strong>JWT Anatomy</strong></td>
+<td align="left">Boarding pass with holographic seal</td>
+<td align="left">Base64URL encoded; guarantees integrity, NOT confidentiality</td>
+</tr>
+<tr>
+<td align="left"><strong>Signature Verification</strong></td>
+<td align="left">Checking the airline&#39;s official stamp</td>
+<td align="left">Use <code>hmac.compare_digest</code> in constant time; hardcode allowed algorithms</td>
+</tr>
+<tr>
+<td align="left"><strong>Token Expiration</strong></td>
+<td align="left">Boarding pass expires before departure</td>
+<td align="left">Short-lived Access Token (15 min) + Refresh Token Rotation with family invalidation</td>
+</tr>
+<tr>
+<td align="left"><strong>RBAC Enforcement</strong></td>
+<td align="left">First Class vs Cockpit access</td>
+<td align="left">Enforced via declarative dependency injection factories (<code>RequireRole</code>)</td>
+</tr>
+<tr>
+<td align="left"><strong>Storage Security</strong></td>
+<td align="left">Keeping your passport in an inside pocket</td>
+<td align="left">Store browser tokens in <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite=Strict</code> cookies</td>
+</tr>
+</tbody></table>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1551,20 +1651,20 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=<span class="hlj
           </button>
         </div>
         <div class="page-navigation">
-    <a href="../01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-card prev">
+    <a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-card prev">
       <span class="nav-direction">← Previous Chapter</span>
-      <span class="nav-page-title">13: Distributed Tasks (Celery & Redis)</span>
+      <span class="nav-page-title">13: Web Architecture (FastAPI & Pydantic)</span>
     </a>
-    <a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-card next">
+    <a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-card next">
       <span class="nav-direction">Next Chapter →</span>
-      <span class="nav-page-title">15: High-Performance Computing (HPC)</span>
+      <span class="nav-page-title">15: Distributed Tasks (Celery & Redis)</span>
     </a></div>
       </div>
     </main>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-foundations-why-do-we-need-sql-and-relational-databases" class="toc-link">0. Zero-Prerequisite Foundations: Why Do We Need SQL and Relational Databases?</a></li><li class="toc-item level-3"><a href="#declarative-vs-imperative-the-core-philosophy-of-sql" class="toc-link">Declarative vs. Imperative: The Core Philosophy of SQL</a></li><li class="toc-item level-2"><a href="#1-postgresql-storage-engine-mvcc-internals" class="toc-link">1. PostgreSQL Storage Engine & MVCC Internals</a></li><li class="toc-item level-3"><a href="#mvcc-header-anatomy" class="toc-link">MVCC Header Anatomy</a></li><li class="toc-item level-2"><a href="#2-reading-explain-analyze-buffers" class="toc-link">2. Reading `EXPLAIN (ANALYZE, BUFFERS)`</a></li><li class="toc-item level-3"><a href="#interpreting-the-execution-plan" class="toc-link">Interpreting the Execution Plan</a></li><li class="toc-item level-3"><a href="#critical-metrics-to-scrutinize" class="toc-link">Critical Metrics to Scrutinize:</a></li><li class="toc-item level-2"><a href="#3-advanced-sql-window-functions-recursive-ctes" class="toc-link">3. Advanced SQL: Window Functions & Recursive CTEs</a></li><li class="toc-item level-3"><a href="#1-window-functions-rolling-averages-lead-lag" class="toc-link">1. Window Functions: Rolling Averages & Lead/Lag</a></li><li class="toc-item level-3"><a href="#2-recursive-common-table-expressions-ctes-graph-tree-traversal" class="toc-link">2. Recursive Common Table Expressions (CTEs): Graph/Tree Traversal</a></li><li class="toc-item level-2"><a href="#4-high-concurrency-row-locking-zero-collision-job-queues" class="toc-link">4. High-Concurrency Row Locking: Zero-Collision Job Queues</a></li><li class="toc-item level-3"><a href="#the-magic-of-for-update-skip-locked" class="toc-link">The Magic of `FOR UPDATE SKIP LOCKED`</a></li><li class="toc-item level-2"><a href="#5-modern-python-orm-mastery-async-sqlalchemy-2-0" class="toc-link">5. Modern Python ORM Mastery: Async SQLAlchemy 2.0</a></li><li class="toc-item level-3"><a href="#eliminating-the-infamous-n-1-query-trap" class="toc-link">Eliminating the Infamous $N+1$ Query Trap</a></li><li class="toc-item level-3"><a href="#the-production-solution-explicit-eager-loading-strategies" class="toc-link">The Production Solution: Explicit Eager Loading Strategies</a></li><li class="toc-item level-2"><a href="#6-summary-senior-engineer-database-optimization-checklist" class="toc-link">6. Summary: Senior Engineer Database Optimization Checklist</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-passwords-done-right-cryptographic-hashing-vs-encryption" class="toc-link">1. Passwords Done Right: Cryptographic Hashing vs Encryption</a></li><li class="toc-item level-3"><a href="#why-plaintext-passwords-are-a-crime" class="toc-link">Why Plaintext Passwords Are a Crime</a></li><li class="toc-item level-3"><a href="#encryption-vs-hashing-spoon-fed-clarity" class="toc-link">Encryption vs Hashing (Spoon-Fed Clarity)</a></li><li class="toc-item level-3"><a href="#why-md5-and-sha-256-are-dead-for-passwords" class="toc-link">Why MD5 and SHA-256 Are Dead for Passwords</a></li><li class="toc-item level-3"><a href="#the-modern-standard-argon2id-bcrypt-memory-hard-hashing" class="toc-link">The Modern Standard: Argon2id & Bcrypt (Memory-Hard Hashing)</a></li><li class="toc-item level-2"><a href="#2-the-anatomy-of-a-json-web-token-jwt" class="toc-link">2. The Anatomy of a JSON Web Token (JWT)</a></li><li class="toc-item level-3"><a href="#the-1-beginner-misconception-jwts-are-encrypted" class="toc-link">The #1 Beginner Misconception: "JWTs Are Encrypted"</a></li><li class="toc-item level-3"><a href="#standard-jwt-claims-rfc-7519" class="toc-link">Standard JWT Claims (RFC 7519)</a></li><li class="toc-item level-3"><a href="#symmetric-hs256-vs-asymmetric-rs256-signing" class="toc-link">Symmetric (HS256) vs Asymmetric (RS256) Signing</a></li><li class="toc-item level-2"><a href="#3-the-enterprise-token-lifecycle-access-refresh-rotation" class="toc-link">3. The Enterprise Token Lifecycle: Access + Refresh Rotation</a></li><li class="toc-item level-3"><a href="#the-two-token-defense-system" class="toc-link">The Two-Token Defense System</a></li><li class="toc-item level-3"><a href="#the-refresh-token-rotation-trap-replay-attack-defense" class="toc-link">The Refresh Token Rotation Trap (Replay Attack Defense)</a></li><li class="toc-item level-2"><a href="#4-declarative-rbac-abac-in-fastapi" class="toc-link">4. Declarative RBAC & ABAC in FastAPI</a></li><li class="toc-item level-3"><a href="#what-is-rbac-and-abac" class="toc-link">What is RBAC and ABAC?</a></li><li class="toc-item level-2"><a href="#5-industrial-security-engine-complete-implementation" class="toc-link">5. Industrial Security Engine: Complete Implementation</a></li><li class="toc-item level-2"><a href="#6-staff-interview-traps-exploit-defense" class="toc-link">6. Staff Interview Traps & Exploit Defense</a></li><li class="toc-item level-3"><a href="#trap-1-the-infamous-algorithm-none-exploit" class="toc-link">Trap 1: The Infamous "Algorithm: none" Exploit</a></li><li class="toc-item level-3"><a href="#trap-2-cryptographic-timing-attacks" class="toc-link">Trap 2: Cryptographic Timing Attacks</a></li><li class="toc-item level-3"><a href="#trap-3-refresh-token-storage-localstorage-vs-httponly-cookies" class="toc-link">Trap 3: Refresh Token Storage: LocalStorage vs HttpOnly Cookies</a></li><li class="toc-item level-2"><a href="#master-checklist-for-chapter-19" class="toc-link">Master Checklist for Chapter 19</a></li></ul>
     </aside>
   </div>
 
@@ -1596,7 +1696,7 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=<span class="hlj
     </div>
   </div>
 
-  <script>window.CURRENT_PAGE = "01-Python-Mastery/14-Production-SQL-And-Database-Internals.html";</script>
+  <script>window.CURRENT_PAGE = "01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html";</script>
   <script>
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';

@@ -1,4 +1,4 @@
-# Chapter 15: High-Performance Computing (HPC) & Accelerating Python
+# Chapter 18: High-Performance Computing (HPC, Cython, Numba & Python 3.13 No-GIL)
 
 > **The 100x Speedup**
 > Standard CPython is notoriously slow for numerical computation. A pure Python `for` loop summing an array of floats can be **50x to 150x slower** than compiled C or Rust. Why? Because every integer or float in Python is a dynamically allocated 28-byte `PyObject` heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.

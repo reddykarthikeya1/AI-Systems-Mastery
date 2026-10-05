@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>13: Distributed Tasks (Celery & Redis) | PBC 2026 Master Preparation Guide</title>
+  <title>11: Monolith Refactoring Lab | PBC 2026 Master Preparation Guide</title>
   <style>
     pre code.hljs {
   display: block;
@@ -1113,7 +1113,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     </a>
     <div class="header-controls">
       <div class="progress-stat-badge" title="Master Curriculum Progress">
-        <span id="header-progress-text">0/88 (0%)</span>
+        <span id="header-progress-text">0/93 (0%)</span>
         <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
       </div>
       <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
@@ -1124,7 +1124,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
       </div>
-      <a href="../../pdfs/01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+      <a href="../../pdfs/01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         <span>Open PDF</span>
       </a>
@@ -1139,7 +1139,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <aside class="sidebar">
       <div class="track-group">
       <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
-      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Packaging.html"><span class="nav-label-text">07: Type System & Typing</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/08-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">08: Core Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/09-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">09: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/10-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">10: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">11: Debugging & Memory Leaks Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">12: Legacy Code Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html" class="nav-link active" data-rel="01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">13: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/14-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">14: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/15-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">15: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html" class="nav-link " data-rel="01-Python-Mastery/17-Testing-Async-Mocking-And-ASGI-Internals.html"><span class="nav-label-text">17: Async Mocking & ASGI Internals</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link active" data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Curated-Video-Masterclasses.html" class="nav-link " data-rel="01-Python-Mastery/22-Curated-Video-Masterclasses.html"><span class="nav-label-text">22: Curated Video Masterclasses</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
@@ -1150,184 +1150,174 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="chapter-13-distributed-task-queues-asynchronous-background-processing-with-celery-redis"><a href="#chapter-13-distributed-task-queues-asynchronous-background-processing-with-celery-redis" class="header-anchor">#</a>Chapter 13: Distributed Task Queues & Asynchronous Background Processing with Celery & Redis</h1><blockquote>
-<p><strong>The Enterprise Asynchronous Tier</strong>
-In modern production systems, web servers (FastAPI, Django, Flask) must never perform heavy computation, external third-party API calls, PDF generation, email dispatch, or large database mutations synchronously within the HTTP request-response cycle. Blocking a web worker thread for 5 seconds destroys your server&#39;s concurrency and cascades into gateway timeouts.</p>
-<p>Production Python architectures decouple synchronous web requests from asynchronous background execution using <strong>Distributed Task Queues</strong>. This chapter is an advanced deep dive into the internals of <strong>Redis</strong>, the architecture of <strong>Celery</strong>, failure recovery, task idempotency, distributed locking, and production worker tuning.</p>
+          <h1 id="chapter-11-legacy-monolith-refactoring-break-fix-engineering-lab"><a href="#chapter-11-legacy-monolith-refactoring-break-fix-engineering-lab" class="header-anchor">#</a>Chapter 11: Legacy Monolith Refactoring & Break-Fix Engineering Lab</h1><blockquote>
+<p><strong>Brownfield vs. Greenfield</strong>
+In school and online tutorials, you always start with an empty <code>main.py</code>. In an enterprise role, you will almost never touch an empty file. You will inherit a 1,500-line function written four years ago by an engineer who left the company, full of mutable defaults, hidden global mutations, unhandled exception swallows, and zero unit tests.</p>
+<p>This lab teaches you the principal engineer&#39;s methodology for refactoring hazardous legacy code into pristine, testable, modern Python without causing a production outage.</p>
 </blockquote>
 <hr>
-<h2 id="0-zero-prerequisite-foundations-why-do-we-need-redis-and-celery"><a href="#0-zero-prerequisite-foundations-why-do-we-need-redis-and-celery" class="header-anchor">#</a>0. Zero-Prerequisite Foundations: Why Do We Need Redis and Celery?</h2><blockquote>
-<p><strong>The &quot;Fast-Food Cashier &amp; Line Cook&quot; Metaphor</strong>
-Imagine you walk into a fast-food restaurant at lunchtime to order a gourmet burger.</p>
-<ul>
-<li><p><strong>The Broken Synchronous World (No Task Queue):</strong>
-The cashier takes your cash, and then says: <em>&quot;Please stand here at the register while I walk into the kitchen, knead the dough, bake the bun, grind the meat, and grill the patty for 15 minutes.&quot;</em> 
-While the cashier is in the kitchen cooking your burger, <strong>nobody else can order</strong>! A line of 100 furious customers stretches out the door, and the restaurant crashes.</p>
-</li>
-<li><p><strong>The Production Asynchronous World (With Redis &amp; Celery):</strong></p>
-<ol>
-<li><strong>The Cashier (FastAPI / Web Server):</strong> Takes your order in <strong>0.05 seconds</strong>, prints a receipt ticket (<code>Order #42</code>), hands it to you, slides the ticket onto the kitchen counter rack, and immediately turns to say: <em>&quot;Next customer please!&quot;</em></li>
-<li><strong>The Order Ticket Rack (The Message Broker — Redis):</strong> An ultra-fast, shared counter where order tickets are placed in a neat, first-in-first-out line.</li>
-<li><strong>The Line Cooks in the Kitchen (The Background Workers — Celery):</strong> Multiple independent cooks who pull tickets off the rack, cook the burgers, generate the invoices, send the emails, and mark the order as complete!</li>
-</ol>
-</li>
-</ul>
-</blockquote>
+<h2 id="1-the-hazardous-legacy-codebase"><a href="#1-the-hazardous-legacy-codebase" class="header-anchor">#</a>1. The Hazardous Legacy Codebase</h2><p>Examine this order processing script taken from an actual real-world legacy code pattern:</p>
 
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-flowchart LR
-    Customer["Client / Browser"] --&gt;|1. POST /order HTTP| WebServer["FastAPI Web Server&lt;br/&gt;(The Cashier)"]
-    WebServer --&gt;|2. Fast Response: 202 Accepted&lt;br/&gt;Job ID: 42| Customer
-    
-    WebServer --&gt;|3. LPUSH ticket #42| Broker["Redis Server&lt;br/&gt;(The Order Ticket Rack in RAM)"]
-    
-    subgraph CeleryFleet ["Celery Worker Fleet (The Line Cooks)"]
-        W1["Worker 1 (PDF Generator)"]
-        W2["Worker 2 (Email Sender)"]
-        W3["Worker 3 (ML Inference)"]
-    end
-    
-    Broker --&gt;|4. BRPOP ticket #42| W1
-    W1 --&gt;|5. Store Result| Broker
-</div>
-      </div>
-    </div><h3 id="why-can-t-we-just-use-a-python-dict-or-a-database"><a href="#why-can-t-we-just-use-a-python-dict-or-a-database" class="header-anchor">#</a>Why Can't We Just Use a Python `dict` or a Database?</h3><p>A newcomer to backend engineering often asks two brilliant questions:</p>
-<h4 id="1-why-can-t-i-just-store-the-tasks-in-a-regular-python-dictionary-my-tasks"><a href="#1-why-can-t-i-just-store-the-tasks-in-a-regular-python-dictionary-my-tasks" class="header-anchor">#</a>1. "Why can't I just store the tasks in a regular Python dictionary (`my_tasks = []`)?"</h4><p>A Python dictionary lives inside the private physical RAM of <strong>one single Python process on one machine</strong>. 
-In real production, you run 10 separate web server containers across 3 cloud servers behind a load balancer. If a user connects to Container #1 and it puts a task in its local dictionary, Container #2 and your Celery worker running on a completely different machine have <strong>zero access</strong> to Container #1&#39;s memory!
-<strong>Redis is an independent, standalone server running on the network.</strong> All 10 web containers and all 50 worker servers connect to Redis over TCP sockets, sharing one single, synchronized state.</p>
-<h4 id="2-why-not-just-use-postgresql-or-mysql-as-the-task-queue"><a href="#2-why-not-just-use-postgresql-or-mysql-as-the-task-queue" class="header-anchor">#</a>2. "Why not just use PostgreSQL or MySQL as the task queue?"</h4><p>Relational databases write data to physical disk drives (NVMe SSDs) with heavy transaction logging, page locking, and table metadata updates. </p>
-<ul>
-<li>Writing to a disk database takes <strong>5 to 20 milliseconds</strong>.</li>
-<li><strong>Redis lives 100% inside physical RAM.</strong> Reading or writing to Redis takes <strong>0.2 milliseconds (200 microseconds)</strong>—roughly <strong>50x to 100x faster</strong> than disk! Redis can easily handle <strong>100,000+ operations per second</strong> on a single CPU core without breaking a sweat.</li>
-</ul>
-<hr>
-<h2 id="1-redis-internals-for-python-engineers"><a href="#1-redis-internals-for-python-engineers" class="header-anchor">#</a>1. Redis Internals for Python Engineers</h2><p>Redis (<strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver) is not merely a key-value store; it is an in-memory data structures server powered by an event-driven, single-threaded I/O multiplexer (<code>epoll</code> on Linux, <code>kqueue</code> on BSD/macOS).</p>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># legacy_order_processor.py</span>
+<span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">import</span> smtplib
+<span class="hljs-keyword">import</span> sqlite3
 
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-flowchart TD
-    subgraph Web_Tier ["Web Application Fleet"]
-        App1["FastAPI Pod 1"]
-        App2["FastAPI Pod 2"]
-    end
+<span class="hljs-comment"># HAZARD 1: Global mutable state</span>
+GLOBAL_TAX_CACHE = {}
+TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
 
-    subgraph Redis_Engine ["Redis Server (Single-Threaded Event Loop)"]
-        Multiplexer["I/O Multiplexer (epoll)"]
-        CommandExec["Atomic Command Execution Engine"]
-        Storage["In-Memory Data Structures (Strings, Hashes, Sorted Sets, Streams)"]
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderProcessor</span>:
+    <span class="hljs-comment"># HAZARD 2: Mutable default argument!</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, db_conn=<span class="hljs-literal">None</span>, discounts=[]</span>):
+        <span class="hljs-variable language_">self</span>.db = db_conn
+        <span class="hljs-variable language_">self</span>.discounts = discounts <span class="hljs-comment"># Mutating this will poison all instances!</span>
+
+    <span class="hljs-comment"># HAZARD 3: God-method with high cyclomatic complexity (Nested 5 levels deep)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process</span>(<span class="hljs-params">self, order_data</span>):
+        <span class="hljs-keyword">global</span> TOTAL_ORDERS_PROCESSED
+        TOTAL_ORDERS_PROCESSED += <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># HAZARD 4: Hardcoded direct DB coupling</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.db:
+            <span class="hljs-variable language_">self</span>.db = sqlite3.connect(<span class="hljs-string">&quot;production.db&quot;</span>)
         
-        Multiplexer --&gt; CommandExec
-        CommandExec --&gt; Storage
-    end
+        cursor = <span class="hljs-variable language_">self</span>.db.cursor()
+        
+        <span class="hljs-comment"># HAZARD 5: SQL Injection vulnerability via string formatting</span>
+        user_query = <span class="hljs-string">f&quot;SELECT balance, email FROM users WHERE id = &#x27;<span class="hljs-subst">{order_data[<span class="hljs-string">&#x27;user_id&#x27;</span>]}</span>&#x27;&quot;</span>
+        cursor.execute(user_query)
+        user = cursor.fetchone()
+        
+        <span class="hljs-keyword">if</span> user:
+            balance = user[<span class="hljs-number">0</span>]
+            email = user[<span class="hljs-number">1</span>]
+            total = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> order_data[<span class="hljs-string">&#x27;items&#x27;</span>]:
+                total += item[<span class="hljs-string">&#x27;price&#x27;</span>] * item.get(<span class="hljs-string">&#x27;qty&#x27;</span>, <span class="hljs-number">1</span>)
 
-    subgraph Worker_Fleet ["Celery Worker Fleet"]
-        W1["Worker 1 (Prefetch=1)"]
-        W2["Worker 2 (Prefetch=1)"]
-        W3["Worker 3 (Prefetch=1)"]
-    end
+            <span class="hljs-comment"># Apply discounts</span>
+            <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.discounts:
+                total -= d
 
-    App1 -- "LPUSH queue:tasks" --&gt; Multiplexer
-    App2 -- "LPUSH queue:tasks" --&gt; Multiplexer
-    Multiplexer -- "BRPOP queue:tasks" --&gt; W1
-    Multiplexer -- "BRPOP queue:tasks" --&gt; W2
-    Multiplexer -- "BRPOP queue:tasks" --&gt; W3
-</div>
-      </div>
-    </div><h3 id="redis-atomicity-lua-scripting"><a href="#redis-atomicity-lua-scripting" class="header-anchor">#</a>Redis Atomicity & Lua Scripting</h3><p>Because Redis executes commands sequentially on a single thread, basic individual commands (<code>INCR</code>, <code>HSET</code>, <code>LPUSH</code>) are guaranteed to be atomic. However, compound business logic requiring a &quot;Check-Then-Act&quot; sequence is vulnerable to race conditions unless executed via <strong>Redis Lua Scripts</strong>.</p>
-<p>When Redis executes a Lua script, the entire script runs atomically from start to finish without any other client command interleaving.</p>
-<h4 id="production-distributed-mutex-lock-with-atomic-lua-release"><a href="#production-distributed-mutex-lock-with-atomic-lua-release" class="header-anchor">#</a>Production Distributed Mutex Lock with Atomic Lua Release</h4>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># redis_lock.py</span>
-<span class="hljs-keyword">import</span> uuid
-<span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> redis
+            <span class="hljs-comment"># HAZARD 6: Hidden side effect mutating a global cache</span>
+            <span class="hljs-keyword">if</span> order_data.get(<span class="hljs-string">&#x27;country&#x27;</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> GLOBAL_TAX_CACHE:
+                <span class="hljs-keyword">if</span> order_data.get(<span class="hljs-string">&#x27;country&#x27;</span>) == <span class="hljs-string">&quot;CA&quot;</span>:
+                    GLOBAL_TAX_CACHE[<span class="hljs-string">&quot;CA&quot;</span>] = <span class="hljs-number">0.13</span>
+                <span class="hljs-keyword">else</span>:
+                    GLOBAL_TAX_CACHE[order_data.get(<span class="hljs-string">&#x27;country&#x27;</span>)] = <span class="hljs-number">0.05</span>
+            
+            tax_rate = GLOBAL_TAX_CACHE[order_data.get(<span class="hljs-string">&#x27;country&#x27;</span>)]
+            total += total * tax_rate
 
-client = redis.Redis(host=<span class="hljs-string">&quot;localhost&quot;</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">0</span>)
+            <span class="hljs-keyword">if</span> balance &gt;= total:
+                new_balance = balance - total
+                cursor.execute(<span class="hljs-string">f&quot;UPDATE users SET balance = <span class="hljs-subst">{new_balance}</span> WHERE id = &#x27;<span class="hljs-subst">{order_data[<span class="hljs-string">&#x27;user_id&#x27;</span>]}</span>&#x27;&quot;</span>)
+                <span class="hljs-variable language_">self</span>.db.commit()
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisDistributedLock</span>:
-    <span class="hljs-comment"># Atomic Lua script: only delete the lock IF the token matches our owner ID!</span>
-    <span class="hljs-comment"># Prevents deleting someone else&#x27;s lock if our task took longer than TTL!</span>
-    RELEASE_LUA_SCRIPT = <span class="hljs-string">&quot;&quot;&quot;
-    if redis.call(&quot;get&quot;, KEYS[1]) == ARGV[1] then
-        return redis.call(&quot;del&quot;, KEYS[1])
-    else
-        return 0
-    end
-    &quot;&quot;&quot;</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, redis_client: redis.Redis, lock_key: <span class="hljs-built_in">str</span>, ttl_seconds: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span></span>):
-        <span class="hljs-variable language_">self</span>.client = redis_client
-        <span class="hljs-variable language_">self</span>.lock_key = lock_key
-        <span class="hljs-variable language_">self</span>.ttl = ttl_seconds
-        <span class="hljs-variable language_">self</span>.token = <span class="hljs-built_in">str</span>(uuid.uuid4())
-        <span class="hljs-variable language_">self</span>._release_script = <span class="hljs-variable language_">self</span>.client.register_script(<span class="hljs-variable language_">self</span>.RELEASE_LUA_SCRIPT)
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">acquire</span>(<span class="hljs-params">self, blocking: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>, timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">5.0</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
-        start_time = time.time()
-        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            <span class="hljs-comment"># NX = Only set if Not eXists; EX = Set Expiration in seconds</span>
-            acquired = <span class="hljs-variable language_">self</span>.client.<span class="hljs-built_in">set</span>(<span class="hljs-variable language_">self</span>.lock_key, <span class="hljs-variable language_">self</span>.token, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-variable language_">self</span>.ttl)
-            <span class="hljs-keyword">if</span> acquired:
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> blocking <span class="hljs-keyword">or</span> (time.time() - start_time) &gt;= timeout:
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-            time.sleep(<span class="hljs-number">0.05</span>) <span class="hljs-comment"># Backoff before retrying</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">release</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">bool</span>:
-        result = <span class="hljs-variable language_">self</span>._release_script(keys=[<span class="hljs-variable language_">self</span>.lock_key], args=[<span class="hljs-variable language_">self</span>.token])
-        <span class="hljs-keyword">return</span> result == <span class="hljs-number">1</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__enter__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.acquire():
-            <span class="hljs-keyword">raise</span> TimeoutError(<span class="hljs-string">f&quot;Could not acquire distributed lock for key: <span class="hljs-subst">{self.lock_key}</span>&quot;</span>)
-        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__exit__</span>(<span class="hljs-params">self, exc_type, exc_val, exc_tb</span>):
-        <span class="hljs-variable language_">self</span>.release()</code></pre>
+                <span class="hljs-comment"># HAZARD 7: External network call inside the transaction loop</span>
+                <span class="hljs-keyword">try</span>:
+                    server = smtplib.SMTP(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-number">25</span>)
+                    server.sendmail(<span class="hljs-string">&quot;store@test.com&quot;</span>, email, <span class="hljs-string">f&quot;Your order of $<span class="hljs-subst">{total}</span> succeeded!&quot;</span>)
+                    server.quit()
+                <span class="hljs-keyword">except</span> Exception:
+                    <span class="hljs-comment"># HAZARD 8: Silent error swallowing!</span>
+                    <span class="hljs-keyword">pass</span> 
+                
+                <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;total&quot;</span>: total, <span class="hljs-string">&quot;remaining_balance&quot;</span>: new_balance}
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;INSUFFICIENT_FUNDS&quot;</span>}
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;USER_NOT_FOUND&quot;</span>}</code></pre>
   </div><hr>
-<h2 id="2-celery-architecture-worker-lifecycles"><a href="#2-celery-architecture-worker-lifecycles" class="header-anchor">#</a>2. Celery Architecture & Worker Lifecycles</h2><p>Celery is an asynchronous distributed task queue built around message brokers (Redis or RabbitMQ) and result backends.</p>
+<h2 id="2-the-golden-rule-characterization-tests-first"><a href="#2-the-golden-rule-characterization-tests-first" class="header-anchor">#</a>2. The Golden Rule: Characterization Tests First</h2><div class="callout callout-caution">
+        <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> <span>CAUTION</span></div>
+        <div class="callout-body"><p><strong>Never refactor code without a safety net.</strong>
+Before altering a single character of production code, write <strong>Characterization Tests</strong> (also called &quot;Pinning Tests&quot;). The goal is not to test what the code <em>should</em> do, but to lock down what it <em>currently</em> does, bugs and all, so any behavioral change is immediately flagged.</p>
+</div>
+      </div>
+<h3 id="writing-the-pinning-harness-with-pytest"><a href="#writing-the-pinning-harness-with-pytest" class="header-anchor">#</a>Writing the Pinning Harness with `pytest`</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># test_legacy_pinning.py</span>
+<span class="hljs-keyword">import</span> pytest
+<span class="hljs-keyword">import</span> sqlite3
+<span class="hljs-keyword">from</span> legacy_order_processor <span class="hljs-keyword">import</span> OrderProcessor, GLOBAL_TAX_CACHE
+
+<span class="hljs-meta">@pytest.fixture</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mock_db</span>():
+    <span class="hljs-comment"># Use in-memory SQLite database</span>
+    conn = sqlite3.connect(<span class="hljs-string">&quot;:memory:&quot;</span>)
+    cursor = conn.cursor()
+    cursor.execute(<span class="hljs-string">&quot;CREATE TABLE users (id TEXT, balance REAL, email TEXT)&quot;</span>)
+    cursor.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;user_1&#x27;, 100.0, &#x27;alice@example.com&#x27;)&quot;</span>)
+    cursor.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;user_2&#x27;, 10.0, &#x27;bob@example.com&#x27;)&quot;</span>)
+    conn.commit()
+    <span class="hljs-keyword">yield</span> conn
+    conn.close()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_successful_order_characterization</span>(<span class="hljs-params">mock_db</span>):
+    GLOBAL_TAX_CACHE.clear()
+    processor = OrderProcessor(db_conn=mock_db, discounts=[<span class="hljs-number">5.0</span>])
+    
+    order = {
+        <span class="hljs-string">&quot;user_id&quot;</span>: <span class="hljs-string">&quot;user_1&quot;</span>,
+        <span class="hljs-string">&quot;country&quot;</span>: <span class="hljs-string">&quot;CA&quot;</span>,
+        <span class="hljs-string">&quot;items&quot;</span>: [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">20.0</span>, <span class="hljs-string">&quot;qty&quot;</span>: <span class="hljs-number">2</span>}] <span class="hljs-comment"># Subtotal: 40 - 5 = 35 + 13% tax = 39.55</span>
+    }
+    
+    result = processor.process(order)
+    
+    <span class="hljs-keyword">assert</span> result[<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;SUCCESS&quot;</span>
+    <span class="hljs-keyword">assert</span> pytest.approx(result[<span class="hljs-string">&quot;total&quot;</span>], <span class="hljs-number">0.01</span>) == <span class="hljs-number">39.55</span>
+    <span class="hljs-keyword">assert</span> pytest.approx(result[<span class="hljs-string">&quot;remaining_balance&quot;</span>], <span class="hljs-number">0.01</span>) == <span class="hljs-number">60.45</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_insufficient_funds_characterization</span>(<span class="hljs-params">mock_db</span>):
+    GLOBAL_TAX_CACHE.clear()
+    processor = OrderProcessor(db_conn=mock_db)
+    
+    order = {
+        <span class="hljs-string">&quot;user_id&quot;</span>: <span class="hljs-string">&quot;user_2&quot;</span>,
+        <span class="hljs-string">&quot;country&quot;</span>: <span class="hljs-string">&quot;US&quot;</span>,
+        <span class="hljs-string">&quot;items&quot;</span>: [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">50.0</span>, <span class="hljs-string">&quot;qty&quot;</span>: <span class="hljs-number">1</span>}]
+    }
+    
+    result = processor.process(order)
+    <span class="hljs-keyword">assert</span> result[<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;INSUFFICIENT_FUNDS&quot;</span></code></pre>
+  </div><p>Run tests to guarantee our baseline passes:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">pytest test_legacy_pinning.py</code></pre>
+  </div><hr>
+<h2 id="3-surgical-modernization-step-by-step"><a href="#3-surgical-modernization-step-by-step" class="header-anchor">#</a>3. Surgical Modernization Step-by-Step</h2><p>We systematically dismantle the architectural anti-patterns:</p>
+<ol>
+<li><strong>Replace string SQL with Parameterized Queries</strong> (Eliminates SQL Injection).</li>
+<li><strong>Eliminate Global State</strong> (<code>GLOBAL_TAX_CACHE</code> and counters are injected via configuration).</li>
+<li><strong>Fix Mutable Defaults</strong> (Use <code>None</code> and initialize inside <code>__init__</code>).</li>
+<li><strong>Decouple External Dependencies with Protocols</strong> (Isolate SMTP Email and Database behind Abstract Interfaces).</li>
+<li><strong>Model Domain with Dataclasses and Enums</strong> (Replace loose dictionaries with type-safe structures).</li>
+</ol>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1348,25 +1338,41 @@ client = redis.Redis(host=<span class="hljs-string">&quot;localhost&quot;</span>
       </div>
       <div class="mermaid-viewport">
         <div class="mermaid">
-sequenceDiagram
-    autonumber
-    participant Client as Web App (Producer)
-    participant Broker as Redis (Task Broker)
-    participant Worker as Celery Worker (Consumer)
-    participant Backend as Redis / PostgreSQL (Result Store)
-
-    Client-&gt;&gt;Broker: LPUSH celery_queue (JSON-serialized task)
-    Broker--&gt;&gt;Client: Return AsyncResult(task_id="abc-123")
-    Worker-&gt;&gt;Broker: BRPOP celery_queue (Prefetches task)
-    Note over Worker: Executes Python Task Function
-    Worker-&gt;&gt;Backend: SET celery-task-meta-abc-123 (SUCCESS / Return Value)
-    Client-&gt;&gt;Backend: GET celery-task-meta-abc-123 (Poll / Await result)
+classDiagram
+    direction TB
+    class OrderItem {
+        +str sku
+        +float price
+        +int qty
+        +float subtotal()
+    }
+    class Order {
+        +str user_id
+        +str country
+        +list[OrderItem] items
+    }
+    class UserRepository {
+        &lt;&lt;interface&gt;&gt;
+        +get_user(user_id) UserRecord
+        +update_balance(user_id, new_balance) void
+    }
+    class NotificationService {
+        &lt;&lt;interface&gt;&gt;
+        +send_order_confirmation(email, total) bool
+    }
+    class ModernOrderService {
+        -UserRepository user_repo
+        -NotificationService notifier
+        -TaxCalculator tax_calc
+        +process_order(order, discounts) OrderResult
+    }
+    ModernOrderService --&gt; UserRepository
+    ModernOrderService --&gt; NotificationService
+    ModernOrderService --&gt; Order
 </div>
       </div>
-    </div><h3 id="critical-production-gotcha-prefetch-limits-starvation"><a href="#critical-production-gotcha-prefetch-limits-starvation" class="header-anchor">#</a>Critical Production Gotcha: Prefetch Limits & Starvation</h3><p>By default, Celery configures <code>worker_prefetch_multiplier = 4</code>. If you have 4 worker concurrency processes, Celery will prefetch <strong>16 tasks</strong> from Redis into local worker memory.</p>
-<ul>
-<li><strong>The Problem:</strong> If Task #1 takes 20 minutes (e.g. video rendering) and Tasks #2–#16 take 100ms each, those 15 quick tasks are trapped sitting idle inside Worker 1&#39;s local memory queue while Worker 2 and Worker 3 sit completely idle with 0% CPU!</li>
-<li><strong>The Production Fix:</strong> For heterogeneous workloads with long-running tasks, always set:
+    </div><hr>
+<h2 id="4-the-pristine-refactored-implementation"><a href="#4-the-pristine-refactored-implementation" class="header-anchor">#</a>4. The Pristine Refactored Implementation</h2>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1375,189 +1381,173 @@ sequenceDiagram
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python">worker_prefetch_multiplier = <span class="hljs-number">1</span>
-task_acks_late = <span class="hljs-literal">True</span></code></pre>
-  </div><code>task_acks_late = True</code> ensures the task is acknowledged to Redis <strong>only after the task successfully finishes</strong>, so if the worker pod crashes mid-execution, Redis safely re-delivers the task to another worker!</li>
-</ul>
-<hr>
-<h2 id="3-advanced-celery-pipeline-workflows-canvas"><a href="#3-advanced-celery-pipeline-workflows-canvas" class="header-anchor">#</a>3. Advanced Celery Pipeline Workflows (Canvas)</h2><p>In complex production pipelines, tasks are rarely isolated. Celery Canvas provides algebraic orchestration primitives:</p>
-
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-graph TD
-    subgraph Chain_Workflow ["Chain: Sequential Execution (A -&gt; B -&gt; C)"]
-        C1["Task A: Fetch Raw Logs"] --&gt; C2["Task B: Parse &amp; Filter"]
-        C2 --&gt; C3["Task C: Store Summary in DB"]
-    end
-
-    subgraph Chord_Workflow ["Chord: Parallel Fan-out + Aggregator Fan-in"]
-        Parent["Header: Fan-Out Tasks"]
-        T1["Process Chunk 1"]
-        T2["Process Chunk 2"]
-        T3["Process Chunk 3"]
-        Callback["Callback: Aggregate Final Report"]
-
-        Parent --&gt; T1
-        Parent --&gt; T2
-        Parent --&gt; T3
-        T1 --&gt; Callback
-        T2 --&gt; Callback
-        T3 --&gt; Callback
-    end
-</div>
-      </div>
-    </div><h3 id="production-celery-application-configuration-canvas-implementation"><a href="#production-celery-application-configuration-canvas-implementation" class="header-anchor">#</a>Production Celery Application Configuration & Canvas Implementation</h3>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># tasks.py</span>
-<span class="hljs-keyword">from</span> celery <span class="hljs-keyword">import</span> Celery, chain, chord, group
-<span class="hljs-keyword">from</span> celery.exceptions <span class="hljs-keyword">import</span> MaxRetriesExceededError
+    <pre><code class="hljs language-python"><span class="hljs-comment"># modern_order_processor.py</span>
+<span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass, field
+<span class="hljs-keyword">from</span> decimal <span class="hljs-keyword">import</span> Decimal, ROUND_HALF_UP
+<span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Protocol, <span class="hljs-type">Sequence</span>, <span class="hljs-type">Optional</span>
 <span class="hljs-keyword">import</span> structlog
-<span class="hljs-keyword">import</span> time
 
 logger = structlog.get_logger()
 
-app = Celery(<span class="hljs-string">&quot;enterprise_pipeline&quot;</span>)
+<span class="hljs-comment"># 1. Type-Safe Domain Entities</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderStatus</span>(<span class="hljs-built_in">str</span>, Enum):
+    SUCCESS = <span class="hljs-string">&quot;SUCCESS&quot;</span>
+    INSUFFICIENT_FUNDS = <span class="hljs-string">&quot;INSUFFICIENT_FUNDS&quot;</span>
+    USER_NOT_FOUND = <span class="hljs-string">&quot;USER_NOT_FOUND&quot;</span>
 
-app.conf.update(
-    broker_url=<span class="hljs-string">&quot;redis://localhost:6379/1&quot;</span>,
-    result_backend=<span class="hljs-string">&quot;redis://localhost:6379/2&quot;</span>,
-    task_serializer=<span class="hljs-string">&quot;json&quot;</span>,
-    accept_content=[<span class="hljs-string">&quot;json&quot;</span>],
-    result_serializer=<span class="hljs-string">&quot;json&quot;</span>,
-    timezone=<span class="hljs-string">&quot;UTC&quot;</span>,
-    enable_utc=<span class="hljs-literal">True</span>,
-    
-    <span class="hljs-comment"># CRITICAL PRODUCTION TUNING</span>
-    worker_prefetch_multiplier=<span class="hljs-number">1</span>,
-    task_acks_late=<span class="hljs-literal">True</span>,
-    task_reject_on_worker_lost=<span class="hljs-literal">True</span>,
-    
-    <span class="hljs-comment"># Memory Leak Prevention: Recycle worker processes after 200 tasks</span>
-    worker_max_tasks_per_child=<span class="hljs-number">200</span>,
-    worker_max_memory_per_child=<span class="hljs-number">300_000</span>, <span class="hljs-comment"># 300 MB limit per worker process</span>
-)
+<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderItem</span>:
+    sku: <span class="hljs-built_in">str</span>
+    price: Decimal
+    qty: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
 
-<span class="hljs-comment"># 1. Resilient Task with Jitter Backoff</span>
-<span class="hljs-meta">@app.task(<span class="hljs-params">bind=<span class="hljs-literal">True</span>, max_retries=<span class="hljs-number">5</span>, default_retry_delay=<span class="hljs-number">2</span></span>)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">send_webhook_notification</span>(<span class="hljs-params">self, webhook_url: <span class="hljs-built_in">str</span>, payload: <span class="hljs-built_in">dict</span></span>):
-    <span class="hljs-keyword">try</span>:
-        logger.info(<span class="hljs-string">&quot;dispatching_webhook&quot;</span>, url=webhook_url, attempt=<span class="hljs-variable language_">self</span>.request.retries)
-        <span class="hljs-comment"># Simulate network failure on early attempts</span>
-        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.request.retries &lt; <span class="hljs-number">2</span>:
-            <span class="hljs-keyword">raise</span> ConnectionError(<span class="hljs-string">&quot;Upstream gateway reset connection&quot;</span>)
-        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;DELIVERED&quot;</span>, <span class="hljs-string">&quot;url&quot;</span>: webhook_url}
-    <span class="hljs-keyword">except</span> ConnectionError <span class="hljs-keyword">as</span> exc:
-        <span class="hljs-comment"># Exponential backoff: 2s, 4s, 8s, 16s... with random jitter</span>
-        countdown = (<span class="hljs-number">2</span> ** <span class="hljs-variable language_">self</span>.request.retries) + (time.time() % <span class="hljs-number">1</span>)
-        logger.warn(<span class="hljs-string">&quot;webhook_failed_retrying&quot;</span>, error=<span class="hljs-built_in">str</span>(exc), countdown=countdown)
-        <span class="hljs-keyword">raise</span> <span class="hljs-variable language_">self</span>.retry(exc=exc, countdown=countdown)
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subtotal</span>(<span class="hljs-params">self</span>) -&gt; Decimal:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.price * <span class="hljs-variable language_">self</span>.qty
 
-<span class="hljs-comment"># 2. Parallel Processing with Chords</span>
-<span class="hljs-meta">@app.task</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">process_data_slice</span>(<span class="hljs-params">chunk_id: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-    time.sleep(<span class="hljs-number">0.5</span>)
-    <span class="hljs-keyword">return</span> chunk_id * <span class="hljs-number">10</span>
+<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span>:
+    user_id: <span class="hljs-built_in">str</span>
+    country: <span class="hljs-built_in">str</span>
+    items: <span class="hljs-type">Sequence</span>[OrderItem]
 
-<span class="hljs-meta">@app.task</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">aggregate_results</span>(<span class="hljs-params">results: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-    total = <span class="hljs-built_in">sum</span>(results)
-    logger.info(<span class="hljs-string">&quot;aggregation_complete&quot;</span>, total=total)
-    <span class="hljs-keyword">return</span> total
+<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRecord</span>:
+    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>
+    balance: Decimal
+    email: <span class="hljs-built_in">str</span>
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_fanout_fanin_pipeline</span>():
-    <span class="hljs-comment"># Chord: Parallel group of tasks followed by a single aggregator callback</span>
-    header = group(process_data_slice.s(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>))
-    callback = aggregate_results.s()
-    workflow = chord(header)(callback)
-    <span class="hljs-keyword">return</span> workflow.<span class="hljs-built_in">id</span></code></pre>
+<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderResult</span>:
+    status: OrderStatus
+    total: <span class="hljs-type">Optional</span>[Decimal] = <span class="hljs-literal">None</span>
+    remaining_balance: <span class="hljs-type">Optional</span>[Decimal] = <span class="hljs-literal">None</span>
+
+<span class="hljs-comment"># 2. Decoupled Interface Protocols (Dependency Inversion)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRepository</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">Optional</span>[UserRecord]: ...
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_balance</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span>, new_balance: Decimal</span>) -&gt; <span class="hljs-literal">None</span>: ...
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">NotificationService</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">notify_order_success</span>(<span class="hljs-params">self, email: <span class="hljs-built_in">str</span>, total: Decimal</span>) -&gt; <span class="hljs-built_in">bool</span>: ...
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TaxService</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tax_rate</span>(<span class="hljs-params">self, country_code: <span class="hljs-built_in">str</span></span>) -&gt; Decimal: ...
+
+<span class="hljs-comment"># 3. Dedicated Tax Calculator with Safe Local State</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StandardTaxService</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, default_rate: Decimal = Decimal(<span class="hljs-params"><span class="hljs-string">&quot;0.05&quot;</span></span>)</span>):
+        <span class="hljs-variable language_">self</span>._rates = {
+            <span class="hljs-string">&quot;CA&quot;</span>: Decimal(<span class="hljs-string">&quot;0.13&quot;</span>),
+            <span class="hljs-string">&quot;US&quot;</span>: Decimal(<span class="hljs-string">&quot;0.08&quot;</span>),
+            <span class="hljs-string">&quot;UK&quot;</span>: Decimal(<span class="hljs-string">&quot;0.20&quot;</span>),
+        }
+        <span class="hljs-variable language_">self</span>._default_rate = default_rate
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tax_rate</span>(<span class="hljs-params">self, country_code: <span class="hljs-built_in">str</span></span>) -&gt; Decimal:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._rates.get(country_code, <span class="hljs-variable language_">self</span>._default_rate)
+
+<span class="hljs-comment"># 4. Pure Business Logic Domain Service</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ModernOrderProcessor</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
+        self,
+        user_repo: UserRepository,
+        notifier: NotificationService,
+        tax_service: <span class="hljs-type">Optional</span>[TaxService] = <span class="hljs-literal">None</span>,
+    </span>):
+        <span class="hljs-variable language_">self</span>.user_repo = user_repo
+        <span class="hljs-variable language_">self</span>.notifier = notifier
+        <span class="hljs-variable language_">self</span>.tax_service = tax_service <span class="hljs-keyword">or</span> StandardTaxService()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_order</span>(<span class="hljs-params">
+        self, 
+        order: Order, 
+        discounts: <span class="hljs-type">Optional</span>[<span class="hljs-type">Sequence</span>[Decimal]] = <span class="hljs-literal">None</span>
+    </span>) -&gt; OrderResult:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Orchestrates order validation, tax calculation, ledger updates, and notification.
+        Pure dependency injection guarantees 100% unit-testability without mocks or network.
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Defensive copy for discounts, resolving mutable default trap</span>
+        applied_discounts = <span class="hljs-built_in">list</span>(discounts) <span class="hljs-keyword">if</span> discounts <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> []
+
+        user = <span class="hljs-variable language_">self</span>.user_repo.get_user(order.user_id)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+            logger.warn(<span class="hljs-string">&quot;order_rejected_user_not_found&quot;</span>, user_id=order.user_id)
+            <span class="hljs-keyword">return</span> OrderResult(status=OrderStatus.USER_NOT_FOUND)
+
+        <span class="hljs-comment"># Calculate subtotal using exact Decimal arithmetic (No floating-point rounding errors!)</span>
+        subtotal = <span class="hljs-built_in">sum</span>(item.subtotal <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> order.items)
+        discount_total = <span class="hljs-built_in">sum</span>(applied_discounts)
+        discounted_subtotal = <span class="hljs-built_in">max</span>(Decimal(<span class="hljs-string">&quot;0.00&quot;</span>), subtotal - discount_total)
+
+        tax_rate = <span class="hljs-variable language_">self</span>.tax_service.get_tax_rate(order.country)
+        tax_amount = (discounted_subtotal * tax_rate).quantize(Decimal(<span class="hljs-string">&quot;0.01&quot;</span>), rounding=ROUND_HALF_UP)
+        final_total = discounted_subtotal + tax_amount
+
+        <span class="hljs-keyword">if</span> user.balance &lt; final_total:
+            logger.warn(
+                <span class="hljs-string">&quot;order_rejected_insufficient_funds&quot;</span>,
+                user_id=order.user_id,
+                balance=user.balance,
+                total=final_total,
+            )
+            <span class="hljs-keyword">return</span> OrderResult(status=OrderStatus.INSUFFICIENT_FUNDS)
+
+        new_balance = user.balance - final_total
+        
+        <span class="hljs-comment"># Atomic persistence</span>
+        <span class="hljs-variable language_">self</span>.user_repo.update_balance(user.<span class="hljs-built_in">id</span>, new_balance)
+
+        <span class="hljs-comment"># Non-blocking notification dispatch</span>
+        <span class="hljs-variable language_">self</span>.notifier.notify_order_success(user.email, final_total)
+
+        logger.info(
+            <span class="hljs-string">&quot;order_processed_successfully&quot;</span>,
+            user_id=user.<span class="hljs-built_in">id</span>,
+            total=final_total,
+            new_balance=new_balance,
+        )
+
+        <span class="hljs-keyword">return</span> OrderResult(
+            status=OrderStatus.SUCCESS,
+            total=final_total,
+            remaining_balance=new_balance,
+        )</code></pre>
   </div><hr>
-<h2 id="4-idempotency-the-dead-letter-queue-dlq"><a href="#4-idempotency-the-dead-letter-queue-dlq" class="header-anchor">#</a>4. Idempotency & The Dead Letter Queue (DLQ)</h2><p>In distributed architectures, <strong>at-least-once delivery</strong> is the standard guarantee. A task might be delivered twice if a network acknowledgement is dropped.</p>
-<h3 id="the-idempotency-key-pattern"><a href="#the-idempotency-key-pattern" class="header-anchor">#</a>The Idempotency Key Pattern</h3><p>Every task modifying state (e.g. charging a payment, creating an invoice) must track an <strong>Idempotency Key</strong> in Redis:</p>
-
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-meta">@app.task(<span class="hljs-params">bind=<span class="hljs-literal">True</span></span>)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">process_billing_transaction</span>(<span class="hljs-params">self, idempotency_key: <span class="hljs-built_in">str</span>, account_id: <span class="hljs-built_in">str</span>, amount_cents: <span class="hljs-built_in">int</span></span>):
-    redis_client = redis.Redis(host=<span class="hljs-string">&quot;localhost&quot;</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">3</span>)
-    
-    <span class="hljs-comment"># Check if transaction was already processed</span>
-    idemp_key = <span class="hljs-string">f&quot;idempotency:billing:<span class="hljs-subst">{idempotency_key}</span>&quot;</span>
-    
-    <span class="hljs-comment"># SET with NX: returns True only if this is the FIRST time we see this key</span>
-    is_new = redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">&quot;PROCESSING&quot;</span>, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-number">86400</span>) <span class="hljs-comment"># 24h TTL</span>
-    
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_new:
-        status = redis_client.get(idemp_key).decode()
-        logger.warn(<span class="hljs-string">&quot;duplicate_task_suppressed&quot;</span>, key=idempotency_key, current_status=status)
-        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;ALREADY_PROCESSED&quot;</span>, <span class="hljs-string">&quot;idempotency_key&quot;</span>: idempotency_key}
-
-    <span class="hljs-keyword">try</span>:
-        <span class="hljs-comment"># Execute non-reversible external financial mutation</span>
-        charge_id = execute_stripe_charge(account_id, amount_cents)
-        redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">f&quot;COMPLETED:<span class="hljs-subst">{charge_id}</span>&quot;</span>, ex=<span class="hljs-number">86400</span>)
-        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;charge_id&quot;</span>: charge_id}
-    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
-        <span class="hljs-comment"># Clear key or flag failure to allow retry</span>
-        redis_client.delete(idemp_key)
-        <span class="hljs-keyword">raise</span> e</code></pre>
-  </div><hr>
-<h2 id="5-senior-production-runbook-triage-common-celery-disasters"><a href="#5-senior-production-runbook-triage-common-celery-disasters" class="header-anchor">#</a>5. Senior Production Runbook: Triage Common Celery Disasters</h2><table>
+<h2 id="5-comparative-architectural-review"><a href="#5-comparative-architectural-review" class="header-anchor">#</a>5. Comparative Architectural Review</h2><table>
 <thead>
 <tr>
-<th align="left">Symptom</th>
-<th align="left">Root Cause</th>
-<th align="left">Immediate Remediation</th>
+<th align="left">Dimension</th>
+<th align="left">Legacy Implementation</th>
+<th align="left">Modern Refactored Architecture</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><strong>Worker RAM keeps growing until OOMKilled</strong></td>
-<td align="left">Python memory fragmentation / C-extension buffer leaks.</td>
-<td align="left">Set <code>worker_max_tasks_per_child = 100</code> and <code>worker_max_memory_per_child = 250000</code> to recycle workers.</td>
+<td align="left"><strong>State Management</strong></td>
+<td align="left">Polluted global tax cache, shared mutable list default</td>
+<td align="left">Fully encapsulated, immutable dataclasses, explicit dependency injection</td>
 </tr>
 <tr>
-<td align="left"><strong>Tasks piling up in Redis despite workers having low CPU</strong></td>
-<td align="left">High <code>worker_prefetch_multiplier</code> holding tasks in starved processes.</td>
-<td align="left">Set <code>worker_prefetch_multiplier = 1</code> and <code>task_acks_late = True</code>.</td>
+<td align="left"><strong>Arithmetic Precision</strong></td>
+<td align="left">Binary <code>float</code> (introduces IEEE-754 precision bugs)</td>
+<td align="left">High-precision <code>Decimal</code> with explicit currency quantization</td>
 </tr>
 <tr>
-<td align="left"><strong>Duplicate task execution on server restart</strong></td>
-<td align="left">Broker re-delivers unacknowledged tasks that were already halfway done.</td>
-<td align="left">Implement the Idempotency Key Pattern in Redis before running side-effects.</td>
+<td align="left"><strong>Security</strong></td>
+<td align="left">Vulnerable to SQL injection via format strings</td>
+<td align="left">Isolated behind Repository with parameterized query abstractions</td>
 </tr>
 <tr>
-<td align="left"><strong>Redis memory usage explosion</strong></td>
-<td align="left">Celery storing task results indefinitely without TTL eviction.</td>
-<td align="left">Set <code>result_expires = 3600</code> (1 hour) or disable result storage for fire-and-forget tasks (<code>ignore_result = True</code>).</td>
+<td align="left"><strong>Testability</strong></td>
+<td align="left">Requires live SQLite file and real SMTP server</td>
+<td align="left">100% testable in memory using mock/stub protocols in under 5ms</td>
+</tr>
+<tr>
+<td align="left"><strong>Observability</strong></td>
+<td align="left">Swallowed errors (<code>except Exception: pass</code>)</td>
+<td align="left">Structured logging with contextual JSON metadata (<code>structlog</code>)</td>
 </tr>
 </tbody></table>
 
@@ -1569,20 +1559,20 @@ app.conf.update(
           </button>
         </div>
         <div class="page-navigation">
-    <a href="../01-Python-Mastery/12-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-card prev">
+    <a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-card prev">
       <span class="nav-direction">← Previous Chapter</span>
-      <span class="nav-page-title">12: Legacy Code Refactoring Lab</span>
+      <span class="nav-page-title">10: Debugging & Profiling Lab</span>
     </a>
-    <a href="../01-Python-Mastery/14-Production-SQL-And-Database-Internals.html" class="nav-card next">
+    <a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-card next">
       <span class="nav-direction">Next Chapter →</span>
-      <span class="nav-page-title">14: Production SQL & DB Internals</span>
+      <span class="nav-page-title">12: Production SQL & DB Internals</span>
     </a></div>
       </div>
     </main>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-foundations-why-do-we-need-redis-and-celery" class="toc-link">0. Zero-Prerequisite Foundations: Why Do We Need Redis and Celery?</a></li><li class="toc-item level-3"><a href="#why-can-t-we-just-use-a-python-dict-or-a-database" class="toc-link">Why Can't We Just Use a Python `dict` or a Database?</a></li><li class="toc-item level-2"><a href="#1-redis-internals-for-python-engineers" class="toc-link">1. Redis Internals for Python Engineers</a></li><li class="toc-item level-3"><a href="#redis-atomicity-lua-scripting" class="toc-link">Redis Atomicity & Lua Scripting</a></li><li class="toc-item level-2"><a href="#2-celery-architecture-worker-lifecycles" class="toc-link">2. Celery Architecture & Worker Lifecycles</a></li><li class="toc-item level-3"><a href="#critical-production-gotcha-prefetch-limits-starvation" class="toc-link">Critical Production Gotcha: Prefetch Limits & Starvation</a></li><li class="toc-item level-2"><a href="#3-advanced-celery-pipeline-workflows-canvas" class="toc-link">3. Advanced Celery Pipeline Workflows (Canvas)</a></li><li class="toc-item level-3"><a href="#production-celery-application-configuration-canvas-implementation" class="toc-link">Production Celery Application Configuration & Canvas Implementation</a></li><li class="toc-item level-2"><a href="#4-idempotency-the-dead-letter-queue-dlq" class="toc-link">4. Idempotency & The Dead Letter Queue (DLQ)</a></li><li class="toc-item level-3"><a href="#the-idempotency-key-pattern" class="toc-link">The Idempotency Key Pattern</a></li><li class="toc-item level-2"><a href="#5-senior-production-runbook-triage-common-celery-disasters" class="toc-link">5. Senior Production Runbook: Triage Common Celery Disasters</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-hazardous-legacy-codebase" class="toc-link">1. The Hazardous Legacy Codebase</a></li><li class="toc-item level-2"><a href="#2-the-golden-rule-characterization-tests-first" class="toc-link">2. The Golden Rule: Characterization Tests First</a></li><li class="toc-item level-3"><a href="#writing-the-pinning-harness-with-pytest" class="toc-link">Writing the Pinning Harness with `pytest`</a></li><li class="toc-item level-2"><a href="#3-surgical-modernization-step-by-step" class="toc-link">3. Surgical Modernization Step-by-Step</a></li><li class="toc-item level-2"><a href="#4-the-pristine-refactored-implementation" class="toc-link">4. The Pristine Refactored Implementation</a></li><li class="toc-item level-2"><a href="#5-comparative-architectural-review" class="toc-link">5. Comparative Architectural Review</a></li></ul>
     </aside>
   </div>
 
@@ -1614,7 +1604,7 @@ app.conf.update(
     </div>
   </div>
 
-  <script>window.CURRENT_PAGE = "01-Python-Mastery/13-Distributed-Task-Queues-Celery-Redis.html";</script>
+  <script>window.CURRENT_PAGE = "01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html";</script>
   <script>
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';

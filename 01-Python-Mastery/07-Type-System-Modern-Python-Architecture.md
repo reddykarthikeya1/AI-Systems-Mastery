@@ -1,4 +1,4 @@
-# Chapter 7: Type Systems, Protocols & Modern Python Architecture
+# Chapter 07: Type Systems, Protocols & Modern Python Architecture
 
 > **Core Learning Objective:** Write robust, self-documenting, production-grade Python. Master gradual typing, covariant/contravariant generics, structural subtyping via `typing.Protocol`, Pydantic v2 data validation, and clean architectural separation.
 

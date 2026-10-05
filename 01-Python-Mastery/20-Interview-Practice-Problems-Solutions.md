@@ -1,4 +1,4 @@
-# Chapter 8: Curated Python Engineering Interview Challenges & Solutions
+# Chapter 20: Staff Python Engineering Interview Challenges & Deep Solutions
 
 > **Core Learning Objective:** Test, solidify, and demonstrate mastery through real-world Product-Based Company (Google, Meta, Uber, Stripe) advanced Python interview problems. Every solution includes architectural commentary, common pitfalls, and complete runnable code.
 
