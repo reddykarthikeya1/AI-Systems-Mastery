@@ -12,11 +12,11 @@
 
 | Track | Beginner Friendliness | Technical Depth | Production Realism & Mastery | Curated Materials |
 | :--- | :---: | :---: | :---: | :---: |
-| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters + Distributed/HPC/SQL/FastAPI/Rust/Polars + Videos + Runnable Labs + PDFs |
-| **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 26 Books (16 Systems + Zero-Prereq Primer + Concurrency Labs) + PDFs |
-| **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 25 Books (13 Systems + Zero-Prereq Global Infra Primer + Chaos/FinOps/SRE + 4 Runnable Simulations) + PDFs |
-| **Track 4: Agentic AI Engineering** | **10 / 10** | **10 / 10** | **10 / 10** | 18 Books (MemGPT / GraphRAG / MCP / vLLM / HNSW Sim) + PDFs |
-| **Track 5: DSA Interview Playbook** | **10 / 10** | **10 / 10** | **10 / 10** | 7 Playbooks + 1-Page Decision Tree + Core 75 Triple-Block Codes + PDFs |
+| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 22 Chapters + Distributed/HPC/SQL/FastAPI/Rust/Polars + 3 Runnable Labs + PDFs |
+| **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 28 Books (18 Systems incl Splitwise & Notifications + Zero-Prereq Primer + Concurrency Lab) + PDFs |
+| **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 27 Books (15 Systems incl Web Crawler & Payment Ledger + Zero-Prereq Global Infra Primer + 4 Sims) + PDFs |
+| **Track 4: Agentic AI Engineering** | **10 / 10** | **10 / 10** | **10 / 10** | 20 Books (MemGPT / GraphRAG / MCP / vLLM / Reasoning GRPO / Prompt Caching / HNSW Sim) + PDFs |
+| **Track 5: DSA Interview Playbook** | **10 / 10** | **10 / 10** | **10 / 10** | 8 Playbooks (1-Page Decision Tree + Core 75 Triple-Block Codes + Company Playbook + Test Runner) + PDFs |
 
 ---
 
@@ -24,11 +24,11 @@
 
 ```mermaid
 flowchart TD
-    T1["Track 1: Python Engineering Mastery<br/>23 Deep Chapters + Labs<br/>(CPython Internals, Memory, Concurrency, Testing, SQL, FastAPI, Security, Celery, Kafka, Polars, HPC, Rust PyO3)"]
-    T2["Track 2: Low-Level Design (LLD)<br/>26 Industrial Books<br/>(Zero-Prereq Primer, OOP, SOLID, Design Patterns, Thread-Safety, 16 Complete Systems)"]
-    T3["Track 3: High-Level Design (HLD)<br/>25 Distributed Books + Sims<br/>(Zero-Prereq Infra Primer, Sharding, Caching, Sagas, Chaos, SRE, 13 Systems, Raft & Hashing Sims)"]
-    T4["Track 4: Agentic AI Engineering<br/>18 Production Books + HNSW Sim<br/>(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, MemGPT, MCP, vLLM, Security)"]
-    T5["Track 5: DSA Interview Playbook<br/>7 Strategic Books<br/>(1-Page Decision Tree, Core 75 Triple-Block Codes, 45-Min Mock Drills, Whiteboard Discipline)"]
+    T1["Track 1: Python Engineering Mastery<br/>22 Deep Chapters + Labs<br/>(CPython Internals, Memory, Concurrency, Testing, SQL, FastAPI, Security, Celery, Kafka, Polars, HPC, Rust PyO3)"]
+    T2["Track 2: Low-Level Design (LLD)<br/>28 Industrial Books + Lab<br/>(Zero-Prereq Primer, OOP, SOLID, Design Patterns, Thread-Safety, 18 Complete Systems)"]
+    T3["Track 3: High-Level Design (HLD)<br/>27 Distributed Books + Sims<br/>(Zero-Prereq Infra Primer, Sharding, Caching, Sagas, Chaos, SRE, 15 Systems, 4 Sims)"]
+    T4["Track 4: Agentic AI Engineering<br/>20 Production Books + HNSW Sim<br/>(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, MemGPT, MCP, vLLM, GRPO, Caching)"]
+    T5["Track 5: DSA Interview Playbook<br/>8 Strategic Books + Test Runner<br/>(1-Page Decision Tree, Core 75 Triple-Block Codes, Company Rubrics, 45-Min Mock Drills)"]
 
     PBC["Staff / Principal Engineer<br/>Product-Based Company (PBC) Standard<br/>Google | Meta | Uber | Amazon | Stripe"]
 
@@ -70,7 +70,10 @@ flowchart TD
 * **[19-Rust-Extensions-PyO3-And-CPython-C-ABI.md](01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.md):** CPython C-API, `PyObject` heap structure, building native compiled Rust extensions with PyO3 and Maturin, releasing the GIL with `Python::allow_threads` for Rayon multicore saturation, and the Python Buffer Protocol for zero-copy memory sharing.
 * **[20-Interview-Practice-Problems-Solutions.md](01-Python-Mastery/20-Interview-Practice-Problems-Solutions.md):** Bounded Blocking Queue from scratch, Async Batcher, Fluent API Client, and Re-entrant Memory Profiler.
 * **[21-Scenario-Based-Interview-Questions-And-Answers.md](01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.md):** Production crisis scenarios: Celery memory leaks, asyncio event loop starvation, CPU multithreading slowdowns, and tricky CPython edge cases.
-* **[22-Curated-Video-Masterclasses.md](01-Python-Mastery/22-Curated-Video-Masterclasses.md):** Hand-curated, 100% active, high-viewership video masterclasses from legendary Python core developers (Raymond Hettinger, David Beazley, ArjanCodes, Corey Schafer, mCoding) mapped 1:1 to every chapter.
+* **Runnable Concurrency & Debugging Labs (`01-Python-Mastery/labs/`):**
+  - `01_race_condition_hunter.py`: Multi-threaded race condition reproduction and atomic lock synchronization.
+  - `02_async_starvation_lab.py`: Event loop starvation detection and CPU-bound threadpool delegation.
+  - `03_memory_leak_debugger.py`: Hunting reference cycles and memory leaks using `tracemalloc` and `gc`.
 
 ---
 
@@ -84,7 +87,7 @@ flowchart TD
 * **[05-Curveball-Requirement-Evolution-Mastery.md](02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.md):** How to handle mid-interview requirement pivots (Surge pricing, temporary seat holds, firefighter elevator emergency modes) without rewriting code.
 * **[06-Legacy-Code-Refactoring-To-Design-Patterns.md](02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.md):** Decomposing a 500-line monolithic checkout God-class using Strategy, Factory, and Observer patterns.
 * **[07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md](02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md):** Hands-on multi-threaded race condition reproduction (double-booking bugs) and comparing Pessimistic Locks vs Optimistic Concurrency Control (OCC).
-* **The 16 Industrial Core Systems:**
+* **The 18 Industrial Core Systems:**
   1. [systems/01-distributed-job-scheduler.md](02-Low-Level-Design/systems/01-distributed-job-scheduler.md) *(Strategy, Command, Observer)*
   2. [systems/02-library-management-system.md](02-Low-Level-Design/systems/02-library-management-system.md) *(Observer, State, Association/Aggregation)*
   3. [systems/03-movie-booking-system.md](02-Low-Level-Design/systems/03-movie-booking-system.md) *(Concurrency, State Machine, Factory, Payment)*
@@ -101,7 +104,11 @@ flowchart TD
   14. [systems/14-pub-sub-message-broker.md](02-Low-Level-Design/systems/14-pub-sub-message-broker.md) *(Kafka Lite, Topic partitions, Consumer groups, offset commits)*
   15. [systems/15-distributed-lock-manager.md](02-Low-Level-Design/systems/15-distributed-lock-manager.md) *(Distributed Redlock Manager, Fencing Tokens, GC Pause Recovery)*
   16. [systems/16-kafka-consumer-group-rebalance.md](02-Low-Level-Design/systems/16-kafka-consumer-group-rebalance.md) *(Cooperative Sticky Assignor, Group Coordinator, Heartbeats)*
+  17. [systems/17-splitwise-expense-sharing.md](02-Low-Level-Design/systems/17-splitwise-expense-sharing.md) *(Expense splitting strategies: Equal/Exact/Percent, Min-Cash-Flow Greedy Heap debt simplification)*
+  18. [systems/18-notification-alerting-service.md](02-Low-Level-Design/systems/18-notification-alerting-service.md) *(Multi-channel dispatch: Email/SMS/Push, user fatigue rate limiting, PriorityQueue ordering)*
 * **[12-Scenario-Based-LLD-Interview-Questions-And-Grills.md](02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.md):** Strategy vs State justification, deadlocks in seat booking, 10,000 QPS spot grabs, Undo/Redo, and mock testing.
+* **Runnable Concurrency Lab (`02-Low-Level-Design/labs/`):**
+  - `01_concurrency_stress_test.py`: Benchmark comparing naive Mutex vs Readers-Writer Lock (RWLock) under high-read/low-write contention with race-condition detection.
 
 ---
 
@@ -117,7 +124,7 @@ flowchart TD
 * **[07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.md](03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.md):** Post-mortems of the Cache Stampede / Thundering Herd, Kafka Rebalance Storms, AWS AZ Blackouts, and blameless post-mortem writing.
 * **[08-Cloud-Cost-Engineering-And-FinOps-Architecture.md](03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.md):** Data egress costs, NAT gateway traps, S3 lifecycle transitions (Standard -> Glacier Instant -> Deep Archive), reducing a $390k/mo cloud spend to $31k/mo.
 * **[09-Load-Testing-Benchmarking-And-SRE-Playbook.md](03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.md):** Google SRE Four Golden Signals, runnable Locust load test scripts, $p99$ tail latency analysis, socket exhaustion, and CFS CPU throttling.
-* **The 13 Production Core Systems:**
+* **The 15 Production Core Systems:**
   1. [systems/01-messaging-app.md](03-High-Level-Design/systems/01-messaging-app.md) *(WebSockets, delivery receipts, Cassandra)*
   2. [systems/02-ticketing-system-hotel-reservation.md](03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.md) *(Distributed locking, Redis Redlock, zero double-booking)*
   3. [systems/03-instagram.md](03-High-Level-Design/systems/03-instagram.md) *(Hybrid fan-out, feed cache, S3 upload pipeline)*
@@ -131,6 +138,8 @@ flowchart TD
   11. [systems/11-distributed-cache-redis-cluster.md](03-High-Level-Design/systems/11-distributed-cache-redis-cluster.md) *(16,384 Hash slots, Gossip protocol, Approximated LRU)*
   12. [systems/12-distributed-search-engine-elasticsearch.md](03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.md) *(Inverted index, BM25 scoring, Sharded prefix trie typeahead)*
   13. [systems/13-time-series-metrics-monitoring-prometheus.md](03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.md) *(Gorilla XOR float compression, Delta-of-delta timestamps, TSDB downsampling)*
+  14. [systems/14-distributed-web-crawler.md](03-High-Level-Design/systems/14-distributed-web-crawler.md) *(Mercator URL Frontier, back queues with domain delay heap, DNS caching, SimHash deduplication, crawl-trap avoidance)*
+  15. [systems/15-payment-gateway-idempotent-ledger.md](03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.md) *(Distributed payment orchestrator, idempotency keys, 64-bit integer cents, double-entry bookkeeping ledger, PSP webhook reconciliation)*
 * **[11-Scenario-Based-HLD-Interview-Questions-And-Grills.md](03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.md):** Cassandra zombie data resurrects, Redis 100% CPU lockouts, NTP clock drift in Snowflake IDs, and multi-region active-active conflicts.
 * **Runnable Distributed Simulations (`03-High-Level-Design/simulations/`):**
   - `consistent_hashing_ring.py`: 100k keys distribution across nodes and verification of minimal key migration upon node crash.
@@ -159,6 +168,8 @@ flowchart TD
 * **[16-Hierarchical-Episodic-Memory-And-GraphRAG.md](04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.md):** Operating System Virtual Memory / paging architecture (MemGPT / Letta), RAPTOR recursive summary trees, and Microsoft GraphRAG with Leiden community detection.
 * **[17-Model-Context-Protocol-And-Multi-Agent-Swarms.md](04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.md):** Anthropic's Model Context Protocol (MCP) JSON-RPC standard, MCP Host/Client/Server architecture, and multi-agent swarm consensus without infinite loops.
 * **[18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md](04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md):** GPU VRAM and HBM mechanics, the KV Cache memory bottleneck, continuous iteration-level batching, prefix caching, and PagedAttention in vLLM.
+* **[19-Reasoning-Models-Test-Time-Compute-And-GRPO.md](04-Agentic-AI/19-Reasoning-Models-Test-Time-Compute-And-GRPO.md):** Test-time compute scaling, `<think>` token streaming parser, and DeepSeek-R1 Group Relative Policy Optimization (GRPO) advantage calculation.
+* **[20-Context-Compaction-Prompt-Caching-And-Token-Budgets.md](04-Agentic-AI/20-Context-Compaction-Prompt-Caching-And-Token-Budgets.md):** Anthropic & OpenAI prompt caching prefix hashing mechanics, Lost-in-the-Middle mitigation, and observation pruning compactor.
 * **Runnable Vector Index Simulation (`04-Agentic-AI/simulations/`):**
   - `pure_python_hnsw.py`: Pure-Python Hierarchical Navigable Small World (HNSW) vector index with 100% recall benchmark against brute-force linear search.
 
@@ -172,17 +183,20 @@ flowchart TD
 * **[05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md](05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md):** The 7 unsticking techniques (Inversion, $N=3$ simulation, sorting trade-offs, DP 3-question formulation) and the pre-flight edge case checklist.
 * **[06-Whiteboard-And-Google-Doc-Coding-Discipline.md](05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md):** Whiteboard 3-zone partitioning, mental compilation routines, and catching the top 10 compiler bugs manually without an IDE.
 * **[07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md](05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md):** Segment Trees with $O(\log N)$ range queries, Fenwick Trees (`i & (-i)`), Disjoint Set Union ($O(\alpha(N))$), and Bitmask DP for TSP.
+* **[08-Company-Specific-Interview-Playbook.md](05-DSA-Interview-Playbook/08-Company-Specific-Interview-Playbook.md):** Company frequency matrix (Google, Meta, Amazon, Uber), interview evaluation rubrics, and the 5-minute opening script.
+* **Runnable Benchmark Suite (`05-DSA-Interview-Playbook/simulations/`):**
+  - `run_all_dsa_benchmarks.py`: Automated performance test runner validating 7 core algorithmic patterns with microsecond timing.
 
 ---
 
 ## Automated PDF & Web Portal Generation Engine
 
 ```bash
-# Compile all 100 books and labs into interactive HTML Web Portal
+# Compile all 106 books and labs into interactive HTML Web Portal
 npm run build:html
 
-# Compile all 100 tracks and labs into print-ready PDFs
+# Compile all 106 tracks and labs into print-ready PDFs
 npm run build:pdf
 ```
-All **100 compiled PDFs** are saved in the `pdfs/` directory, and all **100 interactive HTML pages** are saved in the `html/` directory.
+All **106 compiled PDFs** are saved in the `pdfs/` directory, and all **106 interactive HTML pages** are saved in the `html/` directory.
 

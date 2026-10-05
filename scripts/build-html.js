@@ -178,8 +178,7 @@ const TRACKS = [
       { name: "18-High-Performance-Computing-HPC-Python.md", label: "18: High-Performance Computing (HPC)" },
       { name: "19-Rust-Extensions-PyO3-And-CPython-C-ABI.md", label: "19: Rust Extensions & PyO3" },
       { name: "20-Interview-Practice-Problems-Solutions.md", label: "20: Staff Coding Practice Problems" },
-      { name: "21-Scenario-Based-Interview-Questions-And-Answers.md", label: "21: Production Crisis Scenarios" },
-      { name: "22-Curated-Video-Masterclasses.md", label: "22: Curated Video Masterclasses" }
+      { name: "21-Scenario-Based-Interview-Questions-And-Answers.md", label: "21: Production Crisis Scenarios" }
     ]
   },
   {
@@ -212,6 +211,8 @@ const TRACKS = [
       { name: "systems/14-pub-sub-message-broker.md", label: "Sys 14: Pub/Sub Message Broker (Kafka Lite)" },
       { name: "systems/15-distributed-lock-manager.md", label: "Sys 15: Distributed Lock Manager (Redlock)" },
       { name: "systems/16-kafka-consumer-group-rebalance.md", label: "Sys 16: Kafka Consumer Rebalance Protocol" },
+      { name: "systems/17-splitwise-expense-sharing.md", label: "Sys 17: Splitwise & Debt Simplification" },
+      { name: "systems/18-notification-alerting-service.md", label: "Sys 18: Multi-Channel Notification Service" },
       { name: "12-Scenario-Based-LLD-Interview-Questions-And-Grills.md", label: "12: Staff-Level LLD Grills" }
     ]
   },
@@ -244,6 +245,8 @@ const TRACKS = [
       { name: "systems/11-distributed-cache-redis-cluster.md", label: "Sys 11: Distributed Cache (Redis Cluster)" },
       { name: "systems/12-distributed-search-engine-elasticsearch.md", label: "Sys 12: Search Engine & Typeahead" },
       { name: "systems/13-time-series-metrics-monitoring-prometheus.md", label: "Sys 13: Time-Series Metrics (Prometheus)" },
+      { name: "systems/14-distributed-web-crawler.md", label: "Sys 14: Distributed Web Crawler" },
+      { name: "systems/15-payment-gateway-idempotent-ledger.md", label: "Sys 15: Payment Gateway & Idempotent Ledger" },
       { name: "11-Scenario-Based-HLD-Interview-Questions-And-Grills.md", label: "11: Crisis Scenarios & Staff Grills" }
     ]
   },
@@ -269,7 +272,9 @@ const TRACKS = [
       { name: "15-Multimodal-Agents-And-AI-Red-Teaming-Security.md", label: "15: Multimodal Agents & AI Security" },
       { name: "16-Hierarchical-Episodic-Memory-And-GraphRAG.md", label: "16: Hierarchical Episodic Memory & GraphRAG" },
       { name: "17-Model-Context-Protocol-And-Multi-Agent-Swarms.md", label: "17: Model Context Protocol & Swarms" },
-      { name: "18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md", label: "18: GPU Serving & PagedAttention" }
+      { name: "18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md", label: "18: GPU Serving & PagedAttention" },
+      { name: "19-Reasoning-Models-Test-Time-Compute-And-GRPO.md", label: "19: Reasoning Models & GRPO" },
+      { name: "20-Context-Compaction-Prompt-Caching-And-Token-Budgets.md", label: "20: Context Compaction & Prompt Caching" }
     ]
   },
   {
@@ -283,7 +288,8 @@ const TRACKS = [
       { name: "04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.md", label: "04: 45-Min Timed Interview Drills" },
       { name: "05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md", label: "05: The Stuck Diagnostic Tree" },
       { name: "06-Whiteboard-And-Google-Doc-Coding-Discipline.md", label: "06: Whiteboard & No-IDE Discipline" },
-      { name: "07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md", label: "07: Segment/Fenwick Trees & Bitmask DP" }
+      { name: "07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md", label: "07: Segment/Fenwick Trees & Bitmask DP" },
+      { name: "08-Company-Specific-Interview-Playbook.md", label: "08: Company-Specific Interview Playbook" }
     ]
   }
 ];
