@@ -178,7 +178,8 @@ const TRACKS = [
       { name: "18-High-Performance-Computing-HPC-Python.md", label: "18: High-Performance Computing (HPC)" },
       { name: "19-Rust-Extensions-PyO3-And-CPython-C-ABI.md", label: "19: Rust Extensions & PyO3" },
       { name: "20-Interview-Practice-Problems-Solutions.md", label: "20: Staff Coding Practice Problems" },
-      { name: "21-Scenario-Based-Interview-Questions-And-Answers.md", label: "21: Production Crisis Scenarios" }
+      { name: "21-Scenario-Based-Interview-Questions-And-Answers.md", label: "21: Production Crisis Scenarios" },
+      { name: "22-Track-1-Recap-Python-Mastery-Playbook.md", label: "22: Track 1 Recap & Playbook" }
     ]
   },
   {
@@ -213,7 +214,8 @@ const TRACKS = [
       { name: "systems/16-kafka-consumer-group-rebalance.md", label: "Sys 16: Kafka Consumer Rebalance Protocol" },
       { name: "systems/17-splitwise-expense-sharing.md", label: "Sys 17: Splitwise & Debt Simplification" },
       { name: "systems/18-notification-alerting-service.md", label: "Sys 18: Multi-Channel Notification Service" },
-      { name: "12-Scenario-Based-LLD-Interview-Questions-And-Grills.md", label: "12: Staff-Level LLD Grills" }
+      { name: "12-Scenario-Based-LLD-Interview-Questions-And-Grills.md", label: "12: Staff-Level LLD Grills" },
+      { name: "13-Track-2-Recap-LLD-And-Design-Patterns-Playbook.md", label: "13: Track 2 Recap & Playbook" }
     ]
   },
   {
@@ -247,7 +249,8 @@ const TRACKS = [
       { name: "systems/13-time-series-metrics-monitoring-prometheus.md", label: "Sys 13: Time-Series Metrics (Prometheus)" },
       { name: "systems/14-distributed-web-crawler.md", label: "Sys 14: Distributed Web Crawler" },
       { name: "systems/15-payment-gateway-idempotent-ledger.md", label: "Sys 15: Payment Gateway & Idempotent Ledger" },
-      { name: "11-Scenario-Based-HLD-Interview-Questions-And-Grills.md", label: "11: Crisis Scenarios & Staff Grills" }
+      { name: "11-Scenario-Based-HLD-Interview-Questions-And-Grills.md", label: "11: Crisis Scenarios & Staff Grills" },
+      { name: "12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.md", label: "12: Track 3 Recap & Playbook" }
     ]
   },
   {
@@ -274,7 +277,8 @@ const TRACKS = [
       { name: "17-Model-Context-Protocol-And-Multi-Agent-Swarms.md", label: "17: Model Context Protocol & Swarms" },
       { name: "18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md", label: "18: GPU Serving & PagedAttention" },
       { name: "19-Reasoning-Models-Test-Time-Compute-And-GRPO.md", label: "19: Reasoning Models & GRPO" },
-      { name: "20-Context-Compaction-Prompt-Caching-And-Token-Budgets.md", label: "20: Context Compaction & Prompt Caching" }
+      { name: "20-Context-Compaction-Prompt-Caching-And-Token-Budgets.md", label: "20: Context Compaction & Prompt Caching" },
+      { name: "21-Track-4-Recap-Agentic-AI-Architecture-Playbook.md", label: "21: Track 4 Recap & Playbook" }
     ]
   },
   {
@@ -289,7 +293,8 @@ const TRACKS = [
       { name: "05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md", label: "05: The Stuck Diagnostic Tree" },
       { name: "06-Whiteboard-And-Google-Doc-Coding-Discipline.md", label: "06: Whiteboard & No-IDE Discipline" },
       { name: "07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md", label: "07: Segment/Fenwick Trees & Bitmask DP" },
-      { name: "08-Company-Specific-Interview-Playbook.md", label: "08: Company-Specific Interview Playbook" }
+      { name: "08-Company-Specific-Interview-Playbook.md", label: "08: Company-Specific Interview Playbook" },
+      { name: "09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.md", label: "09: Track 5 Recap & Playbook" }
     ]
   }
 ];
