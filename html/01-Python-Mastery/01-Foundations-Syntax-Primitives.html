@@ -1151,8 +1151,41 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-1-foundations-memory-model-execution-pipeline"><a href="#chapter-1-foundations-memory-model-execution-pipeline" class="header-anchor">#</a>Chapter 1: Foundations, Memory Model & Execution Pipeline</h1><blockquote>
-<p><strong>Core Learning Objective:</strong> Understand Python from the silicon up. You will learn the exact sequence of events when CPython executes a line of code, how objects live in memory, why variables are not &quot;boxes&quot;, and how Python manages references.</p>
+<p><strong>Core Learning Objective:</strong> Understand Python from the silicon up. You will learn the exact sequence of events when <strong>CPython</strong> (the official C-based engine behind Python) executes a line of code, how objects live in memory, why variables are not &quot;boxes&quot;, and how Python manages references.</p>
 </blockquote>
+<hr>
+<div class="callout callout-note">
+        <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> <span>NOTE</span></div>
+        <div class="callout-body"><p></p>
+<h3 id="wait-what-exactly-is-cpython-the-recipe-vs-the-chef"><a href="#wait-what-exactly-is-cpython-the-recipe-vs-the-chef" class="header-anchor">#</a>💡 Wait, What Exactly is "CPython"? (The Recipe vs. The Chef)</h3><p>If you are new to deep Python engineering, seeing the word <strong>&quot;CPython&quot;</strong> right away might make you wonder: <em>&quot;Wait, what is CPython? Is that different from Python? Did I install the wrong software?&quot;</em></p>
+<p>Don&#39;t worry at all! Here is the crystal-clear breakdown:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Term</th>
+<th align="left">Real-World Metaphor</th>
+<th align="left">What It Actually Is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Python</strong></td>
+<td align="left"><strong>The Recipe</strong></td>
+<td align="left">The language specification: the official rules, grammar, and keywords (<code>def</code>, <code>class</code>, <code>for</code>, <code>print</code>). It is an abstract set of instructions written down on paper.</td>
+</tr>
+<tr>
+<td align="left"><strong>CPython</strong></td>
+<td align="left"><strong>The Master Chef</strong></td>
+<td align="left">The actual software program written in the <strong>C programming language</strong> that reads your Python recipe and cooks it into real electrical signals on your physical CPU chip.</td>
+</tr>
+</tbody></table>
+<ul>
+<li>**Why is it called <em>C</em>Python?** Simply because it was written in the <strong>C language</strong> by Guido van Rossum (Python&#39;s original creator).</li>
+<li><strong>Did you install CPython?</strong> <strong>Yes!</strong> When you go to <code>python.org</code> and download Python, or when you type <code>python</code> or <code>python3</code> in your terminal on Windows, Mac, or Linux, you are running <strong>CPython</strong>. Over 99.9% of all Python programs in the world (Google, Netflix, Instagram, OpenAI) run on CPython.</li>
+<li><strong>Are there other &quot;chefs&quot;?</strong> Yes! There are alternative engines like <em>PyPy</em> (written with a Just-In-Time compiler for speed), <em>Jython</em> (runs on the Java JVM), and <em>MicroPython</em> (for tiny IoT microcontrollers). But <strong>CPython is the official, gold-standard reference implementation</strong>.</li>
+</ul>
+<p><strong>Why do we teach you CPython in this course?</strong> Because anyone can learn surface-level syntax, but true Staff Engineers know how the engine works under the hood: how CPython allocates memory, caches small numbers, handles the Global Interpreter Lock (GIL), and manages pointers. That knowledge gives you the superpower to write blazingly fast, bug-free production systems!</p>
+</div>
+      </div>
 <hr>
 <h2 id="1-the-anatomy-of-python-execution"><a href="#1-the-anatomy-of-python-execution" class="header-anchor">#</a>1. The Anatomy of Python Execution</h2><blockquote>
 <p><strong>Zero-Prerequisite Intuition: The &quot;Composer, Sheet Music, &amp; Orchestra&quot; Metaphor</strong>
@@ -1730,7 +1763,7 @@ Tuple state: (1, [2, 3, 4])</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-anatomy-of-python-execution" class="toc-link">1. The Anatomy of Python Execution</a></li><li class="toc-item level-3"><a href="#step-1-tokenization-lexical-analysis" class="toc-link">Step 1: Tokenization (Lexical Analysis)</a></li><li class="toc-item level-3"><a href="#step-2-ast-abstract-syntax-tree-generation" class="toc-link">Step 2: AST (Abstract Syntax Tree) Generation</a></li><li class="toc-item level-3"><a href="#step-3-bytecode-compilation" class="toc-link">Step 3: Bytecode Compilation</a></li><li class="toc-item level-3"><a href="#step-4-the-evaluation-loop-ceval-c" class="toc-link">Step 4: The Evaluation Loop (`ceval.c`)</a></li><li class="toc-item level-2"><a href="#2-the-python-memory-model-variables-are-pointers-not-boxes" class="toc-link">2. The Python Memory Model: Variables Are Pointers, Not Boxes</a></li><li class="toc-item level-3"><a href="#the-pyobject-anatomy" class="toc-link">The `PyObject` Anatomy</a></li><li class="toc-item level-2"><a href="#3-mutability-vs-immutability" class="toc-link">3. Mutability vs Immutability</a></li><li class="toc-item level-3"><a href="#concrete-demonstration-of-immutability" class="toc-link">Concrete Demonstration of Immutability</a></li><li class="toc-item level-3"><a href="#the-mutable-default-argument-trap-classic-interview-question" class="toc-link">The Mutable Default Argument Trap (Classic Interview Question)</a></li><li class="toc-item level-2"><a href="#4-pass-by-assignment-call-by-object-reference" class="toc-link">4. Pass-By-Assignment (Call-by-Object-Reference)</a></li><li class="toc-item level-2"><a href="#5-shallow-copy-vs-deep-copy" class="toc-link">5. Shallow Copy vs Deep Copy</a></li><li class="toc-item level-2"><a href="#6-integer-caching-string-interning" class="toc-link">6. Integer Caching & String Interning</a></li><li class="toc-item level-3"><a href="#small-integer-cache-5-256" class="toc-link">Small Integer Cache (`[-5, 256]`)</a></li><li class="toc-item level-3"><a href="#string-interning" class="toc-link">String Interning</a></li><li class="toc-item level-2"><a href="#7-structural-pattern-matching-python-3-10" class="toc-link">7. Structural Pattern Matching (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verification" class="toc-link">Practice Drills & Interview Verification</a></li><li class="toc-item level-3"><a href="#problem-1-pointer-mutation-trace" class="toc-link">Problem 1: Pointer Mutation Trace</a></li><li class="toc-item level-3"><a href="#problem-2-tuple-with-mutable-elements" class="toc-link">Problem 2: Tuple with Mutable Elements</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-3"><a href="#wait-what-exactly-is-cpython-the-recipe-vs-the-chef" class="toc-link">💡 Wait, What Exactly is "CPython"? (The Recipe vs. The Chef)</a></li><li class="toc-item level-2"><a href="#1-the-anatomy-of-python-execution" class="toc-link">1. The Anatomy of Python Execution</a></li><li class="toc-item level-3"><a href="#step-1-tokenization-lexical-analysis" class="toc-link">Step 1: Tokenization (Lexical Analysis)</a></li><li class="toc-item level-3"><a href="#step-2-ast-abstract-syntax-tree-generation" class="toc-link">Step 2: AST (Abstract Syntax Tree) Generation</a></li><li class="toc-item level-3"><a href="#step-3-bytecode-compilation" class="toc-link">Step 3: Bytecode Compilation</a></li><li class="toc-item level-3"><a href="#step-4-the-evaluation-loop-ceval-c" class="toc-link">Step 4: The Evaluation Loop (`ceval.c`)</a></li><li class="toc-item level-2"><a href="#2-the-python-memory-model-variables-are-pointers-not-boxes" class="toc-link">2. The Python Memory Model: Variables Are Pointers, Not Boxes</a></li><li class="toc-item level-3"><a href="#the-pyobject-anatomy" class="toc-link">The `PyObject` Anatomy</a></li><li class="toc-item level-2"><a href="#3-mutability-vs-immutability" class="toc-link">3. Mutability vs Immutability</a></li><li class="toc-item level-3"><a href="#concrete-demonstration-of-immutability" class="toc-link">Concrete Demonstration of Immutability</a></li><li class="toc-item level-3"><a href="#the-mutable-default-argument-trap-classic-interview-question" class="toc-link">The Mutable Default Argument Trap (Classic Interview Question)</a></li><li class="toc-item level-2"><a href="#4-pass-by-assignment-call-by-object-reference" class="toc-link">4. Pass-By-Assignment (Call-by-Object-Reference)</a></li><li class="toc-item level-2"><a href="#5-shallow-copy-vs-deep-copy" class="toc-link">5. Shallow Copy vs Deep Copy</a></li><li class="toc-item level-2"><a href="#6-integer-caching-string-interning" class="toc-link">6. Integer Caching & String Interning</a></li><li class="toc-item level-3"><a href="#small-integer-cache-5-256" class="toc-link">Small Integer Cache (`[-5, 256]`)</a></li><li class="toc-item level-3"><a href="#string-interning" class="toc-link">String Interning</a></li><li class="toc-item level-2"><a href="#7-structural-pattern-matching-python-3-10" class="toc-link">7. Structural Pattern Matching (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verification" class="toc-link">Practice Drills & Interview Verification</a></li><li class="toc-item level-3"><a href="#problem-1-pointer-mutation-trace" class="toc-link">Problem 1: Pointer Mutation Trace</a></li><li class="toc-item level-3"><a href="#problem-2-tuple-with-mutable-elements" class="toc-link">Problem 2: Tuple with Mutable Elements</a></li></ul>
     </aside>
   </div>
 

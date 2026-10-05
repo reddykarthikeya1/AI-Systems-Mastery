@@ -64,6 +64,16 @@ Here is the secret: **The Stack and the Heap have completely opposite strengths 
 * The **Heap** stores the **actual data objects** that need to grow, shrink, and outlive the functions that created them.
 * **The Bridge:** Your Desk (Stack) holds a tiny 8-byte claim ticket (pointer). The physical luggage sits in the Warehouse (Heap). When the function ends, the desk is wiped clean—but if you handed that claim ticket to the caller, the luggage stays safely in the warehouse!
 
+### "Wait, What Software Engine is Running This?" (Python vs. CPython)
+
+Before we look at the 3 Golden Rules, let's clear up a common beginner question: *“When I type `python script.py` into my terminal, what is actually executing my code?”*
+
+* **Python** is the **Language Specification** (The Recipe): It defines the rules, grammar, and syntax (`def`, `class`, `for`, `print`). It is an abstract set of instructions written down on paper.
+* **CPython** is the **Official Engine** (The Master Chef): It is the actual software program written in the **C programming language** that reads your Python code, manages the Stack and the Heap, and executes instructions on your physical CPU.
+
+> [!TIP]
+> Whenever you download Python from `python.org` or run `python` in your terminal, you are running **CPython**. Throughout this guide, when we peek under the hood of how Python works, we are looking at the CPython engine—the world's most popular Python implementation powering Google, Netflix, Instagram, and OpenAI!
+
 ---
 
 ## 1. The 3 Golden Rules of Python's Mental Model
