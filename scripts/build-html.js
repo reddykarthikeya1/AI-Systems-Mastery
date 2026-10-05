@@ -188,6 +188,7 @@ const TRACKS = [
     dir: "02-Low-Level-Design",
     files: [
       { name: "00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md", label: "00: LLD Mental Model & Blueprint" },
+      { name: "00-B-Zero-Prerequisite-OOP-And-Concurrency-Primer.md", label: "00-B: Zero-Prereq OOP & Concurrency Primer" },
       { name: "01-OOP-Fundamentals-And-SOLID-Principles.md", label: "01: OOP & SOLID Principles" },
       { name: "02-UML-Modeling-Class-Sequence-State-Diagrams.md", label: "02: UML Modeling Masterclass" },
       { name: "03-Design-Patterns-Catalog-Python-Implementations.md", label: "03: Design Patterns Catalog" },
@@ -209,6 +210,8 @@ const TRACKS = [
       { name: "systems/12-in-memory-file-system.md", label: "Sys 12: In-Memory File System" },
       { name: "systems/13-high-throughput-logging-framework.md", label: "Sys 13: High-Throughput Logging Framework" },
       { name: "systems/14-pub-sub-message-broker.md", label: "Sys 14: Pub/Sub Message Broker (Kafka Lite)" },
+      { name: "systems/15-distributed-lock-manager.md", label: "Sys 15: Distributed Lock Manager (Redlock)" },
+      { name: "systems/16-kafka-consumer-group-rebalance.md", label: "Sys 16: Kafka Consumer Rebalance Protocol" },
       { name: "12-Scenario-Based-LLD-Interview-Questions-And-Grills.md", label: "12: Staff-Level LLD Grills" }
     ]
   },
@@ -218,6 +221,7 @@ const TRACKS = [
     dir: "03-High-Level-Design",
     files: [
       { name: "00-Intuitive-Mental-Models-And-Visual-Glossary.md", label: "00: HLD Intuitive Glossary & Models" },
+      { name: "00-B-Zero-Prerequisite-Global-Infrastructure-Primer.md", label: "00-B: Zero-Prereq Global Infra Primer" },
       { name: "01-Distributed-Systems-Core-Prerequisites.md", label: "01: Distributed Systems Foundations" },
       { name: "02-Back-Of-The-Envelope-Calculations-Guide.md", label: "02: Back-of-the-Envelope Math" },
       { name: "03-Databases-Storage-Replication-Partitioning.md", label: "03: Databases, Sharding & Consistent Hashing" },
@@ -262,7 +266,10 @@ const TRACKS = [
       { name: "12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.md", label: "12: Production SSE & Human-in-Loop" },
       { name: "13-Vector-Database-Internals-And-HNSW-Math.md", label: "13: Vector DB Internals & HNSW Math" },
       { name: "14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.md", label: "14: Fine-Tuning, LoRA & DPO Alignment" },
-      { name: "15-Multimodal-Agents-And-AI-Red-Teaming-Security.md", label: "15: Multimodal Agents & AI Security" }
+      { name: "15-Multimodal-Agents-And-AI-Red-Teaming-Security.md", label: "15: Multimodal Agents & AI Security" },
+      { name: "16-Hierarchical-Episodic-Memory-And-GraphRAG.md", label: "16: Hierarchical Episodic Memory & GraphRAG" },
+      { name: "17-Model-Context-Protocol-And-Multi-Agent-Swarms.md", label: "17: Model Context Protocol & Swarms" },
+      { name: "18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md", label: "18: GPU Serving & PagedAttention" }
     ]
   },
   {

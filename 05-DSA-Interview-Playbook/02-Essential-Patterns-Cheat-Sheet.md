@@ -4,6 +4,57 @@
 
 ---
 
+## 0. The Master 1-Page Pattern Recognition Decision Tree
+
+When you read an interview question, how do you instantly know which pattern to apply within 30 seconds? Follow this exact decision tree:
+
+```mermaid
+flowchart TD
+    Start["What is the input structure and goal?"] --> InputType{"Input Type?"}
+
+    InputType -->|"Sorted Array / Searching for Pair or Range"| Q1{"Target sum or condition?"}
+    Q1 -->|"Pair sum / Two boundaries"| P1["Two Pointers (Convergence)"]
+    Q1 -->|"Min / Max optimal value or boundary"| P2["Binary Search on Answer Space"]
+
+    InputType -->|"Contiguous Subarray / Substring"| Q2{"Window constraint?"}
+    Q2 -->|"At most K distinct / max sum / fixed size"| P3["Sliding Window"]
+    Q2 -->|"Sum equals K with negative numbers"| P4["Prefix Sum + Hash Map"]
+
+    InputType -->|"Linked List"| Q3{"Cycle or Midpoint?"}
+    Q3 -->|"Cycle / Loop / Palindrome / Middle"| P5["Fast & Slow Pointers (Tortoise & Hare)"]
+    Q3 -->|"Reverse in-place / Reorder"| P6["In-Place Reversal"]
+
+    InputType -->|"Next Greater / Smaller Element or Histogram"| P7["Monotonic Stack / Deque"]
+
+    InputType -->|"Tree or Graph"| Q4{"Traversal Goal?"}
+    Q4 -->|"Level-by-level / Shortest Path (Unweighted)"| P8["Breadth-First Search (BFS)"]
+    Q4 -->|"Path existence / Exhaustive search / Subtree DP"| P9["Depth-First Search (DFS)"]
+    Q4 -->|"Shortest Path (Weighted)"| P10["Dijkstra's Algorithm (Min-Heap)"]
+    Q4 -->|"Cycle detection / Connected components"| P11["Union-Find (Disjoint Set)"]
+
+    InputType -->|"Top K elements / Running Stream Median"| P12["Heap / Priority Queue"]
+
+    InputType -->|"Prefix matching / Dictionary / Autocomplete"| P13["Trie (Prefix Tree)"]
+
+    InputType -->|"Find all combinations / Permutations"| P14["Backtracking (State Rollback)"]
+
+    InputType -->|"Overlapping subproblems / Optimal substructure"| P15["Dynamic Programming (1D/2D/Knapsack)"]
+```
+
+### Rapid 30-Second Pattern Recognition Matrix
+
+| Clues in Problem Statement | Likely Optimal Pattern | Time Complexity |
+| :--- | :--- | :--- |
+| Sorted array, find pair summing to $X$ | **Two Pointers** | $O(N)$ time, $O(1)$ space |
+| "Longest substring with...", "Contiguous subarray with sum $\le K$" | **Sliding Window** | $O(N)$ time, $O(K)$ space |
+| "Next greater temperature", "Largest rectangle in histogram" | **Monotonic Stack** | $O(N)$ time, $O(N)$ space |
+| "Shortest path in unweighted grid", "Level-order traversal" | **BFS with Queue** | $O(V + E)$ time |
+| "Count total paths", "Find maximum profit without adjacent items" | **Dynamic Programming** | $O(N)$ or $O(N \cdot M)$ |
+| "Top $K$ most frequent words", "Merge $K$ sorted streams" | **Min/Max Heap** | $O(N \log K)$ |
+| "Implement autocomplete", "Find words matching pattern with '.'" | **Trie with DFS** | $O(L)$ where $L$ is word length |
+
+---
+
 ## Pattern 1: Two Pointers (Convergence)
 
 ### When to Use:

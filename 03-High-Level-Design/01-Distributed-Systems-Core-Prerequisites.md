@@ -80,10 +80,54 @@ flowchart TD
 When multiple nodes must agree on a shared state (e.g. Who is the leader? What is the current commit log index?), distributed consensus algorithms ensure agreement even if nodes crash:
 
 ### Raft in a Nutshell (Leader-Based Consensus)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Follower: Node Boots Up
+    Follower --> Candidate: Election Timeout (No Heartbeat Heard)
+    Candidate --> Leader: Receives Quorum Votes (N/2 + 1)
+    Candidate --> Candidate: Split Vote Timeout (Randomized Backoff)
+    Candidate --> Follower: Discovers Leader with Higher Term
+    Leader --> Follower: Discovers Node with Higher Term
+```
+
 1. **Leader Election:**
-   * Nodes start as **Followers**. If a follower hears no heartbeat from a leader within a randomized election timeout ($150\text{ms} - 300\text{ms}$), it becomes a **Candidate** and requests votes.
+   * Nodes start as **Followers**. If a follower hears no heartbeat from a leader within a randomized election timeout ($150\text{ms} - 300\text{ms}$), it transitions to **Candidate**, increments the `term` number, and requests votes.
    * A candidate receiving votes from a **Quorum ($\lfloor N/2 \rfloor + 1$)** becomes the new **Leader**.
+   * If two candidates split votes evenly, both timeout with randomized backoffs ($150\text{ms}$ vs $280\text{ms}$), guaranteeing that one triggers an election earlier on the next round!
 2. **Log Replication:**
-   * Clients send all write requests to the Leader.
-   * The Leader appends the entry to its log and replicates it to all followers.
+   * Clients send all write requests strictly to the Leader.
+   * The Leader appends the entry to its local log and broadcasts `AppendEntries` RPCs to all followers.
    * Once a Quorum of followers acknowledge the entry, the leader commits it and notifies the client.
+
+---
+
+## 5. Active-Active Multi-Region Replication: CRDTs & Vector Clocks
+
+What happens when your database has two primary master databases—one in **New York** and one in **London**—and both accept simultaneous writes while an undersea cable is temporarily cut?
+
+```mermaid
+flowchart TD
+    subgraph NewYork["New York Datacenter"]
+        W1["User A edits document:<br/>Adds 'Hello'"] --> NY_DB["New York Master"]
+    end
+
+    subgraph London["London Datacenter"]
+        W2["User B edits document:<br/>Adds 'World'"] --> LON_DB["London Master"]
+    end
+
+    NY_DB -. "Undersea Cable Restored! Sync conflict!" .- LON_DB
+    
+    subgraph Resolution["CRDT Resolution (Conflict-Free Replicated Data Types)"]
+        Res["Deterministic Mathematical Merge:<br/>Result = 'Hello World' on BOTH nodes without data loss!"]
+    end
+
+    NY_DB --> Res
+    LON_DB --> Res
+```
+
+### The Conflict Resolution Options:
+1. **Last-Write-Wins (LWW):** Compare timestamps and pick the latest write.
+   * *The Danger:* Physical computer clocks drift (NTP clock skew). You might accidentally overwrite a critical edit made 5 milliseconds earlier!
+2. **Vector Clocks:** Every node maintains an array of logical counters: `[NY: 3, LON: 2]`. This allows the database to detect whether Write A *happened-before* Write B, or if they were **concurrent conflicting writes** requiring application resolution.
+3. **CRDTs (Conflict-Free Replicated Data Types):** Data structures mathematically designed so that any concurrent edits can be merged in any arbitrary order, and **all replicas are mathematically guaranteed to converge to the exact same state without locks!** (Used by Figma, Google Docs, Apple Notes, and Redis Enterprise).

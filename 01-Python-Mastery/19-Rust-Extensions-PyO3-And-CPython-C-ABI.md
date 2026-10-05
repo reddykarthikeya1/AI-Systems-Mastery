@@ -42,7 +42,54 @@ In 2026, the premier performance tools in the Python ecosystem are all built wit
 
 ---
 
-## 2. The CPython C-API & PyObject Internals (Spoon-Fed Foundations)
+## 2. Rust Syntax & The Borrow Checker (Spoon-Fed for Pythonistas)
+
+Before we write code that bridges Python and Rust, let's demystify Rust so you never feel intimidated by its syntax.
+
+> **The "Library Book Loan" Metaphor**
+> How do Python and Rust manage memory differently?
+> 
+> * **The Python Way (Chaotic Shared Whiteboard):** In Python, multiple variables can point to the exact same list on the heap. Anyone can scribble on it, append to it, or pass it around. If two threads write at the same time, data gets corrupted—which is why Python was forced to create the heavy single-threaded GIL lock to keep order.
+> * **The Rust Way (Strict Library Loan System):**
+>   1. **Every Value has an Owner:** When you write `let book = String::from("Rust Guide");`, the variable `book` is the sole owner. When `book` leaves the function scope (`}`), Rust vaporizes it instantly. Zero garbage collector pauses!
+>   2. **Immutable Borrow (`&T` - Reading Room):** One hundred people can sit at a table and **read** the book simultaneously (`&book`). But while people are reading, nobody is allowed to write in it.
+>   3. **Mutable Borrow (`&mut T` - The Editor's Desk):** If someone wants to write notes or edit the book (`&mut book`), they must have exclusive access. **Nobody else can read or write to it while an edit is in progress.**
+>   
+> This single rule—*Either any number of readers OR exactly one writer, but never both at once*—guarantees at compile time that **data races and segfaults are mathematically impossible!**
+
+### Rust Syntax Cheat Sheet for Python Developers
+
+```rust
+// 1. Variables are IMMUTABLE by default!
+let x: i64 = 10;
+// x = 20; // ❌ COMPILE ERROR: Cannot assign twice to immutable variable!
+
+// To allow changes, you must explicitly declare 'mut' (mutable):
+let mut y: i64 = 10;
+y = 20; // ✅ Allowed!
+
+// 2. Types are explicit and fixed:
+let count: u64 = 100;         // Unsigned 64-bit integer (cannot be negative)
+let price: f64 = 19.99;       // 64-bit floating point number
+let active: bool = true;      // Boolean
+let name: &str = "Alice";     // String slice (view into read-only text)
+
+// 3. Error Handling without Exceptions:
+// Rust has no 'try / catch' exceptions! Functions return a 'Result<T, E>':
+// Ok(value) -> Calculation succeeded
+// Err(error) -> Calculation failed
+fn divide(a: f64, b: f64) -> Result<f64, String> {
+    if b == 0.0 {
+        Err(String::from("Division by zero!"))
+    } else {
+        Ok(a / b)
+    }
+}
+```
+
+---
+
+## 3. The CPython C-API & PyObject Internals (Spoon-Fed Foundations)
 
 To understand how Python talks to Rust, we must understand how Python represents data in C.
 

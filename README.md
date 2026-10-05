@@ -12,13 +12,11 @@
 
 | Track | Beginner Friendliness | Technical Depth | Production Realism & Mastery | Curated Materials |
 | :--- | :---: | :---: | :---: | :---: |
-| Track | Beginner Friendliness | Technical Depth | Production Realism & Mastery | Curated Materials |
-| :--- | :---: | :---: | :---: | :---: |
-| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters + Distributed/HPC/SQL/FastAPI/Rust/Polars + Videos + PDFs |
-| **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Books (14 Systems + Concurrency Labs) + PDFs |
-| **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 24 Books (13 Systems + Chaos/FinOps/SRE) + PDFs |
-| **Track 4: Agentic AI Engineering** | **10 / 10** | **10 / 10** | **10 / 10** | 16 Chapters + Vector DBs/LoRA/Security + PDFs |
-| **Track 5: DSA Interview Playbook** | **10 / 10** | **10 / 10** | **10 / 10** | 7 Playbooks + Segment Trees/Bitmask DP + PDFs |
+| **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters + Distributed/HPC/SQL/FastAPI/Rust/Polars + Videos + Runnable Labs + PDFs |
+| **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 26 Books (16 Systems + Zero-Prereq Primer + Concurrency Labs) + PDFs |
+| **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 25 Books (13 Systems + Zero-Prereq Global Infra Primer + Chaos/FinOps/SRE + 4 Runnable Simulations) + PDFs |
+| **Track 4: Agentic AI Engineering** | **10 / 10** | **10 / 10** | **10 / 10** | 18 Books (MemGPT / GraphRAG / MCP / vLLM / HNSW Sim) + PDFs |
+| **Track 5: DSA Interview Playbook** | **10 / 10** | **10 / 10** | **10 / 10** | 7 Playbooks + 1-Page Decision Tree + Core 75 Triple-Block Codes + PDFs |
 
 ---
 
@@ -26,11 +24,11 @@
 
 ```mermaid
 flowchart TD
-    T1["Track 1: Python Engineering Mastery<br/>23 Deep Chapters<br/>(CPython Internals, Memory, Concurrency, Testing, SQL, FastAPI, Security, Celery, Kafka, Polars, HPC, Rust PyO3)"]
-    T2["Track 2: Low-Level Design (LLD)<br/>23 Industrial Books<br/>(OOP, SOLID, Design Patterns, Thread-Safety, 14 Complete Systems)"]
-    T3["Track 3: High-Level Design (HLD)<br/>24 Distributed Books<br/>(Foundations, Sharding, Caching, Sagas, Chaos, SRE, 13 Systems)"]
-    T4["Track 4: Agentic AI Engineering<br/>16 Production Books<br/>(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, Vector DBs, Security)"]
-    T5["Track 5: DSA Interview Playbook<br/>7 Strategic Books<br/>(Core 75 Visual Dry-Runs, 45-Min Mock Drills, Whiteboard Discipline)"]
+    T1["Track 1: Python Engineering Mastery<br/>23 Deep Chapters + Labs<br/>(CPython Internals, Memory, Concurrency, Testing, SQL, FastAPI, Security, Celery, Kafka, Polars, HPC, Rust PyO3)"]
+    T2["Track 2: Low-Level Design (LLD)<br/>26 Industrial Books<br/>(Zero-Prereq Primer, OOP, SOLID, Design Patterns, Thread-Safety, 16 Complete Systems)"]
+    T3["Track 3: High-Level Design (HLD)<br/>25 Distributed Books + Sims<br/>(Zero-Prereq Infra Primer, Sharding, Caching, Sagas, Chaos, SRE, 13 Systems, Raft & Hashing Sims)"]
+    T4["Track 4: Agentic AI Engineering<br/>18 Production Books + HNSW Sim<br/>(LLMs, KV-Cache, Tool Calling, LangGraph Swarms, MemGPT, MCP, vLLM, Security)"]
+    T5["Track 5: DSA Interview Playbook<br/>7 Strategic Books<br/>(1-Page Decision Tree, Core 75 Triple-Block Codes, 45-Min Mock Drills, Whiteboard Discipline)"]
 
     PBC["Staff / Principal Engineer<br/>Product-Based Company (PBC) Standard<br/>Google | Meta | Uber | Amazon | Stripe"]
 
@@ -78,6 +76,7 @@ flowchart TD
 
 ### [Track 2: Low-Level Design (LLD)](02-Low-Level-Design/)
 * **[00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md](02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md):** The 4-step Lego framework, the Visual Pattern Decision Tree, and the 11 Systems comparison matrix.
+* **[00-B-Zero-Prerequisite-OOP-And-Concurrency-Primer.md](02-Low-Level-Design/00-B-Zero-Prerequisite-OOP-And-Concurrency-Primer.md):** The Toy Factory Metaphor, Plain-English Jargon Demystifier, bathroom key concurrency intuition, and junior vs senior code comparison.
 * **[01-OOP-Fundamentals-And-SOLID-Principles.md](02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.md):** OOP principles, DRY/KISS, SOLID anti-patterns and Python refactors.
 * **[02-UML-Modeling-Class-Sequence-State-Diagrams.md](02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.md):** Class diagrams, sequence diagrams, state-machine diagrams, and the 5-minute drawing strategy.
 * **[03-Design-Patterns-Catalog-Python-Implementations.md](02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.md):** Creational, Structural, and Behavioral patterns implemented in modern Python.
@@ -85,12 +84,12 @@ flowchart TD
 * **[05-Curveball-Requirement-Evolution-Mastery.md](02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.md):** How to handle mid-interview requirement pivots (Surge pricing, temporary seat holds, firefighter elevator emergency modes) without rewriting code.
 * **[06-Legacy-Code-Refactoring-To-Design-Patterns.md](02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.md):** Decomposing a 500-line monolithic checkout God-class using Strategy, Factory, and Observer patterns.
 * **[07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md](02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md):** Hands-on multi-threaded race condition reproduction (double-booking bugs) and comparing Pessimistic Locks vs Optimistic Concurrency Control (OCC).
-* **The 14 Industrial Core Systems:**
+* **The 16 Industrial Core Systems:**
   1. [systems/01-distributed-job-scheduler.md](02-Low-Level-Design/systems/01-distributed-job-scheduler.md) *(Strategy, Command, Observer)*
   2. [systems/02-library-management-system.md](02-Low-Level-Design/systems/02-library-management-system.md) *(Observer, State, Association/Aggregation)*
   3. [systems/03-movie-booking-system.md](02-Low-Level-Design/systems/03-movie-booking-system.md) *(Concurrency, State Machine, Factory, Payment)*
   4. [systems/04-car-rental-system.md](02-Low-Level-Design/systems/04-car-rental-system.md) *(Strategy, State, Factory)*
-  5. [systems/05-parking-lot.md](02-Low-Level-Design/systems/05-parking-lot.md) *(Factory, Abstract Factory, Strategy, Singleton)*
+  5. [systems/05-parking-lot.md](02-Low-Level-Design/systems/05-parking-lot.md) *(Factory, Abstract Factory, Strategy, Min-Heap Priority Queue)*
   6. [systems/06-inventory-management-system.md](02-Low-Level-Design/systems/06-inventory-management-system.md) *(Observer, Strategy, State)*
   7. [systems/07-ride-sharing-application.md](02-Low-Level-Design/systems/07-ride-sharing-application.md) *(Strategy, Observer, State, Pricing Engine)*
   8. [systems/08-rate-limiter.md](02-Low-Level-Design/systems/08-rate-limiter.md) *(Token Bucket, Leaky Bucket, Sliding Window Log)*
@@ -100,13 +99,16 @@ flowchart TD
   12. [systems/12-in-memory-file-system.md](02-Low-Level-Design/systems/12-in-memory-file-system.md) *(Composite Pattern, Trie path resolution, RLock)*
   13. [systems/13-high-throughput-logging-framework.md](02-Low-Level-Design/systems/13-high-throughput-logging-framework.md) *(Producer-Consumer, Strategy formatters/sinks, non-blocking queue)*
   14. [systems/14-pub-sub-message-broker.md](02-Low-Level-Design/systems/14-pub-sub-message-broker.md) *(Kafka Lite, Topic partitions, Consumer groups, offset commits)*
+  15. [systems/15-distributed-lock-manager.md](02-Low-Level-Design/systems/15-distributed-lock-manager.md) *(Distributed Redlock Manager, Fencing Tokens, GC Pause Recovery)*
+  16. [systems/16-kafka-consumer-group-rebalance.md](02-Low-Level-Design/systems/16-kafka-consumer-group-rebalance.md) *(Cooperative Sticky Assignor, Group Coordinator, Heartbeats)*
 * **[12-Scenario-Based-LLD-Interview-Questions-And-Grills.md](02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.md):** Strategy vs State justification, deadlocks in seat booking, 10,000 QPS spot grabs, Undo/Redo, and mock testing.
 
 ---
 
 ### [Track 3: High-Level Design (HLD)](03-High-Level-Design/)
 * **[00-Intuitive-Mental-Models-And-Visual-Glossary.md](03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.md):** The Real-World Metaphor Dictionary, 10-system comparative matrix, and 45-minute printable interview template.
-* **[01-Distributed-Systems-Core-Prerequisites.md](03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.md):** Hardware latency numbers, CAP & PACELC theorems, TCP/UDP/HTTP3/gRPC/WebSockets, and Raft consensus.
+* **[00-B-Zero-Prerequisite-Global-Infrastructure-Primer.md](03-High-Level-Design/00-B-Zero-Prerequisite-Global-Infrastructure-Primer.md):** The Global Postal & Logistics Metaphor, DNS resolution, TCP vs UDP, L4 vs L7 routing, and 5-minute opening interview survival script.
+* **[01-Distributed-Systems-Core-Prerequisites.md](03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.md):** Hardware latency numbers, CAP & PACELC theorems, TCP/UDP/HTTP3/gRPC/WebSockets, Raft Consensus State Machine, and Active-Active CRDTs & Vector Clocks.
 * **[02-Back-Of-The-Envelope-Calculations-Guide.md](03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.md):** The $10^5$ rule, QPS formulas, 5-year storage, bandwidth, and the 80/20 cache rule.
 * **[03-Databases-Storage-Replication-Partitioning.md](03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.md):** B-Trees vs LSM-Trees, Quorum ($R + W > N$), and Consistent Hash Ring implementation in Python.
 * **[04-Caching-Load-Balancing-CDNs-Proxies.md](03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.md):** The 4 write policies, Cache Stampede/Penetration/Avalanche defenses, L4 vs L7 load balancers, and Anycast CDN routing.
@@ -130,6 +132,11 @@ flowchart TD
   12. [systems/12-distributed-search-engine-elasticsearch.md](03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.md) *(Inverted index, BM25 scoring, Sharded prefix trie typeahead)*
   13. [systems/13-time-series-metrics-monitoring-prometheus.md](03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.md) *(Gorilla XOR float compression, Delta-of-delta timestamps, TSDB downsampling)*
 * **[11-Scenario-Based-HLD-Interview-Questions-And-Grills.md](03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.md):** Cassandra zombie data resurrects, Redis 100% CPU lockouts, NTP clock drift in Snowflake IDs, and multi-region active-active conflicts.
+* **Runnable Distributed Simulations (`03-High-Level-Design/simulations/`):**
+  - `consistent_hashing_ring.py`: 100k keys distribution across nodes and verification of minimal key migration upon node crash.
+  - `raft_consensus_simulator.py`: 5-node cluster with leader election, term numbering, heartbeats, and automated failover.
+  - `bloom_filter.py`: Optimal bit array mathematics, zero false negatives guarantee, and 97% memory savings vs HashSet.
+  - `distributed_rate_limiter.py`: Fixed window boundary burst flaw vs Sliding window log vs Token bucket under concurrency.
 
 ---
 
@@ -149,13 +156,18 @@ flowchart TD
 * **[13-Vector-Database-Internals-And-HNSW-Math.md](04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.md):** High-dimensional geometry, HNSW skip-graph beam search, Product Quantization (IVF-PQ), and single-stage filtered vector search.
 * **[14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.md](04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.md):** RAG vs Fine-Tuning decision tree, LoRA matrix factorization math ($\Delta W = BA$), QLoRA 4-bit NormalFloat, and Direct Preference Optimization (DPO).
 * **[15-Multimodal-Agents-And-AI-Red-Teaming-Security.md](04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.md):** Vision-Language Models (ViT patches), Document AI, indirect prompt injection, ASCII smuggling, and the Dual-LLM quarantine defense.
+* **[16-Hierarchical-Episodic-Memory-And-GraphRAG.md](04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.md):** Operating System Virtual Memory / paging architecture (MemGPT / Letta), RAPTOR recursive summary trees, and Microsoft GraphRAG with Leiden community detection.
+* **[17-Model-Context-Protocol-And-Multi-Agent-Swarms.md](04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.md):** Anthropic's Model Context Protocol (MCP) JSON-RPC standard, MCP Host/Client/Server architecture, and multi-agent swarm consensus without infinite loops.
+* **[18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md](04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.md):** GPU VRAM and HBM mechanics, the KV Cache memory bottleneck, continuous iteration-level batching, prefix caching, and PagedAttention in vLLM.
+* **Runnable Vector Index Simulation (`04-Agentic-AI/simulations/`):**
+  - `pure_python_hnsw.py`: Pure-Python Hierarchical Navigable Small World (HNSW) vector index with 100% recall benchmark against brute-force linear search.
 
 ---
 
 ### [Track 5: DSA Interview Playbook](05-DSA-Interview-Playbook/)
 * **[01-Interview-Tactics-Dry-Run-Communication.md](05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.md):** The 5-step communication strategy and universal dry-run trace table template.
-* **[02-Essential-Patterns-Cheat-Sheet.md](05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.md):** The 15 master reusable coding pattern templates (Two Pointers, Sliding Window, Monotonic Stack, Top K, Topological Sort, etc.).
-* **[03-The-Core-75-Mastery-Walkthroughs.md](05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.md):** Deep, visual problem walkthroughs (Trapping Rain Water, Longest Substring Without Repeating Characters, Course Schedule) with step-by-step dry-run tables.
+* **[02-Essential-Patterns-Cheat-Sheet.md](05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.md):** The Master 1-Page Pattern Recognition Decision Tree, 30-Second Clues Matrix, and the 15 master reusable coding pattern templates (Two Pointers, Sliding Window, Monotonic Stack, Top K, Topological Sort, etc.).
+* **[03-The-Core-75-Mastery-Walkthroughs.md](05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.md):** Deep, visual problem walkthroughs using the **Triple-Block Code Standard** (Naive Brute Force $\to$ Typed Production-Optimal $\to$ Edge-Case Unit Tests), featuring Trapping Rain Water, Course Schedule, Trie with Wildcard Search, Monotonic Deque (Sliding Window Maximum), and Post-Order Tree DP (Binary Tree Maximum Path Sum).
 * **[04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.md](05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.md):** Minute-by-minute timeline (0-5m Constraints, 5-15m Brute Force, 15-30m Coding, 30-40m Dry Run, 40-45m Complexity), and scripts for handling silent, aggressive, and helpful interviewers.
 * **[05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md](05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.md):** The 7 unsticking techniques (Inversion, $N=3$ simulation, sorting trade-offs, DP 3-question formulation) and the pre-flight edge case checklist.
 * **[06-Whiteboard-And-Google-Doc-Coding-Discipline.md](05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md):** Whiteboard 3-zone partitioning, mental compilation routines, and catching the top 10 compiler bugs manually without an IDE.
@@ -166,10 +178,11 @@ flowchart TD
 ## Automated PDF & Web Portal Generation Engine
 
 ```bash
-# Compile all 88 books and labs into interactive HTML Web Portal
+# Compile all 100 books and labs into interactive HTML Web Portal
 npm run build:html
 
-# Compile all 88 tracks and labs into print-ready PDFs
+# Compile all 100 tracks and labs into print-ready PDFs
 npm run build:pdf
 ```
-All **88 compiled PDFs** are saved in the `pdfs/` directory, and all **89 interactive HTML pages** are saved in the `html/` directory.
+All **100 compiled PDFs** are saved in the `pdfs/` directory, and all **100 interactive HTML pages** are saved in the `html/` directory.
+

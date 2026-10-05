@@ -118,14 +118,40 @@ class SpotAllocationStrategy(ABC):
     def find_spot(self, spots: List[ParkingSpot], vehicle: Vehicle) -> Optional[ParkingSpot]:
         pass
 
-class LowestFloorFirstStrategy(SpotAllocationStrategy):
-    """Prefers lowest floor and lowest spot ID first."""
+# ❌ Junior Anti-Pattern: O(N) linear search over 10,000 spots
+class NaiveLinearSearchStrategy(SpotAllocationStrategy):
     def find_spot(self, spots: List[ParkingSpot], vehicle: Vehicle) -> Optional[ParkingSpot]:
+        # Scans every spot in the lot: O(N) time complexity!
         eligible = [s for s in spots if s.can_fit(vehicle)]
-        if not eligible:
-            return None
-        # Sort by floor asc, then best size fit (avoid wasting large spots for bikes)
-        return min(eligible, key=lambda s: (s.floor, s.size.value, s.spot_id))
+        return min(eligible, key=lambda s: (s.floor, s.size.value, s.spot_id)) if eligible else None
+
+# ✅ Staff Solution: O(log N) Min-Heap Priority Queue Partitioned by Vehicle Size
+import heapq
+
+class HeapOptimizedAllocationStrategy(SpotAllocationStrategy):
+    """
+    Maintains a min-heap of available spots ordered by (floor, spot_id).
+    Acquisition is O(log N) rather than O(N)!
+    """
+    def __init__(self, spots: List[ParkingSpot]):
+        # Partition available spots into size-specific min-heaps
+        self._heaps: Dict[VehicleSize, list] = {size: [] for size in VehicleSize}
+        for spot in spots:
+            if not spot.is_occupied:
+                heapq.heappush(self._heaps[spot.size], (spot.floor, spot.spot_id, spot))
+
+    def find_spot(self, spots: List[ParkingSpot], vehicle: Vehicle) -> Optional[ParkingSpot]:
+        # Search available sizes in ascending order of vehicle fit
+        for size in VehicleSize:
+            if size.value >= vehicle.size.value and self._heaps[size]:
+                # Pop the optimal spot in O(log N) time!
+                floor, spot_id, spot = heapq.heappop(self._heaps[size])
+                return spot
+        return None
+
+    def return_spot(self, spot: ParkingSpot):
+        """Returns spot to heap in O(log N) when vehicle exits."""
+        heapq.heappush(self._heaps[spot.size], (spot.floor, spot.spot_id, spot))
 
 # --- Parking Ticket ---
 class ParkingTicket:

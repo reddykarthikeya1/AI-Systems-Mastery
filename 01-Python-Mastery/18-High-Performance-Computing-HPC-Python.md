@@ -278,7 +278,49 @@ print(f"Matrix Multiply (10,000 x 10,000) completed in {elapsed_ms:.2f} ms on GP
 
 ---
 
-## 8. HPC Acceleration Decision Matrix
+## 8. Python 3.13 Subinterpreters (PEP 554 / 684) & The Tier-2 JIT (PEP 744)
+
+The CPython runtime is undergoing the greatest performance evolution in its 35-year history. In addition to the free-threaded build (`python3.13t`), two groundbreaking architectural features have emerged:
+
+### 1. Subinterpreters with Per-Interpreter GIL (PEP 554 / PEP 684)
+Historically, if you wanted to bypass the GIL, you were forced to use `multiprocessing`. But processes are heavy: they copy memory, require slow IPC serialization (`pickle`), and have separate process IDs.
+
+**Subinterpreters** allow multiple completely isolated CPython interpreter engines to live inside the **exact same OS process**:
+* Each subinterpreter has its **own independent Global Interpreter Lock (GIL)**!
+* They run on separate OS threads simultaneously without blocking each other.
+* Data is passed across interpreters using high-speed channel queues without process spawning overhead:
+
+```python
+# subinterpreters_preview.py (Python 3.13+)
+import _xxsubinterpreters as interpreters
+import concurrent.futures
+
+# Create an isolated subinterpreter with its OWN independent GIL!
+interp_id = interpreters.create()
+
+# Execute CPU-bound Python code in parallel within the same process:
+code = """
+import time
+total = sum(i * i for i in range(10_000_000))
+print(f"Computed total in subinterpreter: {total}")
+"""
+
+# Run concurrently without blocking the main interpreter's execution!
+interpreters.run_string(interp_id, code)
+interpreters.destroy(interp_id)
+```
+
+### 2. The Tier-2 Copy-and-Patch JIT Compiler (PEP 744)
+Traditional JIT compilers (like Java's HotSpot or PyPy) use massive compilation engines like LLVM, which consume high memory and introduce "warmup pauses."
+
+Python 3.13 introduced a revolutionary **Copy-and-Patch JIT**:
+1. At CPython build time, small snippets of machine code ("stencils") are pre-compiled for each Python bytecode.
+2. At runtime, the interpreter observes which functions run repeatedly (**Adaptive Specializing Tier-1 Interpreter - PEP 659**).
+3. Once a function is identified as "hot", the Tier-2 engine copies the pre-compiled stencils, patches memory addresses in microseconds, and executes native CPU instructions directly!
+
+---
+
+## 9. HPC Acceleration Decision Matrix
 
 | Performance Bottleneck | Root Cause | Recommended Tool | Expected Speedup |
 | :--- | :--- | :--- | :--- |
