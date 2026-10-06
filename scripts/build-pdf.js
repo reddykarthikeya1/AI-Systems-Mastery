@@ -10,7 +10,7 @@ const TEMPLATES_DIR = path.resolve(__dirname, 'templates');
 const MERMAID_JS = path.resolve(ASSETS_DIR, 'mermaid.min.js').replace(/\\/g, '/');
 const CSS_PATH = path.resolve(TEMPLATES_DIR, 'pdf-style.css');
 const KATEX_DIR = path.resolve(__dirname, '..', 'node_modules', 'katex', 'dist').replace(/\\/g, '/');
-const LITE_TRACKS = ['01-Python-Mastery', '02-Low-Level-Design', '03-High-Level-Design', '04-Agentic-AI', '05-DSA-Interview-Playbook'];
+const LITE_TRACKS = ['01-Python-Mastery', '02-Low-Level-Design', '03-High-Level-Design', '04-Agentic-AI', '05-DSA-Interview-Playbook', '07-Practice-Lab'];
 
 // Configure marked with highlight.js
 marked.setOptions({

@@ -149,7 +149,8 @@ const TRACKS = [
     title: "Master Roadmap & Scorecard",
     dir: "",
     files: [
-      { name: "README.md", label: "Master Curriculum & Scorecard" }
+      { name: "README.md", label: "Master Curriculum & Scorecard" },
+      { name: "QUALITY_REPORT.md", label: "Quality Report (measured, generated)" }
     ]
   },
   {
@@ -301,6 +302,19 @@ const TRACKS = [
       { name: "07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.md", label: "07: Segment/Fenwick Trees & Bitmask DP" },
       { name: "08-Company-Specific-Interview-Playbook.md", label: "08: Company-Specific Interview Playbook" },
       { name: "09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.md", label: "09: Track 5 Recap & Playbook" }
+    ]
+  },
+  {
+    id: "practice",
+    title: "Practice Lab: Exercises, Labs & Tools",
+    dir: "07-Practice-Lab",
+    files: [
+      { name: "00-How-To-Use-The-Practice-Lab.md", label: "00: How to Use the Practice Lab" },
+      { name: "01-Python-Exercises-Chapters-00-07.md", label: "Python Exercises: Chapters 00 to 07" },
+      { name: "02-Python-Exercises-Chapters-08-15.md", label: "Python Exercises: Chapters 08 to 15" },
+      { name: "03-Python-Exercises-Chapters-16-22.md", label: "Python Exercises: Chapters 16 to 22" },
+      { name: "04-DSA-Core-75-Practice-Workbook.md", label: "DSA Core 75 Practice Workbook" },
+      { name: "05-Labs-Simulations-And-Examples.md", label: "Labs, Simulations & Examples" }
     ]
   }
 ];

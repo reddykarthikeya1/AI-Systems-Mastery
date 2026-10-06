@@ -490,3 +490,10 @@ EXPLANATIONS = {
         }
     ]
 }
+
+
+try:  # written walkthroughs for chapters 00-19 live in their own module
+    from _explanations_core import CORE
+    EXPLANATIONS = {**CORE, **EXPLANATIONS}
+except ImportError:  # pragma: no cover
+    pass
