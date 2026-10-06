@@ -141,3 +141,13 @@ flowchart TD
 2. **Top-P (Nucleus Sampling):** Accumulates candidate tokens in descending order of probability until their cumulative probability reaches $P$ (e.g., $P = 0.90$). Truncates the long tail of unlikely words.
 3. **Top-K:** Restricts candidate selection to strictly the $K$ highest probability tokens (e.g., $K = 50$).
 4. **Presence & Frequency Penalties:** Subtracts from a token's logit if it has already appeared in the output, discouraging repetitive loops.
+
+---
+
+## Verified Worked Example: a Tool Loop with Budgets, Error Recovery and Loop Detection
+
+The agent loop above is implemented, run and tested in [`examples/ex01_tool_loop.py`](examples/ex01_tool_loop.py). The scripted model first asks for 30 days of history, gets `ERROR: days must be between 1 and 7` back **as an observation**, corrects itself, and answers. Three properties make it safe: a hard `max_steps` budget, errors fed back instead of raised, and a `seen_calls` check that stops identical repeated calls. Tests: `test_tool_loop_recovers_from_tool_error`, `test_tool_loop_step_budget_stops_runaway_agent`.
+
+Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
+
+**Reliability arithmetic.** With per-step success `p`, an `n`-step task succeeds with `p^n`: `0.95^10 = 0.60`, `0.99^10 = 0.90`. This is why the examples spend effort on raising per-step success (clear tool descriptions, helpful errors) and cutting steps.

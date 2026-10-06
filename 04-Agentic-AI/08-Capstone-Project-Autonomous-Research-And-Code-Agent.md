@@ -29,7 +29,7 @@ flowchart TD
 
 ---
 
-## 2. Complete, Runnable Production Implementation (Pure Python)
+## 2. Runnable Capstone Skeleton (Pure Python, Simulated LLM Calls)
 
 ```python
 import json
@@ -187,3 +187,10 @@ if __name__ == "__main__":
     print(f"\n### Audited Implementation:\n```python\n{result['code_artifact']}\n```")
     print(f"\n### Quality Verification:\n{result['audit_report']}")
 ```
+
+---
+
+## How to Turn the Skeleton into a Real Agent
+
+The capstone is a skeleton with simulated model calls. To make it real: (1) implement `get_llm()` for your provider (see `examples/llm.py`, which already has an Anthropic adapter behind `LLM_PROVIDER=anthropic`), (2) keep a `FakeLLM` script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from `examples/ex05_eval_harness.py` (repeat each task 5 to 10 times and report `pass^k` with a confidence interval), and (4) gate side effects behind the approval pattern from `examples/ex02_langgraph_hitl.py`.
+

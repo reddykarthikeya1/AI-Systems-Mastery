@@ -212,3 +212,12 @@ Before moving to Agent Architectures, verify you can answer these questions with
 3. **What problem does GraphRAG solve that vector chunking cannot?**
    - *Answer:* Global thematic queries across entire corpora (e.g., "What are the common risk factors across all 50 vendor contracts?") by synthesizing entity-relationship knowledge graphs.
 
+---
+
+## Verified Worked Example: Hybrid Retrieval with Measured Recall
+
+[`examples/ex03_hybrid_rag.py`](examples/ex03_hybrid_rag.py) implements chunking, BM25 with IDF and length normalisation, a typo-tolerant hashed character n-gram vector, Reciprocal Rank Fusion (`score = sum 1/(60 + rank)`), and `recall@k` on 10 labelled queries. Result on that set at `k = 1`: **BM25 0.6, n-gram vectors 0.9, hybrid 1.0**. The lexical side wins on exact identifiers (`ECONNRESET`, `SKU-48213`); the vector side wins on misspelled queries with no exact tokens; fusion keeps both. The numbers come from a deliberately small set, so treat them as a demonstration of the *method*; always measure on your own queries.
+
+**Exercise.** Add a query that both methods miss (a pure paraphrase such as "send items back within a month"), observe that hybrid also misses it, then explain what component (a learned embedding model or a query rewriter) would fix it.
+
+Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.

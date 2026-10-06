@@ -35,7 +35,7 @@ flowchart TD
 
 ---
 
-## 3. Complete Production LangGraph Agent Implementation
+## 3. LangGraph-Style Agent (Pure-Python Emulation of the Model)
 
 ```python
 from typing import TypedDict, Annotated, Sequence
@@ -143,3 +143,13 @@ sequenceDiagram
     end
 ```
 *Time-travel checkpointing allows developers to inspect every historical node execution, modify past state variables, and branch alternative execution paths during debugging.*
+
+---
+
+## Verified Worked Example: Real LangGraph with Human-in-the-Loop
+
+The section above emulates the LangGraph execution model in plain Python to teach the ideas. The real API is exercised in [`examples/ex02_langgraph_hitl.py`](examples/ex02_langgraph_hitl.py), verified on `langgraph==1.2.13`: a typed `State` with an append reducer (`Annotated[list, operator.add]`), nodes returning partial updates, a conditional edge, an `InMemorySaver` checkpointer, and an `interrupt()` that pauses for approval and resumes with `Command(resume=...)` on the same `thread_id`. Two behaviours worth testing yourself: (1) the side-effecting node runs **only after** approval, and (2) rejecting leaves `executed` out of the log.
+
+**Version note.** LangGraph's API evolves quickly (for example `MemorySaver` became `InMemorySaver`, and the human-in-the-loop primitives changed from static breakpoints to `interrupt`/`Command`). Pin the version and re-run the examples when upgrading.
+
+Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.

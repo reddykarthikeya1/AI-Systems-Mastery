@@ -302,3 +302,11 @@ Verify your understanding before continuing:
    - *Answer:* Tools (callable actions), Resources (read-only data URIs), and Prompts (reusable LLM interaction templates).
 3. **How does a supervisor multi-agent architecture prevent infinite recursion between agents?**
    - *Answer:* Worker agents are not permitted to delegate directly to each other; all communication routes back through the supervisor, which tracks a strict finite turn budget and halts the workflow when convergence criteria are met.
+
+---
+
+## Verified Worked Example and Version Note (MCP SDK)
+
+A real MCP server with one tool and one resource is in [`examples/ex04_mcp_server.py`](examples/ex04_mcp_server.py), verified on `mcp==2.3.0`. **The Python SDK changed between major versions:** in 1.x the server class is `mcp.server.fastmcp.FastMCP`; in 2.x it is `mcp.server.mcpserver.MCPServer`. Type hints and the docstring become the tool's JSON Schema in both. Always pin the SDK version and check the migration notes when upgrading.
+
+Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.

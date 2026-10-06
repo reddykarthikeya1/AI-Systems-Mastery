@@ -44,7 +44,7 @@ sequenceDiagram
 
 ---
 
-## 3. Production-Grade Tool Calling Implementation in Python
+## 3. Tool-Calling Implementation in Python (Teaching Version)
 
 Here is a complete, runnable in-memory tool loop implementing function calling without third-party dependencies:
 
@@ -147,3 +147,13 @@ class ExtractedEntities(BaseModel):
 print("\nPydantic Validation JSON Schema:")
 print(json.dumps(ExtractedEntities.model_json_schema(), indent=2))
 ```
+
+---
+
+## Verified Worked Example: Tool Errors the Model Can Fix
+
+In [`examples/ex01_tool_loop.py`](examples/ex01_tool_loop.py) the `get_history` tool raises `ValueError("days must be between 1 and 7")`. The harness converts it into the observation `ERROR: days must be between 1 and 7`, which is what lets the model retry with a valid argument. **Design rule:** an error message is part of the tool's interface; say what was wrong and what valid input looks like.
+
+**Real-SDK caveat.** In `mcp==2.3.0`, an exception raised inside an MCP tool reaches the model only as "Error executing tool <name>" (the detail is not forwarded). For fixable mistakes, return the explanation in the result text instead (see [`examples/ex04_mcp_server.py`](examples/ex04_mcp_server.py)). Verify how *your* SDK version reports tool errors before relying on them.
+
+Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.

@@ -27,7 +27,7 @@ flowchart TD
 
 ---
 
-## 2. Complete Multi-Agent Supervisor Implementation in Python
+## 2. Multi-Agent Supervisor (Simulation: Scripted Agents, No Real LLM)
 
 ```python
 from typing import Dict, Any
@@ -122,3 +122,12 @@ Every production agent deployment must log comprehensive execution spans:
    * Wall-clock latency per LLM call vs per tool execution.
    * Model temperature, system prompt version, and exact JSON payloads.
 3. **Error Traces:** Stack traces for flaky external tool APIs.
+
+---
+
+## What the Simulation Above Does and Does Not Show
+
+The supervisor example uses scripted agents (fixed strings) so that the control flow is deterministic and testable. It demonstrates delegation, result passing and a final merge, **not** real model behaviour. For a verified graph with checkpointing and approval see [`examples/ex02_langgraph_hitl.py`](examples/ex02_langgraph_hitl.py); to measure whether a multi-agent design beats a single agent, use the repeated-trial harness in [`examples/ex05_eval_harness.py`](examples/ex05_eval_harness.py): report `pass^k` and a Wilson interval, not a single run.
+
+**Cost reality check.** Multi-agent runs multiply tokens (reported around 15x a chat for research agents versus about 4x for a single agent). If the harness shows no statistically clear gain over the single-agent baseline, ship the single agent.
+
