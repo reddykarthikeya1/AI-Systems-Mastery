@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sys 20: Object Store (S3) | PBC 2026 Master Preparation Guide</title>
+  <style>
+    pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*!
+  Theme: GitHub Dark
+  Description: Dark theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: #ff7b72
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: #d2a8ff
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: #79c0ff
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: #a5d6ff
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: #ffa657
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: #8b949e
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: #7ee787
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: #c9d1d9
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: #1f6feb;
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: #f2cc60
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: #c9d1d9;
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: #c9d1d9;
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: #aff5b4;
+  background-color: #033a16
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: #ffdcd7;
+  background-color: #67060c
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+    
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-surface: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent: #0369a1;
+  --accent-hover: #075985;
+  --accent-light: #e0f2fe;
+  --c-note: #0369a1; --c-tip: #047857; --c-imp: #4f46e5; --c-warn: #b45309; --c-caution: #b91c1c;
+  --code-bg: #0d1117;
+  --sidebar-width: 310px;
+  --toc-width: 250px;
+  --header-height: 64px;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-surface: #172033;
+  --border-color: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-hover: #7dd3fc;
+  --c-note: #38bdf8; --c-tip: #34d399; --c-imp: #a5b4fc; --c-warn: #fbbf24; --c-caution: #f87171;
+  --accent-light: rgba(56, 189, 248, 0.12);
+  --code-bg: #090d16;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.top-nav {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #0284c7, #6366f1);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-input-wrap {
+  position: relative;
+}
+
+.search-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.45rem 1rem 0.45rem 2.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  width: 240px;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  width: 320px;
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.btn-icon {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-pdf {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-pdf:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  scrollbar-width: thin;
+}
+
+.track-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.track-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  line-height: 1.35;
+}
+
+.nav-link:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+}
+
+.content-container {
+  max-width: 1060px;
+  width: 100%;
+  padding: 2.5rem 2.5rem;
+}
+
+/* Right TOC */
+.toc-sidebar {
+  width: var(--toc-width);
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: 2rem 0.85rem 2rem 1.25rem;
+  border-left: 1px solid var(--border-color);
+  font-size: 0.825rem;
+  scrollbar-width: thin;
+}
+
+.toc-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-size: 0.725rem;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.toc-title::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  border-left: 1px solid var(--border-color);
+  margin-left: 0.25rem;
+  padding-left: 0;
+}
+
+.toc-item {
+  position: relative;
+}
+
+.toc-item.level-3 {
+  padding-left: 0.75rem;
+}
+
+.toc-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  padding: 0.35rem 0.65rem;
+  line-height: 1.4;
+  font-size: 0.815rem;
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  border-radius: 0 4px 4px 0;
+  word-break: break-word;
+}
+
+.toc-link:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.toc-link.active {
+  color: var(--accent);
+  font-weight: 600;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-light);
+  transform: translateX(2px);
+}
+
+/* Markdown Content Typography */
+.markdown-body h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.25;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.4rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body li {
+  margin-bottom: 0.4rem;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.markdown-body th, .markdown-body td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-body tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2.5rem 0;
+}
+
+.header-anchor {
+  margin-right: 0.4rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+h2:hover .header-anchor, h3:hover .header-anchor {
+  opacity: 1;
+}
+
+/* Callouts */
+.callout {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+}
+
+.callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.callout-body p {
+  margin-bottom: 0;
+}
+
+.callout-note { background: rgba(2, 132, 199, 0.08); border-color: #0284c7; color: var(--text-primary); }
+.callout-note .callout-title { color: var(--c-note); }
+
+.callout-tip { background: rgba(16, 185, 129, 0.08); border-color: #10b981; color: var(--text-primary); }
+.callout-tip .callout-title { color: var(--c-tip); }
+
+.callout-important { background: rgba(99, 102, 241, 0.08); border-color: #6366f1; color: var(--text-primary); }
+.callout-important .callout-title { color: var(--c-imp); }
+
+.callout-warning { background: rgba(245, 158, 11, 0.08); border-color: #f59e0b; color: var(--text-primary); }
+.callout-warning .callout-title { color: var(--c-warn); }
+
+.callout-caution { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; color: var(--text-primary); }
+.callout-caution .callout-title { color: var(--c-caution); }
+
+/* Code Blocks */
+.code-block-wrapper {
+  background: var(--code-bg);
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.4rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-lang {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: monospace;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.copy-btn.copied {
+  color: #10b981;
+}
+
+.markdown-body pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+:not(pre) > code {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+/* Images & Lightbox */
+.img-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  cursor: zoom-in;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.markdown-body img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--accent);
+}
+
+.img-expand-btn {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.img-container:hover .img-expand-btn {
+  opacity: 1;
+}
+
+.img-expand-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Mermaid Diagrams Container & Controls */
+.mermaid-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.diagram-toolbar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.diagram-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.diagram-btn:hover {
+  background: var(--border-color);
+  color: var(--accent);
+}
+
+.diagram-btn-expand {
+  border-left: 1px solid var(--border-color);
+  padding-left: 0.5rem;
+  margin-left: 0.2rem;
+  color: var(--accent);
+}
+
+.diagram-zoom-level {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.mermaid-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 2.2rem 0.5rem 0.5rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+.mermaid {
+  display: inline-block;
+  min-width: fit-content;
+  text-align: center;
+  transform-origin: top center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mermaid svg {
+  max-width: none !important;
+  height: auto !important;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Fullscreen High-Resolution Modal */
+.pv-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.pv-modal.open {
+  display: flex !important;
+}
+
+.pv-modal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  width: 95vw;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+}
+
+.pv-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.pv-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.pv-modal-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pv-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.pv-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pv-zoom-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-width: 44px;
+  text-align: center;
+  user-select: none;
+}
+
+.pv-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  margin-left: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.pv-close-btn:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.pv-modal-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-surface);
+  cursor: grab;
+}
+
+.pv-modal-viewport:active {
+  cursor: grabbing;
+}
+
+.pv-modal-content {
+  transform-origin: center center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.pv-modal-content svg {
+  max-width: none !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Prev / Next Pagination */
+.page-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.nav-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.nav-card.next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.nav-direction {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.nav-page-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+/* Reading Progress Bar */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0284c7, #6366f1);
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+
+
+.markdown-body p a, .markdown-body li a, .markdown-body td a { text-decoration: underline; text-underline-offset: 2px; }
+/* Accessibility */
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 400;
+  background: var(--accent); color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 8px 0; font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Full-text search results */
+.search-results {
+  position: absolute; top: calc(100% + 6px); right: 0; width: min(560px, 92vw); max-height: 70vh; overflow-y: auto;
+  background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25); z-index: 300; padding: 0.35rem;
+}
+.search-results[hidden] { display: none; }
+.sr-item { display: block; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: var(--text-primary); }
+.sr-item:hover, .sr-item.sr-active { background: var(--accent-light); }
+.sr-title { font-weight: 600; font-size: 0.9rem; }
+.sr-sec { font-size: 0.75rem; color: var(--text-secondary); margin-top: 1px; }
+.sr-snip { font-size: 0.8rem; color: var(--text-secondary); margin-top: 3px; line-height: 1.4; }
+.sr-snip mark { background: #fde68a; color: #1f2937; border-radius: 2px; padding: 0 1px; }
+.sr-empty { padding: 0.9rem; color: var(--text-secondary); font-size: 0.85rem; }
+
+/* Mobile navigation drawer */
+.btn-menu { display: none; }
+.nav-overlay { display: none; }
+@media (max-width: 768px) {
+  .btn-menu { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+    background: transparent; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); cursor: pointer; }
+  .top-nav { padding: 0 0.6rem; gap: 0.4rem; }
+  .brand span:last-child, .btn-pdf span, .progress-stat-badge { display: none; }
+  .header-controls { gap: 0.4rem; }
+  .btn-mark-read span { font-size: 0.7rem; }
+  .btn-icon, .btn-pdf, .btn-mark-read, .diagram-btn { min-height: 44px; min-width: 44px; }
+  .sidebar {
+    display: flex !important; position: fixed; top: var(--header-height); left: 0; bottom: 0; height: auto;
+    width: min(86vw, 340px); z-index: 250; transform: translateX(-102%); transition: transform 0.2s ease;
+    box-shadow: 8px 0 24px rgba(15, 23, 42, 0.25);
+  }
+  body.nav-open .sidebar { transform: none; }
+  body.nav-open .nav-overlay { display: block; position: fixed; inset: var(--header-height) 0 0 0; background: rgba(15, 23, 42, 0.5); z-index: 240; }
+  .sidebar .nav-link { min-height: 44px; }
+  .search-input { width: 120px; }
+  .search-input:focus { width: 160px; }
+  .search-results { position: fixed; top: var(--header-height); left: 0.5rem; right: 0.5rem; width: auto; }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .toc-sidebar { display: none; }
+}
+
+
+
+/* Progress Tracker & Mark as Read */
+.progress-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.progress-mini-bar {
+  width: 50px;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: #10b981;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.btn-mark-read {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-mark-read:hover {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.btn-mark-read.is-read {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.bottom-completion-wrap {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+}
+
+.btn-mark-read-large {
+  padding: 0.65rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+.sidebar-check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  font-size: 9px;
+  color: transparent;
+  flex-shrink: 0;
+  margin-left: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link.is-read .sidebar-check-icon {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-label-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  </style>
+  <link rel="stylesheet" href="../../assets/katex/katex.min.css">
+  <script defer src="../../assets/katex/katex.min.js"></script>
+  <script defer src="../../assets/katex/auto-render.min.js"></script>
+  <script defer src="../../assets/search-index.js"></script>
+  <script src="../../assets/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Initialize Mermaid FIRST on untouched raw diagram blocks
+      if (window.mermaid) {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'neutral',
+          securityLevel: 'loose',
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          flowchart: {
+            curve: 'basis',
+            useMaxWidth: false,
+            htmlLabels: true
+          },
+          sequence: {
+            useMaxWidth: false,
+            showSequenceNumbers: true,
+            actorMargin: 50,
+            boxMargin: 10,
+            boxTextMargin: 5,
+            noteMargin: 10,
+            messageMargin: 35
+          },
+          er: { useMaxWidth: false },
+          class: { useMaxWidth: false },
+          state: { useMaxWidth: false }
+        });
+      }
+
+      // 2. Render KaTeX ONLY on article prose, strictly excluding .mermaid and code blocks
+      function initKatex() {
+        if (typeof renderMathInElement === 'function') {
+          const target = document.querySelector('.article-content') || document.querySelector('.markdown-body');
+          if (target) {
+            renderMathInElement(target, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+              ],
+              ignoredClasses: ['mermaid', 'code-block-wrapper', 'hljs', 'katex-ignore', 'mermaid-viewport'],
+              ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'svg'],
+              throwOnError: false
+            });
+          }
+        } else {
+          setTimeout(initKatex, 100);
+        }
+      }
+      initKatex();
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="progress-bar" class="reading-progress"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav" role="banner">
+    <button id="menu-btn" class="btn-menu" aria-label="Open chapter menu" aria-controls="chapter-nav" aria-expanded="false" title="Chapters"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+    <a href="../../index.html" class="brand">
+      <span class="brand-badge">PBC 2026</span>
+      <span>Master Preparation Guide</span>
+    </a>
+    <div class="header-controls">
+      <div class="progress-stat-badge" title="Master Curriculum Progress">
+        <span id="header-progress-text">0/117 (0%)</span>
+        <div class="progress-mini-bar"><div class="progress-mini-fill" id="header-progress-bar"></div></div>
+      </div>
+      <button id="header-mark-read-btn" class="btn-mark-read" onclick="toggleCurrentChapterRead()" title="Toggle Read Status">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+        <span>Mark as Read</span>
+      </button>
+      <div class="search-input-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="search" class="search-input" aria-label="Search all chapters" placeholder="Search all chapters ( / )" autocomplete="off" oninput="filterNav(this.value)">
+        <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
+      </div>
+      <a href="../../../pdfs/03-High-Level-Design/systems/20-object-store-s3.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Open PDF</span>
+      </a>
+      <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Left Navigation Sidebar -->
+    <nav class="sidebar" id="chapter-nav" aria-label="Chapters">
+      <div class="track-group">
+      <div class="track-title">Master Roadmap & Scorecard</div><a href="../../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../../01-Python-Mastery/22-Track-1-Recap-Python-Mastery-Playbook.html" class="nav-link " data-rel="01-Python-Mastery/22-Track-1-Recap-Python-Mastery-Playbook.html"><span class="nav-label-text">22: Track 1 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 2: Low-Level Design (LLD)</div><a href="../../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html" class="nav-link " data-rel="02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html"><span class="nav-label-text">00: LLD Mental Model & Blueprint</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/00-B-Zero-Prerequisite-OOP-And-Concurrency-Primer.html" class="nav-link " data-rel="02-Low-Level-Design/00-B-Zero-Prerequisite-OOP-And-Concurrency-Primer.html"><span class="nav-label-text">00-B: Zero-Prereq OOP & Concurrency Primer</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html" class="nav-link " data-rel="02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.html"><span class="nav-label-text">01: OOP & SOLID Principles</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html" class="nav-link " data-rel="02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.html"><span class="nav-label-text">02: UML Modeling Masterclass</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html" class="nav-link " data-rel="02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.html"><span class="nav-label-text">03: Design Patterns Catalog</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/03-B-Design-Patterns-Catalog-Part-2.html" class="nav-link " data-rel="02-Low-Level-Design/03-B-Design-Patterns-Catalog-Part-2.html"><span class="nav-label-text">03-B: Design Patterns, Part 2</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html" class="nav-link " data-rel="02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.html"><span class="nav-label-text">04: Concurrency & Thread-Safety</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html" class="nav-link " data-rel="02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.html"><span class="nav-label-text">05: Mid-Interview Curveball Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html" class="nav-link " data-rel="02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.html"><span class="nav-label-text">06: Legacy Spaghetti Refactoring</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html" class="nav-link " data-rel="02-Low-Level-Design/07-Concurrency-Stress-Testing-And-Race-Condition-Labs.html"><span class="nav-label-text">07: Concurrency Stress-Testing Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/01-distributed-job-scheduler.html" class="nav-link " data-rel="02-Low-Level-Design/systems/01-distributed-job-scheduler.html"><span class="nav-label-text">Sys 01: Distributed Job Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/02-library-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/02-library-management-system.html"><span class="nav-label-text">Sys 02: Library Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/03-movie-booking-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/03-movie-booking-system.html"><span class="nav-label-text">Sys 03: Movie Booking System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/04-car-rental-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/04-car-rental-system.html"><span class="nav-label-text">Sys 04: Car Rental System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/05-parking-lot.html" class="nav-link " data-rel="02-Low-Level-Design/systems/05-parking-lot.html"><span class="nav-label-text">Sys 05: Parking Lot</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/06-inventory-management-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/06-inventory-management-system.html"><span class="nav-label-text">Sys 06: Inventory Management System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/07-ride-sharing-application.html" class="nav-link " data-rel="02-Low-Level-Design/systems/07-ride-sharing-application.html"><span class="nav-label-text">Sys 07: Ride-Sharing Application</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/08-rate-limiter.html" class="nav-link " data-rel="02-Low-Level-Design/systems/08-rate-limiter.html"><span class="nav-label-text">Sys 08: API Rate Limiter</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/09-snake-and-ladders.html" class="nav-link " data-rel="02-Low-Level-Design/systems/09-snake-and-ladders.html"><span class="nav-label-text">Sys 09: Snake and Ladders</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/10-elevator-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/10-elevator-system.html"><span class="nav-label-text">Sys 10: Elevator System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/11-vending-machine.html" class="nav-link " data-rel="02-Low-Level-Design/systems/11-vending-machine.html"><span class="nav-label-text">Sys 11: Vending Machine</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/12-in-memory-file-system.html" class="nav-link " data-rel="02-Low-Level-Design/systems/12-in-memory-file-system.html"><span class="nav-label-text">Sys 12: In-Memory File System</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/13-high-throughput-logging-framework.html" class="nav-link " data-rel="02-Low-Level-Design/systems/13-high-throughput-logging-framework.html"><span class="nav-label-text">Sys 13: High-Throughput Logging Framework</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/14-pub-sub-message-broker.html" class="nav-link " data-rel="02-Low-Level-Design/systems/14-pub-sub-message-broker.html"><span class="nav-label-text">Sys 14: Pub/Sub Message Broker (Kafka Lite)</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/15-distributed-lock-manager.html" class="nav-link " data-rel="02-Low-Level-Design/systems/15-distributed-lock-manager.html"><span class="nav-label-text">Sys 15: Distributed Lock Manager (Redlock)</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/16-kafka-consumer-group-rebalance.html" class="nav-link " data-rel="02-Low-Level-Design/systems/16-kafka-consumer-group-rebalance.html"><span class="nav-label-text">Sys 16: Kafka Consumer Rebalance Protocol</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/17-splitwise-expense-sharing.html" class="nav-link " data-rel="02-Low-Level-Design/systems/17-splitwise-expense-sharing.html"><span class="nav-label-text">Sys 17: Splitwise & Debt Simplification</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/systems/18-notification-alerting-service.html" class="nav-link " data-rel="02-Low-Level-Design/systems/18-notification-alerting-service.html"><span class="nav-label-text">Sys 18: Multi-Channel Notification Service</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="02-Low-Level-Design/12-Scenario-Based-LLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">12: Staff-Level LLD Grills</span><span class="sidebar-check-icon">✓</span></a><a href="../../02-Low-Level-Design/13-Track-2-Recap-LLD-And-Design-Patterns-Playbook.html" class="nav-link " data-rel="02-Low-Level-Design/13-Track-2-Recap-LLD-And-Design-Patterns-Playbook.html"><span class="nav-label-text">13: Track 2 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/00-B-Zero-Prerequisite-Global-Infrastructure-Primer.html" class="nav-link " data-rel="03-High-Level-Design/00-B-Zero-Prerequisite-Global-Infrastructure-Primer.html"><span class="nav-label-text">00-B: Zero-Prereq Global Infra Primer</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/14-distributed-web-crawler.html" class="nav-link " data-rel="03-High-Level-Design/systems/14-distributed-web-crawler.html"><span class="nav-label-text">Sys 14: Distributed Web Crawler</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.html" class="nav-link " data-rel="03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.html"><span class="nav-label-text">Sys 15: Payment Gateway & Idempotent Ledger</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/16-url-shortener.html" class="nav-link " data-rel="03-High-Level-Design/systems/16-url-shortener.html"><span class="nav-label-text">Sys 16: URL Shortener</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/17-notification-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/17-notification-service.html"><span class="nav-label-text">Sys 17: Notification Service</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/18-typeahead-autocomplete.html" class="nav-link " data-rel="03-High-Level-Design/systems/18-typeahead-autocomplete.html"><span class="nav-label-text">Sys 18: Typeahead / Autocomplete</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/19-file-storage-and-sync-dropbox.html" class="nav-link " data-rel="03-High-Level-Design/systems/19-file-storage-and-sync-dropbox.html"><span class="nav-label-text">Sys 19: File Storage & Sync</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/systems/20-object-store-s3.html" class="nav-link active" data-rel="03-High-Level-Design/systems/20-object-store-s3.html"><span class="nav-label-text">Sys 20: Object Store (S3)</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a><a href="../../03-High-Level-Design/12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.html"><span class="nav-label-text">12: Track 3 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.html" class="nav-link " data-rel="04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.html"><span class="nav-label-text">16: Hierarchical Episodic Memory & GraphRAG</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.html" class="nav-link " data-rel="04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.html"><span class="nav-label-text">17: Model Context Protocol & Swarms</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.html" class="nav-link " data-rel="04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.html"><span class="nav-label-text">18: GPU Serving & PagedAttention</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/19-Reasoning-Models-Test-Time-Compute-And-GRPO.html" class="nav-link " data-rel="04-Agentic-AI/19-Reasoning-Models-Test-Time-Compute-And-GRPO.html"><span class="nav-label-text">19: Reasoning Models & GRPO</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/20-Context-Compaction-Prompt-Caching-And-Token-Budgets.html" class="nav-link " data-rel="04-Agentic-AI/20-Context-Compaction-Prompt-Caching-And-Token-Budgets.html"><span class="nav-label-text">20: Context Compaction & Prompt Caching</span><span class="sidebar-check-icon">✓</span></a><a href="../../04-Agentic-AI/21-Track-4-Recap-Agentic-AI-Architecture-Playbook.html" class="nav-link " data-rel="04-Agentic-AI/21-Track-4-Recap-Agentic-AI-Architecture-Playbook.html"><span class="nav-label-text">21: Track 4 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
+      <div class="track-title">Track 5: DSA Interview Playbook</div><a href="../../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/08-Company-Specific-Interview-Playbook.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/08-Company-Specific-Interview-Playbook.html"><span class="nav-label-text">08: Company-Specific Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../../05-DSA-Interview-Playbook/09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.html"><span class="nav-label-text">09: Track 5 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div>
+    </nav>
+    <div id="nav-overlay" class="nav-overlay"></div>
+
+    <!-- Main Content Reader -->
+    <main class="main-wrapper" id="main-content" tabindex="-1">
+      <div class="content-container">
+        <article class="markdown-body">
+          <h1 id="hld-case-study-20-object-store-amazon-s3-google-cloud-storage"><a href="#hld-case-study-20-object-store-amazon-s3-google-cloud-storage" class="header-anchor">#</a>HLD Case Study 20: Object Store (Amazon S3 / Google Cloud Storage)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Separating metadata from data, placement with consistent hashing, replication versus erasure coding, durability arithmetic, listing at scale, multipart upload, and consistency.</p>
+</blockquote>
+<hr>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> create buckets; <code>PUT</code>, <code>GET</code>, <code>DELETE</code> and <code>LIST</code> objects by key; large objects through multipart upload; optional versioning; access control.
+<strong>Non-functional:</strong> extreme <strong>durability</strong> (the usual target is 11 nines per year), high availability for reads, scale to trillions of objects and exabytes, strong read-after-write consistency for new objects, low cost per byte.
+<strong>Out of scope for this answer:</strong> the full IAM policy language, cross-region replication details, lifecycle billing.</p>
+<hr>
+<h2 id="2-back-of-the-envelope-estimates"><a href="#2-back-of-the-envelope-estimates" class="header-anchor">#</a>2. Back-of-the-Envelope Estimates</h2>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">objects = <span class="hljs-number">1e12</span>                                          <span class="hljs-comment"># one trillion objects</span>
+avg_object_kb = <span class="hljs-number">512</span>
+logical_pb = objects * avg_object_kb * <span class="hljs-number">1e3</span> / <span class="hljs-number">1e15</span>       <span class="hljs-comment"># ~512 PB logical</span>
+replicated_pb = logical_pb * <span class="hljs-number">3</span>                          <span class="hljs-comment"># three full copies</span>
+k, m = <span class="hljs-number">10</span>, <span class="hljs-number">4</span>                                            <span class="hljs-comment"># erasure coding: 10 data + 4 parity chunks</span>
+ec_overhead = (k + m) / k                               <span class="hljs-comment"># 1.4x</span>
+ec_pb = logical_pb * ec_overhead
+metadata_bytes_per_object = <span class="hljs-number">300</span>
+metadata_tb = objects * metadata_bytes_per_object / <span class="hljs-number">1e12</span>   <span class="hljs-comment"># ~300 TB: the metadata layer is a big database</span>
+peak_get_qps = <span class="hljs-number">5e6</span>
+disk_tb, per_disk_mb_s = <span class="hljs-number">20</span>, <span class="hljs-number">150</span>
+disks_for_throughput = peak_get_qps * avg_object_kb / <span class="hljs-number">1e3</span> / per_disk_mb_s   <span class="hljs-comment"># naive streaming bound</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(logical_pb), <span class="hljs-built_in">round</span>(replicated_pb), <span class="hljs-built_in">round</span>(ec_pb), metadata_tb, <span class="hljs-built_in">round</span>(disks_for_throughput))
+<span class="hljs-keyword">assert</span> ec_overhead == <span class="hljs-number">1.4</span> <span class="hljs-keyword">and</span> <span class="hljs-number">500</span> &lt; logical_pb &lt; <span class="hljs-number">530</span> <span class="hljs-keyword">and</span> ec_pb &lt; replicated_pb / <span class="hljs-number">2</span></code></pre>
+  </div><p>Erasure coding stores about 1.4 times the data instead of 3 times, saving hundreds of petabytes at this scale. The price is CPU and read amplification during repair.</p>
+<hr>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">text</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-text"><span class="language-xml">PUT    /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">                     body -&gt; 200 ETag
+GET    /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">  (Range: bytes=...) -&gt; 200/206
+DELETE /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">                     -&gt; 204
+GET    /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">?prefix=logs/&amp;delimiter=/&amp;continuation-token=T   -&gt; 200 keys, common prefixes, next token
+POST   /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">?uploads             -&gt; upload_id           // multipart: initiate
+PUT    /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">?partNumber=N&amp;uploadId=U                   // upload one part
+POST   /</span><span class="hljs-template-variable">{bucket}</span><span class="language-xml">/</span><span class="hljs-template-variable">{key}</span><span class="language-xml">?uploadId=U          </span><span class="hljs-template-variable">{parts, etags}</span><span class="language-xml">         // complete: assemble</span></code></pre>
+  </div><p><code>LIST</code> returns keys in lexicographic order; &quot;folders&quot; are only a <strong>prefix and delimiter convention</strong>, not a real directory tree.</p>
+<hr>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><table>
+<thead>
+<tr>
+<th align="left">Layer</th>
+<th align="left">Holds</th>
+<th align="left">Scale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Metadata (bucket/key to object record)</td>
+<td align="left">key, size, ETag, version, placement (which nodes hold which chunks), ACL</td>
+<td align="left">~300 TB, sharded by hash of <code>(bucket, key)</code> or by key range</td>
+</tr>
+<tr>
+<td align="left">Placement map</td>
+<td align="left">chunk to storage-node assignments</td>
+<td align="left">derived from consistent hashing plus failure-domain rules</td>
+</tr>
+<tr>
+<td align="left">Data nodes</td>
+<td align="left">immutable chunks or erasure-coded fragments on disk</td>
+<td align="left">exabytes</td>
+</tr>
+</tbody></table>
+<p>Objects are <strong>immutable</strong>: an overwrite writes a new object and atomically repoints the metadata, so readers never see a half-written value.</p>
+<hr>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart LR
+    C["Client"] --&gt; FE["Front-end fleet: auth, routing, throttling"]
+    FE --&gt; META["Metadata service (sharded)"]
+    FE --&gt; PLACE["Placement service"]
+    FE --&gt; DN1["Data node"]
+    FE --&gt; DN2["Data node"]
+    FE --&gt; DN3["Data node"]
+    META --&gt; MDB["Metadata store (key-value)"]
+    REPAIR["Repair and scrub workers"] --&gt; DN1
+    REPAIR --&gt; DN2
+    REPAIR --&gt; DN3
+    REPAIR --&gt; META
+    LIFE["Lifecycle and garbage collection"] --&gt; META
+</div>
+      </div>
+    </div><hr>
+<h2 id="6-deep-dive-durability-erasure-coding-and-repair"><a href="#6-deep-dive-durability-erasure-coding-and-repair" class="header-anchor">#</a>6. Deep Dive: Durability, Erasure Coding and Repair</h2><p><strong>Replication versus erasure coding.</strong> Three replicas tolerate two losses at 3x cost. An erasure code with <code>k</code> data and <code>m</code> parity chunks tolerates <strong>any <code>m</code> losses</strong> at <code>(k+m)/k</code> cost. The simplest code is a single XOR parity chunk (<code>m = 1</code>), which shows the idea:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> comb
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">xor_bytes</span>(<span class="hljs-params">a: <span class="hljs-built_in">bytes</span>, b: <span class="hljs-built_in">bytes</span></span>) -&gt; <span class="hljs-built_in">bytes</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">bytes</span>(x ^ y <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b))
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">data_chunks</span>):
+    parity = <span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">len</span>(data_chunks[<span class="hljs-number">0</span>]))
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> data_chunks:
+        parity = xor_bytes(parity, c)
+    <span class="hljs-keyword">return</span> data_chunks + [parity]
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">recover</span>(<span class="hljs-params">chunks, lost_index</span>):
+    survivors = [c <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(chunks) <span class="hljs-keyword">if</span> i != lost_index <span class="hljs-keyword">and</span> c <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>]
+    out = <span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">len</span>(survivors[<span class="hljs-number">0</span>]))
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> survivors:
+        out = xor_bytes(out, c)
+    <span class="hljs-keyword">return</span> out
+
+data = [<span class="hljs-string">b&quot;AAAA&quot;</span>, <span class="hljs-string">b&quot;BBBB&quot;</span>, <span class="hljs-string">b&quot;CCCC&quot;</span>]
+stored = encode(data)                                  <span class="hljs-comment"># 3 data + 1 parity = 1.33x storage</span>
+<span class="hljs-keyword">for</span> lost <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>):
+    damaged = <span class="hljs-built_in">list</span>(stored)
+    damaged[lost] = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">assert</span> recover(damaged, lost) == stored[lost]      <span class="hljs-comment"># any single lost chunk is rebuilt from the other three</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">loss_probability</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span>, tolerated: <span class="hljs-built_in">int</span>, p_fail: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">float</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Probability that MORE than `tolerated` of n chunks fail in one repair window, each independently with p_fail.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(comb(n, f) * p_fail ** f * (<span class="hljs-number">1</span> - p_fail) ** (n - f) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(tolerated + <span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>))
+
+p = <span class="hljs-number">0.001</span>                                              <span class="hljs-comment"># chance that one disk dies before it is repaired</span>
+three_replicas = loss_probability(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, p)             <span class="hljs-comment"># data lost only if all 3 copies die</span>
+rs_10_4 = loss_probability(<span class="hljs-number">14</span>, <span class="hljs-number">4</span>, p)                   <span class="hljs-comment"># lost only if 5 of 14 chunks die</span>
+<span class="hljs-keyword">assert</span> three_replicas &lt; <span class="hljs-number">1.1e-9</span> <span class="hljs-keyword">and</span> rs_10_4 &lt; <span class="hljs-number">2.2e-12</span>   <span class="hljs-comment"># the 1.4x code is safer than 3 copies at this failure rate</span>
+<span class="hljs-keyword">assert</span> (<span class="hljs-number">10</span> + <span class="hljs-number">4</span>) / <span class="hljs-number">10</span> &lt; <span class="hljs-number">3</span></code></pre>
+  </div><p>The comparison is the interview point: with these assumptions the 14-chunk code both costs less (1.4x versus 3x) and loses data less often, because it needs five simultaneous failures rather than three. Real durability also depends on <strong>repair speed</strong> (the window shrinks the probability), on <strong>independent failure domains</strong> (never put chunks of one object in the same rack or power zone), and on <strong>scrubbing</strong> (reading data in the background to find silent corruption before a second failure arrives).</p>
+<p><strong>Placement.</strong> Hash the object to a position on a consistent-hash ring (or use a placement map), then choose chunk locations across distinct racks and zones. Adding nodes moves only a small fraction of data, and a failed node&#39;s chunks are rebuilt on others by the repair workers.</p>
+<p><strong>Metadata is the hard part.</strong> A trillion keys need a sharded, strongly consistent store. Partition by hash of <code>(bucket, key)</code> for even load; <code>LIST</code> is the awkward operation because it wants key order, so large buckets keep a separate ordered index (range-partitioned) or accept that listing is slower than point reads. Since modern object stores offer strong read-after-write consistency, the metadata commit is the single point where an object becomes visible.</p>
+<p><strong>Multipart upload.</strong> Each part is uploaded and stored independently (retry per part, parallel across connections); <code>complete</code> writes one metadata record that lists the parts in order. Abandoned uploads leave orphan parts, so a lifecycle job garbage-collects incomplete uploads after a retention period.</p>
+<hr>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ol>
+<li><strong>Front-end fleet:</strong> stateless; scale horizontally; throttle per account and per prefix to protect shards.</li>
+<li><strong>Hot prefixes:</strong> sequential key names (timestamps) concentrate load on one metadata shard; hash-prefix keys or let the service split ranges automatically.</li>
+<li><strong>Small objects:</strong> metadata dominates (300 bytes of metadata for a 1 KB object); pack many small objects into larger blobs.</li>
+<li><strong>Repair traffic:</strong> rebuilding a failed 20 TB disk reads from many peers; rate-limit repair so it does not starve foreground reads, while keeping the window short.</li>
+<li><strong>Cold data:</strong> move old objects to cheaper erasure-coded or tape-like tiers with a lifecycle policy; retrieval time becomes minutes or hours.</li>
+</ol>
+<hr>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th align="left">Failure</th>
+<th align="left">Effect</th>
+<th align="left">Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Disk or node failure</td>
+<td align="left">Chunks missing</td>
+<td align="left">Erasure coding or replicas, automatic repair, alerts when redundancy drops</td>
+</tr>
+<tr>
+<td align="left">Rack or zone failure</td>
+<td align="left">Many chunks missing at once</td>
+<td align="left">Spread an object&#39;s chunks across racks and zones so no single domain exceeds <code>m</code> chunks</td>
+</tr>
+<tr>
+<td align="left">Silent corruption (bit rot)</td>
+<td align="left">Wrong bytes returned</td>
+<td align="left">Checksums per chunk verified on read, background scrubbing</td>
+</tr>
+<tr>
+<td align="left">Metadata shard failure</td>
+<td align="left">Objects unreachable</td>
+<td align="left">Replicate shards with consensus (Raft or Paxos); fail over</td>
+</tr>
+<tr>
+<td align="left">Overwrite race</td>
+<td align="left">Two writers, one winner</td>
+<td align="left">Last-writer-wins by commit time, or conditional writes with <code>If-Match</code> on the ETag</td>
+</tr>
+<tr>
+<td align="left">Accidental delete</td>
+<td align="left">Data loss</td>
+<td align="left">Versioning, delete markers, lifecycle retention, optional object lock</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-trade-offs-and-alternatives"><a href="#9-trade-offs-and-alternatives" class="header-anchor">#</a>9. Trade-offs and Alternatives</h2><ul>
+<li><strong>Replication versus erasure coding:</strong> replication reads and repairs faster and costs more space; erasure coding is cheaper per byte and slower to repair. Many systems replicate small or hot objects and erasure-code large or cold ones.</li>
+<li><strong>Strong versus eventual consistency:</strong> eventual consistency was easier to build and caused real application bugs (read your own write); strong consistency costs extra metadata coordination and is now the norm.</li>
+<li><strong>Flat namespace versus hierarchical:</strong> flat keys scale and shard simply; real directories need rename and listing semantics that flat stores do not offer atomically.</li>
+<li><strong>Object size:</strong> large objects favour throughput and erasure coding; billions of tiny objects need packing.</li>
+</ul>
+<hr>
+<h2 id="10-interview-timeline-45-minutes-and-follow-ups"><a href="#10-interview-timeline-45-minutes-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline (45 minutes) and Follow-ups</h2><table>
+<thead>
+<tr>
+<th align="left">Minutes</th>
+<th align="left">Do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0 to 5</td>
+<td align="left">Scope, durability and consistency targets, object size distribution</td>
+</tr>
+<tr>
+<td align="left">5 to 10</td>
+<td align="left">Estimates: capacity, metadata size, replication versus EC overhead</td>
+</tr>
+<tr>
+<td align="left">10 to 20</td>
+<td align="left">API and the split between metadata and data paths</td>
+</tr>
+<tr>
+<td align="left">20 to 32</td>
+<td align="left"><strong>Durability</strong>: erasure coding, placement across failure domains, repair</td>
+</tr>
+<tr>
+<td align="left">32 to 40</td>
+<td align="left">Metadata sharding, listing, multipart upload</td>
+</tr>
+<tr>
+<td align="left">40 to 45</td>
+<td align="left">Failures, hot prefixes, lifecycle, security</td>
+</tr>
+</tbody></table>
+<p><strong>Follow-ups to prepare:</strong> How do you reach 11 nines? How do you list a bucket with a billion keys? What happens during a rack failure? How would you cut cost by 30%? How do you guarantee a reader never sees a partial object?</p>
+
+        </article>
+        <div class="bottom-completion-wrap">
+          <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>
+            <span>Mark as Read</span>
+          </button>
+        </div>
+        <div class="page-navigation">
+    <a href="../../03-High-Level-Design/systems/19-file-storage-and-sync-dropbox.html" class="nav-card prev">
+      <span class="nav-direction">← Previous Chapter</span>
+      <span class="nav-page-title">Sys 19: File Storage & Sync</span>
+    </a>
+    <a href="../../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-card next">
+      <span class="nav-direction">Next Chapter →</span>
+      <span class="nav-page-title">11: Crisis Scenarios & Staff Grills</span>
+    </a></div>
+      </div>
+    </main>
+
+    <!-- Right Table of Contents -->
+    <aside class="toc-sidebar" aria-label="On this page">
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-back-of-the-envelope-estimates" class="toc-link">2. Back-of-the-Envelope Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-durability-erasure-coding-and-repair" class="toc-link">6. Deep Dive: Durability, Erasure Coding and Repair</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs-and-alternatives" class="toc-link">9. Trade-offs and Alternatives</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-45-minutes-and-follow-ups" class="toc-link">10. Interview Timeline (45 minutes) and Follow-ups</a></li></ul>
+    </aside>
+  </div>
+
+  <!-- High-Resolution Fullscreen Diagram & Image Modal -->
+  <div id="pv-modal" class="pv-modal" onclick="closePvModal(event)">
+    <div class="pv-modal-card" onclick="event.stopPropagation()">
+      <div class="pv-modal-header">
+        <span class="pv-modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span id="pv-modal-title-text">High-Resolution Architecture Viewer</span>
+        </span>
+        <div class="pv-modal-tools">
+          <button class="pv-btn" onclick="modalZoomStep(-0.25)" title="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <span id="pv-zoom-val" class="pv-zoom-val">100%</span>
+          <button class="pv-btn" onclick="modalZoomStep(0.25)" title="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <button class="pv-btn" onclick="modalReset()" title="Reset to Fit (100%)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+          </button>
+          <button class="pv-close-btn" onclick="closePvModal()" title="Close Viewer (Esc)">&times;</button>
+        </div>
+      </div>
+      <div class="pv-modal-viewport" id="pv-modal-viewport">
+        <div id="pv-modal-content" class="pv-modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>window.CURRENT_PAGE = "03-High-Level-Design/systems/20-object-store-s3.html";</script>
+  <script>
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+// Init theme
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// Reading Progress Bar at page top
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  const el = document.getElementById('progress-bar');
+  if (el) el.style.width = scrolled + '%';
+});
+
+// Active Heading Indicator for Right "On This Page" TOC
+(function initTocScrollSpy() {
+  function setupSpy() {
+    const tocLinks = Array.from(document.querySelectorAll('.toc-link'));
+    if (tocLinks.length === 0) return;
+
+    const headings = [];
+    tocLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const id = decodeURIComponent(href.substring(1));
+        const el = document.getElementById(id);
+        if (el) {
+          headings.push({ id, el, link });
+        }
+      }
+    });
+
+    if (headings.length === 0) return;
+
+    const tocSidebar = document.querySelector('.toc-sidebar');
+    let isClickScrolling = false;
+    let clickTimeout = null;
+
+    function updateActiveHeading() {
+      if (isClickScrolling) return;
+
+      const scrollY = window.scrollY || window.pageYOffset;
+      const headerOffset = 95;
+      const scrollPos = scrollY + headerOffset;
+
+      let activeItem = null;
+      const isAtBottom = (window.innerHeight + scrollY) >= (document.documentElement.scrollHeight - 50);
+
+      if (isAtBottom) {
+        activeItem = headings[headings.length - 1];
+      } else {
+        for (let i = 0; i < headings.length; i++) {
+          const top = headings[i].el.getBoundingClientRect().top + scrollY;
+          if (top <= scrollPos) {
+            activeItem = headings[i];
+          } else {
+            break;
+          }
+        }
+        if (!activeItem && headings.length > 0) {
+          activeItem = headings[0];
+        }
+      }
+
+      headings.forEach(item => {
+        if (activeItem && item.id === activeItem.id) {
+          if (!item.link.classList.contains('active')) {
+            item.link.classList.add('active');
+            if (tocSidebar) {
+              const linkTop = item.link.offsetTop;
+              const sidebarScroll = tocSidebar.scrollTop;
+              const sidebarHeight = tocSidebar.clientHeight;
+              if (linkTop < sidebarScroll + 40 || linkTop > sidebarScroll + sidebarHeight - 60) {
+                tocSidebar.scrollTo({
+                  top: Math.max(0, linkTop - sidebarHeight / 2),
+                  behavior: 'smooth'
+                });
+              }
+            }
+          }
+        } else {
+          item.link.classList.remove('active');
+        }
+      });
+    }
+
+    // Intercept TOC link clicks for smooth scrolling and immediate activation
+    headings.forEach(item => {
+      item.link.addEventListener('click', (e) => {
+        e.preventDefault();
+        isClickScrolling = true;
+        clearTimeout(clickTimeout);
+
+        headings.forEach(h => h.link.classList.remove('active'));
+        item.link.classList.add('active');
+
+        const headerOffset = 80;
+        const elementPos = item.el.getBoundingClientRect().top;
+        const offsetPos = elementPos + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPos,
+          behavior: 'smooth'
+        });
+
+        history.pushState(null, '', '#' + item.id);
+
+        clickTimeout = setTimeout(() => {
+          isClickScrolling = false;
+          updateActiveHeading();
+        }, 600);
+      });
+    });
+
+    // Throttled scroll listener
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveHeading();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial check
+    updateActiveHeading();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSpy);
+  } else {
+    setTimeout(setupSpy, 50);
+  }
+})();
+
+// Copy Code
+function copyCode(btn) {
+  const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.classList.add('copied');
+    btn.querySelector('span').innerText = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('span').innerText = 'Copy';
+    }, 2000);
+  });
+}
+
+
+// ---------- Accessibility helpers ----------
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('button[title], a[title]').forEach(function (el) {
+    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('title'));
+  });
+  document.querySelectorAll('.mermaid-container').forEach(function (c) {
+    var h = c, label = 'Diagram';
+    while (h && (h = h.previousElementSibling)) {
+      if (/^H[1-6]$/.test(h.tagName)) { label = 'Diagram for section: ' + h.textContent.replace('#', '').trim(); break; }
+    }
+    c.setAttribute('role', 'group');
+    c.setAttribute('aria-label', label);
+    var vp = c.querySelector('.mermaid-viewport');
+    if (vp) { vp.setAttribute('tabindex', '0'); vp.setAttribute('role', 'region'); vp.setAttribute('aria-label', label + ' (scrollable)'); }
+  });
+  document.querySelectorAll('pre, pre code, .table-wrap, table').forEach(function (el) {
+    if (el.scrollWidth > el.clientWidth + 1 && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  });
+  var menuBtn = document.getElementById('menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () {
+      var open = document.body.classList.toggle('nav-open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    var ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', function () { document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); });
+  }
+});
+
+// ---------- Full-text search (prebuilt index, no network) ----------
+(function () {
+  var active = -1;
+  function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function root() { var d = (window.CURRENT_PAGE || '').split('/').length - 1; return d === 0 ? '.' : Array(d).fill('..').join('/'); }
+  window.runSearch = function (q) {
+    var box = document.getElementById('search-results');
+    if (!box) return;
+    var terms = q.toLowerCase().split(/[^a-z0-9_+#.]+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length || !window.SEARCH_INDEX) { box.hidden = true; box.innerHTML = ''; return; }
+    var hits = [];
+    window.SEARCH_INDEX.forEach(function (doc) {
+      doc.s.forEach(function (sec) {
+        var hay = sec.x, score = 0, ok = true;
+        for (var i = 0; i < terms.length; i++) {
+          var t = terms[i], n = 0, pos = hay.indexOf(t);
+          while (pos !== -1 && n < 50) { n++; pos = hay.indexOf(t, pos + t.length); }
+          var inHead = sec.h.toLowerCase().indexOf(t) !== -1, inTitle = doc.t.toLowerCase().indexOf(t) !== -1;
+          if (!n && !inHead && !inTitle) { ok = false; break; }
+          score += Math.min(n, 10) + (inHead ? 15 : 0) + (inTitle ? 8 : 0);
+        }
+        if (ok) hits.push({ doc: doc, sec: sec, score: score });
+      });
+    });
+    hits.sort(function (a, b) { return b.score - a.score; });
+    var seen = {}, out = [];
+    for (var i = 0; i < hits.length && out.length < 12; i++) {
+      var key = hits[i].doc.u + '#' + hits[i].sec.id;
+      if (!seen[key]) { seen[key] = 1; out.push(hits[i]); }
+    }
+    if (!out.length) { box.innerHTML = '<div class="sr-empty">No results for "' + esc(q) + '".</div>'; box.hidden = false; return; }
+    box.innerHTML = out.map(function (h, idx) {
+      var x = h.sec.x, p = x.indexOf(terms[0]); if (p < 0) p = 0;
+      var snip = esc(x.substring(Math.max(0, p - 50), p + 130));
+      terms.forEach(function (t) { snip = snip.split(t).join('<mark>' + t + '</mark>'); });
+      var href = root() + '/' + h.doc.u + (h.sec.id ? '#' + h.sec.id : '');
+      return '<a class="sr-item" role="option" data-i="' + idx + '" href="' + href + '"><div class="sr-title">' + esc(h.doc.t) + '</div><div class="sr-sec">' + esc(h.sec.h) + '</div><div class="sr-snip">... ' + snip + ' ...</div></a>';
+    }).join('');
+    box.hidden = false; active = -1;
+  };
+  document.addEventListener('keydown', function (e) {
+    var inp = document.querySelector('.search-input'), box = document.getElementById('search-results');
+    if (e.key === '/' && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); inp && inp.focus(); return; }
+    if (!box || box.hidden) return;
+    var items = box.querySelectorAll('.sr-item');
+    if (e.key === 'Escape') { box.hidden = true; inp && inp.blur(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      active = e.key === 'ArrowDown' ? Math.min(items.length - 1, active + 1) : Math.max(0, active - 1);
+      items.forEach(function (it, i) { it.classList.toggle('sr-active', i === active); });
+      if (items[active]) items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && active >= 0 && items[active]) { window.location.href = items[active].getAttribute('href'); }
+  });
+  document.addEventListener('click', function (e) {
+    var box = document.getElementById('search-results');
+    if (box && !e.target.closest('.search-input-wrap')) box.hidden = true;
+  });
+})();
+
+// Client search filter in sidebar
+function filterNav(query) {
+  if (window.runSearch) window.runSearch(query);
+  const q = query.toLowerCase().trim();
+  const links = document.querySelectorAll('.sidebar .nav-link');
+  links.forEach(link => {
+    const text = link.innerText.toLowerCase();
+    if (!q || text.includes(q)) {
+      link.style.display = 'flex';
+    } else {
+      link.style.display = 'none';
+    }
+  });
+}
+
+// Master Course Completion Progress Tracker
+const TOTAL_CHAPTERS = 117;
+
+function getCompletedList() {
+  try {
+    return JSON.parse(localStorage.getItem('pbc_read_chapters') || '[]');
+  } catch(e) {
+    return [];
+  }
+}
+
+function toggleCurrentChapterRead() {
+  if (!window.CURRENT_PAGE) return;
+  let list = getCompletedList();
+  const idx = list.indexOf(window.CURRENT_PAGE);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push(window.CURRENT_PAGE);
+  }
+  localStorage.setItem('pbc_read_chapters', JSON.stringify(list));
+  refreshProgressUI();
+}
+
+function refreshProgressUI() {
+  const list = getCompletedList();
+  const count = list.length;
+  const pct = Math.round((count / TOTAL_CHAPTERS) * 100);
+
+  // Update header text and mini bar
+  const textEl = document.getElementById('header-progress-text');
+  const barEl = document.getElementById('header-progress-bar');
+  if (textEl) textEl.innerText = `${count}/${TOTAL_CHAPTERS} (${pct}%)`;
+  if (barEl) barEl.style.width = pct + '%';
+
+  // Update Mark as Read buttons on this page
+  const isRead = window.CURRENT_PAGE && list.includes(window.CURRENT_PAGE);
+  const btns = [document.getElementById('header-mark-read-btn'), document.getElementById('bottom-mark-read-btn')];
+  btns.forEach(btn => {
+    if (!btn) return;
+    if (isRead) {
+      btn.classList.add('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Completed ✓</span>`;
+    } else {
+      btn.classList.remove('is-read');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg><span>Mark as Read</span>`;
+    }
+  });
+
+  // Update sidebar checkmarks
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const rel = link.getAttribute('data-rel');
+    if (rel && list.includes(rel)) {
+      link.classList.add('is-read');
+    } else {
+      link.classList.remove('is-read');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', refreshProgressUI);
+
+// Diagram Zoom & Pan Controller
+function zoomDiagram(btn, delta) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  let currentZoom = parseFloat(target.getAttribute('data-zoom') || '1');
+  currentZoom = Math.max(0.4, Math.min(3.0, currentZoom + delta));
+  target.setAttribute('data-zoom', currentZoom);
+  target.style.transform = 'scale(' + currentZoom + ')';
+  if (label) label.innerText = Math.round(currentZoom * 100) + '%';
+}
+
+function resetDiagramZoom(btn) {
+  const container = btn.closest('.mermaid-container');
+  const target = container.querySelector('.mermaid');
+  const label = container.querySelector('.diagram-zoom-level');
+  target.setAttribute('data-zoom', '1');
+  target.style.transform = 'scale(1)';
+  if (label) label.innerText = '100%';
+}
+
+// Fullscreen Modal for Diagrams and Images
+let modalScale = 1;
+
+function openDiagramFullscreen(btn) {
+  const container = btn.closest('.mermaid-container');
+  if (!container) return;
+  const svg = container.querySelector('.mermaid svg') || container.querySelector('.mermaid-viewport svg');
+  if (!svg) {
+    console.warn('No diagram SVG found in container');
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = 'High-Resolution Architecture Viewer';
+
+  const clonedSvg = svg.cloneNode(true);
+  clonedSvg.style.maxWidth = '90vw';
+  clonedSvg.style.maxHeight = '75vh';
+  clonedSvg.style.width = 'auto';
+  clonedSvg.style.height = 'auto';
+
+  if (content) {
+    content.innerHTML = '';
+    content.appendChild(clonedSvg);
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openImageModal(target) {
+  let img = target;
+  if (target && target.tagName !== 'IMG') {
+    img = target.closest('.img-container')?.querySelector('img') || target.closest('.img-wrapper')?.querySelector('img');
+  }
+  if (!img) return;
+  const modal = document.getElementById('pv-modal');
+  const content = document.getElementById('pv-modal-content');
+  const title = document.getElementById('pv-modal-title-text');
+  if (title) title.innerText = img.getAttribute('title') || img.getAttribute('alt') || 'High-Resolution Image Viewer';
+  if (content) {
+    content.innerHTML = '<img src="' + img.src + '" style="max-height: 75vh; max-width: 90vw; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" />';
+  }
+  modalScale = 1;
+  updateModalScale();
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePvModal(e) {
+  if (e && e.target && e.target.closest('.pv-modal-card') && !e.target.classList.contains('pv-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('pv-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function modalZoomStep(delta) {
+  modalScale = Math.max(0.3, Math.min(4.0, modalScale + delta));
+  updateModalScale();
+}
+
+function modalReset() {
+  modalScale = 1;
+  updateModalScale();
+}
+
+function updateModalScale() {
+  const content = document.getElementById('pv-modal-content');
+  const label = document.getElementById('pv-zoom-val');
+  if (content) content.style.transform = 'scale(' + modalScale + ')';
+  if (label) label.innerText = Math.round(modalScale * 100) + '%';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePvModal();
+});
+</script>
+</body>
+</html>

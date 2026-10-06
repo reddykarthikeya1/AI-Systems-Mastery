@@ -90,6 +90,64 @@ $$\text{Read QPS} = \frac{6 \times 10^9}{10^5} = \mathbf{60,000 \text{ QPS}} \qu
 $$\text{Number of Redis Nodes} = \frac{24 \text{ TB}}{0.256 \text{ TB}} \approx \mathbf{94 \text{ Cache Instances}}$$.
 
 
+## 5. Latency Numbers and a Reusable Calculator
+
+### Orders of magnitude worth memorising
+
+| Operation | Rough time | Use it to decide |
+| :--- | :--- | :--- |
+| Main memory reference | 100 ns | An in-process cache is effectively free |
+| Read 1 MB sequentially from memory | 10 to 50 microseconds | Why you cache hot data in RAM |
+| SSD random read | 100 microseconds | Databases on SSD handle thousands of reads per second per disk |
+| Round trip inside one data centre | 0.5 ms | A chain of ten service calls costs about 5 ms of pure network |
+| Read 1 MB sequentially from SSD | about 1 ms | Large scans are bandwidth-bound |
+| Disk seek (spinning disk) | 5 to 10 ms | Why random access on HDD is slow |
+| Cross-continent round trip | 100 to 150 ms | Why you put data near users (CDNs, regional replicas) |
+
+These are order-of-magnitude figures; hardware changes them by factors of two or three, but the ratios (memory about 1,000 times faster than SSD, SSD about 100 times faster than a cross-continent call) stay stable.
+
+### One function for every estimation question
+
+```python
+SECONDS_PER_DAY = 86_400
+
+def estimate(dau, actions_per_user, read_write_ratio, bytes_per_write, years=5, peak_factor=3, replicas=3):
+    writes_per_day = dau * actions_per_user
+    write_qps = writes_per_day / SECONDS_PER_DAY
+    read_qps = write_qps * read_write_ratio
+    storage_tb = writes_per_day * 365 * years * bytes_per_write * replicas / 1e12
+    return {
+        "write_qps": round(write_qps),
+        "read_qps": round(read_qps),
+        "peak_read_qps": round(read_qps * peak_factor),
+        "storage_tb": round(storage_tb, 1),
+    }
+
+# Practice 1: URL shortener, 10M new links a day, 100 reads per write, 500 bytes each, single copy
+url = estimate(dau=10e6, actions_per_user=1, read_write_ratio=100, bytes_per_write=500, replicas=1)
+assert url == {"write_qps": 116, "read_qps": 11574, "peak_read_qps": 34722, "storage_tb": 9.1}
+
+# Practice 2: chat, 500M DAU sending 40 messages of 100 bytes, reads equal to writes, 3 copies, 1 year
+chat = estimate(dau=500e6, actions_per_user=40, read_write_ratio=1, bytes_per_write=100, years=1, replicas=3)
+assert chat["write_qps"] == 231_481 and chat["storage_tb"] == 2_190.0
+
+# Practice 3: photo upload, 10M DAU uploading 2 photos of 2 MB, 5 years, 3 copies
+photos = estimate(dau=10e6, actions_per_user=2, read_write_ratio=50, bytes_per_write=2e6, replicas=3)
+assert photos["storage_tb"] == 219_000.0                 # 219 PB: this one is dominated by media storage, not QPS
+```
+
+How to use the three results: URL shortener storage is **single-digit terabytes** (a database), chat text is **a few petabytes a year** (a sharded wide-column store), and photos are **hundreds of petabytes** (an object store plus a CDN). The estimate tells you which architecture family you are in before you draw anything.
+
+### Mistakes to avoid
+
+1. Forgetting the peak factor: average QPS sizes the budget, peak QPS sizes the servers.
+2. Forgetting replication in storage (a factor of 3 is easy to omit).
+3. Mixing bits and bytes in bandwidth (a 1 Gbps link carries about 125 MB per second).
+4. Quoting false precision: say "about 10 TB", not "9.13 TB"; the inputs are guesses.
+5. Skipping the sanity check: does one server's worth of memory, disk or network hold this? If yes, do not shard.
+
+---
+
 ## Further Reading
 
 - [Latency numbers every programmer should know](https://gist.github.com/jboner/2841832)

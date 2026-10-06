@@ -96,3 +96,97 @@ flowchart TD
 ## 10. Interview Timeline and Follow-ups
 
 Lead with the read:write ratio, then the fan-out decision, then the celebrity edge case. **Follow-ups:** How do you delete a post everywhere? (tombstone, async removal from caches and CDN purge). How do you implement "Explore"? (offline candidate generation plus an ANN index, course 10). How do you shard posts? (by `author_id` keeps profile pages local; by `post_id` spreads writes evenly). How would you support stories that expire in 24 h? (TTL in storage and cache, lifecycle policy).
+
+
+---
+
+## 5. Runnable Model: Fan-out on Write, Fan-out on Read, and the Hybrid
+
+The feed design stands or falls on one trade-off, and a small simulation shows why celebrities force a hybrid.
+
+```python
+import heapq
+
+class Feed:
+    def __init__(self, celebrity_threshold=1000):
+        self.followers = {}                       # author -> list of followers
+        self.following = {}                       # user -> list of authors
+        self.posts = {}                           # author -> list of (timestamp, post_id), newest last
+        self.inbox = {}                           # user -> list of (timestamp, post_id) pushed at write time
+        self.threshold = celebrity_threshold
+        self.writes = 0                           # counts push operations, the cost of fan-out on write
+
+    def follow(self, user, author):
+        self.followers.setdefault(author, []).append(user)
+        self.following.setdefault(user, []).append(author)
+
+    def post(self, author, ts, post_id, mode):
+        self.posts.setdefault(author, []).append((ts, post_id))
+        followers = self.followers.get(author, [])
+        push = mode == "push" or (mode == "hybrid" and len(followers) < self.threshold)
+        if push:
+            for f in followers:
+                self.inbox.setdefault(f, []).append((ts, post_id))
+                self.writes += 1
+
+    def read(self, user, mode, k=5):
+        items = list(self.inbox.get(user, []))
+        for author in self.following.get(user, []):
+            pull = mode == "pull" or (mode == "hybrid" and len(self.followers.get(author, [])) >= self.threshold)
+            if pull:
+                items.extend(self.posts.get(author, [])[-k:])
+        return [p for _, p in heapq.nlargest(k, items)]
+
+def build(mode):
+    f = Feed(celebrity_threshold=1000)
+    for i in range(5000):
+        f.follow(f"u{i}", "star")                 # a celebrity with 5,000 followers
+    for i in range(5):
+        f.follow("reader", f"friend{i}")          # an ordinary user following five friends
+    f.follow("reader", "star")
+    ts = 0
+    for i in range(5):
+        ts += 1; f.post(f"friend{i}", ts, f"friend-post-{i}", mode)
+    ts += 1; f.post("star", ts, "star-post", mode)
+    return f
+
+push, hybrid, pull = build("push"), build("hybrid"), build("pull")
+assert push.writes == 5001 + 5 and hybrid.writes == 5 and pull.writes == 0    # the star has 5,001 followers (5,000 plus the reader)
+feed_push, feed_hybrid, feed_pull = push.read("reader", "push"), hybrid.read("reader", "hybrid"), pull.read("reader", "pull")
+assert feed_push == feed_hybrid == feed_pull       # all three modes produce the same feed
+assert feed_hybrid[0] == "star-post"               # newest first
+```
+
+The three modes return the same feed but cost differently: **push** makes reads trivial and a celebrity post costs thousands of writes; **pull** makes writes free and every read merges many authors; **hybrid** pushes for ordinary users and pulls celebrity posts at read time, which bounds both costs. This is the design in the architecture section above, shown as numbers.
+
+---
+
+## 6. Failure Modes and Mitigations
+
+| Failure | Effect | Mitigation |
+| :--- | :--- | :--- |
+| Fan-out queue backlog | New posts appear late in followers' feeds | Prioritise active followers first, scale workers, degrade to pull for lagging users |
+| Media upload succeeds, metadata write fails | Orphan blob | Write metadata after upload and garbage-collect unreferenced blobs, or use a pending state |
+| Cache loss for a popular feed | Thundering herd on the database | Request coalescing, replicas, staggered TTLs |
+| CDN origin overload from a viral post | Slow images | Tiered CDN, origin shield, pre-warm for known big accounts |
+| Unfollow or delete after fan-out | Stale items in inboxes | Filter at read time against current follow and deletion state |
+
+## 7. Trade-offs and Alternatives
+
+- **Ranked versus chronological feed:** chronological is cheap and predictable; ranking needs candidate generation, features and a model, and moves cost to read time.
+- **Inbox size:** cap each precomputed inbox (for example the newest 1,000 items) so storage per user is bounded and old content is fetched by pull.
+- **Counts (likes, followers):** exact counters are expensive at scale; approximate or sharded counters with periodic aggregation are normal.
+- **Storing media:** originals in an object store, several resized variants generated asynchronously, everything behind a CDN.
+
+## 8. Interview Timeline (45 minutes) and Follow-ups
+
+| Minutes | Do |
+| :--- | :--- |
+| 0 to 5 | Scope: feed, upload, follow, likes; scale; ranked or chronological |
+| 5 to 10 | Estimates: uploads per day, feed reads per second, storage and egress |
+| 10 to 20 | APIs, data model, upload and media pipeline |
+| 20 to 35 | **Feed generation**: push, pull, hybrid and the celebrity problem |
+| 35 to 42 | Caching, CDN, counters, sharding |
+| 42 to 45 | Failure modes and what you would improve next |
+
+**Follow-ups to prepare:** What is the cost of one celebrity post under push? How do you pick the celebrity threshold? How do you add ranking without making reads slow? How do you handle deletes and privacy changes already fanned out?

@@ -17,8 +17,8 @@
 | Track | Beginner friendliness | Technical depth | Accuracy and currency | Practice and active learning | Biggest remaining gap |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | Python Mastery | 8.5 | 8 | 8.5 | 9 | 18 environment-dependent snippets (DB, CUDA, brokers) are not runnable offline; exercises are not auto-graded in the portal or CI |
-| Low-Level Design | 8 | 8 | 8.5 | 8 | case studies 12, 15, 17 and 18 still lack the tested edge-case section; patterns chapter covers 21 of 23 GoF patterns |
-| High-Level Design | 7 | 7.5 | 7.5 | 7 | five classic systems still missing (news feed, notifications, typeahead, file storage, object store) |
+| Low-Level Design | 8 | 8 | 8.5 | 8 | case studies 12, 15, 17 and 18 still lack the tested edge-case section; patterns chapters cover 22 of 23 GoF patterns (Interpreter is only named) |
+| High-Level Design | 7.5 | 8.5 | 8 | 8 | systems 04 to 10, 14 and 15 have estimates but no runnable core mechanism; exercises are discussion questions, not auto-graded |
 | Agentic AI | 7 | 7.5 | 8 | 8 | chapters 02 to 07 are still short; one provider adapter only |
 | DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
 | Portal (HTML/PDF) | n/a | n/a | 9 | n/a | PDFs print answers collapsed; no automated browser test suite in CI yet |
@@ -157,6 +157,11 @@ flowchart TD
   13. [systems/13-time-series-metrics-monitoring-prometheus.md](03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.md) *(Gorilla XOR float compression, Delta-of-delta timestamps, TSDB downsampling)*
   14. [systems/14-distributed-web-crawler.md](03-High-Level-Design/systems/14-distributed-web-crawler.md) *(Mercator URL Frontier, back queues with domain delay heap, DNS caching, SimHash deduplication, crawl-trap avoidance)*
   15. [systems/15-payment-gateway-idempotent-ledger.md](03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.md) *(Distributed payment orchestrator, idempotency keys, 64-bit integer cents, double-entry bookkeeping ledger, PSP webhook reconciliation)*
+  16. [systems/16-url-shortener.md](03-High-Level-Design/systems/16-url-shortener.md) *(Base-62 key generation, range allocation, 301 vs 302, caching hot links)*
+  17. [systems/17-notification-service.md](03-High-Level-Design/systems/17-notification-service.md) *(Priority queues, dedupe, retries with a dead-letter queue, provider failover)*
+  18. [systems/18-typeahead-autocomplete.md](03-High-Level-Design/systems/18-typeahead-autocomplete.md) *(Trie with top-k per node, offline ranking, trending overlay)*
+  19. [systems/19-file-storage-and-sync-dropbox.md](03-High-Level-Design/systems/19-file-storage-and-sync-dropbox.md) *(Content-defined chunking, dedupe, sync cursors, conflicts)*
+  20. [systems/20-object-store-s3.md](03-High-Level-Design/systems/20-object-store-s3.md) *(Erasure coding vs replication, durability math, metadata sharding, multipart upload)*
 * **[11-Scenario-Based-HLD-Interview-Questions-And-Grills.md](03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.md):** Cassandra zombie data resurrects, Redis 100% CPU lockouts, NTP clock drift in Snowflake IDs, and multi-region active-active conflicts.
 * **[12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.md](03-High-Level-Design/12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.md):** Track 3 executive recap, 4-act interview playbook, back-of-the-envelope rules of thumb, distributed storage/caching/Saga matrix, and 15-system architectural synthesis.
 * **Runnable Distributed Simulations (`03-High-Level-Design/simulations/`):**

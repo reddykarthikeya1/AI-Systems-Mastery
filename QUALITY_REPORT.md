@@ -9,7 +9,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 |---|---|---|---|---|---|---|---|---|
 | 01-Python-Mastery | 23 | 0 | 47,502 | 2093 | 100% | 100% | 92/93 | 17 |
 | 02-Low-Level-Design | 12 | 18 | 43,122 | 1348 | 100% | 100% | 83/84 | 4 |
-| 03-High-Level-Design | 13 | 15 | 30,145 | 973 | 100% | 100% | 15/16 | 1 |
+| 03-High-Level-Design | 13 | 20 | 43,902 | 1280 | 100% | 100% | 36/36 | 1 |
 | 04-Agentic-AI | 21 | 0 | 25,685 | 1054 | 100% | 100% | 22/22 | 2 |
 | 05-DSA-Interview-Playbook | 9 | 0 | 38,053 | 1245 | 100% | 100% | 70/72 | 98 |
 
@@ -27,7 +27,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 ## Portal (static checks)
 
-- HTML pages: 113; PDFs: 113
+- HTML pages: 118; PDFs: 118
 - Full-text search index present: True
 - KaTeX vendored (offline): True
 - Browser-verified separately (not in this script): 0 KaTeX/Mermaid errors across all pages; axe-core WCAG 2.2 AA clean on sampled pages in light and dark.
@@ -36,7 +36,6 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 - 01-Python-Mastery/03-Functions-Functional-Closures-Decorators.md: undefined name my_decorator
 - 02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.md: undefined name Database
-- 03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.md: undefined name db
 - 05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md: undefined name chars
 - 05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md: undefined name n
 
@@ -44,6 +43,6 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 - **01-Python-Mastery**: none against the measured bar
 - **02-Low-Level-Design**: none against the measured bar
-- **03-High-Level-Design**: median chapter is 973 words (< 1200); 4 case studies under 1000 words (e.g. 03-instagram.md)
+- **03-High-Level-Design**: none against the measured bar
 - **04-Agentic-AI**: median chapter is 1054 words (< 1200)
 - **05-DSA-Interview-Playbook**: none against the measured bar

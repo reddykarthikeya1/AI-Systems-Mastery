@@ -58,7 +58,8 @@ sequenceDiagram
 ## 3. The Transactional Outbox Pattern (Eliminating Dual-Write Bugs)
 
 A common bug in event-driven systems is updating the database and sending a Kafka message in two separate operations:
-```python
+```text
+# Pseudocode: the real, runnable version is in section 5
 # FATAL ANTI-PATTERN:
 db.execute("INSERT INTO orders ...") # Succeeded
 kafka.send("order_created_topic")     # Network crash here! Event lost forever! Inconsistent state!
@@ -99,6 +100,135 @@ If the client retries, the server might execute the charge twice!
 3. If the key exists, return the cached result immediately without re-executing.
 4. If the key is new, execute the transaction, persist the result, and reply.
 
+
+## 5. Runnable Models: a Saga with Compensation, and an Outbox with Idempotent Consumers
+
+### An orchestrated saga: if step N fails, undo steps N-1 to 1 in reverse
+
+```python
+class SagaFailed(Exception):
+    pass
+
+def run_saga(steps, log):
+    """steps: list of (name, action, compensation). Run actions in order; on failure compensate completed steps in reverse."""
+    done = []
+    for name, action, compensate in steps:
+        try:
+            action()
+            log.append(f"do:{name}")
+            done.append((name, compensate))
+        except Exception as err:
+            log.append(f"fail:{name}")
+            for done_name, comp in reversed(done):
+                for attempt in range(3):                 # compensations must be retried: they are not allowed to give up
+                    try:
+                        comp()
+                        log.append(f"undo:{done_name}")
+                        break
+                    except Exception:
+                        log.append(f"retry-undo:{done_name}")
+                else:
+                    log.append(f"STUCK:{done_name}")      # alert a human: money or stock is in limbo
+            raise SagaFailed(name) from err
+    return "committed"
+
+state = {"stock": 10, "charged": 0, "shipped": False}
+log = []
+
+def reserve():  state.update(stock=state["stock"] - 1)
+def release():  state.update(stock=state["stock"] + 1)
+def charge():   state.update(charged=state["charged"] + 50)
+def refund():   state.update(charged=state["charged"] - 50)
+def ship():     raise RuntimeError("carrier unavailable")      # the third step fails
+
+try:
+    run_saga([("reserve", reserve, release), ("charge", charge, refund), ("ship", ship, lambda: None)], log)
+    raise AssertionError("expected SagaFailed")
+except SagaFailed as e:
+    assert str(e) == "ship"
+
+assert log == ["do:reserve", "do:charge", "fail:ship", "undo:charge", "undo:reserve"]   # reverse order
+assert state == {"stock": 10, "charged": 0, "shipped": False}                          # fully restored
+
+flaky = {"n": 0}
+def flaky_refund():
+    flaky["n"] += 1
+    if flaky["n"] < 3:
+        raise ConnectionError("payment provider timeout")
+    refund()
+
+state.update(stock=10, charged=0); log.clear()
+state["charged"] = 0
+try:
+    run_saga([("charge", charge, flaky_refund), ("ship", ship, lambda: None)], log)
+except SagaFailed:
+    pass
+assert state["charged"] == 0 and log.count("retry-undo:charge") == 2    # the compensation was retried until it worked
+```
+
+Key rules to state in an interview: every step needs a **compensating action** (refund, release, cancel); compensations must be **idempotent and retried** because they can fail too; a saga gives **atomicity-by-undo, not isolation**, so other transactions can briefly see the intermediate state (design for it, for example with "pending" statuses).
+
+### The transactional outbox plus an idempotent consumer
+
+```python
+import sqlite3
+
+db = sqlite3.connect(":memory:")
+db.executescript("""
+CREATE TABLE orders(id INTEGER PRIMARY KEY, status TEXT);
+CREATE TABLE outbox(id INTEGER PRIMARY KEY AUTOINCREMENT, event TEXT, published INT DEFAULT 0);
+CREATE TABLE processed(event_id INTEGER PRIMARY KEY);
+""")
+
+def place_order(order_id, fail_after_insert=False):
+    with db:                                              # one local transaction: the order AND its event, or neither
+        db.execute("INSERT INTO orders VALUES (?, 'PLACED')", (order_id,))
+        if fail_after_insert:
+            raise RuntimeError("crash before commit")
+        db.execute("INSERT INTO outbox(event) VALUES (?)", (f"OrderPlaced:{order_id}",))
+
+place_order(1)
+try:
+    place_order(2, fail_after_insert=True)
+except RuntimeError:
+    pass
+assert db.execute("SELECT COUNT(*) FROM orders").fetchone() == (1,)      # the failed order left no row...
+assert db.execute("SELECT COUNT(*) FROM outbox").fetchone() == (1,)      # ...and no orphan event
+
+delivered = []
+def relay(broker_fails_once=False):
+    """Publish unsent outbox rows. If we crash after publishing but before marking, the event is sent again (at-least-once)."""
+    for eid, event in db.execute("SELECT id, event FROM outbox WHERE published = 0").fetchall():
+        delivered.append((eid, event))
+        if broker_fails_once:
+            raise ConnectionError("crash before marking published")
+        with db:
+            db.execute("UPDATE outbox SET published = 1 WHERE id = ?", (eid,))
+
+try:
+    relay(broker_fails_once=True)
+except ConnectionError:
+    pass
+relay()
+assert len(delivered) == 2 and delivered[0] == delivered[1]              # duplicate delivery after the crash
+
+effects = []
+def consume(eid, event):
+    try:
+        with db:
+            db.execute("INSERT INTO processed VALUES (?)", (eid,))     # primary key makes the second attempt fail
+            effects.append(event)
+    except sqlite3.IntegrityError:
+        pass                                                           # already handled: ignore the duplicate
+
+for eid, event in delivered:
+    consume(eid, event)
+assert effects == ["OrderPlaced:1"]                                    # at-least-once delivery, exactly-once effect
+```
+
+This pair is the standard answer to "how do you update a database and publish an event reliably?": **outbox for the producer, idempotent handling for the consumer**.
+
+---
 
 ## Further Reading
 

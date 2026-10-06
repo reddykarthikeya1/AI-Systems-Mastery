@@ -250,6 +250,11 @@ const TRACKS = [
       { name: "systems/13-time-series-metrics-monitoring-prometheus.md", label: "Sys 13: Time-Series Metrics (Prometheus)" },
       { name: "systems/14-distributed-web-crawler.md", label: "Sys 14: Distributed Web Crawler" },
       { name: "systems/15-payment-gateway-idempotent-ledger.md", label: "Sys 15: Payment Gateway & Idempotent Ledger" },
+      { name: "systems/16-url-shortener.md", label: "Sys 16: URL Shortener" },
+      { name: "systems/17-notification-service.md", label: "Sys 17: Notification Service" },
+      { name: "systems/18-typeahead-autocomplete.md", label: "Sys 18: Typeahead / Autocomplete" },
+      { name: "systems/19-file-storage-and-sync-dropbox.md", label: "Sys 19: File Storage & Sync" },
+      { name: "systems/20-object-store-s3.md", label: "Sys 20: Object Store (S3)" },
       { name: "11-Scenario-Based-HLD-Interview-Questions-And-Grills.md", label: "11: Crisis Scenarios & Staff Grills" },
       { name: "12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.md", label: "12: Track 3 Recap & Playbook" }
     ]

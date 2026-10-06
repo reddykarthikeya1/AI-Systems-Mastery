@@ -72,6 +72,41 @@ gantt
 3. **Cross-Region Strategy is the Golden Touch:** Conclude by explaining how data replicates across US-East and EU-Central datacenters, handling data sovereignty (GDPR) and cross-ocean replication latency.
 
 
+## 4. A Worked 45-Minute Timeline: "Design a Notification System"
+
+The framework is easiest to learn from a concrete clock. Each row is a block with a deliverable; if you are behind, shorten the later blocks rather than skipping the earlier ones.
+
+| Minutes | Block | What you say or draw | Deliverable |
+| :--- | :--- | :--- | :--- |
+| 0 to 5 | Clarify | "Which channels? Delivery guarantee? Scale? Scheduled sends?" | A written list of functional and non-functional requirements |
+| 5 to 10 | Estimate | 250M notifications a day is about 3,000 per second average, with campaign bursts near 33,000 per second | Two or three numbers that shape the design |
+| 10 to 15 | API and data | `POST /notifications` returns `202`, idempotency key, preferences table | The contract and the main entities |
+| 15 to 25 | High-level design | Producers, API, validation, priority queues per channel, workers, providers, dead-letter queue | One diagram, labelled data flow |
+| 25 to 38 | Deep dive | The part the interviewer picks: dedupe, retries, provider failover, fan-out | Correct detail on one or two components |
+| 38 to 45 | Wrap-up | Failure modes, monitoring (queue age, delivery rate), trade-offs, what you would build next | A list of risks and mitigations |
+
+The full answer for this exact question is in case study 17; the point here is the **shape**: requirements first, numbers second, one diagram, one deep dive, and a deliberate closing.
+
+### Phrases that signal seniority
+
+1. "Before I design, here are the assumptions I am making; correct me if they are wrong."
+2. "The bottleneck is X, so I will spend my depth there."
+3. "There are two options. Option A gives up Y for Z. I would choose A because of the stated requirement."
+4. "This is the failure mode, this is how we detect it, and this is the blast radius."
+5. "I would start simple and name the trigger that makes us change it (a threshold in traffic, data size or team size)."
+
+### Common ways to lose the room
+
+| Mistake | Better |
+| :--- | :--- |
+| Naming technologies before requirements | State the need first ("ordered, durable, replayable") and then say Kafka fits |
+| Drawing 20 boxes at once | Start with four, then add components when a requirement forces them |
+| No numbers | One estimate of QPS and storage justifies every later choice |
+| Treating the interviewer as an examiner | Treat them as a colleague: ask which area they want in depth |
+| Ignoring failure | For every box, say what happens when it dies |
+
+---
+
 ## Further Reading
 
 - [System Design Primer](https://github.com/donnemartin/system-design-primer)

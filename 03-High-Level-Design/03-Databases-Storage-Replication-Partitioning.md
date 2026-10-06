@@ -147,6 +147,81 @@ print("Key 'order_99812' maps to:", ring.get_node("order_99812"))
 ```
 
 
+## 5. Runnable Models: Quorums and Consistent Hashing
+
+### Quorum arithmetic: when is a read guaranteed to see the latest write?
+
+With `N` replicas, a write acknowledged by `W` and a read that asks `R` replicas, **R + W > N** guarantees the read set overlaps the write set in at least one replica:
+
+```python
+from itertools import combinations
+
+def overlap_guaranteed(n, w, r):
+    replicas = range(n)
+    return all(set(ws) & set(rs) for ws in combinations(replicas, w) for rs in combinations(replicas, r))
+
+assert overlap_guaranteed(3, 2, 2) is True        # R + W = 4 > 3: always overlaps (the common "quorum" setting)
+assert overlap_guaranteed(3, 1, 1) is False       # R + W = 2 <= 3: a read can miss the latest write
+assert overlap_guaranteed(5, 3, 3) is True
+assert overlap_guaranteed(5, 2, 3) is False       # 5 is not > 5
+
+def available(n, w, r, failed):
+    live = n - failed
+    return {"write_ok": live >= w, "read_ok": live >= r}
+
+assert available(3, 2, 2, failed=1) == {"write_ok": True, "read_ok": True}     # survives one failure
+assert available(3, 2, 2, failed=2) == {"write_ok": False, "read_ok": False}   # two failures block both
+assert available(3, 3, 1, failed=1) == {"write_ok": False, "read_ok": True}    # W=N favours reads, hurts write availability
+```
+
+Tuning: `W = N, R = 1` gives fast reads and fragile writes; `W = 1, R = N` does the opposite; `W = R = majority` balances them and tolerates a minority of failures. Quorum overlap alone does not give linearizability (concurrent writes, clock issues and sloppy quorums can still surprise you); it gives a bound on staleness.
+
+### Consistent hashing: adding a node moves only about 1/n of the keys
+
+```python
+import bisect
+import hashlib
+
+def h(s: str) -> int:
+    return int(hashlib.md5(s.encode()).hexdigest(), 16)
+
+class Ring:
+    def __init__(self, nodes, vnodes=100):
+        self.points = sorted((h(f"{n}#{i}"), n) for n in nodes for i in range(vnodes))
+        self.keys = [p for p, _ in self.points]
+    def owner(self, key: str) -> str:
+        i = bisect.bisect(self.keys, h(key)) % len(self.points)
+        return self.points[i][1]
+
+keys = [f"user:{i}" for i in range(20_000)]
+before = Ring(["a", "b", "c", "d"])
+after = Ring(["a", "b", "c", "d", "e"])
+moved = sum(before.owner(k) != after.owner(k) for k in keys) / len(keys)
+assert 0.12 < moved < 0.30                                  # about 1/5 of keys move (20%), not nearly all of them
+
+modulo_moved = sum(h(k) % 4 != h(k) % 5 for k in keys) / len(keys)
+assert modulo_moved > 0.7                                   # hash % n reshuffles about 80% of keys when n changes
+
+load = {}
+for k in keys:
+    load[before.owner(k)] = load.get(before.owner(k), 0) + 1
+assert max(load.values()) / min(load.values()) < 1.5        # virtual nodes keep the load balanced
+```
+
+Virtual nodes (here 100 per physical node) do two jobs: they even out the load, and they let a failed node's keys spread across many survivors instead of dumping onto one neighbour.
+
+### Choosing a replication and partitioning scheme
+
+| Need | Pick | Watch out for |
+| :--- | :--- | :--- |
+| Strong consistency, modest scale | Single-leader replication, synchronous follower | Leader is a write bottleneck; failover must avoid split brain |
+| High write availability across regions | Multi-leader or leaderless with quorums | Conflict resolution (last-write-wins loses data; CRDTs or app-level merge preserve it) |
+| Even load, simple lookups | Hash partitioning | Range queries must scatter-gather |
+| Range scans by key | Range partitioning | Hot ranges (monotonic keys); split and rebalance |
+| Elastic cluster | Consistent hashing with virtual nodes | Rebalancing traffic while data moves |
+
+---
+
 ## Further Reading
 
 - [PostgreSQL: high availability and replication](https://www.postgresql.org/docs/current/high-availability.html)

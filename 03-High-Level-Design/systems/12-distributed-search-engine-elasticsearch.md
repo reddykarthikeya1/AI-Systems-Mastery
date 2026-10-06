@@ -120,3 +120,112 @@ $$\text{Score}(D, Q) = \sum_{i=1}^{N} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdo
 
 * **Term Frequency Saturation ($k_1$):** If a document mentions "python" 50 times, it is not 50x more relevant than a document mentioning it 5 times. BM25 flattens the curve.
 * **Document Length Normalization ($b$):** Prevents long 500-page documents from dominating short 1-page articles simply because they have more total words.
+
+
+---
+
+## 5. Runnable Model: Inverted Index, BM25 and Scatter-Gather
+
+```python
+import heapq
+import math
+import re
+from collections import Counter, defaultdict
+
+DOCS = {
+    1: "distributed systems design for scalable search",
+    2: "search engines index documents with an inverted index",
+    3: "the inverted index maps terms to documents",
+    4: "cooking pasta at home",
+    5: "search search search relevance and ranking for search engines",
+}
+
+def tokenize(text):
+    return re.findall(r"[a-z]+", text.lower())
+
+class Index:
+    def __init__(self, docs, k1=1.2, b=0.75):
+        self.k1, self.b = k1, b
+        self.postings = defaultdict(dict)                 # term -> {doc_id: term frequency}
+        self.length = {}
+        for doc_id, text in docs.items():
+            tokens = tokenize(text)
+            self.length[doc_id] = len(tokens)
+            for term, tf in Counter(tokens).items():
+                self.postings[term][doc_id] = tf
+        self.n = len(docs)
+        self.avg_len = sum(self.length.values()) / self.n
+
+    def idf(self, term):
+        df = len(self.postings.get(term, ()))
+        return math.log(1 + (self.n - df + 0.5) / (df + 0.5))
+
+    def score(self, doc_id, terms):
+        total = 0.0
+        for t in terms:
+            tf = self.postings.get(t, {}).get(doc_id, 0)
+            if tf:
+                norm = tf + self.k1 * (1 - self.b + self.b * self.length[doc_id] / self.avg_len)
+                total += self.idf(t) * tf * (self.k1 + 1) / norm
+        return total
+
+    def search(self, query, k=3):
+        terms = tokenize(query)
+        candidates = set().union(*(self.postings.get(t, {}).keys() for t in terms)) if terms else set()
+        return heapq.nlargest(k, ((self.score(d, terms), d) for d in candidates))
+
+idx = Index(DOCS)
+hits = idx.search("search engines")
+assert hits[0][1] == 5                                      # doc 5 mentions "search" four times and "engines" once
+assert [d for _, d in hits][:2] == [5, 2]                   # and doc 2 follows: it contains both query terms
+assert idx.search("pasta")[0][1] == 4 and idx.search("zebra") == []
+
+# Rare terms weigh more than common ones (inverse document frequency)
+assert idx.idf("pasta") > idx.idf("search")
+
+# Term frequency saturates: ten repetitions do not score ten times higher
+sat = Index({1: "search " * 2 + "x" * 0 + "filler words here", 2: "search " * 20 + "filler words here"})
+s1, s2 = sat.score(1, ["search"]), sat.score(2, ["search"])
+assert s2 < s1 * 4
+
+# Scatter-gather: split documents across 3 shards, query each, merge the shard top-k into the global top-k
+shards = [Index({d: DOCS[d] for d in group}) for group in ([1, 4], [2, 5], [3])]
+partial = [h for shard in shards for h in shard.search("search engines", k=3)]
+merged = heapq.nlargest(3, partial)
+assert {d for _, d in merged} >= {2, 5}                     # the right documents are found
+```
+
+The final assertion is deliberately weak, and it points at a real distributed-search problem: **each shard computes IDF from its own documents**, so scores from different shards are not strictly comparable. Production systems either send global term statistics with the query (a `dfs_query_then_fetch` style search) or accept small ranking differences when shards are large and evenly populated.
+
+---
+
+## 6. Failure Modes and Mitigations
+
+| Failure | Effect | Mitigation |
+| :--- | :--- | :--- |
+| Shard replica lost | Reduced capacity, possible data loss if all copies go | At least one replica per shard on a different node and zone; automatic re-replication |
+| Slow shard | The slowest shard sets query latency | Timeouts with partial results, adaptive replica selection, hedged requests |
+| Hot shard (skewed routing) | One node saturates | Route by a high-cardinality key; split the shard; custom routing only when needed |
+| Mapping explosion (dynamic fields) | Memory exhausted | Strict mappings, field limits |
+| Bulk reindex | Cluster load spikes | Index into a new index and switch an alias; throttle |
+| Split brain | Two masters accept writes | Quorum-based master election with a majority of master-eligible nodes |
+
+## 7. Trade-offs and Alternatives
+
+- **Near-real-time versus immediate visibility:** new documents become searchable after a refresh (about one second by default); forcing a refresh per write destroys indexing throughput.
+- **More shards versus fewer:** many small shards parallelise but add per-shard overhead and merge cost; size shards in the tens of gigabytes.
+- **Search engine versus database:** a database is the source of truth; the search index is a derived, rebuildable view, populated through change streams or a periodic reindex.
+- **Relevance tuning versus simplicity:** start with BM25 and field boosts; add learning-to-rank only when you have click data to train and evaluate with.
+
+## 8. Interview Timeline (45 minutes) and Follow-ups
+
+| Minutes | Do |
+| :--- | :--- |
+| 0 to 5 | Scope: corpus size, query rate, freshness, features (filters, facets, typeahead) |
+| 5 to 10 | Estimates: documents, index size, queries per second |
+| 10 to 20 | Inverted index, analysis (tokenising), sharding and replicas |
+| 20 to 32 | Query path: scatter-gather, scoring (BM25), top-k merge |
+| 32 to 40 | Indexing pipeline, near-real-time refresh, reindexing without downtime |
+| 40 to 45 | Failure modes, relevance evaluation, typeahead |
+
+**Follow-ups to prepare:** Why are shard-local IDF scores a problem? How do you reindex a billion documents without downtime? How do you keep the search index consistent with the primary database? How would you evaluate whether a ranking change is better?

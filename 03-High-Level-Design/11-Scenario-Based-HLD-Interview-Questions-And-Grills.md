@@ -75,6 +75,34 @@ If a user updates their profile in US-East while their automated bot updates it 
 2. **Conflict-Free Replicated Data Types (CRDTs):** Mathematically convergent data structures that merge concurrent updates without centralized coordination.
 
 
+## 2. More Defence Questions
+
+### Question 5: "Your database is at 90% CPU. What do you do, in order?"
+
+1. **Measure first:** find the top queries by total time (slow query log, `pg_stat_statements`); fix the worst one before adding hardware.
+2. **Cheap wins:** missing index, N+1 queries, an unbounded `SELECT`, connection storms (add a pooler).
+3. **Offload reads:** cache hot reads, then add read replicas (accept replication lag and route read-your-own-write traffic to the leader).
+4. **Reduce work:** batch writes, move heavy analytics off the primary, precompute aggregates.
+5. **Scale the data layer:** partition by a key with even access, only after the steps above, because sharding is permanent complexity.
+
+### Question 6: "Two data centres disagree about the same record after a network partition. Who wins?"
+
+State the choice before the mechanism. If correctness matters more than availability (money, inventory), block writes on the minority side (CP). If availability matters (shopping cart, likes), accept both writes and reconcile later (AP) using version vectors, last-write-wins with a known data-loss risk, or a mergeable type (CRDT). Then name what you do for the user-visible conflicts you cannot merge automatically.
+
+### Question 7: "How would you roll out a risky change to a system serving a million requests per second?"
+
+Use progressive delivery: ship behind a feature flag, release to internal users, then 1%, 10%, 50%, 100% of traffic while watching error rate, latency percentiles and a business metric; define the rollback trigger **before** starting, keep the old path alive until the new one is proven, and make schema changes backward compatible (expand, migrate, contract) so a rollback never needs a data repair.
+
+### Question 8: "Your service calls three downstream services; one gets slow. What happens and how do you protect yourself?"
+
+Without protection, request threads pile up waiting on the slow service, the pool exhausts, and the failure spreads upward (a cascading failure). Defences, in the order they bite: **timeouts** on every call, **retries with backoff and jitter** only for idempotent calls, a **circuit breaker** that fails fast while the dependency is unhealthy, **bulkheads** (separate pools so one slow dependency cannot take all threads), and **load shedding** or a **degraded response** (cached data, partial page) instead of an error.
+
+### Question 9: "How do you make an API safe to retry?"
+
+Make every unsafe operation idempotent: the client sends an idempotency key, the server stores the key with the result, and a repeated request returns the stored result instead of repeating the effect. Key points: scope the key to the caller, expire it after a bounded window, store the key and the effect in the same transaction, and return the same status code on replay.
+
+---
+
 ## Further Reading
 
 - [System Design Primer](https://github.com/donnemartin/system-design-primer)
