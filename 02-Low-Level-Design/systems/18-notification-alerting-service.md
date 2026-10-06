@@ -339,3 +339,127 @@ Verify your understanding before continuing:
    - *Answer:* It segregates messages by priority tiers (`HIGH` = 1, `MEDIUM` = 2, `LOW` = 3) so time-sensitive transaction messages are dequeued and processed first by worker threads, even if millions of marketing messages are queued.
 3. **What is the purpose of the Circuit Breaker pattern in notification delivery adapters?**
    - *Answer:* Third-party delivery providers (Twilio, SendGrid, APNs) frequently suffer network outages or latency spikes. A circuit breaker detects consecutive failure thresholds and automatically reroutes subsequent messages through a secondary fallback vendor without dropping alerts.
+
+
+---
+
+## 5. Edge Cases, Tests and Extensions
+
+### Behaviour and bugs
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| High priority overtakes low | Good | `PriorityQueue` pops the lowest number first |
+| High priority bypasses the rate limit | By design | OTPs and security alerts must not be throttled |
+| Same priority, same timestamp | **Bug** | Queue entries are `(priority, timestamp, task)`; when two entries tie on both numbers, Python compares the `task` dictionaries and raises `TypeError`. A coarse clock makes the tie realistic |
+| Rate limit consumed before validation | **Bug** | A bad template parameter raises `KeyError` after the quota was already spent |
+| Delivery result ignored | Gap | `deliver` returns a boolean that `process_next_notification` throws away, so there are no retries and no failure record |
+| "Fallback" SMS provider | Simulated | The fallback branch always succeeds and only prints; a real one needs a timeout, a circuit breaker and metrics |
+| Clock | `time.time()` | Not monotonic; the sliding window can misbehave if the system clock steps |
+
+### Tests
+
+This block extends the implementation above. It patches the clock and silences the demo prints.
+
+```python
+# continues: notification engine implementation above
+import io, contextlib
+from unittest import mock
+
+def quiet(fn, *a, **k):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a, **k)
+
+alice = UserProfile("u1", "Alice", "+1-555-0100", "alice@example.com", "fcm_token_alice_abcdef")
+
+# Templates
+t = NotificationTemplateEngine()
+assert t.render("OTP_LOGIN", code="123456").startswith("Security Alert: Your verification code is 123456")
+try:
+    t.render("NOPE")
+    raise AssertionError("expected KeyError")
+except KeyError:
+    pass
+
+# Rate limiter: LOW and MEDIUM are throttled, HIGH never is
+clock = [1000.0]
+with mock.patch("time.time", lambda: clock[0]):
+    lim = UserNotificationLimiter(max_promotional_per_window=2, window_seconds=60)
+    assert [lim.allow_notification("u1", Priority.LOW) for _ in range(3)] == [True, True, False]
+    assert all(lim.allow_notification("u1", Priority.HIGH) for _ in range(10))            # OTPs always pass
+    assert lim.allow_notification("u2", Priority.LOW) is True                             # another user is unaffected
+    clock[0] += 61
+    assert lim.allow_notification("u1", Priority.LOW) is True                              # the window moved on
+
+# Priority order: a HIGH submitted after a LOW is dispatched first
+engine = NotificationEngine()
+quiet(engine.submit_notification, alice, "PROMO_DISCOUNT", Priority.LOW, [ChannelType.EMAIL], {"name": "Alice", "promo": "X"})
+quiet(engine.submit_notification, alice, "OTP_LOGIN", Priority.HIGH, [ChannelType.SMS], {"code": "849201"})
+buf = io.StringIO()
+with contextlib.redirect_stdout(buf):
+    engine.process_next_notification()
+assert "Priority: HIGH" in buf.getvalue() and "849201" in buf.getvalue()
+
+# Bug 1: two same-priority submissions with an identical timestamp crash the queue
+with mock.patch("time.time", lambda: 5000.0):
+    e1 = NotificationEngine()
+    assert quiet(e1.submit_notification, alice, "OTP_LOGIN", Priority.HIGH, [ChannelType.SMS], {"code": "1"})
+    try:
+        quiet(e1.submit_notification, alice, "OTP_LOGIN", Priority.HIGH, [ChannelType.SMS], {"code": "2"})
+        raise AssertionError("expected TypeError")
+    except TypeError:
+        pass                                              # '<' not supported between two task dicts
+
+# Bug 2: a bad template parameter still burns the rate-limit quota
+e2 = NotificationEngine()
+try:
+    quiet(e2.submit_notification, alice, "ORDER_STATUS", Priority.MEDIUM, [ChannelType.PUSH], {"name": "Alice"})   # order_id missing
+    raise AssertionError("expected KeyError")
+except KeyError:
+    pass
+assert len(e2.limiter.user_history["u1"]) == 1            # the failed call consumed one of the two slots
+
+# Fix: a sequence number breaks ties, and rendering happens before the limiter is touched
+import itertools
+class FixedEngine(NotificationEngine):
+    def __init__(self):
+        super().__init__()
+        self._seq = itertools.count()
+    def submit_notification(self, user, template_key, priority, channels, template_params):
+        text = self.template_engine.render(template_key, **template_params)        # validate first
+        if not self.limiter.allow_notification(user.user_id, priority):
+            return False
+        self.pq.put((int(priority), next(self._seq), {"user": user, "message": text, "channels": channels, "priority": priority}))
+        return True
+
+with mock.patch("time.time", lambda: 5000.0):
+    fx = FixedEngine()
+    assert fx.submit_notification(alice, "OTP_LOGIN", Priority.HIGH, [ChannelType.SMS], {"code": "1"})
+    assert fx.submit_notification(alice, "OTP_LOGIN", Priority.HIGH, [ChannelType.SMS], {"code": "2"})   # no crash
+    order = []
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        fx.process_next_notification(); fx.process_next_notification()
+    assert buf.getvalue().index("'Security Alert: Your verification code is 1.") < buf.getvalue().index("code is 2.")   # FIFO among equals
+fx2 = FixedEngine()
+try:
+    fx2.submit_notification(alice, "ORDER_STATUS", Priority.MEDIUM, [ChannelType.PUSH], {"name": "Alice"})
+except KeyError:
+    pass
+assert "u1" not in fx2.limiter.user_history                # a failed render no longer spends quota
+print("notification tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Retries and a dead-letter queue:** have `deliver` raise or return failure, retry with exponential backoff and jitter, then park the message with its error for replay (the design in HLD case study 17).
+2. **Real provider failover:** wrap each provider in a circuit breaker; on open, route to the secondary and probe the primary periodically.
+3. **User preferences and quiet hours:** a preference check before queuing; non-critical messages wait until quiet hours end, critical ones do not.
+4. **Deduplication and collapsing:** an idempotency key per message, and "5 new comments" instead of five pushes.
+5. **Worker pool and graceful shutdown:** consumers pulling from the queue, a sentinel per worker, and a drain on shutdown so queued alerts are not lost.
+
+### Follow-up questions
+
+- *Why not rate limit HIGH priority messages?* They are the ones the user is waiting for (a login code); throttling them breaks the product. Protect against abuse with separate controls, such as limits on how often a code can be requested.
+- *Why include a counter in the queue tuple?* Heap entries must be totally ordered; the counter breaks ties deterministically and keeps the queue from ever comparing payloads.
+- *How do you keep marketing from starving alerts?* Separate queues and worker pools per priority, so a backlog of promotions cannot delay a security message.

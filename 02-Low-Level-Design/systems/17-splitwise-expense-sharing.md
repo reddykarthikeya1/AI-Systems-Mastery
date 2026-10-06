@@ -367,3 +367,158 @@ Verify your understanding before continuing:
    - *Answer:* It eliminates redundant circular transactions between group members. It calculates each user's net balance and uses two Max-Heaps (one for creditors, one for debtors) to iteratively match the largest debtor with the largest creditor in $O(N \log N)$ time, settling all debts in at most $N-1$ steps.
 3. **How do you prevent penny-rounding discrepancies when splitting $100 three ways ($33.33 \times 3 = $99.99)?**
    - *Answer:* You calculate the base share (`round(total / N, 2)`) and assign the residual difference (`total - allocated`, here $0.01$) to the first participant's share.
+
+
+---
+
+## 5. Edge Cases, Tests and Extensions
+
+### Correctness issues to know about
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Equal split remainders | Handled | The leftover cent goes to the first participant |
+| Percent split rounding | **Bug** | Each share is rounded independently, so the shares can add up to a cent more or less than the expense; the group's balances then no longer sum to zero |
+| Money as `float` | Risky | Rounding to two places after every operation hides but does not remove binary error; integer cents are safer |
+| `simplify_debts` | Good but not minimal | Greedy largest-debtor-with-largest-creditor settles in at most `n - 1` payments; finding the true minimum is NP-hard (it is a partition into zero-sum groups) |
+| Payer not in the group | Rejected | `ValueError` |
+| Concurrency | Safe | One re-entrant lock around group state |
+
+### Tests, including the rounding bug and a search for a non-minimal settlement
+
+This block extends the implementation above.
+
+```python
+# continues: expense sharing implementation above
+import itertools, random, threading
+
+alice, bob, cy, dee = (User(f"u{i}", n) for i, n in enumerate(["Alice", "Bob", "Cy", "Dee"], 1))
+
+def group(*users):
+    g = SplitwiseGroup("g", "trip")
+    for u in users:
+        g.add_member(u)
+    return g
+
+# Equal split: the remainder cent goes to the first participant, and the shares add up exactly
+g = group(alice, bob, cy)
+e = g.add_expense("e1", "dinner", 100.00, alice, [EqualSplit(alice), EqualSplit(bob), EqualSplit(cy)], EqualSplitStrategy())
+assert e.shares == {"u1": 33.34, "u2": 33.33, "u3": 33.33} and round(sum(e.shares.values()), 2) == 100.00
+bal = g.compute_net_balances()
+assert bal == {"u1": 66.66, "u2": -33.33, "u3": -33.33} and round(sum(bal.values()), 2) == 0
+
+# Exact and percent splits validate their inputs
+for strategy, splits, total in [(ExactSplitStrategy(), [ExactSplit(alice, 10), ExactSplit(bob, 5)], 20),
+                                (PercentSplitStrategy(), [PercentSplit(alice, 60), PercentSplit(bob, 30)], 20),
+                                (EqualSplitStrategy(), [], 20)]:
+    try:
+        strategy.validate_and_compute(total, splits)
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+try:
+    group(alice).add_expense("e", "x", 10, bob, [EqualSplit(alice)], EqualSplitStrategy())
+    raise AssertionError("expected ValueError")
+except ValueError:
+    pass
+
+# The rounding bug: 10.01 split 33.33 / 33.33 / 33.34 percent produces shares worth 10.02
+shares = PercentSplitStrategy().validate_and_compute(10.01, [PercentSplit(alice, 33.33), PercentSplit(bob, 33.33), PercentSplit(cy, 33.34)])
+assert round(sum(shares.values()), 2) == 10.02 != 10.01               # a cent appears from nowhere
+g = group(alice, bob, cy)
+g.add_expense("e2", "snacks", 10.01, alice, [PercentSplit(alice, 33.33), PercentSplit(bob, 33.33), PercentSplit(cy, 33.34)], PercentSplitStrategy())
+assert round(sum(g.compute_net_balances().values()), 2) == -0.01       # the group no longer balances
+
+# The fix: allocate in integer cents with the largest-remainder method so the parts always sum to the total
+def allocate_cents(total_cents, weights):
+    total_w = sum(weights)
+    raw = [total_cents * w / total_w for w in weights]
+    parts = [int(r) for r in raw]
+    order = sorted(range(len(weights)), key=lambda i: (raw[i] - parts[i], -i), reverse=True)
+    for i in order[: total_cents - sum(parts)]:
+        parts[i] += 1
+    return parts
+
+assert allocate_cents(1001, [33.33, 33.33, 33.34]) == [334, 333, 334] or sum(allocate_cents(1001, [33.33, 33.33, 33.34])) == 1001
+rng = random.Random(11)
+for _ in range(500):
+    w = [rng.randint(1, 100) for _ in range(rng.randint(1, 6))]
+    total = rng.randint(0, 100_000)
+    parts = allocate_cents(total, w)
+    assert sum(parts) == total and all(p >= 0 for p in parts)          # never loses or invents a cent
+
+# Settlements: applying them clears every balance, and there are at most n - 1 of them
+g = group(alice, bob, cy, dee)
+g.add_expense("a", "hotel", 120, alice, [EqualSplit(u) for u in (alice, bob, cy, dee)], EqualSplitStrategy())
+g.add_expense("b", "taxi", 40, bob, [EqualSplit(u) for u in (bob, cy)], EqualSplitStrategy())
+g.add_expense("c", "food", 90, cy, [EqualSplit(u) for u in (alice, cy, dee)], EqualSplitStrategy())
+settlements = g.simplify_debts()
+names = {u.name: u.user_id for u in (alice, bob, cy, dee)}
+after = dict(g.compute_net_balances())
+for debtor, creditor, amount in settlements:
+    after[names[debtor]] = round(after[names[debtor]] + amount, 2)
+    after[names[creditor]] = round(after[names[creditor]] - amount, 2)
+assert all(abs(v) < 0.011 for v in after.values()) and len(settlements) <= 3
+
+# Greedy is not always minimal: search small cases against the true optimum (n minus the most zero-sum groups)
+def greedy_count(bals):
+    cr = sorted([b for b in bals if b > 0], reverse=True)
+    de = sorted([-b for b in bals if b < 0], reverse=True)
+    count = 0
+    while cr and de:
+        c, d = cr.pop(0), de.pop(0)
+        count += 1
+        if c > d: cr.append(c - d); cr.sort(reverse=True)
+        elif d > c: de.append(d - c); de.sort(reverse=True)
+    return count
+
+def optimal_count(bals):
+    bals = [b for b in bals if b]
+    n, best = len(bals), {0: 0}
+    full = (1 << n) - 1
+    sums = {m: sum(bals[i] for i in range(n) if m >> i & 1) for m in range(1 << n)}
+    groups = [0] * (1 << n)
+    for mask in range(1, 1 << n):                                      # most disjoint zero-sum groups inside each subset
+        m_best = 0
+        sub = mask
+        while sub:
+            if sums[sub] == 0:
+                m_best = max(m_best, 1 + groups[mask ^ sub])
+            sub = (sub - 1) & mask
+        groups[mask] = m_best
+    return n - groups[full]
+
+rng = random.Random(3)
+found = None
+for _ in range(4000):
+    bals = [rng.randint(-9, 9) for _ in range(rng.randint(3, 7))]
+    bals.append(-sum(bals))
+    if greedy_count(bals) > optimal_count(bals):
+        found = bals
+        break
+assert found is not None and greedy_count(found) > optimal_count(found)  # greedy can use more payments than necessary
+
+# Concurrency: 8 threads add 25 expenses each, and the group still balances
+g = group(alice, bob, cy)
+def worker(k):
+    for i in range(25):
+        g.add_expense(f"{k}-{i}", "x", 9.00, alice, [EqualSplit(u) for u in (alice, bob, cy)], EqualSplitStrategy())
+ts = [threading.Thread(target=worker, args=(k,)) for k in range(8)]
+[t.start() for t in ts]; [t.join() for t in ts]
+assert len(g.expenses) == 200 and round(sum(g.compute_net_balances().values()), 2) == 0
+print("expense sharing tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Integer cents everywhere:** store amounts as `int` cents and convert only for display; allocation by largest remainder guarantees that parts sum to the whole.
+2. **Multiple currencies:** keep balances per currency and settle within a currency, or convert at an explicit, recorded rate.
+3. **Edit and delete an expense:** keep expenses immutable and add reversal entries (like an accounting ledger) so history and balances stay auditable.
+4. **Recurring and partial payments:** a `Settlement` record that reduces balances, so "who owes whom" is always derived from the ledger, not stored.
+5. **Fewer payments than greedy:** try to partition the members into zero-sum groups first (exponential in the worst case, fine for a group of ten or so), then settle each group greedily.
+
+### Follow-up questions
+
+- *Why can the sum of balances drift?* Because each share is rounded separately; the fix is to allocate in whole cents so the parts sum to the total by construction.
+- *Is the minimum number of settlements computable?* Yes but hard: it equals `n` minus the maximum number of disjoint zero-sum subsets, which is NP-hard in general, so products use the greedy answer.
+- *Why a ledger rather than stored balances?* A ledger can be audited and corrected by adding entries; a stored balance is a cached result that can silently go wrong.

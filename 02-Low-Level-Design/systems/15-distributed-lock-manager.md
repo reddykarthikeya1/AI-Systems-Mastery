@@ -181,3 +181,120 @@ You now understand:
 1. Why local mutexes (`threading.Lock`) fail in multi-container cloud environments.
 2. How the **Redlock Algorithm** reaches consensus across independent Redis nodes ($N/2 + 1$).
 3. Why **Fencing Tokens** are mandatory to prevent split-brain write corruption during long Garbage Collection pauses.
+
+
+---
+
+## 5. Edge Cases, Tests and Extensions
+
+### What Redlock gives you, and what this model gets wrong
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Mutual exclusion for the TTL | Good | `SET NX PX` is atomic per node and a majority is required |
+| Releasing someone else's lock | Safe | `release_if_owner` compares the random token |
+| Partial acquisition | Handled | A failed quorum releases whatever was taken |
+| Validity time | Good | Elapsed time and a drift allowance are subtracted from the TTL |
+| **Fencing token** | **Wrong across clients** | `_global_fence` lives in each manager instance, so two clients both start at 1; tokens are not monotonic across clients, so they cannot protect storage from a stale writer |
+| Paused client (GC pause, VM stall) | Not protected by the lock alone | The lock can expire while the holder sleeps; only a fencing token checked by the *resource* makes the stale write fail |
+| Clock assumptions | Real | Redlock relies on bounded clock drift; this is the core of the long-running debate about it |
+
+### Tests, including the fencing bug
+
+This block extends the implementation above and controls time with a fake monotonic clock.
+
+```python
+# continues: lock manager implementation above
+from unittest import mock
+
+now = [0.0]
+with mock.patch("time.monotonic", lambda: now[0]):
+    nodes = [SimulatedRedisNode(f"n{i}") for i in range(3)]
+    mgr = RedlockManager(nodes)
+
+    a = mgr.acquire("job-42", ttl_ms=1000)
+    assert a is not None and 0 < a.validity_ms < 1000                  # validity is the TTL minus elapsed time and drift
+    assert mgr.acquire("job-42", ttl_ms=1000) is None                  # held: a second client cannot get it
+    assert all("job-42" in n._store for n in nodes)                    # the failed attempt did not disturb the holder
+
+    mgr.release(LockHandle("job-42", "wrong-token", 0, 0))             # someone else's token releases nothing
+    assert all("job-42" in n._store for n in nodes)
+    mgr.release(a)
+    assert all("job-42" not in n._store for n in nodes)
+
+    b = mgr.acquire("job-42", ttl_ms=1000)
+    assert b is not None
+    now[0] = 1.5                                                       # 1,500 ms later: the TTL has passed
+    c = mgr.acquire("job-42", ttl_ms=1000)
+    assert c is not None and c.token != b.token                        # the lock expired by itself and was re-acquired
+
+    # Quorum: two of three nodes are held by another owner, so one success is not enough and it must be rolled back
+    nodes2 = [SimulatedRedisNode(f"m{i}") for i in range(3)]
+    nodes2[0].set_nx_px("r", "other", 10_000); nodes2[1].set_nx_px("r", "other", 10_000)
+    assert RedlockManager(nodes2).acquire("r", 1000) is None
+    assert "r" not in nodes2[2]._store                                 # no stray lock left on the node we did win
+
+    # One node down: a majority is still reachable
+    class DownNode(SimulatedRedisNode):
+        def set_nx_px(self, key, value, ttl_ms): return False
+    nodes3 = [SimulatedRedisNode("p0"), SimulatedRedisNode("p1"), DownNode("p2")]
+    assert RedlockManager(nodes3).acquire("r", 1000) is not None
+
+    # The bug: two clients with their own managers over the same nodes get the SAME fencing token
+    shared = [SimulatedRedisNode(f"s{i}") for i in range(3)]
+    client_a, client_b = RedlockManager(shared), RedlockManager(shared)
+    first = client_a.acquire("db-row", 1000)
+    now[0] = 10.0                                                      # a's lock expires while a is paused
+    second = client_b.acquire("db-row", 1000)
+    assert first.fencing_token == second.fencing_token == 1            # not monotonic: storage cannot tell who is newer
+
+    # The fix: one shared monotonic counter (in a real system, a consensus-backed service or the storage itself)
+    import itertools, threading
+    class SharedFence:
+        def __init__(self): self._c, self._lock = itertools.count(1), threading.Lock()
+        def next(self):
+            with self._lock:
+                return next(self._c)
+
+    class FencedRedlock(RedlockManager):
+        def __init__(self, nodes, fence): super().__init__(nodes); self.fence = fence
+        def acquire(self, resource, ttl_ms):
+            handle = super().acquire(resource, ttl_ms)
+            if handle is not None:
+                handle.fencing_token = self.fence.next()
+            return handle
+
+    class Storage:
+        def __init__(self): self.highest, self.value = 0, None
+        def write(self, token, value):
+            if token < self.highest:
+                return False                                           # a stale writer is refused
+            self.highest, self.value = token, value
+            return True
+
+    fence, storage = SharedFence(), Storage()
+    nodes4 = [SimulatedRedisNode(f"f{i}") for i in range(3)]
+    ca, cb = FencedRedlock(nodes4, fence), FencedRedlock(nodes4, fence)
+    old = ca.acquire("row", 1000)
+    now[0] = 20.0                                                      # a is paused past its TTL
+    new = cb.acquire("row", 1000)
+    assert new.fencing_token > old.fencing_token
+    assert storage.write(new.fencing_token, "from b") is True
+    assert storage.write(old.fencing_token, "from the paused a") is False      # the paused client wakes up and is rejected
+    assert storage.value == "from b"
+print("lock manager tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Lock extension (watchdog):** a background thread renews the TTL while the work continues, and the holder checks its remaining validity before every critical write.
+2. **A single-node lock with a database:** an `INSERT` of the resource name with a unique constraint, plus an expiry column; simpler and consistent, but the database is a single point of failure.
+3. **A consensus-backed lock (etcd, ZooKeeper):** leases and ephemeral nodes give stronger guarantees than timing assumptions; fencing comes from the monotonically increasing revision or zxid.
+4. **Reentrant and fair locks:** store an owner and a count, and a queue of waiters so the next waiter is woken instead of everyone polling.
+5. **Lock-free alternatives:** a conditional write (compare-and-set on a version column) often removes the need for a distributed lock at all.
+
+### Follow-up questions
+
+- *Is a distributed lock enough to guarantee correctness?* Not by itself. A lock bounded by a TTL can be lost while its holder is paused, so correctness needs a fencing token checked by the resource, or an idempotent operation.
+- *Why a random token instead of a fixed owner id?* It proves ownership of **this** acquisition; a client that lost the lock and re-acquired later must not be able to release or extend the earlier one by mistake.
+- *Efficiency lock or correctness lock?* If the lock only avoids duplicate work, a simple single-node lock is fine; if a violation corrupts data, use a consensus system and fencing.
