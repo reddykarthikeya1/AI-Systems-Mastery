@@ -1,5 +1,10 @@
 # Chapter 2: Built-in Data Structures Under the Hood
 
+> **What you will be able to do:** Explain the exact memory layouts of `list`, `tuple`, `dict`, and `set`, calculate over-allocation resizing thresholds, analyze open-addressing perturbation hashing, and choose optimal data structures based on cache locality and time complexity.
+> **What you must already know:** Chapter 01 pointer semantics and how CPython allocates `PyObject` headers on the heap.
+
+---
+
 > **Core Learning Objective:** Peel back the syntax of Python lists, dictionaries, tuples, sets, and deques to understand their underlying C structures, memory layout, dynamic resizing algorithms, and amortized Big-O complexities.
 
 ---

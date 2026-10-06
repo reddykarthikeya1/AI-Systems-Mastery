@@ -1,5 +1,10 @@
 # Chapter 5: Memory Management, CPython Internals, GIL & Garbage Collection
 
+> **What you will be able to do:** Trace CPython's hierarchical memory allocator (arenas, pools, blocks), diagnose circular reference leaks unreachable by reference counting, tune generational GC thresholds, and articulate the exact mechanics and boundaries of the Global Interpreter Lock (GIL).
+> **What you must already know:** Chapter 01 `ob_refcnt` mechanics and Chapter 04 instance `__dict__` layouts.
+
+---
+
 > **Core Learning Objective:** Uncover the deepest runtime systems of CPython. Understand PyMalloc pools and arenas, the mechanics of reference counting, the cyclical generational garbage collector, the Global Interpreter Lock (GIL), and how to optimize memory using `__slots__` and `weakref`.
 
 ---

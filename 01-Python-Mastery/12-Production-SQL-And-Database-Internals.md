@@ -1,5 +1,10 @@
 # Chapter 12: Production SQL, PostgreSQL Internals & Async ORM
 
+> **What you will be able to do:** Design high-throughput database layers using SQLAlchemy 2.0, optimize PostgreSQL connection pools, eliminate $N+1$ query cascades via eager loading, navigate MVCC row locking, and execute zero-downtime database migrations with Alembic.
+> **What you must already know:** Relational database basics (tables, keys, SQL queries) and Chapter 06 async I/O.
+
+---
+
 > **The Database is the Bottleneck**
 > In 95% of web application performance crises, the slowdown is not Python—it is an unindexed database query, an exhausted connection pool, an insidious $N+1$ ORM pattern, or lock contention inside a database transaction.
 > 
@@ -314,6 +319,15 @@ async def fetch_users_with_eager_loading():
 2. **Watch for Implicit Type Conversions:** Querying `WHERE phone_number = 1234567890` on a `VARCHAR` column forces PostgreSQL to cast every row to integer, bypassing the B-Tree index entirely!
 3. **Use `selectinload` for 1-to-Many Collections:** Eliminates $N+1$ queries while preventing the quadratic data explosion of SQL `JOIN` cartesian products.
 4. **Tune `work_mem` and `shared_buffers`:** Default PostgreSQL settings are tuned for 1990s hardware. Increase `shared_buffers` to 25% of system RAM and configure `work_mem` appropriately to prevent sort spills to disk.
+
+
+## Version Notes
+
+- **Python 3.10**: Enhanced `sqlite3` driver with explicit transaction controls and row factory improvements.
+- **Python 3.11**: Introduced `typing.LiteralString` (PEP 675), allowing static type checkers (`mypy`, `pyright`) to statically prevent SQL injection vulnerabilities at compile time.
+- **Python 3.12**: Added `autocommit` parameter to `sqlite3.connect()`, enabling PEP 249 compliant transactional behavior.
+- **Python 3.13**: Free-threaded CPython eliminates the GIL during high-throughput multi-threaded connection pool socket operations.
+- **Python 3.14**: Template strings (`t-strings`, PEP 750) provide a native, safe mechanism for building parameterized SQL queries and database expressions.
 
 
 ## Exercises

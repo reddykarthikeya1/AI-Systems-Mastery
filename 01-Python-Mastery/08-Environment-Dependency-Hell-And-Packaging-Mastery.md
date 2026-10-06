@@ -1,5 +1,10 @@
 # Chapter 08: Modern Environments, Dependency Hell & Packaging Mastery
 
+> **What you will be able to do:** Navigate virtual environments, wheel binary distribution tags (`manylinux`), resolve dependency conflicts using modern resolver algorithms, author standards-compliant `pyproject.toml` packages, and isolate build environments.
+> **What you must already know:** Basic shell command navigation and Python module import mechanisms from Chapter 01.
+
+---
+
 > **The Reality of Production Python**
 > Most Python tutorials assume an idyllic world where `pip install package` runs smoothly and your script executes cleanly. In real-world enterprise engineering, at least 30% of critical incidents and onboarding friction stem from environment corruption, diamond dependency collisions, C-extension ABI incompatibilities, and operating system discrepancies. 
 > 

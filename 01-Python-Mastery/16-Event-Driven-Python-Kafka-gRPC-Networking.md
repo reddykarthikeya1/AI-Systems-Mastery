@@ -1,5 +1,10 @@
 # Chapter 16: Event-Driven Python, Apache Kafka, gRPC, & Networking Internals
 
+> **What you will be able to do:** Build event-driven streaming pipelines using Apache Kafka, design strongly typed high-performance microservices using gRPC and Protocol Buffers over HTTP/2, manage consumer group partition rebalances, and handle backpressure.
+> **What you must already know:** Chapter 06 asynchronous I/O and network socket fundamentals.
+
+---
+
 > **Beyond REST and HTTP/1.1**
 > In high-scale distributed architectures and agentic AI platforms, simple JSON-over-HTTP/1.1 REST endpoints are often too slow, un-typed, and inefficient. Inter-service microservice communication demands ultra-fast, binary-serialized **gRPC over HTTP/2**, non-blocking **low-level OS sockets**, and decoupled, event-driven streaming with **Apache Kafka**.
 > 
@@ -440,6 +445,13 @@ if __name__ == "__main__":
 | **gRPC / Protobuf** | HTTP/2 Multiplexed | 1ms – 5ms | Low-latency internal microservice communication, AI model serving | Direct browser clients without gRPC-Web proxy |
 | **Redis Tasks (Celery)** | Redis In-Memory | < 5ms dispatch | Fast background task dispatch, delayed jobs, scheduled cron | Long-term event replay, multi-consumer broadcast |
 | **Apache Kafka** | TCP Commit Log | 5ms – 20ms | Event-driven choreography, real-time analytics, event sourcing, multi-consumer data streaming | Synchronous request-response queries |
+
+
+## Version Notes
+
+- **Python 3.11**: Introduced `asyncio.TaskGroup` and Exception Groups (PEP 654), providing structured concurrency for managing complex streaming socket lifetimes.
+- **Python 3.12**: Kernel-level event multiplexer enhancements for Linux `epoll` and macOS `kqueue` inside the asyncio core loop.
+- **Python 3.13**: Free-threaded builds allow concurrent network socket readers and gRPC streaming workers to scale linearly across all CPU cores.
 
 
 ## Exercises

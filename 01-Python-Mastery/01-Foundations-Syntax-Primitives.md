@@ -1,5 +1,10 @@
 # Chapter 1: Foundations, Memory Model & Execution Pipeline
 
+> **What you will be able to do:** Trace CPython's execution pipeline from source code to bytecode, inspect object headers (`ob_refcnt`, `ob_type`), avoid mutability and default argument pitfalls, and leverage small-integer and string interning.
+> **What you must already know:** Chapter 00's mental model of Heap vs Stack and nametag pointer binding.
+
+---
+
 > **Core Learning Objective:** Understand Python from the silicon up. You will learn the exact sequence of events when **CPython** (the official C-based engine behind Python) executes a line of code, how objects live in memory, why variables are not "boxes", and how Python manages references.
 
 ---

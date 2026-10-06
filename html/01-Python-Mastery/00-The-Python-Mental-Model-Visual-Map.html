@@ -1243,7 +1243,8 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-0-the-unified-python-mental-map-intuitive-primer"><a href="#chapter-0-the-unified-python-mental-map-intuitive-primer" class="header-anchor">#</a>Chapter 0: The Unified Python Mental Map & Intuitive Primer</h1><blockquote>
-<p><strong>Core Learning Objective:</strong> Form an indestructible, intuitive mental model of how Python works before diving into the details. Eliminate all imposter syndrome with zero jargon, crystal-clear visual analogies, and a progressive self-diagnostic checklist.</p>
+<p><strong>What you will be able to do:</strong> Form an indestructible, intuitive mental model of Python execution, trace variable nametags to heap objects, pinpoint where variables live across function calls, calibrate your learning path across all 23 chapters, and assess your current baseline with a 15-question placement diagnostic.
+<strong>What you must already know:</strong> Basic programming concepts (what variables, loops, and functions are in any language) and comfort running basic commands in a terminal.</p>
 </blockquote>
 <hr>
 <h2 id="0-zero-prerequisite-primer-what-on-earth-is-the-heap"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="header-anchor">#</a>0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</h2><p>Before we look at Python&#39;s rules, let&#39;s understand how your computer&#39;s memory (RAM) actually works. </p>
@@ -1355,7 +1356,7 @@ Behind your desk is a massive, cavernous warehouse with virtually unlimited open
 </div>
       </div>
 <hr>
-<h2 id="1-the-3-golden-rules-of-python-s-mental-model"><a href="#1-the-3-golden-rules-of-python-s-mental-model" class="header-anchor">#</a>1. The 3 Golden Rules of Python's Mental Model</h2><p>If you understand these three simple rules, 90% of Python&#39;s &quot;mysteries&quot; and &quot;gotchas&quot; vanish instantly:</p>
+<h2 id="1-prerequisite-ladder-learning-milestones"><a href="#1-prerequisite-ladder-learning-milestones" class="header-anchor">#</a>1. Prerequisite Ladder & Learning Milestones</h2><p>To get the absolute maximum value from this track without stalling, verify where you stand on the <strong>Prerequisite Ladder</strong>:</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1376,40 +1377,235 @@ Behind your desk is a massive, cavernous warehouse with virtually unlimited open
       </div>
       <div class="mermaid-viewport">
         <div class="mermaid">
-flowchart TD
-    Rule1["Rule 1: Everything is an Object on the Heap (The Warehouse)&lt;br/&gt;(Integers, strings, functions, modules, and classes all live out on the warehouse floor)"]
-    Rule2["Rule 2: Variable Names are Just Post-it Notes&lt;br/&gt;(Variables do not hold data inside them; they are just sticky nametags pointing to the warehouse)"]
-    Rule3["Rule 3: Methods are Recipes in a Class Blueprint&lt;br/&gt;(Calling obj.method(x) is literally Class.method(obj, x))"]
-
-    Rule1 --&gt; Rule2 --&gt; Rule3
+flowchart BT
+    L0["&lt;b&gt;Level 0: Absolute Baseline&lt;/b&gt;&lt;br/&gt;Conditionals, for/while loops, basic terminal commands, function calls"] --&gt; L1
+    L1["&lt;b&gt;Level 1: Working Developer (Chapters 00-05)&lt;/b&gt;&lt;br/&gt;CPython execution pipeline, heap vs stack, reference counting, mutability traps"] --&gt; L2
+    L2["&lt;b&gt;Level 2: Systems Practitioner (Chapters 06-11)&lt;/b&gt;&lt;br/&gt;Asyncio event loop, GIL boundaries, typing protocols, brownfield debugging &amp; refactoring"] --&gt; L3
+    L3["&lt;b&gt;Level 3: Production Architect (Chapters 12-17)&lt;/b&gt;&lt;br/&gt;Connection pooling, ACID internals, ASGI event loops, Celery task brokers, Kafka streaming"] --&gt; L4
+    L4["&lt;b&gt;Level 4: Staff Systems Engineer (Chapters 18-22)&lt;/b&gt;&lt;br/&gt;Vectorized HPC, PyO3 Rust FFI extensions, zero-downtime migrations, Staff interview rubrics"]
 </div>
       </div>
-    </div><h3 id="rule-2-demystified-the-sticky-nametag-storage-tray"><a href="#rule-2-demystified-the-sticky-nametag-storage-tray" class="header-anchor">#</a>Rule 2 Demystified: The Sticky Nametag & Storage Tray</h3><p>In languages like C or Java, a variable is like a <strong>wooden locker labeled <code>x</code></strong>. Inside the locker sits the number <code>5</code>. If you change the value, you open the locker, throw away the <code>5</code>, and put a new number inside.</p>
-<p><strong>Python does not have lockers. Python uses Sticky Nametags on Storage Trays:</strong></p>
-<ul>
-<li>Data objects (like lists, numbers, and text) are physical <strong>storage trays</strong> placed out on the warehouse floor (the Heap).</li>
-<li>Variables are simply <strong>Post-it nametags</strong> stuck onto those trays.</li>
-<li>The <code>=</code> sign does <strong>not</strong> copy data; it just means: <em>&quot;Peel this nametag and stick it onto that tray.&quot;</em></li>
-</ul>
-<p>Let&#39;s trace what happens line-by-line:</p>
-<h4 id="step-1-a-1-2-3"><a href="#step-1-a-1-2-3" class="header-anchor">#</a>Step 1: `a = [1, 2, 3]`</h4><ul>
-<li>Python places a tray containing <code>[1, 2, 3]</code> on the warehouse floor.</li>
-<li>You slap a sticky label labeled <code>a</code> onto that tray.</li>
-</ul>
-<h4 id="step-2-b-a"><a href="#step-2-b-a" class="header-anchor">#</a>Step 2: `b = a`</h4><ul>
-<li>You do <strong>NOT</strong> duplicate the tray! You do <strong>NOT</strong> copy the numbers!</li>
-<li>You simply grab a second sticky label labeled <code>b</code> and slap it onto the <strong>exact same tray</strong>.</li>
-<li>The tray now has two labels stuck to it: <code>a</code> and <code>b</code>. Both names refer to the exact same physical tray.</li>
-</ul>
-<h4 id="step-3-b-append-4"><a href="#step-3-b-append-4" class="header-anchor">#</a>Step 3: `b.append(4)`</h4><ul>
-<li>You walk up to the tray labeled <code>b</code> and drop the number <code>4</code> inside.</li>
-<li>If you now ask Python for <code>a</code>, what do you see? You see <code>[1, 2, 3, 4]</code>! Why? Because <code>a</code> and <code>b</code> are stuck to the <strong>exact same tray</strong>!</li>
-</ul>
-<h4 id="step-4-a-9-9"><a href="#step-4-a-9-9" class="header-anchor">#</a>Step 4: `a = [9, 9]`</h4><ul>
-<li>Python builds a brand new tray <code>[9, 9]</code> elsewhere on the floor.</li>
-<li>You <strong>peel</strong> the label <code>a</code> off the first tray and stick it onto the new tray.</li>
-<li>What happened to the first tray? Nothing! It is completely unharmed, and label <code>b</code> is still stuck to it holding <code>[1, 2, 3, 4]</code>.</li>
-</ul>
+    </div><h3 id="estimated-study-time-curriculum-matrix"><a href="#estimated-study-time-curriculum-matrix" class="header-anchor">#</a>Estimated Study Time & Curriculum Matrix</h3><p>Each chapter is designed for deep focus. Use this matrix to schedule your prep:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Title</th>
+<th align="center">Level</th>
+<th align="center">Est. Time</th>
+<th align="left">Prerequisites</th>
+<th align="left">Core Milestone</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>00</strong></td>
+<td align="left">Mental Model &amp; Visual Map</td>
+<td align="center">Foundational</td>
+<td align="center">1.0 hr</td>
+<td align="left">Basic programming concepts</td>
+<td align="left">Grasp the Heap, Stack, and CPython engine</td>
+</tr>
+<tr>
+<td align="center"><strong>01</strong></td>
+<td align="left">Foundations &amp; Syntax Primitives</td>
+<td align="center">Foundational</td>
+<td align="center">1.5 hrs</td>
+<td align="left">Ch 00</td>
+<td align="left">Master name binding, mutability, and small-int caching</td>
+</tr>
+<tr>
+<td align="center"><strong>02</strong></td>
+<td align="left">Data Structures Under The Hood</td>
+<td align="center">Core</td>
+<td align="center">2.0 hrs</td>
+<td align="left">Ch 01</td>
+<td align="left">Internal arrays of lists, open addressing hash tables</td>
+</tr>
+<tr>
+<td align="center"><strong>03</strong></td>
+<td align="left">Functions, Closures &amp; Decorators</td>
+<td align="center">Core</td>
+<td align="center">2.0 hrs</td>
+<td align="left">Ch 01</td>
+<td align="left"><code>PyCellObject</code>, lexical scoping, stacked decorators</td>
+</tr>
+<tr>
+<td align="center"><strong>04</strong></td>
+<td align="left">OOP, Dunders &amp; Metaprogramming</td>
+<td align="center">Core</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 02, 03</td>
+<td align="left"><code>__new__</code> vs <code>__init__</code>, Descriptors, Metaclasses</td>
+</tr>
+<tr>
+<td align="center"><strong>05</strong></td>
+<td align="left">Memory Management, GIL &amp; GC</td>
+<td align="center">Core Systems</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 01, 04</td>
+<td align="left">Obmalloc, arenas, pools, 3-gen GC, GIL semantics</td>
+</tr>
+<tr>
+<td align="center"><strong>06</strong></td>
+<td align="left">Concurrency: Asyncio &amp; Threads</td>
+<td align="center">Core Systems</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 05</td>
+<td align="left">Epoll loop, thread switching, IPC vs shared memory</td>
+</tr>
+<tr>
+<td align="center"><strong>07</strong></td>
+<td align="left">Type System &amp; Modern Architecture</td>
+<td align="center">Core Systems</td>
+<td align="center">2.0 hrs</td>
+<td align="left">Ch 04</td>
+<td align="left">Covariance/contravariance, Protocols, PEP 695 generics</td>
+</tr>
+<tr>
+<td align="center"><strong>08</strong></td>
+<td align="left">Packaging &amp; Dependency Hell</td>
+<td align="center">Applied</td>
+<td align="center">2.0 hrs</td>
+<td align="left">Ch 01</td>
+<td align="left">Wheels, manylinux, pip dependency resolver, pyproject.toml</td>
+</tr>
+<tr>
+<td align="center"><strong>09</strong></td>
+<td align="left">Enterprise Testing &amp; Async Mocking</td>
+<td align="center">Applied</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 06</td>
+<td align="left">Fixtures, event loop isolation, hypothesis property tests</td>
+</tr>
+<tr>
+<td align="center"><strong>10</strong></td>
+<td align="left">Production Profiling &amp; Leaks Lab</td>
+<td align="center">Systems Lab</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 05</td>
+<td align="left">cProfile, tracemalloc, memray, py-spy sampling</td>
+</tr>
+<tr>
+<td align="center"><strong>11</strong></td>
+<td align="left">Legacy Refactoring &amp; Break-Fix</td>
+<td align="center">Systems Lab</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 09, 10</td>
+<td align="left">Strangler fig, AST codemods, shadow verification</td>
+</tr>
+<tr>
+<td align="center"><strong>12</strong></td>
+<td align="left">Production SQL &amp; DB Internals</td>
+<td align="center">Backend</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 02</td>
+<td align="left">Connection pools, MVCC, N+1 query elimination, Alembic</td>
+</tr>
+<tr>
+<td align="center"><strong>13</strong></td>
+<td align="left">Web Architecture: FastAPI &amp; Pydantic</td>
+<td align="center">Backend</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 06, 07</td>
+<td align="left">ASGI spec, Rust-backed Pydantic V2 serialization</td>
+</tr>
+<tr>
+<td align="center"><strong>14</strong></td>
+<td align="left">Security, OAuth2 &amp; Cryptographic RBAC</td>
+<td align="center">Backend</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 13</td>
+<td align="left">Constant-time comparisons, JWT claims, PBKDF2/argon2</td>
+</tr>
+<tr>
+<td align="center"><strong>15</strong></td>
+<td align="left">Distributed Task Queues: Celery &amp; Redis</td>
+<td align="center">Distributed</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 06, 12</td>
+<td align="left">Prefetch counts, ACK-late, Redis memory fragmentation</td>
+</tr>
+<tr>
+<td align="center"><strong>16</strong></td>
+<td align="left">Event-Driven: Kafka &amp; gRPC</td>
+<td align="center">Distributed</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 06, 15</td>
+<td align="left">Protobuf serialization, consumer group rebalance, backpressure</td>
+</tr>
+<tr>
+<td align="center"><strong>17</strong></td>
+<td align="left">Columnar Data: Polars &amp; DuckDB</td>
+<td align="center">Data Systems</td>
+<td align="center">2.5 hrs</td>
+<td align="left">Ch 02</td>
+<td align="left">Apache Arrow columnar format, SIMD predicates, out-of-core</td>
+</tr>
+<tr>
+<td align="center"><strong>18</strong></td>
+<td align="left">High-Performance Computing (HPC)</td>
+<td align="center">Extreme Perf</td>
+<td align="center">3.0 hrs</td>
+<td align="left">Ch 05, 06</td>
+<td align="left">Numba JIT, Cython, subinterpreters (PEP 684), Tier-2 JIT</td>
+</tr>
+<tr>
+<td align="center"><strong>19</strong></td>
+<td align="left">Rust Extensions: PyO3 &amp; C ABI</td>
+<td align="center">Extreme Perf</td>
+<td align="center">3.5 hrs</td>
+<td align="left">Ch 05, 18</td>
+<td align="left">Rust borrow checker, PyO3 macros, GIL release in FFI</td>
+</tr>
+<tr>
+<td align="center"><strong>20</strong></td>
+<td align="left">Leveled Interview Practice Problems</td>
+<td align="center">Capstone</td>
+<td align="center">3.5 hrs</td>
+<td align="left">All chapters</td>
+<td align="left">15+ coding problems across Junior to Staff rubrics</td>
+</tr>
+<tr>
+<td align="center"><strong>21</strong></td>
+<td align="left">Production Scenario Interview Q&amp;A</td>
+<td align="center">Capstone</td>
+<td align="center">3.5 hrs</td>
+<td align="left">All chapters</td>
+<td align="left">15+ live production incidents &amp; root cause postmortems</td>
+</tr>
+<tr>
+<td align="center"><strong>22</strong></td>
+<td align="left">Track 1 Recap &amp; Staff Playbook</td>
+<td align="center">Capstone</td>
+<td align="center">2.0 hrs</td>
+<td align="left">All chapters</td>
+<td align="left">Comprehensive synthesis, trade-off matrices &amp; cheatsheets</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-comprehensive-python-systems-glossary"><a href="#2-comprehensive-python-systems-glossary" class="header-anchor">#</a>2. Comprehensive Python Systems Glossary</h2><p>Before diving into deeper chapters, bookmark this glossary. These 16 concepts form the bedrock of Staff-level Python conversations:</p>
+<ol>
+<li><strong>CPython</strong>: The standard, reference implementation of the Python programming language written in ANSI C. It compiles Python source code into bytecode and runs it in an evaluation loop (<code>_PyEval_EvalFrameDefault</code>).</li>
+<li><strong>Abstract Syntax Tree (AST)</strong>: A tree representation of the abstract syntactic structure of source code. Python&#39;s parser converts tokens into an AST (<code>ast</code> module) before compiling to bytecode.</li>
+<li><strong>Bytecode</strong>: The intermediate, platform-independent instruction set executed by the CPython virtual machine (e.g., <code>LOAD_FAST</code>, <code>STORE_FAST</code>, <code>BINARY_OP</code>). Viewable via <code>dis.dis()</code>.</li>
+<li><strong>Stack Frame (<code>PyFrameObject</code>)</strong>: The CPython data structure created for each active function call. Contains the local variable array, value stack, instruction pointer, and evaluation context.</li>
+<li><strong>Name Binding</strong>: The process of associating an identifier (nametag) with an object in a namespace dictionary or local frame array (<code>FAST</code> locals). Variables in Python are pointers, never memory containers.</li>
+<li><strong>PyObject</strong>: The foundational C <code>struct</code> that every Python object shares. Contains at least an object header with <code>ob_refcnt</code> (reference count) and <code>ob_type</code> (pointer to the type object).</li>
+<li><strong><code>ob_refcnt</code> &amp; <code>ob_type</code></strong>: The twin fields in every <code>PyObject</code>. <code>ob_refcnt</code> tracks how many names or containers refer to this object; <code>ob_type</code> points to the <code>PyTypeObject</code> defining its methods and behavior.</li>
+<li><strong>Free Lists</strong>: CPython optimization pools that retain freed memory blocks for specific built-in types (e.g., floats, lists, dicts, frames) to avoid calling the OS allocator repeatedly.</li>
+<li><strong>Obmalloc (Arenas, Pools, Blocks)</strong>: CPython&#39;s specialized small-object allocator for requests $\le 512$ bytes. Memory is organized hierarchically into 256KB Arenas, 4KB Pools, and fixed-size Blocks.</li>
+<li><strong>Descriptor Protocol</strong>: The mechanism behind properties, methods, <code>classmethod</code>, and <code>staticmethod</code>. Any object defining <code>__get__</code>, <code>__set__</code>, or <code>__delete__</code> acts as a descriptor.</li>
+<li><strong>Method Resolution Order (MRO / C3 Linearization)</strong>: The deterministic algorithm Python uses to compute class inheritance hierarchies and resolve attribute lookups when multiple inheritance is involved. Viewable via <code>cls.mro()</code>.</li>
+<li><strong>Global Interpreter Lock (GIL)</strong>: A mutual exclusion lock used by CPython to prevent multiple native OS threads from executing Python bytecode simultaneously, safeguarding non-thread-safe reference counts.</li>
+<li><strong>Generational Cyclical Garbage Collector (GC)</strong>: The background collector that detects isolated islands of mutually referencing objects that reference counting alone cannot reclaim. Operates across three generations (Gen 0, 1, 2).</li>
+<li><strong>Coroutine</strong>: A specialized function declared with <code>async def</code> that can suspend its execution via <code>await</code> and resume later, implemented internally as an enhanced generator.</li>
+<li><strong>Event Loop &amp; <code>epoll</code> / <code>kqueue</code></strong>: The single-threaded multiplexer that monitors file descriptors and network sockets using OS kernel primitives (<code>epoll</code> on Linux, <code>kqueue</code> on macOS, IOCP on Windows) to drive non-blocking I/O.</li>
+<li><strong>Protocol &amp; Structural Subtyping</strong>: Static typing paradigm (PEP 544) where class compatibility is determined by available methods and attributes rather than explicit inheritance from an abstract base class.</li>
+</ol>
+<hr>
+<h2 id="3-the-3-golden-rules-of-python-s-mental-model"><a href="#3-the-3-golden-rules-of-python-s-mental-model" class="header-anchor">#</a>3. The 3 Golden Rules of Python's Mental Model</h2><p>Keep these three rules etched in your mind:</p>
+<h3 id="rule-1-variables-are-sticky-nametags-not-storage-boxes"><a href="#rule-1-variables-are-sticky-nametags-not-storage-boxes" class="header-anchor">#</a>Rule 1: Variables Are Sticky Nametags, NOT Storage Boxes</h3><p>In languages like C or Go, a variable is a physical metal box etched into memory. When you assign <code>x = 5</code>, the number 5 is placed inside box <code>x</code>.</p>
+<p>In Python, <strong>variables are thin adhesive paper nametags</strong>. Objects are physical items sitting on the warehouse floor (the Heap). Assignment (<code>=</code>) simply peels a nametag and slaps it onto an object.</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1430,30 +1626,32 @@ flowchart TD
       </div>
       <div class="mermaid-viewport">
         <div class="mermaid">
-flowchart TD
-    subgraph Step_1_and_2 ["Step 1 and 2: Two Nametags on ONE Tray"]
-        TagA1["Label 'a'"] --&gt; Tray1["Physical Tray on Heap:&lt;br&gt;[ 1, 2, 3 ]"]
-        TagB1["Label 'b'"] --&gt; Tray1
+flowchart LR
+    subgraph Metal_Box ["C / Go Model (Storage Box)"]
+        Box["Box 'a'&lt;br/&gt;Contains binary bits: 00000001"]
     end
 
-    subgraph Step_3 ["Step 3: Modify via Label 'b' (b.append(4))"]
-        TagA2["Label 'a'"] --&gt; Tray2["Exact Same Tray Mutated:&lt;br&gt;[ 1, 2, 3, 4 ]"]
-        TagB2["Label 'b'"] --&gt; Tray2
-    end
-
-    subgraph Step_4 ["Step 4: Reassign Label 'a' (a = [9, 9])"]
-        TagA3["Label 'a' (Moved)"] --&gt; TrayNew["New Tray on Heap:&lt;br&gt;[ 9, 9 ]"]
-        TagB3["Label 'b' (Unchanged)"] --&gt; TrayOld["Original Tray Still Intact:&lt;br&gt;[ 1, 2, 3, 4 ]"]
+    subgraph Sticky_Note ["Python Model (Adhesive Nametag)"]
+        Tag["Nametag 'a'"] --&gt; Obj["Physical Integer Object (1)&lt;br/&gt;Heap Address: 0x104b2a8"]
     end
 </div>
       </div>
-    </div><h3 id="rule-3-demystified-blueprints-vs-objects-where-did-my-dog-come-from"><a href="#rule-3-demystified-blueprints-vs-objects-where-did-my-dog-come-from" class="header-anchor">#</a>Rule 3 Demystified: Blueprints vs. Objects (Where Did 'my_dog' Come From?)</h3><p>A very common source of confusion when learning object-oriented programming is mixing up the <strong>blueprint</strong> with an <strong>actual thing built from it</strong>.</p>
-<ul>
-<li><strong>A Blueprint is Not a House:</strong> If an architect draws blueprints for a house on paper, you cannot open the paper door and sleep inside it. It is just instructions.</li>
-<li><strong>A Class is Not an Object:</strong> Writing <code>class Dog:</code> does <strong>not</strong> create a dog in your computer. It simply registers a blueprint (a recipe) in Python&#39;s memory.</li>
-</ul>
-<p>To actually get a dog, you must <strong>construct one</strong> from the blueprint! Let&#39;s trace this step-by-step:</p>
-<h4 id="step-1-define-the-blueprint-class-dog"><a href="#step-1-define-the-blueprint-class-dog" class="header-anchor">#</a>Step 1: Define the Blueprint (`class Dog`)</h4>
+    </div><h3 id="rule-2-multiple-nametags-can-stick-to-the-exact-same-tray"><a href="#rule-2-multiple-nametags-can-stick-to-the-exact-same-tray" class="header-anchor">#</a>Rule 2: Multiple Nametags Can Stick to the Exact Same Tray</h3><p>When you write <code>b = a</code>, Python does <strong>not</strong> duplicate the object. It creates a second nametag <code>b</code> and slaps it onto the exact same physical tray on the warehouse floor.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+b = a
+b.append(<span class="hljs-number">4</span>)
+<span class="hljs-built_in">print</span>(a)  <span class="hljs-comment"># [1, 2, 3, 4] - mutating the shared heap object affects both!</span></code></pre>
+  </div><h3 id="rule-3-methods-live-on-the-class-blueprint-not-the-instance"><a href="#rule-3-methods-live-on-the-class-blueprint-not-the-instance" class="header-anchor">#</a>Rule 3: Methods Live on the Class Blueprint, NOT the Instance</h3><p>Instances do not duplicate method code. When you call <code>dog.bark()</code>, Python looks up the method on <code>Dog</code> and passes <code>dog</code> as the first argument (<code>self</code>):</p>
+
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1463,78 +1661,23 @@ flowchart TD
       </button>
     </div>
     <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.name = name
+
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">bark</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Woof!&quot;</span>)</code></pre>
-  </div><p>Python places a single <strong>Blueprint Object</strong> for <code>Dog</code> on the Heap. Inside this blueprint sits the function <code>bark</code>.</p>
-<h4 id="step-2-construct-an-object-slap-a-nametag-on-it-my-dog-dog"><a href="#step-2-construct-an-object-slap-a-nametag-on-it-my-dog-dog" class="header-anchor">#</a>Step 2: Construct an Object & Slap a Nametag on It (`my_dog = Dog()`)</h4>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python">my_dog = Dog()</code></pre>
-  </div><ul>
-<li><code>Dog()</code> acts as the factory. Python carves out a brand-new, physical object out on the warehouse floor (the Heap).</li>
-<li>The <code>=</code> sign takes the Post-it nametag <code>my_dog</code> and slaps it onto this new dog tray!</li>
-<li><strong>Now, and only now, <code>my_dog</code> exists.</strong></li>
-</ul>
-<p>If you create another dog:</p>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{self.name}</span> says woof!&quot;</span>
 
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python">neighbor_dog = Dog()</code></pre>
-  </div><p>Python allocates a <em>second</em> separate dog tray on the Heap, and slaps the nametag <code>neighbor_dog</code> onto it.</p>
-<h4 id="step-3-tell-your-dog-to-bark-my-dog-bark"><a href="#step-3-tell-your-dog-to-bark-my-dog-bark" class="header-anchor">#</a>Step 3: Tell Your Dog to Bark (`my_dog.bark()`)</h4>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python">my_dog.bark()</code></pre>
-  </div><p>Now ask yourself: <em>Did Python copy the <code>bark()</code> code and paste it inside <code>my_dog</code>&#39;s personal tray?</em></p>
-<p><strong>No!</strong> If you created 100,000 dogs, copying the same function 100,000 times would waste huge amounts of RAM.</p>
-<p>Instead, the <code>bark</code> function lives in exactly <strong>one</strong> place: inside the <code>Dog</code> blueprint. </p>
-<p>When you write <code>my_dog.bark()</code>, Python executes a 3-step lookup:</p>
-<ol>
-<li>Python checks <code>my_dog</code>: <em>&quot;Do you personally have a function named <code>bark</code>?&quot;</em> → No.</li>
-<li>Python checks <code>my_dog</code>&#39;s blueprint link: <em>&quot;What class built you? <code>Dog</code>. Does <code>Dog</code> have a <code>bark</code> function?&quot;</em> → Yes!</li>
-<li>Python calls the blueprint function, passing your specific dog into the first parameter (<code>self</code>):</li>
-</ol>
+my_dog = Dog(<span class="hljs-string">&quot;Fido&quot;</span>)
+neighbor_dog = Dog(<span class="hljs-string">&quot;Rex&quot;</span>)
 
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># What you write:</span>
-my_dog.bark()
+<span class="hljs-comment"># What you write:</span>
+res1 = my_dog.bark()
 
-<span class="hljs-comment"># What Python secretly translates and executes under the hood:</span>
-Dog.bark(my_dog)</code></pre>
-  </div><div class="callout callout-note">
-        <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> <span>NOTE</span></div>
-        <div class="callout-body"><p>The Mystery of <code>self</code> Solved!
-Ever wonder why every method in Python must start with <code>def bark(self):</code>? 
-Because when Python rewrites <code>my_dog.bark()</code> into <code>Dog.bark(my_dog)</code>, your specific dog instance (<code>my_dog</code>) is automatically passed into that first argument! Inside the method, <code>self</code> is literally just an alias for <code>my_dog</code>.</p>
-<p>You can even test this yourself in a Python terminal: running <code>Dog.bark(my_dog)</code> produces the exact same output as <code>my_dog.bark()</code>!</p>
-</div>
-      </div>
+<span class="hljs-comment"># What Python translates and executes under the hood:</span>
+res2 = Dog.bark(my_dog)
 
+<span class="hljs-keyword">assert</span> res1 == res2 == <span class="hljs-string">&quot;Fido says woof!&quot;</span></code></pre>
+  </div>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1562,8 +1705,8 @@ flowchart TD
 
     subgraph Heap_Objects ["The Warehouse Floor (The Heap)"]
         Blueprint["Dog Class Blueprint&lt;br/&gt;(Holds 1 shared copy of bark(self))"]
-        Inst1["Instance: Dog Object #1&lt;br/&gt;__class__ points to Dog"]
-        Inst2["Instance: Dog Object #2&lt;br/&gt;__class__ points to Dog"]
+        Inst1["Instance: Dog Object #1 (Fido)&lt;br/&gt;__class__ points to Dog"]
+        Inst2["Instance: Dog Object #2 (Rex)&lt;br/&gt;__class__ points to Dog"]
     end
 
     Tag1 --&gt; Inst1
@@ -1573,7 +1716,7 @@ flowchart TD
 </div>
       </div>
     </div><hr>
-<h2 id="2-the-master-architecture-map-of-track-1"><a href="#2-the-master-architecture-map-of-track-1" class="header-anchor">#</a>2. The Master Architecture Map of Track 1</h2><p>Here is your complete 18-stage roadmap to Staff-level Python engineering:</p>
+<h2 id="4-the-master-architecture-map-of-track-1"><a href="#4-the-master-architecture-map-of-track-1" class="header-anchor">#</a>4. The Master Architecture Map of Track 1</h2><p>Here is your complete 4-phase, 23-chapter roadmap to Staff-level Python engineering:</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1595,7 +1738,7 @@ flowchart TD
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    subgraph Phase1 ["Phase 1: Core Language &amp; Memory Architecture"]
+    subgraph Phase1 ["Phase 1: Foundations &amp; Memory Architecture (Ch 00-05)"]
         M0["00: Mental Model &amp; Visual Map"] --&gt; M1["01: Foundations &amp; Memory"]
         M1 --&gt; M2["02: Data Structures Under the Hood"]
         M2 --&gt; M3["03: Closures, Scopes &amp; Decorators"]
@@ -1603,103 +1746,121 @@ flowchart TD
         M4 --&gt; M5["05: Memory Management, GIL &amp; GC"]
     end
 
-    subgraph Phase2 ["Phase 2: Concurrency, Typing &amp; Production Labs"]
-        M6["06: Concurrency &amp; Asyncio"] --&gt; M7["07: Type Systems &amp; Typing"]
-        M7 --&gt; M8["08: Algorithmic Practice Problems"]
-        M8 --&gt; M9["09: Production Crisis Scenarios"]
-        M9 --&gt; M10["10: Dependency Hell &amp; Packaging"]
-        M10 --&gt; M11["11: Debugging &amp; Memory Leaks Lab"]
-        M11 --&gt; M12["12: Brownfield Refactoring Lab"]
+    subgraph Phase2 ["Phase 2: Concurrency, Typing &amp; Quality Engineering (Ch 06-11)"]
+        M6["06: Concurrency &amp; Asyncio"] --&gt; M7["07: Type Systems &amp; Architecture"]
+        M7 --&gt; M8["08: Dependency Hell &amp; Packaging"]
+        M8 --&gt; M9["09: Enterprise Testing &amp; Mocking"]
+        M9 --&gt; M10["10: Profiling &amp; Memory Leaks Lab"]
+        M10 --&gt; M11["11: Legacy Refactoring &amp; Break-Fix"]
     end
 
-    subgraph Phase3 ["Phase 3: Distributed Systems, Databases &amp; High Performance"]
-        M13["13: Distributed Tasks (Celery &amp; Redis)"] --&gt; M14["14: Production SQL &amp; DB Internals"]
-        M14 --&gt; M15["15: High-Performance Computing (HPC)"]
+    subgraph Phase3 ["Phase 3: Backend, Distributed Systems &amp; Modern Data (Ch 12-17)"]
+        M12["12: Production SQL &amp; DB Internals"] --&gt; M13["13: High-Perf Web: FastAPI &amp; Pydantic"]
+        M13 --&gt; M14["14: Security, OAuth2 &amp; Cryptographic RBAC"]
+        M14 --&gt; M15["15: Distributed Task Queues (Celery &amp; Redis)"]
         M15 --&gt; M16["16: Event-Driven Kafka &amp; gRPC"]
-        M16 --&gt; M17["17: Async Mocking &amp; ASGI Internals"]
+        M16 --&gt; M17["17: Columnar Data: Polars &amp; DuckDB"]
     end
 
-    Phase1 --&gt; Phase2 --&gt; Phase3
+    subgraph Phase4 ["Phase 4: Extreme Performance &amp; Interview Playbook (Ch 18-22)"]
+        M18["18: High-Performance Computing (HPC)"] --&gt; M19["19: Rust Extensions &amp; PyO3 C-ABI"]
+        M19 --&gt; M20["20: Leveled Interview Problems"]
+        M20 --&gt; M21["21: Production Scenario Q&amp;A"]
+        M21 --&gt; M22["22: Track 1 Recap &amp; Staff Playbook"]
+    end
+
+    Phase1 --&gt; Phase2 --&gt; Phase3 --&gt; Phase4
 </div>
       </div>
     </div><hr>
-<h2 id="3-the-10-question-intuition-self-diagnostic"><a href="#3-the-10-question-intuition-self-diagnostic" class="header-anchor">#</a>3. The 10-Question Intuition Self-Diagnostic</h2><p>Answer these 10 intuitive questions to calibrate your progress through this track. Every question is answered in depth with code walkthroughs and memory diagrams at the linked chapters:</p>
-<table>
-<thead>
-<tr>
-<th align="center">#</th>
-<th align="left">Question</th>
-<th align="left">Intuitive Answer</th>
-<th align="center">Where to Master It</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><strong>1</strong></td>
-<td align="left">Why does <code>a = [1]; b = a; b.append(2)</code> change <code>a</code>?</td>
-<td align="left">Both nametags <code>a</code> and <code>b</code> are stuck to the exact same physical storage tray on the warehouse floor (the Heap).</td>
-<td align="center"><a href="01-Foundations-Syntax-Primitives.html#3-mutability-vs-immutability">Ch 1: Mutability &amp; Memory</a></td>
-</tr>
-<tr>
-<td align="center"><strong>2</strong></td>
-<td align="left">Why does <code>def func(x=[]):</code> share values across calls?</td>
-<td align="left">Default argument objects are constructed <strong>once</strong> when the file is read, not every time the function runs!</td>
-<td align="center"><a href="01-Foundations-Syntax-Primitives.html#the-mutable-default-argument-trap-classic-interview-question">Ch 1: Mutable Default Trap</a></td>
-</tr>
-<tr>
-<td align="center"><strong>3</strong></td>
-<td align="left">Why is <code>list.pop(0)</code> slow ($O(N)$) but <code>deque.popleft()</code> fast ($O(1)$)?</td>
-<td align="left">Lists are contiguous memory blocks requiring every remaining item to slide left; deques are linked blocks.</td>
-<td align="center"><a href="02-Data-Structures-Under-The-Hood.html#collections-deque-double-ended-queue">Ch 2: Deque vs List Memory</a></td>
-</tr>
-<tr>
-<td align="center"><strong>4</strong></td>
-<td align="left">Why did Python 3.6+ dictionaries become insertion-ordered?</td>
-<td align="left">Dictionaries split into an index array and a compact sequential entries array.</td>
-<td align="center"><a href="02-Data-Structures-Under-The-Hood.html#why-dicts-preserve-insertion-order">Ch 2: Compact Hash Tables</a></td>
-</tr>
-<tr>
-<td align="center"><strong>5</strong></td>
-<td align="left">Where does a closure store outer variables after the outer function finishes?</td>
-<td align="left">In a heap-allocated <code>PyCellObject</code> stored inside <code>func.__closure__</code>.</td>
-<td align="center"><a href="03-Functions-Functional-Closures-Decorators.html#3-closures-cell-objects-under-the-hood">Ch 3: Closures &amp; PyCellObject</a></td>
-</tr>
-<tr>
-<td align="center"><strong>6</strong></td>
-<td align="left">What is the real difference between <code>__new__</code> and <code>__init__</code>?</td>
-<td align="left"><code>__new__</code> carves out the raw memory on the heap; <code>__init__</code> paints the colors on the newly created object.</td>
-<td align="center"><a href="04-OOP-Dunder-Metaprogramming.html#1-object-construction-new-vs-init">Ch 4: <code>__new__</code> vs <code>__init__</code></a></td>
-</tr>
-<tr>
-<td align="center"><strong>7</strong></td>
-<td align="left">How does <code>@property</code> actually intercept attribute access?</td>
-<td align="left">It implements the Descriptor Protocol (<code>__get__</code> and <code>__set__</code>).</td>
-<td align="center"><a href="04-OOP-Dunder-Metaprogramming.html#4-the-descriptor-protocol-the-engine-of-python">Ch 4: Descriptor Protocol</a></td>
-</tr>
-<tr>
-<td align="center"><strong>8</strong></td>
-<td align="left">Why does Python need a cyclical garbage collector if it has reference counts?</td>
-<td align="left">Simple reference counters cannot detect two abandoned objects pointing at each other in a circle.</td>
-<td align="center"><a href="05-Memory-Management-GIL-Garbage-Collection.html#3-the-generational-cyclical-garbage-collector">Ch 5: Generational Cyclical GC</a></td>
-</tr>
-<tr>
-<td align="center"><strong>9</strong></td>
-<td align="left">Why doesn&#39;t multithreading speed up pure CPU math in Python?</td>
-<td align="left">The Global Interpreter Lock (GIL) serializes Python bytecode execution to a single CPU core.</td>
-<td align="center"><a href="05-Memory-Management-GIL-Garbage-Collection.html#5-the-global-interpreter-lock-gil-demystified">Ch 5: The GIL</a> &amp; <a href="06-Concurrency-Asyncio-Threading-Multiprocessing.html#1-the-concurrency-landscape-choosing-the-right-engine">Ch 6: Concurrency</a></td>
-</tr>
-<tr>
-<td align="center"><strong>10</strong></td>
-<td align="left">How does <code>asyncio</code> handle 10,000 requests on a single OS thread?</td>
-<td align="left">The event loop asks the OS kernel (<code>epoll</code>) to wake it up only when network packets arrive.</td>
-<td align="center"><a href="06-Concurrency-Asyncio-Threading-Multiprocessing.html#2-asynchronous-i-o-with-asyncio-under-the-hood">Ch 6: Asyncio Epoll</a> &amp; <a href="16-Event-Driven-Python-Kafka-gRPC-Networking.html">Ch 16: Event-Driven</a></td>
-</tr>
-</tbody></table>
+<h2 id="5-diagnostic-placement-quiz"><a href="#5-diagnostic-placement-quiz" class="header-anchor">#</a>5. Diagnostic Placement Quiz</h2><p>Take this 15-question placement diagnostic to identify your exact starting point and pinpoint blind spots before diving in.</p>
+<details>
+<summary><strong>Question 1: What is the output of <code>a = [1, 2]; b = a; b += [3]; print(a)</code> versus <code>a = (1, 2); b = a; b += (3,); print(a)</code>?</strong></summary><p><strong>Answer:</strong> </p>
+<ul>
+<li>In the list case, <code>a</code> prints <code>[1, 2, 3]</code>. For mutable lists, <code>+=</code> invokes <code>__iadd__</code> in-place, modifying the shared heap object.</li>
+<li>In the tuple case, <code>a</code> prints <code>(1, 2)</code>. Tuples are immutable; <code>+=</code> constructs a <em>brand-new</em> tuple object on the heap and reassigns <code>b</code> to it, leaving <code>a</code> pointing to the original object.
+<em>Master this in <a href="01-Foundations-Syntax-Primitives.html">Chapter 01: Foundations &amp; Syntax</a>.</em></li>
+</ul>
+</details><details>
+<summary><strong>Question 2: Why is <code>def append_to(val, target=[]): target.append(val); return target</code> a catastrophic bug?</strong></summary><p><strong>Answer:</strong> 
+Default argument expressions are evaluated <strong>once at function definition time</strong> (when the bytecode is loaded into memory), not on each call. The empty list is constructed once and stored in <code>append_to.__defaults__</code>. All subsequent calls without an explicit argument mutate that exact same shared list.
+<em>Master this in <a href="01-Foundations-Syntax-Primitives.html">Chapter 01: Foundations &amp; Syntax</a>.</em></p>
+</details><details>
+<summary><strong>Question 3: Why does appending to a Python list run in amortized $O(1)$ time rather than strictly $O(1)$?</strong></summary><p><strong>Answer:</strong> 
+A Python <code>list</code> is a contiguous dynamic array of pointers (<code>PyObject**</code>). When the allocated capacity is exhausted, CPython over-allocates according to a geometric growth pattern ($\sim 1.125\times + 6$). Reallocation copies pointers to a new contiguous memory block ($O(N)$), but this happens infrequently enough that the average cost per append is $O(1)$.
+<em>Master this in <a href="02-Data-Structures-Under-The-Hood.html">Chapter 02: Data Structures Under The Hood</a>.</em></p>
+</details><details>
+<summary><strong>Question 4: What is the time complexity difference between <code>list.pop(0)</code> and <code>collections.deque.popleft()</code>?</strong></summary><p><strong>Answer:</strong> </p>
+<ul>
+<li><code>list.pop(0)</code> is $O(N)$ because all remaining $N-1$ pointers in the contiguous array must be shifted left by one slot via <code>memmove</code>.</li>
+<li><code>deque.popleft()</code> is $O(1)$ because <code>deque</code> is implemented as a doubly linked list of 64-element memory blocks; removing the head simply advances a pointer within the head block.
+<em>Master this in <a href="02-Data-Structures-Under-The-Hood.html">Chapter 02: Data Structures Under The Hood</a>.</em></li>
+</ul>
+</details><details>
+<summary><strong>Question 5: Where does a closure keep its enclosed variables after the enclosing outer function returns?</strong></summary><p><strong>Answer:</strong> 
+In heap-allocated <code>PyCellObject</code> instances stored in the inner function&#39;s <code>__closure__</code> tuple. Both the outer function&#39;s local frame and the inner closure point to this cell object. When the outer stack frame terminates, the cell object stays alive on the heap because the inner function retains a reference to it.
+<em>Master this in <a href="03-Functions-Functional-Closures-Decorators.html">Chapter 03: Functions, Scopes &amp; Closures</a>.</em></p>
+</details><details>
+<summary><strong>Question 6: When subclassing, what is the exact difference between <code>__new__</code> and <code>__init__</code>?</strong></summary><p><strong>Answer:</strong> 
+<code>__new__</code> is the static constructor that physically allocates the object memory on the heap and returns the newly instantiated <code>PyObject*</code>. <code>__init__</code> is the instance initializer that receives the created instance as <code>self</code> and populates attributes. When creating immutable singletons or subclassing immutable primitives like <code>int</code> or <code>tuple</code>, <code>__new__</code> must be overridden.
+<em>Master this in <a href="04-OOP-Dunder-Metaprogramming.html">Chapter 04: OOP &amp; Metaprogramming</a>.</em></p>
+</details><details>
+<summary><strong>Question 7: How does a Python descriptor determine whether attribute access falls back to instance <code>__dict__</code>?</strong></summary><p><strong>Answer:</strong> 
+A descriptor that defines <code>__set__</code> (or <code>__delete__</code>) is a <strong>Data Descriptor</strong>. Data descriptors take absolute precedence over the instance&#39;s <code>__dict__</code>. If a descriptor only defines <code>__get__</code>, it is a <strong>Non-Data Descriptor</strong> (such as regular methods), and an entry in <code>instance.__dict__</code> overrides it.
+<em>Master this in <a href="04-OOP-Dunder-Metaprogramming.html">Chapter 04: OOP &amp; Metaprogramming</a>.</em></p>
+</details><details>
+<summary><strong>Question 8: Why can't reference counting alone collect two objects that point to each other in a cycle?</strong></summary><p><strong>Answer:</strong> 
+If object $A$ references $B$, and $B$ references $A$, their reference counts remain at least 1 even after all external references from the stack and globals are deleted. CPython&#39;s generational cyclical garbage collector solves this by maintaining doubly-linked lists of container objects and temporarily subtracting internal references to find unreachable cycles.
+<em>Master this in <a href="05-Memory-Management-GIL-Garbage-Collection.html">Chapter 05: Memory Management, GIL &amp; GC</a>.</em></p>
+</details><details>
+<summary><strong>Question 9: If Python has a GIL, why is <code>counter += 1</code> across two threads still unsafe without a lock?</strong></summary><p><strong>Answer:</strong> 
+The GIL only guarantees that <em>one bytecode instruction</em> executes at a time. The operation <code>counter += 1</code> compiles to multiple bytecode instructions: <code>LOAD_FAST</code>, <code>LOAD_CONST (1)</code>, <code>BINARY_OP (+)</code>, and <code>STORE_FAST</code>. An OS thread switch can happen between <code>LOAD_FAST</code> and <code>STORE_FAST</code>, producing classic lost-update race conditions.
+<em>Master this in <a href="06-Concurrency-Asyncio-Threading-Multiprocessing.html">Chapter 06: Concurrency &amp; Asyncio</a>.</em></p>
+</details><details>
+<summary><strong>Question 10: What happens if you execute <code>time.sleep(5)</code> inside an <code>async def</code> coroutine in an asyncio service?</strong></summary><p><strong>Answer:</strong> 
+<code>time.sleep(5)</code> blocks the OS thread running the single-threaded asyncio event loop. No other coroutines, network socket readers, or scheduled tasks can execute for 5 seconds, causing latency spikes and timeouts across all connected clients. The non-blocking equivalent is <code>await asyncio.sleep(5)</code> or delegating to <code>asyncio.to_thread(time.sleep, 5)</code>.
+<em>Master this in <a href="06-Concurrency-Asyncio-Threading-Multiprocessing.html">Chapter 06: Concurrency &amp; Asyncio</a>.</em></p>
+</details><details>
+<summary><strong>Question 11: In static typing, why is <code>list[Dog]</code> not a valid subtype of <code>list[Animal]</code> even if <code>Dog</code> is a subtype of <code>Animal</code>?</strong></summary><p><strong>Answer:</strong> 
+Because mutable containers are <strong>invariant</strong>. If <code>list[Dog]</code> were accepted where <code>list[Animal]</code> is expected, the receiving function could legally do <code>animals.append(Cat())</code>, corrupting the dog list with a cat object. Immutable sequences like <code>Sequence[Animal]</code> can be <strong>covariant</strong>.
+<em>Master this in <a href="07-Type-System-Modern-Python-Architecture.html">Chapter 07: Type Systems &amp; Modern Architecture</a>.</em></p>
+</details><details>
+<summary><strong>Question 12: How does Python's <code>tracemalloc</code> trace memory leaks back to exact source file lines without runtime overhead?</strong></summary><p><strong>Answer:</strong> 
+<code>tracemalloc</code> hooks into CPython&#39;s internal memory allocators (<code>PyMem_Malloc</code>, <code>PyMem_RawMalloc</code>) and captures the current Python execution traceback whenever a memory block is allocated, storing the allocation address and backtrace in an internal hash table.
+<em>Master this in <a href="10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html">Chapter 10: Production Profiling &amp; Memory Leaks</a>.</em></p>
+</details><details>
+<summary><strong>Question 13: What is the N+1 query problem in SQLAlchemy/Django ORM, and how do you resolve it at the protocol level?</strong></summary><p><strong>Answer:</strong> 
+The N+1 problem occurs when an application executes 1 query to fetch $N$ parent records, and then executes $N$ additional separate queries in a loop to fetch related child records. It is resolved using eager loading: <code>joinedload</code> (SQL <code>LEFT OUTER JOIN</code> in 1 query) or <code>selectinload</code> (a second query using <code>WHERE parent_id IN (...)</code>).
+<em>Master this in <a href="12-Production-SQL-And-Database-Internals.html">Chapter 12: Production SQL &amp; DB Internals</a>.</em></p>
+</details><details>
+<summary><strong>Question 14: Why can a Celery worker crash or hang if tasks are CPU-bound and using prefork concurrency with shared database connections?</strong></summary><p><strong>Answer:</strong> 
+Forking a process after database connection pools or thread locks are created duplicates file descriptors and socket handles across parent and child without reinitializing locks, resulting in corrupted connection state, deadlocks, and missed heartbeats.
+<em>Master this in <a href="15-Distributed-Task-Queues-Celery-Redis.html">Chapter 15: Distributed Task Queues</a>.</em></p>
+</details><details>
+<summary><strong>Question 15: How does Apache Arrow's columnar memory format (used in Polars) achieve 10x-50x speedups over row-oriented Python objects?</strong></summary><p><strong>Answer:</strong> 
+Arrow stores data contiguously by column rather than scattered by row. This enables CPU cache locality, vectorization via SIMD (Single Instruction, Multiple Data) instructions, zero-copy slice operations, and avoids the 28-to-56-byte per-object CPython boxing overhead for numbers and strings.
+<em>Master this in <a href="17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html">Chapter 17: Columnar Data: Polars &amp; DuckDB</a>.</em></p>
+</details><h3 id="placement-scoring-study-pathways"><a href="#placement-scoring-study-pathways" class="header-anchor">#</a>Placement Scoring & Study Pathways</h3><ul>
+<li><strong>Score 0 – 5 (Foundational Track)</strong>:<ul>
+<li><em>Recommendation</em>: Read sequentially from <strong>Chapter 00 through 06</strong>. Do not skip the labs and exercises. Focus on building mental models of memory allocation, scoping, and the GIL before moving to backend chapters.</li>
+</ul>
+</li>
+<li><strong>Score 6 – 11 (Systems Practitioner Track)</strong>:<ul>
+<li><em>Recommendation</em>: Skim Chapters 01–04 for CPython internals, then focus deeply on <strong>Chapters 05, 06, 07, 10, 11, and 12</strong>. Practice the async starvation and memory leak labs.</li>
+</ul>
+</li>
+<li><strong>Score 12 – 15 (Staff &amp; Interview Fast-Track)</strong>:<ul>
+<li><em>Recommendation</em>: Target <strong>Chapters 05, 06, 11, 15, 18, 19, and the Capstone Chapters 20–22</strong>. Use the leveled interview rubrics in Chapter 20 and incident scenarios in Chapter 21 to sharpen Staff-level trade-off communication.</li>
+</ul>
+</li>
+</ul>
 <hr>
-<h2 id="4-your-learning-rhythm-how-to-study-without-burnout"><a href="#4-your-learning-rhythm-how-to-study-without-burnout" class="header-anchor">#</a>4. Your Learning Rhythm (How to Study Without Burnout)</h2><ol>
-<li><strong>Read One Chapter per Day (30-45 minutes):</strong> Do not rush. Every chapter is packed with deep, foundational insights.</li>
-<li><strong>Type the Code Out:</strong> Do not just passively read. Open your terminal, run <code>python</code>, and type the snippets to see the object IDs and memory footprints in real time.</li>
-<li><strong>Trace the Storage Trays:</strong> Whenever code surprises you, grab a piece of paper and draw the nametag on your desk stuck to the physical storage tray sitting on the warehouse floor (the Heap).</li>
+<h2 id="6-your-learning-rhythm-how-to-study-without-burnout"><a href="#6-your-learning-rhythm-how-to-study-without-burnout" class="header-anchor">#</a>6. Your Learning Rhythm (How to Study Without Burnout)</h2><ol>
+<li><strong>One Chapter at a Time (30–60 minutes)</strong>: Take notes on <em>why</em> CPython was designed this way, not just <em>how</em> syntax works.</li>
+<li><strong>Execute Every Code Block</strong>: Open your terminal, run <code>python</code>, and verify object memory addresses with <code>id()</code> and <code>sys.getsizeof()</code>.</li>
+<li><strong>Complete the Graded Exercises</strong>: Use <code>python exercises/run.py --init</code> to create exercise stubs and test your solutions against hidden verification suites.</li>
 </ol>
+<hr>
 <h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
 
   <div class="code-block-wrapper">
@@ -1713,10 +1874,18 @@ flowchart TD
     <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch00.py stubs</span>
 python exercises/run.py 00       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
   </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch00.py</code>.</p>
+<hr>
+<h2 id="version-notes"><a href="#version-notes" class="header-anchor">#</a>Version Notes</h2><ul>
+<li><strong>Python 3.11</strong>: Introduced Adaptive Specializing Interpreter (PEP 659), replacing generic bytecode instructions with specialized variants at runtime (e.g., <code>BINARY_OP_ADD_INT</code>), giving 10–60% execution speedups.</li>
+<li><strong>Python 3.12</strong>: Implemented isolated per-interpreter GIL (PEP 684), allowing subinterpreters to run concurrently on separate CPU cores without GIL contention. Improved error messages with syntax suggestions.</li>
+<li><strong>Python 3.13</strong>: Introduced experimental free-threaded CPython build (<code>--disable-gil</code> / PEP 703) eliminating the Global Interpreter Lock, and introduced the experimental Tier-2 JIT compiler (PEP 744).</li>
+<li><strong>Python 3.14</strong>: Introduces deferred evaluation of annotations (PEP 649 / PEP 749) and template strings (<code>t-strings</code>, PEP 750) for secure query and markup construction.</li>
+</ul>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
-<li><a href="https://docs.python.org/3/reference/datamodel.html#objects-values-and-types">Python data model: objects, values and types</a></li>
-<li><a href="https://docs.python.org/3/tutorial/index.html">Python tutorial</a></li>
-<li><a href="https://nedbatchelder.com/text/names.html">Ned Batchelder: Facts and myths about Python names and values</a></li>
+<li><a href="https://docs.python.org/3/reference/datamodel.html#objects-values-and-types">Python Data Model: Objects, Values and Types</a></li>
+<li><a href="https://devguide.python.org/internals/exploring-the-cpython-source-code/">CPython Internals Source Guide (devguide.python.org)</a></li>
+<li><a href="https://nedbatchelder.com/text/names.html">Ned Batchelder: Facts and Myths about Python Names and Values</a></li>
 </ul>
 <hr>
 <h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
@@ -1751,7 +1920,7 @@ python exercises/run.py 00       <span class="hljs-comment"># run the hidden tes
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="toc-link">0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</a></li><li class="toc-item level-3"><a href="#if-both-are-in-ram-why-do-we-need-two-separate-things" class="toc-link">"If Both Are in RAM, Why Do We Need Two Separate Things?"</a></li><li class="toc-item level-3"><a href="#wait-what-software-engine-is-running-this-python-vs-cpython" class="toc-link">"Wait, What Software Engine is Running This?" (Python vs. CPython)</a></li><li class="toc-item level-2"><a href="#1-the-3-golden-rules-of-python-s-mental-model" class="toc-link">1. The 3 Golden Rules of Python's Mental Model</a></li><li class="toc-item level-3"><a href="#rule-2-demystified-the-sticky-nametag-storage-tray" class="toc-link">Rule 2 Demystified: The Sticky Nametag & Storage Tray</a></li><li class="toc-item level-3"><a href="#rule-3-demystified-blueprints-vs-objects-where-did-my-dog-come-from" class="toc-link">Rule 3 Demystified: Blueprints vs. Objects (Where Did 'my_dog' Come From?)</a></li><li class="toc-item level-2"><a href="#2-the-master-architecture-map-of-track-1" class="toc-link">2. The Master Architecture Map of Track 1</a></li><li class="toc-item level-2"><a href="#3-the-10-question-intuition-self-diagnostic" class="toc-link">3. The 10-Question Intuition Self-Diagnostic</a></li><li class="toc-item level-2"><a href="#4-your-learning-rhythm-how-to-study-without-burnout" class="toc-link">4. Your Learning Rhythm (How to Study Without Burnout)</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="toc-link">0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</a></li><li class="toc-item level-3"><a href="#if-both-are-in-ram-why-do-we-need-two-separate-things" class="toc-link">"If Both Are in RAM, Why Do We Need Two Separate Things?"</a></li><li class="toc-item level-3"><a href="#wait-what-software-engine-is-running-this-python-vs-cpython" class="toc-link">"Wait, What Software Engine is Running This?" (Python vs. CPython)</a></li><li class="toc-item level-2"><a href="#1-prerequisite-ladder-learning-milestones" class="toc-link">1. Prerequisite Ladder & Learning Milestones</a></li><li class="toc-item level-3"><a href="#estimated-study-time-curriculum-matrix" class="toc-link">Estimated Study Time & Curriculum Matrix</a></li><li class="toc-item level-2"><a href="#2-comprehensive-python-systems-glossary" class="toc-link">2. Comprehensive Python Systems Glossary</a></li><li class="toc-item level-2"><a href="#3-the-3-golden-rules-of-python-s-mental-model" class="toc-link">3. The 3 Golden Rules of Python's Mental Model</a></li><li class="toc-item level-3"><a href="#rule-1-variables-are-sticky-nametags-not-storage-boxes" class="toc-link">Rule 1: Variables Are Sticky Nametags, NOT Storage Boxes</a></li><li class="toc-item level-3"><a href="#rule-2-multiple-nametags-can-stick-to-the-exact-same-tray" class="toc-link">Rule 2: Multiple Nametags Can Stick to the Exact Same Tray</a></li><li class="toc-item level-3"><a href="#rule-3-methods-live-on-the-class-blueprint-not-the-instance" class="toc-link">Rule 3: Methods Live on the Class Blueprint, NOT the Instance</a></li><li class="toc-item level-2"><a href="#4-the-master-architecture-map-of-track-1" class="toc-link">4. The Master Architecture Map of Track 1</a></li><li class="toc-item level-2"><a href="#5-diagnostic-placement-quiz" class="toc-link">5. Diagnostic Placement Quiz</a></li><li class="toc-item level-3"><a href="#placement-scoring-study-pathways" class="toc-link">Placement Scoring & Study Pathways</a></li><li class="toc-item level-2"><a href="#6-your-learning-rhythm-how-to-study-without-burnout" class="toc-link">6. Your Learning Rhythm (How to Study Without Burnout)</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#version-notes" class="toc-link">Version Notes</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

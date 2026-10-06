@@ -1,5 +1,10 @@
 # Chapter 3: Functions, Scopes, Closures & Advanced Decorators
 
+> **What you will be able to do:** Implement production-grade decorators that preserve function signatures with `functools.wraps`, inspect closure cell objects (`PyCellObject`) in `__closure__`, master lexical scoping rules (LEGB), and build parameterized and class-based decorators.
+> **What you must already know:** Chapter 01 first-class functions and name binding inside stack frames.
+
+---
+
 > **Core Learning Objective:** Master the execution mechanics of Python functions as first-class citizens. Understand LEGB scope resolution, cell objects, lexical closures, generator delegation (`yield from`), and craft production-grade decorators (retries with exponential backoff, rate limiters, and caching).
 
 ---

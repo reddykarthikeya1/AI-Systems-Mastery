@@ -1,5 +1,10 @@
 # Chapter 19: Compiled Native Extensions with Rust & PyO3
 
+> **What you will be able to do:** Write high-performance native extensions in Rust using PyO3 and `maturin`, expose Rust structs and methods as Python classes, manage memory safety across the C-ABI boundary, and release the GIL for true multi-threaded CPU parallelization.
+> **What you must already know:** Chapter 05 CPython memory model and basic systems programming concepts.
+
+---
+
 > **Zero-Prerequisite Intuition: The "Formula 1 Engine Swap"**
 > Why do we need another language when Python is so enjoyable to write?
 > 
@@ -382,6 +387,14 @@ print(f"First 4 bytes after:  {list(data[:4])}")
 | **Releasing the GIL** | Giving the microphone to someone else while you run | `py.allow_threads` frees the event loop while Rayon saturates all CPU cores |
 | **Buffer Protocol** | Sharing a book on a table instead of photocopying it | Direct pointer manipulation; zero-copy in-place array transformations |
 | **Thread Safety** | Never touch Python objects without a badge | Background Rust threads must call `Python::with_gil()` before invoking Python callbacks |
+
+
+## Version Notes
+
+- **Python 3.11**: Compact object headers reduce memory footprint of `PyObject` and strings across the FFI boundary.
+- **Python 3.12**: Introduction of the Unstable C-API tier (`PyUnstable_`) and expansion of the Limited API / Stable ABI (`Py_LIMITED_API`).
+- **Python 3.13**: PyO3 0.22+ adds native support for free-threaded Python builds (`Py_mod_gil`), enabling Rust extensions to run completely free of the GIL.
+- **Python 3.14**: Stable ABI expansion guarantees binary extension compatibility across multiple future Python releases without recompilation.
 
 
 ## Exercises

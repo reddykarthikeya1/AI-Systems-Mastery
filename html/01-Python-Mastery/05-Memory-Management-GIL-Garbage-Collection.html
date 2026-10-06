@@ -1243,6 +1243,11 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-5-memory-management-cpython-internals-gil-garbage-collection"><a href="#chapter-5-memory-management-cpython-internals-gil-garbage-collection" class="header-anchor">#</a>Chapter 5: Memory Management, CPython Internals, GIL & Garbage Collection</h1><blockquote>
+<p><strong>What you will be able to do:</strong> Trace CPython&#39;s hierarchical memory allocator (arenas, pools, blocks), diagnose circular reference leaks unreachable by reference counting, tune generational GC thresholds, and articulate the exact mechanics and boundaries of the Global Interpreter Lock (GIL).
+<strong>What you must already know:</strong> Chapter 01 <code>ob_refcnt</code> mechanics and Chapter 04 instance <code>__dict__</code> layouts.</p>
+</blockquote>
+<hr>
+<blockquote>
 <p><strong>Core Learning Objective:</strong> Uncover the deepest runtime systems of CPython. Understand PyMalloc pools and arenas, the mechanics of reference counting, the cyclical generational garbage collector, the Global Interpreter Lock (GIL), and how to optimize memory using <code>__slots__</code> and <code>weakref</code>.</p>
 </blockquote>
 <hr>

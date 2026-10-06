@@ -1,5 +1,10 @@
 # Chapter 17: Next-Gen Columnar Data Engineering (Polars & DuckDB)
 
+> **What you will be able to do:** Process multi-gigabyte datasets 10x-50x faster than Pandas using Apache Arrow columnar memory, construct lazy query execution plans with Polars, execute in-process analytical SQL on Parquet files with DuckDB, and manage out-of-core memory streaming.
+> **What you must already know:** Tabular data analysis basics and Chapter 02 CPU cache locality principles.
+
+---
+
 > **Zero-Prerequisite Intuition: The "Index Card Box vs The Microfiche Spool"**
 > How do computers process large spreadsheets and tables?
 > 
@@ -312,6 +317,13 @@ print(result_arrow)
 | **Streaming Mode** | Drinking water in sips instead of the entire bucket | `collect(streaming=True)` processes datasets larger than RAM with flat memory |
 | **DuckDB Engine** | SQLite for analytical aggregation | Embed inside Python; execute SQL directly on Parquet and Polars with zero copy |
 | **Loop Materialization** | Never rebuild the house 4 times | Never call `.collect()` in loops; compute in one unified execution graph |
+
+
+## Version Notes
+
+- **Python 3.11**: Buffer protocol enhancements and memoryview slice performance improvements.
+- **Python 3.12**: Buffer protocol exposed directly to Python code (PEP 688 / `collections.abc.Buffer`), allowing custom objects to expose raw memory to Polars and DuckDB.
+- **Python 3.13**: Free-threaded CPython enables seamless multi-threaded Arrow table transformations without GIL contention.
 
 
 ## Exercises

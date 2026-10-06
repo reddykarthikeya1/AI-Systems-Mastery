@@ -1,5 +1,10 @@
 # Chapter 10: Production Debugging, Profiling & Memory Leaks Lab
 
+> **What you will be able to do:** Profile CPU bottlenecks in production using deterministic (`cProfile`) and statistical sampling (`py-spy`) profilers, trace heap memory leaks using `tracemalloc` and `memray`, and diagnose production deadlocks with GDB and post-mortem dumps.
+> **What you must already know:** Chapter 05 memory allocator architecture and Chapter 06 thread synchronization.
+
+---
+
 > **The Difference Between Junior and Principal Engineers**
 > Anyone can write code that works under ideal conditions. A senior engineer shines when code is burning in production: CPU usage is pegged at 100%, memory consumption creeps steadily toward an Out-Of-Memory (OOM) kernel kill, or worker threads mysteriously freeze in an undetectable deadlock.
 > 
@@ -310,6 +315,14 @@ You can immediately identify:
 1. **Always use context managers** (`with lock:`) for acquiring locks, but establish a strict **global lock acquisition order** (e.g., sort locks by ID before acquiring) to mathematically eliminate deadlocks.
 2. **Never use unbound callbacks or caches** without `weakref` or TTL/LRU eviction policies.
 3. Keep `faulthandler` registered in production servers (`faulthandler.register(signal.SIGUSR1)`) so you can trigger live thread stack dumps on running Kubernetes pods without restarting them!
+
+
+## Version Notes
+
+- **Python 3.11**: Zero-cost exceptions (exceptions cost nothing unless raised) and enhanced tracebacks with column spans (`^^^`) accelerate root-cause triage.
+- **Python 3.12**: Low-overhead monitoring API (PEP 669 / `sys.monitoring`) replaces legacy `sys.settrace()`, enabling production-grade CPU profilers and code coverage tools with near-zero overhead.
+- **Python 3.13**: Memory allocator enhancements support mimalloc, and memory profiling tools (`memray`, `tracemalloc`) add support for free-threaded multi-threaded heaps.
+- **Python 3.14**: Remote process inspection improvements and enhanced crash-handler telemetry for post-mortem diagnostics.
 
 
 ## Exercises

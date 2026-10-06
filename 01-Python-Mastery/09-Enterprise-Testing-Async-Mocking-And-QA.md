@@ -1,5 +1,10 @@
 # Chapter 09: Enterprise Testing, Async Mocking Traps & Quality Assurance
 
+> **What you will be able to do:** Write comprehensive test suites using `pytest`, design isolated fixtures, mock synchronous and asynchronous dependencies safely without leaking state, implement property-based tests with `hypothesis`, and enforce mutation testing coverage.
+> **What you must already know:** Chapter 03 decorators, Chapter 06 asyncio tasks, and standard unit testing conventions.
+
+---
+
 > **Zero-Prerequisite Intuition: The "Movie Stunt Double" Metaphor**
 > What is automated testing, and why do we "mock"?
 > 

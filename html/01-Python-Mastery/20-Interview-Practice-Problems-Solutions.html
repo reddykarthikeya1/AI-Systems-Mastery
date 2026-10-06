@@ -1243,20 +1243,57 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-20-staff-python-engineering-interview-challenges-deep-solutions"><a href="#chapter-20-staff-python-engineering-interview-challenges-deep-solutions" class="header-anchor">#</a>Chapter 20: Staff Python Engineering Interview Challenges & Deep Solutions</h1><blockquote>
-<p><strong>Core Learning Objective:</strong> Test, solidify, and demonstrate mastery through real-world Product-Based Company (Google, Meta, Uber, Stripe) advanced Python interview problems. Every solution includes architectural commentary, common pitfalls, and complete runnable code.</p>
+<p><strong>What you will be able to do:</strong> Solve complex algorithmic and systems design coding challenges tested at top tech companies, benchmark runtime and space complexity, avoid subtle CPython runtime traps, and score top marks against leveled rubrics from Junior to Staff level.
+<strong>What you must already know:</strong> Core algorithms, data structures (Ch 02), closures (Ch 03), and memory mechanics (Ch 05).</p>
 </blockquote>
 <hr>
-<h2 id="challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="header-anchor">#</a>Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Implement a bounded FIFO queue supporting <code>put(item, timeout)</code> and <code>get(timeout)</code>.</p>
+<blockquote>
+<p><strong>Core Learning Objective:</strong> Test, solidify, and demonstrate mastery through real-world Product-Based Company (Google, Meta, Uber, Stripe) advanced Python interview problems. Every solution includes architectural commentary, leveled interview rubrics, interviewer follow-ups, and complete runnable code.</p>
+</blockquote>
+<hr>
+<h2 id="1-staff-interview-evaluation-framework"><a href="#1-staff-interview-evaluation-framework" class="header-anchor">#</a>1. Staff Interview Evaluation Framework</h2><p>Top tech companies do not just evaluate whether your code runs; they evaluate the <strong>depth of your mental model</strong>. Responses are graded against four distinct tiers:</p>
+
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    Tier1["&lt;b&gt;Tier 1: Junior (Reject/Borderline)&lt;/b&gt;&lt;br/&gt;Focuses only on basic syntax; ignores algorithmic complexity, edge cases, and memory overhead."] --&gt; Tier2
+    Tier2["&lt;b&gt;Tier 2: Mid-Level (Hire)&lt;/b&gt;&lt;br/&gt;Produces working code; accurately states Big-O; handles basic edge cases; uses idiomatic Python."] --&gt; Tier3
+    Tier3["&lt;b&gt;Tier 3: Senior (Strong Hire)&lt;/b&gt;&lt;br/&gt;Optimizes for CPU cache locality and memory layout; considers thread safety, race conditions, and error recovery."] --&gt; Tier4
+    Tier4["&lt;b&gt;Tier 4: Staff / Principal (Distinguished Hire)&lt;/b&gt;&lt;br/&gt;Articulates CPython runtime internals (GIL, obmalloc, bytecode, MRO); navigates distributed scale trade-offs; designs extensible zero-overhead abstractions."]
+</div>
+      </div>
+    </div><hr>
+<h2 id="2-leveled-interview-challenges-foundations-to-staff-systems"><a href="#2-leveled-interview-challenges-foundations-to-staff-systems" class="header-anchor">#</a>2. Leveled Interview Challenges: Foundations to Staff Systems</h2><hr>
+<h3 id="challenge-1-junior-to-mid-the-thread-safe-bounded-blocking-queue"><a href="#challenge-1-junior-to-mid-the-thread-safe-bounded-blocking-queue" class="header-anchor">#</a>Challenge 1 (Junior to Mid): The Thread-Safe Bounded Blocking Queue</h3><h4 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h4><p>Implement a bounded FIFO queue supporting <code>put(item, timeout)</code> and <code>get(timeout)</code>.</p>
 <ul>
 <li>If the queue is full, <code>put()</code> must block until a slot becomes free or timeout expires.</li>
 <li>If the queue is empty, <code>get()</code> must block until an item is available or timeout expires.</li>
-<li><strong>Constraint:</strong> You <strong>cannot</strong> use <code>queue.Queue</code>. You must build it using only <code>threading.Lock</code> and <code>threading.Condition</code>.</li>
+<li><strong>Constraint:</strong> You cannot use <code>queue.Queue</code>. You must build it using only <code>threading.Lock</code> and <code>threading.Condition</code>.</li>
 </ul>
-<h3 id="common-pitfalls"><a href="#common-pitfalls" class="header-anchor">#</a>Common Pitfalls</h3><ul>
-<li>Using <code>if</code> instead of <code>while</code> when checking conditions (susceptible to spurious wakeups!).</li>
-<li>Not releasing locks during wait timeouts.</li>
+<h4 id="leveled-evaluation-rubric"><a href="#leveled-evaluation-rubric" class="header-anchor">#</a>Leveled Evaluation Rubric</h4><ul>
+<li><strong>Junior Answer</strong>: Uses a simple <code>threading.Lock</code> with <code>time.sleep()</code> polling inside a while loop (busy-wait CPU burn).</li>
+<li><strong>Mid-Level Answer</strong>: Uses <code>threading.Condition</code> with <code>wait()</code> and <code>notify()</code>, but uses <code>if len(queue) &gt;= capacity</code> instead of <code>while</code> (susceptible to spurious wakeups).</li>
+<li><strong>Senior Answer</strong>: Uses <code>while</code> loops around condition waits, computes monotonic deadlines accurately, and notifies waiting threads appropriately.</li>
+<li><strong>Staff Answer</strong>: Uses two distinct conditions (<code>not_full</code>, <code>not_empty</code>) bound to a single lock to avoid notifying the wrong waiting thread class, explains the CPython condition variable implementation, and prevents lock convoying.</li>
 </ul>
-<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+<h4 id="runnable-model-solution"><a href="#runnable-model-solution" class="header-anchor">#</a>Runnable Model Solution</h4>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1278,107 +1315,63 @@ T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
         <span class="hljs-variable language_">self</span>.capacity = capacity
         <span class="hljs-variable language_">self</span>.queue: <span class="hljs-built_in">list</span>[T] = []
         <span class="hljs-variable language_">self</span>.lock = threading.Lock()
-        
-        <span class="hljs-comment"># Conditions tied to the single mutex</span>
         <span class="hljs-variable language_">self</span>.not_full = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
         <span class="hljs-variable language_">self</span>.not_empty = threading.Condition(<span class="hljs-variable language_">self</span>.lock)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, item: T, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
-        <span class="hljs-string">&quot;&quot;&quot;
-        Pushes an item into the queue. Blocks if full.
-        Returns True on success, False if timed out.
-        &quot;&quot;&quot;</span>
         deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
-
         <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
-            <span class="hljs-comment"># MUST use &#x27;while&#x27; to guard against spurious wakeups</span>
             <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) &gt;= <span class="hljs-variable language_">self</span>.capacity:
                 <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
                     remaining = deadline - time.monotonic()
                     <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Timed out</span>
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
                     <span class="hljs-variable language_">self</span>.not_full.wait(timeout=remaining)
                 <span class="hljs-keyword">else</span>:
                     <span class="hljs-variable language_">self</span>.not_full.wait()
-
             <span class="hljs-variable language_">self</span>.queue.append(item)
-            <span class="hljs-comment"># Notify waiting consumers that an item is now ready</span>
             <span class="hljs-variable language_">self</span>.not_empty.notify()
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, timeout: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-type">Optional</span>[T]:
-        <span class="hljs-string">&quot;&quot;&quot;
-        Pops the oldest item from the queue. Blocks if empty.
-        Returns the item, or None if timed out.
-        &quot;&quot;&quot;</span>
         deadline = time.monotonic() + timeout <span class="hljs-keyword">if</span> timeout <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
-
         <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
             <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) == <span class="hljs-number">0</span>:
                 <span class="hljs-keyword">if</span> deadline <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
                     remaining = deadline - time.monotonic()
                     <span class="hljs-keyword">if</span> remaining &lt;= <span class="hljs-number">0</span>:
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-comment"># Timed out</span>
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
                     <span class="hljs-variable language_">self</span>.not_empty.wait(timeout=remaining)
                 <span class="hljs-keyword">else</span>:
                     <span class="hljs-variable language_">self</span>.not_empty.wait()
-
             item = <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)
-            <span class="hljs-comment"># Notify waiting producers that a slot has freed up</span>
             <span class="hljs-variable language_">self</span>.not_full.notify()
             <span class="hljs-keyword">return</span> item
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
-            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
-
-<span class="hljs-comment"># Verification Test</span>
+<span class="hljs-comment"># Verification</span>
 bq = BoundedBlockingQueue[<span class="hljs-built_in">str</span>](capacity=<span class="hljs-number">2</span>)
-bq.put(<span class="hljs-string">&quot;Message 1&quot;</span>)
-bq.put(<span class="hljs-string">&quot;Message 2&quot;</span>)
-<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.2</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Blocked &amp; timed out</span>
-<span class="hljs-keyword">assert</span> bq.get() == <span class="hljs-string">&quot;Message 1&quot;</span>                   <span class="hljs-comment"># Freed slot</span>
-<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Message 3&quot;</span>, timeout=<span class="hljs-number">0.1</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Succeeded!</span>
-<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;BoundedBlockingQueue passed all concurrency verifications!&quot;</span>)</code></pre>
-  </div><hr>
-<h2 id="challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="header-anchor">#</a>Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>In high-throughput microservices, writing single events to a database or Kafka causes network bottlenecking.
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Msg1&quot;</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Msg2&quot;</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Msg3&quot;</span>, timeout=<span class="hljs-number">0.05</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>
+<span class="hljs-keyword">assert</span> bq.get() == <span class="hljs-string">&quot;Msg1&quot;</span>
+<span class="hljs-keyword">assert</span> bq.put(<span class="hljs-string">&quot;Msg3&quot;</span>, timeout=<span class="hljs-number">0.05</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span></code></pre>
+  </div><h4 id="interviewer-follow-up-twists"><a href="#interviewer-follow-up-twists" class="header-anchor">#</a>Interviewer Follow-Up Twists</h4><ul>
+<li><em>“Why is <code>queue.pop(0)</code> suboptimal here, and what CPython data structure should replace it?”</em><br><strong>Answer</strong>: <code>list.pop(0)</code> is $O(N)$ due to memory shifts. Replace with <code>collections.deque</code> ($O(1)$) or circular ring buffer array.</li>
+</ul>
+<hr>
+<h3 id="challenge-2-mid-to-senior-asynchronous-batching-buffer"><a href="#challenge-2-mid-to-senior-asynchronous-batching-buffer" class="header-anchor">#</a>Challenge 2 (Mid to Senior): Asynchronous Batching Buffer</h3><h4 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h4><p>In high-throughput microservices, writing single events to a database or message broker causes network bottlenecking.
 Implement an <code>AsyncBatcher</code> that collects incoming items and automatically flushes them in batches whenever:</p>
 <ol>
 <li><code>max_batch_size</code> items have accumulated, <strong>OR</strong></li>
 <li><code>max_wait_seconds</code> have elapsed since the earliest buffered item.</li>
 </ol>
-
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    participant Producer as Concurrent Request Coroutines
-    participant Batcher as AsyncBatcher
-    participant DB as Database / Downstream API
-
-    Producer-&gt;&gt;Batcher: push("event_1")
-    Producer-&gt;&gt;Batcher: push("event_2")
-    Note over Batcher: Timer expires (max_wait_seconds) OR batch size reached
-    Batcher-&gt;&gt;DB: flush_batch(["event_1", "event_2"])
-</div>
-      </div>
-    </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+<h4 id="leveled-evaluation-rubric"><a href="#leveled-evaluation-rubric" class="header-anchor">#</a>Leveled Evaluation Rubric</h4><ul>
+<li><strong>Junior Answer</strong>: Launches an uncoordinated <code>asyncio.sleep()</code> background task for every single item pushed, causing task explosion.</li>
+<li><strong>Mid-Level Answer</strong>: Buffers items in a list, checks size on push, and uses a single timer task, but has race conditions when timer and push fire concurrently.</li>
+<li><strong>Senior Answer</strong>: Uses <code>asyncio.Lock</code> to coordinate pushes and flushes; resets the timer cleanly upon size-triggered flush; handles background task cancellation on shutdown.</li>
+<li><strong>Staff Answer</strong>: Decouples batch collection from flush execution using worker queues, bounds memory consumption under downstream backpressure, and guarantees zero message loss during graceful process SIGTERM.</li>
+</ul>
+<h4 id="runnable-model-solution"><a href="#runnable-model-solution" class="header-anchor">#</a>Runnable Model Solution</h4>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1393,24 +1386,16 @@ sequenceDiagram
 T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">AsyncBatcher</span>(<span class="hljs-type">Generic</span>[T]):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
-        self,
-        batch_size: <span class="hljs-built_in">int</span>,
-        wait_seconds: <span class="hljs-built_in">float</span>,
-        flush_handler: <span class="hljs-type">Callable</span>[[<span class="hljs-type">List</span>[T]], Awaitable[<span class="hljs-literal">None</span>]]
-    </span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, batch_size: <span class="hljs-built_in">int</span>, wait_seconds: <span class="hljs-built_in">float</span>, flush_handler: <span class="hljs-type">Callable</span>[[<span class="hljs-type">List</span>[T]], Awaitable[<span class="hljs-literal">None</span>]]</span>):
         <span class="hljs-variable language_">self</span>.batch_size = batch_size
         <span class="hljs-variable language_">self</span>.wait_seconds = wait_seconds
         <span class="hljs-variable language_">self</span>.flush_handler = flush_handler
-        
         <span class="hljs-variable language_">self</span>._buffer: <span class="hljs-type">List</span>[T] = []
         <span class="hljs-variable language_">self</span>._lock = asyncio.Lock()
-        <span class="hljs-variable language_">self</span>._flush_event = asyncio.Event()
         <span class="hljs-variable language_">self</span>._timer_task: asyncio.Task | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
         <span class="hljs-variable language_">self</span>._running = <span class="hljs-literal">True</span>
 
     <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Starts the background timer loop.&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._timer_task = asyncio.create_task(<span class="hljs-variable language_">self</span>._timer_loop())
 
     <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_timer_loop</span>(<span class="hljs-params">self</span>):
@@ -1431,7 +1416,6 @@ T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
             <span class="hljs-keyword">return</span>
         to_flush = <span class="hljs-variable language_">self</span>._buffer[:]
         <span class="hljs-variable language_">self</span>._buffer.clear()
-        <span class="hljs-comment"># Execute handler without holding lock on subsequent pushes</span>
         asyncio.create_task(<span class="hljs-variable language_">self</span>.flush_handler(to_flush))
 
     <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown</span>(<span class="hljs-params">self</span>):
@@ -1441,28 +1425,23 @@ T = TypeVar(<span class="hljs-string">&quot;T&quot;</span>)
         <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
             <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._flush_internal()
 
-<span class="hljs-comment"># Verification Test</span>
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">db_writer</span>(<span class="hljs-params">batch: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>):
-    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[DB Flush] Flushed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(batch)}</span> items: <span class="hljs-subst">{batch}</span>&quot;</span>)
+<span class="hljs-comment"># Verification</span>
+flushed_batches = []
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">mock_sink</span>(<span class="hljs-params">batch</span>): flushed_batches.append(batch)
 
-<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">run_batcher_test</span>():
-    batcher = AsyncBatcher[<span class="hljs-built_in">str</span>](batch_size=<span class="hljs-number">3</span>, wait_seconds=<span class="hljs-number">0.5</span>, flush_handler=db_writer)
-    <span class="hljs-keyword">await</span> batcher.start()
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_batcher</span>():
+    b = AsyncBatcher[<span class="hljs-built_in">int</span>](batch_size=<span class="hljs-number">3</span>, wait_seconds=<span class="hljs-number">0.1</span>, flush_handler=mock_sink)
+    <span class="hljs-keyword">await</span> b.start()
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>): <span class="hljs-keyword">await</span> b.push(i)
+    <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">0.15</span>)
+    <span class="hljs-keyword">await</span> b.shutdown()
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(flushed_batches) == <span class="hljs-number">2</span>
+    <span class="hljs-keyword">assert</span> flushed_batches[<span class="hljs-number">0</span>] == [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+    <span class="hljs-keyword">assert</span> flushed_batches[<span class="hljs-number">1</span>] == [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
 
-    <span class="hljs-comment"># Rapid push: should trigger size-based flush</span>
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e1&quot;</span>)
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e2&quot;</span>)
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e3&quot;</span>) <span class="hljs-comment"># 3 items -&gt; Flushes immediately</span>
-
-    <span class="hljs-comment"># Slow push: should trigger timer-based flush</span>
-    <span class="hljs-keyword">await</span> batcher.push(<span class="hljs-string">&quot;e4&quot;</span>)
-    <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">0.7</span>) <span class="hljs-comment"># Exceeds 0.5s -&gt; Flushes e4</span>
-
-    <span class="hljs-keyword">await</span> batcher.shutdown()
-
-asyncio.run(run_batcher_test())</code></pre>
+asyncio.run(test_batcher())</code></pre>
   </div><hr>
-<h2 id="challenge-3-metaprogramming-fluent-dynamic-http-api-client"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="header-anchor">#</a>Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Construct an SDK client such that dynamic chained method calls automatically format and route REST requests without defining hardcoded methods:</p>
+<h3 id="challenge-3-senior-dynamic-fluent-http-api-client"><a href="#challenge-3-senior-dynamic-fluent-http-api-client" class="header-anchor">#</a>Challenge 3 (Senior): Dynamic Fluent HTTP API Client</h3><h4 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h4><p>Construct an SDK client such that dynamic chained method calls automatically format and route REST requests without defining hardcoded methods:</p>
 
   <div class="code-block-wrapper">
     <div class="code-header">
@@ -1472,10 +1451,15 @@ asyncio.run(run_batcher_test())</code></pre>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># Desired interface:</span>
-client.users(<span class="hljs-number">123</span>).orders.get(status=<span class="hljs-string">&quot;active&quot;</span>)
+    <pre><code class="hljs language-python">client.users(<span class="hljs-number">123</span>).orders.get(status=<span class="hljs-string">&quot;active&quot;</span>)
 <span class="hljs-comment"># Translates to: GET /users/123/orders?status=active</span></code></pre>
-  </div><h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+  </div><h4 id="leveled-evaluation-rubric"><a href="#leveled-evaluation-rubric" class="header-anchor">#</a>Leveled Evaluation Rubric</h4><ul>
+<li><strong>Junior Answer</strong>: Hardcodes dictionary routing or attempts nested subclass definitions.</li>
+<li><strong>Mid-Level Answer</strong>: Overrides <code>__getattr__</code> on a single class, but mutates an internal list in-place, making concurrent client calls corrupt each other&#39;s paths.</li>
+<li><strong>Senior Answer</strong>: Uses immutable chained builder instances where every <code>__getattr__</code> and <code>__call__</code> returns a <em>new</em> instance with appended segments.</li>
+<li><strong>Staff Answer</strong>: Implements <code>__repr__</code> for clean debugging, supports custom URL encoders, handles trailing slashes and path sanitization, and implements <code>__dir__</code> for dynamic REPL autocomplete introspection.</li>
+</ul>
+<h4 id="runnable-model-solution"><a href="#runnable-model-solution" class="header-anchor">#</a>Runnable Model Solution</h4>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1489,29 +1473,19 @@ client.users(<span class="hljs-number">123</span>).orders.get(status=<span class
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">APIEndpoint</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span>, segments: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>):
         <span class="hljs-variable language_">self</span>._base_url = base_url.rstrip(<span class="hljs-string">&quot;/&quot;</span>)
-        <span class="hljs-variable language_">self</span>._segments = segments
+        <span class="hljs-variable language_">self</span>._segments = <span class="hljs-built_in">tuple</span>(segments)  <span class="hljs-comment"># Immutable tuple prevents shared state bugs</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
-        <span class="hljs-comment"># Chain URL path segments</span>
-        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + [name])
+        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-built_in">list</span>(<span class="hljs-variable language_">self</span>._segments) + [name])
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, *args</span>) -&gt; <span class="hljs-string">&quot;APIEndpoint&quot;</span>:
-        <span class="hljs-comment"># Supports path parameters like .users(123)</span>
         str_args = [<span class="hljs-built_in">str</span>(arg) <span class="hljs-keyword">for</span> arg <span class="hljs-keyword">in</span> args]
-        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-variable language_">self</span>._segments + str_args)
+        <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>._base_url, <span class="hljs-built_in">list</span>(<span class="hljs-variable language_">self</span>._segments) + str_args)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, **params</span>) -&gt; <span class="hljs-built_in">dict</span>:
         path = <span class="hljs-string">&quot;/&quot;</span>.join(<span class="hljs-variable language_">self</span>._segments)
         query = <span class="hljs-string">f&quot;?<span class="hljs-subst">{urlencode(params)}</span>&quot;</span> <span class="hljs-keyword">if</span> params <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
-        full_url = <span class="hljs-string">f&quot;<span class="hljs-subst">{self._base_url}</span>/<span class="hljs-subst">{path}</span><span class="hljs-subst">{query}</span>&quot;</span>
-        
-        <span class="hljs-comment"># Simulate execution</span>
-        <span class="hljs-keyword">return</span> {
-            <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;GET&quot;</span>,
-            <span class="hljs-string">&quot;url&quot;</span>: full_url,
-            <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,
-            <span class="hljs-string">&quot;simulated_response&quot;</span>: <span class="hljs-string">f&quot;Payload from <span class="hljs-subst">{full_url}</span>&quot;</span>
-        }
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">f&quot;<span class="hljs-subst">{self._base_url}</span>/<span class="hljs-subst">{path}</span><span class="hljs-subst">{query}</span>&quot;</span>}
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">DynamicAPIClient</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, base_url: <span class="hljs-built_in">str</span></span>):
@@ -1520,22 +1494,23 @@ client.users(<span class="hljs-number">123</span>).orders.get(status=<span class
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>) -&gt; APIEndpoint:
         <span class="hljs-keyword">return</span> APIEndpoint(<span class="hljs-variable language_">self</span>.base_url, [name])
 
-client = DynamicAPIClient(<span class="hljs-string">&quot;https://api.cloudplatform.com/v1&quot;</span>)
-res1 = client.users(<span class="hljs-number">42</span>).profiles.get(fields=<span class="hljs-string">&quot;email,name&quot;</span>)
-<span class="hljs-built_in">print</span>(res1)
-<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/users/42/profiles?fields=email%2Cname&#x27;, ...}</span>
-
-res2 = client.billing.invoices(<span class="hljs-string">&quot;2026-Q1&quot;</span>).download.get()
-<span class="hljs-built_in">print</span>(res2)
-<span class="hljs-comment"># Output: {&#x27;method&#x27;: &#x27;GET&#x27;, &#x27;url&#x27;: &#x27;https://api.cloudplatform.com/v1/billing/invoices/2026-Q1/download&#x27;, ...}</span></code></pre>
+client = DynamicAPIClient(<span class="hljs-string">&quot;https://api.cloud.corp/v1&quot;</span>)
+res = client.users(<span class="hljs-number">42</span>).profiles.get(fields=<span class="hljs-string">&quot;email,name&quot;</span>)
+<span class="hljs-keyword">assert</span> res[<span class="hljs-string">&quot;url&quot;</span>] == <span class="hljs-string">&quot;https://api.cloud.corp/v1/users/42/profiles?fields=email%2Cname&quot;</span></code></pre>
   </div><hr>
-<h2 id="challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="header-anchor">#</a>Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</h2><h3 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h3><p>Create a context manager <code>@profile_scope</code> that measures:</p>
+<h3 id="challenge-4-senior-to-staff-re-entrant-profiling-context-manager-decorator"><a href="#challenge-4-senior-to-staff-re-entrant-profiling-context-manager-decorator" class="header-anchor">#</a>Challenge 4 (Senior to Staff): Re-entrant Profiling Context Manager & Decorator</h3><h4 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h4><p>Create a utility <code>@profile_scope</code> that measures:</p>
 <ol>
-<li>Exact wall-clock elapsed time (using <code>time.perf_counter_ns</code>).</li>
-<li>Net RAM allocated during the block (using <code>tracemalloc</code>).</li>
-<li>Supports both <code>with</code> block syntax AND <code>@decorator</code> syntax seamlessly.</li>
+<li>Exact elapsed wall-clock time in milliseconds (<code>time.perf_counter_ns</code>).</li>
+<li>Net RAM allocated during the block in kilobytes (<code>tracemalloc</code>).</li>
+<li>Seamlessly supports both <code>with</code> block syntax AND <code>@decorator</code> syntax.</li>
 </ol>
-<h3 id="optimal-implementation"><a href="#optimal-implementation" class="header-anchor">#</a>Optimal Implementation</h3>
+<h4 id="leveled-evaluation-rubric"><a href="#leveled-evaluation-rubric" class="header-anchor">#</a>Leveled Evaluation Rubric</h4><ul>
+<li><strong>Junior Answer</strong>: Writes a bare function timer without <code>tracemalloc</code> and without supporting both <code>with</code> and <code>@</code>.</li>
+<li><strong>Mid-Level Answer</strong>: Implements <code>__enter__</code> and <code>__exit__</code>, and duplicates logic in a decorator function wrapper using <code>functools.wraps</code>.</li>
+<li><strong>Senior Answer</strong>: Inherits from <code>contextlib.ContextDecorator</code> to get dual syntax for free; captures baseline and comparison tracemalloc snapshots.</li>
+<li><strong>Staff Answer</strong>: Analyzes tracemalloc overhead in high-throughput environments, manages nested profile scopes safely, and accounts for garbage collection runs distorting net allocation metrics during the measured block.</li>
+</ul>
+<h4 id="runnable-model-solution"><a href="#runnable-model-solution" class="header-anchor">#</a>Runnable Model Solution</h4>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1546,7 +1521,6 @@ res2 = client.billing.invoices(<span class="hljs-string">&quot;2026-Q1&quot;</sp
     </div>
     <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">import</span> tracemalloc
-<span class="hljs-keyword">import</span> functools
 <span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> ContextDecorator
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">profile_scope</span>(<span class="hljs-title class_ inherited__">ContextDecorator</span>):
@@ -1560,42 +1534,155 @@ res2 = client.billing.invoices(<span class="hljs-string">&quot;2026-Q1&quot;</sp
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__exit__</span>(<span class="hljs-params">self, exc_type, exc_val, exc_tb</span>):
-        elapsed_ns = time.perf_counter_ns() - <span class="hljs-variable language_">self</span>.start_time
-        elapsed_ms = elapsed_ns / <span class="hljs-number">1_000_000</span>
-
+        elapsed_ms = (time.perf_counter_ns() - <span class="hljs-variable language_">self</span>.start_time) / <span class="hljs-number">1_000_000</span>
         end_snapshot = tracemalloc.take_snapshot()
         stats = end_snapshot.compare_to(<span class="hljs-variable language_">self</span>.start_snapshot, <span class="hljs-string">&#x27;lineno&#x27;</span>)
-        total_memory_diff_kb = <span class="hljs-built_in">sum</span>(stat.size_diff <span class="hljs-keyword">for</span> stat <span class="hljs-keyword">in</span> stats) / <span class="hljs-number">1024</span>
+        total_kb = <span class="hljs-built_in">sum</span>(stat.size_diff <span class="hljs-keyword">for</span> stat <span class="hljs-keyword">in</span> stats) / <span class="hljs-number">1024</span>
         tracemalloc.stop()
+        <span class="hljs-variable language_">self</span>.elapsed_ms = elapsed_ms
+        <span class="hljs-variable language_">self</span>.net_memory_kb = total_kb
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{self.name}</span>] Wall-clock: <span class="hljs-subst">{elapsed_ms:<span class="hljs-number">.3</span>f}</span> ms | Net Memory: <span class="hljs-subst">{total_memory_diff_kb:+<span class="hljs-number">.2</span>f}</span> KB&quot;</span>)
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment"># Do not suppress exceptions</span>
+<span class="hljs-comment"># Verification</span>
+<span class="hljs-keyword">with</span> profile_scope(<span class="hljs-string">&quot;Allocation Test&quot;</span>) <span class="hljs-keyword">as</span> p:
+    data = [x ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">50_000</span>)]
+<span class="hljs-keyword">assert</span> p.elapsed_ms &gt; <span class="hljs-number">0</span></code></pre>
+  </div><hr>
+<h3 id="challenge-5-staff-systems-deadlock-free-multi-resource-lock-manager"><a href="#challenge-5-staff-systems-deadlock-free-multi-resource-lock-manager" class="header-anchor">#</a>Challenge 5 (Staff Systems): Deadlock-Free Multi-Resource Lock Manager</h3><h4 id="problem-statement"><a href="#problem-statement" class="header-anchor">#</a>Problem Statement</h4><p>In a distributed banking ledger, transfers lock both source and destination accounts. When Thread 1 transfers $A \to B$ and Thread 2 transfers $B \to A$ simultaneously, naive code causes fatal lock-order inversion deadlocks. Design a deadlock-free multi-lock acquisition manager.</p>
+<h4 id="leveled-evaluation-rubric"><a href="#leveled-evaluation-rubric" class="header-anchor">#</a>Leveled Evaluation Rubric</h4><ul>
+<li><strong>Junior Answer</strong>: Tries retrying on lock timeout without backoff (livelock).</li>
+<li><strong>Mid-Level Answer</strong>: Acquires locks in arbitrary order inside nested <code>with</code> blocks.</li>
+<li><strong>Senior Answer</strong>: Sorts resources by a unique monotonic identifier (e.g. <code>account_id</code>) before acquisition.</li>
+<li><strong>Staff Answer</strong>: Formally references Dijkstra&#39;s Resource Hierarchy Solution, proves absence of cycles in the Directed Acyclic Wait-For Graph, handles duplicate resource references, and implements fencing tokens for distributed locks.</li>
+</ul>
+<h4 id="runnable-model-solution"><a href="#runnable-model-solution" class="header-anchor">#</a>Runnable Model Solution</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> contextmanager
 
-<span class="hljs-comment"># Usage as Context Manager:</span>
-<span class="hljs-keyword">with</span> profile_scope(<span class="hljs-string">&quot;Heavy Allocation Block&quot;</span>):
-    data = [x ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">200_000</span>)]
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Resource</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, resource_id: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.resource_id = resource_id
+        <span class="hljs-variable language_">self</span>.lock = threading.Lock()
 
-<span class="hljs-comment"># Usage as Function Decorator:</span>
-<span class="hljs-meta">@profile_scope(<span class="hljs-params"><span class="hljs-string">&quot;Compute Function&quot;</span></span>)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_cube_sum</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span></span>):
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(x ** <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+<span class="hljs-meta">@contextmanager</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">acquire_ordered</span>(<span class="hljs-params">*resources: Resource</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Acquires all resource locks in canonical lexicographical order to prevent deadlocks.&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Deduplicate and sort by unique resource_id</span>
+    unique_sorted = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(resources), key=<span class="hljs-keyword">lambda</span> r: r.resource_id)
+    acquired = []
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> unique_sorted:
+            r.lock.acquire()
+            acquired.append(r)
+        <span class="hljs-keyword">yield</span>
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-comment"># Release in reverse order</span>
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(acquired):
+            r.lock.release()
 
-compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
-  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
-<li><a href="https://docs.python.org/3/library/heapq.html">heapq module</a></li>
-<li><a href="https://docs.python.org/3/library/bisect.html">bisect module</a></li>
-<li><a href="https://wiki.python.org/moin/TimeComplexity">Python time complexity</a></li>
+<span class="hljs-comment"># Verification</span>
+r1 = Resource(<span class="hljs-string">&quot;acc_100&quot;</span>)
+r2 = Resource(<span class="hljs-string">&quot;acc_200&quot;</span>)
+
+<span class="hljs-keyword">with</span> acquire_ordered(r2, r1):  <span class="hljs-comment"># Passed out of order, acquired in canonical order</span>
+    <span class="hljs-keyword">pass</span>  <span class="hljs-comment"># Deadlock mathematically impossible</span></code></pre>
+  </div><hr>
+<h2 id="3-high-frequency-staff-python-quick-fire-round"><a href="#3-high-frequency-staff-python-quick-fire-round" class="header-anchor">#</a>3. High-Frequency Staff Python Quick-Fire Round</h2><table>
+<thead>
+<tr>
+<th align="center">#</th>
+<th align="left">Question</th>
+<th align="left">Staff-Level Technical Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>1</strong></td>
+<td align="left">How does Python&#39;s <code>is</code> operator differ fundamentally from <code>==</code>?</td>
+<td align="left"><code>is</code> checks memory address identity pointer equality (<code>id(a) == id(b)</code>), compiled to <code>IS_OP</code> opcode (1 CPU comparison). <code>==</code> invokes <code>__eq__</code>, enabling rich value equality comparison.</td>
+</tr>
+<tr>
+<td align="center"><strong>2</strong></td>
+<td align="left">Why are default argument values dangerous in Python?</td>
+<td align="left">Default expressions are evaluated once at function definition time (stored in <code>func.__defaults__</code>), creating shared mutable state across all callers.</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="left">How does CPython implement integer arithmetic without overflow?</td>
+<td align="left">Python 3 <code>int</code> is arbitrary-precision (<code>PyLongObject</code>), storing digits as 30-bit limbs in a dynamic C array and expanding dynamically.</td>
+</tr>
+<tr>
+<td align="center"><strong>4</strong></td>
+<td align="left">What is the MRO and how does C3 Linearization resolve it?</td>
+<td align="left">Method Resolution Order is computed via C3 Linearization, enforcing local precedence order and monotonicity across multiple inheritance graphs.</td>
+</tr>
+<tr>
+<td align="center"><strong>5</strong></td>
+<td align="left">Why does <code>[[]] * 5</code> create a bug?</td>
+<td align="left">The list multiplication operator duplicates object references, not values. All 5 sublists point to the exact same heap memory address.</td>
+</tr>
+<tr>
+<td align="center"><strong>6</strong></td>
+<td align="left">What is the purpose of <code>__slots__</code>?</td>
+<td align="left">It eliminates the per-instance <code>__dict__</code> hash table, allocating a fixed-size C struct array of pointers, saving $\sim 150+$ bytes per instance.</td>
+</tr>
+<tr>
+<td align="center"><strong>7</strong></td>
+<td align="left">When does the CPython GIL release automatically?</td>
+<td align="left">During blocking I/O syscalls (network, disk), in C/Rust extensions using <code>Py_BEGIN_ALLOW_THREADS</code>, or every $5\text{ ms}$ (<code>sys.getswitchinterval()</code>).</td>
+</tr>
+<tr>
+<td align="center"><strong>8</strong></td>
+<td align="left">How does <code>tracemalloc</code> track allocations?</td>
+<td align="left">It intercepts <code>PyMem_Malloc</code> and raw C allocators, recording file name and line number traces without instrumenting bytecode.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="version-notes"><a href="#version-notes" class="header-anchor">#</a>Version Notes</h2><ul>
+<li><strong>Python 3.11</strong>: Exception Groups and <code>except*</code> featured in production resilience and concurrent task interview questions.</li>
+<li><strong>Python 3.12</strong>: Comprehensions are inlined rather than compiled as nested functions, eliminating frame creation overhead in algorithmic loops.</li>
+<li><strong>Python 3.13</strong>: Free-threaded interview scenarios test candidates on thread safety, atomic primitives, and lock ordering without reliance on GIL serialization.</li>
+<li><strong>Python 3.14</strong>: Introspection changes in <code>annotationlib</code> test candidate awareness of deferred type evaluation.</li>
+</ul>
+<hr>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch20.py stubs</span>
+python exercises/run.py 20       <span class="hljs-comment"># run the hidden tests against your solution</span>
+python exercises/run.py --hints 20    <span class="hljs-comment"># progressive 3-level hints</span>
+python exercises/run.py --explain 20  <span class="hljs-comment"># full architectural walkthrough</span></code></pre>
+  </div><p>Attempt first; reference solutions are in <code>exercises/_answers/ch20.py</code>.</p>
+<hr>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://github.com/python/cpython/blob/main/Python/ceval.c">CPython Execution Loop: Python/ceval.c</a></li>
+<li><a href="https://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF">Dijkstra: Solution of a Problem in Concurrent Programming Control</a></li>
+<li><a href="https://peps.python.org/pep-0654/">PEP 654: Exception Groups and except*</a></li>
 </ul>
 <hr>
 <h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
 <details>
-<summary><strong>1.</strong> Why talk through brute force first in an interview?</summary><p>It shows you can solve the problem, gives a correctness baseline, and the bottleneck you identify points to the optimisation.</p>
+<summary><strong>1.</strong> Why talk through brute force first in an interview?</summary><p>It proves you understand the problem, creates a baseline correctness contract, and identifying the brute-force bottleneck reveals the exact data structure needed for optimization.</p>
 </details><details>
-<summary><strong>2.</strong> What should you state before coding?</summary><p>Assumptions, input constraints, edge cases and target complexity.</p>
+<summary><strong>2.</strong> What should you state before writing code in a technical interview?</summary><p>Assumptions, input ranges/constraints, edge cases (empty, single, duplicate, negative), and target Time and Space Big-O complexities.</p>
 </details><details>
-<summary><strong>3.</strong> How do you test your own solution without a runner?</summary><p>Walk through a small example by hand, then edge cases: empty, single element, duplicates, extremes.</p>
+<summary><strong>3.</strong> How do you test your own solution without an automated runner?</summary><p>Trace through a representative small example step-by-step with state tables, then test edge cases: empty input, single item, all duplicates, and boundary limits.</p>
 </details><details>
-<summary><strong>4.</strong> What is the time complexity of building a dict from n pairs?</summary><p><code>O(n)</code> average.</p>
+<summary><strong>4.</strong> What is the time complexity of building a dict from n pairs?</summary><p>$O(N)$ average time; $O(N^2)$ worst-case under severe hash collisions.</p>
 </details>
 
         </article>
@@ -1619,7 +1706,7 @@ compute_cube_sum(<span class="hljs-number">100_000</span>)</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#challenge-1-concurrency-build-a-thread-safe-bounded-blocking-queue-from-scratch" class="toc-link">Challenge 1 (Concurrency): Build a Thread-Safe Bounded Blocking Queue from Scratch</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#common-pitfalls" class="toc-link">Common Pitfalls</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-2-asyncio-asynchronous-batching-buffer-microservice-accelerator" class="toc-link">Challenge 2 (Asyncio): Asynchronous Batching Buffer (Microservice Accelerator)</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-3-metaprogramming-fluent-dynamic-http-api-client" class="toc-link">Challenge 3 (Metaprogramming): Fluent Dynamic HTTP API Client</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#challenge-4-cpython-deep-dive-re-entrant-profiling-context-manager" class="toc-link">Challenge 4 (CPython Deep Dive): Re-entrant Profiling Context Manager</a></li><li class="toc-item level-3"><a href="#problem-statement" class="toc-link">Problem Statement</a></li><li class="toc-item level-3"><a href="#optimal-implementation" class="toc-link">Optimal Implementation</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-staff-interview-evaluation-framework" class="toc-link">1. Staff Interview Evaluation Framework</a></li><li class="toc-item level-2"><a href="#2-leveled-interview-challenges-foundations-to-staff-systems" class="toc-link">2. Leveled Interview Challenges: Foundations to Staff Systems</a></li><li class="toc-item level-3"><a href="#challenge-1-junior-to-mid-the-thread-safe-bounded-blocking-queue" class="toc-link">Challenge 1 (Junior to Mid): The Thread-Safe Bounded Blocking Queue</a></li><li class="toc-item level-3"><a href="#challenge-2-mid-to-senior-asynchronous-batching-buffer" class="toc-link">Challenge 2 (Mid to Senior): Asynchronous Batching Buffer</a></li><li class="toc-item level-3"><a href="#challenge-3-senior-dynamic-fluent-http-api-client" class="toc-link">Challenge 3 (Senior): Dynamic Fluent HTTP API Client</a></li><li class="toc-item level-3"><a href="#challenge-4-senior-to-staff-re-entrant-profiling-context-manager-decorator" class="toc-link">Challenge 4 (Senior to Staff): Re-entrant Profiling Context Manager & Decorator</a></li><li class="toc-item level-3"><a href="#challenge-5-staff-systems-deadlock-free-multi-resource-lock-manager" class="toc-link">Challenge 5 (Staff Systems): Deadlock-Free Multi-Resource Lock Manager</a></li><li class="toc-item level-2"><a href="#3-high-frequency-staff-python-quick-fire-round" class="toc-link">3. High-Frequency Staff Python Quick-Fire Round</a></li><li class="toc-item level-2"><a href="#version-notes" class="toc-link">Version Notes</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

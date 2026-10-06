@@ -1,5 +1,10 @@
 # Chapter 18: High-Performance Computing (HPC, Cython, Numba & Python 3.13 No-GIL)
 
+> **What you will be able to do:** Accelerate numerical computations to hardware limits using Numba JIT compilation, compile C extensions with Cython while releasing the GIL, exploit POSIX shared memory across processes, and understand Python 3.13 free-threaded execution.
+> **What you must already know:** Chapter 05 GIL constraints, pointer arrays, and basic linear algebra / matrix operations.
+
+---
+
 > **The 100x Speedup**
 > Standard CPython is notoriously slow for numerical computation. A pure Python `for` loop summing an array of floats is typically **an order of magnitude or more slower** than compiled code (`labs/05_benchmarks.py` measured about 12x for a simple float sum against `numpy.sum` on Python 3.11; branch-heavy loops show larger gaps). Why? Because every integer or float in Python is a dynamically allocated 28-byte `PyObject` heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.
 > 
@@ -222,6 +227,14 @@ Python 3.13 introduces the official experimental build that **completely removes
 3. **Linear CPU Scaling:** A CPU-bound task split across 16 OS threads in `threading.Thread` can now scale across cores for CPU-bound work in pure Python. How close to linear it gets depends on the workload, lock contention and the build; always measure on your own code, and note that the free-threaded build is still marked experimental/supported-but-optional in 3.13/3.14 (PEP 703, PEP 779).
 
 ---
+
+## Version Notes
+
+- **Python 3.11**: Specializing Adaptive Interpreter (PEP 659) boosts pure Python mathematical operations by 10-60%.
+- **Python 3.12**: Per-interpreter GIL (PEP 684) allows multiple subinterpreters to run compute kernels concurrently in separate CPU cores within a single process.
+- **Python 3.13**: Free-threaded CPython (`--disable-gil` / PEP 703) enables true multi-core threading for numeric workloads, and the experimental Tier-2 JIT compiler (PEP 744) generates native machine code for hot execution loops.
+- **Python 3.14**: Advanced Tier-2 JIT trace optimization with native SIMD vector register allocation.
+
 
 ## 7. GPU Acceleration with PyTorch & CUDA
 

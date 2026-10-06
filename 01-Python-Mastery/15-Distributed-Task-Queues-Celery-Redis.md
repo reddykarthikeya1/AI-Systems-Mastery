@@ -1,5 +1,10 @@
 # Chapter 15: Distributed Task Queues (Celery & Redis Architecture)
 
+> **What you will be able to do:** Offload heavy background workloads using Celery and Redis, tune worker prefetch counts and task acknowledgments (`acks_late`), design idempotent tasks with distributed Redlock locking, and diagnose memory leaks in long-running worker processes.
+> **What you must already know:** Chapter 06 process pools and Chapter 12 transactional consistency.
+
+---
+
 > **The Enterprise Asynchronous Tier**
 > In modern production systems, web servers (FastAPI, Django, Flask) must never perform heavy computation, external third-party API calls, PDF generation, email dispatch, or large database mutations synchronously within the HTTP request-response cycle. Blocking a web worker thread for 5 seconds destroys your server's concurrency and cascades into gateway timeouts.
 > 
@@ -322,6 +327,13 @@ def process_billing_transaction(self, idempotency_key: str, account_id: str, amo
 | **Tasks piling up in Redis despite workers having low CPU** | High `worker_prefetch_multiplier` holding tasks in starved processes. | Set `worker_prefetch_multiplier = 1` and `task_acks_late = True`. |
 | **Duplicate task execution on server restart** | Broker re-delivers unacknowledged tasks that were already halfway done. | Implement the Idempotency Key Pattern in Redis before running side-effects. |
 | **Redis memory usage explosion** | Celery storing task results indefinitely without TTL eviction. | Set `result_expires = 3600` (1 hour) or disable result storage for fire-and-forget tasks (`ignore_result = True`). |
+
+
+## Version Notes
+
+- **Python 3.11**: Improved process spawn performance and safer multiprocessing primitives on Linux and macOS.
+- **Python 3.12**: Subinterpreters with per-interpreter GIL (PEP 684) provide isolated worker memory spaces without multi-process IPC memory duplication.
+- **Python 3.13**: Free-threaded worker pools allow Celery and Redis consumer workers to execute thread-safe background jobs without process-fork overhead.
 
 
 ## Exercises

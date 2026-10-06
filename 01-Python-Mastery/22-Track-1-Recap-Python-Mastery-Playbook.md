@@ -1,5 +1,10 @@
 # Chapter 22: Track 1 Recap — The Python Engineering Mastery Playbook
 
+> **What you will be able to do:** Rapidly reference and synthesize the entire spectrum of modern Python engineering—from CPython memory internals to distributed systems and native Rust extensions—and excel in Staff-level technical architecture reviews.
+> **What you must already know:** Completion of Track 1 Chapters 00 through 21.
+
+---
+
 > **Core Learning Objective:** Consolidate everything you have mastered across Track 1 into a permanent, interconnected mental model. This chapter provides a high-yield, quick-reference synthesis of CPython internals, memory mechanics (Stack vs Heap, PyObject, GC), concurrency choices (Threads vs Asyncio vs Multiprocessing), production backend architectures (FastAPI, PostgreSQL, Celery, Kafka), and high-performance computing (Polars, HPC, Rust PyO3).
 
 ---
@@ -125,7 +130,79 @@ Commit these high-frequency technical facts to memory before any Senior/Staff Py
 
 ---
 
-## 6. Track 1 Graduation Milestone Check
+## 6. Staff Architectural Scenarios & System Design Grills
+
+These 10 advanced architectural grills test your ability to synthesize language mechanics with large-scale distributed systems:
+
+### Grill 1: Designing an In-Process Memory Cache for 10M Concurrent Keys
+- **The Question**: How do you architect an in-process cache storing 10 million string keys in Python without blowing up RAM or pausing on GC cycles?
+- **Staff Answer**: A standard `dict` of 10M entries consumes $> 1.5\text{ GB}$ of RAM due to `PyObject` wrappers and table over-allocation, and GC generation 2 collections will pause for hundreds of milliseconds traversing 10M objects. Use a compact representation:
+  1. Store keys and values in shared memory (`multiprocessing.shared_memory`) or a contiguous memory-mapped byte buffer.
+  2. Use a C/Rust native hash map (e.g. PyO3 or `marisa-trie` / `radix-tree`).
+  3. Disable cyclical GC tracking on the container using `gc.freeze()` or `gc.disable()`, because primitive strings cannot form reference cycles.
+
+### Grill 2: Zero-Copy IPC Between Python Processes
+- **The Question**: When scaling CPU-bound workloads across 32 worker processes, transferring 500 MB NumPy arrays via `multiprocessing.Queue` consumes massive CPU and RAM. How do you eliminate serialization overhead?
+- **Staff Answer**: `multiprocessing.Queue` serializes arrays using `pickle`, involving two memory copies and CPU serialization. Use POSIX shared memory (`multiprocessing.shared_memory.SharedMemory`). Allocate the buffer once in the master process, create NumPy `ndarray` views with `buffer=shm.buf` in child workers without copying a single byte ($O(1)$ zero-copy transfer), and coordinate access via `multiprocessing.Lock` or atomic counters.
+
+### Grill 3: Designing a Resilient Distributed Lock with Python and Redis
+- **The Question**: What are the failure modes of naive Redis locks (`SET key val NX PX 10000`), and how do you achieve safety against clock drift and GC pauses?
+- **Staff Answer**: If a process experiences a GC pause or I/O delay longer than 10 seconds, its lock expires automatically. A second worker acquires the lock, and the first worker wakes up and writes corrupted data. Remediation:
+  1. **Fencing Tokens**: Every lock grant returns a strictly monotonically increasing token from Redis (`INCR lock_counter`). The database or storage engine rejects writes with older tokens.
+  2. **Lock Heartbeat Renewal**: Run a background coroutine/thread that extends the TTL periodically as long as the worker is actively executing.
+  3. **Safe Release via Lua**: Release locks using an atomic Lua script verifying that the stored UUID value matches the worker's unique ID.
+
+### Grill 4: Mitigating GIL Bottlenecks in Production AI Serving
+- **The Question**: In an LLM serving backend, Python coordinates batching while PyTorch/vLLM executes tensor operations on GPUs. How do you prevent Python from becoming the serving bottleneck?
+- **Staff Answer**: Keep the Python orchestration layer strictly non-blocking. Offload tensor execution to C++ CUDA kernels that release the GIL (`py::call_guard<py::gil_scoped_release>()`). Use FastAPI with Uvicorn worker threads to receive requests, queue requests in an in-memory `asyncio.Queue`, and run a continuous batching loop that submits batches to the GPU engine without holding the Python GIL.
+
+### Grill 5: Safe Hot-Reloading in Long-Running Python Daemons
+- **The Question**: How can a Python daemon reload updated business logic modules without restarting the process or dropping active TCP connections?
+- **Staff Answer**: Use `importlib.reload(module)`. However, reload does not update existing class instances, inherited subclasses, or previously imported module symbols (`from mod import func`). Staff approach:
+  1. Wrap plugins in dynamic proxy factories that resolve attributes dynamically against the latest loaded module instance.
+  2. Drain active requests on old worker instances before reloading.
+  3. For zero-downtime, utilize OS socket passing (`SO_REUSEPORT` or systemd socket activation) where a new process binds the port and the old process terminates gracefully after draining.
+
+### Grill 6: Evaluating Python 3.13 Free-Threaded Migration
+- **The Question**: Your company is evaluating migrating a multi-process backend to Python 3.13 free-threaded (`--disable-gil`). What risks and verification steps do you present to the executive architecture review?
+- **Staff Answer**:
+  1. **C Extension Compatibility**: Any third-party extension (NumPy, Cython, C-FFI) not explicitly compiled for the free-threaded ABI (`Py_mod_gil`) will force CPython to re-enable the GIL at runtime.
+  2. **Thread Safety Traps**: Code that previously relied on the GIL for implicit serialization (e.g. `list.append()`, `dict[k] = v`, dictionary reads during writes) now requires explicit locking or thread-safe primitives.
+  3. **Verification Plan**: Compile extensions with `--disable-gil`, execute test suites under ThreadSanitizer (TSan), benchmark throughput under high thread counts, and establish memory overhead baselines (biased reference counts and thread-local heaps add $\sim 10-15\%$ memory overhead).
+
+### Grill 7: Debugging a Production Async Deadlock
+- **The Question**: An asyncio backend stops processing incoming requests entirely. CPU usage drops to 0%, but healthcheck endpoints timeout. How do you diagnose it?
+- **Staff Answer**:
+  1. Capture a stack trace of all running asyncio tasks:
+     ```python
+     import asyncio
+     for task in asyncio.all_tasks():
+         task.print_stack()
+     ```
+  2. Typical root cause: An unhandled exception or missed signal caused a lock, event, or queue (`await event.wait()` or `await queue.get()`) to never be notified, causing all tasks to suspend waiting for a condition that will never occur.
+
+### Grill 8: Architectural Trade-offs of Microservices vs Monolith in Python
+- **The Question**: When does a Python monolith hit its breaking point, and what architectural boundaries justify splitting into microservices?
+- **Staff Answer**: Monolith breaking points in Python are typically organizational (merge contention, deployment queues) and operational (heterogeneous resource scaling—e.g. one endpoint requires 16 GPUs while others require 50 MB RAM). Split along domain boundaries (Domain-Driven Design bounded contexts) where failure isolation, distinct scaling profiles, and team ownership outweigh the operational costs of network latency, distributed transactions, and protobuf schema management.
+
+### Grill 9: Defensive Design for Third-Party API Integrations
+- **The Question**: How do you architect a Python client communicating with an external payment gateway that experiences periodic 30-second latency spikes and 500 errors?
+- **Staff Answer**:
+  1. **Timeouts**: Enforce strict connect (2s) and read (5s) timeouts.
+  2. **Circuit Breaker**: Trip the circuit after 5 consecutive failures, failing fast locally for 30 seconds to protect downstream queues.
+  3. **Retry with Exponential Backoff and Full Jitter**: Retry idempotency-keyed requests with randomized exponential delay.
+  4. **Dead Letter Queue (DLQ)**: Persist failed payloads to a durable queue for manual operator replay.
+
+### Grill 10: Ensuring Idempotency Across At-Least-Once Streaming Pipelines
+- **The Question**: In an event-driven architecture using Kafka, network partition recovery can cause message duplication. How do you guarantee exactly-once processing semantics at the Python consumer layer?
+- **Staff Answer**: Kafka provides at-least-once delivery by default. Exactly-once is an end-to-end property achieved via **Idempotent Consumers**:
+  1. Every message includes a globally unique `idempotency_key` (UUID + timestamp).
+  2. On receipt, the consumer executes a database transaction combining the business state mutation with an insertion into an `idempotency_records` table (`INSERT INTO idempotency_keys VALUES (...) ON CONFLICT DO NOTHING`).
+  3. If the insert fails or key exists, the message is skipped as a duplicate, and the Kafka offset is committed.
+
+---
+
+## 7. Track 1 Graduation Milestone Check
 
 Before you proceed to **Track 2: Low-Level Design (LLD)**, verify that you can comfortably answer these 4 mastery questions:
 - [x] *Can you trace the exact journey of code from source characters to AST, bytecode, and `ceval.c` evaluation stack?*
@@ -136,6 +213,31 @@ Before you proceed to **Track 2: Low-Level Design (LLD)**, verify that you can c
 > [!TIP]
 > **Next Stop: Track 2 (Low-Level Design)!**
 > Now that you possess world-class mastery over the Python language engine, memory, and concurrency, it is time to build modular, maintainable, and battle-tested object-oriented architectures. Proceed to [Track 2: Low-Level Design](../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md)!
+
+---
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch22.py stubs
+python exercises/run.py 22       # run the hidden tests against your solution
+python exercises/run.py --hints 22    # progressive 3-level hints
+python exercises/run.py --explain 22  # full architectural walkthrough
+```
+
+Attempt first; reference solutions are in `exercises/_answers/ch22.py`.
+
+---
+
+
+## Version Notes
+
+- **Python 3.11**: Specialized adaptive bytecode (PEP 659), Exception Groups (`except*`), and zero-cost exceptions.
+- **Python 3.12**: Per-interpreter GIL (PEP 684), PEP 695 type parameter syntax, and low-overhead `sys.monitoring` (PEP 669).
+- **Python 3.13**: Free-threaded CPython (PEP 703) and experimental Tier-2 copy-and-patch JIT compiler (PEP 744).
+- **Python 3.14**: Deferred annotation evaluation (PEP 649 / PEP 749) and template strings (`t-strings`, PEP 750).
 
 
 ## Further Reading

@@ -1,5 +1,10 @@
 # Chapter 4: Object-Oriented Architecture, Dunders & Metaprogramming
 
+> **What you will be able to do:** Differentiate memory allocation in `__new__` from initialization in `__init__`, build data and non-data descriptors to validate attributes, resolve complex inheritance trees via C3 Linearization (MRO), and construct metaclasses for compile-time class validation.
+> **What you must already know:** Chapter 02 dictionary hash tables and Chapter 03 closure / callable semantics.
+
+---
+
 > **Core Learning Objective:** Master Python's object model at the deepest level. Understand instance allocation via `__new__`, C3 Linearization (MRO), the Descriptor Protocol that powers `@property` and ORMs, and how to harness Metaclasses to intercept and transform class definitions.
 
 ---
@@ -366,6 +371,15 @@ cfg2 = AppConfiguration()
 assert cfg1 is cfg2
 print("Thread-Safe Singleton Metaclass verified!")
 ```
+
+
+## Version Notes
+
+- **Python 3.10**: Introduced the `match` statement (PEP 634) and `__match_args__` protocol on custom classes for positional structural pattern matching.
+- **Python 3.11**: Fine-grained error locations in tracebacks pinpoint the exact attribute access or descriptor failure within complex expressions.
+- **Python 3.12**: Inlined bytecode instructions for method calls reduce call overhead; PEP 695 adds inline generic syntax for class declarations (`class Box[T]:`).
+- **Python 3.13**: Descriptor caching and Tier-2 optimizer specialization accelerate class attribute lookups and method dispatch.
+- **Python 3.14**: Deferred evaluation of annotations inside class definitions (PEP 649 / PEP 749) eliminates runtime circular dependencies in class schemas.
 
 
 ## Exercises

@@ -1,5 +1,10 @@
 # Chapter 6: Concurrency Mastery: Asyncio, Threading & Multiprocessing
 
+> **What you will be able to do:** Choose decisively between multithreading, multiprocessing, and `asyncio`, build non-blocking asynchronous servers using coroutines and tasks, debug event loop starvation, and prevent race conditions using locks and atomic primitives.
+> **What you must already know:** Chapter 05 GIL execution constraints and OS thread scheduling basics.
+
+---
+
 > **Core Learning Objective:** Master the three fundamental paradigms of concurrency in Python. Understand OS threads and lock contention, cooperative single-threaded asynchronous I/O via the event loop, and true multi-core parallel processing with Inter-Process Communication (IPC).
 
 ---

@@ -5,6 +5,8 @@
     python exercises/run.py 06 12           # only those chapters
     python exercises/run.py --solutions     # run the tests against the reference solutions (maintainer check)
     python exercises/run.py --reset 06      # recreate the stub for chapter 06 (overwrites your work)
+    python exercises/run.py --hints 20      # progressive 3-level hints for chapter 20
+    python exercises/run.py --explain 20    # architectural walkthrough and pitfalls for chapter 20
 
 Each chapter has 2 coding exercises and 1 debugging exercise. The tests live in _answers/ together with the
 reference solutions: attempt first, look afterwards.
@@ -92,6 +94,54 @@ def main() -> int:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     flags = {a for a in sys.argv[1:] if a.startswith("--")}
     answers = sorted(ANSWERS.glob("ch*.py"))
+    
+    if "--hints" in flags:
+        try:
+            sys.path.insert(0, str(HERE))
+            from hints_and_solutions import HINTS
+        except ImportError:
+            print("Hints module not available.")
+            return 1
+        ch_key = f"ch{args[0].zfill(2)}" if args else "ch00"
+        if ch_key not in HINTS:
+            print(f"No hints found for {ch_key}.")
+            return 1
+        hints_list = HINTS[ch_key]
+        prob_idx = int(args[1]) - 1 if len(args) > 1 else None
+        print(f"=== Progressive Hints for {ch_key.upper()} ===")
+        for idx, h_levels in enumerate(hints_list):
+            if prob_idx is not None and idx != prob_idx:
+                continue
+            print(f"\n[Problem {idx+1}]")
+            for lvl, text in enumerate(h_levels, 1):
+                print(f"  Level {lvl}: {text}")
+        return 0
+
+    if "--explain" in flags:
+        try:
+            sys.path.insert(0, str(HERE))
+            from hints_and_solutions import EXPLANATIONS
+        except ImportError:
+            print("Explanations module not available.")
+            return 1
+        ch_key = f"ch{args[0].zfill(2)}" if args else "ch20"
+        if ch_key not in EXPLANATIONS:
+            print(f"No detailed walkthrough for {ch_key} yet. Check exercises/_answers/{ch_key}.py")
+            return 1
+        ex_list = EXPLANATIONS[ch_key]
+        prob_idx = int(args[1]) - 1 if len(args) > 1 else None
+        print(f"=== Solution Architecture Walkthrough for {ch_key.upper()} ===")
+        for idx, item in enumerate(ex_list):
+            if prob_idx is not None and idx != prob_idx:
+                continue
+            print(f"\n[Problem {idx+1}: {item['problem']}]")
+            print(f"  Approach: {item['approach']}")
+            print(f"  Complexity: {item['complexity']}")
+            print("  Common Pitfalls:")
+            for p in item["pitfalls"]:
+                print(f"    - {p}")
+        return 0
+
     if args:
         answers = [a for a in answers if a.stem[2:4] in {x.zfill(2) for x in args}]
     if "--init" in flags or "--reset" in flags:

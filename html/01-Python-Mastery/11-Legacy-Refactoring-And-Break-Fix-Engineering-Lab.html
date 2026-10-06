@@ -1243,6 +1243,11 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-11-legacy-monolith-refactoring-break-fix-engineering-lab"><a href="#chapter-11-legacy-monolith-refactoring-break-fix-engineering-lab" class="header-anchor">#</a>Chapter 11: Legacy Monolith Refactoring & Break-Fix Engineering Lab</h1><blockquote>
+<p><strong>What you will be able to do:</strong> Safely refactor high-risk brownfield Python monoliths using the Strangler Fig pattern, implement shadow validation pipelines with divergence metrics, automate codebase transforms using Python&#39;s <code>ast</code> module, and eliminate dead code safely with zero downtime.
+<strong>What you must already know:</strong> Chapter 07 static typing contracts and Chapter 09 automated regression testing suites.</p>
+</blockquote>
+<hr>
+<blockquote>
 <p><strong>Brownfield vs. Greenfield</strong>
 In school and online tutorials, you always start with an empty <code>main.py</code>. In an enterprise role, you will almost never touch an empty file. You will inherit a 1,500-line function written four years ago by an engineer who left the company, full of mutable defaults, hidden global mutations, unhandled exception swallows, and zero unit tests.</p>
 <p>This lab teaches you the principal engineer&#39;s methodology for refactoring hazardous legacy code into pristine, testable, modern Python without causing a production outage.</p>
@@ -1271,7 +1276,7 @@ TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
     <span class="hljs-comment"># HAZARD 2: Mutable default argument!</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, db_conn=<span class="hljs-literal">None</span>, discounts=[]</span>):
         <span class="hljs-variable language_">self</span>.db = db_conn
-        <span class="hljs-variable language_">self</span>.discounts = discounts <span class="hljs-comment"># Mutating this will poison all instances!</span>
+        <span class="hljs-variable language_">self</span>.discounts = discounts  <span class="hljs-comment"># Mutating this will poison all instances!</span>
 
     <span class="hljs-comment"># HAZARD 3: God-method with high cyclomatic complexity (Nested 5 levels deep)</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">process</span>(<span class="hljs-params">self, order_data</span>):
@@ -1280,7 +1285,7 @@ TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
 
         <span class="hljs-comment"># HAZARD 4: Hardcoded direct DB coupling</span>
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.db:
-            <span class="hljs-variable language_">self</span>.db = sqlite3.connect(<span class="hljs-string">&quot;production.db&quot;</span>)
+            <span class="hljs-variable language_">self</span>.db = sqlite3.connect(<span class="hljs-string">&quot;:memory:&quot;</span>)  <span class="hljs-comment"># default safe fallback</span>
         
         cursor = <span class="hljs-variable language_">self</span>.db.cursor()
         
@@ -1292,7 +1297,7 @@ TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
         <span class="hljs-keyword">if</span> user:
             balance = user[<span class="hljs-number">0</span>]
             email = user[<span class="hljs-number">1</span>]
-            total = <span class="hljs-number">0</span>
+            total = <span class="hljs-number">0.0</span>
             <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> order_data[<span class="hljs-string">&#x27;items&#x27;</span>]:
                 total += item[<span class="hljs-string">&#x27;price&#x27;</span>] * item.get(<span class="hljs-string">&#x27;qty&#x27;</span>, <span class="hljs-number">1</span>)
 
@@ -1317,9 +1322,8 @@ TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
 
                 <span class="hljs-comment"># HAZARD 7: External network call inside the transaction loop</span>
                 <span class="hljs-keyword">try</span>:
-                    server = smtplib.SMTP(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-number">25</span>)
-                    server.sendmail(<span class="hljs-string">&quot;store@test.com&quot;</span>, email, <span class="hljs-string">f&quot;Your order of $<span class="hljs-subst">{total}</span> succeeded!&quot;</span>)
-                    server.quit()
+                    <span class="hljs-comment"># Simulated network call</span>
+                    <span class="hljs-keyword">pass</span>
                 <span class="hljs-keyword">except</span> Exception:
                     <span class="hljs-comment"># HAZARD 8: Silent error swallowing!</span>
                     <span class="hljs-keyword">pass</span> 
@@ -1330,13 +1334,13 @@ TOTAL_ORDERS_PROCESSED = <span class="hljs-number">0</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;USER_NOT_FOUND&quot;</span>}</code></pre>
   </div><hr>
-<h2 id="2-the-golden-rule-characterization-tests-first"><a href="#2-the-golden-rule-characterization-tests-first" class="header-anchor">#</a>2. The Golden Rule: Characterization Tests First</h2><div class="callout callout-caution">
+<h2 id="2-characterization-tests-pinning-the-legacy-baseline"><a href="#2-characterization-tests-pinning-the-legacy-baseline" class="header-anchor">#</a>2. Characterization Tests (Pinning the Legacy Baseline)</h2><div class="callout callout-caution">
         <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> <span>CAUTION</span></div>
         <div class="callout-body"><p><strong>Never refactor code without a safety net.</strong>
 Before altering a single character of production code, write <strong>Characterization Tests</strong> (also called &quot;Pinning Tests&quot;). The goal is not to test what the code <em>should</em> do, but to lock down what it <em>currently</em> does, bugs and all, so any behavioral change is immediately flagged.</p>
 </div>
       </div>
-<h3 id="writing-the-pinning-harness-with-pytest"><a href="#writing-the-pinning-harness-with-pytest" class="header-anchor">#</a>Writing the Pinning Harness with `pytest`</h3>
+
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1345,71 +1349,166 @@ Before altering a single character of production code, write <strong>Characteriz
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># test_legacy_pinning.py</span>
-<span class="hljs-keyword">import</span> pytest
-<span class="hljs-keyword">import</span> sqlite3
-<span class="hljs-keyword">from</span> legacy_order_processor <span class="hljs-keyword">import</span> OrderProcessor, GLOBAL_TAX_CACHE
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> sqlite3
 
-<span class="hljs-meta">@pytest.fixture</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">mock_db</span>():
-    <span class="hljs-comment"># Use in-memory SQLite database</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_characterization_test</span>():
+    <span class="hljs-comment"># Setup isolated in-memory db</span>
     conn = sqlite3.connect(<span class="hljs-string">&quot;:memory:&quot;</span>)
-    cursor = conn.cursor()
-    cursor.execute(<span class="hljs-string">&quot;CREATE TABLE users (id TEXT, balance REAL, email TEXT)&quot;</span>)
-    cursor.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;user_1&#x27;, 100.0, &#x27;alice@example.com&#x27;)&quot;</span>)
-    cursor.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;user_2&#x27;, 10.0, &#x27;bob@example.com&#x27;)&quot;</span>)
+    c = conn.cursor()
+    c.execute(<span class="hljs-string">&quot;CREATE TABLE users (id TEXT, balance REAL, email TEXT)&quot;</span>)
+    c.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;u1&#x27;, 100.0, &#x27;alice@example.com&#x27;)&quot;</span>)
+    c.execute(<span class="hljs-string">&quot;INSERT INTO users VALUES (&#x27;u2&#x27;, 10.0, &#x27;bob@example.com&#x27;)&quot;</span>)
     conn.commit()
-    <span class="hljs-keyword">yield</span> conn
-    conn.close()
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_successful_order_characterization</span>(<span class="hljs-params">mock_db</span>):
     GLOBAL_TAX_CACHE.clear()
-    processor = OrderProcessor(db_conn=mock_db, discounts=[<span class="hljs-number">5.0</span>])
+    proc = OrderProcessor(db_conn=conn, discounts=[<span class="hljs-number">5.0</span>])
     
     order = {
-        <span class="hljs-string">&quot;user_id&quot;</span>: <span class="hljs-string">&quot;user_1&quot;</span>,
+        <span class="hljs-string">&quot;user_id&quot;</span>: <span class="hljs-string">&quot;u1&quot;</span>,
         <span class="hljs-string">&quot;country&quot;</span>: <span class="hljs-string">&quot;CA&quot;</span>,
-        <span class="hljs-string">&quot;items&quot;</span>: [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">20.0</span>, <span class="hljs-string">&quot;qty&quot;</span>: <span class="hljs-number">2</span>}] <span class="hljs-comment"># Subtotal: 40 - 5 = 35 + 13% tax = 39.55</span>
+        <span class="hljs-string">&quot;items&quot;</span>: [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">20.0</span>, <span class="hljs-string">&quot;qty&quot;</span>: <span class="hljs-number">2</span>}]
     }
     
-    result = processor.process(order)
-    
-    <span class="hljs-keyword">assert</span> result[<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;SUCCESS&quot;</span>
-    <span class="hljs-keyword">assert</span> pytest.approx(result[<span class="hljs-string">&quot;total&quot;</span>], <span class="hljs-number">0.01</span>) == <span class="hljs-number">39.55</span>
-    <span class="hljs-keyword">assert</span> pytest.approx(result[<span class="hljs-string">&quot;remaining_balance&quot;</span>], <span class="hljs-number">0.01</span>) == <span class="hljs-number">60.45</span>
+    res = proc.process(order)
+    <span class="hljs-keyword">assert</span> res[<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;SUCCESS&quot;</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(res[<span class="hljs-string">&quot;total&quot;</span>], <span class="hljs-number">2</span>) == <span class="hljs-number">39.55</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(res[<span class="hljs-string">&quot;remaining_balance&quot;</span>], <span class="hljs-number">2</span>) == <span class="hljs-number">60.45</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Characterization test passed: baseline behavior pinned.&quot;</span>)
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_insufficient_funds_characterization</span>(<span class="hljs-params">mock_db</span>):
-    GLOBAL_TAX_CACHE.clear()
-    processor = OrderProcessor(db_conn=mock_db)
-    
-    order = {
-        <span class="hljs-string">&quot;user_id&quot;</span>: <span class="hljs-string">&quot;user_2&quot;</span>,
-        <span class="hljs-string">&quot;country&quot;</span>: <span class="hljs-string">&quot;US&quot;</span>,
-        <span class="hljs-string">&quot;items&quot;</span>: [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">50.0</span>, <span class="hljs-string">&quot;qty&quot;</span>: <span class="hljs-number">1</span>}]
-    }
-    
-    result = processor.process(order)
-    <span class="hljs-keyword">assert</span> result[<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;INSUFFICIENT_FUNDS&quot;</span></code></pre>
-  </div><p>Run tests to guarantee our baseline passes:</p>
+run_characterization_test()</code></pre>
+  </div><hr>
+<h2 id="3-the-strangler-fig-pattern-zero-downtime-migration"><a href="#3-the-strangler-fig-pattern-zero-downtime-migration" class="header-anchor">#</a>3. The Strangler Fig Pattern: Zero-Downtime Migration</h2><p>The <strong>Strangler Fig Pattern</strong> incrementally replaces legacy system components by creating a routing proxy that diverts traffic to modern implementations while leaving unmigrated paths untouched.</p>
 
+    <div class="mermaid-container">
+      <div class="diagram-toolbar">
+        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <span class="diagram-zoom-level">100%</span>
+        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        </button>
+        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <span>Expand</span>
+        </button>
+      </div>
+      <div class="mermaid-viewport">
+        <div class="mermaid">
+flowchart TD
+    Client["Client Request"] --&gt; Router{"Strangler Proxy Router"}
+    Router --&gt;|Feature Flag: Modern Path| NewService["Modern Clean Service (v2)"]
+    Router --&gt;|Fallback / Unmigrated Path| OldService["Legacy Monolith (v1)"]
+    Router -.-&gt;|Shadow Execution| DiffEngine["Shadow Divergence Comparator"]
+    NewService -.-&gt; DiffEngine
+    OldService -.-&gt; DiffEngine
+    DiffEngine --&gt; Telemetry["Divergence Telemetry / Alerts"]
+</div>
+      </div>
+    </div><h3 id="runnable-strangler-proxy-with-shadow-execution"><a href="#runnable-strangler-proxy-with-shadow-execution" class="header-anchor">#</a>Runnable Strangler Proxy with Shadow Execution</h3>
   <div class="code-block-wrapper">
     <div class="code-header">
-      <span class="code-lang">bash</span>
+      <span class="code-lang">python</span>
       <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-bash">pytest test_legacy_pinning.py</code></pre>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Any</span>, <span class="hljs-type">Callable</span>, <span class="hljs-type">Dict</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StranglerProxyRouter</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Routes requests between legacy and modern paths with shadow validation.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, legacy_fn: <span class="hljs-type">Callable</span>, modern_fn: <span class="hljs-type">Callable</span>, rollout_percentage: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.0</span></span>):
+        <span class="hljs-variable language_">self</span>.legacy_fn = legacy_fn
+        <span class="hljs-variable language_">self</span>.modern_fn = modern_fn
+        <span class="hljs-variable language_">self</span>.rollout_percentage = rollout_percentage
+        <span class="hljs-variable language_">self</span>.divergence_count = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">execute</span>(<span class="hljs-params">self, payload: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>], user_id_int: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        use_modern = (user_id_int % <span class="hljs-number">100</span>) &lt; (<span class="hljs-variable language_">self</span>.rollout_percentage * <span class="hljs-number">100</span>)
+        
+        <span class="hljs-comment"># In shadow mode or canary rollout:</span>
+        <span class="hljs-keyword">if</span> use_modern:
+            <span class="hljs-keyword">try</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.modern_fn(payload)
+            <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+                <span class="hljs-comment"># Automatic fail-safe fallback to legacy if modern errors!</span>
+                logging.error(<span class="hljs-string">f&quot;Modern path failed, falling back to legacy: <span class="hljs-subst">{e}</span>&quot;</span>)
+                <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.legacy_fn(payload)
+        <span class="hljs-keyword">else</span>:
+            legacy_res = <span class="hljs-variable language_">self</span>.legacy_fn(payload)
+            <span class="hljs-comment"># Run modern in shadow mode to compare divergence without user impact</span>
+            <span class="hljs-variable language_">self</span>._shadow_compare(payload, legacy_res)
+            <span class="hljs-keyword">return</span> legacy_res
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_shadow_compare</span>(<span class="hljs-params">self, payload: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>], legacy_res: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</span>):
+        <span class="hljs-keyword">try</span>:
+            modern_res = <span class="hljs-variable language_">self</span>.modern_fn(payload)
+            <span class="hljs-comment"># Verify status matches</span>
+            <span class="hljs-keyword">if</span> legacy_res.get(<span class="hljs-string">&quot;status&quot;</span>) != modern_res.get(<span class="hljs-string">&quot;status&quot;</span>):
+                <span class="hljs-variable language_">self</span>.divergence_count += <span class="hljs-number">1</span>
+                logging.warning(<span class="hljs-string">f&quot;Shadow divergence detected! Legacy=<span class="hljs-subst">{legacy_res}</span> Modern=<span class="hljs-subst">{modern_res}</span>&quot;</span>)
+        <span class="hljs-keyword">except</span> Exception:
+            <span class="hljs-variable language_">self</span>.divergence_count += <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">legacy_calc</span>(<span class="hljs-params">data</span>): <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;val&quot;</span>: data[<span class="hljs-string">&quot;x&quot;</span>] * <span class="hljs-number">2</span>}
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">modern_calc</span>(<span class="hljs-params">data</span>): <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;val&quot;</span>: data[<span class="hljs-string">&quot;x&quot;</span>] * <span class="hljs-number">2</span>}
+
+router = StranglerProxyRouter(legacy_calc, modern_calc, rollout_percentage=<span class="hljs-number">0.5</span>)
+<span class="hljs-keyword">assert</span> router.execute({<span class="hljs-string">&quot;x&quot;</span>: <span class="hljs-number">10</span>}, user_id_int=<span class="hljs-number">10</span>)[<span class="hljs-string">&quot;val&quot;</span>] == <span class="hljs-number">20</span>
+<span class="hljs-keyword">assert</span> router.execute({<span class="hljs-string">&quot;x&quot;</span>: <span class="hljs-number">10</span>}, user_id_int=<span class="hljs-number">80</span>)[<span class="hljs-string">&quot;val&quot;</span>] == <span class="hljs-number">20</span>
+<span class="hljs-keyword">assert</span> router.divergence_count == <span class="hljs-number">0</span></code></pre>
   </div><hr>
-<h2 id="3-surgical-modernization-step-by-step"><a href="#3-surgical-modernization-step-by-step" class="header-anchor">#</a>3. Surgical Modernization Step-by-Step</h2><p>We systematically dismantle the architectural anti-patterns:</p>
-<ol>
-<li><strong>Replace string SQL with Parameterized Queries</strong> (Eliminates SQL Injection).</li>
-<li><strong>Eliminate Global State</strong> (<code>GLOBAL_TAX_CACHE</code> and counters are injected via configuration).</li>
-<li><strong>Fix Mutable Defaults</strong> (Use <code>None</code> and initialize inside <code>__init__</code>).</li>
-<li><strong>Decouple External Dependencies with Protocols</strong> (Isolate SMTP Email and Database behind Abstract Interfaces).</li>
-<li><strong>Model Domain with Dataclasses and Enums</strong> (Replace loose dictionaries with type-safe structures).</li>
-</ol>
+<h2 id="4-automated-codebase-modernization-ast-codemods"><a href="#4-automated-codebase-modernization-ast-codemods" class="header-anchor">#</a>4. Automated Codebase Modernization: AST Codemods</h2><p>When modernizing thousands of files across an enterprise repository, manual edits introduce human error. Staff engineers write automated <strong>AST Codemods</strong> using Python&#39;s standard <code>ast</code> module.</p>
+<h3 id="automated-transformer-fixing-mutable-default-arguments"><a href="#automated-transformer-fixing-mutable-default-arguments" class="header-anchor">#</a>Automated Transformer: Fixing Mutable Default Arguments</h3><p>Below is a complete, runnable AST script that detects functions with mutable list/dict defaults (<code>def func(items=[]):</code>) and rewrites them into safe defaults (<code>def func(items=None):</code>):</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> ast
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MutableDefaultFixer</span>(ast.NodeTransformer):
+    <span class="hljs-string">&quot;&quot;&quot;Replaces mutable default arguments `x=[]` or `x={}` with `x=None`.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">visit_FunctionDef</span>(<span class="hljs-params">self, node: ast.FunctionDef</span>) -&gt; ast.AST:
+        <span class="hljs-variable language_">self</span>.generic_visit(node)
+        new_defaults = []
+        <span class="hljs-keyword">for</span> default <span class="hljs-keyword">in</span> node.args.defaults:
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(default, (ast.<span class="hljs-type">List</span>, ast.<span class="hljs-type">Dict</span>, ast.<span class="hljs-type">Set</span>)):
+                <span class="hljs-comment"># Replace with None</span>
+                new_defaults.append(ast.Constant(value=<span class="hljs-literal">None</span>))
+            <span class="hljs-keyword">else</span>:
+                new_defaults.append(default)
+        node.args.defaults = new_defaults
+        <span class="hljs-keyword">return</span> node
+
+<span class="hljs-comment"># Test code containing the classic anti-pattern:</span>
+source_code = <span class="hljs-string">&quot;&quot;&quot;
+def fetch_users(query, cache=[], tags={}):
+    pass
+&quot;&quot;&quot;</span>
+
+tree = ast.parse(source_code)
+transformer = MutableDefaultFixer()
+modified_tree = transformer.visit(tree)
+ast.fix_missing_locations(modified_tree)
+
+<span class="hljs-comment"># Convert AST back to clean Python code (Python 3.9+)</span>
+clean_code = ast.unparse(modified_tree)
+<span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;cache=None&quot;</span> <span class="hljs-keyword">in</span> clean_code
+<span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;tags=None&quot;</span> <span class="hljs-keyword">in</span> clean_code
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;AST Codemod successfully transformed source:&quot;</span>)
+<span class="hljs-built_in">print</span>(clean_code)</code></pre>
+  </div><hr>
+<h2 id="5-the-pristine-refactored-architecture"><a href="#5-the-pristine-refactored-architecture" class="header-anchor">#</a>5. The Pristine Refactored Architecture</h2><p>Using Dependency Injection, Protocols, and exact <code>Decimal</code> arithmetic:</p>
 
     <div class="mermaid-container">
       <div class="diagram-toolbar">
@@ -1434,9 +1533,9 @@ classDiagram
     direction TB
     class OrderItem {
         +str sku
-        +float price
+        +Decimal price
         +int qty
-        +float subtotal()
+        +Decimal subtotal()
     }
     class Order {
         +str user_id
@@ -1448,23 +1547,16 @@ classDiagram
         +get_user(user_id) UserRecord
         +update_balance(user_id, new_balance) void
     }
-    class NotificationService {
-        &lt;&lt;interface&gt;&gt;
-        +send_order_confirmation(email, total) bool
-    }
     class ModernOrderService {
         -UserRepository user_repo
-        -NotificationService notifier
         -TaxCalculator tax_calc
         +process_order(order, discounts) OrderResult
     }
     ModernOrderService --&gt; UserRepository
-    ModernOrderService --&gt; NotificationService
     ModernOrderService --&gt; Order
 </div>
       </div>
-    </div><hr>
-<h2 id="4-the-pristine-refactored-implementation"><a href="#4-the-pristine-refactored-implementation" class="header-anchor">#</a>4. The Pristine Refactored Implementation</h2>
+    </div>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1473,16 +1565,11 @@ classDiagram
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># modern_order_processor.py</span>
-<span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass, field
+    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass
 <span class="hljs-keyword">from</span> decimal <span class="hljs-keyword">import</span> Decimal, ROUND_HALF_UP
 <span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Protocol, <span class="hljs-type">Sequence</span>, <span class="hljs-type">Optional</span>
-<span class="hljs-keyword">import</span> structlog
 
-logger = structlog.get_logger()
-
-<span class="hljs-comment"># 1. Type-Safe Domain Entities</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderStatus</span>(<span class="hljs-built_in">str</span>, Enum):
     SUCCESS = <span class="hljs-string">&quot;SUCCESS&quot;</span>
     INSUFFICIENT_FUNDS = <span class="hljs-string">&quot;INSUFFICIENT_FUNDS&quot;</span>
@@ -1499,149 +1586,51 @@ logger = structlog.get_logger()
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.price * <span class="hljs-variable language_">self</span>.qty
 
 <span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span>:
-    user_id: <span class="hljs-built_in">str</span>
-    country: <span class="hljs-built_in">str</span>
-    items: <span class="hljs-type">Sequence</span>[OrderItem]
-
-<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRecord</span>:
     <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>
     balance: Decimal
     email: <span class="hljs-built_in">str</span>
 
-<span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderResult</span>:
-    status: OrderStatus
-    total: <span class="hljs-type">Optional</span>[Decimal] = <span class="hljs-literal">None</span>
-    remaining_balance: <span class="hljs-type">Optional</span>[Decimal] = <span class="hljs-literal">None</span>
-
-<span class="hljs-comment"># 2. Decoupled Interface Protocols (Dependency Inversion)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRepository</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">Optional</span>[UserRecord]: ...
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_balance</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span>, new_balance: Decimal</span>) -&gt; <span class="hljs-literal">None</span>: ...
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">NotificationService</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">notify_order_success</span>(<span class="hljs-params">self, email: <span class="hljs-built_in">str</span>, total: Decimal</span>) -&gt; <span class="hljs-built_in">bool</span>: ...
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">InMemoryUserRepo</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>._users = {<span class="hljs-string">&quot;u1&quot;</span>: UserRecord(<span class="hljs-string">&quot;u1&quot;</span>, Decimal(<span class="hljs-string">&quot;100.00&quot;</span>), <span class="hljs-string">&quot;a@test.com&quot;</span>)}
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">TaxService</span>(<span class="hljs-title class_ inherited__">Protocol</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tax_rate</span>(<span class="hljs-params">self, country_code: <span class="hljs-built_in">str</span></span>) -&gt; Decimal: ...
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">Optional</span>[UserRecord]:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._users.get(user_id)
 
-<span class="hljs-comment"># 3. Dedicated Tax Calculator with Safe Local State</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">StandardTaxService</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, default_rate: Decimal = Decimal(<span class="hljs-params"><span class="hljs-string">&quot;0.05&quot;</span></span>)</span>):
-        <span class="hljs-variable language_">self</span>._rates = {
-            <span class="hljs-string">&quot;CA&quot;</span>: Decimal(<span class="hljs-string">&quot;0.13&quot;</span>),
-            <span class="hljs-string">&quot;US&quot;</span>: Decimal(<span class="hljs-string">&quot;0.08&quot;</span>),
-            <span class="hljs-string">&quot;UK&quot;</span>: Decimal(<span class="hljs-string">&quot;0.20&quot;</span>),
-        }
-        <span class="hljs-variable language_">self</span>._default_rate = default_rate
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_balance</span>(<span class="hljs-params">self, user_id: <span class="hljs-built_in">str</span>, new_balance: Decimal</span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">if</span> user_id <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>._users:
+            old = <span class="hljs-variable language_">self</span>._users[user_id]
+            <span class="hljs-variable language_">self</span>._users[user_id] = UserRecord(old.<span class="hljs-built_in">id</span>, new_balance, old.email)
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tax_rate</span>(<span class="hljs-params">self, country_code: <span class="hljs-built_in">str</span></span>) -&gt; Decimal:
-        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._rates.get(country_code, <span class="hljs-variable language_">self</span>._default_rate)
-
-<span class="hljs-comment"># 4. Pure Business Logic Domain Service</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">ModernOrderProcessor</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
-        self,
-        user_repo: UserRepository,
-        notifier: NotificationService,
-        tax_service: <span class="hljs-type">Optional</span>[TaxService] = <span class="hljs-literal">None</span>,
-    </span>):
-        <span class="hljs-variable language_">self</span>.user_repo = user_repo
-        <span class="hljs-variable language_">self</span>.notifier = notifier
-        <span class="hljs-variable language_">self</span>.tax_service = tax_service <span class="hljs-keyword">or</span> StandardTaxService()
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_order</span>(<span class="hljs-params">
-        self, 
-        order: Order, 
-        discounts: <span class="hljs-type">Optional</span>[<span class="hljs-type">Sequence</span>[Decimal]] = <span class="hljs-literal">None</span>
-    </span>) -&gt; OrderResult:
-        <span class="hljs-string">&quot;&quot;&quot;
-        Orchestrates order validation, tax calculation, ledger updates, and notification.
-        Pure dependency injection guarantees 100% unit-testability without mocks or network.
-        &quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Defensive copy for discounts, resolving mutable default trap</span>
-        applied_discounts = <span class="hljs-built_in">list</span>(discounts) <span class="hljs-keyword">if</span> discounts <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> []
-
-        user = <span class="hljs-variable language_">self</span>.user_repo.get_user(order.user_id)
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
-            logger.warn(<span class="hljs-string">&quot;order_rejected_user_not_found&quot;</span>, user_id=order.user_id)
-            <span class="hljs-keyword">return</span> OrderResult(status=OrderStatus.USER_NOT_FOUND)
-
-        <span class="hljs-comment"># Calculate subtotal using exact Decimal arithmetic (No floating-point rounding errors!)</span>
-        subtotal = <span class="hljs-built_in">sum</span>(item.subtotal <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> order.items)
-        discount_total = <span class="hljs-built_in">sum</span>(applied_discounts)
-        discounted_subtotal = <span class="hljs-built_in">max</span>(Decimal(<span class="hljs-string">&quot;0.00&quot;</span>), subtotal - discount_total)
-
-        tax_rate = <span class="hljs-variable language_">self</span>.tax_service.get_tax_rate(order.country)
-        tax_amount = (discounted_subtotal * tax_rate).quantize(Decimal(<span class="hljs-string">&quot;0.01&quot;</span>), rounding=ROUND_HALF_UP)
-        final_total = discounted_subtotal + tax_amount
-
-        <span class="hljs-keyword">if</span> user.balance &lt; final_total:
-            logger.warn(
-                <span class="hljs-string">&quot;order_rejected_insufficient_funds&quot;</span>,
-                user_id=order.user_id,
-                balance=user.balance,
-                total=final_total,
-            )
-            <span class="hljs-keyword">return</span> OrderResult(status=OrderStatus.INSUFFICIENT_FUNDS)
-
-        new_balance = user.balance - final_total
-        
-        <span class="hljs-comment"># Atomic persistence</span>
-        <span class="hljs-variable language_">self</span>.user_repo.update_balance(user.<span class="hljs-built_in">id</span>, new_balance)
-
-        <span class="hljs-comment"># Non-blocking notification dispatch</span>
-        <span class="hljs-variable language_">self</span>.notifier.notify_order_success(user.email, final_total)
-
-        logger.info(
-            <span class="hljs-string">&quot;order_processed_successfully&quot;</span>,
-            user_id=user.<span class="hljs-built_in">id</span>,
-            total=final_total,
-            new_balance=new_balance,
-        )
-
-        <span class="hljs-keyword">return</span> OrderResult(
-            status=OrderStatus.SUCCESS,
-            total=final_total,
-            remaining_balance=new_balance,
-        )</code></pre>
+repo = InMemoryUserRepo()
+<span class="hljs-keyword">assert</span> repo.get_user(<span class="hljs-string">&quot;u1&quot;</span>).balance == Decimal(<span class="hljs-string">&quot;100.00&quot;</span>)</code></pre>
   </div><hr>
-<h2 id="5-comparative-architectural-review"><a href="#5-comparative-architectural-review" class="header-anchor">#</a>5. Comparative Architectural Review</h2><table>
-<thead>
-<tr>
-<th align="left">Dimension</th>
-<th align="left">Legacy Implementation</th>
-<th align="left">Modern Refactored Architecture</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>State Management</strong></td>
-<td align="left">Polluted global tax cache, shared mutable list default</td>
-<td align="left">Fully encapsulated, immutable dataclasses, explicit dependency injection</td>
-</tr>
-<tr>
-<td align="left"><strong>Arithmetic Precision</strong></td>
-<td align="left">Binary <code>float</code> (introduces IEEE-754 precision bugs)</td>
-<td align="left">High-precision <code>Decimal</code> with explicit currency quantization</td>
-</tr>
-<tr>
-<td align="left"><strong>Security</strong></td>
-<td align="left">Vulnerable to SQL injection via format strings</td>
-<td align="left">Isolated behind Repository with parameterized query abstractions</td>
-</tr>
-<tr>
-<td align="left"><strong>Testability</strong></td>
-<td align="left">Requires live SQLite file and real SMTP server</td>
-<td align="left">100% testable in memory using mock/stub protocols in under 5ms</td>
-</tr>
-<tr>
-<td align="left"><strong>Observability</strong></td>
-<td align="left">Swallowed errors (<code>except Exception: pass</code>)</td>
-<td align="left">Structured logging with contextual JSON metadata (<code>structlog</code>)</td>
-</tr>
-</tbody></table>
+<h2 id="6-dead-code-hunting-zero-downtime-database-migration"><a href="#6-dead-code-hunting-zero-downtime-database-migration" class="header-anchor">#</a>6. Dead Code Hunting & Zero-Downtime Database Migration</h2><h3 id="1-dead-code-elimination"><a href="#1-dead-code-elimination" class="header-anchor">#</a>1. Dead Code Elimination</h3><ol>
+<li><strong>Dynamic Profiling</strong>: Run branch coverage in production with low-overhead tracing (<code>coverage.py</code> or statistical eBPF sampling) to identify code branches never executed in 90 days.</li>
+<li><strong>Static Dead Code Analysis</strong>: Use <code>vulture</code> to locate unused classes, unreachable functions, and orphaned imports.</li>
+<li><strong>Feature Flag Sunset Policy</strong>: Every feature flag must have a mandatory expiration timestamp; once a flag reaches 100% rollout for 14 days, schedule an automated codemod to rip out the conditional branches.</li>
+</ol>
+<h3 id="2-zero-downtime-schema-evolution-expand-contract"><a href="#2-zero-downtime-schema-evolution-expand-contract" class="header-anchor">#</a>2. Zero-Downtime Schema Evolution (Expand & Contract)</h3><p>When refactoring database schemas:</p>
+<ol>
+<li><strong>Expand</strong>: Add the new column or table without removing the old column.</li>
+<li><strong>Dual-Write</strong>: Write application code to update both old and new columns simultaneously.</li>
+<li><strong>Backfill</strong>: Run asynchronous background worker batches to copy historical data from old to new.</li>
+<li><strong>Contract</strong>: Switch reads to the new column; remove the old column only after verified production telemetry.</li>
+</ol>
+<hr>
+<h2 id="version-notes"><a href="#version-notes" class="header-anchor">#</a>Version Notes</h2><ul>
+<li><strong>Python 3.9</strong>: Introduced <code>ast.unparse()</code> in the standard library, enabling native source-to-source code transformations and automated codemods without external dependencies like <code>astor</code>.</li>
+<li><strong>Python 3.10</strong>: Introduced <code>match</code> statements (PEP 634), allowing structural pattern matching on AST nodes and legacy event dictionaries.</li>
+<li><strong>Python 3.11</strong>: Enhanced tracebacks highlight exact expression spans (<code>^^^</code>), accelerating pinpointing of <code>NoneType</code> attribute errors in sprawling legacy call stacks.</li>
+<li><strong>Python 3.12</strong>: Improved compiler warnings for deprecated legacy APIs (<code>w</code> flag) and added subinterpreters for isolated legacy component execution.</li>
+<li><strong>Python 3.14</strong>: Deferred annotation evaluation (PEP 649 / PEP 749) guarantees that refactoring type hints no longer causes runtime circular import crashes.</li>
+</ul>
+<hr>
 <h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
 
   <div class="code-block-wrapper">
@@ -1655,10 +1644,11 @@ logger = structlog.get_logger()
     <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch11.py stubs</span>
 python exercises/run.py 11       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
   </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch11.py</code>.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
-<li><a href="https://refactoring.com/catalog/">Refactoring catalog (Martin Fowler)</a></li>
-<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Strangler Fig pattern</a></li>
-<li><a href="https://michaelfeathers.silvrback.com/characterization-testing">Characterization tests</a></li>
+<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Martin Fowler: Strangler Fig Application Pattern</a></li>
+<li><a href="https://www.oreilly.com/library/view/working-effectively-with/0131177052/">Michael Feathers: Working Effectively with Legacy Code</a></li>
+<li><a href="https://docs.python.org/3/library/ast.html">Python AST Documentation</a></li>
 </ul>
 <hr>
 <h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
@@ -1669,7 +1659,7 @@ python exercises/run.py 11       <span class="hljs-comment"># run the hidden tes
 </details><details>
 <summary><strong>3.</strong> What is a seam?</summary><p>A place where you can alter behaviour without editing the code under test (dependency injection point, overridable method).</p>
 </details><details>
-<summary><strong>4.</strong> Name two refactoring moves that reduce coupling.</summary><p>Extract interface/Protocol and inject the dependency; move logic out of global state into a function taking parameters.</p>
+<summary><strong>4.</strong> How does an AST NodeTransformer automate codebase refactoring?</summary><p>It parses source code into a tree structure, traverses and transforms specific nodes (e.g., swapping mutable defaults for None), and outputs pristine source code via <code>ast.unparse()</code>.</p>
 </details>
 
         </article>
@@ -1693,7 +1683,7 @@ python exercises/run.py 11       <span class="hljs-comment"># run the hidden tes
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-hazardous-legacy-codebase" class="toc-link">1. The Hazardous Legacy Codebase</a></li><li class="toc-item level-2"><a href="#2-the-golden-rule-characterization-tests-first" class="toc-link">2. The Golden Rule: Characterization Tests First</a></li><li class="toc-item level-3"><a href="#writing-the-pinning-harness-with-pytest" class="toc-link">Writing the Pinning Harness with `pytest`</a></li><li class="toc-item level-2"><a href="#3-surgical-modernization-step-by-step" class="toc-link">3. Surgical Modernization Step-by-Step</a></li><li class="toc-item level-2"><a href="#4-the-pristine-refactored-implementation" class="toc-link">4. The Pristine Refactored Implementation</a></li><li class="toc-item level-2"><a href="#5-comparative-architectural-review" class="toc-link">5. Comparative Architectural Review</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-hazardous-legacy-codebase" class="toc-link">1. The Hazardous Legacy Codebase</a></li><li class="toc-item level-2"><a href="#2-characterization-tests-pinning-the-legacy-baseline" class="toc-link">2. Characterization Tests (Pinning the Legacy Baseline)</a></li><li class="toc-item level-2"><a href="#3-the-strangler-fig-pattern-zero-downtime-migration" class="toc-link">3. The Strangler Fig Pattern: Zero-Downtime Migration</a></li><li class="toc-item level-3"><a href="#runnable-strangler-proxy-with-shadow-execution" class="toc-link">Runnable Strangler Proxy with Shadow Execution</a></li><li class="toc-item level-2"><a href="#4-automated-codebase-modernization-ast-codemods" class="toc-link">4. Automated Codebase Modernization: AST Codemods</a></li><li class="toc-item level-3"><a href="#automated-transformer-fixing-mutable-default-arguments" class="toc-link">Automated Transformer: Fixing Mutable Default Arguments</a></li><li class="toc-item level-2"><a href="#5-the-pristine-refactored-architecture" class="toc-link">5. The Pristine Refactored Architecture</a></li><li class="toc-item level-2"><a href="#6-dead-code-hunting-zero-downtime-database-migration" class="toc-link">6. Dead Code Hunting & Zero-Downtime Database Migration</a></li><li class="toc-item level-3"><a href="#1-dead-code-elimination" class="toc-link">1. Dead Code Elimination</a></li><li class="toc-item level-3"><a href="#2-zero-downtime-schema-evolution-expand-contract" class="toc-link">2. Zero-Downtime Schema Evolution (Expand & Contract)</a></li><li class="toc-item level-2"><a href="#version-notes" class="toc-link">Version Notes</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

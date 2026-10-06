@@ -1,5 +1,10 @@
 # Chapter 14: Enterprise Security, OAuth2, JWT & Cryptographic RBAC
 
+> **What you will be able to do:** Implement secure authentication and authorization systems using OAuth2 with PKCE and signed JWTs, store passwords safely using Argon2id/bcrypt, enforce cryptographic Role-Based Access Control (RBAC), and mitigate timing attacks and SQL/command injection.
+> **What you must already know:** Chapter 13 FastAPI dependency injection and basic web security principles.
+
+---
+
 > **Zero-Prerequisite Intuition: The "Airport Security & Boarding Pass Token System"**
 > Why don't web applications ask you to type your password on every single click?
 > 
@@ -393,6 +398,14 @@ def admin_only_metrics(admin_user: Annotated[TokenPayload, Depends(RequireRole(U
 | **Token Expiration** | Boarding pass expires before departure | Short-lived Access Token (15 min) + Refresh Token Rotation with family invalidation |
 | **RBAC Enforcement** | First Class vs Cockpit access | Enforced via declarative dependency injection factories (`RequireRole`) |
 | **Storage Security** | Keeping your passport in an inside pocket | Store browser tokens in `HttpOnly`, `Secure`, `SameSite=Strict` cookies |
+
+
+## Version Notes
+
+- **Python 3.10**: Strict OpenSSL 1.1.1+ and 3.0+ requirements across `hashlib` and `ssl` modules.
+- **Python 3.11**: Introduced `hashlib.file_digest()` for streaming cryptographic hashes directly from file objects without memory buffering.
+- **Python 3.12**: SHA-3 and cryptographic hashing acceleration; legacy insecure hash algorithms (like MD5) disallowed in FIPS-compliant environments.
+- **Python 3.13**: Cryptographic PRNG speedups in `secrets` module and zeroized memory buffers for sensitive credentials.
 
 
 ## Exercises

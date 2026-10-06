@@ -1,5 +1,10 @@
 # Chapter 13: High-Performance Web Architecture (ASGI, FastAPI & Pydantic V2)
 
+> **What you will be able to do:** Architect production ASGI web services using FastAPI and Uvicorn, implement ultra-fast data validation and serialization pipelines with Rust-backed Pydantic V2, manage lifespan events, and configure production worker concurrency.
+> **What you must already know:** Chapter 06 asyncio coroutines, Chapter 07 type annotations, and HTTP request/response fundamentals.
+
+---
+
 > **Zero-Prerequisite Intuition: The "Michelin-Star Kitchen Assembly Line"**
 > What actually happens when you open an app on your phone and tap "Order Food"?
 > 
