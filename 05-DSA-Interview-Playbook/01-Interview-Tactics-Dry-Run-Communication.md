@@ -84,6 +84,32 @@ Edge Case Verification:
 | **0/1 Knapsack / DP** | Subset sum, partitioning, optimal selection with weight constraints | 2D / 1D DP table (bottom-up iteration) | $O(N \cdot W)$ |
 
 
+## Generated Dry-Run Traces
+
+A dry run is only useful if it is faithful to the code. The repository includes a tracer that **generates** the trace from the actual solution, so it cannot drift from what the code does:
+
+```text
+$ python practice/trace.py 1 "[2,7,11,15]" 9
+two_sum([2, 7, 11, 15], 9)
+  line  46  seen: dict[int, int] = {}                        nums=[2, 7, 11, 15]  target=9
+  line  47  for i, num in enumerate(nums):                   seen={2: 0}
+  line  48  complement = target - num                        seen={2: 0}  i=0  num=2
+  line  49  if complement in seen:                           seen={2: 0}  complement=7
+  line  51  seen[num] = i                                    seen={2: 0}
+  line  47  for i, num in enumerate(nums):                   seen={2: 0}
+  line  48  complement = target - num                        seen={2: 0}  i=1  num=7
+  line  49  if complement in seen:                           seen={2: 0}  complement=2
+  line  50  return [seen[complement], i]                     seen={2: 0}
+  line  50  return [0, 1]
+=> [0, 1]
+```
+
+How to read it: each row is a line about to execute, and the values next to it are the variables that changed since the previous line (so they show the effect of the line above). Here you can watch `seen` fill with `{2: 0}`, then `complement` become `2` on the second pass and the function return `[0, 1]`.
+
+Use it three ways: trace the reference solution on the example to learn the mechanism, trace **your own stub** with `--stub` to see where it diverges, and trace a failing fuzz input (the harness prints the counterexample) to find the exact line where your variable goes wrong. Arguments after the problem number are Python literals, for example `python practice/trace.py 20 "[1,3,5,7,9]" 7`.
+
+---
+
 ## Further Reading
 
 - [Big-O cheat sheet](https://www.bigocheatsheet.com/)

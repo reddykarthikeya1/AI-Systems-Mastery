@@ -1,0 +1,45 @@
+name: quality
+
+# Runs the same checks you can run locally. This workflow definition has not been executed on GitHub yet;
+# every command in it was run locally on Windows with Python 3.11 and Node 20.
+
+on:
+  push:
+    branches: [main, main-lite]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: pip install numpy "pydantic>=2" pytest -r 04-Agentic-AI/examples/requirements.txt
+
+      - name: Python track exercises (reference solutions pass their hidden tests)
+        run: python 01-Python-Mastery/exercises/run.py --solutions
+
+      - name: DSA Core 75 (asserts plus brute-force cross-checks)
+        run: python 05-DSA-Interview-Playbook/practice/run_tests.py --fuzz
+
+      - name: Agentic examples (offline, stub clients)
+        run: cd 04-Agentic-AI/examples && pytest -q
+
+      - name: Static quality audit
+        run: python tools/audit.py --no-run
+
+      - name: Build the portal
+        run: npm ci && node scripts/build-html.js
+
+      - name: Render check (KaTeX, Mermaid, landmarks) in headless Chrome
+        run: python tools/portal_check.py --sample 30

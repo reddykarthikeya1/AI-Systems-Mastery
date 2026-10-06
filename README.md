@@ -10,7 +10,7 @@
 
 ## Quality: what is measured and what is judged
 
-**Measured** (regenerate with `python tools/audit.py`, output in [QUALITY_REPORT.md](QUALITY_REPORT.md)): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 34 brute-force cross-checks), chapters with *Check Yourself* and *Further Reading* (every link checked to resolve), the portal's search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.
+**Measured** (regenerate with `python tools/audit.py`, output in [QUALITY_REPORT.md](QUALITY_REPORT.md)): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 70 brute-force cross-checks, mutation-tested), chapters with *Check Yourself* and *Further Reading* (every link checked to resolve), the portal's search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.
 
 **Editor's assessment** (a judgment, not a measurement, out of 10; the gaps column is what stops a higher score):
 
@@ -20,8 +20,8 @@
 | Low-Level Design | 8 | 8 | 8.5 | 8 | case studies 12, 15, 17 and 18 still lack the tested edge-case section; patterns chapters cover 22 of 23 GoF patterns (Interpreter is only named) |
 | High-Level Design | 7.5 | 8.5 | 8 | 8 | systems 04 to 10, 14 and 15 have estimates but no runnable core mechanism; exercises are discussion questions, not auto-graded |
 | Agentic AI | 7.5 | 8.5 | 8.5 | 8.5 | adapters for Anthropic and OpenAI are tested with stub clients only (never against a live API); no cloud-deployment walkthrough |
-| DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
-| Portal (HTML/PDF) | n/a | n/a | 9 | n/a | PDFs print answers collapsed; no automated browser test suite in CI yet |
+| DSA Playbook | 7.5 | 8 | 8.5 | 9 | the 36 written dry-run traces remain hand-written (a generator, `practice/trace.py`, now produces faithful ones on demand); 5 unfuzzed design problems (trie, word dictionary, word search II, clone graph, alien dictionary) rely on asserts |
+| Portal (HTML/PDF) | n/a | n/a | 9 | n/a | the CI workflow (`.github/workflows/quality.yml`) has been written but not yet run on GitHub; axe-core accessibility checks are manual |
 
 Verified runnable material: `04-Agentic-AI/examples/` (pinned `langgraph==1.2.13`, `mcp==2.3.0`; run with `pytest -q`), `01-Python-Mastery/exercises/` (60 graded exercises across 20 chapters, 95 hidden tests: `python exercises/run.py --init` then `python exercises/run.py 06`), `05-DSA-Interview-Playbook/practice/` (`python run_tests.py 12 --stub`, `--fuzz`, `--hint 12`), and the labs and simulations in each track.
 

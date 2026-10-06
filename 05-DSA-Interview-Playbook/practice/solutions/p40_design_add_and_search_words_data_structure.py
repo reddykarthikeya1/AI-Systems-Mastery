@@ -81,6 +81,8 @@ def run_tests():
     assert wd.search("bad") is True
     assert wd.search(".ad") is True
     assert wd.search("b..") is True
+    assert wd.search("...") is True and wd.search("....") is False        # length must match
+    assert wd.search("b.d") is True and wd.search("b.e") is False
     return True
 
 if __name__ == "__main__":

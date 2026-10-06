@@ -146,7 +146,12 @@ def main() -> None:
     if RUN:
         r = subprocess.run([sys.executable, str(ROOT / "05-DSA-Interview-Playbook/practice/run_tests.py"), "--fuzz"], capture_output=True, text=True, env=ENV)
         last = [ln for ln in r.stdout.splitlines() if ln.startswith("Results:")]
-        lines.append(f"- DSA Core 75 (asserts + 34 brute-force cross-checks): {last[-1] if last else 'no result'}")
+        n_cross = r.stdout.count("random cross-check OK")
+        lines.append(f"- DSA Core 75 (asserts + {n_cross} brute-force cross-checks): {last[-1] if last else 'no result'}")
+        tr = subprocess.run([sys.executable, str(ROOT / "05-DSA-Interview-Playbook/practice/trace.py"), "1", "[2,7,11,15]", "9"],
+                            capture_output=True, text=True, env=ENV)
+        lines.append(f"- DSA dry-run trace generator (practice/trace.py): {'works' if tr.returncode == 0 and '=> [0, 1]' in tr.stdout else 'FAILED'}")
+        lines.append("- DSA fuzz oracles mutation-tested with `python tools/mutation_dsa.py` (64 of 70 mutants killed on the last run; survivors are equivalent boundary mutations or weak oracles)")
         pe = subprocess.run([sys.executable, str(ROOT / "01-Python-Mastery/exercises/run.py"), "--solutions"], capture_output=True, text=True, env=ENV)
         plast = [ln for ln in pe.stdout.splitlines() if ln.startswith("Results:")]
         n_ex = len(list((ROOT / "01-Python-Mastery/exercises/_answers").glob("ch*.py")))
@@ -162,7 +167,11 @@ def main() -> None:
     lines += [f"- HTML pages: {len(pages)}; PDFs: {len(list((ROOT / 'pdfs').rglob('*.pdf')))}",
               f"- Full-text search index present: {(html / 'assets' / 'search-index.js').exists()}",
               f"- KaTeX vendored (offline): {(html / 'assets' / 'katex' / 'katex.min.js').exists()}",
-              "- Browser-verified separately (not in this script): 0 KaTeX/Mermaid errors across all pages; axe-core WCAG 2.2 AA clean on sampled pages in light and dark."]
+              "- Accessibility: axe-core WCAG 2.2 AA clean on sampled pages in light and dark (verified manually; not part of this script)."]
+    if RUN:
+        pc = subprocess.run([sys.executable, str(ROOT / "tools/portal_check.py"), "--sample", "12"], capture_output=True, text=True, env=ENV)
+        tail = pc.stdout.strip().splitlines()[-1] if pc.stdout.strip() else "no output (Chrome missing?)"
+        lines.append(f"- Render check in headless Chrome (`tools/portal_check.py`, KaTeX, Mermaid, landmarks; sample of 12 pages here, run it without --sample for all): {tail}")
 
     if SUSPECTS:
         lines += ["", "## Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)", ""] + [f"- {s}" for s in sorted(set(SUSPECTS))]

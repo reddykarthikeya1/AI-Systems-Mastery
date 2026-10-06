@@ -80,6 +80,10 @@ def run_tests():
     assert t.starts_with("app") is True
     t.insert("app")
     assert t.search("app") is True
+    assert t.search("apples") is False                                  # a longer word is not a match
+    assert t.starts_with("b") is False
+    t.insert("apple")                                                   # inserting twice is harmless
+    assert t.search("apple") is True
     return True
 
 if __name__ == "__main__":

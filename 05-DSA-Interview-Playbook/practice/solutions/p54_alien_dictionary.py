@@ -82,6 +82,9 @@ def run_tests():
     assert alien_order(["z", "x"]) == "zx"
     assert alien_order(["z", "x", "z"]) == "" # Cycle detected
     assert alien_order(["abc", "ab"]) == "" # Prefix violation
+    assert alien_order(["z", "z"]) == "z"                               # equal words add no constraint
+    assert sorted(alien_order(["abc", "bcd"])) == ["a", "b", "c", "d"]  # every letter appears exactly once
+    assert alien_order(["a"]) == "a"
     return True
 
 if __name__ == "__main__":

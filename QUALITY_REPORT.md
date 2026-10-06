@@ -10,8 +10,8 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 | 01-Python-Mastery | 23 | 0 | 47,502 | 2093 | 100% | 100% | 92/93 | 17 |
 | 02-Low-Level-Design | 12 | 18 | 43,122 | 1348 | 100% | 100% | 83/84 | 4 |
 | 03-High-Level-Design | 13 | 20 | 43,902 | 1280 | 100% | 100% | 36/36 | 1 |
-| 04-Agentic-AI | 21 | 0 | 32,563 | 1571 | 100% | 100% | 42/42 | 2 |
-| 05-DSA-Interview-Playbook | 9 | 0 | 38,053 | 1245 | 100% | 100% | 70/72 | 98 |
+| 04-Agentic-AI | 21 | 0 | 32,576 | 1571 | 100% | 100% | 42/42 | 2 |
+| 05-DSA-Interview-Playbook | 9 | 0 | 38,319 | 1245 | 100% | 100% | 70/72 | 98 |
 
 ## Executable assets
 
@@ -20,7 +20,9 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 - HLD simulations: 4/4 scripts run clean
 - Agentic HNSW simulation: 1/1 scripts run clean
 - DSA benchmarks: 1/1 scripts run clean
-- DSA Core 75 (asserts + 34 brute-force cross-checks): Results: 75 PASSED, 0 FAILED out of 75 tests.
+- DSA Core 75 (asserts + 70 brute-force cross-checks): Results: 75 PASSED, 0 FAILED out of 75 tests.
+- DSA dry-run trace generator (practice/trace.py): works
+- DSA fuzz oracles mutation-tested with `python tools/mutation_dsa.py` (64 of 70 mutants killed on the last run; survivors are equivalent boundary mutations or weak oracles)
 - Python exercises (20 chapters, 2 coding + 1 debugging each, hidden tests; reference solutions): Results: 95 passed, 0 failed, 0 skipped
 - Python chapters with a Version Notes section: 9
 - Agentic examples (pinned langgraph/mcp, offline): run `cd 04-Agentic-AI/examples && pytest -q` (needs `pip install -r requirements.txt`)
@@ -30,7 +32,8 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 - HTML pages: 118; PDFs: 118
 - Full-text search index present: True
 - KaTeX vendored (offline): True
-- Browser-verified separately (not in this script): 0 KaTeX/Mermaid errors across all pages; axe-core WCAG 2.2 AA clean on sampled pages in light and dark.
+- Accessibility: axe-core WCAG 2.2 AA clean on sampled pages in light and dark (verified manually; not part of this script).
+- Render check in headless Chrome (`tools/portal_check.py`, KaTeX, Mermaid, landmarks; sample of 12 pages here, run it without --sample for all): checked 12 pages, 0 failed
 
 ## Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)
 

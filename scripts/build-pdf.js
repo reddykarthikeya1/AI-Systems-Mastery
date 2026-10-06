@@ -82,6 +82,8 @@ function convertMarkdownToHtml(mdFilePath) {
   const pm = protectMath(rawMd);
   let bodyHtml = restoreMath(marked.parse(pm.md), pm.store);
   bodyHtml = transformCallouts(bodyHtml);
+  // Print has no click: expand every <details> (the Check Yourself answers) so the PDF is complete
+  bodyHtml = bodyHtml.replace(/<details>/g, '<details open>');
 
   const cssContent = fs.readFileSync(CSS_PATH, 'utf8');
   const title = path.basename(mdFilePath, '.md').replace(/-/g, ' ');

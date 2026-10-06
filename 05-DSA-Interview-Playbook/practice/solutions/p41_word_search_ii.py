@@ -81,7 +81,9 @@ def run_tests():
     w = ["oath","pea","eat","rain"]
     assert sorted(find_words(b, w)) == sorted(["eat", "oath"])
     b2 = [["a","b"],["c","d"]]
-    assert find_words(b2, ["abcd"]) == []
+    assert find_words([["a"]], ["a", "b"]) == ["a"]
+    assert find_words([["a", "a"]], ["aaa"]) == []                       # a cell cannot be reused within one word
+    assert sorted(find_words(b2, ["ab", "cd", "ac", "bd", "ad"])) == ["ab", "ac", "bd", "cd"]   # no diagonal moves
     return True
 
 if __name__ == "__main__":
