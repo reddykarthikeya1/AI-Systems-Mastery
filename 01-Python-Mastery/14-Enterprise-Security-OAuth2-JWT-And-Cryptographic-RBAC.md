@@ -395,6 +395,18 @@ def admin_only_metrics(admin_user: Annotated[TokenPayload, Depends(RequireRole(U
 | **Storage Security** | Keeping your passport in an inside pocket | Store browser tokens in `HttpOnly`, `Secure`, `SameSite=Strict` cookies |
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch14.py stubs
+python exercises/run.py 14       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch14.py`.
+
+
 ## Further Reading
 
 - [JWT introduction](https://jwt.io/introduction)

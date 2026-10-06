@@ -46,7 +46,7 @@ flowchart TD
 
 ## 2. The Apache Arrow Columnar Standard (Spoon-Fed Foundations)
 
-To understand why Polars and DuckDB are 20x to 100x faster than Pandas, we must look at how bytes are arranged in physical RAM.
+To understand why Polars and DuckDB are often several times to an order of magnitude faster than Pandas (about 3x on the single-key group-by in `labs/05_benchmarks.py`; wider gaps appear on multi-core machines, joins and wide scans), we must look at how bytes are arranged in physical RAM.
 
 ### Row-Major vs Columnar Memory Layout
 Suppose we have a table of users:
@@ -312,6 +312,18 @@ print(result_arrow)
 | **Streaming Mode** | Drinking water in sips instead of the entire bucket | `collect(streaming=True)` processes datasets larger than RAM with flat memory |
 | **DuckDB Engine** | SQLite for analytical aggregation | Embed inside Python; execute SQL directly on Parquet and Polars with zero copy |
 | **Loop Materialization** | Never rebuild the house 4 times | Never call `.collect()` in loops; compute in one unified execution graph |
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch17.py stubs
+python exercises/run.py 17       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch17.py`.
 
 
 ## Further Reading

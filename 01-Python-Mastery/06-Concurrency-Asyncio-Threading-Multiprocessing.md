@@ -267,6 +267,25 @@ print("Pipeline completed all jobs cleanly!")
 ```
 
 
+## Version Notes
+
+- `asyncio.TaskGroup`, `asyncio.timeout()` and `except*` exception groups are 3.11+. Before 3.11 use `gather` and `wait_for`.
+- Free-threaded CPython (no GIL) is an optional build: experimental in 3.13 (PEP 703), officially supported but not the default in 3.14 (PEP 779). Check `sys._is_gil_enabled()` before assuming either.
+- The default `multiprocessing` start method on POSIX changes from `fork` to `forkserver` in 3.14; code that relied on inheriting globals through `fork` must pass state explicitly.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch06.py stubs
+python exercises/run.py 06       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch06.py`.
+
+
 ## Further Reading
 
 - [asyncio documentation](https://docs.python.org/3/library/asyncio.html)

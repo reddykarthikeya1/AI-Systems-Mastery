@@ -137,7 +137,7 @@ In Python web servers, data validation used to be a major performance bottleneck
 
 In **Pydantic V2**, the entire core engine was rewritten in **Rust** (`pydantic-core`). 
 
-### Why Rust Makes Python 17x Faster
+### Why Rust Makes Validation Faster
 Python is dynamic: every time it accesses an attribute, it performs hash table lookups, reference count increments, and type checks. 
 Rust compiles directly to native CPU machine instructions. When raw JSON arrives, `pydantic-core` scans the bytes directly in C/Rust memory without creating millions of intermediate temporary Python string and dictionary objects on the heap.
 
@@ -149,7 +149,7 @@ flowchart LR
     end
 
     subgraph V2["Modern Pydantic V2 (Rust Core)"]
-        J2["Raw JSON String"] -->|Rust pydantic-core| M2["Validated Model (Zero-Copy 17x Faster)"]
+        J2["Raw JSON String"] -->|Rust pydantic-core| M2["Validated Model (Rust core, much faster)"]
     end
 ```
 
@@ -646,6 +646,24 @@ async def create_order_endpoint(
 | **Dependency Injection** | Handing ingredients to the chef when needed | Declared via `Depends()`; use `yield` for bulletproof connection pool cleanup |
 | **Lifespan Manager** | Turning lights on/off when kitchen opens/closes | Prevents cross-process file-descriptor corruption caused by `os.fork()` |
 | **Streaming Responses** | Sipping water through a straw instead of swallowing a lake | Keeps RAM footprint flat at $O(1)$ constant size for multi-gigabyte exports |
+
+
+## Version Notes
+
+- Pydantic v2 renamed v1 APIs: `parse_obj` to `model_validate`, `.dict()` to `model_dump()`, `@validator` to `@field_validator`, inner `class Config` to `model_config = ConfigDict(...)`. v1 snippets from older tutorials will emit deprecation warnings or fail.
+- FastAPI replaced `@app.on_event("startup")` hooks with the `lifespan` context manager; the old hooks are deprecated. Check the installed FastAPI and Pydantic versions with `pip show` before copying code from an old article.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch13.py stubs
+python exercises/run.py 13       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch13.py`.
 
 
 ## Further Reading

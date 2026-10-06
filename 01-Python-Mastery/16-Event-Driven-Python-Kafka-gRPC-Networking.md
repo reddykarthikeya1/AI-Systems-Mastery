@@ -442,6 +442,18 @@ if __name__ == "__main__":
 | **Apache Kafka** | TCP Commit Log | 5ms – 20ms | Event-driven choreography, real-time analytics, event sourcing, multi-consumer data streaming | Synchronous request-response queries |
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch16.py stubs
+python exercises/run.py 16       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch16.py`.
+
+
 ## Further Reading
 
 - [Apache Kafka documentation](https://kafka.apache.org/documentation/)

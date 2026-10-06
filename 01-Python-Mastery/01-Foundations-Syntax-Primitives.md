@@ -409,6 +409,24 @@ print(f"Tuple state: {t}")
 > **Staff Engineer Takeaway:** Immutability in Python applies only to the **references** held directly by the container, not to the contents of referenced objects.
 
 
+## Version Notes
+
+- `match` statements arrived in 3.10 (PEP 634); f-strings were reformalised in 3.12 (PEP 701: nested quotes and multi-line expressions work).
+- `str.removeprefix`/`removesuffix` need 3.9; `tomllib` is in the standard library from 3.11; template strings (`t"..."`, PEP 750) are new in 3.14.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch01.py stubs
+python exercises/run.py 01       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch01.py`.
+
+
 ## Further Reading
 
 - [Built-in types](https://docs.python.org/3/library/stdtypes.html)

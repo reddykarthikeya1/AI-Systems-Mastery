@@ -324,6 +324,18 @@ def process_billing_transaction(self, idempotency_key: str, account_id: str, amo
 | **Redis memory usage explosion** | Celery storing task results indefinitely without TTL eviction. | Set `result_expires = 3600` (1 hour) or disable result storage for fire-and-forget tasks (`ignore_result = True`). |
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch15.py stubs
+python exercises/run.py 15       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch15.py`.
+
+
 ## Further Reading
 
 - [Celery documentation](https://docs.celeryq.dev/en/stable/)

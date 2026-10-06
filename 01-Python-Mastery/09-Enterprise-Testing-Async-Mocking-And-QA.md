@@ -323,6 +323,24 @@ def test_lossless_roundtrip_invariant(input_data):
 | **Hypothesis** | Robot throwing 1,000 edge cases at your function | Tests mathematical invariants across generated edge-case input domains |
 
 
+## Version Notes
+
+- `unittest.mock.AsyncMock` needs 3.8; `pytest-asyncio` has strict and auto modes, and the default differs across major versions, so pin it and set the mode explicitly in config.
+- Injecting clocks and `sleep` callables (Chapter 09 exercises) beats patching `time` globally: it works unchanged on every Python version.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch09.py stubs
+python exercises/run.py 09       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch09.py`.
+
+
 ## Further Reading
 
 - [pytest documentation](https://docs.pytest.org/en/stable/)

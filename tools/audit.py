@@ -125,7 +125,7 @@ def main() -> None:
     lines += ["", "## Executable assets", ""]
     checks = [
         ("Python labs", [ROOT / "01-Python-Mastery/labs/01_race_condition_hunter.py", ROOT / "01-Python-Mastery/labs/02_async_starvation_lab.py",
-                         ROOT / "01-Python-Mastery/labs/03_memory_leak_debugger.py", ROOT / "01-Python-Mastery/labs/04_measure_memory_claims.py"]),
+                         ROOT / "01-Python-Mastery/labs/03_memory_leak_debugger.py", ROOT / "01-Python-Mastery/labs/04_measure_memory_claims.py", ROOT / "01-Python-Mastery/labs/05_benchmarks.py"]),
         ("LLD lab", [ROOT / "02-Low-Level-Design/labs/01_concurrency_stress_test.py"]),
         ("HLD simulations", sorted((ROOT / "03-High-Level-Design/simulations").glob("*.py"))),
         ("Agentic HNSW simulation", [ROOT / "04-Agentic-AI/simulations/pure_python_hnsw.py"]),
@@ -138,6 +138,12 @@ def main() -> None:
         r = subprocess.run([sys.executable, str(ROOT / "05-DSA-Interview-Playbook/practice/run_tests.py"), "--fuzz"], capture_output=True, text=True, env=ENV)
         last = [ln for ln in r.stdout.splitlines() if ln.startswith("Results:")]
         lines.append(f"- DSA Core 75 (asserts + 34 brute-force cross-checks): {last[-1] if last else 'no result'}")
+        pe = subprocess.run([sys.executable, str(ROOT / "01-Python-Mastery/exercises/run.py"), "--solutions"], capture_output=True, text=True, env=ENV)
+        plast = [ln for ln in pe.stdout.splitlines() if ln.startswith("Results:")]
+        n_ex = len(list((ROOT / "01-Python-Mastery/exercises/_answers").glob("ch*.py")))
+        lines.append(f"- Python exercises ({n_ex} chapters, 2 coding + 1 debugging each, hidden tests; reference solutions): {plast[-1] if plast else 'no result'}")
+        vn = sum("## Version Notes" in p.read_text(encoding="utf-8", errors="ignore") for p in chapter_files("01-Python-Mastery"))
+        lines.append(f"- Python chapters with a Version Notes section: {vn}")
         ex = ROOT / "04-Agentic-AI/examples"
         lines.append("- Agentic examples (pinned langgraph/mcp, offline): run `cd 04-Agentic-AI/examples && pytest -q` (needs `pip install -r requirements.txt`)")
 

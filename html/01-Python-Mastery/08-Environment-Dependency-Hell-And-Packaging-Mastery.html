@@ -1426,7 +1426,7 @@ graph TD
 <td align="left"><strong><code>uv</code> (Astral)</strong></td>
 <td align="left">PubGrub in Rust</td>
 <td align="left">Deterministic <code>uv.lock</code></td>
-<td align="left">10x-100x faster than pip</td>
+<td align="left">Often 10x+ faster than pip in uv&#39;s own benchmarks (warm cache)</td>
 </tr>
 </tbody></table>
 <h3 id="reproducing-and-resolving-a-conflict-with-pip-tools"><a href="#reproducing-and-resolving-a-conflict-with-pip-tools" class="header-anchor">#</a>Reproducing and Resolving a Conflict with `pip-tools`</h3><p>To guarantee 100% reproducible environments across team machines and production servers, avoid unpinned <code>requirements.txt</code>. Instead, use <strong>source inputs</strong> and <strong>compiled lockfiles</strong>.</p>
@@ -1672,6 +1672,24 @@ awscli&gt;=1.32.0</code></pre>
   </div></li>
 <li>Verify that <code>botocore</code> is synchronized automatically as a transitive requirement without direct manual pinning.</li>
 </ol>
+<h2 id="version-notes"><a href="#version-notes" class="header-anchor">#</a>Version Notes</h2><ul>
+<li><code>pyproject.toml</code> with a <code>[project]</code> table is the standard metadata home (PEP 621); <code>distutils</code> was removed in 3.12, so legacy <code>setup.py</code> files that import it fail there.</li>
+<li>Linux distributions that mark the system Python as externally managed (PEP 668) make plain <code>pip install</code> fail outside a virtual environment, by design.</li>
+<li>Inline script metadata (PEP 723) lets one-file scripts declare dependencies; <code>uv run script.py</code> honours it. <code>uv.lock</code> is uv-specific; the cross-tool lock file format is PEP 751 (<code>pylock.toml</code>).</li>
+</ul>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch08.py stubs</span>
+python exercises/run.py 08       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
+  </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch08.py</code>.</p>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a></li>
 <li><a href="https://packaging.python.org/en/latest/specifications/pyproject-toml/">pyproject.toml specification</a></li>
@@ -1710,7 +1728,7 @@ awscli&gt;=1.32.0</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-virtual-environments-what-happens-under-the-hood" class="toc-link">1. Virtual Environments: What Happens Under the Hood</a></li><li class="toc-item level-3"><a href="#the-anatomy-of-a-venv" class="toc-link">The Anatomy of a `venv`</a></li><li class="toc-item level-3"><a href="#the-pyvenv-cfg-master-switch" class="toc-link">The `pyvenv.cfg` Master Switch</a></li><li class="toc-item level-3"><a href="#sys-path-resolution-mechanics" class="toc-link">`sys.path` Resolution Mechanics</a></li><li class="toc-item level-2"><a href="#2-dependency-hell-the-diamond-dependency-trap" class="toc-link">2. Dependency Hell: The Diamond Dependency Trap</a></li><li class="toc-item level-3"><a href="#modern-resolvers-pip-vs-pip-tools-vs-poetry-vs-uv" class="toc-link">Modern Resolvers: Pip vs. Pip-tools vs. Poetry vs. UV</a></li><li class="toc-item level-3"><a href="#reproducing-and-resolving-a-conflict-with-pip-tools" class="toc-link">Reproducing and Resolving a Conflict with `pip-tools`</a></li><li class="toc-item level-2"><a href="#3-wheels-vs-source-distributions-sdists" class="toc-link">3. Wheels vs. Source Distributions (Sdists)</a></li><li class="toc-item level-3"><a href="#wheel-tag-mechanics-what-does-cp311-cp311-win-amd64-mean" class="toc-link">Wheel Tag Mechanics: What does `cp311-cp311-win_amd64` mean?</a></li><li class="toc-item level-2"><a href="#4-modern-packaging-pyproject-toml-pep-517-621" class="toc-link">4. Modern Packaging: `pyproject.toml` (PEP 517 & 621)</a></li><li class="toc-item level-3"><a href="#production-ready-pyproject-toml-template" class="toc-link">Production-Ready `pyproject.toml` Template</a></li><li class="toc-item level-2"><a href="#5-cross-platform-gotchas-windows-vs-linux" class="toc-link">5. Cross-Platform Gotchas: Windows vs. Linux</a></li><li class="toc-item level-2"><a href="#6-hands-on-break-fix-exercise-resolving-a-live-conflict" class="toc-link">6. Hands-On Break-Fix Exercise: Resolving a Live Conflict</a></li><li class="toc-item level-3"><a href="#the-challenge" class="toc-link">The Challenge</a></li><li class="toc-item level-3"><a href="#the-resolution-strategy" class="toc-link">The Resolution Strategy</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-virtual-environments-what-happens-under-the-hood" class="toc-link">1. Virtual Environments: What Happens Under the Hood</a></li><li class="toc-item level-3"><a href="#the-anatomy-of-a-venv" class="toc-link">The Anatomy of a `venv`</a></li><li class="toc-item level-3"><a href="#the-pyvenv-cfg-master-switch" class="toc-link">The `pyvenv.cfg` Master Switch</a></li><li class="toc-item level-3"><a href="#sys-path-resolution-mechanics" class="toc-link">`sys.path` Resolution Mechanics</a></li><li class="toc-item level-2"><a href="#2-dependency-hell-the-diamond-dependency-trap" class="toc-link">2. Dependency Hell: The Diamond Dependency Trap</a></li><li class="toc-item level-3"><a href="#modern-resolvers-pip-vs-pip-tools-vs-poetry-vs-uv" class="toc-link">Modern Resolvers: Pip vs. Pip-tools vs. Poetry vs. UV</a></li><li class="toc-item level-3"><a href="#reproducing-and-resolving-a-conflict-with-pip-tools" class="toc-link">Reproducing and Resolving a Conflict with `pip-tools`</a></li><li class="toc-item level-2"><a href="#3-wheels-vs-source-distributions-sdists" class="toc-link">3. Wheels vs. Source Distributions (Sdists)</a></li><li class="toc-item level-3"><a href="#wheel-tag-mechanics-what-does-cp311-cp311-win-amd64-mean" class="toc-link">Wheel Tag Mechanics: What does `cp311-cp311-win_amd64` mean?</a></li><li class="toc-item level-2"><a href="#4-modern-packaging-pyproject-toml-pep-517-621" class="toc-link">4. Modern Packaging: `pyproject.toml` (PEP 517 & 621)</a></li><li class="toc-item level-3"><a href="#production-ready-pyproject-toml-template" class="toc-link">Production-Ready `pyproject.toml` Template</a></li><li class="toc-item level-2"><a href="#5-cross-platform-gotchas-windows-vs-linux" class="toc-link">5. Cross-Platform Gotchas: Windows vs. Linux</a></li><li class="toc-item level-2"><a href="#6-hands-on-break-fix-exercise-resolving-a-live-conflict" class="toc-link">6. Hands-On Break-Fix Exercise: Resolving a Live Conflict</a></li><li class="toc-item level-3"><a href="#the-challenge" class="toc-link">The Challenge</a></li><li class="toc-item level-3"><a href="#the-resolution-strategy" class="toc-link">The Resolution Strategy</a></li><li class="toc-item level-2"><a href="#version-notes" class="toc-link">Version Notes</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

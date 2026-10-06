@@ -1,7 +1,7 @@
 # Chapter 18: High-Performance Computing (HPC, Cython, Numba & Python 3.13 No-GIL)
 
 > **The 100x Speedup**
-> Standard CPython is notoriously slow for numerical computation. A pure Python `for` loop summing an array of floats can be **50x to 150x slower** than compiled C or Rust. Why? Because every integer or float in Python is a dynamically allocated 28-byte `PyObject` heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.
+> Standard CPython is notoriously slow for numerical computation. A pure Python `for` loop summing an array of floats is typically **an order of magnitude or more slower** than compiled code (`labs/05_benchmarks.py` measured about 12x for a simple float sum against `numpy.sum` on Python 3.11; branch-heavy loops show larger gaps). Why? Because every integer or float in Python is a dynamically allocated 28-byte `PyObject` heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.
 > 
 > In quantitative finance, scientific simulation, and large-scale AI engineering, we cannot tolerate this overhead. This chapter teaches you how to push Python to native hardware speeds using **NumPy Strides**, **SIMD Vectorization**, **Numba JIT compilation**, **Cython with GIL release**, **Inter-Process Shared Memory**, **Free-Threaded Python 3.13**, and **GPU CUDA Acceleration**.
 
@@ -88,7 +88,7 @@ import time
 import numpy as np
 from numba import njit, prange
 
-# Pure Python Loop: 50x slower
+# Pure Python loop: far slower per iteration than compiled code
 def monte_carlo_pi_python(num_samples: int) -> float:
     inside = 0
     for _ in range(num_samples):
@@ -123,8 +123,10 @@ if __name__ == "__main__":
 
     print(f"Numba JIT Time:   {t_numba:.4f} seconds (Pi = {pi_numba})")
 ```
-* **Pure Python:** ~18.5 seconds
-* **Numba Parallel JIT:** **0.12 seconds (154x Speedup!)**
+* **Pure Python:** about 18.5 seconds
+* **Numba Parallel JIT:** about 0.12 seconds (roughly 150x)
+
+These two timings come from one many-core run and are illustrative, not guaranteed. The ratio depends on core count, because `prange` parallelises across cores and the pure-Python baseline does not. Re-run the script on your own machine and quote your own ratio.
 
 ---
 
@@ -217,7 +219,7 @@ Python 3.13 introduces the official experimental build that **completely removes
 ### How CPython Removed the GIL
 1. **Biased Reference Counting:** Objects local to a single thread use fast, non-atomic reference increments. When an object is shared across threads, it switches to thread-safe atomic reference counting.
 2. **Mimalloc Memory Allocator:** Replaces PyMalloc with Microsoft's thread-local `mimalloc`, preventing memory allocation lock contention across cores.
-3. **Linear CPU Scaling:** A CPU-bound task split across 16 OS threads in `threading.Thread` now achieves a **15.8x real-world speedup on 16 cores** in pure Python!
+3. **Linear CPU Scaling:** A CPU-bound task split across 16 OS threads in `threading.Thread` can now scale across cores for CPU-bound work in pure Python. How close to linear it gets depends on the workload, lock contention and the build; always measure on your own code, and note that the free-threaded build is still marked experimental/supported-but-optional in 3.13/3.14 (PEP 703, PEP 779).
 
 ---
 
@@ -330,6 +332,18 @@ Python 3.13 introduced a revolutionary **Copy-and-Patch JIT**:
 | Multi-process memory bloat | `pickle` serialization over IPC sockets | **`multiprocessing.shared_memory`** | Eliminates 100% of IPC transfer lag |
 | Threaded CPU tasks blocked by GIL | Pre-3.13 CPython GIL serialization | **Python 3.13 Free-Threaded (`python3.13t`)** | Near-linear multi-core scaling |
 | Massive matrix multiplication / deep learning | CPU memory bandwidth exhaustion | **PyTorch / Triton on NVIDIA CUDA GPU** | $1,000\times+$ |
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch18.py stubs
+python exercises/run.py 18       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch18.py`.
 
 
 ## Further Reading

@@ -316,6 +316,18 @@ async def fetch_users_with_eager_loading():
 4. **Tune `work_mem` and `shared_buffers`:** Default PostgreSQL settings are tuned for 1990s hardware. Increase `shared_buffers` to 25% of system RAM and configure `work_mem` appropriately to prevent sort spills to disk.
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch12.py stubs
+python exercises/run.py 12       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch12.py`.
+
+
 ## Further Reading
 
 - [PostgreSQL documentation](https://www.postgresql.org/docs/current/)

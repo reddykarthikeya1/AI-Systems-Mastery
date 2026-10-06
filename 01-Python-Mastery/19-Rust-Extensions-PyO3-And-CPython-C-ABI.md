@@ -34,8 +34,8 @@ flowchart TD
 
 ### The Industry Shift
 In 2026, the premier performance tools in the Python ecosystem are all built with Rust:
-* **Ruff:** 100x faster Python linter/formatter replacing Flake8 and Black.
-* **uv:** 10x–100x faster package manager replacing `pip` and `virtualenv`.
+* **Ruff:** a linter/formatter typically one to two orders of magnitude faster than Flake8 and Black (per Astral's benchmarks), replacing both.
+* **uv:** a package manager often 10x or more faster than `pip` in Astral's benchmarks, replacing `pip` and `virtualenv`.
 * **Pydantic V2:** Rust-based data validation engine.
 * **Polars:** Lightning-fast DataFrame library outperforming Pandas.
 * **Cryptography:** Python's core cryptography library now powered by Rust.
@@ -266,7 +266,7 @@ elapsed_par = time.perf_counter() - start
 print(f"[Rust Parallel Multi-Core] Result: {res_par:,} | Time: {elapsed_par:.3f}s")
 
 speedup = elapsed_seq / elapsed_par
-print(f"Parallel speedup: {speedup:.1f}x faster across all CPU cores!")
+print(f"Parallel speedup: {speedup:.1f}x (bounded by the number of physical cores)")
 ```
 
 ### Benchmark Results on an 8-Core Machine:
@@ -382,6 +382,18 @@ print(f"First 4 bytes after:  {list(data[:4])}")
 | **Releasing the GIL** | Giving the microphone to someone else while you run | `py.allow_threads` frees the event loop while Rayon saturates all CPU cores |
 | **Buffer Protocol** | Sharing a book on a table instead of photocopying it | Direct pointer manipulation; zero-copy in-place array transformations |
 | **Thread Safety** | Never touch Python objects without a badge | Background Rust threads must call `Python::with_gil()` before invoking Python callbacks |
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch19.py stubs
+python exercises/run.py 19       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch19.py`.
 
 
 ## Further Reading

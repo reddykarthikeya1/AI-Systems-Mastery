@@ -368,6 +368,18 @@ print("Thread-Safe Singleton Metaclass verified!")
 ```
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch04.py stubs
+python exercises/run.py 04       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch04.py`.
+
+
 ## Further Reading
 
 - [The Python 2.3 Method Resolution Order (C3)](https://docs.python.org/3/howto/mro.html)

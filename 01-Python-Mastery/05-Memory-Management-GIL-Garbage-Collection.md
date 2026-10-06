@@ -273,6 +273,18 @@ tracemalloc.stop()
 *Output clearly pinpoints the exact file and line number generating net memory increases!*
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch05.py stubs
+python exercises/run.py 05       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch05.py`.
+
+
 ## Further Reading
 
 - [gc module](https://docs.python.org/3/library/gc.html)

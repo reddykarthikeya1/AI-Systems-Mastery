@@ -347,6 +347,18 @@ class ModernOrderProcessor:
 | **Observability** | Swallowed errors (`except Exception: pass`) | Structured logging with contextual JSON metadata (`structlog`) |
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch11.py stubs
+python exercises/run.py 11       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch11.py`.
+
+
 ## Further Reading
 
 - [Refactoring catalog (Martin Fowler)](https://refactoring.com/catalog/)

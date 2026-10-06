@@ -120,7 +120,7 @@ if __name__ == "__main__":
 *   **`ncalls`**: Number of invocations.
 *   **`tottime`**: Total time spent strictly inside this function (excluding calls to other functions).
 *   **`cumtime`**: Cumulative time spent in this function **including** all sub-functions it called.
-*   Notice: `slow_string_concatenation` takes **0.274 seconds**, whereas `fast_string_join` takes only **0.010 seconds**—a 27x speedup!
+*   Notice: the profiler attributes time to `slow_string_concatenation` and `fast_string_join` separately, which is exactly how you locate a hot spot. The timings above are illustrative output from one run. **Do not expect a large gap on CPython:** CPython's `str +=` has an in-place fast path when the string has a single reference, so `labs/05_benchmarks.py` measured only about 1.2x for `+=` versus `join` on Python 3.11. `join` is still the portable idiom because the fast path is an implementation detail: it disappears for `self.s = self.s + x`, for other interpreters, and whenever a second reference exists, and then the loop really is quadratic.
 
 ---
 
@@ -310,6 +310,18 @@ You can immediately identify:
 1. **Always use context managers** (`with lock:`) for acquiring locks, but establish a strict **global lock acquisition order** (e.g., sort locks by ID before acquiring) to mathematically eliminate deadlocks.
 2. **Never use unbound callbacks or caches** without `weakref` or TTL/LRU eviction policies.
 3. Keep `faulthandler` registered in production servers (`faulthandler.register(signal.SIGUSR1)`) so you can trigger live thread stack dumps on running Kubernetes pods without restarting them!
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch10.py stubs
+python exercises/run.py 10       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch10.py`.
 
 
 ## Further Reading

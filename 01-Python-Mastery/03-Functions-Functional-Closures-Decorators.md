@@ -393,6 +393,24 @@ print([m(2) for m in multipliers_fixed]) # [0, 2, 4, 6]
 > **Staff Engineer Rule:** When creating closures inside loops, always use default argument binding `i=i` to bind the current value to a local parameter at definition time.
 
 
+## Version Notes
+
+- `functools.cache` (3.9) is `lru_cache(maxsize=None)`; remember that unbounded caches are a memory leak risk (Chapter 10 exercise).
+- Decorators accept arbitrary expressions since 3.9 (PEP 614). `typing.ParamSpec` (3.10) is how typed decorators preserve signatures.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch03.py stubs
+python exercises/run.py 03       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch03.py`.
+
+
 ## Further Reading
 
 - [Real Python: primer on decorators](https://realpython.com/primer-on-python-decorators/)

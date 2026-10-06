@@ -1244,7 +1244,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
         <article class="markdown-body">
           <h1 id="chapter-18-high-performance-computing-hpc-cython-numba-python-3-13-no-gil"><a href="#chapter-18-high-performance-computing-hpc-cython-numba-python-3-13-no-gil" class="header-anchor">#</a>Chapter 18: High-Performance Computing (HPC, Cython, Numba & Python 3.13 No-GIL)</h1><blockquote>
 <p><strong>The 100x Speedup</strong>
-Standard CPython is notoriously slow for numerical computation. A pure Python <code>for</code> loop summing an array of floats can be <strong>50x to 150x slower</strong> than compiled C or Rust. Why? Because every integer or float in Python is a dynamically allocated 28-byte <code>PyObject</code> heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.</p>
+Standard CPython is notoriously slow for numerical computation. A pure Python <code>for</code> loop summing an array of floats is typically <strong>an order of magnitude or more slower</strong> than compiled code (<code>labs/05_benchmarks.py</code> measured about 12x for a simple float sum against <code>numpy.sum</code> on Python 3.11; branch-heavy loops show larger gaps). Why? Because every integer or float in Python is a dynamically allocated 28-byte <code>PyObject</code> heap structure requiring pointer dereferencing, type checking, and reference count updates on every single arithmetic operation.</p>
 <p>In quantitative finance, scientific simulation, and large-scale AI engineering, we cannot tolerate this overhead. This chapter teaches you how to push Python to native hardware speeds using <strong>NumPy Strides</strong>, <strong>SIMD Vectorization</strong>, <strong>Numba JIT compilation</strong>, <strong>Cython with GIL release</strong>, <strong>Inter-Process Shared Memory</strong>, <strong>Free-Threaded Python 3.13</strong>, and <strong>GPU CUDA Acceleration</strong>.</p>
 </blockquote>
 <hr>
@@ -1371,7 +1371,7 @@ transposed = arr.T
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">from</span> numba <span class="hljs-keyword">import</span> njit, prange
 
-<span class="hljs-comment"># Pure Python Loop: 50x slower</span>
+<span class="hljs-comment"># Pure Python loop: far slower per iteration than compiled code</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">monte_carlo_pi_python</span>(<span class="hljs-params">num_samples: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">float</span>:
     inside = <span class="hljs-number">0</span>
     <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_samples):
@@ -1406,9 +1406,10 @@ transposed = arr.T
 
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Numba JIT Time:   <span class="hljs-subst">{t_numba:<span class="hljs-number">.4</span>f}</span> seconds (Pi = <span class="hljs-subst">{pi_numba}</span>)&quot;</span>)</code></pre>
   </div><ul>
-<li><strong>Pure Python:</strong> ~18.5 seconds</li>
-<li><strong>Numba Parallel JIT:</strong> <strong>0.12 seconds (154x Speedup!)</strong></li>
+<li><strong>Pure Python:</strong> about 18.5 seconds</li>
+<li><strong>Numba Parallel JIT:</strong> about 0.12 seconds (roughly 150x)</li>
 </ul>
+<p>These two timings come from one many-core run and are illustrative, not guaranteed. The ratio depends on core count, because <code>prange</code> parallelises across cores and the pure-Python baseline does not. Re-run the script on your own machine and quote your own ratio.</p>
 <hr>
 <h2 id="4-cython-releasing-the-gil-nogil"><a href="#4-cython-releasing-the-gil-nogil" class="header-anchor">#</a>4. Cython & Releasing the GIL (`nogil`)</h2><p>Cython allows you to write C data types in Python syntax, compile them to native <code>.so</code>/<code>.pyd</code> shared libraries, and explicitly release the Global Interpreter Lock (<strong><code>nogil</code></strong>) to run true multi-threaded CPU-bound algorithms across all cores.</p>
 
@@ -1501,7 +1502,7 @@ def <span class="hljs-title function_">parallel_vector_multiply</span>(<span cla
 <h3 id="how-cpython-removed-the-gil"><a href="#how-cpython-removed-the-gil" class="header-anchor">#</a>How CPython Removed the GIL</h3><ol>
 <li><strong>Biased Reference Counting:</strong> Objects local to a single thread use fast, non-atomic reference increments. When an object is shared across threads, it switches to thread-safe atomic reference counting.</li>
 <li><strong>Mimalloc Memory Allocator:</strong> Replaces PyMalloc with Microsoft&#39;s thread-local <code>mimalloc</code>, preventing memory allocation lock contention across cores.</li>
-<li><strong>Linear CPU Scaling:</strong> A CPU-bound task split across 16 OS threads in <code>threading.Thread</code> now achieves a <strong>15.8x real-world speedup on 16 cores</strong> in pure Python!</li>
+<li><strong>Linear CPU Scaling:</strong> A CPU-bound task split across 16 OS threads in <code>threading.Thread</code> can now scale across cores for CPU-bound work in pure Python. How close to linear it gets depends on the workload, lock contention and the build; always measure on your own code, and note that the free-threaded build is still marked experimental/supported-but-optional in 3.13/3.14 (PEP 703, PEP 779).</li>
 </ol>
 <hr>
 <h2 id="7-gpu-acceleration-with-pytorch-cuda"><a href="#7-gpu-acceleration-with-pytorch-cuda" class="header-anchor">#</a>7. GPU Acceleration with PyTorch & CUDA</h2><p>For matrix multiplications, convolutions, and deep learning computations, CPUs are fundamentally outmatched by the thousands of parallel cores on modern GPUs (NVIDIA Hopper/Blackwell).</p>
@@ -1668,6 +1669,19 @@ interpreters.destroy(interp_id)</code></pre>
 <td align="left">$1,000\times+$</td>
 </tr>
 </tbody></table>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch18.py stubs</span>
+python exercises/run.py 18       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
+  </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch18.py</code>.</p>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://numpy.org/doc/stable/">NumPy documentation</a></li>
 <li><a href="https://numba.readthedocs.io/en/stable/">Numba documentation</a></li>
@@ -1706,7 +1720,7 @@ interpreters.destroy(interp_id)</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-hardware-reality-memory-hierarchies-cpu-caches" class="toc-link">1. Hardware Reality: Memory Hierarchies & CPU Caches</a></li><li class="toc-item level-2"><a href="#2-numpy-under-the-hood-strides-memory-layouts" class="toc-link">2. NumPy Under the Hood: Strides & Memory Layouts</a></li><li class="toc-item level-3"><a href="#strides-arithmetic" class="toc-link">Strides Arithmetic</a></li><li class="toc-item level-3"><a href="#the-power-of-zero-copy-views" class="toc-link">The Power of Zero-Copy Views</a></li><li class="toc-item level-2"><a href="#3-just-in-time-jit-compilation-with-numba" class="toc-link">3. Just-In-Time (JIT) Compilation with Numba</a></li><li class="toc-item level-3"><a href="#numba-jit-vs-python-loop-benchmark" class="toc-link">Numba JIT vs Python Loop Benchmark</a></li><li class="toc-item level-2"><a href="#4-cython-releasing-the-gil-nogil" class="toc-link">4. Cython & Releasing the GIL (`nogil`)</a></li><li class="toc-item level-2"><a href="#5-zero-copy-shared-memory-multiprocessing" class="toc-link">5. Zero-Copy Shared Memory Multiprocessing</a></li><li class="toc-item level-3"><a href="#the-modern-solution-multiprocessing-shared-memory" class="toc-link">The Modern Solution: `multiprocessing.shared_memory`</a></li><li class="toc-item level-2"><a href="#6-python-3-13-free-threaded-pep-703-no-gil" class="toc-link">6. Python 3.13 Free-Threaded (PEP 703 No-GIL)</a></li><li class="toc-item level-3"><a href="#how-cpython-removed-the-gil" class="toc-link">How CPython Removed the GIL</a></li><li class="toc-item level-2"><a href="#7-gpu-acceleration-with-pytorch-cuda" class="toc-link">7. GPU Acceleration with PyTorch & CUDA</a></li><li class="toc-item level-3"><a href="#the-cardinal-rule-of-gpu-programming" class="toc-link">The Cardinal Rule of GPU Programming</a></li><li class="toc-item level-2"><a href="#8-python-3-13-subinterpreters-pep-554-684-the-tier-2-jit-pep-744" class="toc-link">8. Python 3.13 Subinterpreters (PEP 554 / 684) & The Tier-2 JIT (PEP 744)</a></li><li class="toc-item level-3"><a href="#1-subinterpreters-with-per-interpreter-gil-pep-554-pep-684" class="toc-link">1. Subinterpreters with Per-Interpreter GIL (PEP 554 / PEP 684)</a></li><li class="toc-item level-3"><a href="#2-the-tier-2-copy-and-patch-jit-compiler-pep-744" class="toc-link">2. The Tier-2 Copy-and-Patch JIT Compiler (PEP 744)</a></li><li class="toc-item level-2"><a href="#9-hpc-acceleration-decision-matrix" class="toc-link">9. HPC Acceleration Decision Matrix</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-hardware-reality-memory-hierarchies-cpu-caches" class="toc-link">1. Hardware Reality: Memory Hierarchies & CPU Caches</a></li><li class="toc-item level-2"><a href="#2-numpy-under-the-hood-strides-memory-layouts" class="toc-link">2. NumPy Under the Hood: Strides & Memory Layouts</a></li><li class="toc-item level-3"><a href="#strides-arithmetic" class="toc-link">Strides Arithmetic</a></li><li class="toc-item level-3"><a href="#the-power-of-zero-copy-views" class="toc-link">The Power of Zero-Copy Views</a></li><li class="toc-item level-2"><a href="#3-just-in-time-jit-compilation-with-numba" class="toc-link">3. Just-In-Time (JIT) Compilation with Numba</a></li><li class="toc-item level-3"><a href="#numba-jit-vs-python-loop-benchmark" class="toc-link">Numba JIT vs Python Loop Benchmark</a></li><li class="toc-item level-2"><a href="#4-cython-releasing-the-gil-nogil" class="toc-link">4. Cython & Releasing the GIL (`nogil`)</a></li><li class="toc-item level-2"><a href="#5-zero-copy-shared-memory-multiprocessing" class="toc-link">5. Zero-Copy Shared Memory Multiprocessing</a></li><li class="toc-item level-3"><a href="#the-modern-solution-multiprocessing-shared-memory" class="toc-link">The Modern Solution: `multiprocessing.shared_memory`</a></li><li class="toc-item level-2"><a href="#6-python-3-13-free-threaded-pep-703-no-gil" class="toc-link">6. Python 3.13 Free-Threaded (PEP 703 No-GIL)</a></li><li class="toc-item level-3"><a href="#how-cpython-removed-the-gil" class="toc-link">How CPython Removed the GIL</a></li><li class="toc-item level-2"><a href="#7-gpu-acceleration-with-pytorch-cuda" class="toc-link">7. GPU Acceleration with PyTorch & CUDA</a></li><li class="toc-item level-3"><a href="#the-cardinal-rule-of-gpu-programming" class="toc-link">The Cardinal Rule of GPU Programming</a></li><li class="toc-item level-2"><a href="#8-python-3-13-subinterpreters-pep-554-684-the-tier-2-jit-pep-744" class="toc-link">8. Python 3.13 Subinterpreters (PEP 554 / 684) & The Tier-2 JIT (PEP 744)</a></li><li class="toc-item level-3"><a href="#1-subinterpreters-with-per-interpreter-gil-pep-554-pep-684" class="toc-link">1. Subinterpreters with Per-Interpreter GIL (PEP 554 / PEP 684)</a></li><li class="toc-item level-3"><a href="#2-the-tier-2-copy-and-patch-jit-compiler-pep-744" class="toc-link">2. The Tier-2 Copy-and-Patch JIT Compiler (PEP 744)</a></li><li class="toc-item level-2"><a href="#9-hpc-acceleration-decision-matrix" class="toc-link">9. HPC Acceleration Decision Matrix</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

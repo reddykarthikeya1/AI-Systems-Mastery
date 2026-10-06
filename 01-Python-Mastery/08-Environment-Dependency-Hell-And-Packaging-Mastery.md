@@ -114,7 +114,7 @@ Modern packaging uses **SAT solvers (Boolean Satisfiability)** to find a globall
 | **`pip` (>= 20.3)** | Backtracking Resolver | None (requires `requirements.txt`) | Moderate (Python-based) |
 | **`pip-tools`** | `pip-compile` lock generator | Generates pinned hashes | Fast |
 | **`poetry`** | Custom SAT/PubGrub Resolver | Deterministic `poetry.lock` | Slow on huge trees |
-| **`uv` (Astral)** | PubGrub in Rust | Deterministic `uv.lock` | 10x-100x faster than pip |
+| **`uv` (Astral)** | PubGrub in Rust | Deterministic `uv.lock` | Often 10x+ faster than pip in uv's own benchmarks (warm cache) |
 
 ### Reproducing and Resolving a Conflict with `pip-tools`
 
@@ -297,6 +297,25 @@ Running `pip install -r requirements.txt` on modern Python 3.11 fails because:
    pip-compile requirements.in
    ```
 3. Verify that `botocore` is synchronized automatically as a transitive requirement without direct manual pinning.
+
+
+## Version Notes
+
+- `pyproject.toml` with a `[project]` table is the standard metadata home (PEP 621); `distutils` was removed in 3.12, so legacy `setup.py` files that import it fail there.
+- Linux distributions that mark the system Python as externally managed (PEP 668) make plain `pip install` fail outside a virtual environment, by design.
+- Inline script metadata (PEP 723) lets one-file scripts declare dependencies; `uv run script.py` honours it. `uv.lock` is uv-specific; the cross-tool lock file format is PEP 751 (`pylock.toml`).
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch08.py stubs
+python exercises/run.py 08       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch08.py`.
 
 
 ## Further Reading

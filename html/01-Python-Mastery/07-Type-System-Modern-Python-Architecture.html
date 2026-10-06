@@ -1552,7 +1552,25 @@ user = UserCreateRequest.model_validate_json(json_payload)
 └── tests/
     ├── unit/
     └── integration/</code></pre>
-  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+  </div><h2 id="version-notes"><a href="#version-notes" class="header-anchor">#</a>Version Notes</h2><ul>
+<li><code>X | Y</code> unions need 3.10 (PEP 604); <code>typing.Self</code> 3.11; <code>typing.override</code> 3.12; the <code>type</code> statement and <code>class Box[T]:</code> syntax 3.12 (PEP 695); TypeVar defaults 3.13 (PEP 696).</li>
+<li>Annotations are evaluated lazily by default from 3.14 (PEP 649/749), which makes <code>from __future__ import annotations</code> unnecessary there; on older versions it is still the way to avoid forward-reference errors.</li>
+<li><code>dataclass(slots=True, kw_only=True)</code> need 3.10.</li>
+</ul>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch07.py stubs</span>
+python exercises/run.py 07       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
+  </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch07.py</code>.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://docs.python.org/3/library/typing.html">typing module</a></li>
 <li><a href="https://mypy.readthedocs.io/en/stable/">mypy documentation</a></li>
 <li><a href="https://peps.python.org/pep-0544/">PEP 544: Protocols</a></li>
@@ -1590,7 +1608,7 @@ user = UserCreateRequest.model_validate_json(json_payload)
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-modern-python-type-system" class="toc-link">1. The Modern Python Type System</a></li><li class="toc-item level-3"><a href="#essential-typing-primitives-python-3-10" class="toc-link">Essential Typing Primitives (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#2-generics-variance-covariance-vs-contravariance" class="toc-link">2. Generics & Variance: Covariance vs Contravariance</a></li><li class="toc-item level-3"><a href="#variance-explained-covariant-vs-contravariant" class="toc-link">Variance Explained: Covariant vs Contravariant</a></li><li class="toc-item level-2"><a href="#3-structural-subtyping-typing-protocol-formalized-duck-typing" class="toc-link">3. Structural Subtyping: `typing.Protocol` (Formalized Duck Typing)</a></li><li class="toc-item level-2"><a href="#4-modern-data-models-dataclasses-vs-pydantic-v2" class="toc-link">4. Modern Data Models: Dataclasses vs Pydantic v2</a></li><li class="toc-item level-3"><a href="#python-standard-dataclass-best-for-internal-domain-models" class="toc-link">Python Standard `dataclass` (Best for internal domain models)</a></li><li class="toc-item level-3"><a href="#pydantic-v2-best-for-network-boundaries-json-apis-and-agentic-ai" class="toc-link">Pydantic v2 (Best for network boundaries, JSON APIs, and Agentic AI)</a></li><li class="toc-item level-2"><a href="#5-enterprise-exception-hierarchies-exception-groups" class="toc-link">5. Enterprise Exception Hierarchies & Exception Groups</a></li><li class="toc-item level-3"><a href="#1-unified-exception-trees" class="toc-link">1. Unified Exception Trees</a></li><li class="toc-item level-3"><a href="#2-exception-groups-except-python-3-11" class="toc-link">2. Exception Groups & `except*` (Python 3.11+)</a></li><li class="toc-item level-2"><a href="#6-production-repository-structure-12-factor-ready" class="toc-link">6. Production Repository Structure (12-Factor Ready)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-modern-python-type-system" class="toc-link">1. The Modern Python Type System</a></li><li class="toc-item level-3"><a href="#essential-typing-primitives-python-3-10" class="toc-link">Essential Typing Primitives (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#2-generics-variance-covariance-vs-contravariance" class="toc-link">2. Generics & Variance: Covariance vs Contravariance</a></li><li class="toc-item level-3"><a href="#variance-explained-covariant-vs-contravariant" class="toc-link">Variance Explained: Covariant vs Contravariant</a></li><li class="toc-item level-2"><a href="#3-structural-subtyping-typing-protocol-formalized-duck-typing" class="toc-link">3. Structural Subtyping: `typing.Protocol` (Formalized Duck Typing)</a></li><li class="toc-item level-2"><a href="#4-modern-data-models-dataclasses-vs-pydantic-v2" class="toc-link">4. Modern Data Models: Dataclasses vs Pydantic v2</a></li><li class="toc-item level-3"><a href="#python-standard-dataclass-best-for-internal-domain-models" class="toc-link">Python Standard `dataclass` (Best for internal domain models)</a></li><li class="toc-item level-3"><a href="#pydantic-v2-best-for-network-boundaries-json-apis-and-agentic-ai" class="toc-link">Pydantic v2 (Best for network boundaries, JSON APIs, and Agentic AI)</a></li><li class="toc-item level-2"><a href="#5-enterprise-exception-hierarchies-exception-groups" class="toc-link">5. Enterprise Exception Hierarchies & Exception Groups</a></li><li class="toc-item level-3"><a href="#1-unified-exception-trees" class="toc-link">1. Unified Exception Trees</a></li><li class="toc-item level-3"><a href="#2-exception-groups-except-python-3-11" class="toc-link">2. Exception Groups & `except*` (Python 3.11+)</a></li><li class="toc-item level-2"><a href="#6-production-repository-structure-12-factor-ready" class="toc-link">6. Production Repository Structure (12-Factor Ready)</a></li><li class="toc-item level-2"><a href="#version-notes" class="toc-link">Version Notes</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

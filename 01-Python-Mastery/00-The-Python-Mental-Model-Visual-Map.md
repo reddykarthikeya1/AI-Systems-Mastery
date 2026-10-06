@@ -279,6 +279,18 @@ Answer these 10 intuitive questions to calibrate your progress through this trac
 3. **Trace the Storage Trays:** Whenever code surprises you, grab a piece of paper and draw the nametag on your desk stuck to the physical storage tray sitting on the warehouse floor (the Heap).
 
 
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch00.py stubs
+python exercises/run.py 00       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch00.py`.
+
+
 ## Further Reading
 
 - [Python data model: objects, values and types](https://docs.python.org/3/reference/datamodel.html#objects-values-and-types)

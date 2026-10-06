@@ -1700,6 +1700,19 @@ flowchart TD
 <li><strong>Type the Code Out:</strong> Do not just passively read. Open your terminal, run <code>python</code>, and type the snippets to see the object IDs and memory footprints in real time.</li>
 <li><strong>Trace the Storage Trays:</strong> Whenever code surprises you, grab a piece of paper and draw the nametag on your desk stuck to the physical storage tray sitting on the warehouse floor (the Heap).</li>
 </ol>
+<h2 id="exercises"><a href="#exercises" class="header-anchor">#</a>Exercises</h2><p>Three graded exercises for this chapter (two coding, one debugging) with hidden tests:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python exercises/run.py --init   <span class="hljs-comment"># once: creates exercises/ch00.py stubs</span>
+python exercises/run.py 00       <span class="hljs-comment"># run the hidden tests against your solution</span></code></pre>
+  </div><p>Attempt first; the reference solutions are in <code>exercises/_answers/ch00.py</code>.</p>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://docs.python.org/3/reference/datamodel.html#objects-values-and-types">Python data model: objects, values and types</a></li>
 <li><a href="https://docs.python.org/3/tutorial/index.html">Python tutorial</a></li>
@@ -1738,7 +1751,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="toc-link">0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</a></li><li class="toc-item level-3"><a href="#if-both-are-in-ram-why-do-we-need-two-separate-things" class="toc-link">"If Both Are in RAM, Why Do We Need Two Separate Things?"</a></li><li class="toc-item level-3"><a href="#wait-what-software-engine-is-running-this-python-vs-cpython" class="toc-link">"Wait, What Software Engine is Running This?" (Python vs. CPython)</a></li><li class="toc-item level-2"><a href="#1-the-3-golden-rules-of-python-s-mental-model" class="toc-link">1. The 3 Golden Rules of Python's Mental Model</a></li><li class="toc-item level-3"><a href="#rule-2-demystified-the-sticky-nametag-storage-tray" class="toc-link">Rule 2 Demystified: The Sticky Nametag & Storage Tray</a></li><li class="toc-item level-3"><a href="#rule-3-demystified-blueprints-vs-objects-where-did-my-dog-come-from" class="toc-link">Rule 3 Demystified: Blueprints vs. Objects (Where Did 'my_dog' Come From?)</a></li><li class="toc-item level-2"><a href="#2-the-master-architecture-map-of-track-1" class="toc-link">2. The Master Architecture Map of Track 1</a></li><li class="toc-item level-2"><a href="#3-the-10-question-intuition-self-diagnostic" class="toc-link">3. The 10-Question Intuition Self-Diagnostic</a></li><li class="toc-item level-2"><a href="#4-your-learning-rhythm-how-to-study-without-burnout" class="toc-link">4. Your Learning Rhythm (How to Study Without Burnout)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="toc-link">0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</a></li><li class="toc-item level-3"><a href="#if-both-are-in-ram-why-do-we-need-two-separate-things" class="toc-link">"If Both Are in RAM, Why Do We Need Two Separate Things?"</a></li><li class="toc-item level-3"><a href="#wait-what-software-engine-is-running-this-python-vs-cpython" class="toc-link">"Wait, What Software Engine is Running This?" (Python vs. CPython)</a></li><li class="toc-item level-2"><a href="#1-the-3-golden-rules-of-python-s-mental-model" class="toc-link">1. The 3 Golden Rules of Python's Mental Model</a></li><li class="toc-item level-3"><a href="#rule-2-demystified-the-sticky-nametag-storage-tray" class="toc-link">Rule 2 Demystified: The Sticky Nametag & Storage Tray</a></li><li class="toc-item level-3"><a href="#rule-3-demystified-blueprints-vs-objects-where-did-my-dog-come-from" class="toc-link">Rule 3 Demystified: Blueprints vs. Objects (Where Did 'my_dog' Come From?)</a></li><li class="toc-item level-2"><a href="#2-the-master-architecture-map-of-track-1" class="toc-link">2. The Master Architecture Map of Track 1</a></li><li class="toc-item level-2"><a href="#3-the-10-question-intuition-self-diagnostic" class="toc-link">3. The 10-Question Intuition Self-Diagnostic</a></li><li class="toc-item level-2"><a href="#4-your-learning-rhythm-how-to-study-without-burnout" class="toc-link">4. Your Learning Rhythm (How to Study Without Burnout)</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

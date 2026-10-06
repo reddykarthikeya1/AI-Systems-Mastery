@@ -7,7 +7,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 | Track | Chapters | Case studies | Total words | Median chapter words | Check Yourself | References section | Python blocks passing | Fragments |
 |---|---|---|---|---|---|---|---|---|
-| 01-Python-Mastery | 23 | 0 | 45,914 | 2040 | 100% | 100% | 91/91 | 19 |
+| 01-Python-Mastery | 23 | 0 | 47,502 | 2093 | 100% | 100% | 92/92 | 18 |
 | 02-Low-Level-Design | 11 | 18 | 28,535 | 1133 | 100% | 100% | 47/47 | 10 |
 | 03-High-Level-Design | 13 | 15 | 30,145 | 973 | 100% | 100% | 15/15 | 2 |
 | 04-Agentic-AI | 21 | 0 | 25,685 | 1054 | 100% | 100% | 22/22 | 2 |
@@ -15,12 +15,14 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 ## Executable assets
 
-- Python labs: 4/4 scripts run clean
+- Python labs: 5/5 scripts run clean
 - LLD lab: 1/1 scripts run clean
 - HLD simulations: 4/4 scripts run clean
 - Agentic HNSW simulation: 1/1 scripts run clean
 - DSA benchmarks: 1/1 scripts run clean
 - DSA Core 75 (asserts + 34 brute-force cross-checks): Results: 75 PASSED, 0 FAILED out of 75 tests.
+- Python exercises (20 chapters, 2 coding + 1 debugging each, hidden tests; reference solutions): Results: 95 passed, 0 failed, 0 skipped
+- Python chapters with a Version Notes section: 9
 - Agentic examples (pinned langgraph/mcp, offline): run `cd 04-Agentic-AI/examples && pytest -q` (needs `pip install -r requirements.txt`)
 
 ## Portal (static checks)

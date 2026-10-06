@@ -254,6 +254,25 @@ my_enterprise_service/
 ```
 
 
+## Version Notes
+
+- `X | Y` unions need 3.10 (PEP 604); `typing.Self` 3.11; `typing.override` 3.12; the `type` statement and `class Box[T]:` syntax 3.12 (PEP 695); TypeVar defaults 3.13 (PEP 696).
+- Annotations are evaluated lazily by default from 3.14 (PEP 649/749), which makes `from __future__ import annotations` unnecessary there; on older versions it is still the way to avoid forward-reference errors.
+- `dataclass(slots=True, kw_only=True)` need 3.10.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch07.py stubs
+python exercises/run.py 07       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch07.py`.
+
+
 ## Further Reading
 
 - [typing module](https://docs.python.org/3/library/typing.html)

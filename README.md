@@ -16,14 +16,14 @@
 
 | Track | Beginner friendliness | Technical depth | Accuracy and currency | Practice and active learning | Biggest remaining gap |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| Python Mastery | 8.5 | 8 | 7.5 | 7.5 | exercises with hidden tests; version notes beyond Chapter 5 |
+| Python Mastery | 8.5 | 8 | 8.5 | 9 | 18 environment-dependent snippets (DB, CUDA, brokers) are not runnable offline; exercises are not auto-graded in the portal or CI |
 | Low-Level Design | 7.5 | 6.5 | 7.5 | 6.5 | UML and design-pattern chapters are short; 14 systems under 1,000 words |
 | High-Level Design | 7 | 7.5 | 7.5 | 7 | five classic systems still missing (news feed, notifications, typeahead, file storage, object store) |
 | Agentic AI | 7 | 7.5 | 8 | 8 | chapters 02 to 07 are still short; one provider adapter only |
 | DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
 | Portal (HTML/PDF) | n/a | n/a | 9 | n/a | PDFs print answers collapsed; no automated browser test suite in CI yet |
 
-Verified runnable material: `04-Agentic-AI/examples/` (pinned `langgraph==1.2.13`, `mcp==2.3.0`; run with `pytest -q`), `05-DSA-Interview-Playbook/practice/` (`python run_tests.py 12 --stub`, `--fuzz`, `--hint 12`), and the labs and simulations in each track.
+Verified runnable material: `04-Agentic-AI/examples/` (pinned `langgraph==1.2.13`, `mcp==2.3.0`; run with `pytest -q`), `01-Python-Mastery/exercises/` (60 graded exercises across 20 chapters, 95 hidden tests: `python exercises/run.py --init` then `python exercises/run.py 06`), `05-DSA-Interview-Playbook/practice/` (`python run_tests.py 12 --stub`, `--fuzz`, `--hint 12`), and the labs and simulations in each track.
 
 --- | :---: | :---: | :---: | :---: |
 | **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters (incl Capstone Recap) + Distributed/HPC/SQL/FastAPI/Rust/Polars + 3 Labs + PDFs |

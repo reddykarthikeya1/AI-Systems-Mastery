@@ -332,6 +332,24 @@ print("LRU Cache implementation passed all assertions successfully!")
 ```
 
 
+## Version Notes
+
+- Dict insertion order is a language guarantee from 3.7; the `|` merge operator for dicts needs 3.9.
+- `itertools.batched` (3.12) replaces hand-written chunking helpers like the one in the Chapter 01 exercise; `functools.cache` needs 3.9.
+
+
+## Exercises
+
+Three graded exercises for this chapter (two coding, one debugging) with hidden tests:
+
+```bash
+python exercises/run.py --init   # once: creates exercises/ch02.py stubs
+python exercises/run.py 02       # run the hidden tests against your solution
+```
+
+Attempt first; the reference solutions are in `exercises/_answers/ch02.py`.
+
+
 ## Further Reading
 
 - [Data structures tutorial](https://docs.python.org/3/tutorial/datastructures.html)
