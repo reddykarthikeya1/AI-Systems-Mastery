@@ -112,6 +112,75 @@ Where:
 DPO increases the probability of preferred answers while decreasing the probability of rejected answers in a **single standard cross-entropy training pass**!
 
 
+## 4. Runnable Model: LoRA Arithmetic and the DPO Loss
+
+### How few parameters LoRA trains, and what that does to memory
+
+```python
+def lora_params(d_in, d_out, rank):
+    return rank * (d_in + d_out)                            # A is (rank x d_in), B is (d_out x rank)
+
+full = 4096 * 4096                                          # one attention projection matrix
+lora = lora_params(4096, 4096, rank=16)
+assert full == 16_777_216 and lora == 131_072
+assert round(100 * lora / full, 2) == 0.78                  # under 1% of that matrix is trained
+
+layers, matrices_per_layer = 32, 4                          # q, k, v, o projections in a 32-layer model
+trainable = layers * matrices_per_layer * lora
+assert trainable == 16_777_216                              # 16.8M trainable parameters in total
+
+def memory_gb(params_b, bytes_weights, trainable_params, bytes_per_trainable):
+    return params_b * 1e9 * bytes_weights / 1e9 + trainable_params * bytes_per_trainable / 1e9
+
+# 7B model. Full fine-tuning keeps weights (2 bytes) plus gradients (2) plus Adam states and fp32 master copy (12): about 16 bytes/param.
+full_ft = 7e9 * 16 / 1e9
+lora_ft = memory_gb(7, 2, trainable, 16)                    # frozen bf16 weights plus the small trainable set
+assert round(full_ft) == 112 and round(lora_ft, 1) == 14.3
+assert full_ft / lora_ft > 7                                # roughly an eight-fold reduction, before activations
+```
+
+These are weights-and-optimiser figures; activations, batch size and sequence length add more, so treat them as a floor. The conclusion holds: LoRA makes fine-tuning a 7B model feasible on a single large GPU, and with 4-bit base weights (QLoRA) on a consumer card. Rank is the quality-versus-size dial; 8 to 64 covers most uses.
+
+### The DPO loss on toy numbers
+
+Direct Preference Optimisation trains on pairs (chosen `w`, rejected `l`) without a separate reward model:
+`loss = -log sigmoid( beta * [(log pi(w) - log ref(w)) - (log pi(l) - log ref(l))] )`
+
+```python
+import math
+
+def dpo_loss(pi_w, pi_l, ref_w, ref_l, beta=0.1):
+    margin = beta * ((pi_w - ref_w) - (pi_l - ref_l))
+    return -math.log(1 / (1 + math.exp(-margin)))
+
+same_as_reference = dpo_loss(-10, -12, -10, -12)
+assert abs(same_as_reference - math.log(2)) < 1e-12          # no preference learned yet: loss is log 2
+
+learned = dpo_loss(pi_w=-8, pi_l=-14, ref_w=-10, ref_l=-12)  # policy raised the chosen answer and lowered the rejected one
+assert learned < same_as_reference
+
+backwards = dpo_loss(pi_w=-14, pi_l=-8, ref_w=-10, ref_l=-12)
+assert backwards > same_as_reference                          # moving the wrong way is penalised
+
+# beta controls how hard the policy is held to the reference: larger beta, sharper loss for the same shift
+assert dpo_loss(-8, -14, -10, -12, beta=0.5) < dpo_loss(-8, -14, -10, -12, beta=0.1)
+```
+
+What to remember: DPO needs only **preference pairs and the frozen reference model's log-probabilities**; the loss falls when the policy raises the chosen answer relative to the reference more than it raises the rejected one; `beta` limits drift from the reference.
+
+### When to fine-tune at all
+
+| Goal | First try | Fine-tune when |
+| :--- | :--- | :--- |
+| New knowledge or fresh facts | Retrieval (RAG) | Almost never: weights are a poor database |
+| Output format or tone | Prompting with examples, structured output | Prompts get long, costly or inconsistent across many calls |
+| A narrow skill with labelled data (classification, extraction) | Few-shot prompting | You have hundreds to thousands of clean examples and need lower latency or cost |
+| Preferences or safety behaviour | System prompt and guardrails | You have preference data and a reliable evaluation to prove improvement |
+
+Always compare against a **strong prompted baseline** on a held-out evaluation set; a fine-tune that cannot beat it is not worth maintaining.
+
+---
+
 ## Further Reading
 
 - [LoRA paper](https://arxiv.org/abs/2106.09685)

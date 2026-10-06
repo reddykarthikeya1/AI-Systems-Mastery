@@ -1537,6 +1537,85 @@ stateDiagram-v2
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">_run_safe_tool</span>(<span class="hljs-params">self, tool_name, args</span>):
         <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Executed <span class="hljs-subst">{tool_name}</span> with <span class="hljs-subst">{args}</span>&quot;</span>}</code></pre>
   </div><p>This ensures full governance and zero possibility of runaway catastrophic actions in production environments!</p>
+<h2 id="4-runnable-model-resumable-streaming-and-an-approval-gate-with-expiry"><a href="#4-runnable-model-resumable-streaming-and-an-approval-gate-with-expiry" class="header-anchor">#</a>4. Runnable Model: Resumable Streaming and an Approval Gate with Expiry</h2><h3 id="server-sent-events-that-a-client-can-resume"><a href="#server-sent-events-that-a-client-can-resume" class="header-anchor">#</a>Server-sent events that a client can resume</h3><p>A dropped connection in the middle of a long answer should not restart the answer. SSE gives every event an <code>id</code>; a reconnecting browser sends <code>Last-Event-ID</code>, and the server replays from there.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">EventStream</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.events = []                                   <span class="hljs-comment"># (id, data); in production a log or Redis stream</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">publish</span>(<span class="hljs-params">self, data</span>):
+        <span class="hljs-variable language_">self</span>.events.append((<span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.events) + <span class="hljs-number">1</span>, data))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">render</span>(<span class="hljs-params">self, last_event_id=<span class="hljs-number">0</span></span>):
+        <span class="hljs-string">&quot;&quot;&quot;Yield SSE frames for every event after last_event_id.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> eid, data <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.events:
+            <span class="hljs-keyword">if</span> eid &gt; last_event_id:
+                <span class="hljs-keyword">yield</span> <span class="hljs-string">f&quot;id: <span class="hljs-subst">{eid}</span>\ndata: <span class="hljs-subst">{data}</span>\n\n&quot;</span>
+
+s = EventStream()
+<span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;Hel&quot;</span>, <span class="hljs-string">&quot;lo&quot;</span>, <span class="hljs-string">&quot; wor&quot;</span>, <span class="hljs-string">&quot;ld&quot;</span>]:
+    s.publish(token)
+
+full = <span class="hljs-built_in">list</span>(s.render())
+<span class="hljs-keyword">assert</span> full[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;id: 1\ndata: Hel\n\n&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(full) == <span class="hljs-number">4</span>
+resumed = <span class="hljs-built_in">list</span>(s.render(last_event_id=<span class="hljs-number">2</span>))                  <span class="hljs-comment"># the connection dropped after event 2</span>
+<span class="hljs-keyword">assert</span> resumed == [<span class="hljs-string">&quot;id: 3\ndata:  wor\n\n&quot;</span>, <span class="hljs-string">&quot;id: 4\ndata: ld\n\n&quot;</span>]
+<span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;&quot;</span>.join(f.split(<span class="hljs-string">&quot;data: &quot;</span>)[<span class="hljs-number">1</span>].rstrip(<span class="hljs-string">&quot;\n&quot;</span>) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> full[:<span class="hljs-number">2</span>] + resumed) == <span class="hljs-string">&quot;Hello world&quot;</span>   <span class="hljs-comment"># no gap, no duplicate</span></code></pre>
+  </div><p>Deployment notes that matter: disable proxy buffering for the streaming route, send a comment heartbeat every 15 to 30 seconds so idle connections are not closed, and use a per-request id so the stream and the final result can be correlated.</p>
+<h3 id="an-approval-gate-that-cannot-be-approved-after-it-expires"><a href="#an-approval-gate-that-cannot-be-approved-after-it-expires" class="header-anchor">#</a>An approval gate that cannot be approved after it expires</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ApprovalGate</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, clock, ttl</span>):
+        <span class="hljs-variable language_">self</span>.clock, <span class="hljs-variable language_">self</span>.ttl, <span class="hljs-variable language_">self</span>.pending = clock, ttl, {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">request</span>(<span class="hljs-params">self, action_id, action</span>):
+        <span class="hljs-variable language_">self</span>.pending[action_id] = {<span class="hljs-string">&quot;action&quot;</span>: action, <span class="hljs-string">&quot;expires&quot;</span>: <span class="hljs-variable language_">self</span>.clock() + <span class="hljs-variable language_">self</span>.ttl, <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;pending&quot;</span>}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">decide</span>(<span class="hljs-params">self, action_id, approve, approver</span>):
+        item = <span class="hljs-variable language_">self</span>.pending.get(action_id)
+        <span class="hljs-keyword">if</span> item <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> item[<span class="hljs-string">&quot;status&quot;</span>] != <span class="hljs-string">&quot;pending&quot;</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;ignored&quot;</span>                               <span class="hljs-comment"># unknown or already decided: a double click must not run twice</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.clock() &gt; item[<span class="hljs-string">&quot;expires&quot;</span>]:
+            item[<span class="hljs-string">&quot;status&quot;</span>] = <span class="hljs-string">&quot;expired&quot;</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;expired&quot;</span>
+        item[<span class="hljs-string">&quot;status&quot;</span>] = <span class="hljs-string">&quot;approved&quot;</span> <span class="hljs-keyword">if</span> approve <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;rejected&quot;</span>
+        item[<span class="hljs-string">&quot;by&quot;</span>] = approver
+        <span class="hljs-keyword">return</span> item[<span class="hljs-string">&quot;status&quot;</span>]
+
+t = [<span class="hljs-number">0.0</span>]
+gate = ApprovalGate(clock=<span class="hljs-keyword">lambda</span>: t[<span class="hljs-number">0</span>], ttl=<span class="hljs-number">300</span>)
+gate.request(<span class="hljs-string">&quot;refund-1&quot;</span>, {<span class="hljs-string">&quot;amount&quot;</span>: <span class="hljs-number">40</span>})
+<span class="hljs-keyword">assert</span> gate.decide(<span class="hljs-string">&quot;refund-1&quot;</span>, <span class="hljs-literal">True</span>, <span class="hljs-string">&quot;ana&quot;</span>) == <span class="hljs-string">&quot;approved&quot;</span>
+<span class="hljs-keyword">assert</span> gate.decide(<span class="hljs-string">&quot;refund-1&quot;</span>, <span class="hljs-literal">True</span>, <span class="hljs-string">&quot;bo&quot;</span>) == <span class="hljs-string">&quot;ignored&quot;</span>    <span class="hljs-comment"># idempotent: the second approval does nothing</span>
+
+gate.request(<span class="hljs-string">&quot;refund-2&quot;</span>, {<span class="hljs-string">&quot;amount&quot;</span>: <span class="hljs-number">900</span>})
+t[<span class="hljs-number">0</span>] = <span class="hljs-number">301.0</span>
+<span class="hljs-keyword">assert</span> gate.decide(<span class="hljs-string">&quot;refund-2&quot;</span>, <span class="hljs-literal">True</span>, <span class="hljs-string">&quot;ana&quot;</span>) == <span class="hljs-string">&quot;expired&quot;</span>   <span class="hljs-comment"># a stale approval cannot authorise the action</span>
+<span class="hljs-keyword">assert</span> gate.pending[<span class="hljs-string">&quot;refund-2&quot;</span>][<span class="hljs-string">&quot;status&quot;</span>] == <span class="hljs-string">&quot;expired&quot;</span>
+<span class="hljs-keyword">assert</span> gate.decide(<span class="hljs-string">&quot;missing&quot;</span>, <span class="hljs-literal">True</span>, <span class="hljs-string">&quot;ana&quot;</span>) == <span class="hljs-string">&quot;ignored&quot;</span></code></pre>
+  </div><h3 id="human-in-the-loop-design-rules"><a href="#human-in-the-loop-design-rules" class="header-anchor">#</a>Human-in-the-loop design rules</h3><ol>
+<li><strong>Interrupt before the side effect</strong>, with the exact action and arguments shown to the human, not a summary.</li>
+<li>Make decisions <strong>idempotent and attributable</strong> (who approved, when, which version of the request).</li>
+<li>Give approvals an <strong>expiry</strong>; the world changes while a request waits.</li>
+<li>Persist the paused state (a checkpoint) so a restart, a deploy or a day of waiting does not lose the run.</li>
+<li>Decide the <strong>default when nobody answers</strong>: usually reject and notify, never auto-approve.</li>
+</ol>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://docs.langchain.com/oss/python/langgraph/interrupts">LangGraph human-in-the-loop</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">MDN: Server-sent events</a></li>
@@ -1575,7 +1654,7 @@ stateDiagram-v2
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-streaming-real-time-agent-telemetry-with-server-sent-events-sse" class="toc-link">1. Streaming Real-Time Agent Telemetry with Server-Sent Events (SSE)</a></li><li class="toc-item level-3"><a href="#complete-fastapi-sse-agent-streaming-server" class="toc-link">Complete FastAPI SSE Agent Streaming Server</a></li><li class="toc-item level-2"><a href="#2-durable-state-checkpointing-across-pod-crashes" class="toc-link">2. Durable State Checkpointing Across Pod Crashes</a></li><li class="toc-item level-3"><a href="#checkpointing-engine-implementation" class="toc-link">Checkpointing Engine Implementation</a></li><li class="toc-item level-2"><a href="#3-human-in-the-loop-hitl-interruptible-workflows" class="toc-link">3. Human-in-the-Loop (HITL) Interruptible Workflows</a></li><li class="toc-item level-3"><a href="#dangerous-tools-requiring-human-approval" class="toc-link">Dangerous Tools Requiring Human Approval:</a></li><li class="toc-item level-3"><a href="#the-state-machine-for-interruptible-execution" class="toc-link">The State Machine for Interruptible Execution</a></li><li class="toc-item level-3"><a href="#implementing-human-authorization-gates" class="toc-link">Implementing Human Authorization Gates</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-streaming-real-time-agent-telemetry-with-server-sent-events-sse" class="toc-link">1. Streaming Real-Time Agent Telemetry with Server-Sent Events (SSE)</a></li><li class="toc-item level-3"><a href="#complete-fastapi-sse-agent-streaming-server" class="toc-link">Complete FastAPI SSE Agent Streaming Server</a></li><li class="toc-item level-2"><a href="#2-durable-state-checkpointing-across-pod-crashes" class="toc-link">2. Durable State Checkpointing Across Pod Crashes</a></li><li class="toc-item level-3"><a href="#checkpointing-engine-implementation" class="toc-link">Checkpointing Engine Implementation</a></li><li class="toc-item level-2"><a href="#3-human-in-the-loop-hitl-interruptible-workflows" class="toc-link">3. Human-in-the-Loop (HITL) Interruptible Workflows</a></li><li class="toc-item level-3"><a href="#dangerous-tools-requiring-human-approval" class="toc-link">Dangerous Tools Requiring Human Approval:</a></li><li class="toc-item level-3"><a href="#the-state-machine-for-interruptible-execution" class="toc-link">The State Machine for Interruptible Execution</a></li><li class="toc-item level-3"><a href="#implementing-human-authorization-gates" class="toc-link">Implementing Human Authorization Gates</a></li><li class="toc-item level-2"><a href="#4-runnable-model-resumable-streaming-and-an-approval-gate-with-expiry" class="toc-link">4. Runnable Model: Resumable Streaming and an Approval Gate with Expiry</a></li><li class="toc-item level-3"><a href="#server-sent-events-that-a-client-can-resume" class="toc-link">Server-sent events that a client can resume</a></li><li class="toc-item level-3"><a href="#an-approval-gate-that-cannot-be-approved-after-it-expires" class="toc-link">An approval gate that cannot be approved after it expires</a></li><li class="toc-item level-3"><a href="#human-in-the-loop-design-rules" class="toc-link">Human-in-the-loop design rules</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

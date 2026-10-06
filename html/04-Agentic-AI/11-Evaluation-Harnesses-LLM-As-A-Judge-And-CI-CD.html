@@ -1433,6 +1433,90 @@ Evaluate the answer. Return pure JSON matching the FaithfulnessEvaluation schema
           pip install pytest pydantic
           pytest test_agent_regression.py</span></code></pre>
   </div><p>Now, any prompt modification that introduces subtle hallucinations or degrades retrieval quality is blocked at the Pull Request stage before reaching a single customer!</p>
+<h2 id="4-runnable-model-can-you-trust-the-judge-agreement-bias-and-a-ci-gate"><a href="#4-runnable-model-can-you-trust-the-judge-agreement-bias-and-a-ci-gate" class="header-anchor">#</a>4. Runnable Model: Can You Trust the Judge? Agreement, Bias and a CI Gate</h2><p>An LLM judge is a measurement instrument, so calibrate it before trusting a score.</p>
+<h3 id="agreement-with-humans-beyond-chance-cohen-s-kappa"><a href="#agreement-with-humans-beyond-chance-cohen-s-kappa" class="header-anchor">#</a>Agreement with humans beyond chance (Cohen's kappa)</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cohens_kappa</span>(<span class="hljs-params">a, b</span>):
+    n = <span class="hljs-built_in">len</span>(a)
+    observed = <span class="hljs-built_in">sum</span>(x == y <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b)) / n
+    ca, cb = Counter(a), Counter(b)
+    expected = <span class="hljs-built_in">sum</span>((ca[l] / n) * (cb[l] / n) <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> <span class="hljs-built_in">set</span>(a) | <span class="hljs-built_in">set</span>(b))
+    <span class="hljs-keyword">return</span> (observed - expected) / (<span class="hljs-number">1</span> - expected)
+
+human = [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>]
+judge = [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">abs</span>(cohens_kappa(human, judge) - <span class="hljs-number">0.5</span>) &lt; <span class="hljs-number">1e-9</span>        <span class="hljs-comment"># 75% raw agreement, but only 0.5 beyond chance</span>
+
+<span class="hljs-keyword">lazy</span> = [<span class="hljs-number">1</span>] * <span class="hljs-number">8</span>                                              <span class="hljs-comment"># a judge that always says &quot;pass&quot;</span>
+<span class="hljs-keyword">assert</span> cohens_kappa(human, <span class="hljs-keyword">lazy</span>) == <span class="hljs-number">0.0</span>                     <span class="hljs-comment"># 50% raw agreement is worthless once chance is removed</span></code></pre>
+  </div><p>Raw agreement flatters a judge when one label dominates; kappa subtracts the agreement you would get by guessing. A common reading: below 0.4 is weak, 0.6 to 0.8 is substantial.</p>
+<h3 id="position-bias-does-the-verdict-change-when-you-swap-the-answers"><a href="#position-bias-does-the-verdict-change-when-you-swap-the-answers" class="header-anchor">#</a>Position bias: does the verdict change when you swap the answers?</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">position_bias</span>(<span class="hljs-params">judge, pairs</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Fraction of pairs where the verdict flips when the two answers swap places (0 is ideal).&quot;&quot;&quot;</span>
+    flips = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> pairs:
+        first = judge(a, b)                                 <span class="hljs-comment"># returns &quot;first&quot; or &quot;second&quot;</span>
+        swapped = judge(b, a)
+        consistent = (first == <span class="hljs-string">&quot;first&quot;</span> <span class="hljs-keyword">and</span> swapped == <span class="hljs-string">&quot;second&quot;</span>) <span class="hljs-keyword">or</span> (first == <span class="hljs-string">&quot;second&quot;</span> <span class="hljs-keyword">and</span> swapped == <span class="hljs-string">&quot;first&quot;</span>)
+        flips += <span class="hljs-keyword">not</span> consistent
+    <span class="hljs-keyword">return</span> flips / <span class="hljs-built_in">len</span>(pairs)
+
+always_first = <span class="hljs-keyword">lambda</span> x, y: <span class="hljs-string">&quot;first&quot;</span>                         <span class="hljs-comment"># a position-biased judge</span>
+by_length = <span class="hljs-keyword">lambda</span> x, y: <span class="hljs-string">&quot;first&quot;</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(x) &gt;= <span class="hljs-built_in">len</span>(y) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;second&quot;</span>    <span class="hljs-comment"># consistent, but biased towards length</span>
+pairs = [(<span class="hljs-string">&quot;short&quot;</span>, <span class="hljs-string">&quot;a much longer answer&quot;</span>), (<span class="hljs-string">&quot;long answer here&quot;</span>, <span class="hljs-string">&quot;tiny&quot;</span>), (<span class="hljs-string">&quot;same&quot;</span>, <span class="hljs-string">&quot;size&quot;</span>)]
+<span class="hljs-keyword">assert</span> position_bias(always_first, pairs) == <span class="hljs-number">1.0</span>
+<span class="hljs-keyword">assert</span> position_bias(by_length, pairs[:<span class="hljs-number">2</span>]) == <span class="hljs-number">0.0</span>           <span class="hljs-comment"># consistent under swapping, yet it only rewards length</span></code></pre>
+  </div><p>The second judge passes the swap test and is still useless: <strong>position consistency is necessary, not sufficient</strong>. Also test length bias (does a padded answer win?) and self-preference (does a model prefer its own outputs?).</p>
+<h3 id="a-ci-gate-on-a-lower-confidence-bound-not-the-raw-pass-rate"><a href="#a-ci-gate-on-a-lower-confidence-bound-not-the-raw-pass-rate" class="header-anchor">#</a>A CI gate on a lower confidence bound, not the raw pass rate</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> math
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">wilson_lower</span>(<span class="hljs-params">passes, n, z=<span class="hljs-number">1.96</span></span>):
+    p = passes / n
+    centre = p + z * z / (<span class="hljs-number">2</span> * n)
+    margin = z * math.sqrt(p * (<span class="hljs-number">1</span> - p) / n + z * z / (<span class="hljs-number">4</span> * n * n))
+    <span class="hljs-keyword">return</span> (centre - margin) / (<span class="hljs-number">1</span> + z * z / n)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">gate</span>(<span class="hljs-params">passes, n, threshold</span>):
+    <span class="hljs-keyword">return</span> wilson_lower(passes, n) &gt;= threshold
+
+<span class="hljs-keyword">assert</span> gate(<span class="hljs-number">90</span>, <span class="hljs-number">100</span>, <span class="hljs-number">0.80</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>                          <span class="hljs-comment"># 90 of 100: lower bound about 0.83</span>
+<span class="hljs-keyword">assert</span> gate(<span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">0.80</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>                           <span class="hljs-comment"># the same 90% on 10 cases is not enough evidence</span>
+<span class="hljs-keyword">assert</span> gate(<span class="hljs-number">950</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">0.90</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(wilson_lower(<span class="hljs-number">9</span>, <span class="hljs-number">10</span>), <span class="hljs-number">2</span>) == <span class="hljs-number">0.60</span></code></pre>
+  </div><p>The gate encodes the right question: not &quot;did the score exceed the threshold?&quot; but &quot;are we confident the true pass rate does?&quot; Small test sets need a higher raw score to pass, which pushes teams to grow the set.</p>
+<h3 id="evaluation-pipeline-checklist"><a href="#evaluation-pipeline-checklist" class="header-anchor">#</a>Evaluation pipeline checklist</h3><ol>
+<li>A <strong>golden set</strong> with human-verified labels, versioned with the code.</li>
+<li><strong>Deterministic checks first</strong> (schema, exact match, tool-call correctness), judge-model scoring only for what code cannot decide.</li>
+<li><strong>Calibrate the judge</strong> (kappa against human labels, swap test, length test) whenever the judge model or rubric changes.</li>
+<li><strong>Run on every change</strong> that can affect behaviour: prompt, model, tool, retrieval index.</li>
+<li><strong>Report with uncertainty</strong> (confidence interval), and track cost and latency next to quality.</li>
+</ol>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge (MT-Bench)</a></li>
 <li><a href="https://eugeneyan.com/writing/llm-evaluators/">Eugene Yan: LLM evaluators</a></li>
@@ -1471,7 +1555,7 @@ Evaluate the answer. Return pure JSON matching the FaithfulnessEvaluation schema
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-rag-evaluation-rag-triad" class="toc-link">1. The Four Pillars of RAG Evaluation (RAG Triad)</a></li><li class="toc-item level-3"><a href="#the-4-core-metrics-defined" class="toc-link">The 4 Core Metrics Defined</a></li><li class="toc-item level-2"><a href="#2-building-an-automated-llm-as-a-judge-evaluator-from-scratch" class="toc-link">2. Building an Automated "LLM-As-A-Judge" Evaluator from Scratch</a></li><li class="toc-item level-2"><a href="#3-creating-a-golden-benchmark-evaluation-dataset" class="toc-link">3. Creating a Golden Benchmark Evaluation Dataset</a></li><li class="toc-item level-2"><a href="#4-integrating-the-eval-suite-into-ci-cd-github-actions" class="toc-link">4. Integrating the Eval Suite into CI/CD (GitHub Actions)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-rag-evaluation-rag-triad" class="toc-link">1. The Four Pillars of RAG Evaluation (RAG Triad)</a></li><li class="toc-item level-3"><a href="#the-4-core-metrics-defined" class="toc-link">The 4 Core Metrics Defined</a></li><li class="toc-item level-2"><a href="#2-building-an-automated-llm-as-a-judge-evaluator-from-scratch" class="toc-link">2. Building an Automated "LLM-As-A-Judge" Evaluator from Scratch</a></li><li class="toc-item level-2"><a href="#3-creating-a-golden-benchmark-evaluation-dataset" class="toc-link">3. Creating a Golden Benchmark Evaluation Dataset</a></li><li class="toc-item level-2"><a href="#4-integrating-the-eval-suite-into-ci-cd-github-actions" class="toc-link">4. Integrating the Eval Suite into CI/CD (GitHub Actions)</a></li><li class="toc-item level-2"><a href="#4-runnable-model-can-you-trust-the-judge-agreement-bias-and-a-ci-gate" class="toc-link">4. Runnable Model: Can You Trust the Judge? Agreement, Bias and a CI Gate</a></li><li class="toc-item level-3"><a href="#agreement-with-humans-beyond-chance-cohen-s-kappa" class="toc-link">Agreement with humans beyond chance (Cohen's kappa)</a></li><li class="toc-item level-3"><a href="#position-bias-does-the-verdict-change-when-you-swap-the-answers" class="toc-link">Position bias: does the verdict change when you swap the answers?</a></li><li class="toc-item level-3"><a href="#a-ci-gate-on-a-lower-confidence-bound-not-the-raw-pass-rate" class="toc-link">A CI gate on a lower confidence bound, not the raw pass rate</a></li><li class="toc-item level-3"><a href="#evaluation-pipeline-checklist" class="toc-link">Evaluation pipeline checklist</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

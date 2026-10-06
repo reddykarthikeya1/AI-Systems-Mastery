@@ -167,6 +167,86 @@ jobs:
 Now, any prompt modification that introduces subtle hallucinations or degrades retrieval quality is blocked at the Pull Request stage before reaching a single customer!
 
 
+## 4. Runnable Model: Can You Trust the Judge? Agreement, Bias and a CI Gate
+
+An LLM judge is a measurement instrument, so calibrate it before trusting a score.
+
+### Agreement with humans beyond chance (Cohen's kappa)
+
+```python
+from collections import Counter
+
+def cohens_kappa(a, b):
+    n = len(a)
+    observed = sum(x == y for x, y in zip(a, b)) / n
+    ca, cb = Counter(a), Counter(b)
+    expected = sum((ca[l] / n) * (cb[l] / n) for l in set(a) | set(b))
+    return (observed - expected) / (1 - expected)
+
+human = [1, 1, 0, 0, 1, 0, 1, 0]
+judge = [1, 1, 0, 1, 1, 0, 0, 0]
+assert abs(cohens_kappa(human, judge) - 0.5) < 1e-9        # 75% raw agreement, but only 0.5 beyond chance
+
+lazy = [1] * 8                                              # a judge that always says "pass"
+assert cohens_kappa(human, lazy) == 0.0                     # 50% raw agreement is worthless once chance is removed
+```
+
+Raw agreement flatters a judge when one label dominates; kappa subtracts the agreement you would get by guessing. A common reading: below 0.4 is weak, 0.6 to 0.8 is substantial.
+
+### Position bias: does the verdict change when you swap the answers?
+
+```python
+def position_bias(judge, pairs):
+    """Fraction of pairs where the verdict flips when the two answers swap places (0 is ideal)."""
+    flips = 0
+    for a, b in pairs:
+        first = judge(a, b)                                 # returns "first" or "second"
+        swapped = judge(b, a)
+        consistent = (first == "first" and swapped == "second") or (first == "second" and swapped == "first")
+        flips += not consistent
+    return flips / len(pairs)
+
+always_first = lambda x, y: "first"                         # a position-biased judge
+by_length = lambda x, y: "first" if len(x) >= len(y) else "second"    # consistent, but biased towards length
+pairs = [("short", "a much longer answer"), ("long answer here", "tiny"), ("same", "size")]
+assert position_bias(always_first, pairs) == 1.0
+assert position_bias(by_length, pairs[:2]) == 0.0           # consistent under swapping, yet it only rewards length
+```
+
+The second judge passes the swap test and is still useless: **position consistency is necessary, not sufficient**. Also test length bias (does a padded answer win?) and self-preference (does a model prefer its own outputs?).
+
+### A CI gate on a lower confidence bound, not the raw pass rate
+
+```python
+import math
+
+def wilson_lower(passes, n, z=1.96):
+    p = passes / n
+    centre = p + z * z / (2 * n)
+    margin = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return (centre - margin) / (1 + z * z / n)
+
+def gate(passes, n, threshold):
+    return wilson_lower(passes, n) >= threshold
+
+assert gate(90, 100, 0.80) is True                          # 90 of 100: lower bound about 0.83
+assert gate(9, 10, 0.80) is False                           # the same 90% on 10 cases is not enough evidence
+assert gate(950, 1000, 0.90) is True
+assert round(wilson_lower(9, 10), 2) == 0.60
+```
+
+The gate encodes the right question: not "did the score exceed the threshold?" but "are we confident the true pass rate does?" Small test sets need a higher raw score to pass, which pushes teams to grow the set.
+
+### Evaluation pipeline checklist
+
+1. A **golden set** with human-verified labels, versioned with the code.
+2. **Deterministic checks first** (schema, exact match, tool-call correctness), judge-model scoring only for what code cannot decide.
+3. **Calibrate the judge** (kappa against human labels, swap test, length test) whenever the judge model or rubric changes.
+4. **Run on every change** that can affect behaviour: prompt, model, tool, retrieval index.
+5. **Report with uncertainty** (confidence interval), and track cost and latency next to quality.
+
+---
+
 ## Further Reading
 
 - [Judging LLM-as-a-judge (MT-Bench)](https://arxiv.org/abs/2306.05685)

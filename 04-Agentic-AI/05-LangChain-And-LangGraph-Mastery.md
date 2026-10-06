@@ -155,6 +155,90 @@ The section above emulates the LangGraph execution model in plain Python to teac
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
 
 
+## 5. Runnable Model: What a Graph Runtime Actually Does
+
+This is a **teaching emulation** of the ideas in LangGraph (state with reducers, conditional edges, checkpoint and resume), small enough to read in one sitting. The real library with pinned versions is in `examples/ex02_langgraph_hitl.py`; use it in projects.
+
+```python
+END = "__end__"
+
+class MiniGraph:
+    def __init__(self, reducers=None):
+        self.reducers = reducers or {}                      # key -> function(old, new); default is overwrite
+        self.nodes, self.edges, self.routers = {}, {}, {}
+
+    def add_node(self, name, fn):
+        self.nodes[name] = fn
+
+    def add_edge(self, a, b):
+        self.edges[a] = b
+
+    def add_conditional_edges(self, a, router):
+        self.routers[a] = router                            # router(state) -> next node name
+
+    def _merge(self, state, update):
+        out = dict(state)
+        for k, v in update.items():
+            out[k] = self.reducers[k](out.get(k), v) if k in self.reducers else v
+        return out
+
+    def run(self, state, start, interrupt_before=None, max_steps=20):
+        node = start
+        for _ in range(max_steps):
+            if node == END:
+                return "done", state, None
+            if node == interrupt_before:
+                return "interrupted", state, node           # a checkpoint: (state, where to resume)
+            state = self._merge(state, self.nodes[node](state))
+            node = self.routers[node](state) if node in self.routers else self.edges[node]
+        raise RuntimeError("step limit reached (a cycle that never ends)")
+
+    def resume(self, checkpoint_state, node, updates=None, **kwargs):
+        state = self._merge(checkpoint_state, updates or {})
+        return self.run(state, node, **kwargs)
+
+add_list = lambda old, new: (old or []) + new               # a reducer: append instead of overwrite
+
+# 1. A loop with a conditional edge and an appending reducer
+g = MiniGraph(reducers={"log": add_list})
+g.add_node("work", lambda s: {"n": s.get("n", 0) + 1, "log": [f"work {s.get('n', 0) + 1}"]})
+g.add_conditional_edges("work", lambda s: "work" if s["n"] < 3 else END)
+status, final, _ = g.run({}, "work")
+assert status == "done" and final["n"] == 3 and final["log"] == ["work 1", "work 2", "work 3"]
+
+# 2. Human-in-the-loop: stop before "act", resume with the human's decision
+h = MiniGraph(reducers={"log": add_list})
+h.add_node("plan", lambda s: {"log": ["planned"]})
+h.add_node("act", lambda s: {"log": ["acted" if s.get("approved") else "skipped"]})
+h.add_edge("plan", "act")
+h.add_edge("act", END)
+status, state, where = h.run({}, "plan", interrupt_before="act")
+assert status == "interrupted" and state["log"] == ["planned"] and where == "act"
+status, final, _ = h.resume(state, where, updates={"approved": True})
+assert status == "done" and final["log"] == ["planned", "acted"]
+status, final, _ = h.resume(state, where, updates={"approved": False})
+assert final["log"] == ["planned", "skipped"]               # the same checkpoint can resume down a different path
+
+# 3. A cycle with no exit is caught by the step limit
+bad = MiniGraph()
+bad.add_node("a", lambda s: {})
+bad.add_edge("a", "a")
+try:
+    bad.run({}, "a", max_steps=5)
+    raise AssertionError("expected RuntimeError")
+except RuntimeError:
+    pass
+```
+
+### What to take from it
+
+1. A graph agent is **state plus nodes plus edges**. Nodes return *updates*; **reducers** decide how updates combine (append messages, overwrite a flag).
+2. **Conditional edges** are where the agent decides what to do next; cycles are legal, so you must bound them.
+3. **Checkpointing** (saving the state at each step) is what makes human approval, retries and crash recovery possible: resume from the saved state instead of starting again.
+4. Choose a graph framework when you need **branching, loops, persistence or human approval**; for a straight sequence of calls, plain functions are clearer.
+
+---
+
 ## Further Reading
 
 - [LangGraph documentation](https://docs.langchain.com/oss/python/langgraph/overview)

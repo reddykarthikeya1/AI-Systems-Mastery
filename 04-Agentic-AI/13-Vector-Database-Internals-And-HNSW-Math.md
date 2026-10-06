@@ -113,6 +113,82 @@ In real applications, you rarely search vectors in isolation. You search: *"Find
 | **Single-Stage Filtered HNSW** (Qdrant / Milvus) | Navigates the HNSW graph while skipping graph nodes during beam search that fail the metadata bitset. | Optimal: Guarantees exact Top-$K$ while preserving $O(\log N)$ graph search speeds. |
 
 
+## 4. Runnable Model: Memory Arithmetic and the Recall Cost of Searching Fewer Clusters
+
+### Why quantisation matters at a billion vectors
+
+```python
+vectors, dim = 1_000_000_000, 768
+raw_tb = vectors * dim * 4 / 1e12                            # float32
+assert round(raw_tb, 2) == 3.07                              # 3 TB of vectors: far beyond one machine's RAM
+
+sub_vectors = 96                                             # product quantisation: 96 sub-vectors of 8 dimensions
+pq_gb = vectors * sub_vectors * 1 / 1e9                      # one byte per sub-vector code
+assert pq_gb == 96.0                                         # 96 GB: fits on one large machine
+assert raw_tb * 1000 / pq_gb == 32.0                         # a 32x reduction
+
+hnsw_links, bytes_per_link = 32, 4
+graph_gb = vectors * hnsw_links * bytes_per_link / 1e9
+assert graph_gb == 128.0                                     # an HNSW graph adds its own memory on top of the vectors
+```
+
+Takeaway: at scale the question is rarely "which index is fastest" but "what fits in memory". Quantised vectors for the first-pass search, plus the full vectors on disk for re-ranking the top candidates, is the standard compromise.
+
+### The IVF trade-off: probe more clusters, get more recall, pay more time
+
+An IVF index partitions vectors into clusters and searches only the `nprobe` clusters closest to the query. This model builds one and measures recall against exact search.
+
+```python
+import random
+
+random.seed(4)
+DIM, N, K, QUERIES = 8, 3000, 24, 40
+points = [[random.random() for _ in range(DIM)] for _ in range(N)]
+
+def dist2(a, b):
+    return sum((x - y) ** 2 for x, y in zip(a, b))
+
+# Build: a few rounds of k-means to get cluster centres
+centres = random.sample(points, K)
+for _ in range(4):
+    buckets = [[] for _ in range(K)]
+    for p in points:
+        buckets[min(range(K), key=lambda c: dist2(p, centres[c]))].append(p)
+    centres = [[sum(col) / len(b) for col in zip(*b)] if b else centres[i] for i, b in enumerate(buckets)]
+lists = [[] for _ in range(K)]
+for idx, p in enumerate(points):
+    lists[min(range(K), key=lambda c: dist2(p, centres[c]))].append(idx)
+
+def search(q, nprobe, k=10):
+    order = sorted(range(K), key=lambda c: dist2(q, centres[c]))[:nprobe]
+    candidates = [i for c in order for i in lists[c]]
+    return set(sorted(candidates, key=lambda i: dist2(q, points[i]))[:k]), len(candidates)
+
+def exact(q, k=10):
+    return set(sorted(range(N), key=lambda i: dist2(q, points[i]))[:k])
+
+queries = [[random.random() for _ in range(DIM)] for _ in range(QUERIES)]
+truth = [exact(q) for q in queries]
+recall, scanned = {}, {}
+for nprobe in (1, 4, K):
+    hits = scans = 0
+    for q, t in zip(queries, truth):
+        found, n = search(q, nprobe)
+        hits += len(found & t)
+        scans += n
+    recall[nprobe] = hits / (10 * QUERIES)
+    scanned[nprobe] = scans / QUERIES
+
+assert recall[K] == 1.0                                      # probing every cluster is exact search
+assert recall[1] <= recall[4] <= recall[K]                   # more probes never reduce recall here
+assert recall[1] < 0.95                                      # one probe misses neighbours that sit across a boundary
+assert scanned[1] < scanned[4] < scanned[K] == N             # and the cost grows in step: you pay for recall in vectors scanned
+```
+
+The numbers vary with the random data, but the shape does not: **recall rises with `nprobe` and so does the work per query**. Production systems tune `nprobe` (or HNSW's `ef_search`) against a recall target measured on their own data, with a fixed latency budget; the ANN index never promises exact answers, so the recall measurement is part of the system.
+
+---
+
 ## Further Reading
 
 - [HNSW paper](https://arxiv.org/abs/1603.09320)

@@ -1413,6 +1413,91 @@ flowchart TD
 </div>
       </div>
     </div><p><em>By reading its own previous mistakes in memory, the model refactors its code and avoids repeating bugs, increasing complex coding benchmark accuracy by $&gt; 30\%$.</em></p>
+<h2 id="4-runnable-model-the-three-loops-with-their-safety-limits"><a href="#4-runnable-model-the-three-loops-with-their-safety-limits" class="header-anchor">#</a>4. Runnable Model: The Three Loops with Their Safety Limits</h2><p>Every architecture above is a loop, and every production incident with agents is a loop that did not stop. These versions run offline with a scripted &quot;model&quot; so you can see the guards work.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> json
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">react_loop</span>(<span class="hljs-params">llm, tools, question, max_steps=<span class="hljs-number">5</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;ReAct: alternate model decisions and tool calls until it answers, repeats itself, or runs out of budget.&quot;&quot;&quot;</span>
+    trace, seen = [], <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_steps):
+        out = llm(question, trace)
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;answer&quot;</span> <span class="hljs-keyword">in</span> out:
+            <span class="hljs-keyword">return</span> out[<span class="hljs-string">&quot;answer&quot;</span>], trace
+        key = (out[<span class="hljs-string">&quot;tool&quot;</span>], json.dumps(out[<span class="hljs-string">&quot;args&quot;</span>], sort_keys=<span class="hljs-literal">True</span>))
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> seen:                                   <span class="hljs-comment"># the identical call twice means no progress</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;STOPPED: repeated tool call&quot;</span>, trace
+        seen.add(key)
+        trace.append((out[<span class="hljs-string">&quot;tool&quot;</span>], out[<span class="hljs-string">&quot;args&quot;</span>], tools[out[<span class="hljs-string">&quot;tool&quot;</span>]](**out[<span class="hljs-string">&quot;args&quot;</span>])))
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;STOPPED: step budget exhausted&quot;</span>, trace
+
+tools = {<span class="hljs-string">&quot;add&quot;</span>: <span class="hljs-keyword">lambda</span> a, b: a + b}
+
+script = <span class="hljs-built_in">iter</span>([{<span class="hljs-string">&quot;tool&quot;</span>: <span class="hljs-string">&quot;add&quot;</span>, <span class="hljs-string">&quot;args&quot;</span>: {<span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&quot;b&quot;</span>: <span class="hljs-number">3</span>}}, {<span class="hljs-string">&quot;answer&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>}])
+answer, trace = react_loop(<span class="hljs-keyword">lambda</span> q, t: <span class="hljs-built_in">next</span>(script), tools, <span class="hljs-string">&quot;2+3?&quot;</span>)
+<span class="hljs-keyword">assert</span> answer == <span class="hljs-string">&quot;5&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(trace) == <span class="hljs-number">1</span>                  <span class="hljs-comment"># one tool call, then a final answer</span>
+
+answer, trace = react_loop(<span class="hljs-keyword">lambda</span> q, t: {<span class="hljs-string">&quot;tool&quot;</span>: <span class="hljs-string">&quot;add&quot;</span>, <span class="hljs-string">&quot;args&quot;</span>: {<span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;b&quot;</span>: <span class="hljs-number">1</span>}}, tools, <span class="hljs-string">&quot;?&quot;</span>)
+<span class="hljs-keyword">assert</span> answer == <span class="hljs-string">&quot;STOPPED: repeated tool call&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(trace) == <span class="hljs-number">1</span>      <span class="hljs-comment"># an infinite loop is cut after the second identical call</span>
+
+n = <span class="hljs-built_in">iter</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">100</span>))
+answer, _ = react_loop(<span class="hljs-keyword">lambda</span> q, t: {<span class="hljs-string">&quot;tool&quot;</span>: <span class="hljs-string">&quot;add&quot;</span>, <span class="hljs-string">&quot;args&quot;</span>: {<span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-built_in">next</span>(n), <span class="hljs-string">&quot;b&quot;</span>: <span class="hljs-number">0</span>}}, tools, <span class="hljs-string">&quot;?&quot;</span>, max_steps=<span class="hljs-number">3</span>)
+<span class="hljs-keyword">assert</span> answer == <span class="hljs-string">&quot;STOPPED: step budget exhausted&quot;</span>         <span class="hljs-comment"># progress that never ends is cut by the budget</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">plan_and_solve</span>(<span class="hljs-params">plan, executors, replan, max_replans=<span class="hljs-number">1</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Run a fixed plan; if a step fails, ask for replacement steps (bounded), then continue.&quot;&quot;&quot;</span>
+    steps, results, i, replans = <span class="hljs-built_in">list</span>(plan), [], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(steps):
+        name = steps[i]
+        <span class="hljs-keyword">try</span>:
+            results.append((name, executors[name]()))
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> err:
+            <span class="hljs-keyword">if</span> replans &gt;= max_replans:
+                <span class="hljs-keyword">raise</span>
+            replans += <span class="hljs-number">1</span>
+            steps = steps[:i] + replan(name, err) + steps[i + <span class="hljs-number">1</span>:]
+    <span class="hljs-keyword">return</span> results
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_primary</span>():
+    <span class="hljs-keyword">raise</span> ConnectionError(<span class="hljs-string">&quot;primary source down&quot;</span>)
+
+executors = {<span class="hljs-string">&quot;fetch_primary&quot;</span>: fetch_primary, <span class="hljs-string">&quot;fetch_backup&quot;</span>: <span class="hljs-keyword">lambda</span>: <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-string">&quot;summarise&quot;</span>: <span class="hljs-keyword">lambda</span>: <span class="hljs-string">&quot;summary&quot;</span>}
+done = plan_and_solve([<span class="hljs-string">&quot;fetch_primary&quot;</span>, <span class="hljs-string">&quot;summarise&quot;</span>], executors, <span class="hljs-keyword">lambda</span> name, err: [<span class="hljs-string">&quot;fetch_backup&quot;</span>])
+<span class="hljs-keyword">assert</span> [name <span class="hljs-keyword">for</span> name, _ <span class="hljs-keyword">in</span> done] == [<span class="hljs-string">&quot;fetch_backup&quot;</span>, <span class="hljs-string">&quot;summarise&quot;</span>]      <span class="hljs-comment"># the failed step was replaced, the rest ran</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reflexion</span>(<span class="hljs-params">generate, critique, max_rounds=<span class="hljs-number">3</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Generate, critique, and regenerate with the feedback until the critic is satisfied or rounds run out.&quot;&quot;&quot;</span>
+    feedback = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> round_no <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, max_rounds + <span class="hljs-number">1</span>):
+        draft = generate(feedback)
+        feedback = critique(draft)
+        <span class="hljs-keyword">if</span> feedback <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> draft, round_no
+    <span class="hljs-keyword">return</span> draft, max_rounds
+
+generate = <span class="hljs-keyword">lambda</span> fb: <span class="hljs-string">&quot;def f(x): return x&quot;</span> <span class="hljs-keyword">if</span> fb <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;def f(x): return x + 1&quot;</span>
+critique = <span class="hljs-keyword">lambda</span> draft: <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;x + 1&quot;</span> <span class="hljs-keyword">in</span> draft <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;off by one: expected x + 1&quot;</span>
+draft, rounds = reflexion(generate, critique)
+<span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;x + 1&quot;</span> <span class="hljs-keyword">in</span> draft <span class="hljs-keyword">and</span> rounds == <span class="hljs-number">2</span>                   <span class="hljs-comment"># fixed after one round of feedback</span>
+<span class="hljs-keyword">assert</span> reflexion(<span class="hljs-keyword">lambda</span> fb: <span class="hljs-string">&quot;bad&quot;</span>, <span class="hljs-keyword">lambda</span> d: <span class="hljs-string">&quot;still bad&quot;</span>, max_rounds=<span class="hljs-number">3</span>) == (<span class="hljs-string">&quot;bad&quot;</span>, <span class="hljs-number">3</span>)   <span class="hljs-comment"># the loop is bounded</span></code></pre>
+  </div><p><strong>Pattern selection.</strong> Use <strong>ReAct</strong> when the next step depends on what the last tool returned; <strong>plan-and-solve</strong> when the steps are knowable in advance (cheaper, easier to audit, and you can show the plan to a human before running it); <strong>reflexion</strong> when you have a reliable critic, such as unit tests or a schema validator. A critic that is itself a language model with no ground truth often reinforces the first answer rather than improving it.</p>
+<h3 id="termination-checklist-for-any-agent-loop"><a href="#termination-checklist-for-any-agent-loop" class="header-anchor">#</a>Termination checklist for any agent loop</h3><ol>
+<li>A hard <strong>step budget</strong> and a <strong>token or cost budget</strong>.</li>
+<li><strong>Repeated-call detection</strong> (same tool, same arguments).</li>
+<li>A <strong>wall-clock timeout</strong> around every tool call.</li>
+<li>A defined behaviour when stopped: return partial work and say why, rather than raising a bare exception.</li>
+<li>Log the full trace; most agent bugs are diagnosed by reading it.</li>
+</ol>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://arxiv.org/abs/2210.03629">ReAct paper</a></li>
 <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: building effective agents</a></li>
@@ -1451,7 +1536,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-react-pattern-reasoning-acting" class="toc-link">1. The ReAct Pattern (Reasoning + Acting)</a></li><li class="toc-item level-3"><a href="#complete-react-loop-implementation-in-python" class="toc-link">Complete ReAct Loop Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-plan-and-solve-architecture" class="toc-link">2. Plan-and-Solve Architecture</a></li><li class="toc-item level-2"><a href="#3-reflexion-iterative-self-correction" class="toc-link">3. Reflexion: Iterative Self-Correction</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-react-pattern-reasoning-acting" class="toc-link">1. The ReAct Pattern (Reasoning + Acting)</a></li><li class="toc-item level-3"><a href="#complete-react-loop-implementation-in-python" class="toc-link">Complete ReAct Loop Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-plan-and-solve-architecture" class="toc-link">2. Plan-and-Solve Architecture</a></li><li class="toc-item level-2"><a href="#3-reflexion-iterative-self-correction" class="toc-link">3. Reflexion: Iterative Self-Correction</a></li><li class="toc-item level-2"><a href="#4-runnable-model-the-three-loops-with-their-safety-limits" class="toc-link">4. Runnable Model: The Three Loops with Their Safety Limits</a></li><li class="toc-item level-3"><a href="#termination-checklist-for-any-agent-loop" class="toc-link">Termination checklist for any agent loop</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

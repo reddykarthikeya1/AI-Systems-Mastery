@@ -1421,6 +1421,84 @@ flowchart LR
 <td align="left">Optimal: Guarantees exact Top-$K$ while preserving $O(\log N)$ graph search speeds.</td>
 </tr>
 </tbody></table>
+<h2 id="4-runnable-model-memory-arithmetic-and-the-recall-cost-of-searching-fewer-clusters"><a href="#4-runnable-model-memory-arithmetic-and-the-recall-cost-of-searching-fewer-clusters" class="header-anchor">#</a>4. Runnable Model: Memory Arithmetic and the Recall Cost of Searching Fewer Clusters</h2><h3 id="why-quantisation-matters-at-a-billion-vectors"><a href="#why-quantisation-matters-at-a-billion-vectors" class="header-anchor">#</a>Why quantisation matters at a billion vectors</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">vectors, dim = <span class="hljs-number">1_000_000_000</span>, <span class="hljs-number">768</span>
+raw_tb = vectors * dim * <span class="hljs-number">4</span> / <span class="hljs-number">1e12</span>                            <span class="hljs-comment"># float32</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(raw_tb, <span class="hljs-number">2</span>) == <span class="hljs-number">3.07</span>                              <span class="hljs-comment"># 3 TB of vectors: far beyond one machine&#x27;s RAM</span>
+
+sub_vectors = <span class="hljs-number">96</span>                                             <span class="hljs-comment"># product quantisation: 96 sub-vectors of 8 dimensions</span>
+pq_gb = vectors * sub_vectors * <span class="hljs-number">1</span> / <span class="hljs-number">1e9</span>                      <span class="hljs-comment"># one byte per sub-vector code</span>
+<span class="hljs-keyword">assert</span> pq_gb == <span class="hljs-number">96.0</span>                                         <span class="hljs-comment"># 96 GB: fits on one large machine</span>
+<span class="hljs-keyword">assert</span> raw_tb * <span class="hljs-number">1000</span> / pq_gb == <span class="hljs-number">32.0</span>                         <span class="hljs-comment"># a 32x reduction</span>
+
+hnsw_links, bytes_per_link = <span class="hljs-number">32</span>, <span class="hljs-number">4</span>
+graph_gb = vectors * hnsw_links * bytes_per_link / <span class="hljs-number">1e9</span>
+<span class="hljs-keyword">assert</span> graph_gb == <span class="hljs-number">128.0</span>                                     <span class="hljs-comment"># an HNSW graph adds its own memory on top of the vectors</span></code></pre>
+  </div><p>Takeaway: at scale the question is rarely &quot;which index is fastest&quot; but &quot;what fits in memory&quot;. Quantised vectors for the first-pass search, plus the full vectors on disk for re-ranking the top candidates, is the standard compromise.</p>
+<h3 id="the-ivf-trade-off-probe-more-clusters-get-more-recall-pay-more-time"><a href="#the-ivf-trade-off-probe-more-clusters-get-more-recall-pay-more-time" class="header-anchor">#</a>The IVF trade-off: probe more clusters, get more recall, pay more time</h3><p>An IVF index partitions vectors into clusters and searches only the <code>nprobe</code> clusters closest to the query. This model builds one and measures recall against exact search.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> random
+
+random.seed(<span class="hljs-number">4</span>)
+DIM, N, K, QUERIES = <span class="hljs-number">8</span>, <span class="hljs-number">3000</span>, <span class="hljs-number">24</span>, <span class="hljs-number">40</span>
+points = [[random.random() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(DIM)] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(N)]
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dist2</span>(<span class="hljs-params">a, b</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>((x - y) ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b))
+
+<span class="hljs-comment"># Build: a few rounds of k-means to get cluster centres</span>
+centres = random.sample(points, K)
+<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>):
+    buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(K)]
+    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> points:
+        buckets[<span class="hljs-built_in">min</span>(<span class="hljs-built_in">range</span>(K), key=<span class="hljs-keyword">lambda</span> c: dist2(p, centres[c]))].append(p)
+    centres = [[<span class="hljs-built_in">sum</span>(col) / <span class="hljs-built_in">len</span>(b) <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(*b)] <span class="hljs-keyword">if</span> b <span class="hljs-keyword">else</span> centres[i] <span class="hljs-keyword">for</span> i, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(buckets)]
+lists = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(K)]
+<span class="hljs-keyword">for</span> idx, p <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(points):
+    lists[<span class="hljs-built_in">min</span>(<span class="hljs-built_in">range</span>(K), key=<span class="hljs-keyword">lambda</span> c: dist2(p, centres[c]))].append(idx)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">q, nprobe, k=<span class="hljs-number">10</span></span>):
+    order = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">range</span>(K), key=<span class="hljs-keyword">lambda</span> c: dist2(q, centres[c]))[:nprobe]
+    candidates = [i <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> order <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> lists[c]]
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">set</span>(<span class="hljs-built_in">sorted</span>(candidates, key=<span class="hljs-keyword">lambda</span> i: dist2(q, points[i]))[:k]), <span class="hljs-built_in">len</span>(candidates)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">exact</span>(<span class="hljs-params">q, k=<span class="hljs-number">10</span></span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">set</span>(<span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">range</span>(N), key=<span class="hljs-keyword">lambda</span> i: dist2(q, points[i]))[:k])
+
+queries = [[random.random() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(DIM)] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(QUERIES)]
+truth = [exact(q) <span class="hljs-keyword">for</span> q <span class="hljs-keyword">in</span> queries]
+recall, scanned = {}, {}
+<span class="hljs-keyword">for</span> nprobe <span class="hljs-keyword">in</span> (<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, K):
+    hits = scans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> q, t <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(queries, truth):
+        found, n = search(q, nprobe)
+        hits += <span class="hljs-built_in">len</span>(found &amp; t)
+        scans += n
+    recall[nprobe] = hits / (<span class="hljs-number">10</span> * QUERIES)
+    scanned[nprobe] = scans / QUERIES
+
+<span class="hljs-keyword">assert</span> recall[K] == <span class="hljs-number">1.0</span>                                      <span class="hljs-comment"># probing every cluster is exact search</span>
+<span class="hljs-keyword">assert</span> recall[<span class="hljs-number">1</span>] &lt;= recall[<span class="hljs-number">4</span>] &lt;= recall[K]                   <span class="hljs-comment"># more probes never reduce recall here</span>
+<span class="hljs-keyword">assert</span> recall[<span class="hljs-number">1</span>] &lt; <span class="hljs-number">0.95</span>                                      <span class="hljs-comment"># one probe misses neighbours that sit across a boundary</span>
+<span class="hljs-keyword">assert</span> scanned[<span class="hljs-number">1</span>] &lt; scanned[<span class="hljs-number">4</span>] &lt; scanned[K] == N             <span class="hljs-comment"># and the cost grows in step: you pay for recall in vectors scanned</span></code></pre>
+  </div><p>The numbers vary with the random data, but the shape does not: <strong>recall rises with <code>nprobe</code> and so does the work per query</strong>. Production systems tune <code>nprobe</code> (or HNSW&#39;s <code>ef_search</code>) against a recall target measured on their own data, with a fixed latency budget; the ANN index never promises exact answers, so the recall measurement is part of the system.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://arxiv.org/abs/1603.09320">HNSW paper</a></li>
 <li><a href="https://www.pinecone.io/learn/series/faiss/hnsw/">Pinecone: HNSW explained</a></li>
@@ -1459,7 +1537,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-distance-metrics-cosine-vs-dot-product-vs-euclidean-math7" class="toc-link">1. Distance Metrics: Cosine vs. Dot Product vs. Euclidean ($L2$)</a></li><li class="toc-item level-2"><a href="#2-the-hnsw-algorithm-multi-layer-skip-graphs" class="toc-link">2. The HNSW Algorithm: Multi-Layer Skip-Graphs</a></li><li class="toc-item level-3"><a href="#the-express-train-vs-local-walking-metaphor" class="toc-link">The "Express Train vs. Local Walking" Metaphor</a></li><li class="toc-item level-3"><a href="#the-search-mechanics" class="toc-link">The Search Mechanics:</a></li><li class="toc-item level-2"><a href="#3-product-quantization-ivf-pq-compressing-vectors" class="toc-link">3. Product Quantization (IVF-PQ): Compressing Vectors</a></li><li class="toc-item level-2"><a href="#4-metadata-filtering-pre-filtering-vs-single-stage-hybrid-search" class="toc-link">4. Metadata Filtering: Pre-Filtering vs. Single-Stage Hybrid Search</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-distance-metrics-cosine-vs-dot-product-vs-euclidean-math7" class="toc-link">1. Distance Metrics: Cosine vs. Dot Product vs. Euclidean ($L2$)</a></li><li class="toc-item level-2"><a href="#2-the-hnsw-algorithm-multi-layer-skip-graphs" class="toc-link">2. The HNSW Algorithm: Multi-Layer Skip-Graphs</a></li><li class="toc-item level-3"><a href="#the-express-train-vs-local-walking-metaphor" class="toc-link">The "Express Train vs. Local Walking" Metaphor</a></li><li class="toc-item level-3"><a href="#the-search-mechanics" class="toc-link">The Search Mechanics:</a></li><li class="toc-item level-2"><a href="#3-product-quantization-ivf-pq-compressing-vectors" class="toc-link">3. Product Quantization (IVF-PQ): Compressing Vectors</a></li><li class="toc-item level-2"><a href="#4-metadata-filtering-pre-filtering-vs-single-stage-hybrid-search" class="toc-link">4. Metadata Filtering: Pre-Filtering vs. Single-Stage Hybrid Search</a></li><li class="toc-item level-2"><a href="#4-runnable-model-memory-arithmetic-and-the-recall-cost-of-searching-fewer-clusters" class="toc-link">4. Runnable Model: Memory Arithmetic and the Recall Cost of Searching Fewer Clusters</a></li><li class="toc-item level-3"><a href="#why-quantisation-matters-at-a-billion-vectors" class="toc-link">Why quantisation matters at a billion vectors</a></li><li class="toc-item level-3"><a href="#the-ivf-trade-off-probe-more-clusters-get-more-recall-pay-more-time" class="toc-link">The IVF trade-off: probe more clusters, get more recall, pay more time</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

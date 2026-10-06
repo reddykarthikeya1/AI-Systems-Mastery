@@ -10,7 +10,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 | 01-Python-Mastery | 23 | 0 | 47,502 | 2093 | 100% | 100% | 92/93 | 17 |
 | 02-Low-Level-Design | 12 | 18 | 43,122 | 1348 | 100% | 100% | 83/84 | 4 |
 | 03-High-Level-Design | 13 | 20 | 43,902 | 1280 | 100% | 100% | 36/36 | 1 |
-| 04-Agentic-AI | 21 | 0 | 25,685 | 1054 | 100% | 100% | 22/22 | 2 |
+| 04-Agentic-AI | 21 | 0 | 32,563 | 1571 | 100% | 100% | 42/42 | 2 |
 | 05-DSA-Interview-Playbook | 9 | 0 | 38,053 | 1245 | 100% | 100% | 70/72 | 98 |
 
 ## Executable assets
@@ -44,5 +44,5 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 - **01-Python-Mastery**: none against the measured bar
 - **02-Low-Level-Design**: none against the measured bar
 - **03-High-Level-Design**: none against the measured bar
-- **04-Agentic-AI**: median chapter is 1054 words (< 1200)
+- **04-Agentic-AI**: none against the measured bar
 - **05-DSA-Interview-Playbook**: none against the measured bar

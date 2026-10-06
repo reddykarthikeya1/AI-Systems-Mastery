@@ -1422,6 +1422,91 @@ sequenceDiagram
 <h2 id="verified-worked-example-real-langgraph-with-human-in-the-loop"><a href="#verified-worked-example-real-langgraph-with-human-in-the-loop" class="header-anchor">#</a>Verified Worked Example: Real LangGraph with Human-in-the-Loop</h2><p>The section above emulates the LangGraph execution model in plain Python to teach the ideas. The real API is exercised in <a href="examples/ex02_langgraph_hitl.py"><code>examples/ex02_langgraph_hitl.py</code></a>, verified on <code>langgraph==1.2.13</code>: a typed <code>State</code> with an append reducer (<code>Annotated[list, operator.add]</code>), nodes returning partial updates, a conditional edge, an <code>InMemorySaver</code> checkpointer, and an <code>interrupt()</code> that pauses for approval and resumes with <code>Command(resume=...)</code> on the same <code>thread_id</code>. Two behaviours worth testing yourself: (1) the side-effecting node runs <strong>only after</strong> approval, and (2) rejecting leaves <code>executed</code> out of the log.</p>
 <p><strong>Version note.</strong> LangGraph&#39;s API evolves quickly (for example <code>MemorySaver</code> became <code>InMemorySaver</code>, and the human-in-the-loop primitives changed from static breakpoints to <code>interrupt</code>/<code>Command</code>). Pin the version and re-run the examples when upgrading.</p>
 <p>Pinned for the verified examples: <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>, <code>pytest==9.1.1</code> (see <code>examples/requirements.txt</code>). All examples run offline with a scripted fake model: <code>cd examples &amp;&amp; pip install -r requirements.txt &amp;&amp; pytest -q</code>.</p>
+<h2 id="5-runnable-model-what-a-graph-runtime-actually-does"><a href="#5-runnable-model-what-a-graph-runtime-actually-does" class="header-anchor">#</a>5. Runnable Model: What a Graph Runtime Actually Does</h2><p>This is a <strong>teaching emulation</strong> of the ideas in LangGraph (state with reducers, conditional edges, checkpoint and resume), small enough to read in one sitting. The real library with pinned versions is in <code>examples/ex02_langgraph_hitl.py</code>; use it in projects.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">END = <span class="hljs-string">&quot;__end__&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MiniGraph</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, reducers=<span class="hljs-literal">None</span></span>):
+        <span class="hljs-variable language_">self</span>.reducers = reducers <span class="hljs-keyword">or</span> {}                      <span class="hljs-comment"># key -&gt; function(old, new); default is overwrite</span>
+        <span class="hljs-variable language_">self</span>.nodes, <span class="hljs-variable language_">self</span>.edges, <span class="hljs-variable language_">self</span>.routers = {}, {}, {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_node</span>(<span class="hljs-params">self, name, fn</span>):
+        <span class="hljs-variable language_">self</span>.nodes[name] = fn
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_edge</span>(<span class="hljs-params">self, a, b</span>):
+        <span class="hljs-variable language_">self</span>.edges[a] = b
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_conditional_edges</span>(<span class="hljs-params">self, a, router</span>):
+        <span class="hljs-variable language_">self</span>.routers[a] = router                            <span class="hljs-comment"># router(state) -&gt; next node name</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_merge</span>(<span class="hljs-params">self, state, update</span>):
+        out = <span class="hljs-built_in">dict</span>(state)
+        <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> update.items():
+            out[k] = <span class="hljs-variable language_">self</span>.reducers[k](out.get(k), v) <span class="hljs-keyword">if</span> k <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.reducers <span class="hljs-keyword">else</span> v
+        <span class="hljs-keyword">return</span> out
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self, state, start, interrupt_before=<span class="hljs-literal">None</span>, max_steps=<span class="hljs-number">20</span></span>):
+        node = start
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_steps):
+            <span class="hljs-keyword">if</span> node == END:
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;done&quot;</span>, state, <span class="hljs-literal">None</span>
+            <span class="hljs-keyword">if</span> node == interrupt_before:
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;interrupted&quot;</span>, state, node           <span class="hljs-comment"># a checkpoint: (state, where to resume)</span>
+            state = <span class="hljs-variable language_">self</span>._merge(state, <span class="hljs-variable language_">self</span>.nodes[node](state))
+            node = <span class="hljs-variable language_">self</span>.routers[node](state) <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.routers <span class="hljs-keyword">else</span> <span class="hljs-variable language_">self</span>.edges[node]
+        <span class="hljs-keyword">raise</span> RuntimeError(<span class="hljs-string">&quot;step limit reached (a cycle that never ends)&quot;</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">resume</span>(<span class="hljs-params">self, checkpoint_state, node, updates=<span class="hljs-literal">None</span>, **kwargs</span>):
+        state = <span class="hljs-variable language_">self</span>._merge(checkpoint_state, updates <span class="hljs-keyword">or</span> {})
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.run(state, node, **kwargs)
+
+add_list = <span class="hljs-keyword">lambda</span> old, new: (old <span class="hljs-keyword">or</span> []) + new               <span class="hljs-comment"># a reducer: append instead of overwrite</span>
+
+<span class="hljs-comment"># 1. A loop with a conditional edge and an appending reducer</span>
+g = MiniGraph(reducers={<span class="hljs-string">&quot;log&quot;</span>: add_list})
+g.add_node(<span class="hljs-string">&quot;work&quot;</span>, <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;n&quot;</span>: s.get(<span class="hljs-string">&quot;n&quot;</span>, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>, <span class="hljs-string">&quot;log&quot;</span>: [<span class="hljs-string">f&quot;work <span class="hljs-subst">{s.get(<span class="hljs-string">&#x27;n&#x27;</span>, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>}</span>&quot;</span>]})
+g.add_conditional_edges(<span class="hljs-string">&quot;work&quot;</span>, <span class="hljs-keyword">lambda</span> s: <span class="hljs-string">&quot;work&quot;</span> <span class="hljs-keyword">if</span> s[<span class="hljs-string">&quot;n&quot;</span>] &lt; <span class="hljs-number">3</span> <span class="hljs-keyword">else</span> END)
+status, final, _ = g.run({}, <span class="hljs-string">&quot;work&quot;</span>)
+<span class="hljs-keyword">assert</span> status == <span class="hljs-string">&quot;done&quot;</span> <span class="hljs-keyword">and</span> final[<span class="hljs-string">&quot;n&quot;</span>] == <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> final[<span class="hljs-string">&quot;log&quot;</span>] == [<span class="hljs-string">&quot;work 1&quot;</span>, <span class="hljs-string">&quot;work 2&quot;</span>, <span class="hljs-string">&quot;work 3&quot;</span>]
+
+<span class="hljs-comment"># 2. Human-in-the-loop: stop before &quot;act&quot;, resume with the human&#x27;s decision</span>
+h = MiniGraph(reducers={<span class="hljs-string">&quot;log&quot;</span>: add_list})
+h.add_node(<span class="hljs-string">&quot;plan&quot;</span>, <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;log&quot;</span>: [<span class="hljs-string">&quot;planned&quot;</span>]})
+h.add_node(<span class="hljs-string">&quot;act&quot;</span>, <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;log&quot;</span>: [<span class="hljs-string">&quot;acted&quot;</span> <span class="hljs-keyword">if</span> s.get(<span class="hljs-string">&quot;approved&quot;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;skipped&quot;</span>]})
+h.add_edge(<span class="hljs-string">&quot;plan&quot;</span>, <span class="hljs-string">&quot;act&quot;</span>)
+h.add_edge(<span class="hljs-string">&quot;act&quot;</span>, END)
+status, state, where = h.run({}, <span class="hljs-string">&quot;plan&quot;</span>, interrupt_before=<span class="hljs-string">&quot;act&quot;</span>)
+<span class="hljs-keyword">assert</span> status == <span class="hljs-string">&quot;interrupted&quot;</span> <span class="hljs-keyword">and</span> state[<span class="hljs-string">&quot;log&quot;</span>] == [<span class="hljs-string">&quot;planned&quot;</span>] <span class="hljs-keyword">and</span> where == <span class="hljs-string">&quot;act&quot;</span>
+status, final, _ = h.resume(state, where, updates={<span class="hljs-string">&quot;approved&quot;</span>: <span class="hljs-literal">True</span>})
+<span class="hljs-keyword">assert</span> status == <span class="hljs-string">&quot;done&quot;</span> <span class="hljs-keyword">and</span> final[<span class="hljs-string">&quot;log&quot;</span>] == [<span class="hljs-string">&quot;planned&quot;</span>, <span class="hljs-string">&quot;acted&quot;</span>]
+status, final, _ = h.resume(state, where, updates={<span class="hljs-string">&quot;approved&quot;</span>: <span class="hljs-literal">False</span>})
+<span class="hljs-keyword">assert</span> final[<span class="hljs-string">&quot;log&quot;</span>] == [<span class="hljs-string">&quot;planned&quot;</span>, <span class="hljs-string">&quot;skipped&quot;</span>]               <span class="hljs-comment"># the same checkpoint can resume down a different path</span>
+
+<span class="hljs-comment"># 3. A cycle with no exit is caught by the step limit</span>
+bad = MiniGraph()
+bad.add_node(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-keyword">lambda</span> s: {})
+bad.add_edge(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>)
+<span class="hljs-keyword">try</span>:
+    bad.run({}, <span class="hljs-string">&quot;a&quot;</span>, max_steps=<span class="hljs-number">5</span>)
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected RuntimeError&quot;</span>)
+<span class="hljs-keyword">except</span> RuntimeError:
+    <span class="hljs-keyword">pass</span></code></pre>
+  </div><h3 id="what-to-take-from-it"><a href="#what-to-take-from-it" class="header-anchor">#</a>What to take from it</h3><ol>
+<li>A graph agent is <strong>state plus nodes plus edges</strong>. Nodes return <em>updates</em>; <strong>reducers</strong> decide how updates combine (append messages, overwrite a flag).</li>
+<li><strong>Conditional edges</strong> are where the agent decides what to do next; cycles are legal, so you must bound them.</li>
+<li><strong>Checkpointing</strong> (saving the state at each step) is what makes human approval, retries and crash recovery possible: resume from the saved state instead of starting again.</li>
+<li>Choose a graph framework when you need <strong>branching, loops, persistence or human approval</strong>; for a straight sequence of calls, plain functions are clearer.</li>
+</ol>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph documentation</a></li>
 <li><a href="https://docs.langchain.com/oss/python/langgraph/persistence">LangGraph persistence</a></li>
@@ -1460,7 +1545,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-langgraph-replaced-linear-chains" class="toc-link">1. Why LangGraph Replaced Linear Chains</a></li><li class="toc-item level-2"><a href="#2-core-langgraph-primitives" class="toc-link">2. Core LangGraph Primitives</a></li><li class="toc-item level-2"><a href="#3-langgraph-style-agent-pure-python-emulation-of-the-model" class="toc-link">3. LangGraph-Style Agent (Pure-Python Emulation of the Model)</a></li><li class="toc-item level-2"><a href="#4-human-in-the-loop-time-travel-checkpointing" class="toc-link">4. Human-in-the-Loop & Time-Travel Checkpointing</a></li><li class="toc-item level-2"><a href="#verified-worked-example-real-langgraph-with-human-in-the-loop" class="toc-link">Verified Worked Example: Real LangGraph with Human-in-the-Loop</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-langgraph-replaced-linear-chains" class="toc-link">1. Why LangGraph Replaced Linear Chains</a></li><li class="toc-item level-2"><a href="#2-core-langgraph-primitives" class="toc-link">2. Core LangGraph Primitives</a></li><li class="toc-item level-2"><a href="#3-langgraph-style-agent-pure-python-emulation-of-the-model" class="toc-link">3. LangGraph-Style Agent (Pure-Python Emulation of the Model)</a></li><li class="toc-item level-2"><a href="#4-human-in-the-loop-time-travel-checkpointing" class="toc-link">4. Human-in-the-Loop & Time-Travel Checkpointing</a></li><li class="toc-item level-2"><a href="#verified-worked-example-real-langgraph-with-human-in-the-loop" class="toc-link">Verified Worked Example: Real LangGraph with Human-in-the-Loop</a></li><li class="toc-item level-2"><a href="#5-runnable-model-what-a-graph-runtime-actually-does" class="toc-link">5. Runnable Model: What a Graph Runtime Actually Does</a></li><li class="toc-item level-3"><a href="#what-to-take-from-it" class="toc-link">What to take from it</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

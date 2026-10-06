@@ -1402,6 +1402,99 @@ sequenceDiagram
 <hr>
 <h2 id="what-the-simulation-above-does-and-does-not-show"><a href="#what-the-simulation-above-does-and-does-not-show" class="header-anchor">#</a>What the Simulation Above Does and Does Not Show</h2><p>The supervisor example uses scripted agents (fixed strings) so that the control flow is deterministic and testable. It demonstrates delegation, result passing and a final merge, <strong>not</strong> real model behaviour. For a verified graph with checkpointing and approval see <a href="examples/ex02_langgraph_hitl.py"><code>examples/ex02_langgraph_hitl.py</code></a>; to measure whether a multi-agent design beats a single agent, use the repeated-trial harness in <a href="examples/ex05_eval_harness.py"><code>examples/ex05_eval_harness.py</code></a>: report <code>pass^k</code> and a Wilson interval, not a single run.</p>
 <p><strong>Cost reality check.</strong> Multi-agent runs multiply tokens (reported around 15x a chat for research agents versus about 4x for a single agent). If the harness shows no statistically clear gain over the single-agent baseline, ship the single agent.</p>
+<h2 id="4-runnable-model-a-supervisor-with-handoffs-a-turn-budget-and-ping-pong-detection"><a href="#4-runnable-model-a-supervisor-with-handoffs-a-turn-budget-and-ping-pong-detection" class="header-anchor">#</a>4. Runnable Model: A Supervisor with Handoffs, a Turn Budget and Ping-Pong Detection</h2><p>Multi-agent systems fail in a characteristic way: two agents keep handing work back and forth. The supervisor below shows the three controls that prevent it.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">supervisor</span>(<span class="hljs-params">task, workers, first, max_turns=<span class="hljs-number">6</span>, max_repeat=<span class="hljs-number">2</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Route work between workers. A worker returns {&quot;note&quot;, &quot;state&quot;?, &quot;handoff&quot;?}; no handoff means done.&quot;&quot;&quot;</span>
+    state, transcript, handoffs = {<span class="hljs-string">&quot;task&quot;</span>: task}, [], []
+    current = first
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_turns):
+        result = workers[current](state)
+        transcript.append((current, result[<span class="hljs-string">&quot;note&quot;</span>]))
+        state.update(result.get(<span class="hljs-string">&quot;state&quot;</span>, {}))
+        nxt = result.get(<span class="hljs-string">&quot;handoff&quot;</span>)
+        <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> state, transcript
+        handoffs.append((current, nxt))
+        <span class="hljs-keyword">if</span> handoffs.count((current, nxt)) &gt; max_repeat:
+            <span class="hljs-keyword">raise</span> RuntimeError(<span class="hljs-string">f&quot;ping-pong between <span class="hljs-subst">{current}</span> and <span class="hljs-subst">{nxt}</span>&quot;</span>)
+        current = nxt
+    <span class="hljs-keyword">raise</span> RuntimeError(<span class="hljs-string">&quot;turn budget exhausted&quot;</span>)
+
+workers = {
+    <span class="hljs-string">&quot;researcher&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;found 3 sources&quot;</span>, <span class="hljs-string">&quot;state&quot;</span>: {<span class="hljs-string">&quot;sources&quot;</span>: <span class="hljs-number">3</span>}, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;writer&quot;</span>},
+    <span class="hljs-string">&quot;writer&quot;</span>:     <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;drafted&quot;</span>, <span class="hljs-string">&quot;state&quot;</span>: {<span class="hljs-string">&quot;draft&quot;</span>: <span class="hljs-string">f&quot;report using <span class="hljs-subst">{s[<span class="hljs-string">&#x27;sources&#x27;</span>]}</span> sources&quot;</span>}, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;reviewer&quot;</span>},
+    <span class="hljs-string">&quot;reviewer&quot;</span>:   <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;approved&quot;</span>, <span class="hljs-string">&quot;state&quot;</span>: {<span class="hljs-string">&quot;approved&quot;</span>: <span class="hljs-literal">True</span>}},
+}
+state, transcript = supervisor(<span class="hljs-string">&quot;market report&quot;</span>, workers, <span class="hljs-string">&quot;researcher&quot;</span>)
+<span class="hljs-keyword">assert</span> [name <span class="hljs-keyword">for</span> name, _ <span class="hljs-keyword">in</span> transcript] == [<span class="hljs-string">&quot;researcher&quot;</span>, <span class="hljs-string">&quot;writer&quot;</span>, <span class="hljs-string">&quot;reviewer&quot;</span>]
+<span class="hljs-keyword">assert</span> state[<span class="hljs-string">&quot;approved&quot;</span>] <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> state[<span class="hljs-string">&quot;draft&quot;</span>] == <span class="hljs-string">&quot;report using 3 sources&quot;</span>
+
+bouncing = {
+    <span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;not my job&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;b&quot;</span>},
+    <span class="hljs-string">&quot;b&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;not mine either&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;a&quot;</span>},
+}
+<span class="hljs-keyword">try</span>:
+    supervisor(<span class="hljs-string">&quot;unclear task&quot;</span>, bouncing, <span class="hljs-string">&quot;a&quot;</span>, max_turns=<span class="hljs-number">20</span>)
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected RuntimeError&quot;</span>)
+<span class="hljs-keyword">except</span> RuntimeError <span class="hljs-keyword">as</span> err:
+    <span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;ping-pong&quot;</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(err)                         <span class="hljs-comment"># caught long before the turn budget</span>
+
+endless = {<span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;b&quot;</span>}, <span class="hljs-string">&quot;b&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;c&quot;</span>},
+           <span class="hljs-string">&quot;c&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;d&quot;</span>}, <span class="hljs-string">&quot;d&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;e&quot;</span>},
+           <span class="hljs-string">&quot;e&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;f&quot;</span>}, <span class="hljs-string">&quot;f&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;next&quot;</span>, <span class="hljs-string">&quot;handoff&quot;</span>: <span class="hljs-string">&quot;g&quot;</span>},
+           <span class="hljs-string">&quot;g&quot;</span>: <span class="hljs-keyword">lambda</span> s: {<span class="hljs-string">&quot;note&quot;</span>: <span class="hljs-string">&quot;end&quot;</span>}}
+<span class="hljs-keyword">try</span>:
+    supervisor(<span class="hljs-string">&quot;long chain&quot;</span>, endless, <span class="hljs-string">&quot;a&quot;</span>, max_turns=<span class="hljs-number">3</span>)
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected RuntimeError&quot;</span>)
+<span class="hljs-keyword">except</span> RuntimeError <span class="hljs-keyword">as</span> err:
+    <span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;turn budget&quot;</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(err)                       <span class="hljs-comment"># a chain longer than the budget is stopped too</span></code></pre>
+  </div><h3 id="when-multiple-agents-help-and-when-one-agent-with-tools-is-better"><a href="#when-multiple-agents-help-and-when-one-agent-with-tools-is-better" class="header-anchor">#</a>When multiple agents help, and when one agent with tools is better</h3><table>
+<thead>
+<tr>
+<th align="left">Situation</th>
+<th align="left">Use</th>
+<th align="left">Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Steps share most context and are strictly sequential</td>
+<td align="left">One agent with tools</td>
+<td align="left">Splitting only adds handoff cost and lost context</td>
+</tr>
+<tr>
+<td align="left">Subtasks are independent and parallelisable (research five companies)</td>
+<td align="left">Workers in parallel plus an aggregator</td>
+<td align="left">Wall-clock time drops and each context stays small</td>
+</tr>
+<tr>
+<td align="left">Different permissions are needed (read-only searcher, writer with approval)</td>
+<td align="left">Separate agents</td>
+<td align="left">Least privilege: the agent that reads untrusted web pages never holds the write tool</td>
+</tr>
+<tr>
+<td align="left">You want a second opinion (generate, then review)</td>
+<td align="left">Two agents with different prompts</td>
+<td align="left">Independent critique catches errors one context overlooks</td>
+</tr>
+</tbody></table>
+<p><strong>Costs to say aloud.</strong> Every handoff re-sends context (tokens), every extra agent multiplies failure modes, and debugging needs a shared trace id across agents. Start with one agent; split when a measured problem (context overflow, permission separation, parallelism) demands it.</p>
+<h3 id="production-checklist-for-multi-agent-systems"><a href="#production-checklist-for-multi-agent-systems" class="header-anchor">#</a>Production checklist for multi-agent systems</h3><ol>
+<li>A <strong>trace id</strong> propagated through every agent and tool call.</li>
+<li><strong>Budgets per run</strong>: turns, tokens, wall-clock, and money.</li>
+<li><strong>Typed handoff messages</strong> (a schema), not free text, so a malformed handoff fails loudly.</li>
+<li><strong>Idempotent tools</strong> so a retried or duplicated step does not repeat a side effect.</li>
+<li>A <strong>human escalation path</strong> when the supervisor hits any budget.</li>
+</ol>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://www.anthropic.com/engineering/built-multi-agent-research-system">Anthropic: how we built our multi-agent research system</a></li>
 <li><a href="https://microsoft.github.io/autogen/stable/">AutoGen documentation</a></li>
@@ -1440,7 +1533,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-multi-agent-topologies" class="toc-link">1. Multi-Agent Topologies</a></li><li class="toc-item level-2"><a href="#2-multi-agent-supervisor-simulation-scripted-agents-no-real-llm" class="toc-link">2. Multi-Agent Supervisor (Simulation: Scripted Agents, No Real LLM)</a></li><li class="toc-item level-2"><a href="#3-real-time-streaming-architecture-server-sent-events-sse" class="toc-link">3. Real-Time Streaming Architecture (Server-Sent Events - SSE)</a></li><li class="toc-item level-2"><a href="#4-production-observability-opentelemetry-langsmith" class="toc-link">4. Production Observability: OpenTelemetry & LangSmith</a></li><li class="toc-item level-2"><a href="#what-the-simulation-above-does-and-does-not-show" class="toc-link">What the Simulation Above Does and Does Not Show</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-multi-agent-topologies" class="toc-link">1. Multi-Agent Topologies</a></li><li class="toc-item level-2"><a href="#2-multi-agent-supervisor-simulation-scripted-agents-no-real-llm" class="toc-link">2. Multi-Agent Supervisor (Simulation: Scripted Agents, No Real LLM)</a></li><li class="toc-item level-2"><a href="#3-real-time-streaming-architecture-server-sent-events-sse" class="toc-link">3. Real-Time Streaming Architecture (Server-Sent Events - SSE)</a></li><li class="toc-item level-2"><a href="#4-production-observability-opentelemetry-langsmith" class="toc-link">4. Production Observability: OpenTelemetry & LangSmith</a></li><li class="toc-item level-2"><a href="#what-the-simulation-above-does-and-does-not-show" class="toc-link">What the Simulation Above Does and Does Not Show</a></li><li class="toc-item level-2"><a href="#4-runnable-model-a-supervisor-with-handoffs-a-turn-budget-and-ping-pong-detection" class="toc-link">4. Runnable Model: A Supervisor with Handoffs, a Turn Budget and Ping-Pong Detection</a></li><li class="toc-item level-3"><a href="#when-multiple-agents-help-and-when-one-agent-with-tools-is-better" class="toc-link">When multiple agents help, and when one agent with tools is better</a></li><li class="toc-item level-3"><a href="#production-checklist-for-multi-agent-systems" class="toc-link">Production checklist for multi-agent systems</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

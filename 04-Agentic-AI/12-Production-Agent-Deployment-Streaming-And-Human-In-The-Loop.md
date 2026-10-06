@@ -244,6 +244,83 @@ class GovernedToolExecutor:
 This ensures full governance and zero possibility of runaway catastrophic actions in production environments!
 
 
+## 4. Runnable Model: Resumable Streaming and an Approval Gate with Expiry
+
+### Server-sent events that a client can resume
+
+A dropped connection in the middle of a long answer should not restart the answer. SSE gives every event an `id`; a reconnecting browser sends `Last-Event-ID`, and the server replays from there.
+
+```python
+class EventStream:
+    def __init__(self):
+        self.events = []                                   # (id, data); in production a log or Redis stream
+
+    def publish(self, data):
+        self.events.append((len(self.events) + 1, data))
+
+    def render(self, last_event_id=0):
+        """Yield SSE frames for every event after last_event_id."""
+        for eid, data in self.events:
+            if eid > last_event_id:
+                yield f"id: {eid}\ndata: {data}\n\n"
+
+s = EventStream()
+for token in ["Hel", "lo", " wor", "ld"]:
+    s.publish(token)
+
+full = list(s.render())
+assert full[0] == "id: 1\ndata: Hel\n\n" and len(full) == 4
+resumed = list(s.render(last_event_id=2))                  # the connection dropped after event 2
+assert resumed == ["id: 3\ndata:  wor\n\n", "id: 4\ndata: ld\n\n"]
+assert "".join(f.split("data: ")[1].rstrip("\n") for f in full[:2] + resumed) == "Hello world"   # no gap, no duplicate
+```
+
+Deployment notes that matter: disable proxy buffering for the streaming route, send a comment heartbeat every 15 to 30 seconds so idle connections are not closed, and use a per-request id so the stream and the final result can be correlated.
+
+### An approval gate that cannot be approved after it expires
+
+```python
+class ApprovalGate:
+    def __init__(self, clock, ttl):
+        self.clock, self.ttl, self.pending = clock, ttl, {}
+
+    def request(self, action_id, action):
+        self.pending[action_id] = {"action": action, "expires": self.clock() + self.ttl, "status": "pending"}
+
+    def decide(self, action_id, approve, approver):
+        item = self.pending.get(action_id)
+        if item is None or item["status"] != "pending":
+            return "ignored"                               # unknown or already decided: a double click must not run twice
+        if self.clock() > item["expires"]:
+            item["status"] = "expired"
+            return "expired"
+        item["status"] = "approved" if approve else "rejected"
+        item["by"] = approver
+        return item["status"]
+
+t = [0.0]
+gate = ApprovalGate(clock=lambda: t[0], ttl=300)
+gate.request("refund-1", {"amount": 40})
+assert gate.decide("refund-1", True, "ana") == "approved"
+assert gate.decide("refund-1", True, "bo") == "ignored"    # idempotent: the second approval does nothing
+
+gate.request("refund-2", {"amount": 900})
+t[0] = 301.0
+assert gate.decide("refund-2", True, "ana") == "expired"   # a stale approval cannot authorise the action
+assert gate.pending["refund-2"]["status"] == "expired"
+assert gate.decide("missing", True, "ana") == "ignored"
+```
+
+### Human-in-the-loop design rules
+
+1. **Interrupt before the side effect**, with the exact action and arguments shown to the human, not a summary.
+2. Make decisions **idempotent and attributable** (who approved, when, which version of the request).
+3. Give approvals an **expiry**; the world changes while a request waits.
+4. Persist the paused state (a checkpoint) so a restart, a deploy or a day of waiting does not lose the run.
+5. Decide the **default when nobody answers**: usually reject and notify, never auto-approve.
+
+---
+
 ## Further Reading
 
 - [LangGraph human-in-the-loop](https://docs.langchain.com/oss/python/langgraph/interrupts)

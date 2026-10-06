@@ -132,6 +132,79 @@ The supervisor example uses scripted agents (fixed strings) so that the control 
 **Cost reality check.** Multi-agent runs multiply tokens (reported around 15x a chat for research agents versus about 4x for a single agent). If the harness shows no statistically clear gain over the single-agent baseline, ship the single agent.
 
 
+## 4. Runnable Model: A Supervisor with Handoffs, a Turn Budget and Ping-Pong Detection
+
+Multi-agent systems fail in a characteristic way: two agents keep handing work back and forth. The supervisor below shows the three controls that prevent it.
+
+```python
+def supervisor(task, workers, first, max_turns=6, max_repeat=2):
+    """Route work between workers. A worker returns {"note", "state"?, "handoff"?}; no handoff means done."""
+    state, transcript, handoffs = {"task": task}, [], []
+    current = first
+    for _ in range(max_turns):
+        result = workers[current](state)
+        transcript.append((current, result["note"]))
+        state.update(result.get("state", {}))
+        nxt = result.get("handoff")
+        if nxt is None:
+            return state, transcript
+        handoffs.append((current, nxt))
+        if handoffs.count((current, nxt)) > max_repeat:
+            raise RuntimeError(f"ping-pong between {current} and {nxt}")
+        current = nxt
+    raise RuntimeError("turn budget exhausted")
+
+workers = {
+    "researcher": lambda s: {"note": "found 3 sources", "state": {"sources": 3}, "handoff": "writer"},
+    "writer":     lambda s: {"note": "drafted", "state": {"draft": f"report using {s['sources']} sources"}, "handoff": "reviewer"},
+    "reviewer":   lambda s: {"note": "approved", "state": {"approved": True}},
+}
+state, transcript = supervisor("market report", workers, "researcher")
+assert [name for name, _ in transcript] == ["researcher", "writer", "reviewer"]
+assert state["approved"] is True and state["draft"] == "report using 3 sources"
+
+bouncing = {
+    "a": lambda s: {"note": "not my job", "handoff": "b"},
+    "b": lambda s: {"note": "not mine either", "handoff": "a"},
+}
+try:
+    supervisor("unclear task", bouncing, "a", max_turns=20)
+    raise AssertionError("expected RuntimeError")
+except RuntimeError as err:
+    assert "ping-pong" in str(err)                         # caught long before the turn budget
+
+endless = {"a": lambda s: {"note": "next", "handoff": "b"}, "b": lambda s: {"note": "next", "handoff": "c"},
+           "c": lambda s: {"note": "next", "handoff": "d"}, "d": lambda s: {"note": "next", "handoff": "e"},
+           "e": lambda s: {"note": "next", "handoff": "f"}, "f": lambda s: {"note": "next", "handoff": "g"},
+           "g": lambda s: {"note": "end"}}
+try:
+    supervisor("long chain", endless, "a", max_turns=3)
+    raise AssertionError("expected RuntimeError")
+except RuntimeError as err:
+    assert "turn budget" in str(err)                       # a chain longer than the budget is stopped too
+```
+
+### When multiple agents help, and when one agent with tools is better
+
+| Situation | Use | Reason |
+| :--- | :--- | :--- |
+| Steps share most context and are strictly sequential | One agent with tools | Splitting only adds handoff cost and lost context |
+| Subtasks are independent and parallelisable (research five companies) | Workers in parallel plus an aggregator | Wall-clock time drops and each context stays small |
+| Different permissions are needed (read-only searcher, writer with approval) | Separate agents | Least privilege: the agent that reads untrusted web pages never holds the write tool |
+| You want a second opinion (generate, then review) | Two agents with different prompts | Independent critique catches errors one context overlooks |
+
+**Costs to say aloud.** Every handoff re-sends context (tokens), every extra agent multiplies failure modes, and debugging needs a shared trace id across agents. Start with one agent; split when a measured problem (context overflow, permission separation, parallelism) demands it.
+
+### Production checklist for multi-agent systems
+
+1. A **trace id** propagated through every agent and tool call.
+2. **Budgets per run**: turns, tokens, wall-clock, and money.
+3. **Typed handoff messages** (a schema), not free text, so a malformed handoff fails loudly.
+4. **Idempotent tools** so a retried or duplicated step does not repeat a side effect.
+5. A **human escalation path** when the supervisor hits any budget.
+
+---
+
 ## Further Reading
 
 - [Anthropic: how we built our multi-agent research system](https://www.anthropic.com/engineering/built-multi-agent-research-system)

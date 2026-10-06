@@ -19,7 +19,7 @@
 | Python Mastery | 8.5 | 8 | 8.5 | 9 | 18 environment-dependent snippets (DB, CUDA, brokers) are not runnable offline; exercises are not auto-graded in the portal or CI |
 | Low-Level Design | 8 | 8 | 8.5 | 8 | case studies 12, 15, 17 and 18 still lack the tested edge-case section; patterns chapters cover 22 of 23 GoF patterns (Interpreter is only named) |
 | High-Level Design | 7.5 | 8.5 | 8 | 8 | systems 04 to 10, 14 and 15 have estimates but no runnable core mechanism; exercises are discussion questions, not auto-graded |
-| Agentic AI | 7 | 7.5 | 8 | 8 | chapters 02 to 07 are still short; one provider adapter only |
+| Agentic AI | 7.5 | 8.5 | 8.5 | 8.5 | adapters for Anthropic and OpenAI are tested with stub clients only (never against a live API); no cloud-deployment walkthrough |
 | DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
 | Portal (HTML/PDF) | n/a | n/a | 9 | n/a | PDFs print answers collapsed; no automated browser test suite in CI yet |
 

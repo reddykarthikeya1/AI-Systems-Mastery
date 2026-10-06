@@ -1417,6 +1417,96 @@ graph TD
 <li>$\pi_\theta$ is the active model, and $\pi_{\text{ref}}$ is the frozen baseline model.</li>
 </ul>
 <p>DPO increases the probability of preferred answers while decreasing the probability of rejected answers in a <strong>single standard cross-entropy training pass</strong>!</p>
+<h2 id="4-runnable-model-lora-arithmetic-and-the-dpo-loss"><a href="#4-runnable-model-lora-arithmetic-and-the-dpo-loss" class="header-anchor">#</a>4. Runnable Model: LoRA Arithmetic and the DPO Loss</h2><h3 id="how-few-parameters-lora-trains-and-what-that-does-to-memory"><a href="#how-few-parameters-lora-trains-and-what-that-does-to-memory" class="header-anchor">#</a>How few parameters LoRA trains, and what that does to memory</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">lora_params</span>(<span class="hljs-params">d_in, d_out, rank</span>):
+    <span class="hljs-keyword">return</span> rank * (d_in + d_out)                            <span class="hljs-comment"># A is (rank x d_in), B is (d_out x rank)</span>
+
+full = <span class="hljs-number">4096</span> * <span class="hljs-number">4096</span>                                          <span class="hljs-comment"># one attention projection matrix</span>
+lora = lora_params(<span class="hljs-number">4096</span>, <span class="hljs-number">4096</span>, rank=<span class="hljs-number">16</span>)
+<span class="hljs-keyword">assert</span> full == <span class="hljs-number">16_777_216</span> <span class="hljs-keyword">and</span> lora == <span class="hljs-number">131_072</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(<span class="hljs-number">100</span> * lora / full, <span class="hljs-number">2</span>) == <span class="hljs-number">0.78</span>                  <span class="hljs-comment"># under 1% of that matrix is trained</span>
+
+layers, matrices_per_layer = <span class="hljs-number">32</span>, <span class="hljs-number">4</span>                          <span class="hljs-comment"># q, k, v, o projections in a 32-layer model</span>
+trainable = layers * matrices_per_layer * lora
+<span class="hljs-keyword">assert</span> trainable == <span class="hljs-number">16_777_216</span>                              <span class="hljs-comment"># 16.8M trainable parameters in total</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">memory_gb</span>(<span class="hljs-params">params_b, bytes_weights, trainable_params, bytes_per_trainable</span>):
+    <span class="hljs-keyword">return</span> params_b * <span class="hljs-number">1e9</span> * bytes_weights / <span class="hljs-number">1e9</span> + trainable_params * bytes_per_trainable / <span class="hljs-number">1e9</span>
+
+<span class="hljs-comment"># 7B model. Full fine-tuning keeps weights (2 bytes) plus gradients (2) plus Adam states and fp32 master copy (12): about 16 bytes/param.</span>
+full_ft = <span class="hljs-number">7e9</span> * <span class="hljs-number">16</span> / <span class="hljs-number">1e9</span>
+lora_ft = memory_gb(<span class="hljs-number">7</span>, <span class="hljs-number">2</span>, trainable, <span class="hljs-number">16</span>)                    <span class="hljs-comment"># frozen bf16 weights plus the small trainable set</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(full_ft) == <span class="hljs-number">112</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(lora_ft, <span class="hljs-number">1</span>) == <span class="hljs-number">14.3</span>
+<span class="hljs-keyword">assert</span> full_ft / lora_ft &gt; <span class="hljs-number">7</span>                                <span class="hljs-comment"># roughly an eight-fold reduction, before activations</span></code></pre>
+  </div><p>These are weights-and-optimiser figures; activations, batch size and sequence length add more, so treat them as a floor. The conclusion holds: LoRA makes fine-tuning a 7B model feasible on a single large GPU, and with 4-bit base weights (QLoRA) on a consumer card. Rank is the quality-versus-size dial; 8 to 64 covers most uses.</p>
+<h3 id="the-dpo-loss-on-toy-numbers"><a href="#the-dpo-loss-on-toy-numbers" class="header-anchor">#</a>The DPO loss on toy numbers</h3><p>Direct Preference Optimisation trains on pairs (chosen <code>w</code>, rejected <code>l</code>) without a separate reward model:
+<code>loss = -log sigmoid( beta * [(log pi(w) - log ref(w)) - (log pi(l) - log ref(l))] )</code></p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> math
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dpo_loss</span>(<span class="hljs-params">pi_w, pi_l, ref_w, ref_l, beta=<span class="hljs-number">0.1</span></span>):
+    margin = beta * ((pi_w - ref_w) - (pi_l - ref_l))
+    <span class="hljs-keyword">return</span> -math.log(<span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + math.exp(-margin)))
+
+same_as_reference = dpo_loss(-<span class="hljs-number">10</span>, -<span class="hljs-number">12</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">12</span>)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">abs</span>(same_as_reference - math.log(<span class="hljs-number">2</span>)) &lt; <span class="hljs-number">1e-12</span>          <span class="hljs-comment"># no preference learned yet: loss is log 2</span>
+
+learned = dpo_loss(pi_w=-<span class="hljs-number">8</span>, pi_l=-<span class="hljs-number">14</span>, ref_w=-<span class="hljs-number">10</span>, ref_l=-<span class="hljs-number">12</span>)  <span class="hljs-comment"># policy raised the chosen answer and lowered the rejected one</span>
+<span class="hljs-keyword">assert</span> learned &lt; same_as_reference
+
+backwards = dpo_loss(pi_w=-<span class="hljs-number">14</span>, pi_l=-<span class="hljs-number">8</span>, ref_w=-<span class="hljs-number">10</span>, ref_l=-<span class="hljs-number">12</span>)
+<span class="hljs-keyword">assert</span> backwards &gt; same_as_reference                          <span class="hljs-comment"># moving the wrong way is penalised</span>
+
+<span class="hljs-comment"># beta controls how hard the policy is held to the reference: larger beta, sharper loss for the same shift</span>
+<span class="hljs-keyword">assert</span> dpo_loss(-<span class="hljs-number">8</span>, -<span class="hljs-number">14</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">12</span>, beta=<span class="hljs-number">0.5</span>) &lt; dpo_loss(-<span class="hljs-number">8</span>, -<span class="hljs-number">14</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">12</span>, beta=<span class="hljs-number">0.1</span>)</code></pre>
+  </div><p>What to remember: DPO needs only <strong>preference pairs and the frozen reference model&#39;s log-probabilities</strong>; the loss falls when the policy raises the chosen answer relative to the reference more than it raises the rejected one; <code>beta</code> limits drift from the reference.</p>
+<h3 id="when-to-fine-tune-at-all"><a href="#when-to-fine-tune-at-all" class="header-anchor">#</a>When to fine-tune at all</h3><table>
+<thead>
+<tr>
+<th align="left">Goal</th>
+<th align="left">First try</th>
+<th align="left">Fine-tune when</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">New knowledge or fresh facts</td>
+<td align="left">Retrieval (RAG)</td>
+<td align="left">Almost never: weights are a poor database</td>
+</tr>
+<tr>
+<td align="left">Output format or tone</td>
+<td align="left">Prompting with examples, structured output</td>
+<td align="left">Prompts get long, costly or inconsistent across many calls</td>
+</tr>
+<tr>
+<td align="left">A narrow skill with labelled data (classification, extraction)</td>
+<td align="left">Few-shot prompting</td>
+<td align="left">You have hundreds to thousands of clean examples and need lower latency or cost</td>
+</tr>
+<tr>
+<td align="left">Preferences or safety behaviour</td>
+<td align="left">System prompt and guardrails</td>
+<td align="left">You have preference data and a reliable evaluation to prove improvement</td>
+</tr>
+</tbody></table>
+<p>Always compare against a <strong>strong prompted baseline</strong> on a held-out evaluation set; a fine-tune that cannot beat it is not worth maintaining.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://arxiv.org/abs/2106.09685">LoRA paper</a></li>
 <li><a href="https://arxiv.org/abs/2305.18290">DPO paper</a></li>
@@ -1455,7 +1545,7 @@ graph TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-decision-matrix-prompting-vs-rag-vs-fine-tuning" class="toc-link">1. The Decision Matrix: Prompting vs. RAG vs. Fine-Tuning</a></li><li class="toc-item level-2"><a href="#2-parameter-efficient-fine-tuning-the-lora-mathematics" class="toc-link">2. Parameter-Efficient Fine-Tuning: The LoRA Mathematics</a></li><li class="toc-item level-3"><a href="#low-rank-adaptation-lora" class="toc-link">Low-Rank Adaptation (LoRA)</a></li><li class="toc-item level-2"><a href="#3-qlora-fine-tuning-on-a-single-consumer-gpu" class="toc-link">3. QLoRA: Fine-Tuning on a Single Consumer GPU</a></li><li class="toc-item level-3"><a href="#the-3-core-innovations-of-qlora" class="toc-link">The 3 Core Innovations of QLoRA:</a></li><li class="toc-item level-2"><a href="#4-alignment-preference-optimization-dpo-vs-rlhf" class="toc-link">4. Alignment & Preference Optimization: DPO vs. RLHF</a></li><li class="toc-item level-3"><a href="#the-dpo-breakthrough-rafailov-et-al-stanford" class="toc-link">The DPO Breakthrough (Rafailov et al., Stanford)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-decision-matrix-prompting-vs-rag-vs-fine-tuning" class="toc-link">1. The Decision Matrix: Prompting vs. RAG vs. Fine-Tuning</a></li><li class="toc-item level-2"><a href="#2-parameter-efficient-fine-tuning-the-lora-mathematics" class="toc-link">2. Parameter-Efficient Fine-Tuning: The LoRA Mathematics</a></li><li class="toc-item level-3"><a href="#low-rank-adaptation-lora" class="toc-link">Low-Rank Adaptation (LoRA)</a></li><li class="toc-item level-2"><a href="#3-qlora-fine-tuning-on-a-single-consumer-gpu" class="toc-link">3. QLoRA: Fine-Tuning on a Single Consumer GPU</a></li><li class="toc-item level-3"><a href="#the-3-core-innovations-of-qlora" class="toc-link">The 3 Core Innovations of QLoRA:</a></li><li class="toc-item level-2"><a href="#4-alignment-preference-optimization-dpo-vs-rlhf" class="toc-link">4. Alignment & Preference Optimization: DPO vs. RLHF</a></li><li class="toc-item level-3"><a href="#the-dpo-breakthrough-rafailov-et-al-stanford" class="toc-link">The DPO Breakthrough (Rafailov et al., Stanford)</a></li><li class="toc-item level-2"><a href="#4-runnable-model-lora-arithmetic-and-the-dpo-loss" class="toc-link">4. Runnable Model: LoRA Arithmetic and the DPO Loss</a></li><li class="toc-item level-3"><a href="#how-few-parameters-lora-trains-and-what-that-does-to-memory" class="toc-link">How few parameters LoRA trains, and what that does to memory</a></li><li class="toc-item level-3"><a href="#the-dpo-loss-on-toy-numbers" class="toc-link">The DPO loss on toy numbers</a></li><li class="toc-item level-3"><a href="#when-to-fine-tune-at-all" class="toc-link">When to fine-tune at all</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

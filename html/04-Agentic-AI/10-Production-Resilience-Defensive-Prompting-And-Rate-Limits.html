@@ -1496,6 +1496,115 @@ flowchart LR
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.total_cost_accrued &gt; <span class="hljs-variable language_">self</span>.max_cost_dollars:
             <span class="hljs-keyword">raise</span> PermissionError(<span class="hljs-string">f&quot;CIRCUIT BREAKER TRIPPED: Cost limit ($<span class="hljs-subst">{self.max_cost_dollars}</span>) breached!&quot;</span>)</code></pre>
   </div><p>Every production agent loop must wrap its execution inside this circuit breaker!</p>
+<h2 id="4-runnable-model-circuit-breaker-and-retry-with-jitter"><a href="#4-runnable-model-circuit-breaker-and-retry-with-jitter" class="header-anchor">#</a>4. Runnable Model: Circuit Breaker and Retry with Jitter</h2><p>Model APIs fail in bursts: a rate limit, a timeout, a regional incident. Two small components turn those failures from outages into slowdowns.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CircuitBreaker</span>:
+    <span class="hljs-string">&quot;&quot;&quot;CLOSED passes calls; after `threshold` consecutive failures it OPENS and fails fast for `cooldown` seconds;
+    then HALF_OPEN lets one trial call through: success closes it, failure re-opens it.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, threshold, cooldown, clock</span>):
+        <span class="hljs-variable language_">self</span>.threshold, <span class="hljs-variable language_">self</span>.cooldown, <span class="hljs-variable language_">self</span>.clock = threshold, cooldown, clock
+        <span class="hljs-variable language_">self</span>.state, <span class="hljs-variable language_">self</span>.failures, <span class="hljs-variable language_">self</span>.opened_at = <span class="hljs-string">&quot;CLOSED&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.0</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">call</span>(<span class="hljs-params">self, fn</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.state == <span class="hljs-string">&quot;OPEN&quot;</span>:
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.clock() - <span class="hljs-variable language_">self</span>.opened_at &lt; <span class="hljs-variable language_">self</span>.cooldown:
+                <span class="hljs-keyword">raise</span> RuntimeError(<span class="hljs-string">&quot;circuit open: failing fast&quot;</span>)
+            <span class="hljs-variable language_">self</span>.state = <span class="hljs-string">&quot;HALF_OPEN&quot;</span>
+        <span class="hljs-keyword">try</span>:
+            result = fn()
+        <span class="hljs-keyword">except</span> Exception:
+            <span class="hljs-variable language_">self</span>.failures += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.state == <span class="hljs-string">&quot;HALF_OPEN&quot;</span> <span class="hljs-keyword">or</span> <span class="hljs-variable language_">self</span>.failures &gt;= <span class="hljs-variable language_">self</span>.threshold:
+                <span class="hljs-variable language_">self</span>.state, <span class="hljs-variable language_">self</span>.opened_at = <span class="hljs-string">&quot;OPEN&quot;</span>, <span class="hljs-variable language_">self</span>.clock()
+            <span class="hljs-keyword">raise</span>
+        <span class="hljs-variable language_">self</span>.state, <span class="hljs-variable language_">self</span>.failures = <span class="hljs-string">&quot;CLOSED&quot;</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">return</span> result
+
+now = [<span class="hljs-number">0.0</span>]
+breaker = CircuitBreaker(threshold=<span class="hljs-number">3</span>, cooldown=<span class="hljs-number">30</span>, clock=<span class="hljs-keyword">lambda</span>: now[<span class="hljs-number">0</span>])
+calls = []
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">failing</span>():
+    calls.append(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">raise</span> ConnectionError(<span class="hljs-string">&quot;provider down&quot;</span>)
+
+<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):
+    <span class="hljs-keyword">try</span>:
+        breaker.call(failing)
+    <span class="hljs-keyword">except</span> ConnectionError:
+        <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">assert</span> breaker.state == <span class="hljs-string">&quot;OPEN&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(calls) == <span class="hljs-number">3</span>
+
+<span class="hljs-keyword">try</span>:
+    breaker.call(failing)
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected fast failure&quot;</span>)
+<span class="hljs-keyword">except</span> RuntimeError:
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(calls) == <span class="hljs-number">3</span>                                <span class="hljs-comment"># the provider was not called while the circuit was open</span>
+
+now[<span class="hljs-number">0</span>] = <span class="hljs-number">31.0</span>                                             <span class="hljs-comment"># cooldown over: one trial call is allowed</span>
+<span class="hljs-keyword">assert</span> breaker.call(<span class="hljs-keyword">lambda</span>: <span class="hljs-string">&quot;ok&quot;</span>) == <span class="hljs-string">&quot;ok&quot;</span> <span class="hljs-keyword">and</span> breaker.state == <span class="hljs-string">&quot;CLOSED&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">backoff_delays</span>(<span class="hljs-params">attempts, base, cap, rng</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Full jitter: each delay is uniform between 0 and min(cap, base * 2**attempt).&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> [rng.uniform(<span class="hljs-number">0</span>, <span class="hljs-built_in">min</span>(cap, base * <span class="hljs-number">2</span> ** k)) <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(attempts)]
+
+rng = random.Random(<span class="hljs-number">1</span>)
+delays = backoff_delays(<span class="hljs-number">8</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">20.0</span>, rng)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(<span class="hljs-number">0</span> &lt;= d &lt;= <span class="hljs-built_in">min</span>(<span class="hljs-number">20.0</span>, <span class="hljs-number">2</span> ** k) <span class="hljs-keyword">for</span> k, d <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(delays))
+runs = [backoff_delays(<span class="hljs-number">5</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">20.0</span>, random.Random(s)) <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">50</span>)]
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>({<span class="hljs-built_in">round</span>(r[<span class="hljs-number">3</span>], <span class="hljs-number">6</span>) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> runs}) &gt; <span class="hljs-number">40</span>          <span class="hljs-comment"># clients spread out instead of retrying in lockstep</span></code></pre>
+  </div><p><strong>Why jitter matters.</strong> Without it, every client that failed at the same moment retries at the same moments (1 s, 2 s, 4 s), creating synchronised waves that keep a recovering provider down. Randomising the delay spreads the load.</p>
+<h3 id="a-decision-table-for-model-api-failures"><a href="#a-decision-table-for-model-api-failures" class="header-anchor">#</a>A decision table for model-API failures</h3><table>
+<thead>
+<tr>
+<th align="left">Symptom</th>
+<th align="left">Retry?</th>
+<th align="left">Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>429</code> rate limited</td>
+<td align="left">Yes, honour <code>Retry-After</code>, with jitter</td>
+<td align="left">Queue and smooth traffic; lower concurrency</td>
+</tr>
+<tr>
+<td align="left"><code>500</code> / <code>503</code> provider error</td>
+<td align="left">Yes, bounded attempts</td>
+<td align="left">Breaker, then fail over to a second model or provider</td>
+</tr>
+<tr>
+<td align="left">Timeout</td>
+<td align="left">Only if the call is idempotent</td>
+<td align="left">Shorter timeouts plus hedged requests for latency-critical paths</td>
+</tr>
+<tr>
+<td align="left"><code>400</code> invalid request</td>
+<td align="left">No</td>
+<td align="left">Fix the request; retrying cannot help</td>
+</tr>
+<tr>
+<td align="left">Content filter or refusal</td>
+<td align="left">No</td>
+<td align="left">Return a safe fallback message and log it</td>
+</tr>
+<tr>
+<td align="left">Truncated output (<code>max_tokens</code>)</td>
+<td align="left">Maybe</td>
+<td align="left">Raise the limit or ask for continuation, not a blind retry</td>
+</tr>
+</tbody></table>
+<h3 id="defensive-prompting-in-one-paragraph"><a href="#defensive-prompting-in-one-paragraph" class="header-anchor">#</a>Defensive prompting in one paragraph</h3><p>Put instructions and untrusted data in separate, clearly delimited places; state the task, the output format and what to do when the input is out of scope; validate the output with code (schema, allowed values) instead of trusting the prompt; and assume any prompt can be overridden by hostile input, so keep real authority in permissions, not wording.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">AWS: exponential backoff and jitter</a></li>
 <li><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM applications</a></li>
@@ -1534,7 +1643,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-schema-enforcement-healing-with-pydantic-instructor" class="toc-link">1. Schema Enforcement & Healing with Pydantic & Instructor</a></li><li class="toc-item level-3"><a href="#self-healing-extraction-pipeline" class="toc-link">Self-Healing Extraction Pipeline</a></li><li class="toc-item level-2"><a href="#2-rate-limits-throttling-full-jitter-backoff" class="toc-link">2. Rate Limits, Throttling, & Full Jitter Backoff</a></li><li class="toc-item level-3"><a href="#why-exponential-backoff-without-jitter-causes-avalanches" class="toc-link">Why Exponential Backoff Without Jitter Causes Avalanches</a></li><li class="toc-item level-3"><a href="#production-rate-limiter-with-full-jitter" class="toc-link">Production Rate Limiter with Full Jitter</a></li><li class="toc-item level-2"><a href="#3-multi-provider-fallback-cascade" class="toc-link">3. Multi-Provider Fallback Cascade</a></li><li class="toc-item level-3"><a href="#cascade-implementation" class="toc-link">Cascade Implementation</a></li><li class="toc-item level-2"><a href="#4-runaway-recursive-loop-circuit-breaker" class="toc-link">4. Runaway Recursive Loop Circuit Breaker</a></li><li class="toc-item level-3"><a href="#the-strict-budget-token-step-circuit-breaker" class="toc-link">The Strict Budget Token & Step Circuit Breaker</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-schema-enforcement-healing-with-pydantic-instructor" class="toc-link">1. Schema Enforcement & Healing with Pydantic & Instructor</a></li><li class="toc-item level-3"><a href="#self-healing-extraction-pipeline" class="toc-link">Self-Healing Extraction Pipeline</a></li><li class="toc-item level-2"><a href="#2-rate-limits-throttling-full-jitter-backoff" class="toc-link">2. Rate Limits, Throttling, & Full Jitter Backoff</a></li><li class="toc-item level-3"><a href="#why-exponential-backoff-without-jitter-causes-avalanches" class="toc-link">Why Exponential Backoff Without Jitter Causes Avalanches</a></li><li class="toc-item level-3"><a href="#production-rate-limiter-with-full-jitter" class="toc-link">Production Rate Limiter with Full Jitter</a></li><li class="toc-item level-2"><a href="#3-multi-provider-fallback-cascade" class="toc-link">3. Multi-Provider Fallback Cascade</a></li><li class="toc-item level-3"><a href="#cascade-implementation" class="toc-link">Cascade Implementation</a></li><li class="toc-item level-2"><a href="#4-runaway-recursive-loop-circuit-breaker" class="toc-link">4. Runaway Recursive Loop Circuit Breaker</a></li><li class="toc-item level-3"><a href="#the-strict-budget-token-step-circuit-breaker" class="toc-link">The Strict Budget Token & Step Circuit Breaker</a></li><li class="toc-item level-2"><a href="#4-runnable-model-circuit-breaker-and-retry-with-jitter" class="toc-link">4. Runnable Model: Circuit Breaker and Retry with Jitter</a></li><li class="toc-item level-3"><a href="#a-decision-table-for-model-api-failures" class="toc-link">A decision table for model-API failures</a></li><li class="toc-item level-3"><a href="#defensive-prompting-in-one-paragraph" class="toc-link">Defensive prompting in one paragraph</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

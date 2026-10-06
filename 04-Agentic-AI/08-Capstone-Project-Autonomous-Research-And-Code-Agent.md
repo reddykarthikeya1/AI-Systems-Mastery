@@ -192,8 +192,62 @@ if __name__ == "__main__":
 
 ## How to Turn the Skeleton into a Real Agent
 
-The capstone is a skeleton with simulated model calls. To make it real: (1) implement `get_llm()` for your provider (see `examples/llm.py`, which already has an Anthropic adapter behind `LLM_PROVIDER=anthropic`), (2) keep a `FakeLLM` script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from `examples/ex05_eval_harness.py` (repeat each task 5 to 10 times and report `pass^k` with a confidence interval), and (4) gate side effects behind the approval pattern from `examples/ex02_langgraph_hitl.py`.
+The capstone is a skeleton with simulated model calls. To make it real: (1) implement `get_llm()` for your provider (see `examples/llm.py`, which has Anthropic and OpenAI adapters behind `LLM_PROVIDER=anthropic|openai` (set `LLM_MODEL` to a current model id; both are unit-tested with stub clients)), (2) keep a `FakeLLM` script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from `examples/ex05_eval_harness.py` (repeat each task 5 to 10 times and report `pass^k` with a confidence interval), and (4) gate side effects behind the approval pattern from `examples/ex02_langgraph_hitl.py`.
 
+
+## 4. Runnable Model: Acceptance Tests for the Capstone
+
+A capstone is only finished when it can be graded without opinion. These checks are deterministic, run offline, and are the kind of automated gate a review would apply to your agent's output.
+
+```python
+import re
+
+def check_report(report: str, sources: dict) -> list:
+    """Return a list of problems. Rules: every cited id must exist, every sentence with a number must cite a source,
+    and a source must not be listed that was never cited."""
+    problems, cited = [], set()
+    for sentence in re.split(r"(?<=[.!?])\s+", report.strip()):
+        ids = re.findall(r"\[(S\d+)\]", sentence)
+        cited.update(ids)
+        for i in ids:
+            if i not in sources:
+                problems.append(f"unknown source {i}")
+        if re.search(r"\d", re.sub(r"\[S\d+\]", "", sentence)) and not ids:
+            problems.append(f"uncited figure: {sentence[:40]}")
+    for unused in sorted(set(sources) - cited):
+        problems.append(f"unused source {unused}")
+    return problems
+
+sources = {"S1": "Annual report 2024", "S2": "Industry survey"}
+good = "Revenue grew 12% in 2024 [S1]. Analysts expect continued demand [S2]."
+assert check_report(good, sources) == []
+assert check_report("Revenue grew 12% in 2024. Demand is strong [S2].", sources) == [
+    "uncited figure: Revenue grew 12% in 2024.", "unused source S1"]
+assert check_report("Revenue grew 12% [S9]. Demand [S1] [S2].", sources) == ["unknown source S9"]
+```
+
+### Rubric the grader (human or script) applies
+
+| Area | Passing evidence | Automated check |
+| :--- | :--- | :--- |
+| Grounding | Every factual claim carries a citation that exists | `check_report` above |
+| Tool discipline | No calls outside the allowlist; arguments validated; step and cost budgets enforced | Replay the trace and assert limits |
+| Recovery | A failed tool call leads to a retry, an alternative or a clear partial answer, never a crash | Inject a failing tool in a test and assert the final status |
+| Safety | Untrusted web content cannot trigger a write or send action | Feed a hostile page and assert no privileged tool was called |
+| Reproducibility | The same inputs and recorded model outputs give the same report | Run the pipeline twice against a recording |
+| Cost | Cost per task is reported and under the stated cap | Sum token usage from the trace |
+
+### Suggested milestones
+
+1. **Day 1, the loop:** a ReAct loop with two tools (search stub, calculator), a step budget and a trace log, tested with a scripted model.
+2. **Day 2, grounding:** retrieval over a small fixed corpus, citations in the output, `check_report` as a test.
+3. **Day 3, safety and recovery:** tool allowlist and argument validation, a failing-tool test, a hostile-page test.
+4. **Day 4, evaluation:** 20 golden tasks, a pass-rate gate with a confidence bound, and a cost report.
+5. **Day 5, polish:** README with architecture, limits, a demo transcript and the evaluation results.
+
+The deliverable that distinguishes strong submissions is not a clever prompt; it is the **evidence**: tests, a trace, an evaluation table and an honest list of known failures.
+
+---
 
 ## Further Reading
 

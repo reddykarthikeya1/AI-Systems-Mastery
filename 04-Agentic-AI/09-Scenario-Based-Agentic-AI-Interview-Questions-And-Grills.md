@@ -63,6 +63,45 @@ flowchart TD
    Modern providers (Anthropic, OpenAI) support **Prompt Caching**. Ensure the system prompt and static tool definitions remain byte-identical at the beginning of the context window. Subsequent requests reuse the KV-cache at the provider level, reducing token costs by **$90\%$** and cutting latency by **$80\%$**!
 
 
+## 2. More Production Grills
+
+### "Your agent's bill tripled this month with no change in traffic. Why?"
+
+The usual cause is **context growth inside the loop**: each step re-sends everything so far, so cost per run grows roughly with the *square* of the number of steps. A small increase in average steps per task, or one verbose tool that returns large payloads, multiplies the bill.
+
+```python
+def run_cost(steps, system_tokens, added_per_step, out_tokens, in_price_per_m, out_price_per_m):
+    """Dollar cost of one agent run. Step i sends the system prompt plus everything added by earlier steps."""
+    total_in = sum(system_tokens + i * added_per_step for i in range(steps))
+    assert total_in == steps * system_tokens + added_per_step * steps * (steps - 1) // 2   # the closed form
+    return (total_in * in_price_per_m + steps * out_tokens * out_price_per_m) / 1e6
+
+ten = run_cost(10, 2000, 1500, 300, in_price_per_m=3.0, out_price_per_m=15.0)
+twenty = run_cost(20, 2000, 1500, 300, in_price_per_m=3.0, out_price_per_m=15.0)
+assert round(ten, 4) == 0.3075 and round(twenty, 4) == 1.065
+assert 3.4 < twenty / ten < 3.5                          # twice the steps costs about 3.5 times as much
+```
+
+Fixes, in order of effect: trim or summarise tool output before it enters the context, cap steps, cache the stable prefix (prompt caching), route easy steps to a cheaper model, and alert on cost per task, not only total spend.
+
+### "A web page the agent browsed told it to email the customer database. What stopped it?"
+
+This is **indirect prompt injection**. The defence is architectural, because no prompt reliably prevents it: the agent that reads untrusted content must not hold dangerous tools (least privilege); sensitive actions need human approval or an allowlist of recipients; tool outputs are wrapped and treated as data; and outbound channels (email, HTTP) are restricted to approved destinations. Say plainly that detection is a weak layer and permission design is the strong one.
+
+### "Quality dropped after a model upgrade and nobody noticed for a week. How do you prevent that?"
+
+Keep a versioned **evaluation set** drawn from real traffic and run it in CI on every prompt, model or tool change, with a pass-rate threshold that blocks the release. Add online monitoring: track task success, tool error rate, retries per task, cost per task and user feedback, with alerts on a shift against a rolling baseline. Pin model versions and upgrade deliberately.
+
+### "How do you let a customer-facing agent take actions, such as refunds, safely?"
+
+Separate **deciding** from **doing**: the agent proposes a structured action; deterministic code validates it against policy (amount limits, eligibility, ownership); high-risk actions need human approval; the action runs with an idempotency key; everything is logged for audit. The model never receives credentials with broader scope than the single action it is allowed to request.
+
+### "How do you debug a non-deterministic failure you cannot reproduce?"
+
+Record every run's inputs, model version, prompts, tool calls and outputs, so any failing run can be **replayed** with the model responses mocked from the recording. Then turn each production failure into a regression test in the evaluation set. Lower temperature for tool-using steps, because randomness there rarely helps.
+
+---
+
 ## Further Reading
 
 - [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents)

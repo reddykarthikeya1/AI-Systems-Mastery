@@ -201,6 +201,89 @@ class AgentExecutionCircuitBreaker:
 Every production agent loop must wrap its execution inside this circuit breaker!
 
 
+## 4. Runnable Model: Circuit Breaker and Retry with Jitter
+
+Model APIs fail in bursts: a rate limit, a timeout, a regional incident. Two small components turn those failures from outages into slowdowns.
+
+```python
+import random
+
+class CircuitBreaker:
+    """CLOSED passes calls; after `threshold` consecutive failures it OPENS and fails fast for `cooldown` seconds;
+    then HALF_OPEN lets one trial call through: success closes it, failure re-opens it."""
+    def __init__(self, threshold, cooldown, clock):
+        self.threshold, self.cooldown, self.clock = threshold, cooldown, clock
+        self.state, self.failures, self.opened_at = "CLOSED", 0, 0.0
+
+    def call(self, fn):
+        if self.state == "OPEN":
+            if self.clock() - self.opened_at < self.cooldown:
+                raise RuntimeError("circuit open: failing fast")
+            self.state = "HALF_OPEN"
+        try:
+            result = fn()
+        except Exception:
+            self.failures += 1
+            if self.state == "HALF_OPEN" or self.failures >= self.threshold:
+                self.state, self.opened_at = "OPEN", self.clock()
+            raise
+        self.state, self.failures = "CLOSED", 0
+        return result
+
+now = [0.0]
+breaker = CircuitBreaker(threshold=3, cooldown=30, clock=lambda: now[0])
+calls = []
+
+def failing():
+    calls.append(1)
+    raise ConnectionError("provider down")
+
+for _ in range(3):
+    try:
+        breaker.call(failing)
+    except ConnectionError:
+        pass
+assert breaker.state == "OPEN" and len(calls) == 3
+
+try:
+    breaker.call(failing)
+    raise AssertionError("expected fast failure")
+except RuntimeError:
+    assert len(calls) == 3                                # the provider was not called while the circuit was open
+
+now[0] = 31.0                                             # cooldown over: one trial call is allowed
+assert breaker.call(lambda: "ok") == "ok" and breaker.state == "CLOSED"
+
+def backoff_delays(attempts, base, cap, rng):
+    """Full jitter: each delay is uniform between 0 and min(cap, base * 2**attempt)."""
+    return [rng.uniform(0, min(cap, base * 2 ** k)) for k in range(attempts)]
+
+rng = random.Random(1)
+delays = backoff_delays(8, 1.0, 20.0, rng)
+assert all(0 <= d <= min(20.0, 2 ** k) for k, d in enumerate(delays))
+runs = [backoff_delays(5, 1.0, 20.0, random.Random(s)) for s in range(50)]
+assert len({round(r[3], 6) for r in runs}) > 40          # clients spread out instead of retrying in lockstep
+```
+
+**Why jitter matters.** Without it, every client that failed at the same moment retries at the same moments (1 s, 2 s, 4 s), creating synchronised waves that keep a recovering provider down. Randomising the delay spreads the load.
+
+### A decision table for model-API failures
+
+| Symptom | Retry? | Action |
+| :--- | :--- | :--- |
+| `429` rate limited | Yes, honour `Retry-After`, with jitter | Queue and smooth traffic; lower concurrency |
+| `500` / `503` provider error | Yes, bounded attempts | Breaker, then fail over to a second model or provider |
+| Timeout | Only if the call is idempotent | Shorter timeouts plus hedged requests for latency-critical paths |
+| `400` invalid request | No | Fix the request; retrying cannot help |
+| Content filter or refusal | No | Return a safe fallback message and log it |
+| Truncated output (`max_tokens`) | Maybe | Raise the limit or ask for continuation, not a blind retry |
+
+### Defensive prompting in one paragraph
+
+Put instructions and untrusted data in separate, clearly delimited places; state the task, the output format and what to do when the input is out of scope; validate the output with code (schema, allowed values) instead of trusting the prompt; and assume any prompt can be overridden by hostile input, so keep real authority in permissions, not wording.
+
+---
+
 ## Further Reading
 
 - [AWS: exponential backoff and jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/)

@@ -1452,7 +1452,89 @@ class SlidingWindowRateLimiter:
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n### Audited Implementation:\n```python\n<span class="hljs-subst">{result[<span class="hljs-string">&#x27;code_artifact&#x27;</span>]}</span>\n```&quot;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n### Quality Verification:\n<span class="hljs-subst">{result[<span class="hljs-string">&#x27;audit_report&#x27;</span>]}</span>&quot;</span>)</code></pre>
   </div><hr>
-<h2 id="how-to-turn-the-skeleton-into-a-real-agent"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="header-anchor">#</a>How to Turn the Skeleton into a Real Agent</h2><p>The capstone is a skeleton with simulated model calls. To make it real: (1) implement <code>get_llm()</code> for your provider (see <code>examples/llm.py</code>, which already has an Anthropic adapter behind <code>LLM_PROVIDER=anthropic</code>), (2) keep a <code>FakeLLM</code> script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from <code>examples/ex05_eval_harness.py</code> (repeat each task 5 to 10 times and report <code>pass^k</code> with a confidence interval), and (4) gate side effects behind the approval pattern from <code>examples/ex02_langgraph_hitl.py</code>.</p>
+<h2 id="how-to-turn-the-skeleton-into-a-real-agent"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="header-anchor">#</a>How to Turn the Skeleton into a Real Agent</h2><p>The capstone is a skeleton with simulated model calls. To make it real: (1) implement <code>get_llm()</code> for your provider (see <code>examples/llm.py</code>, which has Anthropic and OpenAI adapters behind <code>LLM_PROVIDER=anthropic|openai</code> (set <code>LLM_MODEL</code> to a current model id; both are unit-tested with stub clients)), (2) keep a <code>FakeLLM</code> script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from <code>examples/ex05_eval_harness.py</code> (repeat each task 5 to 10 times and report <code>pass^k</code> with a confidence interval), and (4) gate side effects behind the approval pattern from <code>examples/ex02_langgraph_hitl.py</code>.</p>
+<h2 id="4-runnable-model-acceptance-tests-for-the-capstone"><a href="#4-runnable-model-acceptance-tests-for-the-capstone" class="header-anchor">#</a>4. Runnable Model: Acceptance Tests for the Capstone</h2><p>A capstone is only finished when it can be graded without opinion. These checks are deterministic, run offline, and are the kind of automated gate a review would apply to your agent&#39;s output.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> re
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">check_report</span>(<span class="hljs-params">report: <span class="hljs-built_in">str</span>, sources: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Return a list of problems. Rules: every cited id must exist, every sentence with a number must cite a source,
+    and a source must not be listed that was never cited.&quot;&quot;&quot;</span>
+    problems, cited = [], <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> sentence <span class="hljs-keyword">in</span> re.split(<span class="hljs-string">r&quot;(?&lt;=[.!?])\s+&quot;</span>, report.strip()):
+        ids = re.findall(<span class="hljs-string">r&quot;\[(S\d+)\]&quot;</span>, sentence)
+        cited.update(ids)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> ids:
+            <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> sources:
+                problems.append(<span class="hljs-string">f&quot;unknown source <span class="hljs-subst">{i}</span>&quot;</span>)
+        <span class="hljs-keyword">if</span> re.search(<span class="hljs-string">r&quot;\d&quot;</span>, re.sub(<span class="hljs-string">r&quot;\[S\d+\]&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, sentence)) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ids:
+            problems.append(<span class="hljs-string">f&quot;uncited figure: <span class="hljs-subst">{sentence[:<span class="hljs-number">40</span>]}</span>&quot;</span>)
+    <span class="hljs-keyword">for</span> unused <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(sources) - cited):
+        problems.append(<span class="hljs-string">f&quot;unused source <span class="hljs-subst">{unused}</span>&quot;</span>)
+    <span class="hljs-keyword">return</span> problems
+
+sources = {<span class="hljs-string">&quot;S1&quot;</span>: <span class="hljs-string">&quot;Annual report 2024&quot;</span>, <span class="hljs-string">&quot;S2&quot;</span>: <span class="hljs-string">&quot;Industry survey&quot;</span>}
+good = <span class="hljs-string">&quot;Revenue grew 12% in 2024 [S1]. Analysts expect continued demand [S2].&quot;</span>
+<span class="hljs-keyword">assert</span> check_report(good, sources) == []
+<span class="hljs-keyword">assert</span> check_report(<span class="hljs-string">&quot;Revenue grew 12% in 2024. Demand is strong [S2].&quot;</span>, sources) == [
+    <span class="hljs-string">&quot;uncited figure: Revenue grew 12% in 2024.&quot;</span>, <span class="hljs-string">&quot;unused source S1&quot;</span>]
+<span class="hljs-keyword">assert</span> check_report(<span class="hljs-string">&quot;Revenue grew 12% [S9]. Demand [S1] [S2].&quot;</span>, sources) == [<span class="hljs-string">&quot;unknown source S9&quot;</span>]</code></pre>
+  </div><h3 id="rubric-the-grader-human-or-script-applies"><a href="#rubric-the-grader-human-or-script-applies" class="header-anchor">#</a>Rubric the grader (human or script) applies</h3><table>
+<thead>
+<tr>
+<th align="left">Area</th>
+<th align="left">Passing evidence</th>
+<th align="left">Automated check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Grounding</td>
+<td align="left">Every factual claim carries a citation that exists</td>
+<td align="left"><code>check_report</code> above</td>
+</tr>
+<tr>
+<td align="left">Tool discipline</td>
+<td align="left">No calls outside the allowlist; arguments validated; step and cost budgets enforced</td>
+<td align="left">Replay the trace and assert limits</td>
+</tr>
+<tr>
+<td align="left">Recovery</td>
+<td align="left">A failed tool call leads to a retry, an alternative or a clear partial answer, never a crash</td>
+<td align="left">Inject a failing tool in a test and assert the final status</td>
+</tr>
+<tr>
+<td align="left">Safety</td>
+<td align="left">Untrusted web content cannot trigger a write or send action</td>
+<td align="left">Feed a hostile page and assert no privileged tool was called</td>
+</tr>
+<tr>
+<td align="left">Reproducibility</td>
+<td align="left">The same inputs and recorded model outputs give the same report</td>
+<td align="left">Run the pipeline twice against a recording</td>
+</tr>
+<tr>
+<td align="left">Cost</td>
+<td align="left">Cost per task is reported and under the stated cap</td>
+<td align="left">Sum token usage from the trace</td>
+</tr>
+</tbody></table>
+<h3 id="suggested-milestones"><a href="#suggested-milestones" class="header-anchor">#</a>Suggested milestones</h3><ol>
+<li><strong>Day 1, the loop:</strong> a ReAct loop with two tools (search stub, calculator), a step budget and a trace log, tested with a scripted model.</li>
+<li><strong>Day 2, grounding:</strong> retrieval over a small fixed corpus, citations in the output, <code>check_report</code> as a test.</li>
+<li><strong>Day 3, safety and recovery:</strong> tool allowlist and argument validation, a failing-tool test, a hostile-page test.</li>
+<li><strong>Day 4, evaluation:</strong> 20 golden tasks, a pass-rate gate with a confidence bound, and a cost report.</li>
+<li><strong>Day 5, polish:</strong> README with architecture, limits, a demo transcript and the evaluation results.</li>
+</ol>
+<p>The deliverable that distinguishes strong submissions is not a clever prompt; it is the <strong>evidence</strong>: tests, a trace, an evaluation table and an honest list of known failures.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: building effective agents</a></li>
 <li><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph documentation</a></li>
@@ -1491,7 +1573,7 @@ class SlidingWindowRateLimiter:
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-project-overview-architectural-flow" class="toc-link">1. Project Overview & Architectural Flow</a></li><li class="toc-item level-2"><a href="#2-runnable-capstone-skeleton-pure-python-simulated-llm-calls" class="toc-link">2. Runnable Capstone Skeleton (Pure Python, Simulated LLM Calls)</a></li><li class="toc-item level-2"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="toc-link">How to Turn the Skeleton into a Real Agent</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-project-overview-architectural-flow" class="toc-link">1. Project Overview & Architectural Flow</a></li><li class="toc-item level-2"><a href="#2-runnable-capstone-skeleton-pure-python-simulated-llm-calls" class="toc-link">2. Runnable Capstone Skeleton (Pure Python, Simulated LLM Calls)</a></li><li class="toc-item level-2"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="toc-link">How to Turn the Skeleton into a Real Agent</a></li><li class="toc-item level-2"><a href="#4-runnable-model-acceptance-tests-for-the-capstone" class="toc-link">4. Runnable Model: Acceptance Tests for the Capstone</a></li><li class="toc-item level-3"><a href="#rubric-the-grader-human-or-script-applies" class="toc-link">Rubric the grader (human or script) applies</a></li><li class="toc-item level-3"><a href="#suggested-milestones" class="toc-link">Suggested milestones</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

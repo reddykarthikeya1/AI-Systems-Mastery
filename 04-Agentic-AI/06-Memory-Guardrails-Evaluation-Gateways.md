@@ -150,6 +150,113 @@ flowchart TD
 3. **Answer Relevance:** Evaluates whether the answer directly and concisely satisfies the user's intent.
 
 
+## 4. Runnable Model: Memory Budget, Guardrails and a Policy Gateway
+
+### A memory that stays inside a token budget
+
+```python
+class TokenBudgetMemory:
+    """Keeps the system message and the most recent turns verbatim; older turns collapse into one summary line."""
+    def __init__(self, budget, keep_last=2, count=lambda s: len(s.split())):
+        self.budget, self.keep_last, self.count = budget, keep_last, count
+        self.system, self.summary, self.turns = None, None, []
+
+    def add(self, role, text):
+        if role == "system":
+            self.system = text
+            return
+        self.turns.append((role, text))
+        while self._tokens() > self.budget and len(self.turns) > self.keep_last:
+            old = self.turns.pop(0)
+            merged = f"{self.summary} | {old[0]}: {old[1][:20]}" if self.summary else f"{old[0]}: {old[1][:20]}"
+            self.summary = merged[-60:]                  # in production an LLM writes this summary
+
+    def _tokens(self):
+        parts = [self.system or "", self.summary or ""] + [t for _, t in self.turns]
+        return sum(self.count(p) for p in parts)
+
+    def messages(self):
+        out = [("system", self.system)] if self.system else []
+        if self.summary:
+            out.append(("system", f"Earlier conversation: {self.summary}"))
+        return out + self.turns
+
+mem = TokenBudgetMemory(budget=30)
+mem.add("system", "You are a helpful assistant")
+for i in range(12):
+    mem.add("user", f"question number {i} about topic {i}")
+    mem.add("assistant", f"answer number {i} with some detail")
+msgs = mem.messages()
+assert mem._tokens() <= 30                                # the budget holds however long the chat runs
+assert msgs[0] == ("system", "You are a helpful assistant")
+assert msgs[-1][1].startswith("answer number 11")         # the latest turn is verbatim
+assert any("Earlier conversation" in t for _, t in msgs)  # older turns survive as a summary
+```
+
+### Input and output guardrails
+
+```python
+import re
+
+EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
+CARD = re.compile(r"\b(?:\d[ -]?){13,16}\b")
+
+def redact(text: str) -> str:
+    return CARD.sub("[CARD]", EMAIL.sub("[EMAIL]", text))
+
+def check_output(text: str, allowed_domains: set) -> list:
+    problems = []
+    for url in re.findall(r"https?://([^/\s]+)", text):
+        if url not in allowed_domains:
+            problems.append(f"link to unapproved domain: {url}")
+    if re.search(r"(?i)\bpassword\s*[:=]", text):
+        problems.append("looks like a credential")
+    return problems
+
+assert redact("mail bo@example.com card 4111 1111 1111 1111") == "mail [EMAIL] card [CARD]"
+assert check_output("see https://docs.example.com/x", {"docs.example.com"}) == []
+assert check_output("go to http://evil.test/login, password: hunter2", {"docs.example.com"}) == [
+    "link to unapproved domain: evil.test", "looks like a credential"]
+```
+
+Regexes catch the obvious cases and are only a first layer: treat them as cheap filters, then add a classifier or a model-based check for what they miss, and never rely on a guardrail prompt alone for security.
+
+### A policy gateway: rate limit, spend cap, and an audit trail in one place
+
+```python
+class Gateway:
+    def __init__(self, calls_per_minute, daily_budget_cents, clock):
+        self.limit, self.budget, self.clock = calls_per_minute, daily_budget_cents, clock
+        self.calls, self.spent, self.audit = {}, {}, []
+
+    def allow(self, user, est_cost_cents):
+        now = self.clock()
+        recent = [t for t in self.calls.get(user, []) if now - t < 60]
+        if len(recent) >= self.limit:
+            decision = "denied:rate_limit"
+        elif self.spent.get(user, 0) + est_cost_cents > self.budget:
+            decision = "denied:budget"
+        else:
+            decision = "allowed"
+            recent.append(now)
+            self.spent[user] = self.spent.get(user, 0) + est_cost_cents
+        self.calls[user] = recent
+        self.audit.append((now, user, decision))
+        return decision
+
+t = [0.0]
+gw = Gateway(calls_per_minute=2, daily_budget_cents=100, clock=lambda: t[0])
+assert [gw.allow("a", 10) for _ in range(3)] == ["allowed", "allowed", "denied:rate_limit"]
+t[0] = 61.0
+assert gw.allow("a", 10) == "allowed"                      # the window slid
+assert gw.allow("b", 500) == "denied:budget"               # a single expensive call exceeds the cap
+assert len(gw.audit) == 5 and all(entry[2] for entry in gw.audit)   # every decision is recorded
+```
+
+A gateway in front of every model call gives you one place for rate limits, budgets, model routing, caching, redaction and audit logs, so a runaway agent or a leaked key is bounded by policy instead of by luck.
+
+---
+
 ## Further Reading
 
 - [LiteLLM documentation](https://docs.litellm.ai/)

@@ -1464,6 +1464,120 @@ flowchart TD
 <li><strong>Faithfulness (Groundedness):</strong> Evaluates whether every claim in the generated answer can be directly inferred from the retrieved context (Score $1.0$ = zero hallucinations).</li>
 <li><strong>Answer Relevance:</strong> Evaluates whether the answer directly and concisely satisfies the user&#39;s intent.</li>
 </ol>
+<h2 id="4-runnable-model-memory-budget-guardrails-and-a-policy-gateway"><a href="#4-runnable-model-memory-budget-guardrails-and-a-policy-gateway" class="header-anchor">#</a>4. Runnable Model: Memory Budget, Guardrails and a Policy Gateway</h2><h3 id="a-memory-that-stays-inside-a-token-budget"><a href="#a-memory-that-stays-inside-a-token-budget" class="header-anchor">#</a>A memory that stays inside a token budget</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TokenBudgetMemory</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Keeps the system message and the most recent turns verbatim; older turns collapse into one summary line.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, budget, keep_last=<span class="hljs-number">2</span>, count=<span class="hljs-keyword">lambda</span> s: <span class="hljs-built_in">len</span>(<span class="hljs-params">s.split(<span class="hljs-params"></span>)</span>)</span>):
+        <span class="hljs-variable language_">self</span>.budget, <span class="hljs-variable language_">self</span>.keep_last, <span class="hljs-variable language_">self</span>.count = budget, keep_last, count
+        <span class="hljs-variable language_">self</span>.system, <span class="hljs-variable language_">self</span>.summary, <span class="hljs-variable language_">self</span>.turns = <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, role, text</span>):
+        <span class="hljs-keyword">if</span> role == <span class="hljs-string">&quot;system&quot;</span>:
+            <span class="hljs-variable language_">self</span>.system = text
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-variable language_">self</span>.turns.append((role, text))
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>._tokens() &gt; <span class="hljs-variable language_">self</span>.budget <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.turns) &gt; <span class="hljs-variable language_">self</span>.keep_last:
+            old = <span class="hljs-variable language_">self</span>.turns.pop(<span class="hljs-number">0</span>)
+            merged = <span class="hljs-string">f&quot;<span class="hljs-subst">{self.summary}</span> | <span class="hljs-subst">{old[<span class="hljs-number">0</span>]}</span>: <span class="hljs-subst">{old[<span class="hljs-number">1</span>][:<span class="hljs-number">20</span>]}</span>&quot;</span> <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.summary <span class="hljs-keyword">else</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{old[<span class="hljs-number">0</span>]}</span>: <span class="hljs-subst">{old[<span class="hljs-number">1</span>][:<span class="hljs-number">20</span>]}</span>&quot;</span>
+            <span class="hljs-variable language_">self</span>.summary = merged[-<span class="hljs-number">60</span>:]                  <span class="hljs-comment"># in production an LLM writes this summary</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_tokens</span>(<span class="hljs-params">self</span>):
+        parts = [<span class="hljs-variable language_">self</span>.system <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable language_">self</span>.summary <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;&quot;</span>] + [t <span class="hljs-keyword">for</span> _, t <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.turns]
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-variable language_">self</span>.count(p) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> parts)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">messages</span>(<span class="hljs-params">self</span>):
+        out = [(<span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-variable language_">self</span>.system)] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.system <span class="hljs-keyword">else</span> []
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.summary:
+            out.append((<span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-string">f&quot;Earlier conversation: <span class="hljs-subst">{self.summary}</span>&quot;</span>))
+        <span class="hljs-keyword">return</span> out + <span class="hljs-variable language_">self</span>.turns
+
+mem = TokenBudgetMemory(budget=<span class="hljs-number">30</span>)
+mem.add(<span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-string">&quot;You are a helpful assistant&quot;</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">12</span>):
+    mem.add(<span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">f&quot;question number <span class="hljs-subst">{i}</span> about topic <span class="hljs-subst">{i}</span>&quot;</span>)
+    mem.add(<span class="hljs-string">&quot;assistant&quot;</span>, <span class="hljs-string">f&quot;answer number <span class="hljs-subst">{i}</span> with some detail&quot;</span>)
+msgs = mem.messages()
+<span class="hljs-keyword">assert</span> mem._tokens() &lt;= <span class="hljs-number">30</span>                                <span class="hljs-comment"># the budget holds however long the chat runs</span>
+<span class="hljs-keyword">assert</span> msgs[<span class="hljs-number">0</span>] == (<span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-string">&quot;You are a helpful assistant&quot;</span>)
+<span class="hljs-keyword">assert</span> msgs[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>].startswith(<span class="hljs-string">&quot;answer number 11&quot;</span>)         <span class="hljs-comment"># the latest turn is verbatim</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">any</span>(<span class="hljs-string">&quot;Earlier conversation&quot;</span> <span class="hljs-keyword">in</span> t <span class="hljs-keyword">for</span> _, t <span class="hljs-keyword">in</span> msgs)  <span class="hljs-comment"># older turns survive as a summary</span></code></pre>
+  </div><h3 id="input-and-output-guardrails"><a href="#input-and-output-guardrails" class="header-anchor">#</a>Input and output guardrails</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> re
+
+EMAIL = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&quot;[\w.+-]+@[\w-]+\.[\w.-]+&quot;</span>)
+CARD = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&quot;\b(?:\d[ -]?){13,16}\b&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">redact</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-keyword">return</span> CARD.sub(<span class="hljs-string">&quot;[CARD]&quot;</span>, EMAIL.sub(<span class="hljs-string">&quot;[EMAIL]&quot;</span>, text))
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">check_output</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span>, allowed_domains: <span class="hljs-built_in">set</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    problems = []
+    <span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> re.findall(<span class="hljs-string">r&quot;https?://([^/\s]+)&quot;</span>, text):
+        <span class="hljs-keyword">if</span> url <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> allowed_domains:
+            problems.append(<span class="hljs-string">f&quot;link to unapproved domain: <span class="hljs-subst">{url}</span>&quot;</span>)
+    <span class="hljs-keyword">if</span> re.search(<span class="hljs-string">r&quot;(?i)\bpassword\s*[:=]&quot;</span>, text):
+        problems.append(<span class="hljs-string">&quot;looks like a credential&quot;</span>)
+    <span class="hljs-keyword">return</span> problems
+
+<span class="hljs-keyword">assert</span> redact(<span class="hljs-string">&quot;mail bo@example.com card 4111 1111 1111 1111&quot;</span>) == <span class="hljs-string">&quot;mail [EMAIL] card [CARD]&quot;</span>
+<span class="hljs-keyword">assert</span> check_output(<span class="hljs-string">&quot;see https://docs.example.com/x&quot;</span>, {<span class="hljs-string">&quot;docs.example.com&quot;</span>}) == []
+<span class="hljs-keyword">assert</span> check_output(<span class="hljs-string">&quot;go to http://evil.test/login, password: hunter2&quot;</span>, {<span class="hljs-string">&quot;docs.example.com&quot;</span>}) == [
+    <span class="hljs-string">&quot;link to unapproved domain: evil.test&quot;</span>, <span class="hljs-string">&quot;looks like a credential&quot;</span>]</code></pre>
+  </div><p>Regexes catch the obvious cases and are only a first layer: treat them as cheap filters, then add a classifier or a model-based check for what they miss, and never rely on a guardrail prompt alone for security.</p>
+<h3 id="a-policy-gateway-rate-limit-spend-cap-and-an-audit-trail-in-one-place"><a href="#a-policy-gateway-rate-limit-spend-cap-and-an-audit-trail-in-one-place" class="header-anchor">#</a>A policy gateway: rate limit, spend cap, and an audit trail in one place</h3>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Gateway</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, calls_per_minute, daily_budget_cents, clock</span>):
+        <span class="hljs-variable language_">self</span>.limit, <span class="hljs-variable language_">self</span>.budget, <span class="hljs-variable language_">self</span>.clock = calls_per_minute, daily_budget_cents, clock
+        <span class="hljs-variable language_">self</span>.calls, <span class="hljs-variable language_">self</span>.spent, <span class="hljs-variable language_">self</span>.audit = {}, {}, []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">allow</span>(<span class="hljs-params">self, user, est_cost_cents</span>):
+        now = <span class="hljs-variable language_">self</span>.clock()
+        recent = [t <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.calls.get(user, []) <span class="hljs-keyword">if</span> now - t &lt; <span class="hljs-number">60</span>]
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(recent) &gt;= <span class="hljs-variable language_">self</span>.limit:
+            decision = <span class="hljs-string">&quot;denied:rate_limit&quot;</span>
+        <span class="hljs-keyword">elif</span> <span class="hljs-variable language_">self</span>.spent.get(user, <span class="hljs-number">0</span>) + est_cost_cents &gt; <span class="hljs-variable language_">self</span>.budget:
+            decision = <span class="hljs-string">&quot;denied:budget&quot;</span>
+        <span class="hljs-keyword">else</span>:
+            decision = <span class="hljs-string">&quot;allowed&quot;</span>
+            recent.append(now)
+            <span class="hljs-variable language_">self</span>.spent[user] = <span class="hljs-variable language_">self</span>.spent.get(user, <span class="hljs-number">0</span>) + est_cost_cents
+        <span class="hljs-variable language_">self</span>.calls[user] = recent
+        <span class="hljs-variable language_">self</span>.audit.append((now, user, decision))
+        <span class="hljs-keyword">return</span> decision
+
+t = [<span class="hljs-number">0.0</span>]
+gw = Gateway(calls_per_minute=<span class="hljs-number">2</span>, daily_budget_cents=<span class="hljs-number">100</span>, clock=<span class="hljs-keyword">lambda</span>: t[<span class="hljs-number">0</span>])
+<span class="hljs-keyword">assert</span> [gw.allow(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">10</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)] == [<span class="hljs-string">&quot;allowed&quot;</span>, <span class="hljs-string">&quot;allowed&quot;</span>, <span class="hljs-string">&quot;denied:rate_limit&quot;</span>]
+t[<span class="hljs-number">0</span>] = <span class="hljs-number">61.0</span>
+<span class="hljs-keyword">assert</span> gw.allow(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">10</span>) == <span class="hljs-string">&quot;allowed&quot;</span>                      <span class="hljs-comment"># the window slid</span>
+<span class="hljs-keyword">assert</span> gw.allow(<span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-number">500</span>) == <span class="hljs-string">&quot;denied:budget&quot;</span>               <span class="hljs-comment"># a single expensive call exceeds the cap</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(gw.audit) == <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">all</span>(entry[<span class="hljs-number">2</span>] <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> gw.audit)   <span class="hljs-comment"># every decision is recorded</span></code></pre>
+  </div><p>A gateway in front of every model call gives you one place for rate limits, budgets, model routing, caching, redaction and audit logs, so a runaway agent or a leaked key is bounded by policy instead of by luck.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://docs.litellm.ai/">LiteLLM documentation</a></li>
 <li><a href="https://docs.nvidia.com/nemo/guardrails/latest/index.html">NeMo Guardrails</a></li>
@@ -1502,7 +1616,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-multi-tier-memory-hierarchy" class="toc-link">1. The Multi-Tier Memory Hierarchy</a></li><li class="toc-item level-3"><a href="#implementing-fact-extraction-long-term-memory-in-python" class="toc-link">Implementing Fact-Extraction Long-Term Memory in Python:</a></li><li class="toc-item level-2"><a href="#2-guardrails-defending-against-prompt-injections-pii-leaks" class="toc-link">2. Guardrails: Defending Against Prompt Injections & PII Leaks</a></li><li class="toc-item level-3"><a href="#prompt-injection-pii-redactor" class="toc-link">Prompt Injection & PII Redactor:</a></li><li class="toc-item level-2"><a href="#3-production-llm-gateways-litellm-architecture" class="toc-link">3. Production LLM Gateways (LiteLLM Architecture)</a></li><li class="toc-item level-3"><a href="#key-gateway-responsibilities" class="toc-link">Key Gateway Responsibilities:</a></li><li class="toc-item level-2"><a href="#4-the-rag-evaluation-triad" class="toc-link">4. The RAG Evaluation Triad</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-multi-tier-memory-hierarchy" class="toc-link">1. The Multi-Tier Memory Hierarchy</a></li><li class="toc-item level-3"><a href="#implementing-fact-extraction-long-term-memory-in-python" class="toc-link">Implementing Fact-Extraction Long-Term Memory in Python:</a></li><li class="toc-item level-2"><a href="#2-guardrails-defending-against-prompt-injections-pii-leaks" class="toc-link">2. Guardrails: Defending Against Prompt Injections & PII Leaks</a></li><li class="toc-item level-3"><a href="#prompt-injection-pii-redactor" class="toc-link">Prompt Injection & PII Redactor:</a></li><li class="toc-item level-2"><a href="#3-production-llm-gateways-litellm-architecture" class="toc-link">3. Production LLM Gateways (LiteLLM Architecture)</a></li><li class="toc-item level-3"><a href="#key-gateway-responsibilities" class="toc-link">Key Gateway Responsibilities:</a></li><li class="toc-item level-2"><a href="#4-the-rag-evaluation-triad" class="toc-link">4. The RAG Evaluation Triad</a></li><li class="toc-item level-2"><a href="#4-runnable-model-memory-budget-guardrails-and-a-policy-gateway" class="toc-link">4. Runnable Model: Memory Budget, Guardrails and a Policy Gateway</a></li><li class="toc-item level-3"><a href="#a-memory-that-stays-inside-a-token-budget" class="toc-link">A memory that stays inside a token budget</a></li><li class="toc-item level-3"><a href="#input-and-output-guardrails" class="toc-link">Input and output guardrails</a></li><li class="toc-item level-3"><a href="#a-policy-gateway-rate-limit-spend-cap-and-an-audit-trail-in-one-place" class="toc-link">A policy gateway: rate limit, spend cap, and an audit trail in one place</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 
