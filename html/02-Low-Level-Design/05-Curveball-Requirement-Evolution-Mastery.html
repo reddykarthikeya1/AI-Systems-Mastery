@@ -131,10 +131,11 @@ code.hljs {
   --border-color: #e2e8f0;
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --accent: #0284c7;
-  --accent-hover: #0369a1;
+  --text-muted: #64748b;
+  --accent: #0369a1;
+  --accent-hover: #075985;
   --accent-light: #e0f2fe;
+  --c-note: #0369a1; --c-tip: #047857; --c-imp: #4f46e5; --c-warn: #b45309; --c-caution: #b91c1c;
   --code-bg: #0d1117;
   --sidebar-width: 310px;
   --toc-width: 250px;
@@ -148,9 +149,10 @@ code.hljs {
   --border-color: #1e293b;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-muted: #94a3b8;
   --accent: #38bdf8;
-  --accent-hover: #0ea5e9;
+  --accent-hover: #7dd3fc;
+  --c-note: #38bdf8; --c-tip: #34d399; --c-imp: #a5b4fc; --c-warn: #fbbf24; --c-caution: #f87171;
   --accent-light: rgba(56, 189, 248, 0.12);
   --code-bg: #090d16;
 }
@@ -546,19 +548,19 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 }
 
 .callout-note { background: rgba(2, 132, 199, 0.08); border-color: #0284c7; color: var(--text-primary); }
-.callout-note .callout-title { color: #0284c7; }
+.callout-note .callout-title { color: var(--c-note); }
 
 .callout-tip { background: rgba(16, 185, 129, 0.08); border-color: #10b981; color: var(--text-primary); }
-.callout-tip .callout-title { color: #10b981; }
+.callout-tip .callout-title { color: var(--c-tip); }
 
 .callout-important { background: rgba(99, 102, 241, 0.08); border-color: #6366f1; color: var(--text-primary); }
-.callout-important .callout-title { color: #6366f1; }
+.callout-important .callout-title { color: var(--c-imp); }
 
 .callout-warning { background: rgba(245, 158, 11, 0.08); border-color: #f59e0b; color: var(--text-primary); }
-.callout-warning .callout-title { color: #f59e0b; }
+.callout-warning .callout-title { color: var(--c-warn); }
 
 .callout-caution { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; color: var(--text-primary); }
-.callout-caution .callout-title { color: #ef4444; }
+.callout-caution .callout-title { color: var(--c-caution); }
 
 /* Code Blocks */
 .code-block-wrapper {
@@ -968,16 +970,65 @@ h2:hover .header-anchor, h3:hover .header-anchor {
   transition: width 0.1s ease;
 }
 
+
+
+.markdown-body p a, .markdown-body li a, .markdown-body td a { text-decoration: underline; text-underline-offset: 2px; }
+/* Accessibility */
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 400;
+  background: var(--accent); color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 8px 0; font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Full-text search results */
+.search-results {
+  position: absolute; top: calc(100% + 6px); right: 0; width: min(560px, 92vw); max-height: 70vh; overflow-y: auto;
+  background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25); z-index: 300; padding: 0.35rem;
+}
+.search-results[hidden] { display: none; }
+.sr-item { display: block; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: var(--text-primary); }
+.sr-item:hover, .sr-item.sr-active { background: var(--accent-light); }
+.sr-title { font-weight: 600; font-size: 0.9rem; }
+.sr-sec { font-size: 0.75rem; color: var(--text-secondary); margin-top: 1px; }
+.sr-snip { font-size: 0.8rem; color: var(--text-secondary); margin-top: 3px; line-height: 1.4; }
+.sr-snip mark { background: #fde68a; color: #1f2937; border-radius: 2px; padding: 0 1px; }
+.sr-empty { padding: 0.9rem; color: var(--text-secondary); font-size: 0.85rem; }
+
+/* Mobile navigation drawer */
+.btn-menu { display: none; }
+.nav-overlay { display: none; }
+@media (max-width: 768px) {
+  .btn-menu { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+    background: transparent; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); cursor: pointer; }
+  .top-nav { padding: 0 0.6rem; gap: 0.4rem; }
+  .brand span:last-child, .btn-pdf span, .progress-stat-badge { display: none; }
+  .header-controls { gap: 0.4rem; }
+  .btn-mark-read span { font-size: 0.7rem; }
+  .btn-icon, .btn-pdf, .btn-mark-read, .diagram-btn { min-height: 44px; min-width: 44px; }
+  .sidebar {
+    display: flex !important; position: fixed; top: var(--header-height); left: 0; bottom: 0; height: auto;
+    width: min(86vw, 340px); z-index: 250; transform: translateX(-102%); transition: transform 0.2s ease;
+    box-shadow: 8px 0 24px rgba(15, 23, 42, 0.25);
+  }
+  body.nav-open .sidebar { transform: none; }
+  body.nav-open .nav-overlay { display: block; position: fixed; inset: var(--header-height) 0 0 0; background: rgba(15, 23, 42, 0.5); z-index: 240; }
+  .sidebar .nav-link { min-height: 44px; }
+  .search-input { width: 120px; }
+  .search-input:focus { width: 160px; }
+  .search-results { position: fixed; top: var(--header-height); left: 0.5rem; right: 0.5rem; width: auto; }
+}
+
 /* Responsive */
 @media (max-width: 1100px) {
   .toc-sidebar { display: none; }
 }
 
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .search-input { width: 140px; }
-  .search-input:focus { width: 180px; }
-}
+
 
 /* Progress Tracker & Mark as Read */
 .progress-stat-badge {
@@ -1082,9 +1133,10 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 }
 
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+  <script defer src="../assets/katex/katex.min.js"></script>
+  <script defer src="../assets/katex/auto-render.min.js"></script>
+  <script defer src="../assets/search-index.js"></script>
   <script src="../assets/mermaid.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1139,10 +1191,12 @@ h2:hover .header-anchor, h3:hover .header-anchor {
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="progress-bar" class="reading-progress"></div>
 
   <!-- Top Navigation Header -->
-  <header class="top-nav">
+  <header class="top-nav" role="banner">
+    <button id="menu-btn" class="btn-menu" aria-label="Open chapter menu" aria-controls="chapter-nav" aria-expanded="false" title="Chapters"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
     <a href="../index.html" class="brand">
       <span class="brand-badge">PBC 2026</span>
       <span>Master Preparation Guide</span>
@@ -1158,7 +1212,8 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       </button>
       <div class="search-input-wrap">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
+        <input type="search" class="search-input" aria-label="Search all chapters" placeholder="Search all chapters ( / )" autocomplete="off" oninput="filterNav(this.value)">
+        <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
       </div>
       <a href="../../pdfs/02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.pdf" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -1172,7 +1227,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 
   <div class="app-container">
     <!-- Left Navigation Sidebar -->
-    <aside class="sidebar">
+    <nav class="sidebar" id="chapter-nav" aria-label="Chapters">
       <div class="track-group">
       <div class="track-title">Master Roadmap & Scorecard</div><a href="../README.html" class="nav-link " data-rel="README.html"><span class="nav-label-text">Master Curriculum & Scorecard</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 1: Python Engineering Mastery</div><a href="../01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html" class="nav-link " data-rel="01-Python-Mastery/00-The-Python-Mental-Model-Visual-Map.html"><span class="nav-label-text">00: Mental Model & Visual Map</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/01-Foundations-Syntax-Primitives.html" class="nav-link " data-rel="01-Python-Mastery/01-Foundations-Syntax-Primitives.html"><span class="nav-label-text">01: Foundations & Memory Model</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/02-Data-Structures-Under-The-Hood.html" class="nav-link " data-rel="01-Python-Mastery/02-Data-Structures-Under-The-Hood.html"><span class="nav-label-text">02: Data Structures Under the Hood</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html" class="nav-link " data-rel="01-Python-Mastery/03-Functions-Functional-Closures-Decorators.html"><span class="nav-label-text">03: Closures, Scopes & Decorators</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html" class="nav-link " data-rel="01-Python-Mastery/04-OOP-Dunder-Metaprogramming.html"><span class="nav-label-text">04: OOP, Dunders & Metaclasses</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html" class="nav-link " data-rel="01-Python-Mastery/05-Memory-Management-GIL-Garbage-Collection.html"><span class="nav-label-text">05: Memory Management, GIL & GC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html" class="nav-link " data-rel="01-Python-Mastery/06-Concurrency-Asyncio-Threading-Multiprocessing.html"><span class="nav-label-text">06: Concurrency & Asyncio</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html" class="nav-link " data-rel="01-Python-Mastery/07-Type-System-Modern-Python-Architecture.html"><span class="nav-label-text">07: Type Systems & Protocols</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html" class="nav-link " data-rel="01-Python-Mastery/08-Environment-Dependency-Hell-And-Packaging-Mastery.html"><span class="nav-label-text">08: Dependency Hell & Packaging</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html" class="nav-link " data-rel="01-Python-Mastery/09-Enterprise-Testing-Async-Mocking-And-QA.html"><span class="nav-label-text">09: Testing, Mocking & QA</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html" class="nav-link " data-rel="01-Python-Mastery/10-Production-Debugging-Profiling-And-Memory-Leaks-Lab.html"><span class="nav-label-text">10: Debugging & Profiling Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html" class="nav-link " data-rel="01-Python-Mastery/11-Legacy-Refactoring-And-Break-Fix-Engineering-Lab.html"><span class="nav-label-text">11: Monolith Refactoring Lab</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/12-Production-SQL-And-Database-Internals.html" class="nav-link " data-rel="01-Python-Mastery/12-Production-SQL-And-Database-Internals.html"><span class="nav-label-text">12: Production SQL & DB Internals</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html" class="nav-link " data-rel="01-Python-Mastery/13-High-Performance-Web-Architecture-FastAPI-And-Pydantic-V2.html"><span class="nav-label-text">13: Web Architecture (FastAPI & Pydantic)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html" class="nav-link " data-rel="01-Python-Mastery/14-Enterprise-Security-OAuth2-JWT-And-Cryptographic-RBAC.html"><span class="nav-label-text">14: Enterprise Security, JWT & RBAC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html" class="nav-link " data-rel="01-Python-Mastery/15-Distributed-Task-Queues-Celery-Redis.html"><span class="nav-label-text">15: Distributed Tasks (Celery & Redis)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html" class="nav-link " data-rel="01-Python-Mastery/16-Event-Driven-Python-Kafka-gRPC-Networking.html"><span class="nav-label-text">16: Event-Driven Kafka & gRPC</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html" class="nav-link " data-rel="01-Python-Mastery/17-Modern-Columnar-Data-Engineering-Polars-And-DuckDB.html"><span class="nav-label-text">17: Columnar Data (Polars & DuckDB)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html" class="nav-link " data-rel="01-Python-Mastery/18-High-Performance-Computing-HPC-Python.html"><span class="nav-label-text">18: High-Performance Computing (HPC)</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html" class="nav-link " data-rel="01-Python-Mastery/19-Rust-Extensions-PyO3-And-CPython-C-ABI.html"><span class="nav-label-text">19: Rust Extensions & PyO3</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html" class="nav-link " data-rel="01-Python-Mastery/20-Interview-Practice-Problems-Solutions.html"><span class="nav-label-text">20: Staff Coding Practice Problems</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html" class="nav-link " data-rel="01-Python-Mastery/21-Scenario-Based-Interview-Questions-And-Answers.html"><span class="nav-label-text">21: Production Crisis Scenarios</span><span class="sidebar-check-icon">✓</span></a><a href="../01-Python-Mastery/22-Track-1-Recap-Python-Mastery-Playbook.html" class="nav-link " data-rel="01-Python-Mastery/22-Track-1-Recap-Python-Mastery-Playbook.html"><span class="nav-label-text">22: Track 1 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
@@ -1180,10 +1235,11 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="track-title">Track 3: High-Level Design (HLD)</div><a href="../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html" class="nav-link " data-rel="03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.html"><span class="nav-label-text">00: HLD Intuitive Glossary & Models</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/00-B-Zero-Prerequisite-Global-Infrastructure-Primer.html" class="nav-link " data-rel="03-High-Level-Design/00-B-Zero-Prerequisite-Global-Infrastructure-Primer.html"><span class="nav-label-text">00-B: Zero-Prereq Global Infra Primer</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html" class="nav-link " data-rel="03-High-Level-Design/01-Distributed-Systems-Core-Prerequisites.html"><span class="nav-label-text">01: Distributed Systems Foundations</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html" class="nav-link " data-rel="03-High-Level-Design/02-Back-Of-The-Envelope-Calculations-Guide.html"><span class="nav-label-text">02: Back-of-the-Envelope Math</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html" class="nav-link " data-rel="03-High-Level-Design/03-Databases-Storage-Replication-Partitioning.html"><span class="nav-label-text">03: Databases, Sharding & Consistent Hashing</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html" class="nav-link " data-rel="03-High-Level-Design/04-Caching-Load-Balancing-CDNs-Proxies.html"><span class="nav-label-text">04: Caching, CDNs & Stampede Defenses</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html" class="nav-link " data-rel="03-High-Level-Design/05-Distributed-Transactions-Sagas-Coordination.html"><span class="nav-label-text">05: Distributed Sagas & Outbox Pattern</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html" class="nav-link " data-rel="03-High-Level-Design/06-HLD-Interview-Framework-And-Communication.html"><span class="nav-label-text">06: 45-Min Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html" class="nav-link " data-rel="03-High-Level-Design/07-Chaos-Engineering-Disaster-Recovery-And-Post-Mortems.html"><span class="nav-label-text">07: Chaos Engineering & Post-Mortems</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html" class="nav-link " data-rel="03-High-Level-Design/08-Cloud-Cost-Engineering-And-FinOps-Architecture.html"><span class="nav-label-text">08: Cloud Cost & FinOps Architecture</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/09-Load-Testing-Benchmarking-And-SRE-Playbook.html"><span class="nav-label-text">09: Load Testing & SRE Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/01-messaging-app.html" class="nav-link " data-rel="03-High-Level-Design/systems/01-messaging-app.html"><span class="nav-label-text">Sys 01: Real-Time Messaging (WhatsApp)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html" class="nav-link " data-rel="03-High-Level-Design/systems/02-ticketing-system-hotel-reservation.html"><span class="nav-label-text">Sys 02: Ticketing & Hotel Reservation</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/03-instagram.html" class="nav-link " data-rel="03-High-Level-Design/systems/03-instagram.html"><span class="nav-label-text">Sys 03: Photo Sharing Feed (Instagram)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/04-distributed-task-scheduler.html" class="nav-link " data-rel="03-High-Level-Design/systems/04-distributed-task-scheduler.html"><span class="nav-label-text">Sys 04: Distributed Task Scheduler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/05-video-streaming-youtube.html" class="nav-link " data-rel="03-High-Level-Design/systems/05-video-streaming-youtube.html"><span class="nav-label-text">Sys 05: Video Streaming (YouTube)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/06-ecommerce-platform.html" class="nav-link " data-rel="03-High-Level-Design/systems/06-ecommerce-platform.html"><span class="nav-label-text">Sys 06: E-Commerce Platform (Amazon)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/07-proximity-service.html" class="nav-link " data-rel="03-High-Level-Design/systems/07-proximity-service.html"><span class="nav-label-text">Sys 07: Proximity Service (Yelp/Nearby)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/08-tinder.html" class="nav-link " data-rel="03-High-Level-Design/systems/08-tinder.html"><span class="nav-label-text">Sys 08: Mutual Match System (Tinder)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/09-uber.html" class="nav-link " data-rel="03-High-Level-Design/systems/09-uber.html"><span class="nav-label-text">Sys 09: Real-Time Geospatial (Uber)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/10-twitter.html" class="nav-link " data-rel="03-High-Level-Design/systems/10-twitter.html"><span class="nav-label-text">Sys 10: Social Feed & Snowflake (Twitter)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html" class="nav-link " data-rel="03-High-Level-Design/systems/11-distributed-cache-redis-cluster.html"><span class="nav-label-text">Sys 11: Distributed Cache (Redis Cluster)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html" class="nav-link " data-rel="03-High-Level-Design/systems/12-distributed-search-engine-elasticsearch.html"><span class="nav-label-text">Sys 12: Search Engine & Typeahead</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html" class="nav-link " data-rel="03-High-Level-Design/systems/13-time-series-metrics-monitoring-prometheus.html"><span class="nav-label-text">Sys 13: Time-Series Metrics (Prometheus)</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/14-distributed-web-crawler.html" class="nav-link " data-rel="03-High-Level-Design/systems/14-distributed-web-crawler.html"><span class="nav-label-text">Sys 14: Distributed Web Crawler</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.html" class="nav-link " data-rel="03-High-Level-Design/systems/15-payment-gateway-idempotent-ledger.html"><span class="nav-label-text">Sys 15: Payment Gateway & Idempotent Ledger</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html" class="nav-link " data-rel="03-High-Level-Design/11-Scenario-Based-HLD-Interview-Questions-And-Grills.html"><span class="nav-label-text">11: Crisis Scenarios & Staff Grills</span><span class="sidebar-check-icon">✓</span></a><a href="../03-High-Level-Design/12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.html" class="nav-link " data-rel="03-High-Level-Design/12-Track-3-Recap-HLD-And-Distributed-Systems-Playbook.html"><span class="nav-label-text">12: Track 3 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 4: Agentic AI Engineering</div><a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html" class="nav-link " data-rel="04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html"><span class="nav-label-text">01: LLM Foundations & KV-Cache</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html" class="nav-link " data-rel="04-Agentic-AI/02-Prompt-Engineering-To-Tool-Calling.html"><span class="nav-label-text">02: Tool Calling & Structured Output</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html" class="nav-link " data-rel="04-Agentic-AI/03-RAG-And-Vectorless-RAG-Deep-Dive.html"><span class="nav-label-text">03: Advanced & Vectorless RAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html" class="nav-link " data-rel="04-Agentic-AI/04-Agent-Architectures-ReAct-PlanSolve-StateMachines.html"><span class="nav-label-text">04: ReAct Loops & Task DAGs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html" class="nav-link " data-rel="04-Agentic-AI/05-LangChain-And-LangGraph-Mastery.html"><span class="nav-label-text">05: LangGraph Stateful Graphs</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html" class="nav-link " data-rel="04-Agentic-AI/06-Memory-Guardrails-Evaluation-Gateways.html"><span class="nav-label-text">06: Memory, Guardrails & Gateways</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html" class="nav-link " data-rel="04-Agentic-AI/07-Multi-Agent-Collaboration-And-Production.html"><span class="nav-label-text">07: Multi-Agent Swarms & Tracing</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html" class="nav-link " data-rel="04-Agentic-AI/08-Capstone-Project-Autonomous-Research-And-Code-Agent.html"><span class="nav-label-text">08: Autonomous Capstone Agent</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html" class="nav-link " data-rel="04-Agentic-AI/09-Scenario-Based-Agentic-AI-Interview-Questions-And-Grills.html"><span class="nav-label-text">09: Agentic Scenarios & Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html" class="nav-link " data-rel="04-Agentic-AI/10-Production-Resilience-Defensive-Prompting-And-Rate-Limits.html"><span class="nav-label-text">10: Resilience, Jitter & Circuit Breakers</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html" class="nav-link " data-rel="04-Agentic-AI/11-Evaluation-Harnesses-LLM-As-A-Judge-And-CI-CD.html"><span class="nav-label-text">11: Evaluation Harnesses & CI/CD</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html" class="nav-link " data-rel="04-Agentic-AI/12-Production-Agent-Deployment-Streaming-And-Human-In-The-Loop.html"><span class="nav-label-text">12: Production SSE & Human-in-Loop</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html" class="nav-link " data-rel="04-Agentic-AI/13-Vector-Database-Internals-And-HNSW-Math.html"><span class="nav-label-text">13: Vector DB Internals & HNSW Math</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html" class="nav-link " data-rel="04-Agentic-AI/14-Model-Fine-Tuning-LoRA-And-DPO-Alignment.html"><span class="nav-label-text">14: Fine-Tuning, LoRA & DPO Alignment</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html" class="nav-link " data-rel="04-Agentic-AI/15-Multimodal-Agents-And-AI-Red-Teaming-Security.html"><span class="nav-label-text">15: Multimodal Agents & AI Security</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.html" class="nav-link " data-rel="04-Agentic-AI/16-Hierarchical-Episodic-Memory-And-GraphRAG.html"><span class="nav-label-text">16: Hierarchical Episodic Memory & GraphRAG</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.html" class="nav-link " data-rel="04-Agentic-AI/17-Model-Context-Protocol-And-Multi-Agent-Swarms.html"><span class="nav-label-text">17: Model Context Protocol & Swarms</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.html" class="nav-link " data-rel="04-Agentic-AI/18-GPU-Serving-Mechanics-PagedAttention-And-vLLM.html"><span class="nav-label-text">18: GPU Serving & PagedAttention</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/19-Reasoning-Models-Test-Time-Compute-And-GRPO.html" class="nav-link " data-rel="04-Agentic-AI/19-Reasoning-Models-Test-Time-Compute-And-GRPO.html"><span class="nav-label-text">19: Reasoning Models & GRPO</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/20-Context-Compaction-Prompt-Caching-And-Token-Budgets.html" class="nav-link " data-rel="04-Agentic-AI/20-Context-Compaction-Prompt-Caching-And-Token-Budgets.html"><span class="nav-label-text">20: Context Compaction & Prompt Caching</span><span class="sidebar-check-icon">✓</span></a><a href="../04-Agentic-AI/21-Track-4-Recap-Agentic-AI-Architecture-Playbook.html" class="nav-link " data-rel="04-Agentic-AI/21-Track-4-Recap-Agentic-AI-Architecture-Playbook.html"><span class="nav-label-text">21: Track 4 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div><div class="track-group">
       <div class="track-title">Track 5: DSA Interview Playbook</div><a href="../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.html"><span class="nav-label-text">01: 5-Step Interview Strategy</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/02-Essential-Patterns-Cheat-Sheet.html"><span class="nav-label-text">02: 15 Master Pattern Templates</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/03-The-Core-75-Mastery-Walkthroughs.html"><span class="nav-label-text">03: Core 75 Visual Dry-Runs</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/04-The-45-Minute-Ticking-Clock-Mock-Interview-Simulations.html"><span class="nav-label-text">04: 45-Min Timed Interview Drills</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/05-The-Stuck-Engineers-Diagnostic-Decision-Tree.html"><span class="nav-label-text">05: The Stuck Diagnostic Tree</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.html"><span class="nav-label-text">06: Whiteboard & No-IDE Discipline</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/07-Advanced-Data-Structures-Segment-Trees-Fenwick-Bitmask-DP.html"><span class="nav-label-text">07: Segment/Fenwick Trees & Bitmask DP</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/08-Company-Specific-Interview-Playbook.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/08-Company-Specific-Interview-Playbook.html"><span class="nav-label-text">08: Company-Specific Interview Playbook</span><span class="sidebar-check-icon">✓</span></a><a href="../05-DSA-Interview-Playbook/09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.html" class="nav-link " data-rel="05-DSA-Interview-Playbook/09-Track-5-Recap-DSA-Mastery-And-Interview-Playbook.html"><span class="nav-label-text">09: Track 5 Recap & Playbook</span><span class="sidebar-check-icon">✓</span></a></div>
-    </aside>
+    </nav>
+    <div id="nav-overlay" class="nav-overlay"></div>
 
     <!-- Main Content Reader -->
-    <main class="main-wrapper">
+    <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-05-mid-interview-curveball-requirement-evolution-mastery"><a href="#chapter-05-mid-interview-curveball-requirement-evolution-mastery" class="header-anchor">#</a>Chapter 05: Mid-Interview Curveball & Requirement Evolution Mastery</h1><blockquote>
@@ -1559,7 +1615,7 @@ stateDiagram-v2
     </main>
 
     <!-- Right Table of Contents -->
-    <aside class="toc-sidebar">
+    <aside class="toc-sidebar" aria-label="On this page">
       <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-4-step-curveball-response-framework" class="toc-link">1. The 4-Step Curveball Response Framework</a></li><li class="toc-item level-2"><a href="#2-curveball-1-parking-lot-dynamic-surge-pricing-ev-charging-queues" class="toc-link">2. Curveball 1: Parking Lot -> Dynamic Surge Pricing & EV Charging Queues</a></li><li class="toc-item level-3"><a href="#the-scenario" class="toc-link">The Scenario</a></li><li class="toc-item level-3"><a href="#the-code-transformation" class="toc-link">The Code Transformation</a></li><li class="toc-item level-2"><a href="#3-curveball-2-movie-booking-10-minute-temporary-seat-hold-with-expiry" class="toc-link">3. Curveball 2: Movie Booking -> 10-Minute Temporary Seat Hold with Expiry</a></li><li class="toc-item level-3"><a href="#the-scenario" class="toc-link">The Scenario</a></li><li class="toc-item level-3"><a href="#the-architectural-evolution-state-pattern-with-ephemeral-leases" class="toc-link">The Architectural Evolution: State Pattern with Ephemeral Leases</a></li><li class="toc-item level-2"><a href="#4-curveball-3-elevator-system-firefighter-emergency-mode" class="toc-link">4. Curveball 3: Elevator System -> Firefighter Emergency Mode</a></li><li class="toc-item level-3"><a href="#the-scenario" class="toc-link">The Scenario</a></li><li class="toc-item level-3"><a href="#the-architectural-evolution-state-pattern-with-priority-interrupt" class="toc-link">The Architectural Evolution: State Pattern with Priority Interrupt</a></li><li class="toc-item level-2"><a href="#5-summary-matrix-how-to-defeat-any-curveball" class="toc-link">5. Summary Matrix: How to Defeat Any Curveball</a></li></ul>
     </aside>
   </div>
@@ -1752,8 +1808,98 @@ function copyCode(btn) {
   });
 }
 
+
+// ---------- Accessibility helpers ----------
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('button[title], a[title]').forEach(function (el) {
+    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('title'));
+  });
+  document.querySelectorAll('.mermaid-container').forEach(function (c) {
+    var h = c, label = 'Diagram';
+    while (h && (h = h.previousElementSibling)) {
+      if (/^H[1-6]$/.test(h.tagName)) { label = 'Diagram for section: ' + h.textContent.replace('#', '').trim(); break; }
+    }
+    c.setAttribute('role', 'group');
+    c.setAttribute('aria-label', label);
+    var vp = c.querySelector('.mermaid-viewport');
+    if (vp) { vp.setAttribute('tabindex', '0'); vp.setAttribute('role', 'region'); vp.setAttribute('aria-label', label + ' (scrollable)'); }
+  });
+  document.querySelectorAll('pre, pre code, .table-wrap, table').forEach(function (el) {
+    if (el.scrollWidth > el.clientWidth + 1 && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  });
+  var menuBtn = document.getElementById('menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () {
+      var open = document.body.classList.toggle('nav-open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    var ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', function () { document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); });
+  }
+});
+
+// ---------- Full-text search (prebuilt index, no network) ----------
+(function () {
+  var active = -1;
+  function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function root() { var d = (window.CURRENT_PAGE || '').split('/').length - 1; return d === 0 ? '.' : Array(d).fill('..').join('/'); }
+  window.runSearch = function (q) {
+    var box = document.getElementById('search-results');
+    if (!box) return;
+    var terms = q.toLowerCase().split(/[^a-z0-9_+#.]+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length || !window.SEARCH_INDEX) { box.hidden = true; box.innerHTML = ''; return; }
+    var hits = [];
+    window.SEARCH_INDEX.forEach(function (doc) {
+      doc.s.forEach(function (sec) {
+        var hay = sec.x, score = 0, ok = true;
+        for (var i = 0; i < terms.length; i++) {
+          var t = terms[i], n = 0, pos = hay.indexOf(t);
+          while (pos !== -1 && n < 50) { n++; pos = hay.indexOf(t, pos + t.length); }
+          var inHead = sec.h.toLowerCase().indexOf(t) !== -1, inTitle = doc.t.toLowerCase().indexOf(t) !== -1;
+          if (!n && !inHead && !inTitle) { ok = false; break; }
+          score += Math.min(n, 10) + (inHead ? 15 : 0) + (inTitle ? 8 : 0);
+        }
+        if (ok) hits.push({ doc: doc, sec: sec, score: score });
+      });
+    });
+    hits.sort(function (a, b) { return b.score - a.score; });
+    var seen = {}, out = [];
+    for (var i = 0; i < hits.length && out.length < 12; i++) {
+      var key = hits[i].doc.u + '#' + hits[i].sec.id;
+      if (!seen[key]) { seen[key] = 1; out.push(hits[i]); }
+    }
+    if (!out.length) { box.innerHTML = '<div class="sr-empty">No results for "' + esc(q) + '".</div>'; box.hidden = false; return; }
+    box.innerHTML = out.map(function (h, idx) {
+      var x = h.sec.x, p = x.indexOf(terms[0]); if (p < 0) p = 0;
+      var snip = esc(x.substring(Math.max(0, p - 50), p + 130));
+      terms.forEach(function (t) { snip = snip.split(t).join('<mark>' + t + '</mark>'); });
+      var href = root() + '/' + h.doc.u + (h.sec.id ? '#' + h.sec.id : '');
+      return '<a class="sr-item" role="option" data-i="' + idx + '" href="' + href + '"><div class="sr-title">' + esc(h.doc.t) + '</div><div class="sr-sec">' + esc(h.sec.h) + '</div><div class="sr-snip">... ' + snip + ' ...</div></a>';
+    }).join('');
+    box.hidden = false; active = -1;
+  };
+  document.addEventListener('keydown', function (e) {
+    var inp = document.querySelector('.search-input'), box = document.getElementById('search-results');
+    if (e.key === '/' && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); inp && inp.focus(); return; }
+    if (!box || box.hidden) return;
+    var items = box.querySelectorAll('.sr-item');
+    if (e.key === 'Escape') { box.hidden = true; inp && inp.blur(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      active = e.key === 'ArrowDown' ? Math.min(items.length - 1, active + 1) : Math.max(0, active - 1);
+      items.forEach(function (it, i) { it.classList.toggle('sr-active', i === active); });
+      if (items[active]) items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && active >= 0 && items[active]) { window.location.href = items[active].getAttribute('href'); }
+  });
+  document.addEventListener('click', function (e) {
+    var box = document.getElementById('search-results');
+    if (box && !e.target.closest('.search-input-wrap')) box.hidden = true;
+  });
+})();
+
 // Client search filter in sidebar
 function filterNav(query) {
+  if (window.runSearch) window.runSearch(query);
   const q = query.toLowerCase().trim();
   const links = document.querySelectorAll('.sidebar .nav-link');
   links.forEach(link => {

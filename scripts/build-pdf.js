@@ -9,6 +9,8 @@ const ASSETS_DIR = path.resolve(__dirname, 'assets');
 const TEMPLATES_DIR = path.resolve(__dirname, 'templates');
 const MERMAID_JS = path.resolve(ASSETS_DIR, 'mermaid.min.js').replace(/\\/g, '/');
 const CSS_PATH = path.resolve(TEMPLATES_DIR, 'pdf-style.css');
+const KATEX_DIR = path.resolve(__dirname, '..', 'node_modules', 'katex', 'dist').replace(/\\/g, '/');
+const LITE_TRACKS = ['01-Python-Mastery', '02-Low-Level-Design', '03-High-Level-Design', '04-Agentic-AI', '05-DSA-Interview-Playbook'];
 
 // Configure marked with highlight.js
 marked.setOptions({
@@ -60,9 +62,25 @@ function transformCallouts(html) {
   return html;
 }
 
+// Protect math ($...$ and $$...$$) from markdown processing (marked would eat backslash-underscore and backslash-dollar)
+function protectMath(md) {
+  const store = [];
+  const re = /(```[\s\S]*?```|`[^`\n]+`)|(\$\$(?:\\.|[^$\\])+?\$\$)|(\$(?:\\.|[^$\\\n])+?\$)|(\\\$)/g;
+  const out = md.replace(re, (m, code, disp, inl, esc) => {
+    if (code || esc) return m;
+    store.push(m);
+    return '@@MATH' + (store.length - 1) + '@@';
+  });
+  return { md: out, store };
+}
+function restoreMath(html, store) {
+  return html.replace(/@@MATH(\d+)@@/g, (m, i) => store[+i].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+}
+
 function convertMarkdownToHtml(mdFilePath) {
   const rawMd = fs.readFileSync(mdFilePath, 'utf8');
-  let bodyHtml = marked.parse(rawMd);
+  const pm = protectMath(rawMd);
+  let bodyHtml = restoreMath(marked.parse(pm.md), pm.store);
   bodyHtml = transformCallouts(bodyHtml);
 
   const cssContent = fs.readFileSync(CSS_PATH, 'utf8');
@@ -76,9 +94,15 @@ function convertMarkdownToHtml(mdFilePath) {
   <style>
     ${cssContent}
   </style>
+  <link rel="stylesheet" href="file:///${KATEX_DIR}/katex.min.css">
+  <script src="file:///${KATEX_DIR}/katex.min.js"></script>
+  <script src="file:///${KATEX_DIR}/contrib/auto-render.min.js"></script>
   <script src="file:///${MERMAID_JS}"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], ignoredClasses: ['mermaid'], ignoredTags: ['script', 'style', 'pre', 'code', 'svg'], throwOnError: false });
+      }
       mermaid.initialize({
         startOnLoad: true,
         theme: 'neutral',
@@ -163,7 +187,7 @@ Usage:
 const rootDir = path.resolve(__dirname, '..');
 
 if (args.length === 0 || args.includes('--all')) {
-  const allMdFiles = walkDir(rootDir);
+  const allMdFiles = LITE_TRACKS.flatMap(t => walkDir(path.resolve(rootDir, t))).concat([path.resolve(rootDir, 'README.md')]);
   console.log(`Found ${allMdFiles.length} Markdown files to compile to PDF...`);
   allMdFiles.forEach(f => convertFileToPdf(f));
 } else {

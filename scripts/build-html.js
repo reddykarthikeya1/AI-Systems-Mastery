@@ -329,10 +329,11 @@ const PORTAL_CSS = `
   --border-color: #e2e8f0;
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --accent: #0284c7;
-  --accent-hover: #0369a1;
+  --text-muted: #64748b;
+  --accent: #0369a1;
+  --accent-hover: #075985;
   --accent-light: #e0f2fe;
+  --c-note: #0369a1; --c-tip: #047857; --c-imp: #4f46e5; --c-warn: #b45309; --c-caution: #b91c1c;
   --code-bg: #0d1117;
   --sidebar-width: 310px;
   --toc-width: 250px;
@@ -346,9 +347,10 @@ const PORTAL_CSS = `
   --border-color: #1e293b;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-muted: #94a3b8;
   --accent: #38bdf8;
-  --accent-hover: #0ea5e9;
+  --accent-hover: #7dd3fc;
+  --c-note: #38bdf8; --c-tip: #34d399; --c-imp: #a5b4fc; --c-warn: #fbbf24; --c-caution: #f87171;
   --accent-light: rgba(56, 189, 248, 0.12);
   --code-bg: #090d16;
 }
@@ -744,19 +746,19 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 }
 
 .callout-note { background: rgba(2, 132, 199, 0.08); border-color: #0284c7; color: var(--text-primary); }
-.callout-note .callout-title { color: #0284c7; }
+.callout-note .callout-title { color: var(--c-note); }
 
 .callout-tip { background: rgba(16, 185, 129, 0.08); border-color: #10b981; color: var(--text-primary); }
-.callout-tip .callout-title { color: #10b981; }
+.callout-tip .callout-title { color: var(--c-tip); }
 
 .callout-important { background: rgba(99, 102, 241, 0.08); border-color: #6366f1; color: var(--text-primary); }
-.callout-important .callout-title { color: #6366f1; }
+.callout-important .callout-title { color: var(--c-imp); }
 
 .callout-warning { background: rgba(245, 158, 11, 0.08); border-color: #f59e0b; color: var(--text-primary); }
-.callout-warning .callout-title { color: #f59e0b; }
+.callout-warning .callout-title { color: var(--c-warn); }
 
 .callout-caution { background: rgba(239, 68, 68, 0.08); border-color: #ef4444; color: var(--text-primary); }
-.callout-caution .callout-title { color: #ef4444; }
+.callout-caution .callout-title { color: var(--c-caution); }
 
 /* Code Blocks */
 .code-block-wrapper {
@@ -1166,16 +1168,65 @@ h2:hover .header-anchor, h3:hover .header-anchor {
   transition: width 0.1s ease;
 }
 
+
+
+.markdown-body p a, .markdown-body li a, .markdown-body td a { text-decoration: underline; text-underline-offset: 2px; }
+/* Accessibility */
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 400;
+  background: var(--accent); color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 8px 0; font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Full-text search results */
+.search-results {
+  position: absolute; top: calc(100% + 6px); right: 0; width: min(560px, 92vw); max-height: 70vh; overflow-y: auto;
+  background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25); z-index: 300; padding: 0.35rem;
+}
+.search-results[hidden] { display: none; }
+.sr-item { display: block; padding: 0.6rem 0.75rem; border-radius: 8px; text-decoration: none; color: var(--text-primary); }
+.sr-item:hover, .sr-item.sr-active { background: var(--accent-light); }
+.sr-title { font-weight: 600; font-size: 0.9rem; }
+.sr-sec { font-size: 0.75rem; color: var(--text-secondary); margin-top: 1px; }
+.sr-snip { font-size: 0.8rem; color: var(--text-secondary); margin-top: 3px; line-height: 1.4; }
+.sr-snip mark { background: #fde68a; color: #1f2937; border-radius: 2px; padding: 0 1px; }
+.sr-empty { padding: 0.9rem; color: var(--text-secondary); font-size: 0.85rem; }
+
+/* Mobile navigation drawer */
+.btn-menu { display: none; }
+.nav-overlay { display: none; }
+@media (max-width: 768px) {
+  .btn-menu { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+    background: transparent; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); cursor: pointer; }
+  .top-nav { padding: 0 0.6rem; gap: 0.4rem; }
+  .brand span:last-child, .btn-pdf span, .progress-stat-badge { display: none; }
+  .header-controls { gap: 0.4rem; }
+  .btn-mark-read span { font-size: 0.7rem; }
+  .btn-icon, .btn-pdf, .btn-mark-read, .diagram-btn { min-height: 44px; min-width: 44px; }
+  .sidebar {
+    display: flex !important; position: fixed; top: var(--header-height); left: 0; bottom: 0; height: auto;
+    width: min(86vw, 340px); z-index: 250; transform: translateX(-102%); transition: transform 0.2s ease;
+    box-shadow: 8px 0 24px rgba(15, 23, 42, 0.25);
+  }
+  body.nav-open .sidebar { transform: none; }
+  body.nav-open .nav-overlay { display: block; position: fixed; inset: var(--header-height) 0 0 0; background: rgba(15, 23, 42, 0.5); z-index: 240; }
+  .sidebar .nav-link { min-height: 44px; }
+  .search-input { width: 120px; }
+  .search-input:focus { width: 160px; }
+  .search-results { position: fixed; top: var(--header-height); left: 0.5rem; right: 0.5rem; width: auto; }
+}
+
 /* Responsive */
 @media (max-width: 1100px) {
   .toc-sidebar { display: none; }
 }
 
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .search-input { width: 140px; }
-  .search-input:focus { width: 180px; }
-}
+
 
 /* Progress Tracker & Mark as Read */
 .progress-stat-badge {
@@ -1440,8 +1491,98 @@ function copyCode(btn) {
   });
 }
 
+
+// ---------- Accessibility helpers ----------
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('button[title], a[title]').forEach(function (el) {
+    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('title'));
+  });
+  document.querySelectorAll('.mermaid-container').forEach(function (c) {
+    var h = c, label = 'Diagram';
+    while (h && (h = h.previousElementSibling)) {
+      if (/^H[1-6]$/.test(h.tagName)) { label = 'Diagram for section: ' + h.textContent.replace('#', '').trim(); break; }
+    }
+    c.setAttribute('role', 'group');
+    c.setAttribute('aria-label', label);
+    var vp = c.querySelector('.mermaid-viewport');
+    if (vp) { vp.setAttribute('tabindex', '0'); vp.setAttribute('role', 'region'); vp.setAttribute('aria-label', label + ' (scrollable)'); }
+  });
+  document.querySelectorAll('pre, pre code, .table-wrap, table').forEach(function (el) {
+    if (el.scrollWidth > el.clientWidth + 1 && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  });
+  var menuBtn = document.getElementById('menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () {
+      var open = document.body.classList.toggle('nav-open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    var ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', function () { document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); });
+  }
+});
+
+// ---------- Full-text search (prebuilt index, no network) ----------
+(function () {
+  var active = -1;
+  function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function root() { var d = (window.CURRENT_PAGE || '').split('/').length - 1; return d === 0 ? '.' : Array(d).fill('..').join('/'); }
+  window.runSearch = function (q) {
+    var box = document.getElementById('search-results');
+    if (!box) return;
+    var terms = q.toLowerCase().split(/[^a-z0-9_+#.]+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length || !window.SEARCH_INDEX) { box.hidden = true; box.innerHTML = ''; return; }
+    var hits = [];
+    window.SEARCH_INDEX.forEach(function (doc) {
+      doc.s.forEach(function (sec) {
+        var hay = sec.x, score = 0, ok = true;
+        for (var i = 0; i < terms.length; i++) {
+          var t = terms[i], n = 0, pos = hay.indexOf(t);
+          while (pos !== -1 && n < 50) { n++; pos = hay.indexOf(t, pos + t.length); }
+          var inHead = sec.h.toLowerCase().indexOf(t) !== -1, inTitle = doc.t.toLowerCase().indexOf(t) !== -1;
+          if (!n && !inHead && !inTitle) { ok = false; break; }
+          score += Math.min(n, 10) + (inHead ? 15 : 0) + (inTitle ? 8 : 0);
+        }
+        if (ok) hits.push({ doc: doc, sec: sec, score: score });
+      });
+    });
+    hits.sort(function (a, b) { return b.score - a.score; });
+    var seen = {}, out = [];
+    for (var i = 0; i < hits.length && out.length < 12; i++) {
+      var key = hits[i].doc.u + '#' + hits[i].sec.id;
+      if (!seen[key]) { seen[key] = 1; out.push(hits[i]); }
+    }
+    if (!out.length) { box.innerHTML = '<div class="sr-empty">No results for "' + esc(q) + '".</div>'; box.hidden = false; return; }
+    box.innerHTML = out.map(function (h, idx) {
+      var x = h.sec.x, p = x.indexOf(terms[0]); if (p < 0) p = 0;
+      var snip = esc(x.substring(Math.max(0, p - 50), p + 130));
+      terms.forEach(function (t) { snip = snip.split(t).join('<mark>' + t + '</mark>'); });
+      var href = root() + '/' + h.doc.u + (h.sec.id ? '#' + h.sec.id : '');
+      return '<a class="sr-item" role="option" data-i="' + idx + '" href="' + href + '"><div class="sr-title">' + esc(h.doc.t) + '</div><div class="sr-sec">' + esc(h.sec.h) + '</div><div class="sr-snip">... ' + snip + ' ...</div></a>';
+    }).join('');
+    box.hidden = false; active = -1;
+  };
+  document.addEventListener('keydown', function (e) {
+    var inp = document.querySelector('.search-input'), box = document.getElementById('search-results');
+    if (e.key === '/' && document.activeElement && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); inp && inp.focus(); return; }
+    if (!box || box.hidden) return;
+    var items = box.querySelectorAll('.sr-item');
+    if (e.key === 'Escape') { box.hidden = true; inp && inp.blur(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      active = e.key === 'ArrowDown' ? Math.min(items.length - 1, active + 1) : Math.max(0, active - 1);
+      items.forEach(function (it, i) { it.classList.toggle('sr-active', i === active); });
+      if (items[active]) items[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && active >= 0 && items[active]) { window.location.href = items[active].getAttribute('href'); }
+  });
+  document.addEventListener('click', function (e) {
+    var box = document.getElementById('search-results');
+    if (box && !e.target.closest('.search-input-wrap')) box.hidden = true;
+  });
+})();
+
 // Client search filter in sidebar
 function filterNav(query) {
+  if (window.runSearch) window.runSearch(query);
   const q = query.toLowerCase().trim();
   const links = document.querySelectorAll('.sidebar .nav-link');
   links.forEach(link => {
@@ -1688,9 +1829,10 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
     ${highlightCss}
     ${PORTAL_CSS}
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="${rootRel}/assets/katex/katex.min.css">
+  <script defer src="${rootRel}/assets/katex/katex.min.js"></script>
+  <script defer src="${rootRel}/assets/katex/auto-render.min.js"></script>
+  <script defer src="${rootRel}/assets/search-index.js"></script>
   <script src="${rootRel}/assets/mermaid.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1745,10 +1887,12 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="progress-bar" class="reading-progress"></div>
 
   <!-- Top Navigation Header -->
-  <header class="top-nav">
+  <header class="top-nav" role="banner">
+    <button id="menu-btn" class="btn-menu" aria-label="Open chapter menu" aria-controls="chapter-nav" aria-expanded="false" title="Chapters"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
     <a href="${rootRel}/index.html" class="brand">
       <span class="brand-badge">PBC 2026</span>
       <span>Master Preparation Guide</span>
@@ -1764,7 +1908,8 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
       </button>
       <div class="search-input-wrap">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" class="search-input" placeholder="Search chapters... (Type to filter)" oninput="filterNav(this.value)">
+        <input type="search" class="search-input" aria-label="Search all chapters" placeholder="Search all chapters ( / )" autocomplete="off" oninput="filterNav(this.value)">
+        <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
       </div>
       <a href="${pdfHref}" class="btn-pdf" target="_blank" title="Open compiled print PDF">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -1778,12 +1923,13 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
 
   <div class="app-container">
     <!-- Left Navigation Sidebar -->
-    <aside class="sidebar">
+    <nav class="sidebar" id="chapter-nav" aria-label="Chapters">
       ${sidebarHtml}
-    </aside>
+    </nav>
+    <div id="nav-overlay" class="nav-overlay"></div>
 
     <!-- Main Content Reader -->
-    <main class="main-wrapper">
+    <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
           ${bodyHtml}
@@ -1799,7 +1945,7 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
     </main>
 
     <!-- Right Table of Contents -->
-    <aside class="toc-sidebar">
+    <aside class="toc-sidebar" aria-label="On this page">
       ${tocHtml}
     </aside>
   </div>
@@ -1838,6 +1984,21 @@ function buildPageHtml(currentChapter, bodyHtml, tocItems) {
 </html>`;
 }
 
+// Protect math ($...$ and $$...$$) from markdown processing (marked would eat backslash-underscore and backslash-dollar)
+function protectMath(md) {
+  const store = [];
+  const re = /(```[\s\S]*?```|`[^`\n]+`)|(\$\$(?:\\.|[^$\\])+?\$\$)|(\$(?:\\.|[^$\\\n])+?\$)|(\\\$)/g;
+  const out = md.replace(re, (m, code, disp, inl, esc) => {
+    if (code || esc) return m;
+    store.push(m);
+    return '@@MATH' + (store.length - 1) + '@@';
+  });
+  return { md: out, store };
+}
+function restoreMath(html, store) {
+  return html.replace(/@@MATH(\d+)@@/g, (m, i) => store[+i].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+}
+
 // Compile all chapters
 function buildAllHtml() {
   console.log(`Starting Interactive HTML Portal Build for ${ALL_CHAPTERS.length} Books...`);
@@ -1856,6 +2017,20 @@ function buildAllHtml() {
     console.log(`  -> Copied offline mermaid.min.js to html/assets/`);
   }
 
+  // Vendor KaTeX (offline): css + js + auto-render + fonts
+  const kSrc = path.resolve(ROOT_DIR, 'node_modules', 'katex', 'dist');
+  const kDst = path.join(outAssets, 'katex');
+  if (fs.existsSync(kSrc)) {
+    fs.mkdirSync(path.join(kDst, 'fonts'), { recursive: true });
+    fs.copyFileSync(path.join(kSrc, 'katex.min.css'), path.join(kDst, 'katex.min.css'));
+    fs.copyFileSync(path.join(kSrc, 'katex.min.js'), path.join(kDst, 'katex.min.js'));
+    fs.copyFileSync(path.join(kSrc, 'contrib', 'auto-render.min.js'), path.join(kDst, 'auto-render.min.js'));
+    fs.readdirSync(path.join(kSrc, 'fonts')).filter(f => f.endsWith('.woff2')).forEach(f =>
+      fs.copyFileSync(path.join(kSrc, 'fonts', f), path.join(kDst, 'fonts', f)));
+    console.log('  -> Vendored KaTeX into html/assets/katex/');
+  }
+
+  const searchIndex = [];
   let count = 0;
   ALL_CHAPTERS.forEach(chapter => {
     const srcMdPath = path.resolve(ROOT_DIR, chapter.relMd);
@@ -1865,7 +2040,8 @@ function buildAllHtml() {
     }
 
     const rawMd = fs.readFileSync(srcMdPath, 'utf8');
-    let parsedHtml = marked.parse(rawMd);
+    const pm = protectMath(rawMd);
+    let parsedHtml = restoreMath(marked.parse(pm.md), pm.store);
     parsedHtml = transformCallouts(parsedHtml);
 
     // Transform internal markdown links to HTML links
@@ -1885,7 +2061,24 @@ function buildAllHtml() {
 
     fs.writeFileSync(destHtmlPath, fullPageHtml, 'utf8');
     count++;
+
+    // Section-level full-text index for client-side search
+    const plain = h => h.replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, ' ').replace(/<[^>]+>/g, ' ')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ').trim();
+    const parts = parsedHtml.split(/(?=<h[23]\s+id=")/);
+    const secs = [];
+    parts.forEach((part, i) => {
+      const m = /^<h[23]\s+id="([^"]+)">.*?<\/a>(.*?)<\/h[23]>/s.exec(part);
+      const text = plain(part).toLowerCase().slice(0, 6000);
+      if (m) secs.push({ id: m[1], h: plain(m[2]), x: text });
+      else if (i === 0 && text) secs.push({ id: '', h: chapter.label, x: text });
+    });
+    searchIndex.push({ u: chapter.relHtml, t: chapter.label, s: secs });
   });
+
+  fs.writeFileSync(path.join(outAssets, 'search-index.js'), 'window.SEARCH_INDEX=' + JSON.stringify(searchIndex) + ';', 'utf8');
+  console.log('  -> Wrote full-text search index (' + searchIndex.length + ' chapters)');
 
   // Also create a copy of README.html as index.html in the html directory
   const readmeHtml = path.resolve(HTML_OUT_DIR, 'README.html');

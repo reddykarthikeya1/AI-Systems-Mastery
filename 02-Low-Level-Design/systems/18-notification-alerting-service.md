@@ -27,8 +27,8 @@ Imagine a busy hospital dispatch center:
 ```mermaid
 flowchart TD
     Req["Incoming Notification Request<br/>(User, Template, Priority, Channels)"] --> RL{"User Rate Limit Exceeded?<br/>(Only applies to LOW/MEDIUM)"}
-    RL -->|Yes (Spam Blocked)| Dropped["[DROPPED] User Cooldown Active"]
-    RL -->|No (Permitted)| Router["Priority Dispatch Router"]
+    RL -->|"Yes: Spam Blocked"| Dropped["[DROPPED] User Cooldown Active"]
+    RL -->|"No: Permitted"| Router["Priority Dispatch Router"]
     
     Router -->|HIGH: OTP / Fraud| Q_High["Priority Queue (HIGH)"]
     Router -->|MEDIUM: Order Status| Q_Med["Priority Queue (MEDIUM)"]
