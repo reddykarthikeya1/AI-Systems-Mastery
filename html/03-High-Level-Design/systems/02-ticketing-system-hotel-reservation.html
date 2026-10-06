@@ -1242,23 +1242,47 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-2-ticketing-hotel-reservation-system-ticketmaster-booking-com"><a href="#hld-case-study-2-ticketing-hotel-reservation-system-ticketmaster-booking-com" class="header-anchor">#</a>HLD Case Study 2: Ticketing & Hotel Reservation System (Ticketmaster / Booking.com)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Concurrency control, distributed locking (Redis Redlock), preventing double-booking, idempotency, and temporary hold expiration.</p>
+          <h1 id="hld-case-study-2-ticketing-and-hotel-reservation-ticketmaster-booking-com"><a href="#hld-case-study-2-ticketing-and-hotel-reservation-ticketmaster-booking-com" class="header-anchor">#</a>HLD Case Study 2: Ticketing and Hotel Reservation (Ticketmaster / Booking.com)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Preventing double booking, temporary holds with expiry, flash-sale traffic spikes, inventory consistency, and payment integration.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-requirements"><a href="#1-problem-statement-requirements" class="header-anchor">#</a>1. Problem Statement & Requirements</h2><p>Design a global ticketing platform for high-demand concerts where 50,000 seats sell out within seconds.</p>
-<h3 id="functional-requirements"><a href="#functional-requirements" class="header-anchor">#</a>Functional Requirements:</h3><ol>
-<li>Search events, venues, and view available seats in real-time.</li>
-<li>Select and temporarily hold seats for 10 minutes while user completes checkout.</li>
-<li>Confirm booking upon successful payment capture.</li>
-<li>Auto-release seats back to the public pool if payment times out.</li>
-</ol>
-<h3 id="non-functional-requirements"><a href="#non-functional-requirements" class="header-anchor">#</a>Non-Functional Requirements:</h3><ol>
-<li><strong>Strict Zero Double-Booking:</strong> Never sell the same seat to two customers under any failure scenario.</li>
-<li>High availability for browsing; strong consistency for booking.</li>
-</ol>
-<hr>
-<h2 id="2-high-level-architecture-diagram"><a href="#2-high-level-architecture-diagram" class="header-anchor">#</a>2. High-Level Architecture Diagram</h2>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> search events or hotels, view availability, select seats or room dates, <strong>hold</strong> inventory for a few minutes, pay, receive confirmation, cancel/refund.
+<strong>Non-functional:</strong> <strong>never sell the same seat or room-night twice</strong> (strong consistency on inventory); browsing may be eventually consistent; survive a 100x spike when a popular event goes on sale; hold expiry must be reliable.
+<strong>Out of scope:</strong> dynamic pricing algorithms, resale marketplace, recommendations.</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume a major on-sale: 50,000 seats, 2M users arriving in the first 10 minutes, each making about 20 requests (seat map refreshes, holds).</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">users, reqs_each, window_s = <span class="hljs-number">2_000_000</span>, <span class="hljs-number">20</span>, <span class="hljs-number">600</span>
+peak_qps = users * reqs_each / window_s            <span class="hljs-comment"># ~66,667 req/s sustained</span>
+read_ratio = <span class="hljs-number">0.95</span>
+write_qps = peak_qps * (<span class="hljs-number">1</span> - read_ratio)            <span class="hljs-comment"># ~3,333 hold attempts/s</span>
+seats = <span class="hljs-number">50_000</span>
+<span class="hljs-comment"># worst-case contention: everyone wants the same ~5,000 best seats</span>
+contenders_per_seat = (users * <span class="hljs-number">0.3</span>) / <span class="hljs-number">5_000</span>        <span class="hljs-comment"># 120 users chase each good seat</span>
+hold_ttl_s = <span class="hljs-number">600</span>
+active_holds_max = seats                           <span class="hljs-comment"># cannot exceed inventory</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(peak_qps), <span class="hljs-built_in">round</span>(write_qps), contenders_per_seat)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(peak_qps) == <span class="hljs-number">66667</span> <span class="hljs-keyword">and</span> contenders_per_seat == <span class="hljs-number">120</span></code></pre>
+  </div><p>The write path is small (about 3.3K/s) but <strong>extremely contended</strong>: 120 users compete for each good seat. The design goal is correct arbitration under contention, plus shielding the database from the read flood.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li><code>GET /events/{id}/seatmap</code> (cached, may be a few seconds stale)</li>
+<li><code>POST /holds</code> body <code>{event_id, seat_ids[], idempotency_key}</code> returns <code>{hold_id, expires_at}</code> or <code>409 Conflict</code></li>
+<li><code>POST /orders</code> body <code>{hold_id, payment_token, idempotency_key}</code> returns <code>{order_id, status}</code></li>
+<li><code>DELETE /holds/{hold_id}</code> (user abandons)</li>
+</ul>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>seat</strong> (<code>event_id, seat_id, status: AVAILABLE|HELD|SOLD, hold_id, hold_expires_at, version</code>) in a relational database (PostgreSQL), partitioned by <code>event_id</code>.</li>
+<li><strong>hold</strong> (<code>hold_id, user_id, seat_ids, expires_at</code>), <strong>order</strong> (<code>order_id, hold_id, amount, payment_status</code>).</li>
+<li>For hotels the unit is a <strong>room-night</strong>: <code>inventory(hotel_id, room_type, date, total, reserved)</code> with a check <code>reserved &lt;= total</code>.</li>
+</ul>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1279,98 +1303,74 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Client["Client App"] --&gt; CDN["CDN (Cached Event Info)"]
-    Client --&gt; ALB["Application Load Balancer"]
-    ALB --&gt; Gateway["API Gateway"]
-    
-    Gateway --&gt; SearchSvc["Search Service (Elasticsearch)"]
-    Gateway --&gt; BookingSvc["Booking Service"]
-    
-    BookingSvc --&gt; RedisLock["Redis Cluster (Distributed Locks &amp; Seat Holds with TTL)"]
-    BookingSvc --&gt; RDBMS["PostgreSQL (ACID Source of Truth)&lt;br/&gt;(Row-level locks / Read-Committed)"]
-    BookingSvc --&gt; PaymentSvc["Payment Service (Stripe Gateway)"]
-    
-    BookingSvc --&gt; Kafka["Kafka: booking_events"]
-    Kafka --&gt; TimeoutWorker["Hold Expiration Worker"]
+    U["Users"] --&gt; WR["Virtual Waiting Room (admission control, queue token)"]
+    WR --&gt; CDN["CDN + cached seat map"]
+    WR --&gt; API["Booking API"]
+    API --&gt; Redis["Redis: atomic seat hold (SET NX EX / Lua)"]
+    API --&gt; DB[("PostgreSQL: authoritative seat state")]
+    API --&gt; Pay["Payment Service (idempotent)"]
+    Pay --&gt; PSP["Payment Provider"]
+    API --&gt; Q["Kafka: order and hold events"]
+    Q --&gt; Mail["Notification Service"]
+    Q --&gt; Exp["Hold Expiry Worker"]
+    Exp --&gt; DB
 </div>
       </div>
-    </div><hr>
-<h2 id="3-distributed-locking-the-seat-reservation-lifecycle"><a href="#3-distributed-locking-the-seat-reservation-lifecycle" class="header-anchor">#</a>3. Distributed Locking & The Seat Reservation Lifecycle</h2>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor User as Customer
-    participant Svc as Booking Service
-    participant Redis as Redis Lock Engine
-    participant DB as PostgreSQL
-    participant Pay as Payment Gateway
+    </div><h2 id="6-deep-dive-preventing-double-booking"><a href="#6-deep-dive-preventing-double-booking" class="header-anchor">#</a>6. Deep Dive: Preventing Double Booking</h2><p>Three layers, increasing in cost:</p>
+<ol>
+<li><strong>Fast arbitration in Redis.</strong> <code>SET seat:{event}:{seat} {hold_id} NX EX 600</code> is atomic: exactly one caller gets <code>OK</code>. Losers get <code>409</code> immediately without touching the database. For multi-seat holds use a Lua script that acquires all seats or none.</li>
+<li><strong>Authoritative write in the database.</strong> On successful hold, persist with optimistic concurrency: <code>UPDATE seat SET status=&#39;HELD&#39;, hold_id=:h, hold_expires_at=:t, version=version+1 WHERE event_id=:e AND seat_id=:s AND status=&#39;AVAILABLE&#39;</code> and check <code>rowcount == 1</code>. Redis is a performance layer; the DB row is the source of truth, so a Redis failure cannot cause double sale.</li>
+<li><strong>Final purchase check.</strong> On payment success, <code>UPDATE ... SET status=&#39;SOLD&#39; WHERE hold_id=:h AND status=&#39;HELD&#39; AND hold_expires_at &gt; now()</code>. If zero rows, the hold expired: refund automatically.</li>
+</ol>
+<p><strong>Hold expiry.</strong> Redis TTL frees the fast lock; a worker also scans <code>hold_expires_at &lt; now()</code> and resets stale <code>HELD</code> rows to <code>AVAILABLE</code> (idempotent, runs every few seconds). Never rely on a single mechanism.</p>
+<p><strong>Waiting room.</strong> Admit users at the rate the backend can serve (for example 1,000 per second) using signed queue tokens; everyone else sees a lightweight static page from the CDN. This turns an unbounded spike into a controlled flow.</p>
+<p><strong>Hotels.</strong> Decrement inventory per night in one transaction: <code>UPDATE inventory SET reserved = reserved + 1 WHERE hotel_id=:h AND room_type=:r AND date BETWEEN :in AND :out - 1 AND reserved &lt; total</code>, and require rowcount equals number of nights, otherwise roll back. Overbooking is sometimes deliberate; model it as <code>total = physical * 1.05</code> per business policy.</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Reads:</strong> cache seat maps at the CDN (1 to 5 s TTL) and show &quot;likely available&quot; rather than exact state.</li>
+<li><strong>Hot partition:</strong> one blockbuster event is one hot key range. Shard by <code>(event_id, section)</code> so sections lock independently.</li>
+<li><strong>Database write contention:</strong> the Redis gate keeps conflicting writers out of the DB, so only about one write per successful hold arrives.</li>
+<li><strong>Payment latency (seconds):</strong> never hold a DB transaction open during payment; hold state is separate from the payment call.</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Redis loses data</td>
+<td>DB constraint still prevents double sale; rebuild holds from DB <code>HELD</code> rows</td>
+</tr>
+<tr>
+<td>Payment succeeds but callback lost</td>
+<td>idempotency key + reconciliation job against the PSP</td>
+</tr>
+<tr>
+<td>User pays after hold expiry</td>
+<td>conditional <code>UPDATE</code> fails, trigger refund</td>
+</tr>
+<tr>
+<td>Duplicate submit (double click, retry)</td>
+<td><code>idempotency_key</code> returns the same result</td>
+</tr>
+<tr>
+<td>Bots grabbing seats</td>
+<td>waiting room, CAPTCHA, per-account and per-IP limits, signed tokens</td>
+</tr>
+<tr>
+<td>Region outage</td>
+<td>active-passive DB with synchronous replica for seat state</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>Pessimistic lock vs optimistic version check:</strong> pessimistic (<code>SELECT ... FOR UPDATE</code>) is simple but blocks under contention; optimistic fails fast and retries, which suits &quot;first wins&quot; semantics.</li>
+<li><strong>Redis-first vs DB-only:</strong> Redis cuts DB load by about 20x under contention but adds a second system; keep DB authoritative.</li>
+<li><strong>Strong vs eventual consistency:</strong> strong for inventory, eventual for browse and search results.</li>
+<li><strong>Short vs long holds:</strong> longer holds improve conversion but reduce inventory turnover; 5 to 10 minutes is typical.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Spend 10 minutes on the double-booking argument: state the invariant (&quot;a seat is SOLD at most once&quot;), show the conditional update, then add Redis as an optimisation. <strong>Follow-ups:</strong> How do you handle best-available seating? (query candidates, try holds in order, release on partial failure). How do refunds restore inventory? (event-driven, idempotent). How would you add dynamic pricing? (pricing service reads demand metrics; price is snapshotted on the hold). What if the waiting room itself is attacked? (CDN rate limits, token signing, proof-of-work).</p>
 
-    User-&gt;&gt;Svc: reserve_seats(show_id, seat_ids=[A1, A2])
-    Svc-&gt;&gt;Redis: SET lock:show_1:A1 user_123 NX EX 600
-    alt Lock Acquired on all seats
-        Redis--&gt;&gt;Svc: Success (10-minute hold active)
-        Svc-&gt;&gt;DB: INSERT INTO reservations (status='HELD', expires_at=NOW()+10min)
-        Svc--&gt;&gt;User: 200 OK (Seats held, please pay within 10 mins)
-        
-        User-&gt;&gt;Svc: checkout(reservation_id, payment_token)
-        Svc-&gt;&gt;Pay: charge(amount)
-        alt Payment Success
-            Pay--&gt;&gt;Svc: 200 Paid
-            Svc-&gt;&gt;DB: UPDATE reservations CONFIRMED and seats BOOKED
-            Svc-&gt;&gt;Redis: DEL lock:show_1:A1
-            Svc--&gt;&gt;User: 201 Created (Tickets Confirmed!)
-        else Payment Failed / Timeout
-            Pay--&gt;&gt;Svc: Declined
-            Svc-&gt;&gt;Redis: DEL lock:show_1:A1 (Immediately released back to pool!)
-        end
-    else Lock Failed (Another user got there first)
-        Redis--&gt;&gt;Svc: Key already exists!
-        Svc--&gt;&gt;User: 409 Conflict: Seats currently held by another user.
-    end
-</div>
-      </div>
-    </div><hr>
-<h2 id="4-database-schema-postgresql-with-optimistic-locking"><a href="#4-database-schema-postgresql-with-optimistic-locking" class="header-anchor">#</a>4. Database Schema (PostgreSQL with Optimistic Locking)</h2>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE TABLE</span> seats (
-    seat_id UUID <span class="hljs-keyword">PRIMARY KEY</span>,
-    show_id UUID <span class="hljs-keyword">NOT NULL</span>,
-    seat_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT NULL</span>,
-    status <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">-- AVAILABLE, HELD, BOOKED</span>
-    version <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">1</span>, <span class="hljs-comment">-- Optimistic locking counter</span>
-    <span class="hljs-keyword">UNIQUE</span>(show_id, seat_number)
-);
-
-<span class="hljs-comment">-- Atomic SQL reservation query preventing race conditions:</span>
-<span class="hljs-keyword">UPDATE</span> seats 
-<span class="hljs-keyword">SET</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;HELD&#x27;</span>, version <span class="hljs-operator">=</span> version <span class="hljs-operator">+</span> <span class="hljs-number">1</span> 
-<span class="hljs-keyword">WHERE</span> seat_id <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;c4b8-...&#x27;</span> <span class="hljs-keyword">AND</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;AVAILABLE&#x27;</span> <span class="hljs-keyword">AND</span> version <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</code></pre>
-  </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1392,7 +1392,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-requirements" class="toc-link">1. Problem Statement & Requirements</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements:</a></li><li class="toc-item level-3"><a href="#non-functional-requirements" class="toc-link">Non-Functional Requirements:</a></li><li class="toc-item level-2"><a href="#2-high-level-architecture-diagram" class="toc-link">2. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#3-distributed-locking-the-seat-reservation-lifecycle" class="toc-link">3. Distributed Locking & The Seat Reservation Lifecycle</a></li><li class="toc-item level-2"><a href="#4-database-schema-postgresql-with-optimistic-locking" class="toc-link">4. Database Schema (PostgreSQL with Optimistic Locking)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-preventing-double-booking" class="toc-link">6. Deep Dive: Preventing Double Booking</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

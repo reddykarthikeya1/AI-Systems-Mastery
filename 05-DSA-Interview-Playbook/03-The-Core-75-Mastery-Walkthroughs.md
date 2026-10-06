@@ -4826,3 +4826,45 @@ Missing Number: 2
 Could Gauss's summation formula $\frac{n(n+1)}{2} - \sum nums$ be used instead? Yes, though in fixed-width integers (C++/Java) XOR is safer as it eliminates integer overflow risks.
 
 ---
+
+
+## Further Reading
+
+- [CP-Algorithms: graphs](https://cp-algorithms.com/graph/breadth-first-search.html)
+- [Python heapq](https://docs.python.org/3/library/heapq.html)
+- [Python bisect](https://docs.python.org/3/library/bisect.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Run `python practice/run_tests.py 12 --stub` on an unimplemented stub: what do you see?</summary>
+
+It reports the stub still raises NotImplementedError and suggests `--hint 12`.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does `--fuzz` do?</summary>
+
+Cross-checks your function against an independent brute-force implementation on random inputs.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why trust a fuzz check more than three hand-written asserts?</summary>
+
+Random inputs reach cases you did not think of, including boundaries.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Pick one problem: state the brute force, the insight and the complexity without looking.</summary>
+
+Self-check against the walkthrough: you should be able to name each in one sentence.
+
+</details>

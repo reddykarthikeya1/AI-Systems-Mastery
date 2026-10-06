@@ -316,3 +316,45 @@ class HasCoinState(VendingMachineState):
         ctx.balance = 0.0
         ctx.set_state(IdleState())
 ```
+
+
+## Further Reading
+
+- [Refactoring Guru: pattern catalog](https://refactoring.guru/design-patterns/catalog)
+- [Wikipedia: Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
+- [Python typing.Protocol](https://docs.python.org/3/library/typing.html#typing.Protocol)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Strategy versus State: how do they differ although the structure looks alike?</summary>
+
+Strategy lets the client choose an interchangeable algorithm; State lets an object change behaviour automatically as its internal state changes.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> When is Singleton a bad idea?</summary>
+
+It hides global state, hurts testing and concurrency; prefer dependency injection of a single instance.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What problem does Observer solve?</summary>
+
+Notifying many dependents of changes without the subject knowing who they are (event handlers, pub/sub).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does Factory give you over `new`/constructors?</summary>
+
+Centralised creation logic and the ability to return different concrete types behind one interface.
+
+</details>

@@ -270,3 +270,45 @@ class FirefighterLockdownState(ElevatorState):
 | *"System behaves completely differently in mode X"* | Internal State / Lifecycle | **State Pattern** |
 | *"Add audit logging / rate limiting to existing API"* | Cross-cutting concern | **Proxy** or **Decorator Pattern** |
 | *"Support a new third-party vendor with weird API"* | Protocol / Schema mismatch | **Adapter Pattern** |
+
+
+## Further Reading
+
+- [Wikipedia: Open-closed principle](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle)
+- [Refactoring Guru: Strategy](https://refactoring.guru/design-patterns/strategy)
+- [Refactoring catalog](https://refactoring.com/catalog/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> A new requirement arrives mid-interview. What is the first thing you do?</summary>
+
+Restate it, identify which abstraction it affects, and show the minimal change: ideally adding a class, not editing many.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do you show your design is extensible?</summary>
+
+Point at the interface where the change plugs in and demonstrate it with a concrete new implementation.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is a sign that your abstraction is wrong?</summary>
+
+A new requirement forces edits across many unrelated classes or conditionals on type.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why avoid over-engineering for hypothetical futures?</summary>
+
+Unneeded flexibility adds complexity now; design for stated requirements and keep seams for likely change.
+
+</details>

@@ -277,3 +277,45 @@ Answer these 10 intuitive questions to calibrate your progress through this trac
 1. **Read One Chapter per Day (30-45 minutes):** Do not rush. Every chapter is packed with deep, foundational insights.
 2. **Type the Code Out:** Do not just passively read. Open your terminal, run `python`, and type the snippets to see the object IDs and memory footprints in real time.
 3. **Trace the Storage Trays:** Whenever code surprises you, grab a piece of paper and draw the nametag on your desk stuck to the physical storage tray sitting on the warehouse floor (the Heap).
+
+
+## Further Reading
+
+- [Python data model: objects, values and types](https://docs.python.org/3/reference/datamodel.html#objects-values-and-types)
+- [Python tutorial](https://docs.python.org/3/tutorial/index.html)
+- [Ned Batchelder: Facts and myths about Python names and values](https://nedbatchelder.com/text/names.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> In `a = [1, 2]; b = a; b.append(3)`, what is `a`, and why?</summary>
+
+`[1, 2, 3]`. Names are labels attached to objects; `b = a` attaches a second label to the same list, so mutation through either name is visible through both.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is the difference between `is` and `==`?</summary>
+
+`==` compares values (calls `__eq__`); `is` compares object identity (same object in memory). Use `is` only for singletons such as `None`.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Where do local variables live versus the objects they refer to?</summary>
+
+Names live in a frame's namespace on the call stack; the objects they refer to live on the heap. Returning a name from a function keeps the object alive via its reference count.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why does `sys.getrefcount(x)` print one more than you expect?</summary>
+
+Passing `x` as an argument creates a temporary extra reference for the duration of the call.
+
+</details>

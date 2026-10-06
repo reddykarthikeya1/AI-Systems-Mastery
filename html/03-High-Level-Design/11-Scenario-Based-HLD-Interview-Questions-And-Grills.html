@@ -1342,6 +1342,22 @@ sequenceDiagram
 <li><strong>Last-Write-Wins (LWW):</strong> Uses NTP timestamp to pick the highest clock value (Danger: Clock skew can overwrite newer changes).</li>
 <li><strong>Conflict-Free Replicated Data Types (CRDTs):</strong> Mathematically convergent data structures that merge concurrent updates without centralized coordination.</li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://github.com/donnemartin/system-design-primer">System Design Primer</a></li>
+<li><a href="https://stripe.com/blog/rate-limiters">Stripe: rate limiters</a></li>
+<li><a href="https://aws.amazon.com/builders-library/">AWS Builders&#39; Library</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> How do you start 'design a rate limiter'?</summary><p>Clarify scope (per user/IP, where enforced, hard or soft limits), choose an algorithm (token bucket), then storage (Redis) and distribution.</p>
+</details><details>
+<summary><strong>2.</strong> Strong versus eventual consistency: how do you justify choosing?</summary><p>Tie to the cost of staleness: money and inventory need strong; feeds and counters tolerate eventual.</p>
+</details><details>
+<summary><strong>3.</strong> How do you handle 'it must be highly available'?</summary><p>Remove single points of failure, replicate across zones, use health checks and failover, and state RTO/RPO.</p>
+</details><details>
+<summary><strong>4.</strong> What closes a strong answer?</summary><p>Bottlenecks identified, a scaling path, and the trade-offs you accepted.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1364,7 +1380,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-cassandra-zombie-data-resurrect-bug" class="toc-link">Scenario 1: The Cassandra "Zombie Data" Resurrect Bug</a></li><li class="toc-item level-3"><a href="#scenario-2-redis-cluster-at-100-cpu-utilization" class="toc-link">Scenario 2: Redis Cluster at 100% CPU Utilization</a></li><li class="toc-item level-3"><a href="#scenario-3-clock-drift-snowflake-id-collisions" class="toc-link">Scenario 3: Clock Drift & Snowflake ID Collisions</a></li><li class="toc-item level-2"><a href="#2-multi-region-active-active-replication" class="toc-link">2. Multi-Region Active-Active Replication</a></li><li class="toc-item level-3"><a href="#handling-multi-region-conflicts-active-active" class="toc-link">Handling Multi-Region Conflicts (Active-Active)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-cassandra-zombie-data-resurrect-bug" class="toc-link">Scenario 1: The Cassandra "Zombie Data" Resurrect Bug</a></li><li class="toc-item level-3"><a href="#scenario-2-redis-cluster-at-100-cpu-utilization" class="toc-link">Scenario 2: Redis Cluster at 100% CPU Utilization</a></li><li class="toc-item level-3"><a href="#scenario-3-clock-drift-snowflake-id-collisions" class="toc-link">Scenario 3: Clock Drift & Snowflake ID Collisions</a></li><li class="toc-item level-2"><a href="#2-multi-region-active-active-replication" class="toc-link">2. Multi-Region Active-Active Replication</a></li><li class="toc-item level-3"><a href="#handling-multi-region-conflicts-active-active" class="toc-link">Handling Multi-Region Conflicts (Active-Active)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

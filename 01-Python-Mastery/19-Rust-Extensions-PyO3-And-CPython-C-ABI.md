@@ -382,3 +382,45 @@ print(f"First 4 bytes after:  {list(data[:4])}")
 | **Releasing the GIL** | Giving the microphone to someone else while you run | `py.allow_threads` frees the event loop while Rayon saturates all CPU cores |
 | **Buffer Protocol** | Sharing a book on a table instead of photocopying it | Direct pointer manipulation; zero-copy in-place array transformations |
 | **Thread Safety** | Never touch Python objects without a badge | Background Rust threads must call `Python::with_gil()` before invoking Python callbacks |
+
+
+## Further Reading
+
+- [PyO3 user guide](https://pyo3.rs/)
+- [maturin](https://www.maturin.rs/)
+- [Python/C API reference](https://docs.python.org/3/c-api/index.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does PyO3 provide?</summary>
+
+Rust bindings for the CPython API so you can write extension modules and call Rust from Python (built with `maturin`).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why release the GIL in a native extension?</summary>
+
+So other Python threads can run while your Rust code computes (`py.allow_threads`).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is the cost of crossing the Python/Rust boundary?</summary>
+
+Argument conversion and refcount handling per call; batch work into fewer, larger calls.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does the stable ABI (abi3) buy you?</summary>
+
+One wheel works across multiple Python versions at some performance and API limits.
+
+</details>

@@ -1417,6 +1417,22 @@ graph TD
 <li>$\pi_\theta$ is the active model, and $\pi_{\text{ref}}$ is the frozen baseline model.</li>
 </ul>
 <p>DPO increases the probability of preferred answers while decreasing the probability of rejected answers in a <strong>single standard cross-entropy training pass</strong>!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/2106.09685">LoRA paper</a></li>
+<li><a href="https://arxiv.org/abs/2305.18290">DPO paper</a></li>
+<li><a href="https://huggingface.co/docs/peft/index">Hugging Face PEFT</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does LoRA train?</summary><p>Small low-rank adapter matrices added to frozen weights, so only a tiny fraction of parameters are updated.</p>
+</details><details>
+<summary><strong>2.</strong> What does DPO optimise?</summary><p>A preference objective directly from chosen/rejected pairs, without training a separate reward model or running RL.</p>
+</details><details>
+<summary><strong>3.</strong> When fine-tune instead of using RAG?</summary><p>To change style, format or skills; use RAG for fresh or private knowledge.</p>
+</details><details>
+<summary><strong>4.</strong> Why hold out an evaluation set before fine-tuning?</summary><p>To detect overfitting and regressions on general capabilities.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1439,7 +1455,7 @@ graph TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-decision-matrix-prompting-vs-rag-vs-fine-tuning" class="toc-link">1. The Decision Matrix: Prompting vs. RAG vs. Fine-Tuning</a></li><li class="toc-item level-2"><a href="#2-parameter-efficient-fine-tuning-the-lora-mathematics" class="toc-link">2. Parameter-Efficient Fine-Tuning: The LoRA Mathematics</a></li><li class="toc-item level-3"><a href="#low-rank-adaptation-lora" class="toc-link">Low-Rank Adaptation (LoRA)</a></li><li class="toc-item level-2"><a href="#3-qlora-fine-tuning-on-a-single-consumer-gpu" class="toc-link">3. QLoRA: Fine-Tuning on a Single Consumer GPU</a></li><li class="toc-item level-3"><a href="#the-3-core-innovations-of-qlora" class="toc-link">The 3 Core Innovations of QLoRA:</a></li><li class="toc-item level-2"><a href="#4-alignment-preference-optimization-dpo-vs-rlhf" class="toc-link">4. Alignment & Preference Optimization: DPO vs. RLHF</a></li><li class="toc-item level-3"><a href="#the-dpo-breakthrough-rafailov-et-al-stanford" class="toc-link">The DPO Breakthrough (Rafailov et al., Stanford)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-decision-matrix-prompting-vs-rag-vs-fine-tuning" class="toc-link">1. The Decision Matrix: Prompting vs. RAG vs. Fine-Tuning</a></li><li class="toc-item level-2"><a href="#2-parameter-efficient-fine-tuning-the-lora-mathematics" class="toc-link">2. Parameter-Efficient Fine-Tuning: The LoRA Mathematics</a></li><li class="toc-item level-3"><a href="#low-rank-adaptation-lora" class="toc-link">Low-Rank Adaptation (LoRA)</a></li><li class="toc-item level-2"><a href="#3-qlora-fine-tuning-on-a-single-consumer-gpu" class="toc-link">3. QLoRA: Fine-Tuning on a Single Consumer GPU</a></li><li class="toc-item level-3"><a href="#the-3-core-innovations-of-qlora" class="toc-link">The 3 Core Innovations of QLoRA:</a></li><li class="toc-item level-2"><a href="#4-alignment-preference-optimization-dpo-vs-rlhf" class="toc-link">4. Alignment & Preference Optimization: DPO vs. RLHF</a></li><li class="toc-item level-3"><a href="#the-dpo-breakthrough-rafailov-et-al-stanford" class="toc-link">The DPO Breakthrough (Rafailov et al., Stanford)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

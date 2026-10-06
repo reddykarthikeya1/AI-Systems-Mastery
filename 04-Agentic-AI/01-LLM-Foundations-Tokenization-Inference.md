@@ -151,3 +151,45 @@ The agent loop above is implemented, run and tested in [`examples/ex01_tool_loop
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
 
 **Reliability arithmetic.** With per-step success `p`, an `n`-step task succeeds with `p^n`: `0.95^10 = 0.60`, `0.99^10 = 0.90`. This is why the examples spend effort on raising per-step success (clear tool descriptions, helpful errors) and cutting steps.
+
+
+## Further Reading
+
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+- [Hugging Face LLM course](https://huggingface.co/learn/llm-course/chapter1/1)
+- [Andrej Karpathy: nanoGPT](https://github.com/karpathy/nanoGPT)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is a token and why does it matter for cost and limits?</summary>
+
+A token is a sub-word unit the model reads and writes; pricing, context limits and latency are all counted in tokens.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why does decoding generate one token at a time?</summary>
+
+Each token is sampled conditioned on all previous tokens (autoregression), so generation is sequential even though prompt processing is parallel.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does temperature do?</summary>
+
+It rescales the logits before sampling: low values make output more deterministic, high values more varied.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the KV cache?</summary>
+
+Stored key and value tensors of earlier tokens so attention does not recompute them each step; it trades memory for speed.
+
+</details>

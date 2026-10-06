@@ -66,3 +66,45 @@ def lock_seats_deadlock_free(seat_ids: list[str], seat_pool: dict):
   * Classes must depend on abstract **Protocols** or interfaces (`PaymentGateway`, `SeatRepository`), not concrete classes (`StripeGateway`, `PostgresDB`).
   * In unit tests, inject an in-memory **Mock Repository** (`MockPaymentGateway` returning `True/False`) directly into the constructor.
   * This allows running 1,000 test cases in 50 milliseconds in CI/CD without external network dependencies.
+
+
+## Further Reading
+
+- [Refactoring Guru: pattern catalog](https://refactoring.guru/design-patterns/catalog)
+- [UML diagrams reference](https://www.uml-diagrams.org/)
+- [Wikipedia: SOLID](https://en.wikipedia.org/wiki/SOLID)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> How do you handle 'design a parking lot' in the first 5 minutes?</summary>
+
+Clarify vehicle types, floors, pricing, entry/exit, concurrency; then list entities (Lot, Floor, Spot, Vehicle, Ticket, PricingStrategy).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What do interviewers want to see in the extensibility discussion?</summary>
+
+A named seam (interface) and a concrete example of adding a new variant without modifying existing code.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you address concurrency in a booking system?</summary>
+
+Make allocation atomic (lock or conditional update) and state the invariant: a resource is assigned at most once.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a strong closing statement?</summary>
+
+Summarise key decisions, trade-offs accepted, and what you would add with more time (persistence, metrics, failure handling).
+
+</details>

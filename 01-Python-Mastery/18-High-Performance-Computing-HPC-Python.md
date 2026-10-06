@@ -185,7 +185,7 @@ if __name__ == "__main__":
     # Create a 100M float array (800 MB)
     shape = (100_000_000,)
     dtype = np.float64
-    bytes_needed = np.prod(shape) * np.dtype(dtype).itemsize
+    bytes_needed = int(np.prod(shape)) * np.dtype(dtype).itemsize   # must be a Python int (np.int64 fails on Windows)
 
     # Allocate physical shared memory block in OS kernel
     shm = shared_memory.SharedMemory(create=True, size=bytes_needed)
@@ -330,3 +330,45 @@ Python 3.13 introduced a revolutionary **Copy-and-Patch JIT**:
 | Multi-process memory bloat | `pickle` serialization over IPC sockets | **`multiprocessing.shared_memory`** | Eliminates 100% of IPC transfer lag |
 | Threaded CPU tasks blocked by GIL | Pre-3.13 CPython GIL serialization | **Python 3.13 Free-Threaded (`python3.13t`)** | Near-linear multi-core scaling |
 | Massive matrix multiplication / deep learning | CPU memory bandwidth exhaustion | **PyTorch / Triton on NVIDIA CUDA GPU** | $1,000\times+$ |
+
+
+## Further Reading
+
+- [NumPy documentation](https://numpy.org/doc/stable/)
+- [Numba documentation](https://numba.readthedocs.io/en/stable/)
+- [multiprocessing.shared_memory](https://docs.python.org/3/library/multiprocessing.shared_memory.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why are NumPy loops over arrays vectorised?</summary>
+
+The loop runs in compiled C over contiguous memory, avoiding per-element interpreter overhead.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is `numba`'s `@njit` doing?</summary>
+
+JIT-compiling a numeric Python function to machine code; it works on typed numeric code, not arbitrary Python objects.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does shared memory (`multiprocessing.shared_memory`) avoid?</summary>
+
+Copying large arrays between processes via pickling.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What limits GPU speedups for small workloads?</summary>
+
+Host-device transfer and kernel launch overhead can exceed the compute saved.
+
+</details>

@@ -1290,7 +1290,7 @@ flowchart TD
 <li><strong>Conditional Edges:</strong> Dynamic routers that inspect the state and determine the next destination node.</li>
 </ol>
 <hr>
-<h2 id="3-complete-production-langgraph-agent-implementation"><a href="#3-complete-production-langgraph-agent-implementation" class="header-anchor">#</a>3. Complete Production LangGraph Agent Implementation</h2>
+<h2 id="3-langgraph-style-agent-pure-python-emulation-of-the-model"><a href="#3-langgraph-style-agent-pure-python-emulation-of-the-model" class="header-anchor">#</a>3. LangGraph-Style Agent (Pure-Python Emulation of the Model)</h2>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1418,6 +1418,26 @@ sequenceDiagram
 </div>
       </div>
     </div><p><em>Time-travel checkpointing allows developers to inspect every historical node execution, modify past state variables, and branch alternative execution paths during debugging.</em></p>
+<hr>
+<h2 id="verified-worked-example-real-langgraph-with-human-in-the-loop"><a href="#verified-worked-example-real-langgraph-with-human-in-the-loop" class="header-anchor">#</a>Verified Worked Example: Real LangGraph with Human-in-the-Loop</h2><p>The section above emulates the LangGraph execution model in plain Python to teach the ideas. The real API is exercised in <a href="examples/ex02_langgraph_hitl.py"><code>examples/ex02_langgraph_hitl.py</code></a>, verified on <code>langgraph==1.2.13</code>: a typed <code>State</code> with an append reducer (<code>Annotated[list, operator.add]</code>), nodes returning partial updates, a conditional edge, an <code>InMemorySaver</code> checkpointer, and an <code>interrupt()</code> that pauses for approval and resumes with <code>Command(resume=...)</code> on the same <code>thread_id</code>. Two behaviours worth testing yourself: (1) the side-effecting node runs <strong>only after</strong> approval, and (2) rejecting leaves <code>executed</code> out of the log.</p>
+<p><strong>Version note.</strong> LangGraph&#39;s API evolves quickly (for example <code>MemorySaver</code> became <code>InMemorySaver</code>, and the human-in-the-loop primitives changed from static breakpoints to <code>interrupt</code>/<code>Command</code>). Pin the version and re-run the examples when upgrading.</p>
+<p>Pinned for the verified examples: <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>, <code>pytest==9.1.1</code> (see <code>examples/requirements.txt</code>). All examples run offline with a scripted fake model: <code>cd examples &amp;&amp; pip install -r requirements.txt &amp;&amp; pytest -q</code>.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph documentation</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/persistence">LangGraph persistence</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/graph-api">LangGraph graph API</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does a reducer do in LangGraph state?</summary><p>It defines how updates to a key are merged (append, overwrite, custom); required when parallel nodes write the same key.</p>
+</details><details>
+<summary><strong>2.</strong> What does a checkpointer enable?</summary><p>Saving state after each step per thread ID: memory across turns, resume after failure, human-in-the-loop and time travel.</p>
+</details><details>
+<summary><strong>3.</strong> What does `interrupt()` plus `Command(resume=...)` do?</summary><p>Pauses the graph for human input and resumes the same thread with the supplied value.</p>
+</details><details>
+<summary><strong>4.</strong> Why re-run examples when upgrading LangGraph?</summary><p>The API changes between versions; pinned versions plus tests catch breakage (see <code>examples/</code>).</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1440,7 +1460,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-langgraph-replaced-linear-chains" class="toc-link">1. Why LangGraph Replaced Linear Chains</a></li><li class="toc-item level-2"><a href="#2-core-langgraph-primitives" class="toc-link">2. Core LangGraph Primitives</a></li><li class="toc-item level-2"><a href="#3-complete-production-langgraph-agent-implementation" class="toc-link">3. Complete Production LangGraph Agent Implementation</a></li><li class="toc-item level-2"><a href="#4-human-in-the-loop-time-travel-checkpointing" class="toc-link">4. Human-in-the-Loop & Time-Travel Checkpointing</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-langgraph-replaced-linear-chains" class="toc-link">1. Why LangGraph Replaced Linear Chains</a></li><li class="toc-item level-2"><a href="#2-core-langgraph-primitives" class="toc-link">2. Core LangGraph Primitives</a></li><li class="toc-item level-2"><a href="#3-langgraph-style-agent-pure-python-emulation-of-the-model" class="toc-link">3. LangGraph-Style Agent (Pure-Python Emulation of the Model)</a></li><li class="toc-item level-2"><a href="#4-human-in-the-loop-time-travel-checkpointing" class="toc-link">4. Human-in-the-Loop & Time-Travel Checkpointing</a></li><li class="toc-item level-2"><a href="#verified-worked-example-real-langgraph-with-human-in-the-loop" class="toc-link">Verified Worked Example: Real LangGraph with Human-in-the-Loop</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

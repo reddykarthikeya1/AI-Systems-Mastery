@@ -1663,6 +1663,22 @@ flowchart TD
 <td align="left">Tests mathematical invariants across generated edge-case input domains</td>
 </tr>
 </tbody></table>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.pytest.org/en/stable/">pytest documentation</a></li>
+<li><a href="https://docs.python.org/3/library/unittest.mock.html">unittest.mock</a></li>
+<li><a href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Hypothesis quickstart</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is the difference between a stub, a spy and a mock?</summary><p>A stub returns canned answers; a spy records how it was called while delegating; a mock has expectations about calls that it verifies.</p>
+</details><details>
+<summary><strong>2.</strong> You patch `requests.get` but the code under test still makes real calls. Why?</summary><p>You must patch the name where it is looked up (<code>mymodule.requests.get</code> or <code>mymodule.get</code>), not where it is defined.</p>
+</details><details>
+<summary><strong>3.</strong> What do pytest fixture scopes control?</summary><p>How often the fixture is created: <code>function</code> (default), <code>class</code>, <code>module</code>, <code>package</code>, <code>session</code>.</p>
+</details><details>
+<summary><strong>4.</strong> What does property-based testing (Hypothesis) add?</summary><p>It generates many inputs, checks invariants you state, and shrinks a failing case to a minimal example.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1685,7 +1701,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-test-doubles-demystified-dummy-vs-stub-vs-spy-vs-mock-vs-fake" class="toc-link">1. Test Doubles Demystified: Dummy vs Stub vs Spy vs Mock vs Fake</a></li><li class="toc-item level-3"><a href="#the-5-types-in-concrete-python-code" class="toc-link">The 5 Types in Concrete Python Code:</a></li><li class="toc-item level-2"><a href="#2-the-pytest-framework-fixture-scopes" class="toc-link">2. The Pytest Framework & Fixture Scopes</a></li><li class="toc-item level-3"><a href="#pytest-fixture-lifecycle-dependency-injection" class="toc-link">Pytest Fixture Lifecycle & Dependency Injection</a></li><li class="toc-item level-3"><a href="#parametrized-tests-testing-100-edge-cases-in-5-lines" class="toc-link">Parametrized Tests: Testing 100 Edge Cases in 5 Lines</a></li><li class="toc-item level-2"><a href="#3-the-1-senior-python-interview-trap-where-to-patch" class="toc-link">3. The #1 Senior Python Interview Trap: Where to Patch?</a></li><li class="toc-item level-3"><a href="#the-golden-rule-of-unittest-mock-patch" class="toc-link">The Golden Rule of `unittest.mock.patch`</a></li><li class="toc-item level-2"><a href="#4-async-mocking-asyncmock-coroutine-testing" class="toc-link">4. Async Mocking (`AsyncMock`) & Coroutine Testing</a></li><li class="toc-item level-2"><a href="#5-property-based-testing-with-hypothesis" class="toc-link">5. Property-Based Testing with Hypothesis</a></li><li class="toc-item level-2"><a href="#6-staff-interview-traps-testing-pitfalls" class="toc-link">6. Staff Interview Traps & Testing Pitfalls</a></li><li class="toc-item level-3"><a href="#trap-1-the-shared-state-leak-across-tests" class="toc-link">Trap 1: The Shared State Leak Across Tests</a></li><li class="toc-item level-3"><a href="#trap-2-mocking-what-you-don-t-own" class="toc-link">Trap 2: Mocking What You Don't Own</a></li><li class="toc-item level-2"><a href="#master-checklist-for-chapter-09" class="toc-link">Master Checklist for Chapter 09</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-test-doubles-demystified-dummy-vs-stub-vs-spy-vs-mock-vs-fake" class="toc-link">1. Test Doubles Demystified: Dummy vs Stub vs Spy vs Mock vs Fake</a></li><li class="toc-item level-3"><a href="#the-5-types-in-concrete-python-code" class="toc-link">The 5 Types in Concrete Python Code:</a></li><li class="toc-item level-2"><a href="#2-the-pytest-framework-fixture-scopes" class="toc-link">2. The Pytest Framework & Fixture Scopes</a></li><li class="toc-item level-3"><a href="#pytest-fixture-lifecycle-dependency-injection" class="toc-link">Pytest Fixture Lifecycle & Dependency Injection</a></li><li class="toc-item level-3"><a href="#parametrized-tests-testing-100-edge-cases-in-5-lines" class="toc-link">Parametrized Tests: Testing 100 Edge Cases in 5 Lines</a></li><li class="toc-item level-2"><a href="#3-the-1-senior-python-interview-trap-where-to-patch" class="toc-link">3. The #1 Senior Python Interview Trap: Where to Patch?</a></li><li class="toc-item level-3"><a href="#the-golden-rule-of-unittest-mock-patch" class="toc-link">The Golden Rule of `unittest.mock.patch`</a></li><li class="toc-item level-2"><a href="#4-async-mocking-asyncmock-coroutine-testing" class="toc-link">4. Async Mocking (`AsyncMock`) & Coroutine Testing</a></li><li class="toc-item level-2"><a href="#5-property-based-testing-with-hypothesis" class="toc-link">5. Property-Based Testing with Hypothesis</a></li><li class="toc-item level-2"><a href="#6-staff-interview-traps-testing-pitfalls" class="toc-link">6. Staff Interview Traps & Testing Pitfalls</a></li><li class="toc-item level-3"><a href="#trap-1-the-shared-state-leak-across-tests" class="toc-link">Trap 1: The Shared State Leak Across Tests</a></li><li class="toc-item level-3"><a href="#trap-2-mocking-what-you-don-t-own" class="toc-link">Trap 2: Mocking What You Don't Own</a></li><li class="toc-item level-2"><a href="#master-checklist-for-chapter-09" class="toc-link">Master Checklist for Chapter 09</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

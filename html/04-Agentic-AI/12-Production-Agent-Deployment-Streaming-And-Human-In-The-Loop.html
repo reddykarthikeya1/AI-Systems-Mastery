@@ -1537,6 +1537,22 @@ stateDiagram-v2
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">_run_safe_tool</span>(<span class="hljs-params">self, tool_name, args</span>):
         <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Executed <span class="hljs-subst">{tool_name}</span> with <span class="hljs-subst">{args}</span>&quot;</span>}</code></pre>
   </div><p>This ensures full governance and zero possibility of runaway catastrophic actions in production environments!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/interrupts">LangGraph human-in-the-loop</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">MDN: Server-sent events</a></li>
+<li><a href="https://fastapi.tiangolo.com/advanced/custom-response/">FastAPI streaming responses</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why stream tokens to the client?</summary><p>Perceived latency drops because users see output start immediately.</p>
+</details><details>
+<summary><strong>2.</strong> Where do you put human approval in an agent flow?</summary><p>Before irreversible or external actions, with the exact action shown to the approver.</p>
+</details><details>
+<summary><strong>3.</strong> What state must survive a restart?</summary><p>Conversation thread state and pending approvals, stored in a durable checkpointer.</p>
+</details><details>
+<summary><strong>4.</strong> Why make tools idempotent in HITL flows?</summary><p>Resumed nodes may re-run, so side effects must not duplicate.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1559,7 +1575,7 @@ stateDiagram-v2
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-streaming-real-time-agent-telemetry-with-server-sent-events-sse" class="toc-link">1. Streaming Real-Time Agent Telemetry with Server-Sent Events (SSE)</a></li><li class="toc-item level-3"><a href="#complete-fastapi-sse-agent-streaming-server" class="toc-link">Complete FastAPI SSE Agent Streaming Server</a></li><li class="toc-item level-2"><a href="#2-durable-state-checkpointing-across-pod-crashes" class="toc-link">2. Durable State Checkpointing Across Pod Crashes</a></li><li class="toc-item level-3"><a href="#checkpointing-engine-implementation" class="toc-link">Checkpointing Engine Implementation</a></li><li class="toc-item level-2"><a href="#3-human-in-the-loop-hitl-interruptible-workflows" class="toc-link">3. Human-in-the-Loop (HITL) Interruptible Workflows</a></li><li class="toc-item level-3"><a href="#dangerous-tools-requiring-human-approval" class="toc-link">Dangerous Tools Requiring Human Approval:</a></li><li class="toc-item level-3"><a href="#the-state-machine-for-interruptible-execution" class="toc-link">The State Machine for Interruptible Execution</a></li><li class="toc-item level-3"><a href="#implementing-human-authorization-gates" class="toc-link">Implementing Human Authorization Gates</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-streaming-real-time-agent-telemetry-with-server-sent-events-sse" class="toc-link">1. Streaming Real-Time Agent Telemetry with Server-Sent Events (SSE)</a></li><li class="toc-item level-3"><a href="#complete-fastapi-sse-agent-streaming-server" class="toc-link">Complete FastAPI SSE Agent Streaming Server</a></li><li class="toc-item level-2"><a href="#2-durable-state-checkpointing-across-pod-crashes" class="toc-link">2. Durable State Checkpointing Across Pod Crashes</a></li><li class="toc-item level-3"><a href="#checkpointing-engine-implementation" class="toc-link">Checkpointing Engine Implementation</a></li><li class="toc-item level-2"><a href="#3-human-in-the-loop-hitl-interruptible-workflows" class="toc-link">3. Human-in-the-Loop (HITL) Interruptible Workflows</a></li><li class="toc-item level-3"><a href="#dangerous-tools-requiring-human-approval" class="toc-link">Dangerous Tools Requiring Human Approval:</a></li><li class="toc-item level-3"><a href="#the-state-machine-for-interruptible-execution" class="toc-link">The State Machine for Interruptible Execution</a></li><li class="toc-item level-3"><a href="#implementing-human-authorization-gates" class="toc-link">Implementing Human Authorization Gates</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

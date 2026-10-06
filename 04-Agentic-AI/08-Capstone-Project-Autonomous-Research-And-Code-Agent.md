@@ -194,3 +194,44 @@ if __name__ == "__main__":
 
 The capstone is a skeleton with simulated model calls. To make it real: (1) implement `get_llm()` for your provider (see `examples/llm.py`, which already has an Anthropic adapter behind `LLM_PROVIDER=anthropic`), (2) keep a `FakeLLM` script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from `examples/ex05_eval_harness.py` (repeat each task 5 to 10 times and report `pass^k` with a confidence interval), and (4) gate side effects behind the approval pattern from `examples/ex02_langgraph_hitl.py`.
 
+
+## Further Reading
+
+- [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [LangGraph documentation](https://docs.langchain.com/oss/python/langgraph/overview)
+- [SWE-bench](https://arxiv.org/abs/2310.06770)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What makes a capstone agent testable offline?</summary>
+
+A scripted fake model, deterministic tools and assertions on the final state.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which three checks gate a side-effecting action?</summary>
+
+Argument validation, authorisation and (for risky actions) human approval.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What should the capstone log?</summary>
+
+Each step: prompt, tool call, result, latency, tokens and cost.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you turn a simulation into a real agent?</summary>
+
+Swap the fake model for a provider adapter and keep the scripted tests as regression cases.
+
+</details>

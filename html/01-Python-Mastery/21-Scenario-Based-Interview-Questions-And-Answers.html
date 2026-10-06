@@ -1350,6 +1350,22 @@ x = x + [<span class="hljs-number">4</span>]   <span class="hljs-comment"># Allo
 <hr>
 <h3 id="question-3-why-does-python-have-slots-if-it-already-has-dictionaries"><a href="#question-3-why-does-python-have-slots-if-it-already-has-dictionaries" class="header-anchor">#</a>Question 3: "Why does Python have `__slots__` if it already has dictionaries?"</h3><p><strong>Answer:</strong>
 By default, every Python instance stores attributes in a dynamic dictionary (<code>self.__dict__</code>), which incurs substantial memory overhead (indices array, entries array, hash table padding: ~150-200 bytes per instance).<br><code>__slots__</code> replaces <code>__dict__</code> with a <strong>static C struct array of pointers</strong>, saving $&gt;68\%$ of RAM per instance and speeding up attribute access by bypassing dictionary lookups.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://sre.google/sre-book/postmortem-culture/">Google SRE book: postmortem culture</a></li>
+<li><a href="https://docs.python.org/3/library/tracemalloc.html">tracemalloc</a></li>
+<li><a href="https://docs.python.org/3/howto/logging.html">Python logging how-to</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> A scenario question asks 'how would you debug a memory leak in production?' Outline an answer.</summary><p>Confirm growth with metrics, capture <code>tracemalloc</code> snapshots over time, diff to find growing allocation sites, inspect referrers (objgraph), fix, add a regression metric/alert.</p>
+</details><details>
+<summary><strong>2.</strong> How do you structure an answer to a design-trade-off question?</summary><p>State the options, evaluate each against the requirements and constraints, choose with reasons, and name what would change your mind.</p>
+</details><details>
+<summary><strong>3.</strong> What do interviewers look for in 'tell me about a production incident'?</summary><p>Clear timeline, your specific actions, root cause, the fix, and what you changed to prevent recurrence.</p>
+</details><details>
+<summary><strong>4.</strong> What turns a good answer into a strong one?</summary><p>Quantified impact, honest trade-offs and awareness of failure modes.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1372,7 +1388,7 @@ By default, every Python instance stores attributes in a dynamic dictionary (<co
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-memory-leak-in-a-celery-background-worker" class="toc-link">Scenario 1: The Memory Leak in a Celery Background Worker</a></li><li class="toc-item level-3"><a href="#scenario-2-the-event-loop-freeze-in-an-asyncio-microservice" class="toc-link">Scenario 2: The Event Loop Freeze in an Asyncio Microservice</a></li><li class="toc-item level-3"><a href="#scenario-3-high-concurrency-multithreading-slowdown" class="toc-link">Scenario 3: High Concurrency Multithreading Slowdown</a></li><li class="toc-item level-2"><a href="#2-tricky-cpython-runtime-language-edge-cases" class="toc-link">2. Tricky CPython Runtime & Language Edge Cases</a></li><li class="toc-item level-3"><a href="#question-1-is-a-b-always-identical-to-a-a-b" class="toc-link">Question 1: "Is `a += b` always identical to `a = a + b`?"</a></li><li class="toc-item level-3"><a href="#question-2-what-is-the-difference-between-getattr-and-getattribute" class="toc-link">Question 2: "What is the difference between `__getattr__` and `__getattribute__`?"</a></li><li class="toc-item level-3"><a href="#question-3-why-does-python-have-slots-if-it-already-has-dictionaries" class="toc-link">Question 3: "Why does Python have `__slots__` if it already has dictionaries?"</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-memory-leak-in-a-celery-background-worker" class="toc-link">Scenario 1: The Memory Leak in a Celery Background Worker</a></li><li class="toc-item level-3"><a href="#scenario-2-the-event-loop-freeze-in-an-asyncio-microservice" class="toc-link">Scenario 2: The Event Loop Freeze in an Asyncio Microservice</a></li><li class="toc-item level-3"><a href="#scenario-3-high-concurrency-multithreading-slowdown" class="toc-link">Scenario 3: High Concurrency Multithreading Slowdown</a></li><li class="toc-item level-2"><a href="#2-tricky-cpython-runtime-language-edge-cases" class="toc-link">2. Tricky CPython Runtime & Language Edge Cases</a></li><li class="toc-item level-3"><a href="#question-1-is-a-b-always-identical-to-a-a-b" class="toc-link">Question 1: "Is `a += b` always identical to `a = a + b`?"</a></li><li class="toc-item level-3"><a href="#question-2-what-is-the-difference-between-getattr-and-getattribute" class="toc-link">Question 2: "What is the difference between `__getattr__` and `__getattribute__`?"</a></li><li class="toc-item level-3"><a href="#question-3-why-does-python-have-slots-if-it-already-has-dictionaries" class="toc-link">Question 3: "Why does Python have `__slots__` if it already has dictionaries?"</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

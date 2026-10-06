@@ -70,3 +70,45 @@ gantt
 1. **Keep Continuous Dialogue:** System design is a collaborative design session. If you go silent for 2 minutes while drawing, the interviewer feels detached. Vocalize your thought process: *"I am choosing Cassandra over PostgreSQL here because our write volume is 50,000 QPS and our query pattern is strictly key-value lookups by message ID..."*
 2. **Never Rush into Components:** Junior candidates immediately draw Kafka, Redis, and Elasticsearch on the whiteboard within 2 minutes without justifying why. Senior candidates justify every box with mathematical estimation and trade-off analysis.
 3. **Cross-Region Strategy is the Golden Touch:** Conclude by explaining how data replicates across US-East and EU-Central datacenters, handling data sovereignty (GDPR) and cross-ocean replication latency.
+
+
+## Further Reading
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [AWS Builders' Library](https://aws.amazon.com/builders-library/)
+- [Hello Interview: system design](https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> List the phases of an HLD interview.</summary>
+
+Requirements and scope, estimates, API, data model, high-level design, deep dive, bottlenecks/failures, trade-offs.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How should you use the whiteboard?</summary>
+
+Keep a simple labelled diagram, narrate data flow, and update it as constraints change.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What do you do when the interviewer pushes back?</summary>
+
+Treat it as a requirement change: state the impact, adjust one component, and explain the trade-off.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why discuss failure modes?</summary>
+
+It shows production maturity; every component can fail and the design must degrade gracefully.
+
+</details>

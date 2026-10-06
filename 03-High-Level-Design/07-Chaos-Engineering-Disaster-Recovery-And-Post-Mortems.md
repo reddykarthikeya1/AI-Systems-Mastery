@@ -180,3 +180,45 @@ The `homepage_feed_global` cache key expired at 09:00 UTC. The application lacke
 | Deploy PgBouncer connection pooler in transaction mode | Mitigation | SRE Team | 2026-10-10 |
 | Configure Chaos Mesh experiment to simulate cache flushes under 50k QPS | Detection | QA Lead | 2026-10-15 |
 ```
+
+
+## Further Reading
+
+- [Principles of Chaos Engineering](https://principlesofchaos.org/)
+- [Google SRE book: postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+- [AWS: disaster recovery whitepaper](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is chaos engineering?</summary>
+
+Deliberately injecting failures in a controlled way to verify the system tolerates them.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> RTO versus RPO?</summary>
+
+RTO is how long recovery may take; RPO is how much data loss is acceptable (time since last recoverable copy).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What belongs in a blameless post-mortem?</summary>
+
+Timeline, impact, root causes (systemic), what went well, and tracked action items.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why define a steady-state metric before a chaos experiment?</summary>
+
+To detect deviation objectively and to know when to abort.
+
+</details>

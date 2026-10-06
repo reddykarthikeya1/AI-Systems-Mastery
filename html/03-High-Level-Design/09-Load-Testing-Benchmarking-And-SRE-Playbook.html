@@ -1434,6 +1434,22 @@ flowchart TD
 </li>
 <li><strong>Isolate Recent Changes:</strong> Did a deployment or database schema migration occur in the last 60 minutes? If yes, <strong>rollback first, ask questions later.</strong></li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://sre.google/sre-book/service-level-objectives/">Google SRE book: service level objectives</a></li>
+<li><a href="https://www.youtube.com/watch?v=lJ8ydIuPFeU">Gil Tene: How NOT to measure latency</a></li>
+<li><a href="https://grafana.com/docs/k6/latest/">k6 documentation</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why measure percentiles instead of averages?</summary><p>Tail latency (p95/p99) is what users feel; averages hide slow outliers.</p>
+</details><details>
+<summary><strong>2.</strong> What is coordinated omission?</summary><p>A closed-loop load generator slows down when the system does, under-reporting latency; use open-loop arrival rates.</p>
+</details><details>
+<summary><strong>3.</strong> What is an SLO versus an SLA?</summary><p>An SLO is an internal reliability target; an SLA is an external commitment with consequences.</p>
+</details><details>
+<summary><strong>4.</strong> What is an error budget?</summary><p>The allowed unreliability (1 minus the SLO); spend it on releases, stop risky changes when exhausted.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1456,7 +1472,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-golden-signals-of-distributed-systems" class="toc-link">1. The Four Golden Signals of Distributed Systems</a></li><li class="toc-item level-2"><a href="#2-hands-on-load-testing-with-locust" class="toc-link">2. Hands-On Load Testing with Locust</a></li><li class="toc-item level-3"><a href="#the-complete-production-load-test-locustfile-py" class="toc-link">The Complete Production Load Test (`locustfile.py`)</a></li><li class="toc-item level-3"><a href="#deciphering-the-latency-distribution" class="toc-link">Deciphering the Latency Distribution</a></li><li class="toc-item level-2"><a href="#3-the-3-most-common-saturation-bottlenecks" class="toc-link">3. The 3 Most Common Saturation Bottlenecks</a></li><li class="toc-item level-3"><a href="#1-database-connection-pool-exhaustion" class="toc-link">1. Database Connection Pool Exhaustion</a></li><li class="toc-item level-3"><a href="#2-ephemeral-port-exhaustion-time-wait-buildup" class="toc-link">2. Ephemeral Port Exhaustion (`TIME_WAIT` Buildup)</a></li><li class="toc-item level-3"><a href="#3-kubernetes-cfs-cpu-quota-throttling" class="toc-link">3. Kubernetes CFS CPU Quota Throttling</a></li><li class="toc-item level-2"><a href="#4-on-call-incident-troubleshooting-runbook" class="toc-link">4. On-Call Incident Troubleshooting Runbook</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-golden-signals-of-distributed-systems" class="toc-link">1. The Four Golden Signals of Distributed Systems</a></li><li class="toc-item level-2"><a href="#2-hands-on-load-testing-with-locust" class="toc-link">2. Hands-On Load Testing with Locust</a></li><li class="toc-item level-3"><a href="#the-complete-production-load-test-locustfile-py" class="toc-link">The Complete Production Load Test (`locustfile.py`)</a></li><li class="toc-item level-3"><a href="#deciphering-the-latency-distribution" class="toc-link">Deciphering the Latency Distribution</a></li><li class="toc-item level-2"><a href="#3-the-3-most-common-saturation-bottlenecks" class="toc-link">3. The 3 Most Common Saturation Bottlenecks</a></li><li class="toc-item level-3"><a href="#1-database-connection-pool-exhaustion" class="toc-link">1. Database Connection Pool Exhaustion</a></li><li class="toc-item level-3"><a href="#2-ephemeral-port-exhaustion-time-wait-buildup" class="toc-link">2. Ephemeral Port Exhaustion (`TIME_WAIT` Buildup)</a></li><li class="toc-item level-3"><a href="#3-kubernetes-cfs-cpu-quota-throttling" class="toc-link">3. Kubernetes CFS CPU Quota Throttling</a></li><li class="toc-item level-2"><a href="#4-on-call-incident-troubleshooting-runbook" class="toc-link">4. On-Call Incident Troubleshooting Runbook</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

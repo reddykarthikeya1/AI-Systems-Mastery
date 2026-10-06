@@ -321,3 +321,45 @@ def test_lossless_roundtrip_invariant(input_data):
 | **Where to Patch** | Patch where looked up, not where defined | Target the importing module's namespace (`checkout_service.Client`) |
 | **AsyncMock** | Stunt double for `async def` functions | Standard `MagicMock` crashes when awaited; use `AsyncMock` |
 | **Hypothesis** | Robot throwing 1,000 edge cases at your function | Tests mathematical invariants across generated edge-case input domains |
+
+
+## Further Reading
+
+- [pytest documentation](https://docs.pytest.org/en/stable/)
+- [unittest.mock](https://docs.python.org/3/library/unittest.mock.html)
+- [Hypothesis quickstart](https://hypothesis.readthedocs.io/en/latest/quickstart.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the difference between a stub, a spy and a mock?</summary>
+
+A stub returns canned answers; a spy records how it was called while delegating; a mock has expectations about calls that it verifies.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> You patch `requests.get` but the code under test still makes real calls. Why?</summary>
+
+You must patch the name where it is looked up (`mymodule.requests.get` or `mymodule.get`), not where it is defined.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What do pytest fixture scopes control?</summary>
+
+How often the fixture is created: `function` (default), `class`, `module`, `package`, `session`.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does property-based testing (Hypothesis) add?</summary>
+
+It generates many inputs, checks invariants you state, and shrinks a failing case to a minimal example.
+
+</details>

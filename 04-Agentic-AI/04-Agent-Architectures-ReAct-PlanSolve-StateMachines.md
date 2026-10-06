@@ -119,3 +119,45 @@ flowchart TD
     Memory --> Actor
 ```
 *By reading its own previous mistakes in memory, the model refactors its code and avoids repeating bugs, increasing complex coding benchmark accuracy by $> 30\%$.*
+
+
+## Further Reading
+
+- [ReAct paper](https://arxiv.org/abs/2210.03629)
+- [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [Lilian Weng: LLM powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> ReAct in one sentence?</summary>
+
+The model alternates reasoning steps and tool actions, using each observation to decide the next step.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Plan-and-solve versus ReAct?</summary>
+
+Plan-and-solve writes a full plan first (fewer calls, reviewable); ReAct decides step by step (more adaptive).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why do agents need step budgets?</summary>
+
+To stop infinite loops and runaway cost when the model cannot make progress.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why model an agent as a state machine?</summary>
+
+Explicit states and transitions make behaviour testable, resumable and debuggable.
+
+</details>

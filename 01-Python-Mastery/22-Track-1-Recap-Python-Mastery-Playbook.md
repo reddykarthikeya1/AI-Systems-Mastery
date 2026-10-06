@@ -136,3 +136,45 @@ Before you proceed to **Track 2: Low-Level Design (LLD)**, verify that you can c
 > [!TIP]
 > **Next Stop: Track 2 (Low-Level Design)!**
 > Now that you possess world-class mastery over the Python language engine, memory, and concurrency, it is time to build modular, maintainable, and battle-tested object-oriented architectures. Proceed to [Track 2: Low-Level Design](../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.md)!
+
+
+## Further Reading
+
+- [Python performance tips (docs)](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
+- [cProfile](https://docs.python.org/3/library/profile.html)
+- [Real Python: concurrency overview](https://realpython.com/python-concurrency/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Name the three levels of the Python performance ladder.</summary>
+
+Algorithmic/data-structure choice, vectorisation and libraries, then native code (Numba/Cython/Rust).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which two concurrency models fit I/O-bound work?</summary>
+
+Threads and asyncio; processes are for CPU-bound work.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you keep dependencies reproducible?</summary>
+
+Lock files plus a virtual environment (or container), built from `pyproject.toml`.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the first step before any optimisation?</summary>
+
+Measure with a profiler or benchmark to find the real bottleneck.
+
+</details>

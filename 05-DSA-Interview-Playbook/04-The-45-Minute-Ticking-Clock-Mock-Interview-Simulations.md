@@ -129,3 +129,45 @@ classDiagram
 * **Danger:** Stubbornly continuing with your original idea and missing the lifeline.
 * **The Antidote:** **Latch on immediately!**
   > *"Ah, thank you! Because it's sorted, we don't need a hash map at all—we can use Binary Search or Two Pointers to solve it in $O(\log N)$ or $O(N)$ with $O(1)$ auxiliary space."*
+
+
+## Further Reading
+
+- [Big-O cheat sheet](https://www.bigocheatsheet.com/)
+- [Python collections](https://docs.python.org/3/library/collections.html)
+- [VisuAlgo](https://visualgo.net/en)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> How should 45 minutes be split in a coding interview?</summary>
+
+About 5 clarifying, 5 to 10 approach, 20 coding, 5 testing, 5 for complexity and follow-ups.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What do you do at the 10-minute mark with no approach?</summary>
+
+State brute force, code or outline it if time allows, then improve it.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why verbalise trade-offs?</summary>
+
+Interviewers grade reasoning, not just the final code.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What do you do if you find a bug late?</summary>
+
+Say so, localise it with a trace, fix it and re-run the examples.
+
+</details>

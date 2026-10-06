@@ -230,3 +230,45 @@ Verify your understanding before continuing:
    - *Answer:* Transformer self-attention mechanisms naturally place higher attention weights on initial positional tokens (primacy effect) and recent trailing tokens (recency effect), creating an attention trough in the middle of long contexts.
 3. **What is observation pruning and when should an agent execute it?**
    - *Answer:* It is the practice of replacing large intermediate raw tool outputs (e.g. multi-megabyte JSON payloads or SQL table dumps) with concise summaries once the agent has finished parsing the necessary factual deductions, preserving context space for future turns.
+
+
+## Further Reading
+
+- [Anthropic: prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)
+- [Lost in the middle paper](https://arxiv.org/abs/2307.03172)
+- [LLMLingua paper](https://arxiv.org/abs/2310.05736)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does prompt caching require of your prompt layout?</summary>
+
+Stable content (system prompt, tools, shared documents) first, volatile content last, so the prefix can be reused.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is context compaction?</summary>
+
+Summarising or trimming history and tool outputs to keep the prompt within budget while preserving key facts.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is 'lost in the middle'?</summary>
+
+Models use information at the start and end of long prompts better than in the middle; order evidence accordingly.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you budget tokens?</summary>
+
+Reserve output and system space, summarise history, then fit the best-ranked evidence in the remainder.
+
+</details>

@@ -1323,6 +1323,22 @@ flowchart TD
 <li><strong>Rolling Summary Buffer Memory:</strong><br>Compress steps 1 through 15 into a concise 3-sentence summary: <em>&quot;Steps 1-15 verified test failure in auth_service.py: line 42 raised IndexError&quot;</em>. Discard the raw token history of past steps.</li>
 <li><strong>Semantic Prompt Caching:</strong><br>Modern providers (Anthropic, OpenAI) support <strong>Prompt Caching</strong>. Ensure the system prompt and static tool definitions remain byte-identical at the beginning of the context window. Subsequent requests reuse the KV-cache at the provider level, reducing token costs by <strong>$90\%$</strong> and cutting latency by <strong>$80\%$</strong>!</li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: building effective agents</a></li>
+<li><a href="https://hamel.dev/blog/posts/evals/">Hamel Husain: your AI product needs evals</a></li>
+<li><a href="https://eugeneyan.com/writing/llm-patterns/">Eugene Yan: LLM patterns</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> How do you answer 'how would you evaluate an agent'?</summary><p>Define success by end state, build a task suite, run repeated trials, grade outcome and trajectory, report pass^k with intervals.</p>
+</details><details>
+<summary><strong>2.</strong> How do you answer 'how do you stop hallucinations in RAG'?</summary><p>Ground answers in retrieved text with citations, add groundedness checks, allow &#39;I don&#39;t know&#39;, and measure faithfulness.</p>
+</details><details>
+<summary><strong>3.</strong> What do interviewers want in 'design a support agent'?</summary><p>Scope, tools, memory, guardrails, escalation to humans, evaluation and cost control.</p>
+</details><details>
+<summary><strong>4.</strong> Strong closing for an agent design?</summary><p>Failure modes, safety controls and how you would measure quality in production.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1345,7 +1361,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-infinite-tool-calling-loop" class="toc-link">Scenario 1: The Infinite Tool Calling Loop</a></li><li class="toc-item level-3"><a href="#scenario-2-indirect-prompt-injection-via-untrusted-web-scraping" class="toc-link">Scenario 2: Indirect Prompt Injection via Untrusted Web Scraping</a></li><li class="toc-item level-3"><a href="#scenario-3-token-inflation-in-long-running-reasoning-chains" class="toc-link">Scenario 3: Token Inflation in Long-Running Reasoning Chains</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-production-crisis-scenarios" class="toc-link">1. Production Crisis Scenarios</a></li><li class="toc-item level-3"><a href="#scenario-1-the-infinite-tool-calling-loop" class="toc-link">Scenario 1: The Infinite Tool Calling Loop</a></li><li class="toc-item level-3"><a href="#scenario-2-indirect-prompt-injection-via-untrusted-web-scraping" class="toc-link">Scenario 2: Indirect Prompt Injection via Untrusted Web Scraping</a></li><li class="toc-item level-3"><a href="#scenario-3-token-inflation-in-long-running-reasoning-chains" class="toc-link">Scenario 3: Token Inflation in Long-Running Reasoning Chains</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

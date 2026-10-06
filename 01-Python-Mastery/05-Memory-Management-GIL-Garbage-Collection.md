@@ -24,8 +24,8 @@ Python does not call the operating system's `malloc()` directly for every object
 ```mermaid
 flowchart TD
     OS["Operating System Virtual Memory"] --> Layer0["Layer 0: OS malloc() / free()<br>(The Giant Steel Factory)"]
-    Layer0 --> Arenas["Arenas (256 KB Chunks)<br>(The Big Storage Pallet)"]
-    Arenas --> Pools["Pools (4 KB Pages aligned within Arenas)<br>(The Organizer Trays)"]
+    Layer0 --> Arenas["Arenas (1 MiB on 3.10+ 64-bit builds; 256 KiB before)<br>(The Big Storage Pallet)"]
+    Arenas --> Pools["Pools (16 KiB on 3.10+; 4 KiB before)<br>(The Organizer Trays)"]
     Pools --> Blocks["Blocks (Uniform sizes from 8 to 512 bytes)<br>(The Pre-Cut Screw Slots)"]
     Blocks --> Objects["Small PyObjects (Integers, Floats, Strings, Small Lists)"]
 ```
@@ -218,8 +218,26 @@ print(f"Standard instance size: {sys.getsizeof(p_std)} bytes + dict size: {sys.g
 print(f"Slotted instance size:  {sys.getsizeof(p_slot)} bytes (Has no __dict__!)")
 ```
 *Memory Impact in Scale Systems:*
-* 10 million `StandardPoint` instances: $\approx 1.6 \text{ GB}$ of RAM.
-* 10 million `SlottedPoint` instances: $\approx 500 \text{ MB}$ of RAM (**$> 68\%$ memory reduction!**).
+**Measured, not remembered.** Run [`labs/04_measure_memory_claims.py`](labs/04_measure_memory_claims.py) on your interpreter. On CPython 3.11.9 (64-bit Windows), two `float` attributes per object, including the two float objects themselves:
+
+| Class | Bytes per instance (measured) |
+|---|---|
+| `StandardPoint` (with `__dict__`) | about 144 |
+| `SlottedPoint` (`__slots__`) | about 104 (**about 28% smaller**) |
+
+Scaled to 10 million instances that is roughly 1.4 GB versus 1.0 GB. The saving is real but **version-dependent** and smaller than the old "70%" folklore: CPython 3.11+ stores instance attributes inline and shares key tables between instances of the same class, which shrank the cost of `__dict__`. The saving grows with the number of attributes and is largest when the values themselves are small or shared (ints, interned strings). Always measure on your version before promising a number.
+
+---
+
+## Version Notes (what changed in CPython, and what to check on your version)
+
+| Topic | What to know |
+|---|---|
+| `pymalloc` sizes | 64-bit builds since 3.10 use **1 MiB arenas and 16 KiB pools** (earlier: 256 KiB and 4 KiB). Check `sys._debugmallocstats()`. |
+| GC thresholds | Default `gc.get_threshold()` is `(700, 10, 10)` on 3.11. The collector has been reworked in newer releases (3.14 introduces an incremental collector), so treat numbers as version-specific and print them on your interpreter. |
+| The GIL | Python 3.13 added an **experimental free-threaded build** (PEP 703, no GIL, `python3.13t`); it is officially supported (but optional) from 3.14 (PEP 779). Single-thread speed and C-extension compatibility are the trade-offs. Detect it with `sys._is_gil_enabled()`. |
+| Subinterpreters | 3.12 gave each subinterpreter its **own GIL** (PEP 684); 3.14 exposes a high-level API (PEP 734, `concurrent.interpreters`), a third way to use multiple cores besides threads (free-threaded) and processes. |
+| JIT | 3.13 ships an **experimental copy-and-patch JIT** (PEP 744), off by default. |
 
 ---
 
@@ -253,3 +271,45 @@ for stat in top_stats[:3]:
 tracemalloc.stop()
 ```
 *Output clearly pinpoints the exact file and line number generating net memory increases!*
+
+
+## Further Reading
+
+- [gc module](https://docs.python.org/3/library/gc.html)
+- [PEP 703: making the GIL optional](https://peps.python.org/pep-0703/)
+- [PEP 779: free-threaded Python support criteria](https://peps.python.org/pep-0779/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What are the two mechanisms CPython uses to reclaim memory?</summary>
+
+Reference counting (immediate, handles most objects) plus a cyclic garbage collector for reference cycles.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why can a free-threaded (no-GIL) build be slower for single-threaded code?</summary>
+
+It needs atomic or biased reference counting and finer-grained locking, which add overhead per operation; the benefit appears when threads run CPU-bound Python code in parallel.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does `weakref` solve?</summary>
+
+It references an object without increasing its reference count, so caches and observer lists do not keep objects alive or create cycles.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Run `labs/04_measure_memory_claims.py`: why is the `__slots__` saving smaller than older articles claim?</summary>
+
+CPython 3.11+ stores instance attributes inline and shares key tables, shrinking `__dict__` overhead; the measured saving on small objects is tens of percent, not 70%.
+
+</details>

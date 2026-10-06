@@ -73,3 +73,45 @@ sequenceDiagram
 If a user updates their profile in US-East while their automated bot updates it in EU-West simultaneously:
 1. **Last-Write-Wins (LWW):** Uses NTP timestamp to pick the highest clock value (Danger: Clock skew can overwrite newer changes).
 2. **Conflict-Free Replicated Data Types (CRDTs):** Mathematically convergent data structures that merge concurrent updates without centralized coordination.
+
+
+## Further Reading
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [Stripe: rate limiters](https://stripe.com/blog/rate-limiters)
+- [AWS Builders' Library](https://aws.amazon.com/builders-library/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> How do you start 'design a rate limiter'?</summary>
+
+Clarify scope (per user/IP, where enforced, hard or soft limits), choose an algorithm (token bucket), then storage (Redis) and distribution.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Strong versus eventual consistency: how do you justify choosing?</summary>
+
+Tie to the cost of staleness: money and inventory need strong; feeds and counters tolerate eventual.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you handle 'it must be highly available'?</summary>
+
+Remove single points of failure, replicate across zones, use health checks and failover, and state RTO/RPO.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What closes a strong answer?</summary>
+
+Bottlenecks identified, a scaling path, and the trade-offs you accepted.
+
+</details>

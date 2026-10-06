@@ -148,3 +148,45 @@ flowchart TD
 1. **Context Relevance:** Evaluates if the retrieved chunks contain the actual facts needed to answer the question without irrelevant noise.
 2. **Faithfulness (Groundedness):** Evaluates whether every claim in the generated answer can be directly inferred from the retrieved context (Score $1.0$ = zero hallucinations).
 3. **Answer Relevance:** Evaluates whether the answer directly and concisely satisfies the user's intent.
+
+
+## Further Reading
+
+- [LiteLLM documentation](https://docs.litellm.ai/)
+- [NeMo Guardrails](https://docs.nvidia.com/nemo/guardrails/latest/index.html)
+- [Generative Agents paper](https://arxiv.org/abs/2304.03442)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Short-term versus long-term agent memory?</summary>
+
+Short-term is the current thread's context/state; long-term persists facts and experiences across sessions in a store.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is a guardrail?</summary>
+
+A control around the model that detects or blocks unsafe inputs, outputs or actions; it is a detection layer, not access control.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does an LLM gateway centralise?</summary>
+
+Provider routing, retries/fallbacks, rate limits, caching, cost tracking and auth.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why log prompts and tool calls?</summary>
+
+To debug failures, evaluate quality and audit behaviour (with privacy controls).
+
+</details>

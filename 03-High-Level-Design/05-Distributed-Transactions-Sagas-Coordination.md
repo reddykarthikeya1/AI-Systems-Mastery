@@ -98,3 +98,45 @@ If the client retries, the server might execute the charge twice!
 2. Server checks Redis/DB for this key atomically (`SET key token NX EX 120`).
 3. If the key exists, return the cached result immediately without re-executing.
 4. If the key is new, execute the transaction, persist the result, and reply.
+
+
+## Further Reading
+
+- [Saga pattern](https://microservices.io/patterns/data/saga.html)
+- [Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
+- [Azure: Saga pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why not use two-phase commit across microservices?</summary>
+
+It blocks on coordinator failure and couples availability of all participants; sagas with compensations are more resilient.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Orchestration versus choreography saga?</summary>
+
+Orchestration uses a central coordinator that issues commands; choreography has services react to each other's events.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What problem does the transactional outbox solve?</summary>
+
+Atomically updating state and publishing an event by writing both in one local transaction and publishing from the outbox table.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What makes a saga step safe to retry?</summary>
+
+Idempotency (idempotency keys) and a defined compensating action.
+
+</details>

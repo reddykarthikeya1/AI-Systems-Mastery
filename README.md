@@ -8,10 +8,24 @@
 
 ---
 
-## Master Scorecard & Confidence Matrix (Genuine 10 / 10 Across All Dimensions)
+## Quality: what is measured and what is judged
 
-| Track | Beginner Friendliness | Technical Depth | Production Realism & Mastery | Curated Materials |
-| :--- | :---: | :---: | :---: | :---: |
+**Measured** (regenerate with `python tools/audit.py`, output in [QUALITY_REPORT.md](QUALITY_REPORT.md)): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 34 brute-force cross-checks), chapters with *Check Yourself* and *Further Reading* (every link checked to resolve), the portal's search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.
+
+**Editor's assessment** (a judgment, not a measurement, out of 10; the gaps column is what stops a higher score):
+
+| Track | Beginner friendliness | Technical depth | Accuracy and currency | Practice and active learning | Biggest remaining gap |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| Python Mastery | 8.5 | 8 | 7.5 | 7.5 | exercises with hidden tests; version notes beyond Chapter 5 |
+| Low-Level Design | 7.5 | 6.5 | 7.5 | 6.5 | UML and design-pattern chapters are short; 14 systems under 1,000 words |
+| High-Level Design | 7 | 7.5 | 7.5 | 7 | five classic systems still missing (news feed, notifications, typeahead, file storage, object store) |
+| Agentic AI | 7 | 7.5 | 8 | 8 | chapters 02 to 07 are still short; one provider adapter only |
+| DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
+| Portal (HTML/PDF) | n/a | n/a | 9 | n/a | PDFs print answers collapsed; no automated browser test suite in CI yet |
+
+Verified runnable material: `04-Agentic-AI/examples/` (pinned `langgraph==1.2.13`, `mcp==2.3.0`; run with `pytest -q`), `05-DSA-Interview-Playbook/practice/` (`python run_tests.py 12 --stub`, `--fuzz`, `--hint 12`), and the labs and simulations in each track.
+
+--- | :---: | :---: | :---: | :---: |
 | **Track 1: Python Engineering Mastery** | **10 / 10** | **10 / 10** | **10 / 10** | 23 Chapters (incl Capstone Recap) + Distributed/HPC/SQL/FastAPI/Rust/Polars + 3 Labs + PDFs |
 | **Track 2: Low-Level Design (LLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 29 Books (18 Systems + Zero-Prereq Primer + LLD Recap + Concurrency Lab) + PDFs |
 | **Track 3: High-Level Design (HLD)** | **10 / 10** | **10 / 10** | **10 / 10** | 28 Books (15 Systems + Zero-Prereq Global Infra Primer + HLD Recap + 4 Sims) + PDFs |

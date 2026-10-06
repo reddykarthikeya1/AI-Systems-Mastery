@@ -1462,7 +1462,23 @@ ring.add_node(<span class="hljs-string">&quot;DB_Shard_C&quot;</span>)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Key &#x27;user_10291&#x27; maps to:&quot;</span>, ring.get_node(<span class="hljs-string">&quot;user_10291&quot;</span>))
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Key &#x27;order_99812&#x27; maps to:&quot;</span>, ring.get_node(<span class="hljs-string">&quot;order_99812&quot;</span>))</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://www.postgresql.org/docs/current/high-availability.html">PostgreSQL: high availability and replication</a></li>
+<li><a href="https://www.mongodb.com/docs/manual/sharding/">MongoDB sharding</a></li>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html">DynamoDB partition key design</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Replication versus partitioning (sharding)?</summary><p>Replication copies the same data for availability and read scale; partitioning splits different data across nodes for write and storage scale.</p>
+</details><details>
+<summary><strong>2.</strong> What makes a good shard key?</summary><p>High cardinality and even distribution of load, aligned with the dominant query pattern; avoid monotonic keys that create hot shards.</p>
+</details><details>
+<summary><strong>3.</strong> What is read-your-writes consistency?</summary><p>A client always sees its own writes, e.g. by reading from the primary or sticky routing after a write.</p>
+</details><details>
+<summary><strong>4.</strong> Why does a cross-shard transaction hurt?</summary><p>It needs coordination (2PC or sagas), adding latency and failure modes.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1484,7 +1500,7 @@ ring.add_node(<span class="hljs-string">&quot;DB_Shard_C&quot;</span>)
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-storage-engines-under-the-hood-b-trees-vs-lsm-trees" class="toc-link">1. Storage Engines Under the Hood: B-Trees vs LSM-Trees</a></li><li class="toc-item level-2"><a href="#2-replication-models-leader-vs-leaderless" class="toc-link">2. Replication Models: Leader vs Leaderless</a></li><li class="toc-item level-3"><a href="#the-quorum-mathematics-math4" class="toc-link">The Quorum Mathematics ($R + W &gt; N$)</a></li><li class="toc-item level-2"><a href="#3-sharding-horizontal-partitioning" class="toc-link">3. Sharding & Horizontal Partitioning</a></li><li class="toc-item level-3"><a href="#partitioning-strategies" class="toc-link">Partitioning Strategies:</a></li><li class="toc-item level-2"><a href="#4-consistent-hashing-with-virtual-nodes-the-standard" class="toc-link">4. Consistent Hashing with Virtual Nodes (The Standard)</a></li><li class="toc-item level-3"><a href="#why-it-eliminates-re-indexing-storms" class="toc-link">Why It Eliminates Re-indexing Storms</a></li><li class="toc-item level-3"><a href="#eliminating-hotspots-virtual-nodes-vnodes" class="toc-link">Eliminating Hotspots: Virtual Nodes (vnodes)</a></li><li class="toc-item level-3"><a href="#complete-consistent-hash-ring-implementation-in-python" class="toc-link">Complete Consistent Hash Ring Implementation in Python</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-storage-engines-under-the-hood-b-trees-vs-lsm-trees" class="toc-link">1. Storage Engines Under the Hood: B-Trees vs LSM-Trees</a></li><li class="toc-item level-2"><a href="#2-replication-models-leader-vs-leaderless" class="toc-link">2. Replication Models: Leader vs Leaderless</a></li><li class="toc-item level-3"><a href="#the-quorum-mathematics-math4" class="toc-link">The Quorum Mathematics ($R + W &gt; N$)</a></li><li class="toc-item level-2"><a href="#3-sharding-horizontal-partitioning" class="toc-link">3. Sharding & Horizontal Partitioning</a></li><li class="toc-item level-3"><a href="#partitioning-strategies" class="toc-link">Partitioning Strategies:</a></li><li class="toc-item level-2"><a href="#4-consistent-hashing-with-virtual-nodes-the-standard" class="toc-link">4. Consistent Hashing with Virtual Nodes (The Standard)</a></li><li class="toc-item level-3"><a href="#why-it-eliminates-re-indexing-storms" class="toc-link">Why It Eliminates Re-indexing Storms</a></li><li class="toc-item level-3"><a href="#eliminating-hotspots-virtual-nodes-vnodes" class="toc-link">Eliminating Hotspots: Virtual Nodes (vnodes)</a></li><li class="toc-item level-3"><a href="#complete-consistent-hash-ring-implementation-in-python" class="toc-link">Complete Consistent Hash Ring Implementation in Python</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

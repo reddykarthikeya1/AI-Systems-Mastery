@@ -231,3 +231,45 @@ Verify your understanding before moving forward:
    - *Answer:* Flat chunking cannot answer broad, thematic questions spanning an entire library. RAPTOR builds recursive cluster summaries, allowing queries to be answered at varying levels of semantic abstraction.
 3. **In GraphRAG, what does the Leiden community detection algorithm accomplish?**
    - *Answer:* It partitions densely connected clusters of entities (e.g., all people and projects within a single department) so the system can generate structured, high-level summaries of entire interconnected domains.
+
+
+## Further Reading
+
+- [GraphRAG paper](https://arxiv.org/abs/2404.16130)
+- [Microsoft GraphRAG documentation](https://microsoft.github.io/graphrag/)
+- [MemGPT paper](https://arxiv.org/abs/2310.08560)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does episodic memory store?</summary>
+
+Specific past experiences and their outcomes, retrieved to guide similar tasks.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> When does GraphRAG help most?</summary>
+
+Corpus-wide or relational questions that top-k chunk retrieval cannot answer.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is the main cost of GraphRAG?</summary>
+
+Indexing: many LLM calls to extract entities and write community summaries.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why timestamp and attribute memories?</summary>
+
+To resolve conflicts, expire stale facts and audit where a memory came from.
+
+</details>

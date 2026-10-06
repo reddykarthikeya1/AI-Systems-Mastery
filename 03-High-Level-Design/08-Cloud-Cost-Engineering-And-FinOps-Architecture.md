@@ -116,3 +116,45 @@ When wrapping up any High-Level Design interview, spend the final 2 minutes demo
 > *"To ensure this architecture is commercially viable at scale, I've designed direct client-to-object pre-signed uploads to bypass our compute fleet and NAT gateways, utilized WebP compression to reduce egress transfer by 80%, and enforced a 30-day S3 Glacier Instant Retrieval lifecycle to slash long-term storage expenditure by 85%."*
 
 This elevates you immediately from a mid-level engineer to a Staff/Principal candidate.
+
+
+## Further Reading
+
+- [FinOps Foundation](https://www.finops.org/introduction/what-is-finops/)
+- [AWS pricing calculator](https://calculator.aws/)
+- [AWS Well-Architected: cost optimisation](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Biggest hidden cost in cloud architectures?</summary>
+
+Data transfer (egress and cross-AZ/region) and idle over-provisioned resources.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> When are spot or preemptible instances appropriate?</summary>
+
+For fault-tolerant, interruptible work such as batch jobs, with checkpointing.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does FinOps add to engineering?</summary>
+
+Cost visibility per team/service, budgets and unit economics (cost per request/user).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Reserved capacity versus on-demand?</summary>
+
+Reserved or committed use lowers price for steady baseline load; on-demand handles variable peaks.
+
+</details>

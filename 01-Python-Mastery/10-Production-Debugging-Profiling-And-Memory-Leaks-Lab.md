@@ -310,3 +310,45 @@ You can immediately identify:
 1. **Always use context managers** (`with lock:`) for acquiring locks, but establish a strict **global lock acquisition order** (e.g., sort locks by ID before acquiring) to mathematically eliminate deadlocks.
 2. **Never use unbound callbacks or caches** without `weakref` or TTL/LRU eviction policies.
 3. Keep `faulthandler` registered in production servers (`faulthandler.register(signal.SIGUSR1)`) so you can trigger live thread stack dumps on running Kubernetes pods without restarting them!
+
+
+## Further Reading
+
+- [tracemalloc](https://docs.python.org/3/library/tracemalloc.html)
+- [cProfile and profile](https://docs.python.org/3/library/profile.html)
+- [py-spy](https://github.com/benfred/py-spy)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Which tool shows where Python allocated memory over time?</summary>
+
+`tracemalloc` (snapshots and diffs). `objgraph` helps find why objects stay alive.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do you find a CPU hotspot?</summary>
+
+Profile with `cProfile` or a sampling profiler (py-spy), sort by cumulative time, then optimise the function that dominates.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> A long-running service's memory only grows. First three suspects?</summary>
+
+Unbounded caches or lists, reference cycles with `__del__` or global references, and per-request objects stored in module-level state.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why measure before optimising?</summary>
+
+Intuition about hotspots is often wrong; optimising a function that is 2% of runtime cannot give more than a 2% gain (Amdahl's law).
+
+</details>

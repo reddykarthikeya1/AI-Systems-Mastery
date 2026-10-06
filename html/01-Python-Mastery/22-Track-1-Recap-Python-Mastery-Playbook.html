@@ -1536,6 +1536,22 @@ flowchart TD
 Now that you possess world-class mastery over the Python language engine, memory, and concurrency, it is time to build modular, maintainable, and battle-tested object-oriented architectures. Proceed to <a href="../02-Low-Level-Design/00-The-Intuitive-LLD-Mental-Model-And-Interview-Blueprint.html">Track 2: Low-Level Design</a>!</p>
 </div>
       </div>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://wiki.python.org/moin/PythonSpeed/PerformanceTips">Python performance tips (docs)</a></li>
+<li><a href="https://docs.python.org/3/library/profile.html">cProfile</a></li>
+<li><a href="https://realpython.com/python-concurrency/">Real Python: concurrency overview</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Name the three levels of the Python performance ladder.</summary><p>Algorithmic/data-structure choice, vectorisation and libraries, then native code (Numba/Cython/Rust).</p>
+</details><details>
+<summary><strong>2.</strong> Which two concurrency models fit I/O-bound work?</summary><p>Threads and asyncio; processes are for CPU-bound work.</p>
+</details><details>
+<summary><strong>3.</strong> How do you keep dependencies reproducible?</summary><p>Lock files plus a virtual environment (or container), built from <code>pyproject.toml</code>.</p>
+</details><details>
+<summary><strong>4.</strong> What is the first step before any optimisation?</summary><p>Measure with a profiler or benchmark to find the real bottleneck.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1558,7 +1574,7 @@ Now that you possess world-class mastery over the Python language engine, memory
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-grand-architectural-mental-map" class="toc-link">1. The Grand Architectural Mental Map</a></li><li class="toc-item level-2"><a href="#2-plain-english-jargon-demystifier-track-1-edition" class="toc-link">2. Plain-English Jargon Demystifier (Track 1 Edition)</a></li><li class="toc-item level-2"><a href="#3-the-concurrency-parallelism-decision-matrix" class="toc-link">3. The Concurrency & Parallelism Decision Matrix</a></li><li class="toc-item level-2"><a href="#4-the-junior-vs-senior-antipattern-graveyard" class="toc-link">4. The Junior vs. Senior Antipattern Graveyard</a></li><li class="toc-item level-2"><a href="#5-high-yield-10-minute-pre-interview-memory-anchors" class="toc-link">5. High-Yield 10-Minute Pre-Interview Memory Anchors</a></li><li class="toc-item level-2"><a href="#6-track-1-graduation-milestone-check" class="toc-link">6. Track 1 Graduation Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-grand-architectural-mental-map" class="toc-link">1. The Grand Architectural Mental Map</a></li><li class="toc-item level-2"><a href="#2-plain-english-jargon-demystifier-track-1-edition" class="toc-link">2. Plain-English Jargon Demystifier (Track 1 Edition)</a></li><li class="toc-item level-2"><a href="#3-the-concurrency-parallelism-decision-matrix" class="toc-link">3. The Concurrency & Parallelism Decision Matrix</a></li><li class="toc-item level-2"><a href="#4-the-junior-vs-senior-antipattern-graveyard" class="toc-link">4. The Junior vs. Senior Antipattern Graveyard</a></li><li class="toc-item level-2"><a href="#5-high-yield-10-minute-pre-interview-memory-anchors" class="toc-link">5. High-Yield 10-Minute Pre-Interview Memory Anchors</a></li><li class="toc-item level-2"><a href="#6-track-1-graduation-milestone-check" class="toc-link">6. Track 1 Graduation Milestone Check</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

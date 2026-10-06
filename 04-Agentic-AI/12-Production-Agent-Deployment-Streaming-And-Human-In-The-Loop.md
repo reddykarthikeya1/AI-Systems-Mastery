@@ -242,3 +242,45 @@ class GovernedToolExecutor:
 ```
 
 This ensures full governance and zero possibility of runaway catastrophic actions in production environments!
+
+
+## Further Reading
+
+- [LangGraph human-in-the-loop](https://docs.langchain.com/oss/python/langgraph/interrupts)
+- [MDN: Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+- [FastAPI streaming responses](https://fastapi.tiangolo.com/advanced/custom-response/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why stream tokens to the client?</summary>
+
+Perceived latency drops because users see output start immediately.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Where do you put human approval in an agent flow?</summary>
+
+Before irreversible or external actions, with the exact action shown to the approver.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What state must survive a restart?</summary>
+
+Conversation thread state and pending approvals, stored in a durable checkpointer.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why make tools idempotent in HITL flows?</summary>
+
+Resumed nodes may re-run, so side effects must not duplicate.
+
+</details>

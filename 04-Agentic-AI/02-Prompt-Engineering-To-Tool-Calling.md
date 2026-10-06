@@ -157,3 +157,45 @@ In [`examples/ex01_tool_loop.py`](examples/ex01_tool_loop.py) the `get_history` 
 **Real-SDK caveat.** In `mcp==2.3.0`, an exception raised inside an MCP tool reaches the model only as "Error executing tool <name>" (the detail is not forwarded). For fixable mistakes, return the explanation in the result text instead (see [`examples/ex04_mcp_server.py`](examples/ex04_mcp_server.py)). Verify how *your* SDK version reports tool errors before relying on them.
 
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
+
+
+## Further Reading
+
+- [Anthropic: tool use overview](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview)
+- [OpenAI: function calling](https://platform.openai.com/docs/guides/function-calling)
+- [Lilian Weng: prompt engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the difference between a system prompt and a user prompt?</summary>
+
+The system prompt sets role and rules for the conversation; the user prompt carries the request. Neither is a security boundary.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> In function calling, who executes the function?</summary>
+
+Your application. The model only emits a structured call (name and arguments); you validate, run and return the result.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why give tool parameters enums and descriptions?</summary>
+
+They constrain and document the call, reducing wrong or invented arguments.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is few-shot prompting?</summary>
+
+Including worked examples in the prompt so the model imitates the format and reasoning.
+
+</details>

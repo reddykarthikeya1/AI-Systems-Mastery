@@ -330,3 +330,45 @@ assert lru.get(2) == -1  # Verified evicted!
 assert lru.get(3) == 300
 print("LRU Cache implementation passed all assertions successfully!")
 ```
+
+
+## Further Reading
+
+- [Data structures tutorial](https://docs.python.org/3/tutorial/datastructures.html)
+- [collections module](https://docs.python.org/3/library/collections.html)
+- [TimeComplexity wiki](https://wiki.python.org/moin/TimeComplexity)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the average time complexity of `x in some_set` versus `x in some_list`?</summary>
+
+`O(1)` average for a set (hash lookup) versus `O(n)` for a list (linear scan).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why must dict keys be hashable, and what rule links `__hash__` and `__eq__`?</summary>
+
+The key's hash picks a slot. Objects that compare equal must have equal hashes (`a == b` implies `hash(a) == hash(b)`), otherwise lookups fail.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why is `list.insert(0, x)` slow but `collections.deque.appendleft(x)` fast?</summary>
+
+A list is a contiguous array, so inserting at the front shifts all elements (`O(n)`). A deque is a linked structure of blocks with `O(1)` operations at both ends.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Since which version do dicts preserve insertion order as a language guarantee?</summary>
+
+Python 3.7 (it was an implementation detail of CPython 3.6).
+
+</details>

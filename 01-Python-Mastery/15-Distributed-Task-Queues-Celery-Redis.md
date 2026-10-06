@@ -322,3 +322,45 @@ def process_billing_transaction(self, idempotency_key: str, account_id: str, amo
 | **Tasks piling up in Redis despite workers having low CPU** | High `worker_prefetch_multiplier` holding tasks in starved processes. | Set `worker_prefetch_multiplier = 1` and `task_acks_late = True`. |
 | **Duplicate task execution on server restart** | Broker re-delivers unacknowledged tasks that were already halfway done. | Implement the Idempotency Key Pattern in Redis before running side-effects. |
 | **Redis memory usage explosion** | Celery storing task results indefinitely without TTL eviction. | Set `result_expires = 3600` (1 hour) or disable result storage for fire-and-forget tasks (`ignore_result = True`). |
+
+
+## Further Reading
+
+- [Celery documentation](https://docs.celeryq.dev/en/stable/)
+- [Celery task best practices](https://docs.celeryq.dev/en/stable/userguide/tasks.html)
+- [Redis documentation](https://redis.io/docs/latest/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why use a task queue instead of doing work in the request handler?</summary>
+
+To keep requests fast, retry failures, smooth bursts and scale workers independently.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What makes a Celery task safe to retry?</summary>
+
+Idempotency: running it twice has the same effect as once (use idempotency keys or upserts).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does `acks_late` change?</summary>
+
+The message is acknowledged after the task finishes, so a crashed worker's task is redelivered (at-least-once) instead of lost.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the role of the broker versus the result backend?</summary>
+
+The broker carries task messages (Redis/RabbitMQ); the result backend stores return values and states.
+
+</details>

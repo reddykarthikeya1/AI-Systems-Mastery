@@ -153,3 +153,45 @@ The section above emulates the LangGraph execution model in plain Python to teac
 **Version note.** LangGraph's API evolves quickly (for example `MemorySaver` became `InMemorySaver`, and the human-in-the-loop primitives changed from static breakpoints to `interrupt`/`Command`). Pin the version and re-run the examples when upgrading.
 
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
+
+
+## Further Reading
+
+- [LangGraph documentation](https://docs.langchain.com/oss/python/langgraph/overview)
+- [LangGraph persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
+- [LangGraph graph API](https://docs.langchain.com/oss/python/langgraph/graph-api)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does a reducer do in LangGraph state?</summary>
+
+It defines how updates to a key are merged (append, overwrite, custom); required when parallel nodes write the same key.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does a checkpointer enable?</summary>
+
+Saving state after each step per thread ID: memory across turns, resume after failure, human-in-the-loop and time travel.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does `interrupt()` plus `Command(resume=...)` do?</summary>
+
+Pauses the graph for human input and resumes the same thread with the supplied value.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why re-run examples when upgrading LangGraph?</summary>
+
+The API changes between versions; pinned versions plus tests catch breakage (see `examples/`).
+
+</details>

@@ -176,3 +176,45 @@ You now understand:
 4. How the **Strategy Pattern** lets you swap business rules at runtime without breaking existing code.
 
 You are now 100% prepared to study the 16 Industrial Core Systems in Track 2!
+
+
+## Further Reading
+
+- [Python classes tutorial](https://docs.python.org/3/tutorial/classes.html)
+- [threading module](https://docs.python.org/3/library/threading.html)
+- [Refactoring Guru: OOP basics](https://refactoring.guru/design-patterns/what-is-pattern)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is encapsulation and why does it matter in design?</summary>
+
+Hiding internal state behind a small interface so implementation can change without breaking callers and invariants are protected.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Composition versus inheritance: which is the default choice and why?</summary>
+
+Prefer composition: it couples less, can change behaviour at runtime, and avoids fragile base-class hierarchies. Use inheritance for true is-a relationships.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is a race condition?</summary>
+
+A bug where the result depends on the timing of concurrent operations on shared state, e.g. two threads doing `balance += x` and losing an update.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does a lock protect, and what is the risk of using two?</summary>
+
+A lock protects a critical section from concurrent access. Acquiring two locks in different orders in different threads can deadlock.
+
+</details>

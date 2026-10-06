@@ -111,3 +111,45 @@ In real applications, you rarely search vectors in isolation. You search: *"Find
 | **Post-Filtering** | Run HNSW vector search to find Top-100 nearest items, then discard items that don't match `user_id = 42`. | **Zero Results Disaster:** If only 1 out of 10,000 items belongs to user 42, the top-100 will contain 0 matching items, returning an empty list! |
 | **Pre-Filtering** | Query SQL index first to find all IDs matching `user_id = 42`, then run brute force vector distance only on those matching IDs. | Inefficient if user 42 has 500,000 items (falls back to slow brute force). |
 | **Single-Stage Filtered HNSW** (Qdrant / Milvus) | Navigates the HNSW graph while skipping graph nodes during beam search that fail the metadata bitset. | Optimal: Guarantees exact Top-$K$ while preserving $O(\log N)$ graph search speeds. |
+
+
+## Further Reading
+
+- [HNSW paper](https://arxiv.org/abs/1603.09320)
+- [Pinecone: HNSW explained](https://www.pinecone.io/learn/series/faiss/hnsw/)
+- [FAISS wiki](https://github.com/facebookresearch/faiss/wiki)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does HNSW trade for speed?</summary>
+
+Memory and a small loss of recall; it builds a layered proximity graph for logarithmic-time search.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does `efSearch` control?</summary>
+
+The candidate list size at query time: higher means better recall and higher latency.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why normalise vectors for cosine similarity?</summary>
+
+After L2 normalisation, dot product equals cosine similarity and is cheaper to compute.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How does product quantization save memory?</summary>
+
+It splits vectors into sub-vectors and stores each as a small codebook ID, e.g. 1024 floats to 64 bytes.
+
+</details>

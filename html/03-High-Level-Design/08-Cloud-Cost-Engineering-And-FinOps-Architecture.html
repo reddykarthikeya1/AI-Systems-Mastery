@@ -1431,6 +1431,22 @@ flowchart TD
 <p><em>&quot;To ensure this architecture is commercially viable at scale, I&#39;ve designed direct client-to-object pre-signed uploads to bypass our compute fleet and NAT gateways, utilized WebP compression to reduce egress transfer by 80%, and enforced a 30-day S3 Glacier Instant Retrieval lifecycle to slash long-term storage expenditure by 85%.&quot;</em></p>
 </blockquote>
 <p>This elevates you immediately from a mid-level engineer to a Staff/Principal candidate.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://www.finops.org/introduction/what-is-finops/">FinOps Foundation</a></li>
+<li><a href="https://calculator.aws/">AWS pricing calculator</a></li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html">AWS Well-Architected: cost optimisation</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Biggest hidden cost in cloud architectures?</summary><p>Data transfer (egress and cross-AZ/region) and idle over-provisioned resources.</p>
+</details><details>
+<summary><strong>2.</strong> When are spot or preemptible instances appropriate?</summary><p>For fault-tolerant, interruptible work such as batch jobs, with checkpointing.</p>
+</details><details>
+<summary><strong>3.</strong> What does FinOps add to engineering?</summary><p>Cost visibility per team/service, budgets and unit economics (cost per request/user).</p>
+</details><details>
+<summary><strong>4.</strong> Reserved capacity versus on-demand?</summary><p>Reserved or committed use lowers price for steady baseline load; on-demand handles variable peaks.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1453,7 +1469,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-silent-cloud-budget-killers" class="toc-link">1. The Four Silent Cloud Budget Killers</a></li><li class="toc-item level-3"><a href="#1-data-egress-fees" class="toc-link">1. Data Egress Fees</a></li><li class="toc-item level-3"><a href="#2-the-nat-gateway-tax" class="toc-link">2. The NAT Gateway Tax</a></li><li class="toc-item level-3"><a href="#3-s3-storage-without-lifecycle-policies" class="toc-link">3. S3 Storage Without Lifecycle Policies</a></li><li class="toc-item level-2"><a href="#2-finops-case-study-10m-daily-photo-upload-service" class="toc-link">2. FinOps Case Study: 10M Daily Photo Upload Service</a></li><li class="toc-item level-3"><a href="#architecture-a-the-naive-architecture-the-112-000-month-nightmare" class="toc-link">Architecture A: The Naive Architecture (The $112,000/Month Nightmare)</a></li><li class="toc-item level-3"><a href="#architecture-b-the-finops-optimized-architecture-31-200-month" class="toc-link">Architecture B: The FinOps Optimized Architecture ($31,200/Month)</a></li><li class="toc-item level-2"><a href="#3-financial-comparison-matrix" class="toc-link">3. Financial Comparison Matrix</a></li><li class="toc-item level-3"><a href="#senior-architect-interview-tip" class="toc-link">Senior Architect Interview Tip</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-silent-cloud-budget-killers" class="toc-link">1. The Four Silent Cloud Budget Killers</a></li><li class="toc-item level-3"><a href="#1-data-egress-fees" class="toc-link">1. Data Egress Fees</a></li><li class="toc-item level-3"><a href="#2-the-nat-gateway-tax" class="toc-link">2. The NAT Gateway Tax</a></li><li class="toc-item level-3"><a href="#3-s3-storage-without-lifecycle-policies" class="toc-link">3. S3 Storage Without Lifecycle Policies</a></li><li class="toc-item level-2"><a href="#2-finops-case-study-10m-daily-photo-upload-service" class="toc-link">2. FinOps Case Study: 10M Daily Photo Upload Service</a></li><li class="toc-item level-3"><a href="#architecture-a-the-naive-architecture-the-112-000-month-nightmare" class="toc-link">Architecture A: The Naive Architecture (The $112,000/Month Nightmare)</a></li><li class="toc-item level-3"><a href="#architecture-b-the-finops-optimized-architecture-31-200-month" class="toc-link">Architecture B: The FinOps Optimized Architecture ($31,200/Month)</a></li><li class="toc-item level-2"><a href="#3-financial-comparison-matrix" class="toc-link">3. Financial Comparison Matrix</a></li><li class="toc-item level-3"><a href="#senior-architect-interview-tip" class="toc-link">Senior Architect Interview Tip</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -440,3 +440,45 @@ if __name__ == "__main__":
 | **gRPC / Protobuf** | HTTP/2 Multiplexed | 1ms – 5ms | Low-latency internal microservice communication, AI model serving | Direct browser clients without gRPC-Web proxy |
 | **Redis Tasks (Celery)** | Redis In-Memory | < 5ms dispatch | Fast background task dispatch, delayed jobs, scheduled cron | Long-term event replay, multi-consumer broadcast |
 | **Apache Kafka** | TCP Commit Log | 5ms – 20ms | Event-driven choreography, real-time analytics, event sourcing, multi-consumer data streaming | Synchronous request-response queries |
+
+
+## Further Reading
+
+- [Apache Kafka documentation](https://kafka.apache.org/documentation/)
+- [gRPC introduction](https://grpc.io/docs/what-is-grpc/introduction/)
+- [RabbitMQ tutorials](https://www.rabbitmq.com/tutorials)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does a Kafka consumer group guarantee about partitions?</summary>
+
+Each partition is assigned to at most one consumer in the group, giving per-partition ordering and parallelism up to the partition count.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What do offsets let a consumer do?</summary>
+
+Track progress and replay: committing after processing gives at-least-once; before processing risks loss.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When choose gRPC over REST?</summary>
+
+For internal service-to-service calls needing strict schemas (protobuf), streaming and lower overhead; REST for public, browser-friendly APIs.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is backpressure?</summary>
+
+A signal or mechanism that slows producers when consumers cannot keep up, preventing unbounded queues.
+
+</details>

@@ -1242,99 +1242,43 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-7-proximity-service-yelp-google-maps-places"><a href="#hld-case-study-7-proximity-service-yelp-google-maps-places" class="header-anchor">#</a>HLD Case Study 7: Proximity Service (Yelp / Google Maps Places)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Geospatial indexing algorithms, Geohash vs Google S2 vs Uber H3, Quadtrees, and low-latency nearest-neighbor search.</p>
+          <h1 id="hld-case-study-7-proximity-service-yelp-nearby-places"><a href="#hld-case-study-7-proximity-service-yelp-nearby-places" class="header-anchor">#</a>HLD Case Study 7: Proximity Service (Yelp / Nearby Places)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Geospatial indexing (geohash, quadtree, S2/H3), radius search with ranking, read-heavy scaling, and eventual-consistency updates.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-functional-requirements"><a href="#1-problem-statement-functional-requirements" class="header-anchor">#</a>1. Problem Statement & Functional Requirements</h2><p>Design a global proximity service capable of answering spatial queries like <em>&quot;Find the top-rated 20 restaurants within 5 km of my current GPS location&quot;</em> in under 50 milliseconds.</p>
-<h3 id="requirements"><a href="#requirements" class="header-anchor">#</a>Requirements:</h3><ol>
-<li>Fast nearest-neighbor query by radius ($R \text{ km}$) and category.</li>
-<li>Business owners can add or update location metadata and operating hours.</li>
-<li>Scale to 500 million active users and 100 million places worldwide.</li>
-<li>Support rapid geographic panning and zoom levels on mobile maps.</li>
-</ol>
-<hr>
-<h2 id="2-geospatial-indexing-why-standard-databases-fail"><a href="#2-geospatial-indexing-why-standard-databases-fail" class="header-anchor">#</a>2. Geospatial Indexing: Why Standard Databases Fail</h2><p>A standard SQL query attempting to find locations within a radius:</p>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> search businesses within a radius of a location (with category and rating filters), view details, owners add/update/delete businesses, reviews.
+<strong>Non-functional:</strong> search p99 under 200 ms; read-heavy (100:1 vs writes); business updates may take minutes to appear (eventual consistency is acceptable); high availability; global scale.
+<strong>Out of scope:</strong> reviews moderation, maps rendering, turn-by-turn routing.</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume 200M businesses, 100M DAU, 5 searches per user per day, a business record of 1 KB.</p>
 
   <div class="code-block-wrapper">
     <div class="code-header">
-      <span class="code-lang">sql</span>
+      <span class="code-lang">python</span>
       <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> places 
-<span class="hljs-keyword">WHERE</span> latitude <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">37.70</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">37.80</span> 
-  <span class="hljs-keyword">AND</span> longitude <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">-122.50</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">-122.40</span>;</code></pre>
-  </div><p>Even with a 2D composite index <code>(latitude, longitude)</code>, B-Trees can only effectively filter on <strong>one dimension at a time</strong>. The database scans millions of candidate rows along the latitude slice and filters longitude manually in memory, causing severe latency degradation.</p>
-<hr>
-<h2 id="3-spatial-indexing-algorithms-compared"><a href="#3-spatial-indexing-algorithms-compared" class="header-anchor">#</a>3. Spatial Indexing Algorithms Compared</h2><table>
-<thead>
-<tr>
-<th align="left">Algorithm</th>
-<th align="left">Representation</th>
-<th align="left">Neighbor Distance</th>
-<th align="left">Edge Artifacts</th>
-<th align="left">Industry Adoption</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>Geohash</strong></td>
-<td align="left">Rectangular base32 grid strings</td>
-<td align="left">Unequal (orthogonal vs diagonal neighbors)</td>
-<td align="left">Boundary discontinuity issues</td>
-<td align="left">Redis GEO, DynamoDB, MongoDB</td>
-</tr>
-<tr>
-<td align="left"><strong>QuadTree</strong></td>
-<td align="left">Hierarchical 4-way tree in memory</td>
-<td align="left">Variable</td>
-<td align="left">Memory fragmentation across node splits</td>
-<td align="left">In-memory spatial caches</td>
-</tr>
-<tr>
-<td align="left"><strong>Google S2</strong></td>
-<td align="left">Hilbert curve on projected cube</td>
-<td align="left">Uniform Hilbert distance</td>
-<td align="left">Minimal distortion at poles</td>
-<td align="left">Google Maps, Foursquare</td>
-</tr>
-<tr>
-<td align="left"><strong>Uber H3</strong></td>
-<td align="left"><strong>Hexagonal Hierarchical Grid</strong></td>
-<td align="left"><strong>Identical (All 6 neighbors are strictly equidistant!)</strong></td>
-<td align="left">Zero diagonal distortion</td>
-<td align="left">Uber, Lyft, DoorDash</td>
-</tr>
-</tbody></table>
-
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-flowchart LR
-    Square["Square Grid (Geohash)&lt;br/&gt;Orthogonal neighbor = D&lt;br/&gt;Diagonal neighbor = sqrt(2) * D&lt;br/&gt;(Unequal distances!)"]
-    Hexagon["Hexagonal Grid (Uber H3)&lt;br/&gt;All 6 neighboring hexagons share&lt;br/&gt;IDENTICAL center-to-center distance!&lt;br/&gt;(Mathematically optimal for radius searches)"]
-</div>
-      </div>
-    </div><hr>
-<h2 id="4-high-level-architecture-diagram"><a href="#4-high-level-architecture-diagram" class="header-anchor">#</a>4. High-Level Architecture Diagram</h2>
+    <pre><code class="hljs language-python">businesses, dau, searches = <span class="hljs-number">200e6</span>, <span class="hljs-number">100e6</span>, <span class="hljs-number">5</span>
+qps = dau * searches / <span class="hljs-number">86400</span>                          <span class="hljs-comment"># ~5,787 searches/s</span>
+peak_qps = qps * <span class="hljs-number">5</span>                                    <span class="hljs-comment"># ~28,935/s</span>
+storage_gb = businesses * <span class="hljs-number">1_000</span> / <span class="hljs-number">1e9</span>                 <span class="hljs-comment"># 200 GB of business data (fits in memory across a few nodes)</span>
+geohash_precision = <span class="hljs-number">6</span>                                 <span class="hljs-comment"># ~1.2 km x 0.6 km cells</span>
+index_entries = businesses                            <span class="hljs-comment"># one (geohash, business_id) row each</span>
+index_gb = index_entries * (<span class="hljs-number">6</span> + <span class="hljs-number">8</span>) / <span class="hljs-number">1e9</span>              <span class="hljs-comment"># 6 B geohash + 8 B id = 2.8 GB</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(qps), <span class="hljs-built_in">round</span>(peak_qps), storage_gb, index_gb)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(qps) == <span class="hljs-number">5787</span> <span class="hljs-keyword">and</span> storage_gb == <span class="hljs-number">200.0</span> <span class="hljs-keyword">and</span> index_gb == <span class="hljs-number">2.8</span></code></pre>
+  </div><p>Takeaways: the <strong>whole spatial index (about 2.8 GB) fits in RAM</strong>, so sharding is for QPS and availability, not capacity. This is a read-scaling problem solved with replicas and caching.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li><code>GET /search/nearby?lat=&amp;lng=&amp;radius_km=&amp;category=&amp;min_rating=&amp;cursor=</code> returns ranked business summaries (id, name, location, rating, distance).</li>
+<li><code>GET /businesses/{id}</code>; <code>POST/PUT/DELETE /businesses</code> (owner flow, authenticated).</li>
+</ul>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>business</strong> (relational or document DB; sharded by <code>business_id</code>): id, name, address, <code>lat</code>, <code>lng</code>, category, rating, hours.</li>
+<li><strong>geo index</strong>: <code>geohash -&gt; [business_id]</code> (in memory, e.g. Redis sets keyed by geohash prefix or a purpose-built quadtree), rebuilt or updated asynchronously from the DB.</li>
+<li><strong>read replicas</strong> of both, in each region.</li>
+</ul>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1355,56 +1299,65 @@ flowchart LR
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Client["User Mobile App (GPS Lat, Lon)"] --&gt; LB["Global Load Balancer"]
-    LB --&gt; GeoAPI["Proximity Query Service"]
-    
-    GeoAPI --&gt; SpatialIndex["Distributed Spatial Index (Redis Cluster / ScyllaDB)&lt;br/&gt;Key: H3_Hex_Index or Geohash_Prefix -&gt; Set[place_ids]"]
-    
-    SpatialIndex --&gt; PlaceCache["Places Metadata Cache (Memcached/Redis)"]
-    
-    GeoAPI --&gt; PlaceMetadataDB["Permanent Places DB (PostgreSQL / PostGIS)&lt;br/&gt;(Master records: Name, menu, photos, reviews)"]
+    C["Client"] --&gt; LB["Load Balancer"]
+    LB --&gt; LBS["Location-Based Service (stateless, many replicas)"]
+    LBS --&gt; Geo["Geo Index (in-memory, replicated)"]
+    LBS --&gt; Cache["Redis: business details cache"]
+    Cache --&gt; Rep[("Business DB read replicas")]
+    Owner["Owner app"] --&gt; BS["Business Service (writes)"]
+    BS --&gt; Prim[("Business DB primary")]
+    Prim --&gt;|"change stream"| Idx["Index Updater"]
+    Idx --&gt; Geo
 </div>
       </div>
-    </div><hr>
-<h2 id="5-the-geohash-h3-query-walkthrough"><a href="#5-the-geohash-h3-query-walkthrough" class="header-anchor">#</a>5. The Geohash / H3 Query Walkthrough</h2>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor User as User App
-    participant Geo as Proximity Service
-    participant Index as Redis Spatial Index
-    participant Cache as Metadata Cache
+    </div><h2 id="6-deep-dive-geospatial-indexing"><a href="#6-deep-dive-geospatial-indexing" class="header-anchor">#</a>6. Deep Dive: Geospatial Indexing</h2><p><strong>Why not <code>WHERE lat BETWEEN ... AND lng BETWEEN ...</code>?</strong> Two independent range predicates on separate indexes cannot be satisfied efficiently, and results form a square, not a circle. We need a structure that maps 2D location to 1D keys that preserve locality.</p>
+<p><strong>Geohash.</strong> Interleave bits of latitude and longitude into a base-32 string; a longer prefix means a smaller cell and <strong>nearby points usually share a prefix</strong>. Precision 5 is about 4.9 km x 4.9 km, 6 about 1.2 km x 0.6 km, 7 about 153 m x 153 m. To search a radius: choose the precision whose cell size is close to the radius, compute the user&#39;s cell <strong>and its 8 neighbours</strong> (because points near a cell edge have neighbours with different prefixes), fetch candidates from those 9 cells, then filter by exact great-circle (haversine) distance and sort. Weakness: cells distort near the poles and the prefix-locality is imperfect at some boundaries (hence the neighbour lookup).</p>
+<p><strong>Quadtree.</strong> Recursively split a region into 4 quadrants until each leaf holds at most about 100 businesses. Dense cities get deep trees, sparse areas shallow. Search: find the leaf containing the user, expand to neighbouring leaves until enough results or radius covered. Adapts to density (geohash does not), costs more to update and keep in memory (a small tree of leaf nodes holds only ids).</p>
+<p><strong>S2 / H3.</strong> Google&#39;s S2 (square cells on a sphere, Hilbert curve ordering) and Uber&#39;s H3 (hexagons, uniform neighbour distance) are production-grade cell systems with region-covering functions. Use them when accuracy near poles/boundaries and uniform neighbour logic matter.</p>
+<p><strong>Search flow.</strong> (1) Convert radius to cell level, (2) compute covering cells, (3) read candidate ids from the in-memory index, (4) load details from cache/DB, (5) filter by exact distance, category, rating, open hours, (6) rank (distance, rating, popularity) and paginate. If too few results, widen the radius and repeat (adaptive search).</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Reads dominate:</strong> replicate the index to every service instance (2.8 GB) or to a regional cache tier; no need to shard for capacity, shard/replicate for QPS and regional latency.</li>
+<li><strong>Hotspots:</strong> dense areas (Manhattan) have many businesses per cell; cap results and use a finer precision there, or the quadtree.</li>
+<li><strong>Updates:</strong> business changes are rare; apply them to the index asynchronously from the change stream (delay of minutes is acceptable). Rebuild the full index nightly as a consistency check.</li>
+<li><strong>Caching:</strong> cache by <code>(cell, filters)</code> for popular queries and business details by id.</li>
+<li><strong>Global:</strong> deploy per region with region-local replicas, route by user location.</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Index node lost</td>
+<td>stateless service, any replica can answer; rebuild from DB snapshot in minutes</td>
+</tr>
+<tr>
+<td>Stale index (closed business shown)</td>
+<td>change-stream lag alert; details call re-checks <code>status</code>; nightly rebuild</td>
+</tr>
+<tr>
+<td>DB primary down</td>
+<td>failover to replica; reads unaffected (served from replicas and cache)</td>
+</tr>
+<tr>
+<td>Cache stampede on a popular cell</td>
+<td>request coalescing, jittered TTL</td>
+</tr>
+<tr>
+<td>Bad coordinates</td>
+<td>validate ranges, reject (0,0) &quot;null island&quot;</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>Geohash vs quadtree vs S2/H3:</strong> geohash is trivial and DB-friendly (prefix queries); quadtree adapts to density; S2/H3 give the best geometry at the cost of a library dependency.</li>
+<li><strong>Index in DB vs in memory:</strong> DB-resident (<code>LIKE &#39;dr5ru%&#39;</code>) is simpler and consistent; in-memory is faster and easily replicated at this scale.</li>
+<li><strong>Strong vs eventual consistency:</strong> eventual for search, strong for the owner&#39;s own writes (read-your-writes on the owner view).</li>
+<li><strong>Radius vs bounding box:</strong> the box is cheap, the circle needs a post-filter; always post-filter by true distance.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Go quickly through estimates (the index fits in RAM is the punchline), spend 15 minutes on indexing choices, 5 on updates and replication. <strong>Follow-ups:</strong> How do you handle the antimeridian and poles? (S2/H3 or special-case wrap-around). How do you add &quot;open now&quot;? (precomputed hours bitmap, filter after candidate fetch). How would you do moving objects (drivers)? (that is the Uber case, in-memory index with frequent updates, next chapter). How would you rank by personalisation? (re-rank top 100 with a model after the geo filter).</p>
 
-    User-&gt;&gt;Geo: search_nearby(lat=37.7749, lon=-122.4194, radius_km=2.0)
-    Note over Geo: 1. Convert (lat, lon) to central H3 Hexagon / Geohash
-    Note over Geo: 2. Calculate the 6 surrounding neighbor hex cells (Coverage ring)
-    Geo-&gt;&gt;Index: SMEMBERS [Center_Hex, Neighbor_1, ..., Neighbor_6]
-    Index--&gt;&gt;Geo: Returns list of 150 place_ids
-    Geo-&gt;&gt;Cache: MGET place_ids
-    Cache--&gt;&gt;Geo: Returns full place details (Ratings, photos)
-    Note over Geo: 3. Filter by radius, sort by rating, paginate top 20
-    Geo--&gt;&gt;User: 200 OK (20 nearby venues in 18ms!)
-</div>
-      </div>
-    </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1426,7 +1379,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-functional-requirements" class="toc-link">1. Problem Statement & Functional Requirements</a></li><li class="toc-item level-3"><a href="#requirements" class="toc-link">Requirements:</a></li><li class="toc-item level-2"><a href="#2-geospatial-indexing-why-standard-databases-fail" class="toc-link">2. Geospatial Indexing: Why Standard Databases Fail</a></li><li class="toc-item level-2"><a href="#3-spatial-indexing-algorithms-compared" class="toc-link">3. Spatial Indexing Algorithms Compared</a></li><li class="toc-item level-2"><a href="#4-high-level-architecture-diagram" class="toc-link">4. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#5-the-geohash-h3-query-walkthrough" class="toc-link">5. The Geohash / H3 Query Walkthrough</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-geospatial-indexing" class="toc-link">6. Deep Dive: Geospatial Indexing</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

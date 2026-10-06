@@ -1604,6 +1604,25 @@ sequenceDiagram
 </ul>
 </li>
 </ol>
+<hr>
+<h2 id="verified-worked-example-and-version-note-mcp-sdk"><a href="#verified-worked-example-and-version-note-mcp-sdk" class="header-anchor">#</a>Verified Worked Example and Version Note (MCP SDK)</h2><p>A real MCP server with one tool and one resource is in <a href="examples/ex04_mcp_server.py"><code>examples/ex04_mcp_server.py</code></a>, verified on <code>mcp==2.3.0</code>. <strong>The Python SDK changed between major versions:</strong> in 1.x the server class is <code>mcp.server.fastmcp.FastMCP</code>; in 2.x it is <code>mcp.server.mcpserver.MCPServer</code>. Type hints and the docstring become the tool&#39;s JSON Schema in both. Always pin the SDK version and check the migration notes when upgrading.</p>
+<p>Pinned for the verified examples: <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>, <code>pytest==9.1.1</code> (see <code>examples/requirements.txt</code>). All examples run offline with a scripted fake model: <code>cd examples &amp;&amp; pip install -r requirements.txt &amp;&amp; pytest -q</code>.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+<li><a href="https://github.com/modelcontextprotocol/python-sdk">MCP Python SDK</a></li>
+<li><a href="https://github.com/openai/swarm">OpenAI Swarm</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What problem does MCP solve?</summary><p>It standardises how AI applications connect to tools and data, turning M-by-N integrations into M plus N.</p>
+</details><details>
+<summary><strong>2.</strong> Name MCP's three primitives.</summary><p>Tools, resources and prompts.</p>
+</details><details>
+<summary><strong>3.</strong> What changed in the Python SDK between 1.x and 2.x?</summary><p>The server class <code>FastMCP</code> (<code>mcp.server.fastmcp</code>) became <code>MCPServer</code> (<code>mcp.server.mcpserver</code>); pin the version.</p>
+</details><details>
+<summary><strong>4.</strong> Why treat third-party MCP servers as untrusted?</summary><p>Their tool descriptions enter the prompt and their code runs on your behalf: tool poisoning and injection are possible.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1626,7 +1645,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-usb-c-standard-for-ai-agents" class="toc-link">2. Spoon-Fed Mental Model: The USB-C Standard for AI Agents</a></li><li class="toc-item level-2"><a href="#3-the-3-primitives-of-mcp" class="toc-link">3. The 3 Primitives of MCP</a></li><li class="toc-item level-2"><a href="#4-multi-agent-swarm-topologies-avoiding-the-infinite-loop" class="toc-link">4. Multi-Agent Swarm Topologies: Avoiding the Infinite Loop</a></li><li class="toc-item level-2"><a href="#5-junior-vs-staff-implementation-agent-tool-integration" class="toc-link">5. Junior vs Staff Implementation: Agent Tool Integration</a></li><li class="toc-item level-2"><a href="#6-complete-runnable-implementation-pure-python-mcp-server-swarm-orchestrator" class="toc-link">6. Complete Runnable Implementation: Pure-Python MCP Server & Swarm Orchestrator</a></li><li class="toc-item level-2"><a href="#7-chapter-milestone-check" class="toc-link">7. Chapter Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-usb-c-standard-for-ai-agents" class="toc-link">2. Spoon-Fed Mental Model: The USB-C Standard for AI Agents</a></li><li class="toc-item level-2"><a href="#3-the-3-primitives-of-mcp" class="toc-link">3. The 3 Primitives of MCP</a></li><li class="toc-item level-2"><a href="#4-multi-agent-swarm-topologies-avoiding-the-infinite-loop" class="toc-link">4. Multi-Agent Swarm Topologies: Avoiding the Infinite Loop</a></li><li class="toc-item level-2"><a href="#5-junior-vs-staff-implementation-agent-tool-integration" class="toc-link">5. Junior vs Staff Implementation: Agent Tool Integration</a></li><li class="toc-item level-2"><a href="#6-complete-runnable-implementation-pure-python-mcp-server-swarm-orchestrator" class="toc-link">6. Complete Runnable Implementation: Pure-Python MCP Server & Swarm Orchestrator</a></li><li class="toc-item level-2"><a href="#7-chapter-milestone-check" class="toc-link">7. Chapter Milestone Check</a></li><li class="toc-item level-2"><a href="#verified-worked-example-and-version-note-mcp-sdk" class="toc-link">Verified Worked Example and Version Note (MCP SDK)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -95,3 +95,44 @@ Verify your understanding before your interviews:
    - *Answer:* Interval merging/sweep-line algorithms, Sliding Window, Coordinate Compression, and Double-Entry ledger state tracking.
 3. **What is the number one reason candidates fail Amazon coding interviews despite writing working code?**
    - *Answer:* Failing the 20-minute Behavioral Leadership Principles portion or failing to demonstrate clean, maintainable code structure (treating code as a competitive programming hack rather than production software).
+
+
+## Further Reading
+
+- [Big-O cheat sheet](https://www.bigocheatsheet.com/)
+- [CP-Algorithms](https://cp-algorithms.com/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Which patterns do large product companies over-index on?</summary>
+
+Graphs and dynamic programming, plus design-oriented and concurrency questions at senior levels; check each company's recent reports.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What do rubrics typically score?</summary>
+
+Problem solving, coding quality, verification and communication.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How should you use company-specific lists?</summary>
+
+To calibrate patterns, not to memorise answers.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a common company-specific pitfall?</summary>
+
+Ignoring the behavioural or system design rounds while over-preparing coding.
+
+</details>

@@ -92,3 +92,45 @@ Before you proceed to **Track 5: DSA Interview Playbook**, confirm that you comm
 > [!TIP]
 > **Next Stop: Track 5 (DSA Interview Playbook)!**
 > You have mastered modern software engineering, low-level systems, global distributed architectures, and autonomous AI systems. Now it is time to sharpen your algorithmic problem-solving and conquer the 45-minute live coding whiteboard interview! Proceed to [Track 5: DSA Interview Playbook](../05-DSA-Interview-Playbook/01-Interview-Tactics-Dry-Run-Communication.md)!
+
+
+## Further Reading
+
+- [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
+- [LangGraph documentation](https://docs.langchain.com/oss/python/langgraph/overview)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Name the layers of a production agent stack.</summary>
+
+Model/gateway, tools and MCP, memory, orchestration (graph), guardrails, evaluation, observability.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is the most important habit for agent engineering?</summary>
+
+Evaluate with repeated trials against a baseline before trusting any design.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What turns a demo into a product?</summary>
+
+Reliability engineering: budgets, retries, idempotency, approvals and monitoring.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Which version-sensitive pieces should you pin?</summary>
+
+Framework and SDK versions (LangGraph, MCP) and model IDs.
+
+</details>

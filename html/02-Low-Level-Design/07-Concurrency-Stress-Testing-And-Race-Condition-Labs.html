@@ -1508,6 +1508,22 @@ sequenceDiagram
 <li><em>&quot;At the database level, I will use <strong>Optimistic Concurrency Control</strong> via an atomic <code>UPDATE seats SET status=&#39;BOOKED&#39;, version=v+1 WHERE id=:id AND version=:v</code> to prevent holding long-lived DB transactions.&quot;</em></li>
 <li><em>&quot;At the application gateway layer, I will use a <strong>Redis Distributed Lock with a short TTL (Redlock)</strong> to prevent 10,000 requests from hitting the database simultaneously in the first place.&quot;</em></li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/library/threading.html">threading module</a></li>
+<li><a href="https://docs.python.org/3/library/concurrent.futures.html">concurrent.futures</a></li>
+<li><a href="https://docs.pytest.org/en/stable/">pytest documentation</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> How do you reproduce a race condition reliably?</summary><p>Increase contention (many threads, many iterations), add small sleeps/yields at the racy point, and assert an invariant at the end.</p>
+</details><details>
+<summary><strong>2.</strong> A test passes 100 times then fails once. What does that suggest?</summary><p>A non-deterministic race or ordering bug; passing runs do not prove safety, so examine shared state and synchronisation.</p>
+</details><details>
+<summary><strong>3.</strong> What does `threading.Lock` not protect against?</summary><p>Logic races across separate critical sections (check-then-act split into two locked regions) and deadlocks.</p>
+</details><details>
+<summary><strong>4.</strong> Name a tool or technique to find data races.</summary><p>Stress tests with invariants, thread sanitizers in native code, and code review of shared mutable state.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1530,7 +1546,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-disaster-reproducing-the-double-booking-bug" class="toc-link">1. The Disaster: Reproducing the Double-Booking Bug</a></li><li class="toc-item level-3"><a href="#the-unsafe-implementation" class="toc-link">The Unsafe Implementation</a></li><li class="toc-item level-3"><a href="#execution-output" class="toc-link">Execution Output:</a></li><li class="toc-item level-2"><a href="#2-solution-1-pessimistic-locking-threading-lock" class="toc-link">2. Solution 1: Pessimistic Locking (`threading.Lock`)</a></li><li class="toc-item level-3"><a href="#why-reentrant-locks-rlock-matter" class="toc-link">Why Reentrant Locks (`RLock`) Matter</a></li><li class="toc-item level-2"><a href="#3-solution-2-optimistic-concurrency-control-occ" class="toc-link">3. Solution 2: Optimistic Concurrency Control (OCC)</a></li><li class="toc-item level-3"><a href="#python-implementation-of-in-memory-occ" class="toc-link">Python Implementation of In-Memory OCC</a></li><li class="toc-item level-2"><a href="#4-benchmark-strategy-comparison-matrix" class="toc-link">4. Benchmark & Strategy Comparison Matrix</a></li><li class="toc-item level-3"><a href="#senior-interview-tip" class="toc-link">Senior Interview Tip</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-disaster-reproducing-the-double-booking-bug" class="toc-link">1. The Disaster: Reproducing the Double-Booking Bug</a></li><li class="toc-item level-3"><a href="#the-unsafe-implementation" class="toc-link">The Unsafe Implementation</a></li><li class="toc-item level-3"><a href="#execution-output" class="toc-link">Execution Output:</a></li><li class="toc-item level-2"><a href="#2-solution-1-pessimistic-locking-threading-lock" class="toc-link">2. Solution 1: Pessimistic Locking (`threading.Lock`)</a></li><li class="toc-item level-3"><a href="#why-reentrant-locks-rlock-matter" class="toc-link">Why Reentrant Locks (`RLock`) Matter</a></li><li class="toc-item level-2"><a href="#3-solution-2-optimistic-concurrency-control-occ" class="toc-link">3. Solution 2: Optimistic Concurrency Control (OCC)</a></li><li class="toc-item level-3"><a href="#python-implementation-of-in-memory-occ" class="toc-link">Python Implementation of In-Memory OCC</a></li><li class="toc-item level-2"><a href="#4-benchmark-strategy-comparison-matrix" class="toc-link">4. Benchmark & Strategy Comparison Matrix</a></li><li class="toc-item level-3"><a href="#senior-interview-tip" class="toc-link">Senior Interview Tip</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -125,3 +125,45 @@ Before you proceed to **Track 3: High-Level Design (HLD)**, confirm that you hav
 > [!TIP]
 > **Next Stop: Track 3 (High-Level Design)!**
 > You now know how to design rock-solid object-oriented code running inside a single machine or microservice. Now it is time to scale out to millions of users across globally distributed datacenters! Proceed to [Track 3: High-Level Design](../03-High-Level-Design/00-Intuitive-Mental-Models-And-Visual-Glossary.md)!
+
+
+## Further Reading
+
+- [Refactoring Guru: design patterns](https://refactoring.guru/design-patterns)
+- [Wikipedia: Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns)
+- [UML diagrams reference](https://www.uml-diagrams.org/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Which principle do most patterns serve?</summary>
+
+Programming to interfaces and composing behaviour so change is localised.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What two diagrams do you draw in nearly every LLD interview?</summary>
+
+A class diagram of entities and relationships and a sequence diagram of the main flow.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Name three patterns that most often appear in LLD problems.</summary>
+
+Strategy (pricing, routing), Observer (notifications), State (order or elevator state), plus Factory and Builder.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the most common mistake candidates make?</summary>
+
+Jumping to code before clarifying requirements and defining responsibilities.
+
+</details>

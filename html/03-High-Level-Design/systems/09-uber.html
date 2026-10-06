@@ -1242,26 +1242,46 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-9-real-time-ride-dispatch-platform-uber-lyft"><a href="#hld-case-study-9-real-time-ride-dispatch-platform-uber-lyft" class="header-anchor">#</a>HLD Case Study 9: Real-Time Ride Dispatch Platform (Uber / Lyft)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Real-time location tracking at massive ingestion volume (1M+ writes/sec), Uber H3 hexagonal spatial indexing, dispatch matching state machines, and dynamic surge pricing.</p>
+          <h1 id="hld-case-study-9-uber-lyft-ride-hailing-and-dispatch"><a href="#hld-case-study-9-uber-lyft-ride-hailing-and-dispatch" class="header-anchor">#</a>HLD Case Study 9: Uber / Lyft (Ride Hailing and Dispatch)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Real-time driver location ingestion, geospatial matching, trip state machine, surge pricing, ETA, and consistent driver assignment.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-functional-requirements"><a href="#1-problem-statement-functional-requirements" class="header-anchor">#</a>1. Problem Statement & Functional Requirements</h2><p>Design the real-time location streaming and driver dispatch architecture for a global ride-hailing platform.</p>
-<h3 id="requirements"><a href="#requirements" class="header-anchor">#</a>Requirements:</h3><ol>
-<li><strong>High-Frequency Location Tracking:</strong> 5 Million active drivers streaming GPS coordinates every 4 seconds.</li>
-<li><strong>Nearest Driver Dispatch:</strong> Match riders with optimal nearby drivers within 5 seconds.</li>
-<li><strong>Trip State Machine:</strong> Manage the trip lifecycle from <code>Requested</code> $\rightarrow$ <code>Dispatched</code> $\rightarrow$ <code>Arrived</code> $\rightarrow$ <code>In-Trip</code> $\rightarrow$ <code>Completed</code>.</li>
-<li><strong>Dynamic Surge Pricing:</strong> Adjust fares based on regional supply/demand imbalances.</li>
-</ol>
-<hr>
-<h2 id="2-ingestion-scale-estimations"><a href="#2-ingestion-scale-estimations" class="header-anchor">#</a>2. Ingestion Scale & Estimations</h2><ul>
-<li><strong>Active Drivers:</strong> $5 \text{ Million}$ concurrent vehicles worldwide.</li>
-<li><strong>Ping Frequency:</strong> 1 ping every 4 seconds.</li>
-<li><strong>Location Ingestion QPS:</strong> $\frac{5,000,000}{4} = \mathbf{1,250,000 \text{ Writes/Second!}}$</li>
-<li><strong>Storage Consideration:</strong> A relational database would crash immediately under $1.25 \text{M QPS}$ of writes. Location pings are <strong>ephemeral</strong>; we only need the latest driver position in RAM!</li>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> riders request a trip, nearby available drivers are matched, drivers accept, live tracking, fare calculation, payment, ratings.
+<strong>Non-functional:</strong> match within a few seconds; location updates are high volume but <strong>loss-tolerant</strong>; <strong>a driver is assigned to at most one trip</strong> (strong consistency for assignment); trips survive service failures; low-latency ETA.
+<strong>Out of scope:</strong> routing engine internals, fraud, driver onboarding.</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume 5M concurrent online drivers worldwide at peak, GPS update every 4 seconds, 20M trips/day, 100 bytes per update.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">drivers, interval_s, bytes_update = <span class="hljs-number">5_000_000</span>, <span class="hljs-number">4</span>, <span class="hljs-number">100</span>
+loc_qps = drivers / interval_s                         <span class="hljs-comment"># 1.25M updates/s</span>
+loc_mb_per_s = loc_qps * bytes_update / <span class="hljs-number">1e6</span>            <span class="hljs-comment"># 125 MB/s ingest</span>
+loc_tb_per_day = loc_qps * bytes_update * <span class="hljs-number">86400</span> / <span class="hljs-number">1e12</span> <span class="hljs-comment"># ~10.8 TB/day if all were persisted</span>
+trips_day = <span class="hljs-number">20e6</span>
+trip_qps = trips_day / <span class="hljs-number">86400</span>                           <span class="hljs-comment"># ~231 trips/s average</span>
+peak_trip_qps = trip_qps * <span class="hljs-number">5</span>                           <span class="hljs-comment"># ~1,157/s</span>
+live_index_gb = drivers * <span class="hljs-number">64</span> / <span class="hljs-number">1e9</span>                     <span class="hljs-comment"># in-memory index: id, cell, lat/lng, status = 0.32 GB</span>
+<span class="hljs-built_in">print</span>(loc_qps, loc_mb_per_s, <span class="hljs-built_in">round</span>(loc_tb_per_day, <span class="hljs-number">1</span>), <span class="hljs-built_in">round</span>(trip_qps), <span class="hljs-built_in">round</span>(peak_trip_qps), live_index_gb)
+<span class="hljs-keyword">assert</span> loc_qps == <span class="hljs-number">1_250_000</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(trip_qps) == <span class="hljs-number">231</span></code></pre>
+  </div><p>Takeaways: the system is dominated by <strong>location write throughput</strong> (1.25M/s), but the data is ephemeral (only the latest position matters), so keep it <strong>in memory</strong>, not in a disk database; trips themselves are modest (hundreds per second).</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li>Driver: <code>POST /driver/location</code> (batched/streamed over WebSocket or MQTT), <code>POST /driver/status</code>, <code>POST /trips/{id}/accept</code>.</li>
+<li>Rider: <code>POST /trips</code> <code>{pickup, dropoff, product, idempotency_key}</code>, <code>GET /trips/{id}</code> (or stream), <code>DELETE /trips/{id}</code>.</li>
+<li><code>GET /eta?from=&amp;to=</code>; <code>GET /pricing/estimate</code>.</li>
 </ul>
-<hr>
-<h2 id="3-high-level-architecture-diagram"><a href="#3-high-level-architecture-diagram" class="header-anchor">#</a>3. High-Level Architecture Diagram</h2>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>live driver index</strong> (in-memory, partitioned by geography cell): <code>cell -&gt; {driver_id: (lat, lng, heading, status, ts)}</code>, TTL on stale drivers.</li>
+<li><strong>trips</strong> (sharded relational DB by <code>trip_id</code>): rider, driver, state, pickup/dropoff, fare, timestamps; <strong>trip state machine</strong> <code>REQUESTED -&gt; MATCHING -&gt; DRIVER_ASSIGNED -&gt; EN_ROUTE -&gt; ARRIVED -&gt; IN_PROGRESS -&gt; COMPLETED | CANCELLED</code>.</li>
+<li><strong>location history</strong> (append-only, Kafka to object storage/time-series) only for trip replay, safety, analytics.</li>
+<li><strong>driver assignment lock</strong>: per-driver conditional state (<code>AVAILABLE -&gt; OFFERED -&gt; ON_TRIP</code>).</li>
+</ul>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1282,67 +1302,76 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Drivers["5 Million Active Drivers"] --&gt;|GPS pings every 4s via gRPC or WebSocket| NetLB["Layer 4 Network Load Balancer (NLB)"]
-    NetLB --&gt; LocationIngest["Location Ingestion Gateway Fleet (Netty / Go)"]
-    
-    LocationIngest --&gt; KafkaStream["Kafka: driver_location_stream&lt;br/&gt;(Partitioned by H3 Hex Cell Index)"]
-    
-    KafkaStream --&gt; SpatialIndexWorker["Spatial Indexing Worker Fleet"]
-    SpatialIndexWorker --&gt; RedisSpatial["In-Memory Spatial Store: Redis Cluster H3&lt;br/&gt;Key: H3 Cell ID to Driver Location Hash"]
-    
-    Rider["Rider App"] --&gt; DispatchSvc["Dispatch &amp; Matching Service"]
-    DispatchSvc --&gt; RedisSpatial
-    DispatchSvc --&gt; MatchWorker["Dispatch Offer Worker (15s Acceptance Timer)"]
-    MatchWorker --&gt; TripDB["Trips Database (PostgreSQL / CockroachDB)"]
+    D["Driver app"] --&gt;|"location stream"| GW["Realtime Gateway"]
+    GW --&gt; Loc["Location Service"]
+    Loc --&gt; Idx["Geo Index (in-memory, sharded by cell, H3/S2)"]
+    Loc --&gt; K["Kafka: location history"]
+    R["Rider app"] --&gt; API["Trip API"]
+    API --&gt; Trip["Trip Service (state machine)"]
+    Trip --&gt; DB[("Trips DB")]
+    Trip --&gt; Disp["Dispatch / Matching Service"]
+    Disp --&gt; Idx
+    Disp --&gt; ETA["ETA / Routing Service"]
+    Disp --&gt; Price["Pricing (surge)"]
+    Disp --&gt; Offer["Offer to driver (push)"]
+    Offer --&gt; D
+    Trip --&gt; Pay["Payment"]
+    K --&gt; Surge["Surge calculator (supply/demand per cell)"]
+    Surge --&gt; Price
 </div>
       </div>
-    </div><hr>
-<h2 id="4-the-dispatch-matching-sequence"><a href="#4-the-dispatch-matching-sequence" class="header-anchor">#</a>4. The Dispatch & Matching Sequence</h2>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor Rider as Rider App
-    participant Dispatch as Dispatch Service
-    participant Spatial as Redis H3 Spatial Index
-    participant Kafka as Kafka / Timer Engine
-    actor Driver as Driver App
+    </div><h2 id="6-deep-dive-matching-and-assignment"><a href="#6-deep-dive-matching-and-assignment" class="header-anchor">#</a>6. Deep Dive: Matching and Assignment</h2><p><strong>Finding candidates.</strong> Map the pickup location to a cell (H3 resolution 8 to 9 is about 0.1 to 0.7 km^2), read drivers in that cell and its <strong>k-ring neighbours</strong>, discard unavailable ones, then compute <strong>road-network ETA</strong> for the top candidates (straight-line distance is only a pre-filter). Rank by ETA, rating, acceptance history. Expand the ring if there are too few drivers.</p>
+<p><strong>Offering and acceptance.</strong> Send the offer to the best driver; they have about 10 seconds. If declined or timed out, offer the next one. To guarantee one trip per driver, transition the driver <code>AVAILABLE -&gt; OFFERED</code> with a compare-and-set (in the index owner or a store such as Redis with a Lua script); only the dispatcher that wins the CAS may send the offer. On accept, <code>OFFERED -&gt; ON_TRIP</code> and write <code>DRIVER_ASSIGNED</code> to the trips DB. If the same driver is considered by two concurrent requests, the CAS lets exactly one proceed.</p>
+<p><strong>Batching (&quot;matching windows&quot;).</strong> Instead of greedily matching each request on arrival, collect requests for about 2 seconds per area and solve a small assignment problem (minimise total pickup ETA, Hungarian/greedy hybrid). This reduces global wait time versus first-come matching.</p>
+<p><strong>Surge pricing.</strong> For each cell, compute <code>demand / supply</code> over a sliding window (requests vs available drivers). Map the ratio to a multiplier with smoothing and caps; apply per-cell and publish with the fare estimate. The fare is <strong>locked at request time</strong> so the price does not change while the rider confirms.</p>
+<p><strong>Location pipeline.</strong> Drivers stream updates; the gateway fans them to the owner of the driver&#39;s cell. Only the latest value is kept in memory; the stream is also written to Kafka for history. Because updates are frequent, losing a few is harmless.</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Shard by geography</strong> (city or H3 parent cell) so a request touches one or a few shards; split hot cities into sub-cells.</li>
+<li><strong>Hot events</strong> (a concert ending) create demand spikes in a few cells: pre-scale, use batching and surge to rebalance supply.</li>
+<li><strong>ETA computation</strong> is expensive: cache road-segment travel times, precompute with contraction hierarchies, ETA service autoscaled.</li>
+<li><strong>Driver moving across shards:</strong> hand off ownership when the cell changes; dual-write briefly.</li>
+<li><strong>Gateway connections:</strong> millions of persistent sockets, the same scaling pattern as the messaging case.</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Location shard lost</td>
+<td>rebuild from drivers&#39; next updates (4 s) since state is ephemeral</td>
+</tr>
+<tr>
+<td>Dispatcher crash mid-match</td>
+<td>trip state persisted; a new dispatcher resumes from <code>MATCHING</code></td>
+</tr>
+<tr>
+<td>Driver app offline after accepting</td>
+<td>heartbeat timeout reassigns the trip and penalises</td>
+</tr>
+<tr>
+<td>Duplicate trip request</td>
+<td>idempotency key per rider request</td>
+</tr>
+<tr>
+<td>Payment failure after trip</td>
+<td>trip completes; payment retried and debt recorded (do not strand the rider)</td>
+</tr>
+<tr>
+<td>Clock/GPS errors</td>
+<td>smooth with map-matching and sanity checks (speed limits)</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>In-memory index vs database:</strong> memory for write throughput and latency; persistence only for history. Cost: rebuild after failure.</li>
+<li><strong>Greedy vs batched matching:</strong> greedy is lowest latency; batching improves global efficiency at the cost of a short delay.</li>
+<li><strong>Straight-line vs road ETA:</strong> straight-line is cheap and wrong in cities; road ETA is accurate and expensive, so use it on a short list.</li>
+<li><strong>Consistency:</strong> strong (CAS) for assignment; eventual for locations and surge.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Lead with the location write rate and why it stays in memory, then the match and assignment race. <strong>Follow-ups:</strong> How do you handle pooled rides (UberPool)? (matching on route overlap with detour constraints, a harder assignment problem). How do you ensure fairness to drivers? (dispatch fairness policies, tracked acceptance). How do you test surge? (replay recorded location and request streams offline). How do you add scheduled rides? (a delayed job, see the task scheduler case, plus pre-reservation of supply).</p>
 
-    Rider-&gt;&gt;Dispatch: request_ride(pickup_lat, pickup_lon)
-    Note over Dispatch: 1. Convert pickup (lat, lon) to H3 Hex Cell (Resolution 8)
-    Dispatch-&gt;&gt;Spatial: Find active drivers in H3 Cell + adjacent ring of 6 hexagons
-    Spatial--&gt;&gt;Dispatch: Returns candidate drivers: [D1, D2, D3]
-    Note over Dispatch: 2. Rank candidates by ETA and rating, select best driver D1
-    Dispatch-&gt;&gt;Kafka: create_dispatch_offer(trip_id, driver_id=D1, timeout=15s)
-    Kafka-&gt;&gt;Driver: Push: "New Ride Request (15 seconds to accept)"
-    
-    alt Driver Accepts within 15s
-        Driver-&gt;&gt;Dispatch: accept_offer(trip_id)
-        Dispatch-&gt;&gt;Spatial: Mark Driver D1 as BUSY
-        Dispatch--&gt;&gt;Rider: Driver Found! Arriving in 4 mins.
-    else Driver Rejects or 15s Timer Expires
-        Note over Dispatch: Re-route offer to next candidate D2!
-    end
-</div>
-      </div>
-    </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1364,7 +1393,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-functional-requirements" class="toc-link">1. Problem Statement & Functional Requirements</a></li><li class="toc-item level-3"><a href="#requirements" class="toc-link">Requirements:</a></li><li class="toc-item level-2"><a href="#2-ingestion-scale-estimations" class="toc-link">2. Ingestion Scale & Estimations</a></li><li class="toc-item level-2"><a href="#3-high-level-architecture-diagram" class="toc-link">3. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#4-the-dispatch-matching-sequence" class="toc-link">4. The Dispatch & Matching Sequence</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-matching-and-assignment" class="toc-link">6. Deep Dive: Matching and Assignment</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

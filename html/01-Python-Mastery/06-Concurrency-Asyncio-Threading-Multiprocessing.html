@@ -1615,7 +1615,23 @@ WORK_QUEUE.join()
 
 <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> consumers: c.join()
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Pipeline completed all jobs cleanly!&quot;</span>)</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/library/asyncio.html">asyncio documentation</a></li>
+<li><a href="https://docs.python.org/3/library/threading.html">threading module</a></li>
+<li><a href="https://docs.python.org/3/library/concurrent.futures.html">concurrent.futures</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> For a CPU-bound task on a standard CPython build, threads or processes?</summary><p>Processes (<code>multiprocessing</code>/<code>ProcessPoolExecutor</code>), because the GIL lets only one thread run Python bytecode at a time. Threads suit I/O-bound work.</p>
+</details><details>
+<summary><strong>2.</strong> What does `await` do that a blocking call does not?</summary><p>It suspends the current coroutine and returns control to the event loop so other tasks run, then resumes when the awaited operation completes.</p>
+</details><details>
+<summary><strong>3.</strong> Why does a `time.sleep(5)` inside `async def` freeze every other task?</summary><p>It blocks the single event-loop thread. Use <code>await asyncio.sleep(5)</code> or move blocking work to an executor (<code>asyncio.to_thread</code>).</p>
+</details><details>
+<summary><strong>4.</strong> What does `asyncio.TaskGroup` give you over `gather`?</summary><p>Structured concurrency: if one task fails the others are cancelled and the errors are raised together as an <code>ExceptionGroup</code>, so no task is left running unobserved.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1637,7 +1653,7 @@ WORK_QUEUE.join()
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-concurrency-landscape-choosing-the-right-engine" class="toc-link">1. The Concurrency Landscape: Choosing the Right Engine</a></li><li class="toc-item level-2"><a href="#2-asynchronous-i-o-with-asyncio-under-the-hood" class="toc-link">2. Asynchronous I/O with `asyncio` Under the Hood</a></li><li class="toc-item level-3"><a href="#the-three-pillars-of-asyncio" class="toc-link">The Three Pillars of `asyncio`:</a></li><li class="toc-item level-3"><a href="#modern-structured-concurrency-with-asyncio-taskgroup-python-3-11" class="toc-link">Modern Structured Concurrency with `asyncio.TaskGroup` (Python 3.11+)</a></li><li class="toc-item level-3"><a href="#controlling-rate-concurrency-asyncio-semaphore" class="toc-link">Controlling Rate & Concurrency: `asyncio.Semaphore`</a></li><li class="toc-item level-2"><a href="#3-preemptive-threading-synchronization-race-conditions" class="toc-link">3. Preemptive Threading: Synchronization & Race Conditions</a></li><li class="toc-item level-3"><a href="#essential-thread-synchronization-primitives" class="toc-link">Essential Thread Synchronization Primitives</a></li><li class="toc-item level-2"><a href="#4-multi-process-parallelism-bypassing-the-gil" class="toc-link">4. Multi-Process Parallelism: Bypassing the GIL</a></li><li class="toc-item level-2"><a href="#5-enterprise-pattern-thread-safe-producer-consumer-pipeline" class="toc-link">5. Enterprise Pattern: Thread-Safe Producer-Consumer Pipeline</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-concurrency-landscape-choosing-the-right-engine" class="toc-link">1. The Concurrency Landscape: Choosing the Right Engine</a></li><li class="toc-item level-2"><a href="#2-asynchronous-i-o-with-asyncio-under-the-hood" class="toc-link">2. Asynchronous I/O with `asyncio` Under the Hood</a></li><li class="toc-item level-3"><a href="#the-three-pillars-of-asyncio" class="toc-link">The Three Pillars of `asyncio`:</a></li><li class="toc-item level-3"><a href="#modern-structured-concurrency-with-asyncio-taskgroup-python-3-11" class="toc-link">Modern Structured Concurrency with `asyncio.TaskGroup` (Python 3.11+)</a></li><li class="toc-item level-3"><a href="#controlling-rate-concurrency-asyncio-semaphore" class="toc-link">Controlling Rate & Concurrency: `asyncio.Semaphore`</a></li><li class="toc-item level-2"><a href="#3-preemptive-threading-synchronization-race-conditions" class="toc-link">3. Preemptive Threading: Synchronization & Race Conditions</a></li><li class="toc-item level-3"><a href="#essential-thread-synchronization-primitives" class="toc-link">Essential Thread Synchronization Primitives</a></li><li class="toc-item level-2"><a href="#4-multi-process-parallelism-bypassing-the-gil" class="toc-link">4. Multi-Process Parallelism: Bypassing the GIL</a></li><li class="toc-item level-2"><a href="#5-enterprise-pattern-thread-safe-producer-consumer-pipeline" class="toc-link">5. Enterprise Pattern: Thread-Safe Producer-Consumer Pipeline</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

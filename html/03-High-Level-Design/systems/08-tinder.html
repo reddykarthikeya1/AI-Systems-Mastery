@@ -1242,18 +1242,47 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-8-real-time-matching-recommendation-tinder"><a href="#hld-case-study-8-real-time-matching-recommendation-tinder" class="header-anchor">#</a>HLD Case Study 8: Real-Time Matching & Recommendation (Tinder)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Bidirectional mutual matching, real-time swipe ingestion, two-stage recommendation ranking, geospatial bucketing, and match notifications.</p>
+          <h1 id="hld-case-study-8-tinder-recommendation-deck-and-matching"><a href="#hld-case-study-8-tinder-recommendation-deck-and-matching" class="header-anchor">#</a>HLD Case Study 8: Tinder (Recommendation Deck and Matching)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Geo-and-preference candidate generation, deck prefetching, swipe write volume, mutual-match detection, and avoiding repeated profiles.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-functional-requirements"><a href="#1-problem-statement-functional-requirements" class="header-anchor">#</a>1. Problem Statement & Functional Requirements</h2><p>Design the core discovery and mutual matching engine for a mobile dating application.</p>
-<h3 id="requirements"><a href="#requirements" class="header-anchor">#</a>Requirements:</h3><ol>
-<li><strong>Swipe Ingestion:</strong> Users swipe Right (Like) or Left (Pass) at massive throughput ($&gt; 50,000 \text{ swipes/second}$).</li>
-<li><strong>Mutual Match Detection:</strong> If both users swipe Right on each other, trigger a real-time <strong>Mutual Match</strong> event immediately.</li>
-<li><strong>Recommendation Feed:</strong> Provide users with an endless stream of active, nearby profiles matching their preferences.</li>
-</ol>
-<hr>
-<h2 id="2-high-level-architecture-diagram"><a href="#2-high-level-architecture-diagram" class="header-anchor">#</a>2. High-Level Architecture Diagram</h2>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> profiles with photos, a swipe deck of nearby candidates matching preferences (age, gender, distance), swipe left/right, a <strong>match</strong> when both swipe right, then chat (see the messaging case study).
+<strong>Non-functional:</strong> next profile appears instantly (under 100 ms); a user never sees the same profile twice; match notification within seconds; massive swipe write volume; privacy of location (fuzzed distance).
+<strong>Out of scope:</strong> payments, moderation ML, the chat system.</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume 75M MAU, 25M DAU, 100 swipes per user per day, 1.5 photos shown per card at 150 KB.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">dau, swipes_per_user = <span class="hljs-number">25e6</span>, <span class="hljs-number">100</span>
+swipes_per_day = dau * swipes_per_user                <span class="hljs-comment"># 2.5e9</span>
+swipe_qps = swipes_per_day / <span class="hljs-number">86400</span>                    <span class="hljs-comment"># ~28,935 writes/s</span>
+peak_swipe_qps = swipe_qps * <span class="hljs-number">3</span>                        <span class="hljs-comment"># ~86,800/s</span>
+swipe_record_bytes = <span class="hljs-number">24</span>                               <span class="hljs-comment"># user, target, direction, time</span>
+swipe_gb_per_day = swipes_per_day * swipe_record_bytes / <span class="hljs-number">1e9</span>   <span class="hljs-comment"># 60 GB/day</span>
+swipe_tb_per_year = swipe_gb_per_day * <span class="hljs-number">365</span> / <span class="hljs-number">1000</span>     <span class="hljs-comment"># ~22 TB/year</span>
+photo_egress_gbps = swipe_qps * <span class="hljs-number">1.5</span> * <span class="hljs-number">0.15</span> * <span class="hljs-number">8</span> / <span class="hljs-number">1000</span> <span class="hljs-comment"># ~52 Gbps behind CDN</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(swipe_qps), <span class="hljs-built_in">round</span>(peak_swipe_qps), swipe_gb_per_day, <span class="hljs-built_in">round</span>(swipe_tb_per_year), <span class="hljs-built_in">round</span>(photo_egress_gbps))
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(swipe_qps) == <span class="hljs-number">28935</span> <span class="hljs-keyword">and</span> swipe_gb_per_day == <span class="hljs-number">60.0</span></code></pre>
+  </div><p>Takeaways: swipes are a <strong>write-heavy, append-only, high-volume</strong> stream (about 29K/s average, 87K/s peak) with tiny records; photos are served by a CDN; the hard parts are the deck algorithm and the &quot;already seen&quot; filter.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li><code>GET /deck?limit=20</code> returns candidate profiles (batched; the client prefetches the next batch when 5 remain).</li>
+<li><code>POST /swipes</code> <code>{target_id, direction, idempotency_key}</code> returns <code>{matched: bool, match_id?}</code>.</li>
+<li><code>GET /matches</code>, <code>PUT /profile</code>, <code>PUT /location</code>.</li>
+</ul>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>profiles</strong> (sharded by <code>user_id</code>): attributes, preferences, photos (object keys), <code>geo_cell</code>, <code>last_active</code>.</li>
+<li><strong>swipes</strong> (wide-column store, partition key <code>swiper_id</code>, clustering <code>target_id</code>): the authoritative &quot;who I have swiped on&quot;. Used for &quot;already seen&quot; and mutual-match checks.</li>
+<li><strong>likes_inbox</strong> (partition <code>target_id</code>): list of users who liked me, for the reciprocal check and a &quot;Likes you&quot; feature.</li>
+<li><strong>geo index</strong>: users in an in-memory cell index (<code>geo_cell -&gt; user_ids</code>) updated on location/active changes.</li>
+<li><strong>seen filter</strong>: per-user Bloom filter (or a compact bitmap/ID set) of seen profiles, cached in Redis.</li>
+</ul>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1274,99 +1303,69 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Client["User App"] --&gt; ALB["Application Load Balancer"]
-    ALB --&gt; Gateway["API Gateway"]
-    
-    Gateway --&gt; SwipeSvc["Swipe Processing Service"]
-    SwipeSvc --&gt; MatchCache["Redis Cluster (Active Likes &amp; Swipes)&lt;br/&gt;Set: user_likes:A -&gt; {B, C, D}"]
-    
-    SwipeSvc --&gt; Kafka["Kafka: swipe_events"]
-    Kafka --&gt; MatchWorker["Match Detection &amp; Notification Worker"]
-    MatchWorker --&gt; MatchDB["Matches Database (Cassandra / DynamoDB)"]
-    MatchWorker --&gt; PushSvc["Push Notification Service (WebSockets)"]
-    
-    Gateway --&gt; RecSvc["Recommendation Service"]
-    RecSvc --&gt; GeoIndex["Geospatial Profile Index (Uber H3 / Elasticsearch)"]
-    RecSvc --&gt; MLRanker["ML Candidate Ranking Model"]
+    C["Client app"] --&gt; API["API Gateway"]
+    API --&gt; Deck["Deck Service"]
+    Deck --&gt; Geo["Geo Index (cells, in memory)"]
+    Deck --&gt; Prof[("Profile Store")]
+    Deck --&gt; Seen["Seen filter (Redis Bloom / set)"]
+    Deck --&gt; Rank["Ranking (recency, activity, preference fit)"]
+    API --&gt; Swipe["Swipe Service"]
+    Swipe --&gt; SW[("Swipes: wide-column")]
+    Swipe --&gt; Match["Match Detector (check reverse swipe)"]
+    Match --&gt; Bus["Kafka"]
+    Bus --&gt; Push["Notifications"]
+    Bus --&gt; Chat["Chat room creation"]
+    C --&gt; CDN["CDN (photos)"]
 </div>
       </div>
-    </div><hr>
-<h2 id="3-real-time-mutual-match-detection-pipeline"><a href="#3-real-time-mutual-match-detection-pipeline" class="header-anchor">#</a>3. Real-Time Mutual Match Detection Pipeline</h2><p>How do we check if a swipe produces a mutual match in under 10 milliseconds without querying heavy relational databases?</p>
+    </div><h2 id="6-deep-dive-deck-generation-and-matching"><a href="#6-deep-dive-deck-generation-and-matching" class="header-anchor">#</a>6. Deep Dive: Deck Generation and Matching</h2><p><strong>Candidate generation.</strong> (1) Find nearby users via the cell index (reuse the geohash/S2 idea from the proximity case) within the user&#39;s radius; (2) filter by mutual preferences (their age/gender preferences must include me), (3) remove users already swiped (seen filter), blocked, or inactive; (4) rank by an engagement-aware score (recent activity, profile completeness, how likely they are to like me); (5) store the ordered batch.</p>
+<p><strong>Precompute and prefetch.</strong> Generating a deck on every request is expensive. A background job builds a deck of about 200 candidates per active user and caches it (Redis list). <code>GET /deck</code> pops 20 and triggers a refill when low. Clients also prefetch images for the next 3 cards so swiping feels instant.</p>
+<p><strong>Never repeat a profile.</strong> The swipes table is authoritative; the Redis Bloom filter makes the check O(1) per candidate. A Bloom filter may rarely say &quot;seen&quot; for an unseen profile (a harmless false positive: it just gets skipped) but never the reverse. Persist and periodically rebuild it from the swipes table.</p>
+<p><strong>Mutual match detection.</strong> On a right-swipe from A to B: write <code>swipes[A,B]=like</code>; then read <code>swipes[B,A]</code>. If it is a like, create the match (idempotent on the pair key <code>min(A,B):max(A,B)</code>) and emit events. To avoid a race where A and B swipe simultaneously and both reads miss the other&#39;s write, <strong>write first, then read</strong>: at least one of the two reads is guaranteed to see the other&#39;s write, and the unique match key de-duplicates if both do.</p>
+<p><strong>Pre-swipe shortcut (&quot;likes you&quot;).</strong> Because <code>likes_inbox[B]</code> holds users who liked B, B&#39;s deck can put those candidates first, so a right-swipe immediately completes a match.</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Swipe writes:</strong> partition by <code>swiper_id</code>; batch writes through Kafka for the analytics path but keep the match check synchronous for fast feedback.</li>
+<li><strong>Hot cities:</strong> a dense city has many candidates per cell: cap candidate sets, sample by freshness. Sparse regions: widen radius adaptively.</li>
+<li><strong>Location updates:</strong> frequent movers cause index churn; update the cell index only when the user moves to a new cell or every few minutes.</li>
+<li><strong>Cold start:</strong> new users get a boosted exposure so they receive early swipes (explicit product rule).</li>
+<li><strong>Photo delivery:</strong> multiple resized renditions on a CDN; progressive/blur placeholders.</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deck cache lost</td>
+<td>rebuild on demand from the index; degrade to a smaller batch</td>
+</tr>
+<tr>
+<td>Duplicate swipe (retry)</td>
+<td>idempotent write keyed by <code>(swiper, target)</code></td>
+</tr>
+<tr>
+<td>Match detector down</td>
+<td>swipes still stored; replay missed reciprocal checks from the log</td>
+</tr>
+<tr>
+<td>Stale location</td>
+<td>TTL on last-known location, show &quot;recently active&quot; cues</td>
+</tr>
+<tr>
+<td>Abuse (bots, spam swiping)</td>
+<td>per-user swipe rate limits, device attestation, shadow throttling</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>Precomputed deck vs real-time:</strong> precompute is fast but slightly stale (a user who just went inactive may appear); real-time is fresh but slow. Prefetch plus an activity re-check at serve time.</li>
+<li><strong>Bloom filter vs exact set:</strong> Bloom saves memory (about 1.2 bytes per item at 1% FP) but has false positives and no deletes; an exact set is accurate but large for heavy swipers.</li>
+<li><strong>Strong vs eventual consistency:</strong> a match should not be missed, but the deck can lag.</li>
+<li><strong>Privacy:</strong> return distance rounded and only after the match; never expose raw coordinates.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Spend time on deck generation, the seen filter and the match race condition. <strong>Follow-ups:</strong> How do you avoid showing profiles that already liked someone else exclusively? (not needed; ranking only). How do you rank fairly so popular users do not absorb all likes? (cap daily exposure, diversity re-ranking). How do you detect fake profiles? (graph and behavioural signals, course 12 style evaluation). How do you scale reciprocal likes to billions of rows? (partition by user, TTL old swipes after N months, keep only likes in the inbox).</p>
 
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor A as User Alice
-    participant Svc as Swipe Service
-    participant Redis as Redis Cluster
-    participant Kafka as Kafka Queue
-    actor B as User Bob
-
-    A-&gt;&gt;Svc: swipe_right(target_user_id = Bob)
-    Note over Svc: 1. Record Alice's like in Redis set
-    Svc-&gt;&gt;Redis: SADD user_likes:Alice Bob
-    
-    Note over Svc: 2. Atomic check: Did Bob already like Alice?
-    Svc-&gt;&gt;Redis: SISMEMBER user_likes:Bob Alice
-    alt Mutual Match Found! (Bob already liked Alice)
-        Redis--&gt;&gt;Svc: True (Mutual Match!)
-        Svc-&gt;&gt;Kafka: emit_event("MATCH_CREATED", {Alice, Bob})
-        Svc--&gt;&gt;A: 200 OK: "It's a Match!"
-        Kafka-&gt;&gt;B: Push Notification: "You matched with Alice!"
-    else No Match Yet
-        Redis--&gt;&gt;Svc: False
-        Svc--&gt;&gt;A: 200 OK: Swipe recorded
-    end
-</div>
-      </div>
-    </div><hr>
-<h2 id="4-the-2-stage-recommendation-engine"><a href="#4-the-2-stage-recommendation-engine" class="header-anchor">#</a>4. The 2-Stage Recommendation Engine</h2><p>Delivering a fresh deck of 20 profiles to a user involves two distinct stages:</p>
-
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-flowchart LR
-    AllProfiles["Millions of Profiles"] --&gt; Stage1["Stage 1: Candidate Generation (Filtering)&lt;br/&gt;- Geo-radius (H3 Hexagonal grid)&lt;br/&gt;- Age / Gender preferences&lt;br/&gt;- Filter out already-swiped users (Bloom Filter)"]
-    Stage1 --&gt; Candidates["~1,000 Candidate Profiles"]
-    Candidates --&gt; Stage2["Stage 2: ML Scoring &amp; Ranking&lt;br/&gt;- Activity recency score&lt;br/&gt;- Mutual attractiveness score (Elo rating)&lt;br/&gt;- Vector embedding similarity"]
-    Stage2 --&gt; FinalDeck["Top 20 Ranked Profiles to User"]
-</div>
-      </div>
-    </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1388,7 +1387,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-functional-requirements" class="toc-link">1. Problem Statement & Functional Requirements</a></li><li class="toc-item level-3"><a href="#requirements" class="toc-link">Requirements:</a></li><li class="toc-item level-2"><a href="#2-high-level-architecture-diagram" class="toc-link">2. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#3-real-time-mutual-match-detection-pipeline" class="toc-link">3. Real-Time Mutual Match Detection Pipeline</a></li><li class="toc-item level-2"><a href="#4-the-2-stage-recommendation-engine" class="toc-link">4. The 2-Stage Recommendation Engine</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-deck-generation-and-matching" class="toc-link">6. Deep Dive: Deck Generation and Matching</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

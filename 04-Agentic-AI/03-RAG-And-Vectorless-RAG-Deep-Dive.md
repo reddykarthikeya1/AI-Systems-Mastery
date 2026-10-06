@@ -221,3 +221,45 @@ Before moving to Agent Architectures, verify you can answer these questions with
 **Exercise.** Add a query that both methods miss (a pure paraphrase such as "send items back within a month"), observe that hybrid also misses it, then explain what component (a learned embedding model or a query rewriter) would fix it.
 
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
+
+
+## Further Reading
+
+- [Retrieval-Augmented Generation paper](https://arxiv.org/abs/2005.11401)
+- [Anthropic: contextual retrieval](https://www.anthropic.com/news/contextual-retrieval)
+- [RAGAS documentation](https://docs.ragas.io/en/stable/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why chunk documents before embedding?</summary>
+
+Embeddings of long texts blur details and models have input limits; chunks make retrieval precise.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does a reranker add after vector search?</summary>
+
+A more accurate cross-encoder score on a short candidate list, improving precision of the top results.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When can retrieval be 'vectorless'?</summary>
+
+When structure or keywords suffice: BM25, SQL/metadata filters, or navigating document trees instead of embeddings.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you measure retrieval quality?</summary>
+
+recall@k, MRR or nDCG on a labelled query set, separate from answer quality.
+
+</details>

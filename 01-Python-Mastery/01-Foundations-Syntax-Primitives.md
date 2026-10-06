@@ -407,3 +407,45 @@ print(f"Tuple state: {t}")
   Tuple state: (1, [2, 3, 4])
   ```
 > **Staff Engineer Takeaway:** Immutability in Python applies only to the **references** held directly by the container, not to the contents of referenced objects.
+
+
+## Further Reading
+
+- [Built-in types](https://docs.python.org/3/library/stdtypes.html)
+- [Python FAQ: how are arguments passed](https://docs.python.org/3/faq/programming.html#how-do-i-write-a-function-with-output-parameters-call-by-reference)
+- [Real Python: Python data types](https://realpython.com/python-data-types/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why is `def f(x, items=[]): items.append(x); return items` a bug?</summary>
+
+The default list is created once when the function is defined and shared across calls, so state leaks between calls. Use `items=None` and create a new list inside.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which are immutable: `list`, `tuple`, `str`, `frozenset`, `dict`?</summary>
+
+`tuple`, `str` and `frozenset`. A tuple containing a list is immutable as a container but its list element can still change.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does Python use for argument passing?</summary>
+
+Pass by assignment (pass by object reference): the parameter name is bound to the same object the caller passed. Rebinding the name inside does not affect the caller; mutating the object does.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does `-5 // 2` return and why?</summary>
+
+`-3`. Floor division rounds toward negative infinity, not toward zero; `%` is defined consistently so that `a == (a // b) * b + a % b`.
+
+</details>

@@ -1516,6 +1516,22 @@ $$\text{Static System Instructions} \longrightarrow \text{Tool Schemas} \longrig
 </ul>
 </li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching">Anthropic: prompt caching</a></li>
+<li><a href="https://arxiv.org/abs/2307.03172">Lost in the middle paper</a></li>
+<li><a href="https://arxiv.org/abs/2310.05736">LLMLingua paper</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does prompt caching require of your prompt layout?</summary><p>Stable content (system prompt, tools, shared documents) first, volatile content last, so the prefix can be reused.</p>
+</details><details>
+<summary><strong>2.</strong> What is context compaction?</summary><p>Summarising or trimming history and tool outputs to keep the prompt within budget while preserving key facts.</p>
+</details><details>
+<summary><strong>3.</strong> What is 'lost in the middle'?</summary><p>Models use information at the start and end of long prompts better than in the middle; order evidence accordingly.</p>
+</details><details>
+<summary><strong>4.</strong> How do you budget tokens?</summary><p>Reserve output and system space, summarise history, then fit the best-ranked evidence in the remainder.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1538,7 +1554,7 @@ $$\text{Static System Instructions} \longrightarrow \text{Tool Schemas} \longrig
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-open-textbook-on-the-desk" class="toc-link">2. Spoon-Fed Mental Model: The Open Textbook on the Desk</a></li><li class="toc-item level-3"><a href="#without-prompt-caching-naive-approach" class="toc-link">Without Prompt Caching (Naive Approach):</a></li><li class="toc-item level-3"><a href="#with-prompt-caching-anthropic-openai-mechanics" class="toc-link">With Prompt Caching (Anthropic & OpenAI Mechanics):</a></li><li class="toc-item level-2"><a href="#3-the-3-architectural-rules-of-prompt-caching" class="toc-link">3. The 3 Architectural Rules of Prompt Caching</a></li><li class="toc-item level-2"><a href="#4-defeating-lost-in-the-middle-context-window-compaction" class="toc-link">4. Defeating "Lost-in-the-Middle": Context Window Compaction</a></li><li class="toc-item level-3"><a href="#production-compaction-techniques" class="toc-link">Production Compaction Techniques:</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation-prompt-cache-simulator-context-compactor" class="toc-link">5. Complete Runnable Implementation: Prompt Cache Simulator & Context Compactor</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-open-textbook-on-the-desk" class="toc-link">2. Spoon-Fed Mental Model: The Open Textbook on the Desk</a></li><li class="toc-item level-3"><a href="#without-prompt-caching-naive-approach" class="toc-link">Without Prompt Caching (Naive Approach):</a></li><li class="toc-item level-3"><a href="#with-prompt-caching-anthropic-openai-mechanics" class="toc-link">With Prompt Caching (Anthropic & OpenAI Mechanics):</a></li><li class="toc-item level-2"><a href="#3-the-3-architectural-rules-of-prompt-caching" class="toc-link">3. The 3 Architectural Rules of Prompt Caching</a></li><li class="toc-item level-2"><a href="#4-defeating-lost-in-the-middle-context-window-compaction" class="toc-link">4. Defeating "Lost-in-the-Middle": Context Window Compaction</a></li><li class="toc-item level-3"><a href="#production-compaction-techniques" class="toc-link">Production Compaction Techniques:</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation-prompt-cache-simulator-context-compactor" class="toc-link">5. Complete Runnable Implementation: Prompt Cache Simulator & Context Compactor</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

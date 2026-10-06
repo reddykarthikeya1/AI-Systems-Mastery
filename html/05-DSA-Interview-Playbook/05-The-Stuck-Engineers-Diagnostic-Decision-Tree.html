@@ -1385,6 +1385,22 @@ flowchart TD
 [ ] 6. Large Boundary Extremes: Does target exceed the sum of all elements?
 [ ] 7. Cycles / Visited Sets: In graph or tree traversal, did you guard against infinite loops with a visited set?</code></pre>
   </div><p>Running through this checklist out loud demonstrates true principal-level engineering rigor.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://cp-algorithms.com/">CP-Algorithms</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Algorithm_design">Wikipedia: Algorithm design</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Greedy_algorithm">Wikipedia: Greedy algorithm</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What question do you ask when you do not recognise a problem?</summary><p>What is the input structure (array, graph, tree, string) and what is being optimised?</p>
+</details><details>
+<summary><strong>2.</strong> When do you suspect greedy versus DP?</summary><p>Greedy when a local choice is provably safe; DP when choices interact through overlapping subproblems.</p>
+</details><details>
+<summary><strong>3.</strong> How do you decompose a hard problem?</summary><p>Solve a smaller version, find the invariant, then generalise.</p>
+</details><details>
+<summary><strong>4.</strong> Why write down the brute force even if slow?</summary><p>It gives a baseline and test oracle for the optimised version.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1407,7 +1423,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-7-step-unsticking-decision-tree" class="toc-link">1. The 7-Step Unsticking Decision Tree</a></li><li class="toc-item level-3"><a href="#technique-1-hand-simulate-a-tiny-example-math0" class="toc-link">Technique 1: Hand-Simulate a Tiny Example ($N = 3$)</a></li><li class="toc-item level-3"><a href="#technique-2-inversion-solve-backwards" class="toc-link">Technique 2: Inversion (Solve Backwards)</a></li><li class="toc-item level-3"><a href="#technique-3-the-sorting-trade-off-math9" class="toc-link">Technique 3: The Sorting Trade-Off ($O(N \log N)$)</a></li><li class="toc-item level-2"><a href="#2-the-data-structure-matchmaker-matrix" class="toc-link">2. The Data Structure Matchmaker Matrix</a></li><li class="toc-item level-2"><a href="#3-dynamic-programming-the-3-question-formulation" class="toc-link">3. Dynamic Programming: The 3-Question Formulation</a></li><li class="toc-item level-2"><a href="#4-the-pre-flight-edge-case-checklist" class="toc-link">4. The Pre-Flight Edge Case Checklist</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-7-step-unsticking-decision-tree" class="toc-link">1. The 7-Step Unsticking Decision Tree</a></li><li class="toc-item level-3"><a href="#technique-1-hand-simulate-a-tiny-example-math0" class="toc-link">Technique 1: Hand-Simulate a Tiny Example ($N = 3$)</a></li><li class="toc-item level-3"><a href="#technique-2-inversion-solve-backwards" class="toc-link">Technique 2: Inversion (Solve Backwards)</a></li><li class="toc-item level-3"><a href="#technique-3-the-sorting-trade-off-math9" class="toc-link">Technique 3: The Sorting Trade-Off ($O(N \log N)$)</a></li><li class="toc-item level-2"><a href="#2-the-data-structure-matchmaker-matrix" class="toc-link">2. The Data Structure Matchmaker Matrix</a></li><li class="toc-item level-2"><a href="#3-dynamic-programming-the-3-question-formulation" class="toc-link">3. Dynamic Programming: The 3-Question Formulation</a></li><li class="toc-item level-2"><a href="#4-the-pre-flight-edge-case-checklist" class="toc-link">4. The Pre-Flight Edge Case Checklist</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

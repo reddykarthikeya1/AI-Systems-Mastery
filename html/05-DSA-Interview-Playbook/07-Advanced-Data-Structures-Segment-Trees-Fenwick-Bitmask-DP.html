@@ -1502,6 +1502,22 @@ graph TD
     min_tour = tsp_bitmask_dp(dist)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Optimal Traveling Salesperson Tour Cost:&quot;</span>, min_tour) <span class="hljs-comment"># 80</span></code></pre>
   </div><p>This reduces $O(N!)$ time down to $O(N^2 2^N)$, making problems up to $N = 20$ solvable in milliseconds!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://cp-algorithms.com/data_structures/segment_tree.html">CP-Algorithms: segment tree</a></li>
+<li><a href="https://cp-algorithms.com/data_structures/fenwick.html">CP-Algorithms: Fenwick tree</a></li>
+<li><a href="https://cp-algorithms.com/data_structures/disjoint_set_union.html">CP-Algorithms: DSU</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does a segment tree support?</summary><p>Range queries and point or range updates in O(log n).</p>
+</details><details>
+<summary><strong>2.</strong> Fenwick tree versus segment tree?</summary><p>Fenwick (BIT) is simpler and smaller for prefix sums with point updates; a segment tree is more general (range min/max, lazy updates).</p>
+</details><details>
+<summary><strong>3.</strong> When use bitmask DP?</summary><p>When the state is a subset of a small set (n up to about 20), e.g. TSP-style problems.</p>
+</details><details>
+<summary><strong>4.</strong> What is the complexity of union-find with path compression and union by rank?</summary><p>Nearly constant per operation (inverse Ackermann).</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1524,7 +1540,7 @@ graph TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-segment-trees-range-queries-point-updates-in-math6" class="toc-link">1. Segment Trees: Range Queries & Point Updates in $O(\log N)$</a></li><li class="toc-item level-3"><a href="#complete-segment-tree-implementation-in-python" class="toc-link">Complete Segment Tree Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-fenwick-tree-binary-indexed-tree-bit" class="toc-link">2. Fenwick Tree (Binary Indexed Tree / BIT)</a></li><li class="toc-item level-3"><a href="#the-magic-of-the-lowest-set-bit-i-i" class="toc-link">The Magic of the Lowest Set Bit: `i & (-i)`</a></li><li class="toc-item level-2"><a href="#3-disjoint-set-union-union-find-with-rank-path-compression" class="toc-link">3. Disjoint Set Union (Union-Find) with Rank & Path Compression</a></li><li class="toc-item level-2"><a href="#4-bitmask-dynamic-programming" class="toc-link">4. Bitmask Dynamic Programming</a></li><li class="toc-item level-3"><a href="#the-traveling-salesperson-problem-tsp-in-math17" class="toc-link">The Traveling Salesperson Problem (TSP) in $O(N^2 2^N)$</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-segment-trees-range-queries-point-updates-in-math6" class="toc-link">1. Segment Trees: Range Queries & Point Updates in $O(\log N)$</a></li><li class="toc-item level-3"><a href="#complete-segment-tree-implementation-in-python" class="toc-link">Complete Segment Tree Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-fenwick-tree-binary-indexed-tree-bit" class="toc-link">2. Fenwick Tree (Binary Indexed Tree / BIT)</a></li><li class="toc-item level-3"><a href="#the-magic-of-the-lowest-set-bit-i-i" class="toc-link">The Magic of the Lowest Set Bit: `i & (-i)`</a></li><li class="toc-item level-2"><a href="#3-disjoint-set-union-union-find-with-rank-path-compression" class="toc-link">3. Disjoint Set Union (Union-Find) with Rank & Path Compression</a></li><li class="toc-item level-2"><a href="#4-bitmask-dynamic-programming" class="toc-link">4. Bitmask Dynamic Programming</a></li><li class="toc-item level-3"><a href="#the-traveling-salesperson-problem-tsp-in-math17" class="toc-link">The Traveling Salesperson Problem (TSP) in $O(N^2 2^N)$</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -1438,7 +1438,23 @@ Whenever a thread needs to acquire multiple locks, it <strong>must always acquir
                     <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Allocating heavy resource pool singleton...&quot;</span>)
                     cls._instance = cls()
         <span class="hljs-keyword">return</span> cls._instance</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/library/threading.html">threading module</a></li>
+<li><a href="https://docs.python.org/3/library/queue.html">queue module</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Deadlock_(computer_science)">Wikipedia: Deadlock</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why is `count += 1` not thread-safe?</summary><p>It is read-modify-write across several bytecodes; two threads can read the same value and one update is lost. Use a lock or atomic structure.</p>
+</details><details>
+<summary><strong>2.</strong> What are the four conditions for deadlock?</summary><p>Mutual exclusion, hold-and-wait, no preemption, circular wait. Break one (usually enforce a global lock order).</p>
+</details><details>
+<summary><strong>3.</strong> Why prefer a concurrent queue between producers and consumers?</summary><p>It decouples rates, gives backpressure (bounded queue) and keeps shared-state locking in one tested place.</p>
+</details><details>
+<summary><strong>4.</strong> When use a read-write lock?</summary><p>When reads vastly outnumber writes and readers can proceed concurrently.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1460,7 +1476,7 @@ Whenever a thread needs to acquire multiple locks, it <strong>must always acquir
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-concurrency-matters-in-lld-interviews" class="toc-link">1. Why Concurrency Matters in LLD Interviews</a></li><li class="toc-item level-2"><a href="#2-the-readers-writer-lock-rwlock-pattern" class="toc-link">2. The Readers-Writer Lock (RWLock) Pattern</a></li><li class="toc-item level-3"><a href="#complete-thread-safe-rwlock-implementation-in-python" class="toc-link">Complete Thread-Safe RWLock Implementation in Python</a></li><li class="toc-item level-2"><a href="#3-deadlocks-the-4-coffman-conditions" class="toc-link">3. Deadlocks & The 4 Coffman Conditions</a></li><li class="toc-item level-3"><a href="#the-4-coffman-conditions-for-deadlock" class="toc-link">The 4 Coffman Conditions for Deadlock:</a></li><li class="toc-item level-3"><a href="#how-to-eliminate-deadlocks-global-lock-ordering" class="toc-link">How to Eliminate Deadlocks: Global Lock Ordering</a></li><li class="toc-item level-2"><a href="#4-double-checked-locking-in-python" class="toc-link">4. Double-Checked Locking in Python</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-why-concurrency-matters-in-lld-interviews" class="toc-link">1. Why Concurrency Matters in LLD Interviews</a></li><li class="toc-item level-2"><a href="#2-the-readers-writer-lock-rwlock-pattern" class="toc-link">2. The Readers-Writer Lock (RWLock) Pattern</a></li><li class="toc-item level-3"><a href="#complete-thread-safe-rwlock-implementation-in-python" class="toc-link">Complete Thread-Safe RWLock Implementation in Python</a></li><li class="toc-item level-2"><a href="#3-deadlocks-the-4-coffman-conditions" class="toc-link">3. Deadlocks & The 4 Coffman Conditions</a></li><li class="toc-item level-3"><a href="#the-4-coffman-conditions-for-deadlock" class="toc-link">The 4 Coffman Conditions for Deadlock:</a></li><li class="toc-item level-3"><a href="#how-to-eliminate-deadlocks-global-lock-ordering" class="toc-link">How to Eliminate Deadlocks: Global Lock Ordering</a></li><li class="toc-item level-2"><a href="#4-double-checked-locking-in-python" class="toc-link">4. Double-Checked Locking in Python</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -305,3 +305,45 @@ def compute_cube_sum(n: int):
 
 compute_cube_sum(100_000)
 ```
+
+
+## Further Reading
+
+- [heapq module](https://docs.python.org/3/library/heapq.html)
+- [bisect module](https://docs.python.org/3/library/bisect.html)
+- [Python time complexity](https://wiki.python.org/moin/TimeComplexity)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why talk through brute force first in an interview?</summary>
+
+It shows you can solve the problem, gives a correctness baseline, and the bottleneck you identify points to the optimisation.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What should you state before coding?</summary>
+
+Assumptions, input constraints, edge cases and target complexity.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you test your own solution without a runner?</summary>
+
+Walk through a small example by hand, then edge cases: empty, single element, duplicates, extremes.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the time complexity of building a dict from n pairs?</summary>
+
+`O(n)` average.
+
+</details>

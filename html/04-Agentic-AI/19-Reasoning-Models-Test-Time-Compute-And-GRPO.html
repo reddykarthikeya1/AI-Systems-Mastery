@@ -1538,6 +1538,22 @@ $$\hat{A}_i = \frac{r_i - \text{mean}(\{r_1, \dots, r_G\})}{\text{std}(\{r_1, \d
 </ul>
 </li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/2402.03300">DeepSeekMath (GRPO)</a></li>
+<li><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1 paper</a></li>
+<li><a href="https://arxiv.org/abs/2201.11903">Chain-of-thought prompting paper</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is test-time compute?</summary><p>Spending more computation at inference (longer reasoning, sampling several answers, search) to improve answers.</p>
+</details><details>
+<summary><strong>2.</strong> How does GRPO avoid a value model?</summary><p>It samples a group of answers per prompt and uses each answer&#39;s reward relative to the group mean as the advantage.</p>
+</details><details>
+<summary><strong>3.</strong> What makes a reward 'verifiable'?</summary><p>It can be checked automatically (unit tests, exact answers), enabling RL without human labels.</p>
+</details><details>
+<summary><strong>4.</strong> Why can longer reasoning hurt cost and latency?</summary><p>More tokens are generated and billed; use budgets and routing to reasoning only when needed.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1560,7 +1576,7 @@ $$\hat{A}_i = \frac{r_i - \text{mean}(\{r_1, \dots, r_G\})}{\text{std}(\{r_1, \d
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-blitz-chess-vs-grandmaster-deep-thought" class="toc-link">2. Spoon-Fed Mental Model: Blitz Chess vs Grandmaster Deep Thought</a></li><li class="toc-item level-3"><a href="#pre-2025-llms-next-token-prediction" class="toc-link">Pre-2025 LLMs (Next-Token Prediction):</a></li><li class="toc-item level-3"><a href="#2025-2026-reasoning-models-test-time-compute" class="toc-link">2025/2026 Reasoning Models (Test-Time Compute):</a></li><li class="toc-item level-2"><a href="#3-the-mathematics-of-grpo-group-relative-policy-optimization" class="toc-link">3. The Mathematics of GRPO (Group Relative Policy Optimization)</a></li><li class="toc-item level-3"><a href="#how-deepseek-r1-eliminates-the-critic-with-grpo" class="toc-link">How DeepSeek-R1 Eliminates the Critic with GRPO:</a></li><li class="toc-item level-2"><a href="#4-junior-vs-staff-implementation-integrating-reasoning-models" class="toc-link">4. Junior vs Staff Implementation: Integrating Reasoning Models</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation-grpo-advantage-reasoning-parser" class="toc-link">5. Complete Runnable Implementation: GRPO Advantage & Reasoning Parser</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-blitz-chess-vs-grandmaster-deep-thought" class="toc-link">2. Spoon-Fed Mental Model: Blitz Chess vs Grandmaster Deep Thought</a></li><li class="toc-item level-3"><a href="#pre-2025-llms-next-token-prediction" class="toc-link">Pre-2025 LLMs (Next-Token Prediction):</a></li><li class="toc-item level-3"><a href="#2025-2026-reasoning-models-test-time-compute" class="toc-link">2025/2026 Reasoning Models (Test-Time Compute):</a></li><li class="toc-item level-2"><a href="#3-the-mathematics-of-grpo-group-relative-policy-optimization" class="toc-link">3. The Mathematics of GRPO (Group Relative Policy Optimization)</a></li><li class="toc-item level-3"><a href="#how-deepseek-r1-eliminates-the-critic-with-grpo" class="toc-link">How DeepSeek-R1 Eliminates the Critic with GRPO:</a></li><li class="toc-item level-2"><a href="#4-junior-vs-staff-implementation-integrating-reasoning-models" class="toc-link">4. Junior vs Staff Implementation: Integrating Reasoning Models</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation-grpo-advantage-reasoning-parser" class="toc-link">5. Complete Runnable Implementation: GRPO Advantage & Reasoning Parser</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

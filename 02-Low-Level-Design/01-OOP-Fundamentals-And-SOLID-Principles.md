@@ -314,3 +314,45 @@ class MockOrderRepository:
         self.saved.append((order_id, amount))
         return True
 ```
+
+
+## Further Reading
+
+- [Wikipedia: SOLID](https://en.wikipedia.org/wiki/SOLID)
+- [Refactoring Guru: SOLID principles](https://refactoring.guru/design-patterns)
+- [Python abc module](https://docs.python.org/3/library/abc.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> State the Single Responsibility Principle with an example.</summary>
+
+A class should have one reason to change. A `Report` class that both formats and emails reports changes for two reasons; split into `ReportFormatter` and `ReportMailer`.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does the Liskov Substitution Principle forbid?</summary>
+
+Subclasses that break the base class contract, e.g. a `Square` subclass of `Rectangle` that surprises callers by coupling width and height.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does Dependency Inversion mean in practice?</summary>
+
+High-level code depends on abstractions (interfaces/Protocols), and concrete implementations are injected, so they can be swapped and tested.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> When does Open/Closed push you toward a pattern?</summary>
+
+When new variants arrive frequently (payment methods, pricing rules): add new classes implementing an interface (Strategy) instead of editing an `if/else` chain.
+
+</details>

@@ -157,3 +157,45 @@ Before you tell the interviewer you have finished, execute this 4-step mental dr
 ```
 
 Mastering this discipline separates engineers who rely on trial-and-error from masters who write correct, production-grade code on the first attempt.
+
+
+## Further Reading
+
+- [Python style guide (PEP 8)](https://peps.python.org/pep-0008/)
+- [Big-O cheat sheet](https://www.bigocheatsheet.com/)
+- [Python data structures](https://docs.python.org/3/tutorial/datastructures.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why write helper functions with clear names on a whiteboard?</summary>
+
+They keep the main logic readable and reduce bugs.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What do you state about complexity?</summary>
+
+Time and space in terms of input size, including hidden costs like sorting or slicing.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you handle an unfamiliar language feature?</summary>
+
+Use a simpler construct you are certain about and say so.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a good habit before declaring done?</summary>
+
+Test one normal case and one edge case aloud.
+
+</details>

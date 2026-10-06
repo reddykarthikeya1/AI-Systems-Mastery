@@ -195,3 +195,45 @@ When we run our 50-thread stress test across all three implementations:
 In an LLD interview, when the interviewer asks: *"How will you handle 10,000 users booking tickets at the same second?"*, give this two-tiered answer:
 1. *"At the database level, I will use **Optimistic Concurrency Control** via an atomic `UPDATE seats SET status='BOOKED', version=v+1 WHERE id=:id AND version=:v` to prevent holding long-lived DB transactions."*
 2. *"At the application gateway layer, I will use a **Redis Distributed Lock with a short TTL (Redlock)** to prevent 10,000 requests from hitting the database simultaneously in the first place."*
+
+
+## Further Reading
+
+- [threading module](https://docs.python.org/3/library/threading.html)
+- [concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
+- [pytest documentation](https://docs.pytest.org/en/stable/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> How do you reproduce a race condition reliably?</summary>
+
+Increase contention (many threads, many iterations), add small sleeps/yields at the racy point, and assert an invariant at the end.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> A test passes 100 times then fails once. What does that suggest?</summary>
+
+A non-deterministic race or ordering bug; passing runs do not prove safety, so examine shared state and synchronisation.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does `threading.Lock` not protect against?</summary>
+
+Logic races across separate critical sections (check-then-act split into two locked regions) and deadlocks.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Name a tool or technique to find data races.</summary>
+
+Stress tests with invariants, thread sanitizers in native code, and code review of shared mutable state.
+
+</details>

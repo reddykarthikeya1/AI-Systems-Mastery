@@ -97,3 +97,45 @@ A CDN is a geographically distributed network of **Edge Proxy Servers (Points of
 
 * **Anycast DNS Routing:** Multiple worldwide CDN POPs advertise the **exact same public IP address** via BGP (Border Gateway Protocol). The internet's routing fabric automatically directs user packets to the topologically closest datacenter.
 * **Origin Shielding:** A secondary caching layer between CDN edge servers and your main datacenter to ensure origin servers are never flooded during cache misses.
+
+
+## Further Reading
+
+- [Redis documentation](https://redis.io/docs/latest/)
+- [NGINX load balancing](https://nginx.org/en/docs/http/load_balancing.html)
+- [Wikipedia: Consistent hashing](https://en.wikipedia.org/wiki/Consistent_hashing)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Cache-aside versus write-through?</summary>
+
+Cache-aside: the app loads on miss and writes to the DB then invalidates. Write-through: writes go through the cache to the store synchronously.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is a cache stampede and a fix?</summary>
+
+Many requests miss at once and hammer the origin. Use request coalescing, jittered TTLs or probabilistic early refresh.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Layer 4 versus layer 7 load balancing?</summary>
+
+L4 balances on IP/port (fast, protocol-agnostic); L7 understands HTTP and can route on path, headers, cookies.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is consistent hashing for?</summary>
+
+Distributing keys so adding/removing a node remaps only about 1/N of them.
+
+</details>

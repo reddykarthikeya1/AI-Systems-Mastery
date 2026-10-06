@@ -1433,6 +1433,22 @@ Evaluate the answer. Return pure JSON matching the FaithfulnessEvaluation schema
           pip install pytest pydantic
           pytest test_agent_regression.py</span></code></pre>
   </div><p>Now, any prompt modification that introduces subtle hallucinations or degrades retrieval quality is blocked at the Pull Request stage before reaching a single customer!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-judge (MT-Bench)</a></li>
+<li><a href="https://eugeneyan.com/writing/llm-evaluators/">Eugene Yan: LLM evaluators</a></li>
+<li><a href="https://github.com/EleutherAI/lm-evaluation-harness">lm-evaluation-harness</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why calibrate an LLM judge against human labels?</summary><p>To measure its agreement and error directions (TPR/FPR) before trusting its scores.</p>
+</details><details>
+<summary><strong>2.</strong> What biases do LLM judges show?</summary><p>Position, verbosity, self-preference and formatting bias.</p>
+</details><details>
+<summary><strong>3.</strong> How do you put evals in CI?</summary><p>Run a fixed task suite on each change, compare with the baseline within confidence intervals, and block regressions.</p>
+</details><details>
+<summary><strong>4.</strong> What is pass^k?</summary><p>The probability that all k independent trials succeed; it measures consistency.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1455,7 +1471,7 @@ Evaluate the answer. Return pure JSON matching the FaithfulnessEvaluation schema
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-rag-evaluation-rag-triad" class="toc-link">1. The Four Pillars of RAG Evaluation (RAG Triad)</a></li><li class="toc-item level-3"><a href="#the-4-core-metrics-defined" class="toc-link">The 4 Core Metrics Defined</a></li><li class="toc-item level-2"><a href="#2-building-an-automated-llm-as-a-judge-evaluator-from-scratch" class="toc-link">2. Building an Automated "LLM-As-A-Judge" Evaluator from Scratch</a></li><li class="toc-item level-2"><a href="#3-creating-a-golden-benchmark-evaluation-dataset" class="toc-link">3. Creating a Golden Benchmark Evaluation Dataset</a></li><li class="toc-item level-2"><a href="#4-integrating-the-eval-suite-into-ci-cd-github-actions" class="toc-link">4. Integrating the Eval Suite into CI/CD (GitHub Actions)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-rag-evaluation-rag-triad" class="toc-link">1. The Four Pillars of RAG Evaluation (RAG Triad)</a></li><li class="toc-item level-3"><a href="#the-4-core-metrics-defined" class="toc-link">The 4 Core Metrics Defined</a></li><li class="toc-item level-2"><a href="#2-building-an-automated-llm-as-a-judge-evaluator-from-scratch" class="toc-link">2. Building an Automated "LLM-As-A-Judge" Evaluator from Scratch</a></li><li class="toc-item level-2"><a href="#3-creating-a-golden-benchmark-evaluation-dataset" class="toc-link">3. Creating a Golden Benchmark Evaluation Dataset</a></li><li class="toc-item level-2"><a href="#4-integrating-the-eval-suite-into-ci-cd-github-actions" class="toc-link">4. Integrating the Eval Suite into CI/CD (GitHub Actions)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

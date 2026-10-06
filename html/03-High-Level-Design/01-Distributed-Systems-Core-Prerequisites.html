@@ -1514,6 +1514,22 @@ flowchart TD
 <li><strong>Vector Clocks:</strong> Every node maintains an array of logical counters: <code>[NY: 3, LON: 2]</code>. This allows the database to detect whether Write A <em>happened-before</em> Write B, or if they were <strong>concurrent conflicting writes</strong> requiring application resolution.</li>
 <li><strong>CRDTs (Conflict-Free Replicated Data Types):</strong> Data structures mathematically designed so that any concurrent edits can be merged in any arbitrary order, and <strong>all replicas are mathematically guaranteed to converge to the exact same state without locks!</strong> (Used by Figma, Google Docs, Apple Notes, and Redis Enterprise).</li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://raft.github.io/">Raft consensus visualisation</a></li>
+<li><a href="https://en.wikipedia.org/wiki/CAP_theorem">Wikipedia: CAP theorem</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Vector_clock">Wikipedia: Vector clock</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> State the CAP theorem precisely.</summary><p>During a network partition, a system must choose between consistency (every read sees the latest write) and availability (every request gets a non-error response).</p>
+</details><details>
+<summary><strong>2.</strong> What does a quorum read/write with R+W>N guarantee?</summary><p>Read and write sets overlap, so a read sees at least one replica with the latest acknowledged write.</p>
+</details><details>
+<summary><strong>3.</strong> Why can't you rely on wall clocks to order events across machines?</summary><p>Clocks drift and skew; use logical clocks (Lamport/vector) or a consensus-ordered log.</p>
+</details><details>
+<summary><strong>4.</strong> What does Raft do?</summary><p>Elects a leader and replicates a log so a majority agrees on the order of entries, tolerating minority failures.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1536,7 +1552,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-latency-numbers-every-systems-engineer-must-know" class="toc-link">1. Latency Numbers Every Systems Engineer Must Know</a></li><li class="toc-item level-2"><a href="#2-cap-theorem-vs-pacelc-theorem" class="toc-link">2. CAP Theorem vs PACELC Theorem</a></li><li class="toc-item level-3"><a href="#the-classic-cap-theorem" class="toc-link">The Classic CAP Theorem</a></li><li class="toc-item level-3"><a href="#the-pacelc-theorem-the-complete-reality" class="toc-link">The PACELC Theorem (The Complete Reality)</a></li><li class="toc-item level-2"><a href="#3-network-transport-protocols-tcp-udp-http-2-http-3-grpc-websockets" class="toc-link">3. Network Transport Protocols: TCP, UDP, HTTP/2, HTTP/3, gRPC & WebSockets</a></li><li class="toc-item level-3"><a href="#protocol-comparison-matrix" class="toc-link">Protocol Comparison Matrix</a></li><li class="toc-item level-2"><a href="#4-distributed-consensus-raft-paxos-essentials" class="toc-link">4. Distributed Consensus: Raft & Paxos Essentials</a></li><li class="toc-item level-3"><a href="#raft-in-a-nutshell-leader-based-consensus" class="toc-link">Raft in a Nutshell (Leader-Based Consensus)</a></li><li class="toc-item level-2"><a href="#5-active-active-multi-region-replication-crdts-vector-clocks" class="toc-link">5. Active-Active Multi-Region Replication: CRDTs & Vector Clocks</a></li><li class="toc-item level-3"><a href="#the-conflict-resolution-options" class="toc-link">The Conflict Resolution Options:</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-latency-numbers-every-systems-engineer-must-know" class="toc-link">1. Latency Numbers Every Systems Engineer Must Know</a></li><li class="toc-item level-2"><a href="#2-cap-theorem-vs-pacelc-theorem" class="toc-link">2. CAP Theorem vs PACELC Theorem</a></li><li class="toc-item level-3"><a href="#the-classic-cap-theorem" class="toc-link">The Classic CAP Theorem</a></li><li class="toc-item level-3"><a href="#the-pacelc-theorem-the-complete-reality" class="toc-link">The PACELC Theorem (The Complete Reality)</a></li><li class="toc-item level-2"><a href="#3-network-transport-protocols-tcp-udp-http-2-http-3-grpc-websockets" class="toc-link">3. Network Transport Protocols: TCP, UDP, HTTP/2, HTTP/3, gRPC & WebSockets</a></li><li class="toc-item level-3"><a href="#protocol-comparison-matrix" class="toc-link">Protocol Comparison Matrix</a></li><li class="toc-item level-2"><a href="#4-distributed-consensus-raft-paxos-essentials" class="toc-link">4. Distributed Consensus: Raft & Paxos Essentials</a></li><li class="toc-item level-3"><a href="#raft-in-a-nutshell-leader-based-consensus" class="toc-link">Raft in a Nutshell (Leader-Based Consensus)</a></li><li class="toc-item level-2"><a href="#5-active-active-multi-region-replication-crdts-vector-clocks" class="toc-link">5. Active-Active Multi-Region Replication: CRDTs & Vector Clocks</a></li><li class="toc-item level-3"><a href="#the-conflict-resolution-options" class="toc-link">The Conflict Resolution Options:</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -118,3 +118,45 @@ Before you proceed to **Track 4: Agentic AI Engineering**, ensure you can confid
 > [!TIP]
 > **Next Stop: Track 4 (Agentic AI Engineering)!**
 > You now command the architectural power to build systems scaling to hundreds of millions of users. Now it is time to master the frontier of software engineering: autonomous reasoning agents, RAG, vector databases, and multi-agent cognitive swarms! Proceed to [Track 4: Agentic AI Engineering](../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.md)!
+
+
+## Further Reading
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [AWS Builders' Library](https://aws.amazon.com/builders-library/)
+- [Google SRE book](https://sre.google/sre-book/table-of-contents/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Name the standard building blocks used in most HLD answers.</summary>
+
+Load balancer, stateless services, cache, database with replication and sharding, queue, CDN, object storage.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which two numbers frame most designs?</summary>
+
+Peak QPS and storage growth.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When do you add a queue?</summary>
+
+To decouple spikes, enable retries and run work asynchronously.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the most common mistake in HLD interviews?</summary>
+
+Drawing boxes before clarifying requirements and estimating load.
+
+</details>

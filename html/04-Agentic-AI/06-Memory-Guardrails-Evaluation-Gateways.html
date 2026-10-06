@@ -1464,6 +1464,22 @@ flowchart TD
 <li><strong>Faithfulness (Groundedness):</strong> Evaluates whether every claim in the generated answer can be directly inferred from the retrieved context (Score $1.0$ = zero hallucinations).</li>
 <li><strong>Answer Relevance:</strong> Evaluates whether the answer directly and concisely satisfies the user&#39;s intent.</li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.litellm.ai/">LiteLLM documentation</a></li>
+<li><a href="https://docs.nvidia.com/nemo/guardrails/latest/index.html">NeMo Guardrails</a></li>
+<li><a href="https://arxiv.org/abs/2304.03442">Generative Agents paper</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Short-term versus long-term agent memory?</summary><p>Short-term is the current thread&#39;s context/state; long-term persists facts and experiences across sessions in a store.</p>
+</details><details>
+<summary><strong>2.</strong> What is a guardrail?</summary><p>A control around the model that detects or blocks unsafe inputs, outputs or actions; it is a detection layer, not access control.</p>
+</details><details>
+<summary><strong>3.</strong> What does an LLM gateway centralise?</summary><p>Provider routing, retries/fallbacks, rate limits, caching, cost tracking and auth.</p>
+</details><details>
+<summary><strong>4.</strong> Why log prompts and tool calls?</summary><p>To debug failures, evaluate quality and audit behaviour (with privacy controls).</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1486,7 +1502,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-multi-tier-memory-hierarchy" class="toc-link">1. The Multi-Tier Memory Hierarchy</a></li><li class="toc-item level-3"><a href="#implementing-fact-extraction-long-term-memory-in-python" class="toc-link">Implementing Fact-Extraction Long-Term Memory in Python:</a></li><li class="toc-item level-2"><a href="#2-guardrails-defending-against-prompt-injections-pii-leaks" class="toc-link">2. Guardrails: Defending Against Prompt Injections & PII Leaks</a></li><li class="toc-item level-3"><a href="#prompt-injection-pii-redactor" class="toc-link">Prompt Injection & PII Redactor:</a></li><li class="toc-item level-2"><a href="#3-production-llm-gateways-litellm-architecture" class="toc-link">3. Production LLM Gateways (LiteLLM Architecture)</a></li><li class="toc-item level-3"><a href="#key-gateway-responsibilities" class="toc-link">Key Gateway Responsibilities:</a></li><li class="toc-item level-2"><a href="#4-the-rag-evaluation-triad" class="toc-link">4. The RAG Evaluation Triad</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-multi-tier-memory-hierarchy" class="toc-link">1. The Multi-Tier Memory Hierarchy</a></li><li class="toc-item level-3"><a href="#implementing-fact-extraction-long-term-memory-in-python" class="toc-link">Implementing Fact-Extraction Long-Term Memory in Python:</a></li><li class="toc-item level-2"><a href="#2-guardrails-defending-against-prompt-injections-pii-leaks" class="toc-link">2. Guardrails: Defending Against Prompt Injections & PII Leaks</a></li><li class="toc-item level-3"><a href="#prompt-injection-pii-redactor" class="toc-link">Prompt Injection & PII Redactor:</a></li><li class="toc-item level-2"><a href="#3-production-llm-gateways-litellm-architecture" class="toc-link">3. Production LLM Gateways (LiteLLM Architecture)</a></li><li class="toc-item level-3"><a href="#key-gateway-responsibilities" class="toc-link">Key Gateway Responsibilities:</a></li><li class="toc-item level-2"><a href="#4-the-rag-evaluation-triad" class="toc-link">4. The RAG Evaluation Triad</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

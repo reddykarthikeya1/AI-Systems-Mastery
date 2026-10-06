@@ -247,3 +247,45 @@ Verify your understanding before continuing:
    - *Answer:* Pre-training scaling only improves the model's static statistical intuition. Test-Time Compute grants the model dynamic inference-time token budget to explore hypotheses, verify invariants, detect contradictions, and self-correct before outputting the final token.
 3. **Why must autonomous agent architectures separate thinking tokens from final response streams?**
    - *Answer:* Leaking raw chain-of-thought scratchpad tokens clutters user interfaces, increases downstream token usage when fed back into chat history, and may expose internal prompt instructions.
+
+
+## Further Reading
+
+- [DeepSeekMath (GRPO)](https://arxiv.org/abs/2402.03300)
+- [DeepSeek-R1 paper](https://arxiv.org/abs/2501.12948)
+- [Chain-of-thought prompting paper](https://arxiv.org/abs/2201.11903)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is test-time compute?</summary>
+
+Spending more computation at inference (longer reasoning, sampling several answers, search) to improve answers.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How does GRPO avoid a value model?</summary>
+
+It samples a group of answers per prompt and uses each answer's reward relative to the group mean as the advantage.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What makes a reward 'verifiable'?</summary>
+
+It can be checked automatically (unit tests, exact answers), enabling RL without human labels.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why can longer reasoning hurt cost and latency?</summary>
+
+More tokens are generated and billed; use budgets and routing to reasoning only when needed.
+
+</details>

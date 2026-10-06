@@ -252,3 +252,45 @@ Verify your understanding before moving forward:
    - *Answer:* Instead of pre-allocating a contiguous array for the worst-case sequence length (e.g., 4096 tokens), PagedAttention allocates small virtual blocks (e.g., 16 tokens) dynamically as tokens are generated, mapping non-contiguous physical blocks via a block table.
 3. **What is Prefix Caching and why is it game-changing for agentic multi-turn chats?**
    - *Answer:* Multi-turn agents repeatedly send the same system prompt and tools list. Prefix caching retains the KV cache of that shared prefix across requests, dropping the time-to-first-token (TTFT) and compute cost to near zero.
+
+
+## Further Reading
+
+- [PagedAttention paper (vLLM)](https://arxiv.org/abs/2309.06180)
+- [vLLM documentation](https://docs.vllm.ai/en/latest/)
+- [NVIDIA: mastering LLM inference optimisation](https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What problem does PagedAttention solve?</summary>
+
+KV-cache memory fragmentation: it stores the cache in fixed-size blocks allocated on demand, raising batch size and throughput.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Prefill versus decode?</summary>
+
+Prefill processes the prompt in parallel (compute-bound); decode generates tokens one at a time (memory-bound).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does continuous batching do?</summary>
+
+Re-forms the batch every decoding step so finished sequences leave and new ones join immediately.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you estimate KV cache size per token?</summary>
+
+`2 x layers x kv_heads x head_dim x bytes` (e.g. 128 KiB per token for Llama-3 8B in FP16).
+
+</details>

@@ -314,3 +314,45 @@ async def fetch_users_with_eager_loading():
 2. **Watch for Implicit Type Conversions:** Querying `WHERE phone_number = 1234567890` on a `VARCHAR` column forces PostgreSQL to cast every row to integer, bypassing the B-Tree index entirely!
 3. **Use `selectinload` for 1-to-Many Collections:** Eliminates $N+1$ queries while preventing the quadratic data explosion of SQL `JOIN` cartesian products.
 4. **Tune `work_mem` and `shared_buffers`:** Default PostgreSQL settings are tuned for 1990s hardware. Increase `shared_buffers` to 25% of system RAM and configure `work_mem` appropriately to prevent sort spills to disk.
+
+
+## Further Reading
+
+- [PostgreSQL documentation](https://www.postgresql.org/docs/current/)
+- [Use The Index, Luke](https://use-the-index-luke.com/)
+- [SQLAlchemy 2.0 tutorial](https://docs.sqlalchemy.org/en/20/tutorial/index.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does an index do and what is its cost?</summary>
+
+It speeds lookups by keeping a sorted structure (usually a B-tree) on columns, at the cost of extra storage and slower writes.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is an N+1 query problem?</summary>
+
+One query loads N parents, then N more queries load each child. Fix with a join or eager loading (`selectinload`).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Which isolation level prevents dirty reads but allows non-repeatable reads?</summary>
+
+READ COMMITTED (the default in PostgreSQL).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why use parameterised queries?</summary>
+
+They separate SQL from data, preventing SQL injection and allowing plan reuse.
+
+</details>

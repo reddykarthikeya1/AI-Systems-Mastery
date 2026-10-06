@@ -110,3 +110,45 @@ Where:
 * $\pi_\theta$ is the active model, and $\pi_{\text{ref}}$ is the frozen baseline model.
 
 DPO increases the probability of preferred answers while decreasing the probability of rejected answers in a **single standard cross-entropy training pass**!
+
+
+## Further Reading
+
+- [LoRA paper](https://arxiv.org/abs/2106.09685)
+- [DPO paper](https://arxiv.org/abs/2305.18290)
+- [Hugging Face PEFT](https://huggingface.co/docs/peft/index)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does LoRA train?</summary>
+
+Small low-rank adapter matrices added to frozen weights, so only a tiny fraction of parameters are updated.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does DPO optimise?</summary>
+
+A preference objective directly from chosen/rejected pairs, without training a separate reward model or running RL.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When fine-tune instead of using RAG?</summary>
+
+To change style, format or skills; use RAG for fresh or private knowledge.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why hold out an evaluation set before fine-tuning?</summary>
+
+To detect overfitting and regressions on general capabilities.
+
+</details>

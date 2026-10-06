@@ -1552,7 +1552,23 @@ user = UserCreateRequest.model_validate_json(json_payload)
 └── tests/
     ├── unit/
     └── integration/</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/library/typing.html">typing module</a></li>
+<li><a href="https://mypy.readthedocs.io/en/stable/">mypy documentation</a></li>
+<li><a href="https://peps.python.org/pep-0544/">PEP 544: Protocols</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Does the interpreter enforce type hints at runtime?</summary><p>No. Hints are metadata checked by tools such as mypy/pyright (or libraries like Pydantic that choose to validate).</p>
+</details><details>
+<summary><strong>2.</strong> What does `Protocol` give you that an abstract base class does not?</summary><p>Structural subtyping: any class with the right methods satisfies it without inheriting from it.</p>
+</details><details>
+<summary><strong>3.</strong> When would you use a `dataclass(frozen=True, slots=True)`?</summary><p>For immutable, hashable, memory-light value objects; <code>frozen</code> blocks assignment and <code>slots</code> removes the per-instance dict.</p>
+</details><details>
+<summary><strong>4.</strong> What is `TypeVar` for?</summary><p>To express that the output type depends on the input type (generics), e.g. <code>def first(xs: list[T]) -&gt; T</code>.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1574,7 +1590,7 @@ user = UserCreateRequest.model_validate_json(json_payload)
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-modern-python-type-system" class="toc-link">1. The Modern Python Type System</a></li><li class="toc-item level-3"><a href="#essential-typing-primitives-python-3-10" class="toc-link">Essential Typing Primitives (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#2-generics-variance-covariance-vs-contravariance" class="toc-link">2. Generics & Variance: Covariance vs Contravariance</a></li><li class="toc-item level-3"><a href="#variance-explained-covariant-vs-contravariant" class="toc-link">Variance Explained: Covariant vs Contravariant</a></li><li class="toc-item level-2"><a href="#3-structural-subtyping-typing-protocol-formalized-duck-typing" class="toc-link">3. Structural Subtyping: `typing.Protocol` (Formalized Duck Typing)</a></li><li class="toc-item level-2"><a href="#4-modern-data-models-dataclasses-vs-pydantic-v2" class="toc-link">4. Modern Data Models: Dataclasses vs Pydantic v2</a></li><li class="toc-item level-3"><a href="#python-standard-dataclass-best-for-internal-domain-models" class="toc-link">Python Standard `dataclass` (Best for internal domain models)</a></li><li class="toc-item level-3"><a href="#pydantic-v2-best-for-network-boundaries-json-apis-and-agentic-ai" class="toc-link">Pydantic v2 (Best for network boundaries, JSON APIs, and Agentic AI)</a></li><li class="toc-item level-2"><a href="#5-enterprise-exception-hierarchies-exception-groups" class="toc-link">5. Enterprise Exception Hierarchies & Exception Groups</a></li><li class="toc-item level-3"><a href="#1-unified-exception-trees" class="toc-link">1. Unified Exception Trees</a></li><li class="toc-item level-3"><a href="#2-exception-groups-except-python-3-11" class="toc-link">2. Exception Groups & `except*` (Python 3.11+)</a></li><li class="toc-item level-2"><a href="#6-production-repository-structure-12-factor-ready" class="toc-link">6. Production Repository Structure (12-Factor Ready)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-modern-python-type-system" class="toc-link">1. The Modern Python Type System</a></li><li class="toc-item level-3"><a href="#essential-typing-primitives-python-3-10" class="toc-link">Essential Typing Primitives (Python 3.10+)</a></li><li class="toc-item level-2"><a href="#2-generics-variance-covariance-vs-contravariance" class="toc-link">2. Generics & Variance: Covariance vs Contravariance</a></li><li class="toc-item level-3"><a href="#variance-explained-covariant-vs-contravariant" class="toc-link">Variance Explained: Covariant vs Contravariant</a></li><li class="toc-item level-2"><a href="#3-structural-subtyping-typing-protocol-formalized-duck-typing" class="toc-link">3. Structural Subtyping: `typing.Protocol` (Formalized Duck Typing)</a></li><li class="toc-item level-2"><a href="#4-modern-data-models-dataclasses-vs-pydantic-v2" class="toc-link">4. Modern Data Models: Dataclasses vs Pydantic v2</a></li><li class="toc-item level-3"><a href="#python-standard-dataclass-best-for-internal-domain-models" class="toc-link">Python Standard `dataclass` (Best for internal domain models)</a></li><li class="toc-item level-3"><a href="#pydantic-v2-best-for-network-boundaries-json-apis-and-agentic-ai" class="toc-link">Pydantic v2 (Best for network boundaries, JSON APIs, and Agentic AI)</a></li><li class="toc-item level-2"><a href="#5-enterprise-exception-hierarchies-exception-groups" class="toc-link">5. Enterprise Exception Hierarchies & Exception Groups</a></li><li class="toc-item level-3"><a href="#1-unified-exception-trees" class="toc-link">1. Unified Exception Trees</a></li><li class="toc-item level-3"><a href="#2-exception-groups-except-python-3-11" class="toc-link">2. Exception Groups & `except*` (Python 3.11+)</a></li><li class="toc-item level-2"><a href="#6-production-repository-structure-12-factor-ready" class="toc-link">6. Production Repository Structure (12-Factor Ready)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -82,3 +82,44 @@ Edge Case Verification:
 | **Topological Sort** | Course scheduling, task dependency DAG, build order | In-degree array + BFS Queue (Kahn's Algorithm) | $O(V + E)$ / $O(V + E)$ |
 | **Trie (Prefix Tree)** | Autocomplete, word search, prefix matching | Multi-way tree (`children = dict`, `is_end = bool`) | $O(L)$ query ($L = \text{length}$) |
 | **0/1 Knapsack / DP** | Subset sum, partitioning, optimal selection with weight constraints | 2D / 1D DP table (bottom-up iteration) | $O(N \cdot W)$ |
+
+
+## Further Reading
+
+- [Big-O cheat sheet](https://www.bigocheatsheet.com/)
+- [Python time complexity](https://wiki.python.org/moin/TimeComplexity)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What do you say first when given a coding problem?</summary>
+
+Restate it, ask clarifying questions about inputs and constraints, and confirm examples and edge cases.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why describe brute force before optimising?</summary>
+
+It proves correctness of your understanding and the bottleneck suggests the optimisation.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you dry-run your solution?</summary>
+
+Trace a small example line by line, track variable values, then test edge cases.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What do you do when stuck?</summary>
+
+Think aloud, simplify the problem, try a small case, and ask for a hint rather than going silent.
+
+</details>

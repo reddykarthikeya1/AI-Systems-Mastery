@@ -310,3 +310,45 @@ Verify your understanding before continuing:
 A real MCP server with one tool and one resource is in [`examples/ex04_mcp_server.py`](examples/ex04_mcp_server.py), verified on `mcp==2.3.0`. **The Python SDK changed between major versions:** in 1.x the server class is `mcp.server.fastmcp.FastMCP`; in 2.x it is `mcp.server.mcpserver.MCPServer`. Type hints and the docstring become the tool's JSON Schema in both. Always pin the SDK version and check the migration notes when upgrading.
 
 Pinned for the verified examples: `langgraph==1.2.13`, `mcp==2.3.0`, `pytest==9.1.1` (see `examples/requirements.txt`). All examples run offline with a scripted fake model: `cd examples && pip install -r requirements.txt && pytest -q`.
+
+
+## Further Reading
+
+- [Model Context Protocol](https://modelcontextprotocol.io/)
+- [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+- [OpenAI Swarm](https://github.com/openai/swarm)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What problem does MCP solve?</summary>
+
+It standardises how AI applications connect to tools and data, turning M-by-N integrations into M plus N.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Name MCP's three primitives.</summary>
+
+Tools, resources and prompts.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What changed in the Python SDK between 1.x and 2.x?</summary>
+
+The server class `FastMCP` (`mcp.server.fastmcp`) became `MCPServer` (`mcp.server.mcpserver`); pin the version.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why treat third-party MCP servers as untrusted?</summary>
+
+Their tool descriptions enter the prompt and their code runs on your behalf: tool poisoning and injection are possible.
+
+</details>

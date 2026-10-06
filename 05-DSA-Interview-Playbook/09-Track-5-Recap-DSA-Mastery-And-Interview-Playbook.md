@@ -112,3 +112,45 @@ You now possess:
 5. **Algorithmic Confidence:** The muscle memory to rapidly identify patterns, write typed bug-free code, and calmly solve complex problems under live interview pressure.
 
 Walk into your interviews with total confidence. **You are ready.**
+
+
+## Further Reading
+
+- [CP-Algorithms](https://cp-algorithms.com/)
+- [VisuAlgo](https://visualgo.net/en)
+- [Big-O cheat sheet](https://www.bigocheatsheet.com/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Name the top-level decision tree for a new problem.</summary>
+
+Identify structure, pick a pattern, state brute force, optimise, code, test.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which complexity should you quote for sorting-based solutions?</summary>
+
+O(n log n) time dominated by the sort.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is the best use of the practice harness?</summary>
+
+Attempt the stub, run `--stub`, use hints only after a real attempt, then compare with the walkthrough.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you know a topic is mastered?</summary>
+
+You can solve a fresh variant within the time limit and explain the trade-offs.
+
+</details>

@@ -114,3 +114,45 @@ flowchart TD
 1. **Never Give Agents Raw Shell Execution:** Never provide `bash(command)` or `eval()` tools. Only expose narrow, typed, parameter-validated APIs.
 2. **Output Sanitization:** Strip all outbound Markdown image links (`![]()`) before rendering agent responses to users to eliminate data exfiltration channels.
 3. **Human Approval Gates for Destructive Actions:** Financial transfers, account deletions, and password resets must pause the agent loop and require a cryptographically signed human authorization token!
+
+
+## Further Reading
+
+- [OWASP Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/)
+- [Indirect prompt injection paper](https://arxiv.org/abs/2302.12173)
+- [MITRE ATLAS](https://atlas.mitre.org/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is a multimodal agent?</summary>
+
+An agent whose model can take images/audio/video as input (and sometimes output) and act on them.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is indirect prompt injection?</summary>
+
+Malicious instructions hidden in content the agent reads (web pages, documents, images), not typed by the user.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Name two mitigations for injection.</summary>
+
+Isolate untrusted content from instructions and require approval or least privilege for sensitive actions.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why red-team before launch?</summary>
+
+To find failures systematically and add them to a regression suite.
+
+</details>

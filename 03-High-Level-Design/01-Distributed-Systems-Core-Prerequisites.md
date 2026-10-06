@@ -131,3 +131,45 @@ flowchart TD
    * *The Danger:* Physical computer clocks drift (NTP clock skew). You might accidentally overwrite a critical edit made 5 milliseconds earlier!
 2. **Vector Clocks:** Every node maintains an array of logical counters: `[NY: 3, LON: 2]`. This allows the database to detect whether Write A *happened-before* Write B, or if they were **concurrent conflicting writes** requiring application resolution.
 3. **CRDTs (Conflict-Free Replicated Data Types):** Data structures mathematically designed so that any concurrent edits can be merged in any arbitrary order, and **all replicas are mathematically guaranteed to converge to the exact same state without locks!** (Used by Figma, Google Docs, Apple Notes, and Redis Enterprise).
+
+
+## Further Reading
+
+- [Raft consensus visualisation](https://raft.github.io/)
+- [Wikipedia: CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+- [Wikipedia: Vector clock](https://en.wikipedia.org/wiki/Vector_clock)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> State the CAP theorem precisely.</summary>
+
+During a network partition, a system must choose between consistency (every read sees the latest write) and availability (every request gets a non-error response).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does a quorum read/write with R+W>N guarantee?</summary>
+
+Read and write sets overlap, so a read sees at least one replica with the latest acknowledged write.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why can't you rely on wall clocks to order events across machines?</summary>
+
+Clocks drift and skew; use logical clocks (Lamport/vector) or a consensus-ordered log.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does Raft do?</summary>
+
+Elects a leader and replicates a log so a majority agrees on the order of entries, tolerating minority failures.
+
+</details>

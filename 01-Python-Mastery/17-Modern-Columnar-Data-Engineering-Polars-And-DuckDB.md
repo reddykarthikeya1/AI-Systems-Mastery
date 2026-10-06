@@ -312,3 +312,45 @@ print(result_arrow)
 | **Streaming Mode** | Drinking water in sips instead of the entire bucket | `collect(streaming=True)` processes datasets larger than RAM with flat memory |
 | **DuckDB Engine** | SQLite for analytical aggregation | Embed inside Python; execute SQL directly on Parquet and Polars with zero copy |
 | **Loop Materialization** | Never rebuild the house 4 times | Never call `.collect()` in loops; compute in one unified execution graph |
+
+
+## Further Reading
+
+- [Polars user guide](https://docs.pola.rs/)
+- [DuckDB documentation](https://duckdb.org/docs/stable/)
+- [Apache Parquet documentation](https://parquet.apache.org/docs/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why is a Polars `LazyFrame` often faster than eager execution?</summary>
+
+It builds a query plan the optimiser can rewrite (predicate/projection pushdown, parallel execution) before running.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why is Parquet better than CSV for analytics?</summary>
+
+Columnar layout with compression and statistics lets engines read only needed columns/row groups.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When pick DuckDB?</summary>
+
+For in-process analytical SQL over local files/dataframes without running a server.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is predicate pushdown?</summary>
+
+Applying filters as early as possible, ideally inside the file scan, to avoid reading irrelevant data.
+
+</details>

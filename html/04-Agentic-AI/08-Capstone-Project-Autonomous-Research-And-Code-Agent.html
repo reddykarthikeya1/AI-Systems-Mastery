@@ -1288,7 +1288,7 @@ flowchart TD
 </div>
       </div>
     </div><hr>
-<h2 id="2-complete-runnable-production-implementation-pure-python"><a href="#2-complete-runnable-production-implementation-pure-python" class="header-anchor">#</a>2. Complete, Runnable Production Implementation (Pure Python)</h2>
+<h2 id="2-runnable-capstone-skeleton-pure-python-simulated-llm-calls"><a href="#2-runnable-capstone-skeleton-pure-python-simulated-llm-calls" class="header-anchor">#</a>2. Runnable Capstone Skeleton (Pure Python, Simulated LLM Calls)</h2>
   <div class="code-block-wrapper">
     <div class="code-header">
       <span class="code-lang">python</span>
@@ -1451,7 +1451,25 @@ class SlidingWindowRateLimiter:
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n### Architectural Research:\n<span class="hljs-subst">{result[<span class="hljs-string">&#x27;research_summary&#x27;</span>]}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n### Audited Implementation:\n```python\n<span class="hljs-subst">{result[<span class="hljs-string">&#x27;code_artifact&#x27;</span>]}</span>\n```&quot;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n### Quality Verification:\n<span class="hljs-subst">{result[<span class="hljs-string">&#x27;audit_report&#x27;</span>]}</span>&quot;</span>)</code></pre>
-  </div>
+  </div><hr>
+<h2 id="how-to-turn-the-skeleton-into-a-real-agent"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="header-anchor">#</a>How to Turn the Skeleton into a Real Agent</h2><p>The capstone is a skeleton with simulated model calls. To make it real: (1) implement <code>get_llm()</code> for your provider (see <code>examples/llm.py</code>, which already has an Anthropic adapter behind <code>LLM_PROVIDER=anthropic</code>), (2) keep a <code>FakeLLM</code> script for each scenario so tests stay offline and deterministic, (3) add the evaluation loop from <code>examples/ex05_eval_harness.py</code> (repeat each task 5 to 10 times and report <code>pass^k</code> with a confidence interval), and (4) gate side effects behind the approval pattern from <code>examples/ex02_langgraph_hitl.py</code>.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: building effective agents</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph documentation</a></li>
+<li><a href="https://arxiv.org/abs/2310.06770">SWE-bench</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What makes a capstone agent testable offline?</summary><p>A scripted fake model, deterministic tools and assertions on the final state.</p>
+</details><details>
+<summary><strong>2.</strong> Which three checks gate a side-effecting action?</summary><p>Argument validation, authorisation and (for risky actions) human approval.</p>
+</details><details>
+<summary><strong>3.</strong> What should the capstone log?</summary><p>Each step: prompt, tool call, result, latency, tokens and cost.</p>
+</details><details>
+<summary><strong>4.</strong> How do you turn a simulation into a real agent?</summary><p>Swap the fake model for a provider adapter and keep the scripted tests as regression cases.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1473,7 +1491,7 @@ class SlidingWindowRateLimiter:
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-project-overview-architectural-flow" class="toc-link">1. Project Overview & Architectural Flow</a></li><li class="toc-item level-2"><a href="#2-complete-runnable-production-implementation-pure-python" class="toc-link">2. Complete, Runnable Production Implementation (Pure Python)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-project-overview-architectural-flow" class="toc-link">1. Project Overview & Architectural Flow</a></li><li class="toc-item level-2"><a href="#2-runnable-capstone-skeleton-pure-python-simulated-llm-calls" class="toc-link">2. Runnable Capstone Skeleton (Pure Python, Simulated LLM Calls)</a></li><li class="toc-item level-2"><a href="#how-to-turn-the-skeleton-into-a-real-agent" class="toc-link">How to Turn the Skeleton into a Real Agent</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

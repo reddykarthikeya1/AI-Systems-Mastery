@@ -265,3 +265,45 @@ for _ in consumers:
 for c in consumers: c.join()
 print("Pipeline completed all jobs cleanly!")
 ```
+
+
+## Further Reading
+
+- [asyncio documentation](https://docs.python.org/3/library/asyncio.html)
+- [threading module](https://docs.python.org/3/library/threading.html)
+- [concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> For a CPU-bound task on a standard CPython build, threads or processes?</summary>
+
+Processes (`multiprocessing`/`ProcessPoolExecutor`), because the GIL lets only one thread run Python bytecode at a time. Threads suit I/O-bound work.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does `await` do that a blocking call does not?</summary>
+
+It suspends the current coroutine and returns control to the event loop so other tasks run, then resumes when the awaited operation completes.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why does a `time.sleep(5)` inside `async def` freeze every other task?</summary>
+
+It blocks the single event-loop thread. Use `await asyncio.sleep(5)` or move blocking work to an executor (`asyncio.to_thread`).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does `asyncio.TaskGroup` give you over `gather`?</summary>
+
+Structured concurrency: if one task fails the others are cancelled and the errors are raised together as an `ExceptionGroup`, so no task is left running unobserved.
+
+</details>

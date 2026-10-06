@@ -165,3 +165,45 @@ jobs:
 ```
 
 Now, any prompt modification that introduces subtle hallucinations or degrades retrieval quality is blocked at the Pull Request stage before reaching a single customer!
+
+
+## Further Reading
+
+- [Judging LLM-as-a-judge (MT-Bench)](https://arxiv.org/abs/2306.05685)
+- [Eugene Yan: LLM evaluators](https://eugeneyan.com/writing/llm-evaluators/)
+- [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why calibrate an LLM judge against human labels?</summary>
+
+To measure its agreement and error directions (TPR/FPR) before trusting its scores.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What biases do LLM judges show?</summary>
+
+Position, verbosity, self-preference and formatting bias.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you put evals in CI?</summary>
+
+Run a fixed task suite on each change, compare with the baseline within confidence intervals, and block regressions.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is pass^k?</summary>
+
+The probability that all k independent trials succeed; it measures consistency.
+
+</details>

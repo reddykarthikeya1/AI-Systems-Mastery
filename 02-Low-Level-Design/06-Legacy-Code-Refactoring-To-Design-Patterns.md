@@ -264,3 +264,45 @@ if __name__ == "__main__":
     receipt = service.checkout("cust_99", cart, ApplePayStrategy(), {})
     print(f"Order completed successfully! Tx: {receipt.transaction_id}")
 ```
+
+
+## Further Reading
+
+- [Refactoring catalog](https://refactoring.com/catalog/)
+- [Refactoring Guru: code smells](https://refactoring.guru/refactoring/smells)
+- [Strangler Fig pattern](https://martinfowler.com/bliki/StranglerFigApplication.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the first step when refactoring tangled code toward patterns?</summary>
+
+Add tests that pin current behaviour, then make small behaviour-preserving steps.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Which smell often suggests Strategy?</summary>
+
+Long `if/elif` chains selecting an algorithm by type or flag.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Which smell suggests Observer or events?</summary>
+
+One class explicitly calling many others after a change.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why refactor in small commits?</summary>
+
+Each step is reversible and reviewable; failures are easy to localise.
+
+</details>

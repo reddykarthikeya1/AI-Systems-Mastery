@@ -1470,7 +1470,23 @@ The <span class="hljs-code">`homepage_feed_global`</span> cache key expired at 0
 | Implement Redis single-flight distributed lock for all tier-1 cache keys | Prevention | Backend Lead | 2026-10-07 |
 | Deploy PgBouncer connection pooler in transaction mode | Mitigation | SRE Team | 2026-10-10 |
 | Configure Chaos Mesh experiment to simulate cache flushes under 50k QPS | Detection | QA Lead | 2026-10-15 |</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://principlesofchaos.org/">Principles of Chaos Engineering</a></li>
+<li><a href="https://sre.google/sre-book/postmortem-culture/">Google SRE book: postmortem culture</a></li>
+<li><a href="https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html">AWS: disaster recovery whitepaper</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is chaos engineering?</summary><p>Deliberately injecting failures in a controlled way to verify the system tolerates them.</p>
+</details><details>
+<summary><strong>2.</strong> RTO versus RPO?</summary><p>RTO is how long recovery may take; RPO is how much data loss is acceptable (time since last recoverable copy).</p>
+</details><details>
+<summary><strong>3.</strong> What belongs in a blameless post-mortem?</summary><p>Timeline, impact, root causes (systemic), what went well, and tracked action items.</p>
+</details><details>
+<summary><strong>4.</strong> Why define a steady-state metric before a chaos experiment?</summary><p>To detect deviation objectively and to know when to abort.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1492,7 +1508,7 @@ The <span class="hljs-code">`homepage_feed_global`</span> cache key expired at 0
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-disaster-1-the-cache-stampede-thundering-herd" class="toc-link">1. Disaster 1: The Cache Stampede (Thundering Herd)</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#2-disaster-2-the-kafka-partition-rebalance-storm" class="toc-link">2. Disaster 2: The Kafka Partition Rebalance Storm</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#3-disaster-3-complete-aws-availability-zone-blackout" class="toc-link">3. Disaster 3: Complete AWS Availability Zone Blackout</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#4-the-blameless-post-mortem-template" class="toc-link">4. The Blameless Post-Mortem Template</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-disaster-1-the-cache-stampede-thundering-herd" class="toc-link">1. Disaster 1: The Cache Stampede (Thundering Herd)</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#2-disaster-2-the-kafka-partition-rebalance-storm" class="toc-link">2. Disaster 2: The Kafka Partition Rebalance Storm</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#3-disaster-3-complete-aws-availability-zone-blackout" class="toc-link">3. Disaster 3: Complete AWS Availability Zone Blackout</a></li><li class="toc-item level-3"><a href="#what-happened" class="toc-link">What Happened</a></li><li class="toc-item level-3"><a href="#the-architectural-defenses" class="toc-link">The Architectural Defenses</a></li><li class="toc-item level-2"><a href="#4-the-blameless-post-mortem-template" class="toc-link">4. The Blameless Post-Mortem Template</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

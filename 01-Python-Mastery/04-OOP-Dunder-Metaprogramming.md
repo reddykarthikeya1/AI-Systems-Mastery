@@ -366,3 +366,45 @@ cfg2 = AppConfiguration()
 assert cfg1 is cfg2
 print("Thread-Safe Singleton Metaclass verified!")
 ```
+
+
+## Further Reading
+
+- [The Python 2.3 Method Resolution Order (C3)](https://docs.python.org/3/howto/mro.html)
+- [Descriptor how-to guide](https://docs.python.org/3/howto/descriptor.html)
+- [Data model: special method names](https://docs.python.org/3/reference/datamodel.html#special-method-names)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the MRO and which algorithm computes it?</summary>
+
+Method Resolution Order: the linearised class lookup order, computed by C3 linearisation. Inspect it with `Class.__mro__`.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do `__new__` and `__init__` differ?</summary>
+
+`__new__` creates and returns the instance (it is a static method on the class); `__init__` initialises the already-created instance. Override `__new__` for immutable types or singletons.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does `super()` do in multiple inheritance?</summary>
+
+It returns a proxy that delegates to the next class in the instance's MRO (not necessarily the parent), which is what makes cooperative multiple inheritance work.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a descriptor?</summary>
+
+An object with `__get__` (and optionally `__set__`/`__delete__`) stored on a class; attribute access on instances calls these methods. Properties, methods and `__slots__` members are descriptors.
+
+</details>

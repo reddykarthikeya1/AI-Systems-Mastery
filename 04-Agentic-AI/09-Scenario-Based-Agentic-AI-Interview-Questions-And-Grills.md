@@ -61,3 +61,45 @@ flowchart TD
    Compress steps 1 through 15 into a concise 3-sentence summary: *"Steps 1-15 verified test failure in auth_service.py: line 42 raised IndexError"*. Discard the raw token history of past steps.
 3. **Semantic Prompt Caching:**  
    Modern providers (Anthropic, OpenAI) support **Prompt Caching**. Ensure the system prompt and static tool definitions remain byte-identical at the beginning of the context window. Subsequent requests reuse the KV-cache at the provider level, reducing token costs by **$90\%$** and cutting latency by **$80\%$**!
+
+
+## Further Reading
+
+- [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+- [Hamel Husain: your AI product needs evals](https://hamel.dev/blog/posts/evals/)
+- [Eugene Yan: LLM patterns](https://eugeneyan.com/writing/llm-patterns/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> How do you answer 'how would you evaluate an agent'?</summary>
+
+Define success by end state, build a task suite, run repeated trials, grade outcome and trajectory, report pass^k with intervals.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do you answer 'how do you stop hallucinations in RAG'?</summary>
+
+Ground answers in retrieved text with citations, add groundedness checks, allow 'I don't know', and measure faithfulness.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What do interviewers want in 'design a support agent'?</summary>
+
+Scope, tools, memory, guardrails, escalation to humans, evaluation and cost control.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Strong closing for an agent design?</summary>
+
+Failure modes, safety controls and how you would measure quality in production.
+
+</details>

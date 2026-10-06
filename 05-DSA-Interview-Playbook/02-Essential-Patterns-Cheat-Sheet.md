@@ -244,3 +244,45 @@ def topological_sort(num_nodes: int, edges: list[list[int]]) -> list[int]:
 
     return order if len(order) == num_nodes else [] # Valid DAG check
 ```
+
+
+## Further Reading
+
+- [CP-Algorithms](https://cp-algorithms.com/)
+- [VisuAlgo](https://visualgo.net/en)
+- [Wikipedia: Dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Sorted array and a target sum: which pattern?</summary>
+
+Two pointers from both ends, O(n) time, O(1) space.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Subarray or substring with a constraint on contiguous elements?</summary>
+
+Sliding window.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Shortest path in an unweighted graph?</summary>
+
+BFS.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Overlapping subproblems with optimal substructure?</summary>
+
+Dynamic programming (memoisation or tabulation).
+
+</details>

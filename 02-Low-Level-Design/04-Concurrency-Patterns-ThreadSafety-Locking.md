@@ -153,3 +153,45 @@ class HeavyResourcePool:
                     cls._instance = cls()
         return cls._instance
 ```
+
+
+## Further Reading
+
+- [threading module](https://docs.python.org/3/library/threading.html)
+- [queue module](https://docs.python.org/3/library/queue.html)
+- [Wikipedia: Deadlock](https://en.wikipedia.org/wiki/Deadlock_(computer_science))
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why is `count += 1` not thread-safe?</summary>
+
+It is read-modify-write across several bytecodes; two threads can read the same value and one update is lost. Use a lock or atomic structure.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What are the four conditions for deadlock?</summary>
+
+Mutual exclusion, hold-and-wait, no preemption, circular wait. Break one (usually enforce a global lock order).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why prefer a concurrent queue between producers and consumers?</summary>
+
+It decouples rates, gives backpressure (bounded queue) and keeps shared-state locking in one tested place.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> When use a read-write lock?</summary>
+
+When reads vastly outnumber writes and readers can proceed concurrently.
+
+</details>

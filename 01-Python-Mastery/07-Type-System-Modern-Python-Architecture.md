@@ -252,3 +252,45 @@ my_enterprise_service/
     ├── unit/
     └── integration/
 ```
+
+
+## Further Reading
+
+- [typing module](https://docs.python.org/3/library/typing.html)
+- [mypy documentation](https://mypy.readthedocs.io/en/stable/)
+- [PEP 544: Protocols](https://peps.python.org/pep-0544/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Does the interpreter enforce type hints at runtime?</summary>
+
+No. Hints are metadata checked by tools such as mypy/pyright (or libraries like Pydantic that choose to validate).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does `Protocol` give you that an abstract base class does not?</summary>
+
+Structural subtyping: any class with the right methods satisfies it without inheriting from it.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When would you use a `dataclass(frozen=True, slots=True)`?</summary>
+
+For immutable, hashable, memory-light value objects; `frozen` blocks assignment and `slots` removes the per-instance dict.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is `TypeVar` for?</summary>
+
+To express that the output type depends on the input type (generics), e.g. `def first(xs: list[T]) -> T`.
+
+</details>

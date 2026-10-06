@@ -646,3 +646,45 @@ async def create_order_endpoint(
 | **Dependency Injection** | Handing ingredients to the chef when needed | Declared via `Depends()`; use `yield` for bulletproof connection pool cleanup |
 | **Lifespan Manager** | Turning lights on/off when kitchen opens/closes | Prevents cross-process file-descriptor corruption caused by `os.fork()` |
 | **Streaming Responses** | Sipping water through a straw instead of swallowing a lake | Keeps RAM footprint flat at $O(1)$ constant size for multi-gigabyte exports |
+
+
+## Further Reading
+
+- [FastAPI documentation](https://fastapi.tiangolo.com/)
+- [Pydantic documentation](https://docs.pydantic.dev/latest/)
+- [ASGI specification](https://asgi.readthedocs.io/en/latest/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does FastAPI use Pydantic for?</summary>
+
+To parse and validate request bodies, query and path parameters from type hints and to generate OpenAPI schemas.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why should a blocking function be declared `def` not `async def` in FastAPI?</summary>
+
+FastAPI runs plain `def` endpoints in a threadpool; an `async def` containing blocking calls blocks the event loop.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is dependency injection in FastAPI?</summary>
+
+Declaring `Depends(fn)` parameters; the framework calls `fn`, caches per request and injects the result (DB sessions, auth).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do Pydantic v2 validators differ from simple type coercion?</summary>
+
+`field_validator`/`model_validator` run custom checks (cross-field rules, normalisation) after or before type validation.
+
+</details>

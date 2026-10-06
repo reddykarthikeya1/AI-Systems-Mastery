@@ -1562,6 +1562,22 @@ $$\text{RAM Required for Cache} = \text{Daily Read Volume} \times 0.20$$</p>
 You now command the architectural power to build systems scaling to hundreds of millions of users. Now it is time to master the frontier of software engineering: autonomous reasoning agents, RAG, vector databases, and multi-agent cognitive swarms! Proceed to <a href="../04-Agentic-AI/01-LLM-Foundations-Tokenization-Inference.html">Track 4: Agentic AI Engineering</a>!</p>
 </div>
       </div>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://github.com/donnemartin/system-design-primer">System Design Primer</a></li>
+<li><a href="https://aws.amazon.com/builders-library/">AWS Builders&#39; Library</a></li>
+<li><a href="https://sre.google/sre-book/table-of-contents/">Google SRE book</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Name the standard building blocks used in most HLD answers.</summary><p>Load balancer, stateless services, cache, database with replication and sharding, queue, CDN, object storage.</p>
+</details><details>
+<summary><strong>2.</strong> Which two numbers frame most designs?</summary><p>Peak QPS and storage growth.</p>
+</details><details>
+<summary><strong>3.</strong> When do you add a queue?</summary><p>To decouple spikes, enable retries and run work asynchronously.</p>
+</details><details>
+<summary><strong>4.</strong> What is the most common mistake in HLD interviews?</summary><p>Drawing boxes before clarifying requirements and estimating load.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1584,7 +1600,7 @@ You now command the architectural power to build systems scaling to hundreds of 
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-45-minute-hld-interview-playbook-the-4-act-play" class="toc-link">1. The 45-Minute HLD Interview Playbook (The 4-Act Play)</a></li><li class="toc-item level-2"><a href="#2-back-of-the-envelope-estimation-rules-of-thumb" class="toc-link">2. Back-of-the-Envelope Estimation Rules of Thumb</a></li><li class="toc-item level-3"><a href="#1-the-math0-daily-multiplier" class="toc-link">1. The $10^5$ Daily Multiplier</a></li><li class="toc-item level-3"><a href="#2-storage-multiplier" class="toc-link">2. Storage Multiplier</a></li><li class="toc-item level-3"><a href="#3-the-80-20-memory-cache-sizing-rule" class="toc-link">3. The 80/20 Memory Cache Sizing Rule</a></li><li class="toc-item level-3"><a href="#4-latency-numbers-every-staff-engineer-must-know" class="toc-link">4. Latency Numbers Every Staff Engineer Must Know</a></li><li class="toc-item level-2"><a href="#3-the-distributed-systems-tech-stack-decision-matrix" class="toc-link">3. The Distributed Systems Tech Stack Decision Matrix</a></li><li class="toc-item level-2"><a href="#4-the-15-production-core-systems-architecture-synthesis" class="toc-link">4. The 15 Production Core Systems Architecture Synthesis</a></li><li class="toc-item level-2"><a href="#5-the-junior-vs-senior-antipattern-graveyard" class="toc-link">5. The Junior vs. Senior Antipattern Graveyard</a></li><li class="toc-item level-2"><a href="#6-track-3-graduation-milestone-check" class="toc-link">6. Track 3 Graduation Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-45-minute-hld-interview-playbook-the-4-act-play" class="toc-link">1. The 45-Minute HLD Interview Playbook (The 4-Act Play)</a></li><li class="toc-item level-2"><a href="#2-back-of-the-envelope-estimation-rules-of-thumb" class="toc-link">2. Back-of-the-Envelope Estimation Rules of Thumb</a></li><li class="toc-item level-3"><a href="#1-the-math0-daily-multiplier" class="toc-link">1. The $10^5$ Daily Multiplier</a></li><li class="toc-item level-3"><a href="#2-storage-multiplier" class="toc-link">2. Storage Multiplier</a></li><li class="toc-item level-3"><a href="#3-the-80-20-memory-cache-sizing-rule" class="toc-link">3. The 80/20 Memory Cache Sizing Rule</a></li><li class="toc-item level-3"><a href="#4-latency-numbers-every-staff-engineer-must-know" class="toc-link">4. Latency Numbers Every Staff Engineer Must Know</a></li><li class="toc-item level-2"><a href="#3-the-distributed-systems-tech-stack-decision-matrix" class="toc-link">3. The Distributed Systems Tech Stack Decision Matrix</a></li><li class="toc-item level-2"><a href="#4-the-15-production-core-systems-architecture-synthesis" class="toc-link">4. The 15 Production Core Systems Architecture Synthesis</a></li><li class="toc-item level-2"><a href="#5-the-junior-vs-senior-antipattern-graveyard" class="toc-link">5. The Junior vs. Senior Antipattern Graveyard</a></li><li class="toc-item level-2"><a href="#6-track-3-graduation-milestone-check" class="toc-link">6. Track 3 Graduation Milestone Check</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

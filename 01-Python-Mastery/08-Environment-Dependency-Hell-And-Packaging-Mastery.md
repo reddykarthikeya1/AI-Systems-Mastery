@@ -297,3 +297,45 @@ Running `pip install -r requirements.txt` on modern Python 3.11 fails because:
    pip-compile requirements.in
    ```
 3. Verify that `botocore` is synchronized automatically as a transitive requirement without direct manual pinning.
+
+
+## Further Reading
+
+- [Python Packaging User Guide](https://packaging.python.org/en/latest/)
+- [pyproject.toml specification](https://packaging.python.org/en/latest/specifications/pyproject-toml/)
+- [uv documentation](https://docs.astral.sh/uv/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why use a virtual environment per project?</summary>
+
+To isolate dependency versions so projects do not conflict and the environment can be recreated exactly from a lock file.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is a 'diamond dependency' problem?</summary>
+
+Two packages require incompatible versions of a shared dependency; the resolver must find a compatible set or fail.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is the difference between a wheel and an sdist?</summary>
+
+A wheel is a pre-built binary distribution (fast install); an sdist is source that must be built on install (may need compilers).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Which file declares modern project metadata and build backend?</summary>
+
+`pyproject.toml` (PEP 517/518/621).
+
+</details>

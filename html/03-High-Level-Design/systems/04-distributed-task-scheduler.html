@@ -1242,19 +1242,45 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-4-distributed-task-scheduler-apache-airflow-temporal"><a href="#hld-case-study-4-distributed-task-scheduler-apache-airflow-temporal" class="header-anchor">#</a>HLD Case Study 4: Distributed Task Scheduler (Apache Airflow / Temporal)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Distributed scheduling, two-level dispatching, leader election via Raft/ZooKeeper, heartbeat failure detection, and exactly-once vs. at-least-once execution guarantees.</p>
+          <h1 id="hld-case-study-4-distributed-task-scheduler-cron-at-scale"><a href="#hld-case-study-4-distributed-task-scheduler-cron-at-scale" class="header-anchor">#</a>HLD Case Study 4: Distributed Task Scheduler (Cron at Scale)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Timing wheels and delayed queues, exactly-once vs at-least-once execution, leader election, partitioned scheduling, retries and backpressure.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-functional-requirements"><a href="#1-problem-statement-functional-requirements" class="header-anchor">#</a>1. Problem Statement & Functional Requirements</h2><p>Design a planetary-scale distributed task scheduler executing millions of recurring (cron) and ad-hoc jobs per minute across thousands of heterogeneous worker nodes.</p>
-<h3 id="requirements"><a href="#requirements" class="header-anchor">#</a>Requirements:</h3><ol>
-<li>Schedule jobs to run at specific timestamps or periodic intervals (cron).</li>
-<li>Support task dependencies represented as a <strong>Directed Acyclic Graph (DAG)</strong>.</li>
-<li>Automatically handle worker node crashes without losing or corrupting tasks.</li>
-<li>Provide <strong>At-Least-Once execution</strong> (with idempotency for critical tasks).</li>
-</ol>
-<hr>
-<h2 id="2-high-level-architecture-diagram"><a href="#2-high-level-architecture-diagram" class="header-anchor">#</a>2. High-Level Architecture Diagram</h2>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> schedule one-off and recurring jobs (cron expressions), cancel/update, retries with backoff, job status and history, priorities.
+<strong>Non-functional:</strong> a job fires within about 1 second of its scheduled time; <strong>no job is silently lost</strong>; execution is <strong>at-least-once</strong> with idempotent handlers (exactly-once is built on top); survives node failures without duplicate storms; scales to billions of scheduled jobs.
+<strong>Out of scope:</strong> the business logic of jobs, workflow DAG orchestration (mention as an extension).</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume 1B scheduled jobs, 100M executions/day, bursts at minute boundaries (for example 00:00 daily jobs), average job payload 1 KB.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">jobs, runs_per_day, payload = <span class="hljs-number">1e9</span>, <span class="hljs-number">100e6</span>, <span class="hljs-number">1_000</span>
+avg_qps = runs_per_day / <span class="hljs-number">86400</span>                     <span class="hljs-comment"># ~1,157 executions/s</span>
+burst_factor = <span class="hljs-number">50</span>                                  <span class="hljs-comment"># minute-boundary spikes</span>
+peak_qps = avg_qps * burst_factor                  <span class="hljs-comment"># ~57,870/s</span>
+storage_tb = jobs * payload / <span class="hljs-number">1e12</span>                 <span class="hljs-comment"># 1 TB of job definitions</span>
+partitions = <span class="hljs-number">256</span>
+jobs_per_partition = jobs / partitions             <span class="hljs-comment"># ~3.9M each</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(avg_qps), <span class="hljs-built_in">round</span>(peak_qps), storage_tb, <span class="hljs-built_in">round</span>(jobs_per_partition))
+<span class="hljs-keyword">assert</span> storage_tb == <span class="hljs-number">1.0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(avg_qps) == <span class="hljs-number">1157</span></code></pre>
+  </div><p>Takeaways: storage is modest (1 TB, shardable), the challenge is <strong>bursty, time-aligned load</strong> and <strong>correctness under failure</strong>, not raw volume.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li><code>POST /jobs</code> <code>{job_id (client-chosen), schedule: {type: once|cron, at|expr, tz}, target: {http|queue|function}, payload, retry: {max, backoff}, idempotency_key}</code></li>
+<li><code>GET /jobs/{id}</code>, <code>DELETE /jobs/{id}</code>, <code>PATCH /jobs/{id}</code> (pause/resume)</li>
+<li><code>GET /jobs/{id}/runs</code> (history)</li>
+</ul>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>jobs</strong> (sharded by <code>job_id</code> hash): definition, <code>next_run_at</code>, <code>status</code>.</li>
+<li><strong>schedule index</strong>: for each partition, an index on <code>(next_run_at, job_id)</code> so &quot;what is due in the next N seconds&quot; is a range scan (a time-bucketed table or sorted set).</li>
+<li><strong>runs</strong>: <code>(job_id, run_id, scheduled_for, started_at, finished_at, status, attempt)</code>; <code>run_id = hash(job_id, scheduled_for)</code> makes the same fire time map to one run.</li>
+<li><strong>leases</strong>: <code>(partition_id -&gt; owner, lease_expires_at)</code> in a coordination store.</li>
+</ul>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1275,40 +1301,76 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Client["Client / API Gateway"] --&gt; SchedulerLeader["Scheduler Master (Active Leader)&lt;br/&gt;(Elected via etcd / ZooKeeper)"]
-    SchedulerStandby["Scheduler Master (Standby)"] -.-&gt;|Heartbeat / Raft Consensus| etcd["etcd / ZooKeeper Cluster"]
-    SchedulerLeader -.-&gt; etcd
-    
-    SchedulerLeader --&gt; TaskDB["Metadata &amp; State DB (PostgreSQL)"]
-    SchedulerLeader --&gt; DelayedWheel["Hashed Timing Wheel / Redis ZSET&lt;br/&gt;(Delayed execution queue: score = trigger_timestamp)"]
-    
-    DelayedWheel --&gt; Dispatcher["Job Dispatcher Worker"]
-    Dispatcher --&gt; KafkaMQ["Kafka / RabbitMQ Job Execution Queue"]
-    
-    KafkaMQ --&gt; Worker1["Worker Node 1"]
-    KafkaMQ --&gt; Worker2["Worker Node 2"]
-    KafkaMQ --&gt; Worker3["Worker Node 3"]
-    
-    Worker1 --&gt; HeartbeatMgr["Heartbeat &amp; Health Checker"]
-    Worker2 --&gt; HeartbeatMgr
-    Worker3 --&gt; HeartbeatMgr
+    API["Scheduler API"] --&gt; DB[("Job Store (sharded)")]
+    subgraph Partitions["256 scheduler partitions, each owned by one scheduler node via lease"]
+        Sch["Scheduler node: polls due jobs, loads next 60 s into an in-memory timing wheel"]
+    end
+    DB --&gt; Sch
+    Coord["Coordination (etcd / ZooKeeper): leases, leader election"] --&gt; Sch
+    Sch --&gt;|"enqueue at fire time (idempotent run_id)"| Q["Execution Queue (Kafka / SQS), priority lanes"]
+    Q --&gt; W["Worker Fleet (autoscaled)"]
+    W --&gt; Tgt["Job target: HTTP / queue / function"]
+    W --&gt; Runs[("Run History")]
+    W --&gt;|"failure: delayed retry"| Q
 </div>
       </div>
-    </div><hr>
-<h2 id="3-deep-dive-the-high-performance-timing-wheel"><a href="#3-deep-dive-the-high-performance-timing-wheel" class="header-anchor">#</a>3. Deep Dive: The High-Performance Timing Wheel</h2><p>Querying a SQL database every second with <code>SELECT * FROM tasks WHERE trigger_at &lt;= NOW()</code> causes database collapse at scale.</p>
-<h3 id="the-hashed-timing-wheel-o-1-scheduling"><a href="#the-hashed-timing-wheel-o-1-scheduling" class="header-anchor">#</a>The Hashed Timing Wheel (O(1) Scheduling)</h3><ul>
-<li>A circular array of buckets where each slot represents a time slice (e.g. 1 second per tick).</li>
-<li>When a job is scheduled for $T + 45$ seconds, calculate:
-$$\text{bucket} = (\text{current\_tick} + 45) \pmod{\text{total\_buckets}}$$</li>
-<li>The scheduler pointer simply advances one slot every tick and dispatches all jobs linked to that bucket in <strong>$O(1)$ time complexity</strong>!</li>
+    </div><h2 id="6-deep-dive-firing-on-time-without-duplicates"><a href="#6-deep-dive-firing-on-time-without-duplicates" class="header-anchor">#</a>6. Deep Dive: Firing on Time Without Duplicates</h2><p><strong>Finding due jobs.</strong> Each partition owner periodically (every second) queries <code>WHERE partition=p AND next_run_at &lt;= now()+60s AND status=&#39;ACTIVE&#39;</code> and loads results into a <strong>timing wheel</strong> (a circular array of buckets, for example 60 buckets of 1 second each; insertion and expiry are O(1)). A hierarchical wheel (seconds, minutes, hours) handles long delays without scanning.</p>
+<p><strong>Preventing double execution.</strong> A partition has exactly one active owner at a time, enforced by a <strong>lease with a fencing token</strong> in etcd/ZooKeeper. If the owner stalls and loses its lease, a new owner takes over; the old owner&#39;s writes are rejected because its fencing token is stale. When a job fires, the scheduler does a conditional update <code>UPDATE jobs SET next_run_at = :next WHERE job_id=:j AND next_run_at = :scheduled</code> and enqueues only if exactly one row changed. Combined with <code>run_id = hash(job_id, scheduled_for)</code>, even a replayed enqueue is de-duplicated by the queue or the worker.</p>
+<p><strong>At-least-once plus idempotency.</strong> A worker takes a message, executes, then acks. If it crashes before the ack, the message is redelivered. Therefore job handlers must be idempotent (use <code>run_id</code> as the idempotency key against downstream systems). &quot;Exactly-once&quot; is achieved effectively, not magically.</p>
+<p><strong>Recurring jobs.</strong> After each fire, compute the next occurrence from the cron expression and the job&#39;s timezone (careful with DST: skip or repeat per policy) and store it as <code>next_run_at</code>.</p>
+<p><strong>Retries.</strong> Exponential backoff with jitter: <code>delay = min(cap, base * 2^attempt) * random(0.5, 1)</code>; after <code>max</code> attempts move to a dead-letter queue and alert.</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Minute-boundary spikes:</strong> randomise or spread &quot;midnight&quot; jobs (jitter within a configured window), pre-load the next minute, and autoscale workers on queue depth.</li>
+<li><strong>Hot partitions:</strong> hash <code>job_id</code> (not time) to spread load; rebalance partitions across scheduler nodes on membership change.</li>
+<li><strong>Slow jobs blocking workers:</strong> per-job timeouts, separate queues by priority and tenant, concurrency limits per tenant to prevent noisy neighbours.</li>
+<li><strong>Large fan-out:</strong> a job that spawns 1M tasks should enqueue in batches with rate limiting.</li>
 </ul>
-<hr>
-<h2 id="4-fault-tolerance-exactly-once-semantics"><a href="#4-fault-tolerance-exactly-once-semantics" class="header-anchor">#</a>4. Fault Tolerance & Exactly-Once Semantics</h2><p>In distributed computing, true &quot;exactly-once&quot; delivery over a network is mathematically impossible (The Two Generals&#39; Problem).
-Production task schedulers achieve <strong>effective exactly-once execution</strong> via:</p>
-<ol>
-<li><strong>At-Least-Once Delivery:</strong> Tasks are requeued if a worker fails to send a heartbeat within 30 seconds.</li>
-<li><strong>Idempotency Keys:</strong> Every task payload contains a unique <code>task_execution_id</code>. The worker writes this ID to an atomic deduplication store before running business logic, guaranteeing zero duplicate executions.</li>
-</ol>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Effect</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scheduler node dies</td>
+<td>its partitions stop firing</td>
+<td>lease expires (about 10 s), another node acquires and catches up using <code>next_run_at &lt;= now()</code></td>
+</tr>
+<tr>
+<td>Clock skew</td>
+<td>early or late fire</td>
+<td>use server-side time from one source (NTP-synced), tolerate small skew, never rely on client clocks</td>
+</tr>
+<tr>
+<td>Missed window after outage</td>
+<td>jobs overdue</td>
+<td>on takeover, run missed jobs per policy: fire-once, fire-all, or skip</td>
+</tr>
+<tr>
+<td>Queue outage</td>
+<td>enqueue fails</td>
+<td>do not advance <code>next_run_at</code> until enqueue succeeds (outbox pattern)</td>
+</tr>
+<tr>
+<td>Worker crash mid-job</td>
+<td>duplicate execution after redelivery</td>
+<td>idempotent handlers, visibility timeout longer than expected runtime</td>
+</tr>
+<tr>
+<td>Split brain</td>
+<td>two owners</td>
+<td>fencing tokens reject stale owner</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>DB-polling vs in-memory timing wheel vs delay queues (SQS delay, Redis ZSET):</strong> polling is simple but adds latency; wheels give O(1) precision; ZSET plus a poller is easy for smaller scale.</li>
+<li><strong>At-least-once vs at-most-once:</strong> losing a job is usually worse than running it twice; choose at-least-once and make handlers idempotent.</li>
+<li><strong>Central scheduler vs partitioned:</strong> a single leader is simple but caps scale; partitioned owners scale linearly with more coordination logic.</li>
+<li><strong>Push (scheduler enqueues) vs pull (workers poll DB):</strong> push decouples timing from execution capacity.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Start with the single-node design (sorted set of <code>(time, job)</code>), then evolve: partition, lease/fencing, queue, retries. <strong>Follow-ups:</strong> How do you guarantee a daily job runs once even if two schedulers race? (conditional update on <code>next_run_at</code> plus deterministic <code>run_id</code>). How do you support DAG dependencies? (a workflow layer that schedules child jobs on parent completion events). How do you throttle a tenant? (token bucket per tenant at enqueue). How would you test it? (fake clock, chaos kill of owners, duplicate-run detector).</p>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1331,7 +1393,7 @@ Production task schedulers achieve <strong>effective exactly-once execution</str
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-functional-requirements" class="toc-link">1. Problem Statement & Functional Requirements</a></li><li class="toc-item level-3"><a href="#requirements" class="toc-link">Requirements:</a></li><li class="toc-item level-2"><a href="#2-high-level-architecture-diagram" class="toc-link">2. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#3-deep-dive-the-high-performance-timing-wheel" class="toc-link">3. Deep Dive: The High-Performance Timing Wheel</a></li><li class="toc-item level-3"><a href="#the-hashed-timing-wheel-o-1-scheduling" class="toc-link">The Hashed Timing Wheel (O(1) Scheduling)</a></li><li class="toc-item level-2"><a href="#4-fault-tolerance-exactly-once-semantics" class="toc-link">4. Fault Tolerance & Exactly-Once Semantics</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-firing-on-time-without-duplicates" class="toc-link">6. Deep Dive: Firing on Time Without Duplicates</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

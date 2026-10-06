@@ -1420,6 +1420,22 @@ flowchart TD
 <li><strong>Anycast DNS Routing:</strong> Multiple worldwide CDN POPs advertise the <strong>exact same public IP address</strong> via BGP (Border Gateway Protocol). The internet&#39;s routing fabric automatically directs user packets to the topologically closest datacenter.</li>
 <li><strong>Origin Shielding:</strong> A secondary caching layer between CDN edge servers and your main datacenter to ensure origin servers are never flooded during cache misses.</li>
 </ul>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://redis.io/docs/latest/">Redis documentation</a></li>
+<li><a href="https://nginx.org/en/docs/http/load_balancing.html">NGINX load balancing</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Consistent_hashing">Wikipedia: Consistent hashing</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Cache-aside versus write-through?</summary><p>Cache-aside: the app loads on miss and writes to the DB then invalidates. Write-through: writes go through the cache to the store synchronously.</p>
+</details><details>
+<summary><strong>2.</strong> What is a cache stampede and a fix?</summary><p>Many requests miss at once and hammer the origin. Use request coalescing, jittered TTLs or probabilistic early refresh.</p>
+</details><details>
+<summary><strong>3.</strong> Layer 4 versus layer 7 load balancing?</summary><p>L4 balances on IP/port (fast, protocol-agnostic); L7 understands HTTP and can route on path, headers, cookies.</p>
+</details><details>
+<summary><strong>4.</strong> What is consistent hashing for?</summary><p>Distributing keys so adding/removing a node remaps only about 1/N of them.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1442,7 +1458,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-caching-strategies-write-policies" class="toc-link">1. Caching Strategies & Write Policies</a></li><li class="toc-item level-3"><a href="#write-policies-comparison-matrix" class="toc-link">Write Policies Comparison Matrix</a></li><li class="toc-item level-2"><a href="#2-the-4-fatal-cache-failure-modes-defenses" class="toc-link">2. The 4 Fatal Cache Failure Modes & Defenses</a></li><li class="toc-item level-3"><a href="#1-cache-stampede-thundering-herd" class="toc-link">1. Cache Stampede (Thundering Herd)</a></li><li class="toc-item level-3"><a href="#2-cache-penetration" class="toc-link">2. Cache Penetration</a></li><li class="toc-item level-3"><a href="#3-cache-avalanche" class="toc-link">3. Cache Avalanche</a></li><li class="toc-item level-2"><a href="#3-load-balancing-layer-4-vs-layer-7" class="toc-link">3. Load Balancing: Layer 4 vs Layer 7</a></li><li class="toc-item level-2"><a href="#4-content-delivery-networks-cdns-anycast-routing" class="toc-link">4. Content Delivery Networks (CDNs) & Anycast Routing</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-caching-strategies-write-policies" class="toc-link">1. Caching Strategies & Write Policies</a></li><li class="toc-item level-3"><a href="#write-policies-comparison-matrix" class="toc-link">Write Policies Comparison Matrix</a></li><li class="toc-item level-2"><a href="#2-the-4-fatal-cache-failure-modes-defenses" class="toc-link">2. The 4 Fatal Cache Failure Modes & Defenses</a></li><li class="toc-item level-3"><a href="#1-cache-stampede-thundering-herd" class="toc-link">1. Cache Stampede (Thundering Herd)</a></li><li class="toc-item level-3"><a href="#2-cache-penetration" class="toc-link">2. Cache Penetration</a></li><li class="toc-item level-3"><a href="#3-cache-avalanche" class="toc-link">3. Cache Avalanche</a></li><li class="toc-item level-2"><a href="#3-load-balancing-layer-4-vs-layer-7" class="toc-link">3. Load Balancing: Layer 4 vs Layer 7</a></li><li class="toc-item level-2"><a href="#4-content-delivery-networks-cdns-anycast-routing" class="toc-link">4. Content Delivery Networks (CDNs) & Anycast Routing</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

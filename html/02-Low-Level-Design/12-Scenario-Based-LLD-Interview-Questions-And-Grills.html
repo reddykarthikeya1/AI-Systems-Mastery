@@ -1337,6 +1337,22 @@ flowchart LR
 </ul>
 </li>
 </ul>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://refactoring.guru/design-patterns/catalog">Refactoring Guru: pattern catalog</a></li>
+<li><a href="https://www.uml-diagrams.org/">UML diagrams reference</a></li>
+<li><a href="https://en.wikipedia.org/wiki/SOLID">Wikipedia: SOLID</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> How do you handle 'design a parking lot' in the first 5 minutes?</summary><p>Clarify vehicle types, floors, pricing, entry/exit, concurrency; then list entities (Lot, Floor, Spot, Vehicle, Ticket, PricingStrategy).</p>
+</details><details>
+<summary><strong>2.</strong> What do interviewers want to see in the extensibility discussion?</summary><p>A named seam (interface) and a concrete example of adding a new variant without modifying existing code.</p>
+</details><details>
+<summary><strong>3.</strong> How do you address concurrency in a booking system?</summary><p>Make allocation atomic (lock or conditional update) and state the invariant: a resource is assigned at most once.</p>
+</details><details>
+<summary><strong>4.</strong> What is a strong closing statement?</summary><p>Summarise key decisions, trade-offs accepted, and what you would add with more time (persistence, metrics, failure handling).</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1359,7 +1375,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-architectural-defense-questions" class="toc-link">1. Architectural Defense Questions</a></li><li class="toc-item level-3"><a href="#question-1-why-did-you-use-the-strategy-pattern-instead-of-the-state-pattern" class="toc-link">Question 1: "Why did you use the Strategy Pattern instead of the State Pattern?"</a></li><li class="toc-item level-3"><a href="#question-2-in-your-movie-booking-system-two-users-attempt-to-book-seats-a1-and-a2-in-reverse-order-simultaneously-how-do-you-prevent-a-distributed-deadlock" class="toc-link">Question 2: "In your Movie Booking system, two users attempt to book seats A1 and A2 in reverse order simultaneously. How do you prevent a distributed deadlock?"</a></li><li class="toc-item level-3"><a href="#question-3-how-would-you-add-undo-redo-functionality-to-this-system" class="toc-link">Question 3: "How would you add Undo / Redo functionality to this system?"</a></li><li class="toc-item level-3"><a href="#question-4-how-do-you-test-this-system-in-isolation-without-spinning-up-real-databases-or-payment-gateways" class="toc-link">Question 4: "How do you test this system in isolation without spinning up real databases or payment gateways?"</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-architectural-defense-questions" class="toc-link">1. Architectural Defense Questions</a></li><li class="toc-item level-3"><a href="#question-1-why-did-you-use-the-strategy-pattern-instead-of-the-state-pattern" class="toc-link">Question 1: "Why did you use the Strategy Pattern instead of the State Pattern?"</a></li><li class="toc-item level-3"><a href="#question-2-in-your-movie-booking-system-two-users-attempt-to-book-seats-a1-and-a2-in-reverse-order-simultaneously-how-do-you-prevent-a-distributed-deadlock" class="toc-link">Question 2: "In your Movie Booking system, two users attempt to book seats A1 and A2 in reverse order simultaneously. How do you prevent a distributed deadlock?"</a></li><li class="toc-item level-3"><a href="#question-3-how-would-you-add-undo-redo-functionality-to-this-system" class="toc-link">Question 3: "How would you add Undo / Redo functionality to this system?"</a></li><li class="toc-item level-3"><a href="#question-4-how-do-you-test-this-system-in-isolation-without-spinning-up-real-databases-or-payment-gateways" class="toc-link">Question 4: "How do you test this system in isolation without spinning up real databases or payment gateways?"</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

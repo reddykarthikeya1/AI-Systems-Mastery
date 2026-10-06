@@ -1496,6 +1496,22 @@ flowchart LR
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.total_cost_accrued &gt; <span class="hljs-variable language_">self</span>.max_cost_dollars:
             <span class="hljs-keyword">raise</span> PermissionError(<span class="hljs-string">f&quot;CIRCUIT BREAKER TRIPPED: Cost limit ($<span class="hljs-subst">{self.max_cost_dollars}</span>) breached!&quot;</span>)</code></pre>
   </div><p>Every production agent loop must wrap its execution inside this circuit breaker!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">AWS: exponential backoff and jitter</a></li>
+<li><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM applications</a></li>
+<li><a href="https://martinfowler.com/bliki/CircuitBreaker.html">Martin Fowler: circuit breaker</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does exponential backoff with jitter avoid?</summary><p>Synchronised retry storms that overload a recovering service.</p>
+</details><details>
+<summary><strong>2.</strong> Why set timeouts on every LLM and tool call?</summary><p>To bound latency and free resources when a dependency hangs.</p>
+</details><details>
+<summary><strong>3.</strong> What is defensive prompting?</summary><p>Structuring prompts so untrusted content is delimited and treated as data, plus validating outputs; it reduces but does not remove injection risk.</p>
+</details><details>
+<summary><strong>4.</strong> What is a circuit breaker?</summary><p>A component that stops calling a failing dependency for a period so it can recover and callers fail fast.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1518,7 +1534,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-schema-enforcement-healing-with-pydantic-instructor" class="toc-link">1. Schema Enforcement & Healing with Pydantic & Instructor</a></li><li class="toc-item level-3"><a href="#self-healing-extraction-pipeline" class="toc-link">Self-Healing Extraction Pipeline</a></li><li class="toc-item level-2"><a href="#2-rate-limits-throttling-full-jitter-backoff" class="toc-link">2. Rate Limits, Throttling, & Full Jitter Backoff</a></li><li class="toc-item level-3"><a href="#why-exponential-backoff-without-jitter-causes-avalanches" class="toc-link">Why Exponential Backoff Without Jitter Causes Avalanches</a></li><li class="toc-item level-3"><a href="#production-rate-limiter-with-full-jitter" class="toc-link">Production Rate Limiter with Full Jitter</a></li><li class="toc-item level-2"><a href="#3-multi-provider-fallback-cascade" class="toc-link">3. Multi-Provider Fallback Cascade</a></li><li class="toc-item level-3"><a href="#cascade-implementation" class="toc-link">Cascade Implementation</a></li><li class="toc-item level-2"><a href="#4-runaway-recursive-loop-circuit-breaker" class="toc-link">4. Runaway Recursive Loop Circuit Breaker</a></li><li class="toc-item level-3"><a href="#the-strict-budget-token-step-circuit-breaker" class="toc-link">The Strict Budget Token & Step Circuit Breaker</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-schema-enforcement-healing-with-pydantic-instructor" class="toc-link">1. Schema Enforcement & Healing with Pydantic & Instructor</a></li><li class="toc-item level-3"><a href="#self-healing-extraction-pipeline" class="toc-link">Self-Healing Extraction Pipeline</a></li><li class="toc-item level-2"><a href="#2-rate-limits-throttling-full-jitter-backoff" class="toc-link">2. Rate Limits, Throttling, & Full Jitter Backoff</a></li><li class="toc-item level-3"><a href="#why-exponential-backoff-without-jitter-causes-avalanches" class="toc-link">Why Exponential Backoff Without Jitter Causes Avalanches</a></li><li class="toc-item level-3"><a href="#production-rate-limiter-with-full-jitter" class="toc-link">Production Rate Limiter with Full Jitter</a></li><li class="toc-item level-2"><a href="#3-multi-provider-fallback-cascade" class="toc-link">3. Multi-Provider Fallback Cascade</a></li><li class="toc-item level-3"><a href="#cascade-implementation" class="toc-link">Cascade Implementation</a></li><li class="toc-item level-2"><a href="#4-runaway-recursive-loop-circuit-breaker" class="toc-link">4. Runaway Recursive Loop Circuit Breaker</a></li><li class="toc-item level-3"><a href="#the-strict-budget-token-step-circuit-breaker" class="toc-link">The Strict Budget Token & Step Circuit Breaker</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -76,3 +76,45 @@ Click on any system to jump directly into its complete, runnable Python implemen
 | **[12. In-Memory File System](systems/12-in-memory-file-system.md)** | **Composite** (Files & Dirs) | **Trie** (Path traversal) | Concurrency lock on parent directory path mutations |
 | **[13. High-Throughput Logger](systems/13-high-throughput-logging-framework.md)** | **Singleton** + **Observer** | **RingBuffer** (Zero-lock queue) | Producer-consumer backpressure & buffer overflow |
 | **[14. Pub-Sub Message Broker](systems/14-pub-sub-message-broker.md)** | **Observer** (Subscribers) | **Strategy** (Partitioning) | Fan-out race conditions & consumer offset tracking |
+
+
+## Further Reading
+
+- [Refactoring Guru: design patterns](https://refactoring.guru/design-patterns)
+- [UML diagrams reference](https://www.uml-diagrams.org/)
+- [Mermaid class diagrams](https://mermaid.js.org/syntax/classDiagram.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> List the steps of a 45-minute LLD interview.</summary>
+
+Clarify requirements, identify entities and relationships, define interfaces and responsibilities, sketch classes, walk through key flows, handle edge cases and extensibility, discuss concurrency.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do you find classes from a problem statement?</summary>
+
+Nouns become candidate entities, verbs become methods or services; keep only those with state or behaviour that matters.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why ask about requirements before drawing anything?</summary>
+
+Scope drives the design: concurrency, persistence, scale and extensibility each change the structure.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a good first diagram?</summary>
+
+A small class diagram of core entities and their relationships, then a sequence diagram for the main flow.
+
+</details>

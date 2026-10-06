@@ -1500,6 +1500,22 @@ flowchart TD
 <li>How the <strong>Strategy Pattern</strong> lets you swap business rules at runtime without breaking existing code.</li>
 </ol>
 <p>You are now 100% prepared to study the 16 Industrial Core Systems in Track 2!</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/tutorial/classes.html">Python classes tutorial</a></li>
+<li><a href="https://docs.python.org/3/library/threading.html">threading module</a></li>
+<li><a href="https://refactoring.guru/design-patterns/what-is-pattern">Refactoring Guru: OOP basics</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is encapsulation and why does it matter in design?</summary><p>Hiding internal state behind a small interface so implementation can change without breaking callers and invariants are protected.</p>
+</details><details>
+<summary><strong>2.</strong> Composition versus inheritance: which is the default choice and why?</summary><p>Prefer composition: it couples less, can change behaviour at runtime, and avoids fragile base-class hierarchies. Use inheritance for true is-a relationships.</p>
+</details><details>
+<summary><strong>3.</strong> What is a race condition?</summary><p>A bug where the result depends on the timing of concurrent operations on shared state, e.g. two threads doing <code>balance += x</code> and losing an update.</p>
+</details><details>
+<summary><strong>4.</strong> What does a lock protect, and what is the risk of using two?</summary><p>A lock protects a critical section from concurrent access. Acquiring two locks in different orders in different threads can deadlock.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1522,7 +1538,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-the-jargon-demystifier-plain-english-dictionary" class="toc-link">0. The Jargon Demystifier (Plain English Dictionary)</a></li><li class="toc-item level-2"><a href="#1-zero-prerequisite-intuition-the-toy-factory-metaphor" class="toc-link">1. Zero-Prerequisite Intuition: The "Toy Factory" Metaphor</a></li><li class="toc-item level-3"><a href="#1-class-vs-object-the-mold-vs-the-plastic-toy" class="toc-link">1. Class vs Object: The Mold vs The Plastic Toy</a></li><li class="toc-item level-3"><a href="#2-encapsulation-the-protective-casing" class="toc-link">2. Encapsulation: The Protective Casing</a></li><li class="toc-item level-3"><a href="#3-the-1-junior-mistake-inheritance-vs-composition" class="toc-link">3. The #1 Junior Mistake: Inheritance vs Composition</a></li><li class="toc-item level-2"><a href="#2-concurrency-for-beginners-the-single-bathroom-key" class="toc-link">2. Concurrency for Beginners: The "Single Bathroom Key"</a></li><li class="toc-item level-3"><a href="#the-plain-english-rule-of-thread-safety" class="toc-link">The Plain-English Rule of Thread Safety:</a></li><li class="toc-item level-2"><a href="#3-the-4-step-framework-to-solve-any-low-level-design-interview" class="toc-link">3. The 4-Step Framework to Solve ANY Low-Level Design Interview</a></li><li class="toc-item level-3"><a href="#the-before-after-evolution" class="toc-link">The Before & After Evolution:</a></li><li class="toc-item level-2"><a href="#4-milestone-check-what-you-just-mastered" class="toc-link">4. Milestone Check: What You Just Mastered!</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-the-jargon-demystifier-plain-english-dictionary" class="toc-link">0. The Jargon Demystifier (Plain English Dictionary)</a></li><li class="toc-item level-2"><a href="#1-zero-prerequisite-intuition-the-toy-factory-metaphor" class="toc-link">1. Zero-Prerequisite Intuition: The "Toy Factory" Metaphor</a></li><li class="toc-item level-3"><a href="#1-class-vs-object-the-mold-vs-the-plastic-toy" class="toc-link">1. Class vs Object: The Mold vs The Plastic Toy</a></li><li class="toc-item level-3"><a href="#2-encapsulation-the-protective-casing" class="toc-link">2. Encapsulation: The Protective Casing</a></li><li class="toc-item level-3"><a href="#3-the-1-junior-mistake-inheritance-vs-composition" class="toc-link">3. The #1 Junior Mistake: Inheritance vs Composition</a></li><li class="toc-item level-2"><a href="#2-concurrency-for-beginners-the-single-bathroom-key" class="toc-link">2. Concurrency for Beginners: The "Single Bathroom Key"</a></li><li class="toc-item level-3"><a href="#the-plain-english-rule-of-thread-safety" class="toc-link">The Plain-English Rule of Thread Safety:</a></li><li class="toc-item level-2"><a href="#3-the-4-step-framework-to-solve-any-low-level-design-interview" class="toc-link">3. The 4-Step Framework to Solve ANY Low-Level Design Interview</a></li><li class="toc-item level-3"><a href="#the-before-after-evolution" class="toc-link">The Before & After Evolution:</a></li><li class="toc-item level-2"><a href="#4-milestone-check-what-you-just-mastered" class="toc-link">4. Milestone Check: What You Just Mastered!</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

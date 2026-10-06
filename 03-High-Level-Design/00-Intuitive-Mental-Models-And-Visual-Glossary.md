@@ -83,3 +83,45 @@ Print this 1-page canvas to structure your whiteboard during mock interviews:
   - Disaster Recovery / Observability (Metrics, Traces, Alerts)?
 ================================================================================
 ```
+
+
+## Further Reading
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [AWS Builders' Library](https://aws.amazon.com/builders-library/)
+- [Wikipedia: Eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does 'eventual consistency' mean?</summary>
+
+If no new updates occur, all replicas will converge to the same value, but reads may be stale for a while.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is a single point of failure?</summary>
+
+A component whose failure takes the whole system down; remove it with redundancy.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is idempotency?</summary>
+
+Repeating an operation gives the same result as doing it once, which makes retries safe.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is backpressure?</summary>
+
+Slowing producers when consumers cannot keep up so queues stay bounded.
+
+</details>

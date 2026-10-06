@@ -1247,52 +1247,75 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 <p><strong>Zero Gaps Guarantee:</strong> This curriculum covers not only theoretical blueprints, but also live execution feedback loops: dependency hell diagnostics, post-mortem chaos engineering, multi-threaded race condition reproductions, automated CI/CD evaluation harnesses, and 45-minute ticking-clock interview simulations.</p>
 </blockquote>
 <hr>
-<h2 id="master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions"><a href="#master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions" class="header-anchor">#</a>Master Scorecard & Confidence Matrix (Genuine 10 / 10 Across All Dimensions)</h2><table>
+<h2 id="quality-what-is-measured-and-what-is-judged"><a href="#quality-what-is-measured-and-what-is-judged" class="header-anchor">#</a>Quality: what is measured and what is judged</h2><p><strong>Measured</strong> (regenerate with <code>python tools/audit.py</code>, output in <a href="QUALITY_REPORT.html">QUALITY_REPORT.md</a>): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 34 brute-force cross-checks), chapters with <em>Check Yourself</em> and <em>Further Reading</em> (every link checked to resolve), the portal&#39;s search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.</p>
+<p><strong>Editor&#39;s assessment</strong> (a judgment, not a measurement, out of 10; the gaps column is what stops a higher score):</p>
+<table>
 <thead>
 <tr>
 <th align="left">Track</th>
-<th align="center">Beginner Friendliness</th>
-<th align="center">Technical Depth</th>
-<th align="center">Production Realism &amp; Mastery</th>
-<th align="center">Curated Materials</th>
+<th align="center">Beginner friendliness</th>
+<th align="center">Technical depth</th>
+<th align="center">Accuracy and currency</th>
+<th align="center">Practice and active learning</th>
+<th align="left">Biggest remaining gap</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><strong>Track 1: Python Engineering Mastery</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center">23 Chapters (incl Capstone Recap) + Distributed/HPC/SQL/FastAPI/Rust/Polars + 3 Labs + PDFs</td>
+<td align="left">Python Mastery</td>
+<td align="center">8.5</td>
+<td align="center">8</td>
+<td align="center">7.5</td>
+<td align="center">7.5</td>
+<td align="left">exercises with hidden tests; version notes beyond Chapter 5</td>
 </tr>
 <tr>
-<td align="left"><strong>Track 2: Low-Level Design (LLD)</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center">29 Books (18 Systems + Zero-Prereq Primer + LLD Recap + Concurrency Lab) + PDFs</td>
+<td align="left">Low-Level Design</td>
+<td align="center">7.5</td>
+<td align="center">6.5</td>
+<td align="center">7.5</td>
+<td align="center">6.5</td>
+<td align="left">UML and design-pattern chapters are short; 14 systems under 1,000 words</td>
 </tr>
 <tr>
-<td align="left"><strong>Track 3: High-Level Design (HLD)</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center">28 Books (15 Systems + Zero-Prereq Global Infra Primer + HLD Recap + 4 Sims) + PDFs</td>
+<td align="left">High-Level Design</td>
+<td align="center">7</td>
+<td align="center">7.5</td>
+<td align="center">7.5</td>
+<td align="center">7</td>
+<td align="left">five classic systems still missing (news feed, notifications, typeahead, file storage, object store)</td>
 </tr>
 <tr>
-<td align="left"><strong>Track 4: Agentic AI Engineering</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center">21 Books (20 Chapters + Agentic AI Recap + HNSW Sim) + PDFs</td>
+<td align="left">Agentic AI</td>
+<td align="center">7</td>
+<td align="center">7.5</td>
+<td align="center">8</td>
+<td align="center">8</td>
+<td align="left">chapters 02 to 07 are still short; one provider adapter only</td>
 </tr>
 <tr>
-<td align="left"><strong>Track 5: DSA Interview Playbook</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center"><strong>10 / 10</strong></td>
-<td align="center">9 Playbooks (8 Chapters + DSA Recap + Test Runner) + PDFs</td>
+<td align="left">DSA Playbook</td>
+<td align="center">6.5</td>
+<td align="center">6.5</td>
+<td align="center">8</td>
+<td align="center">8.5</td>
+<td align="left">36 dry-run traces are narrated, not generated from the solution; terse per-problem text</td>
+</tr>
+<tr>
+<td align="left">Portal (HTML/PDF)</td>
+<td align="center">n/a</td>
+<td align="center">n/a</td>
+<td align="center">9</td>
+<td align="center">n/a</td>
+<td align="left">PDFs print answers collapsed; no automated browser test suite in CI yet</td>
 </tr>
 </tbody></table>
+<p>Verified runnable material: <code>04-Agentic-AI/examples/</code> (pinned <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>; run with <code>pytest -q</code>), <code>05-DSA-Interview-Playbook/practice/</code> (<code>python run_tests.py 12 --stub</code>, <code>--fuzz</code>, <code>--hint 12</code>), and the labs and simulations in each track.</p>
+<p>--- | :---: | :---: | :---: | :---: |
+| <strong>Track 1: Python Engineering Mastery</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | 23 Chapters (incl Capstone Recap) + Distributed/HPC/SQL/FastAPI/Rust/Polars + 3 Labs + PDFs |
+| <strong>Track 2: Low-Level Design (LLD)</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | 29 Books (18 Systems + Zero-Prereq Primer + LLD Recap + Concurrency Lab) + PDFs |
+| <strong>Track 3: High-Level Design (HLD)</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | 28 Books (15 Systems + Zero-Prereq Global Infra Primer + HLD Recap + 4 Sims) + PDFs |
+| <strong>Track 4: Agentic AI Engineering</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | 21 Books (20 Chapters + Agentic AI Recap + HNSW Sim) + PDFs |
+| <strong>Track 5: DSA Interview Playbook</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | <strong>10 / 10</strong> | 9 Playbooks (8 Chapters + DSA Recap + Test Runner) + PDFs |</p>
 <hr>
 <h2 id="curriculum-architecture-blueprint"><a href="#curriculum-architecture-blueprint" class="header-anchor">#</a>Curriculum Architecture & Blueprint</h2>
     <div class="mermaid-container">
@@ -1524,7 +1547,7 @@ npm run build:pdf</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-3"><a href="#complete-zero-to-one-hundred-engineering-curriculum-python-lld-hld-agentic-ai-dsa" class="toc-link">Complete Zero-to-One Hundred Engineering Curriculum: Python, LLD, HLD, Agentic AI & DSA</a></li><li class="toc-item level-2"><a href="#master-scorecard-confidence-matrix-genuine-10-10-across-all-dimensions" class="toc-link">Master Scorecard & Confidence Matrix (Genuine 10 / 10 Across All Dimensions)</a></li><li class="toc-item level-2"><a href="#curriculum-architecture-blueprint" class="toc-link">Curriculum Architecture & Blueprint</a></li><li class="toc-item level-2"><a href="#detailed-track-syllabus" class="toc-link">Detailed Track Syllabus</a></li><li class="toc-item level-3"><a href="#track-1-python-engineering-mastery-01-python-mastery" class="toc-link">[Track 1: Python Engineering Mastery](01-Python-Mastery/)</a></li><li class="toc-item level-3"><a href="#track-2-low-level-design-lld-02-low-level-design" class="toc-link">[Track 2: Low-Level Design (LLD)](02-Low-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-3-high-level-design-hld-03-high-level-design" class="toc-link">[Track 3: High-Level Design (HLD)](03-High-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-4-agentic-ai-engineering-04-agentic-ai" class="toc-link">[Track 4: Agentic AI Engineering](04-Agentic-AI/)</a></li><li class="toc-item level-3"><a href="#track-5-dsa-interview-playbook-05-dsa-interview-playbook" class="toc-link">[Track 5: DSA Interview Playbook](05-DSA-Interview-Playbook/)</a></li><li class="toc-item level-2"><a href="#automated-pdf-web-portal-generation-engine" class="toc-link">Automated PDF & Web Portal Generation Engine</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-3"><a href="#complete-zero-to-one-hundred-engineering-curriculum-python-lld-hld-agentic-ai-dsa" class="toc-link">Complete Zero-to-One Hundred Engineering Curriculum: Python, LLD, HLD, Agentic AI & DSA</a></li><li class="toc-item level-2"><a href="#quality-what-is-measured-and-what-is-judged" class="toc-link">Quality: what is measured and what is judged</a></li><li class="toc-item level-2"><a href="#curriculum-architecture-blueprint" class="toc-link">Curriculum Architecture & Blueprint</a></li><li class="toc-item level-2"><a href="#detailed-track-syllabus" class="toc-link">Detailed Track Syllabus</a></li><li class="toc-item level-3"><a href="#track-1-python-engineering-mastery-01-python-mastery" class="toc-link">[Track 1: Python Engineering Mastery](01-Python-Mastery/)</a></li><li class="toc-item level-3"><a href="#track-2-low-level-design-lld-02-low-level-design" class="toc-link">[Track 2: Low-Level Design (LLD)](02-Low-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-3-high-level-design-hld-03-high-level-design" class="toc-link">[Track 3: High-Level Design (HLD)](03-High-Level-Design/)</a></li><li class="toc-item level-3"><a href="#track-4-agentic-ai-engineering-04-agentic-ai" class="toc-link">[Track 4: Agentic AI Engineering](04-Agentic-AI/)</a></li><li class="toc-item level-3"><a href="#track-5-dsa-interview-playbook-05-dsa-interview-playbook" class="toc-link">[Track 5: DSA Interview Playbook](05-DSA-Interview-Playbook/)</a></li><li class="toc-item level-2"><a href="#automated-pdf-web-portal-generation-engine" class="toc-link">Automated PDF & Web Portal Generation Engine</a></li></ul>
     </aside>
   </div>
 

@@ -1532,7 +1532,23 @@ graph TD
     <span class="hljs-comment"># Seamless execution</span>
     receipt = service.checkout(<span class="hljs-string">&quot;cust_99&quot;</span>, cart, ApplePayStrategy(), {})
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Order completed successfully! Tx: <span class="hljs-subst">{receipt.transaction_id}</span>&quot;</span>)</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://refactoring.com/catalog/">Refactoring catalog</a></li>
+<li><a href="https://refactoring.guru/refactoring/smells">Refactoring Guru: code smells</a></li>
+<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Strangler Fig pattern</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is the first step when refactoring tangled code toward patterns?</summary><p>Add tests that pin current behaviour, then make small behaviour-preserving steps.</p>
+</details><details>
+<summary><strong>2.</strong> Which smell often suggests Strategy?</summary><p>Long <code>if/elif</code> chains selecting an algorithm by type or flag.</p>
+</details><details>
+<summary><strong>3.</strong> Which smell suggests Observer or events?</summary><p>One class explicitly calling many others after a change.</p>
+</details><details>
+<summary><strong>4.</strong> Why refactor in small commits?</summary><p>Each step is reversible and reviewable; failures are easy to localise.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1554,7 +1570,7 @@ graph TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-monolithic-god-class" class="toc-link">1. The Monolithic God-Class</a></li><li class="toc-item level-2"><a href="#2-the-refactoring-blueprint-applying-design-patterns" class="toc-link">2. The Refactoring Blueprint: Applying Design Patterns</a></li><li class="toc-item level-2"><a href="#3-the-clean-refactored-architecture" class="toc-link">3. The Clean Refactored Architecture</a></li><li class="toc-item level-2"><a href="#4-verification-and-extensibility-proof" class="toc-link">4. Verification and Extensibility Proof</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-monolithic-god-class" class="toc-link">1. The Monolithic God-Class</a></li><li class="toc-item level-2"><a href="#2-the-refactoring-blueprint-applying-design-patterns" class="toc-link">2. The Refactoring Blueprint: Applying Design Patterns</a></li><li class="toc-item level-2"><a href="#3-the-clean-refactored-architecture" class="toc-link">3. The Clean Refactored Architecture</a></li><li class="toc-item level-2"><a href="#4-verification-and-extensibility-proof" class="toc-link">4. Verification and Extensibility Proof</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -1440,7 +1440,23 @@ flowchart TD
   - Cross-region replication strategy (Active-Active vs Active-Passive)?
   - Disaster Recovery / Observability (Metrics, Traces, Alerts)?
 ================================================================================</code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://github.com/donnemartin/system-design-primer">System Design Primer</a></li>
+<li><a href="https://aws.amazon.com/builders-library/">AWS Builders&#39; Library</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Eventual_consistency">Wikipedia: Eventual consistency</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does 'eventual consistency' mean?</summary><p>If no new updates occur, all replicas will converge to the same value, but reads may be stale for a while.</p>
+</details><details>
+<summary><strong>2.</strong> What is a single point of failure?</summary><p>A component whose failure takes the whole system down; remove it with redundancy.</p>
+</details><details>
+<summary><strong>3.</strong> What is idempotency?</summary><p>Repeating an operation gives the same result as doing it once, which makes retries safe.</p>
+</details><details>
+<summary><strong>4.</strong> What is backpressure?</summary><p>Slowing producers when consumers cannot keep up so queues stay bounded.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1462,7 +1478,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-distributed-systems-metaphor-dictionary-zero-jargon" class="toc-link">1. The Distributed Systems Metaphor Dictionary (Zero Jargon)</a></li><li class="toc-item level-2"><a href="#2-the-13-high-level-systems-rosetta-stone-comparison" class="toc-link">2. The 13 High-Level Systems Rosetta Stone Comparison</a></li><li class="toc-item level-2"><a href="#3-the-45-minute-printable-interview-cheat-template" class="toc-link">3. The 45-Minute Printable Interview Cheat Template</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-distributed-systems-metaphor-dictionary-zero-jargon" class="toc-link">1. The Distributed Systems Metaphor Dictionary (Zero Jargon)</a></li><li class="toc-item level-2"><a href="#2-the-13-high-level-systems-rosetta-stone-comparison" class="toc-link">2. The 13 High-Level Systems Rosetta Stone Comparison</a></li><li class="toc-item level-2"><a href="#3-the-45-minute-printable-interview-cheat-template" class="toc-link">3. The 45-Minute Printable Interview Cheat Template</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

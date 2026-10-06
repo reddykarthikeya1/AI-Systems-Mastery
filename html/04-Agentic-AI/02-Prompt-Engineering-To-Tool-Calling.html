@@ -1317,7 +1317,7 @@ sequenceDiagram
 </div>
       </div>
     </div><hr>
-<h2 id="3-production-grade-tool-calling-implementation-in-python"><a href="#3-production-grade-tool-calling-implementation-in-python" class="header-anchor">#</a>3. Production-Grade Tool Calling Implementation in Python</h2><p>Here is a complete, runnable in-memory tool loop implementing function calling without third-party dependencies:</p>
+<h2 id="3-tool-calling-implementation-in-python-teaching-version"><a href="#3-tool-calling-implementation-in-python-teaching-version" class="header-anchor">#</a>3. Tool-Calling Implementation in Python (Teaching Version)</h2><p>Here is a complete, runnable in-memory tool loop implementing function calling without third-party dependencies:</p>
 
   <div class="code-block-wrapper">
     <div class="code-header">
@@ -1426,7 +1426,27 @@ tool_output = tools.execute(simulated_llm_call[<span class="hljs-string">&quot;n
 <span class="hljs-comment"># that output conforms 100% to ExtractedEntities.model_json_schema()!</span>
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nPydantic Validation JSON Schema:&quot;</span>)
 <span class="hljs-built_in">print</span>(json.dumps(ExtractedEntities.model_json_schema(), indent=<span class="hljs-number">2</span>))</code></pre>
-  </div>
+  </div><hr>
+<h2 id="verified-worked-example-tool-errors-the-model-can-fix"><a href="#verified-worked-example-tool-errors-the-model-can-fix" class="header-anchor">#</a>Verified Worked Example: Tool Errors the Model Can Fix</h2><p>In <a href="examples/ex01_tool_loop.py"><code>examples/ex01_tool_loop.py</code></a> the <code>get_history</code> tool raises <code>ValueError(&quot;days must be between 1 and 7&quot;)</code>. The harness converts it into the observation <code>ERROR: days must be between 1 and 7</code>, which is what lets the model retry with a valid argument. <strong>Design rule:</strong> an error message is part of the tool&#39;s interface; say what was wrong and what valid input looks like.</p>
+<p><strong>Real-SDK caveat.</strong> In <code>mcp==2.3.0</code>, an exception raised inside an MCP tool reaches the model only as &quot;Error executing tool <name>&quot; (the detail is not forwarded). For fixable mistakes, return the explanation in the result text instead (see <a href="examples/ex04_mcp_server.py"><code>examples/ex04_mcp_server.py</code></a>). Verify how <em>your</em> SDK version reports tool errors before relying on them.</p>
+<p>Pinned for the verified examples: <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>, <code>pytest==9.1.1</code> (see <code>examples/requirements.txt</code>). All examples run offline with a scripted fake model: <code>cd examples &amp;&amp; pip install -r requirements.txt &amp;&amp; pytest -q</code>.</p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview">Anthropic: tool use overview</a></li>
+<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: function calling</a></li>
+<li><a href="https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/">Lilian Weng: prompt engineering</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What is the difference between a system prompt and a user prompt?</summary><p>The system prompt sets role and rules for the conversation; the user prompt carries the request. Neither is a security boundary.</p>
+</details><details>
+<summary><strong>2.</strong> In function calling, who executes the function?</summary><p>Your application. The model only emits a structured call (name and arguments); you validate, run and return the result.</p>
+</details><details>
+<summary><strong>3.</strong> Why give tool parameters enums and descriptions?</summary><p>They constrain and document the call, reducing wrong or invented arguments.</p>
+</details><details>
+<summary><strong>4.</strong> What is few-shot prompting?</summary><p>Including worked examples in the prompt so the model imitates the format and reasoning.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1448,7 +1468,7 @@ tool_output = tools.execute(simulated_llm_call[<span class="hljs-string">&quot;n
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-prompt-engineering-hierarchy" class="toc-link">1. The Prompt Engineering Hierarchy</a></li><li class="toc-item level-2"><a href="#2-the-tool-calling-function-calling-protocol-under-the-hood" class="toc-link">2. The Tool Calling (Function Calling) Protocol Under the Hood</a></li><li class="toc-item level-2"><a href="#3-production-grade-tool-calling-implementation-in-python" class="toc-link">3. Production-Grade Tool Calling Implementation in Python</a></li><li class="toc-item level-2"><a href="#4-structured-output-enforcement-with-pydantic-v2" class="toc-link">4. Structured Output Enforcement with Pydantic v2</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-prompt-engineering-hierarchy" class="toc-link">1. The Prompt Engineering Hierarchy</a></li><li class="toc-item level-2"><a href="#2-the-tool-calling-function-calling-protocol-under-the-hood" class="toc-link">2. The Tool Calling (Function Calling) Protocol Under the Hood</a></li><li class="toc-item level-2"><a href="#3-tool-calling-implementation-in-python-teaching-version" class="toc-link">3. Tool-Calling Implementation in Python (Teaching Version)</a></li><li class="toc-item level-2"><a href="#4-structured-output-enforcement-with-pydantic-v2" class="toc-link">4. Structured Output Enforcement with Pydantic v2</a></li><li class="toc-item level-2"><a href="#verified-worked-example-tool-errors-the-model-can-fix" class="toc-link">Verified Worked Example: Tool Errors the Model Can Fix</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

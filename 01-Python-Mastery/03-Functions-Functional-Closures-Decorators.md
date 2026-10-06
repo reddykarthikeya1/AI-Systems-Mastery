@@ -391,3 +391,45 @@ multipliers_fixed = [lambda x, i=i: x * i for i in range(4)]
 print([m(2) for m in multipliers_fixed]) # [0, 2, 4, 6]
 ```
 > **Staff Engineer Rule:** When creating closures inside loops, always use default argument binding `i=i` to bind the current value to a local parameter at definition time.
+
+
+## Further Reading
+
+- [Real Python: primer on decorators](https://realpython.com/primer-on-python-decorators/)
+- [Real Python: the LEGB rule](https://realpython.com/python-scope-legb-rule/)
+- [functools module](https://docs.python.org/3/library/functools.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does LEGB stand for?</summary>
+
+Local, Enclosing, Global, Built-in: the order in which Python searches scopes to resolve a name.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does `[lambda: i for i in range(3)][0]()` return and why?</summary>
+
+`2`. Closures capture the variable, not its value at creation time, and all lambdas share the final `i`. Fix with a default argument `lambda i=i: i`.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What does a decorator return, and what does `functools.wraps` preserve?</summary>
+
+A new callable that replaces the original (`f = deco(f)`). `wraps` copies `__name__`, `__doc__` and other metadata so introspection and debugging still work.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> When is `nonlocal` required?</summary>
+
+When an inner function must rebind (assign to) a variable of an enclosing function. Reading needs no declaration.
+
+</details>

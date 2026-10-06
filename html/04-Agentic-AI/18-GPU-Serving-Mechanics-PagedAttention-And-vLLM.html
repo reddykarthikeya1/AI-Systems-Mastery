@@ -1541,6 +1541,22 @@ $$\text{VRAM required per user} = 4,096 \times 320\text{ KB} \approx 1.28\text{ 
 </ul>
 </li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/2309.06180">PagedAttention paper (vLLM)</a></li>
+<li><a href="https://docs.vllm.ai/en/latest/">vLLM documentation</a></li>
+<li><a href="https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/">NVIDIA: mastering LLM inference optimisation</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What problem does PagedAttention solve?</summary><p>KV-cache memory fragmentation: it stores the cache in fixed-size blocks allocated on demand, raising batch size and throughput.</p>
+</details><details>
+<summary><strong>2.</strong> Prefill versus decode?</summary><p>Prefill processes the prompt in parallel (compute-bound); decode generates tokens one at a time (memory-bound).</p>
+</details><details>
+<summary><strong>3.</strong> What does continuous batching do?</summary><p>Re-forms the batch every decoding step so finished sequences leave and new ones join immediately.</p>
+</details><details>
+<summary><strong>4.</strong> How do you estimate KV cache size per token?</summary><p><code>2 x layers x kv_heads x head_dim x bytes</code> (e.g. 128 KiB per token for Llama-3 8B in FP16).</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1563,7 +1579,7 @@ $$\text{VRAM required per user} = 4,096 \times 320\text{ KB} \approx 1.28\text{ 
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-restaurant-reservation-problem" class="toc-link">2. Spoon-Fed Mental Model: The Restaurant Reservation Problem</a></li><li class="toc-item level-3"><a href="#the-naive-serving-model-static-batching" class="toc-link">The Naive Serving Model (Static Batching):</a></li><li class="toc-item level-3"><a href="#the-pagedattention-model-vllm" class="toc-link">The PagedAttention Model (vLLM):</a></li><li class="toc-item level-2"><a href="#3-the-mathematics-of-kv-cache-memory-consumption" class="toc-link">3. The Mathematics of KV Cache Memory Consumption</a></li><li class="toc-item level-3"><a href="#real-world-example-llama-3-70b-fp16-2-bytes-float" class="toc-link">Real-World Example: Llama-3-70B (FP16, 2 bytes/float)</a></li><li class="toc-item level-2"><a href="#4-continuous-batching-vs-static-batching" class="toc-link">4. Continuous Batching vs Static Batching</a></li><li class="toc-item level-2"><a href="#5-junior-vs-staff-implementation-llm-serving" class="toc-link">5. Junior vs Staff Implementation: LLM Serving</a></li><li class="toc-item level-2"><a href="#6-complete-runnable-implementation-kv-cache-paging-simulator" class="toc-link">6. Complete Runnable Implementation: KV Cache Paging Simulator</a></li><li class="toc-item level-2"><a href="#7-chapter-milestone-check" class="toc-link">7. Chapter Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-restaurant-reservation-problem" class="toc-link">2. Spoon-Fed Mental Model: The Restaurant Reservation Problem</a></li><li class="toc-item level-3"><a href="#the-naive-serving-model-static-batching" class="toc-link">The Naive Serving Model (Static Batching):</a></li><li class="toc-item level-3"><a href="#the-pagedattention-model-vllm" class="toc-link">The PagedAttention Model (vLLM):</a></li><li class="toc-item level-2"><a href="#3-the-mathematics-of-kv-cache-memory-consumption" class="toc-link">3. The Mathematics of KV Cache Memory Consumption</a></li><li class="toc-item level-3"><a href="#real-world-example-llama-3-70b-fp16-2-bytes-float" class="toc-link">Real-World Example: Llama-3-70B (FP16, 2 bytes/float)</a></li><li class="toc-item level-2"><a href="#4-continuous-batching-vs-static-batching" class="toc-link">4. Continuous Batching vs Static Batching</a></li><li class="toc-item level-2"><a href="#5-junior-vs-staff-implementation-llm-serving" class="toc-link">5. Junior vs Staff Implementation: LLM Serving</a></li><li class="toc-item level-2"><a href="#6-complete-runnable-implementation-kv-cache-paging-simulator" class="toc-link">6. Complete Runnable Implementation: KV Cache Paging Simulator</a></li><li class="toc-item level-2"><a href="#7-chapter-milestone-check" class="toc-link">7. Chapter Milestone Check</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

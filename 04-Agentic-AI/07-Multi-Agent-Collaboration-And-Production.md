@@ -131,3 +131,44 @@ The supervisor example uses scripted agents (fixed strings) so that the control 
 
 **Cost reality check.** Multi-agent runs multiply tokens (reported around 15x a chat for research agents versus about 4x for a single agent). If the harness shows no statistically clear gain over the single-agent baseline, ship the single agent.
 
+
+## Further Reading
+
+- [Anthropic: how we built our multi-agent research system](https://www.anthropic.com/engineering/built-multi-agent-research-system)
+- [AutoGen documentation](https://microsoft.github.io/autogen/stable/)
+- [OpenTelemetry documentation](https://opentelemetry.io/docs/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> When is a single agent better than multi-agent?</summary>
+
+When steps are tightly coupled and share lots of state; multi-agent suits broad, parallelisable work.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is a handoff?</summary>
+
+Transferring control (and chosen context) from one agent to another.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Why bound the number of agents and rounds?</summary>
+
+Cost and latency multiply with agents; unbounded delegation can loop.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> How do you decide if multi-agent helped?</summary>
+
+Compare against a single-agent baseline with repeated trials (pass^k, confidence intervals).
+
+</details>

@@ -92,3 +92,45 @@
 **Answer:**
 By default, every Python instance stores attributes in a dynamic dictionary (`self.__dict__`), which incurs substantial memory overhead (indices array, entries array, hash table padding: ~150-200 bytes per instance).  
 `__slots__` replaces `__dict__` with a **static C struct array of pointers**, saving $>68\%$ of RAM per instance and speeding up attribute access by bypassing dictionary lookups.
+
+
+## Further Reading
+
+- [Google SRE book: postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+- [tracemalloc](https://docs.python.org/3/library/tracemalloc.html)
+- [Python logging how-to](https://docs.python.org/3/howto/logging.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> A scenario question asks 'how would you debug a memory leak in production?' Outline an answer.</summary>
+
+Confirm growth with metrics, capture `tracemalloc` snapshots over time, diff to find growing allocation sites, inspect referrers (objgraph), fix, add a regression metric/alert.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> How do you structure an answer to a design-trade-off question?</summary>
+
+State the options, evaluate each against the requirements and constraints, choose with reasons, and name what would change your mind.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What do interviewers look for in 'tell me about a production incident'?</summary>
+
+Clear timeline, your specific actions, root cause, the fix, and what you changed to prevent recurrence.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What turns a good answer into a strong one?</summary>
+
+Quantified impact, honest trade-offs and awareness of failure modes.
+
+</details>

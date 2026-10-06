@@ -393,3 +393,45 @@ def admin_only_metrics(admin_user: Annotated[TokenPayload, Depends(RequireRole(U
 | **Token Expiration** | Boarding pass expires before departure | Short-lived Access Token (15 min) + Refresh Token Rotation with family invalidation |
 | **RBAC Enforcement** | First Class vs Cockpit access | Enforced via declarative dependency injection factories (`RequireRole`) |
 | **Storage Security** | Keeping your passport in an inside pocket | Store browser tokens in `HttpOnly`, `Secure`, `SameSite=Strict` cookies |
+
+
+## Further Reading
+
+- [JWT introduction](https://jwt.io/introduction)
+- [OWASP Authentication cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
+- [OWASP Password Storage cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What are the three parts of a JWT?</summary>
+
+Header, payload (claims), signature, base64url-encoded and joined by dots. The payload is encoded, not encrypted.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why never put secrets in a JWT payload?</summary>
+
+Anyone holding the token can decode the payload; only the signature prevents tampering.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Authentication versus authorisation?</summary>
+
+Authentication proves who you are; authorisation decides what you may do (RBAC maps roles to permissions).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why hash passwords with bcrypt or argon2 rather than SHA-256?</summary>
+
+They are deliberately slow and salted, making brute force expensive; a fast hash can be tried billions of times per second.
+
+</details>

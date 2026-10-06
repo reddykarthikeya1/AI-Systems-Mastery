@@ -1242,19 +1242,76 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-6-distributed-e-commerce-platform-amazon-shopify"><a href="#hld-case-study-6-distributed-e-commerce-platform-amazon-shopify" class="header-anchor">#</a>HLD Case Study 6: Distributed E-Commerce Platform (Amazon / Shopify)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Distributed transactions, Saga Orchestration, high-concurrency inventory reservation, idempotency, and payment reconciliation.</p>
+          <h1 id="hld-case-study-6-e-commerce-platform-amazon-style"><a href="#hld-case-study-6-e-commerce-platform-amazon-style" class="header-anchor">#</a>HLD Case Study 6: E-Commerce Platform (Amazon-style)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Catalog and search, cart and checkout, inventory reservation, order saga across services, idempotent payments, and peak-event (Black Friday) scaling.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-functional-requirements"><a href="#1-problem-statement-functional-requirements" class="header-anchor">#</a>1. Problem Statement & Functional Requirements</h2><p>Design the checkout and order fulfillment pipeline for an e-commerce platform processing millions of flash-sale purchases per minute.</p>
-<h3 id="requirements"><a href="#requirements" class="header-anchor">#</a>Requirements:</h3><ol>
-<li>Product search and browsing with real-time stock levels.</li>
-<li>High-speed cart checkout with temporary inventory reservation.</li>
-<li>Multi-stage distributed transaction: Inventory $\rightarrow$ Payment $\rightarrow$ Shipping.</li>
-<li>Guaranteed zero overselling and automated order rollback on failure.</li>
-</ol>
-<hr>
-<h2 id="2-high-level-architecture-diagram"><a href="#2-high-level-architecture-diagram" class="header-anchor">#</a>2. High-Level Architecture Diagram</h2>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> browse and search products, product detail pages, cart, checkout with payment, order tracking, inventory management, seller listings.
+<strong>Non-functional:</strong> catalog reads very fast and highly available (eventual consistency is fine); <strong>checkout must be correct</strong> (no oversell, no double charge); handle 10x spikes on sale days; 99.99% availability for browse, strong guarantees for orders.
+<strong>Out of scope:</strong> recommendations, returns logistics, seller payouts.</p>
+<h2 id="2-estimates"><a href="#2-estimates" class="header-anchor">#</a>2. Estimates</h2><p>Assume 300M MAU, 50M DAU, 20 page views per session, conversion 3%, 1.5M orders/day, Black Friday peak 10x.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">dau, pv_per_session, conversion = <span class="hljs-number">50e6</span>, <span class="hljs-number">20</span>, <span class="hljs-number">0.03</span>
+page_views = dau * pv_per_session                    <span class="hljs-comment"># 1e9/day</span>
+avg_read_qps = page_views / <span class="hljs-number">86400</span>                    <span class="hljs-comment"># ~11,574 req/s</span>
+peak_read_qps = avg_read_qps * <span class="hljs-number">10</span>                    <span class="hljs-comment"># ~115,740 req/s on sale days</span>
+orders_day = dau * conversion                        <span class="hljs-comment"># 1.5M</span>
+avg_order_qps = orders_day / <span class="hljs-number">86400</span>                   <span class="hljs-comment"># ~17/s</span>
+peak_order_qps = avg_order_qps * <span class="hljs-number">10</span> * <span class="hljs-number">5</span>              <span class="hljs-comment"># 10x event, 5x within-hour burst =&gt; ~870/s</span>
+catalog_items, bytes_item = <span class="hljs-number">500e6</span>, <span class="hljs-number">5_000</span>
+catalog_gb = catalog_items * bytes_item / <span class="hljs-number">1e9</span>        <span class="hljs-comment"># 2,500 GB metadata</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(avg_read_qps), <span class="hljs-built_in">round</span>(peak_read_qps), orders_day, <span class="hljs-built_in">round</span>(peak_order_qps), catalog_gb)
+<span class="hljs-keyword">assert</span> orders_day == <span class="hljs-number">1.5e6</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(avg_read_qps) == <span class="hljs-number">11574</span></code></pre>
+  </div><p>Takeaways: reads dwarf orders (about 670:1), so the catalog is cached and replicated aggressively; the order path is low volume but needs transactions and sagas.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><ul>
+<li><code>GET /products/{id}</code>, <code>GET /search?q=&amp;filters=&amp;cursor=</code></li>
+<li><code>PUT /cart/items</code> <code>{sku, qty}</code>, <code>GET /cart</code></li>
+<li><code>POST /checkout</code> <code>{cart_id, address_id, payment_method, idempotency_key}</code> returns <code>{order_id, status}</code></li>
+<li><code>GET /orders/{id}</code> (status stream)</li>
+</ul>
+<h2 id="4-data-model-and-service-boundaries"><a href="#4-data-model-and-service-boundaries" class="header-anchor">#</a>4. Data Model and Service Boundaries</h2><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Store</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Catalog</td>
+<td>document store + search index (Elasticsearch/OpenSearch)</td>
+<td>read-heavy, denormalised, cached in CDN/Redis</td>
+</tr>
+<tr>
+<td>Cart</td>
+<td>Redis or DynamoDB keyed by <code>user_id</code></td>
+<td>expires, easy to lose-and-rebuild</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>relational (partitioned by <code>sku</code>)</td>
+<td>strong consistency, <code>available</code>, <code>reserved</code></td>
+</tr>
+<tr>
+<td>Order</td>
+<td>relational, sharded by <code>user_id</code></td>
+<td>state machine <code>PENDING, PAID, SHIPPED, DELIVERED, CANCELLED</code></td>
+</tr>
+<tr>
+<td>Payment</td>
+<td>relational + external PSP</td>
+<td>idempotent, append-only ledger</td>
+</tr>
+</tbody></table>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1275,96 +1332,80 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    Client["Customer Web/Mobile"] --&gt; ALB["Application Load Balancer"]
-    ALB --&gt; Gateway["API Gateway (Rate Limiter, Auth)"]
-    
-    Gateway --&gt; OrderSvc["Order Service"]
-    OrderSvc --&gt; SagaOrch["Order Saga Orchestrator (State Machine)"]
-    
-    SagaOrch --&gt; InventorySvc["Inventory Service (Redis + MySQL)"]
-    SagaOrch --&gt; PaymentSvc["Payment Gateway Service (Stripe / PayPal)"]
-    SagaOrch --&gt; ShippingSvc["Fulfillment &amp; Shipping Service"]
-    
-    SagaOrch --&gt; Kafka["Kafka: order_lifecycle_events"]
-    Kafka --&gt; Analytics["Analytics &amp; Order History Store"]
+    U["Client"] --&gt; CDN["CDN + API Gateway"]
+    CDN --&gt; Cat["Catalog Service"]
+    Cat --&gt; Cache["Redis cache"]
+    Cat --&gt; Doc[("Catalog Store")]
+    Cat --&gt; Search["Search Index"]
+    CDN --&gt; Cart["Cart Service (Redis)"]
+    CDN --&gt; Ord["Order Service (saga orchestrator)"]
+    Ord --&gt; Inv["Inventory Service"]
+    Ord --&gt; Pay["Payment Service"]
+    Ord --&gt; Ful["Fulfillment / Shipping"]
+    Ord --&gt; Bus["Kafka event bus"]
+    Bus --&gt; Noti["Notifications"]
+    Bus --&gt; Idx["Search/Catalog Indexers"]
+    Bus --&gt; Analytics["Analytics"]
 </div>
       </div>
-    </div><hr>
-<h2 id="3-high-concurrency-flash-sale-inventory-reservation"><a href="#3-high-concurrency-flash-sale-inventory-reservation" class="header-anchor">#</a>3. High-Concurrency Flash Sale Inventory Reservation</h2><p>During a flash sale (e.g. 5,000 gaming consoles sold to 200,000 buyers in 10 seconds), traditional SQL transactions (<code>SELECT FOR UPDATE</code>) cause severe database lock contention and database timeouts.</p>
-<h3 id="the-in-memory-atomic-lua-script-solution-redis"><a href="#the-in-memory-atomic-lua-script-solution-redis" class="header-anchor">#</a>The In-Memory Atomic Lua Script Solution (Redis)</h3><p>All flash sale inventory is preloaded into a <strong>Redis Cluster</strong>. Stock reservation is executed in <strong>$O(1)$ microseconds</strong> via an atomic Redis Lua script:</p>
+    </div><h2 id="6-deep-dive-checkout-as-a-saga"><a href="#6-deep-dive-checkout-as-a-saga" class="header-anchor">#</a>6. Deep Dive: Checkout as a Saga</h2><p>A single ACID transaction cannot span inventory, payment and order services (separate databases). Use an <strong>orchestrated saga</strong> with compensations:</p>
+<ol>
+<li><strong>Create order</strong> <code>PENDING</code> (idempotent on <code>idempotency_key</code>).</li>
+<li><strong>Reserve inventory:</strong> <code>UPDATE inventory SET available = available - :q, reserved = reserved + :q WHERE sku=:s AND available &gt;= :q</code>; rowcount 0 means out of stock, abort.</li>
+<li><strong>Charge payment</strong> with the same idempotency key passed to the PSP.</li>
+<li>On success: mark order <code>PAID</code>, convert reservation to committed, emit <code>OrderPaid</code> event for fulfillment.</li>
+<li>On payment failure: <strong>compensate</strong> by releasing the reservation and marking the order <code>CANCELLED</code>.</li>
+</ol>
+<p>Each step is retried with backoff; the orchestrator persists saga state so it can resume after a crash. The transactional outbox pattern (write the event and state change in one local transaction, publish asynchronously) prevents &quot;state changed but event lost&quot;.</p>
+<p><strong>Overselling control.</strong> The conditional decrement above is the guard. For flash-sale SKUs, shard the counter (for example 16 sub-counters each holding a slice of stock) so a hot SKU is not one hot row; reserve from a random sub-counter and fall back to others.</p>
+<p><strong>Catalog freshness.</strong> The source of truth is the seller/catalog DB; changes publish events that update the search index and invalidate caches. Price and stock shown on a product page can be a few seconds stale; the <strong>checkout re-validates</strong> price and availability.</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Reads:</strong> CDN for images and static content; Redis for hot product JSON; read replicas; search index for listing pages.</li>
+<li><strong>Hot SKUs (flash deals):</strong> pre-warm caches, sharded stock counters, queue the &quot;buy&quot; requests (waiting room) to smooth load.</li>
+<li><strong>Search:</strong> index sharded by product id, replicas for QPS, query cache, typo tolerance and facets precomputed.</li>
+<li><strong>Order DB:</strong> shard by <code>user_id</code>; orders are rarely joined across users.</li>
+<li><strong>Black Friday:</strong> scale out in advance, load test at 2x expected peak (course 03 HLD chapter 09), degrade gracefully (disable recommendations first).</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Payment timeout (unknown outcome)</td>
+<td>query PSP by idempotency key before retry; reconcile nightly</td>
+</tr>
+<tr>
+<td>Inventory service down</td>
+<td>fail checkout fast with a clear message; browse still works</td>
+</tr>
+<tr>
+<td>Duplicate checkout click</td>
+<td>idempotency key returns the first result</td>
+</tr>
+<tr>
+<td>Reservation leaks (user abandons)</td>
+<td>reservation TTL plus a sweeper that releases expired holds</td>
+</tr>
+<tr>
+<td>Event lost</td>
+<td>outbox pattern guarantees publish</td>
+</tr>
+<tr>
+<td>Cache stampede on a hot product</td>
+<td>request coalescing, jittered TTLs</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs"><a href="#9-trade-offs" class="header-anchor">#</a>9. Trade-offs</h2><ul>
+<li><strong>Orchestration vs choreography saga:</strong> orchestration is easier to reason about and monitor; choreography reduces central coupling but is harder to trace.</li>
+<li><strong>Reserve at add-to-cart vs at checkout:</strong> reserving early hurts availability (carts abandon); reserve at checkout start with a short TTL.</li>
+<li><strong>Strong consistency vs availability:</strong> CP for inventory and orders, AP for catalog and carts.</li>
+<li><strong>Monolith vs microservices:</strong> microservices let teams scale independently but introduce sagas and distributed debugging; a modular monolith is a valid starting point.</li>
+</ul>
+<h2 id="10-interview-timeline-and-follow-ups"><a href="#10-interview-timeline-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline and Follow-ups</h2><p>Cover catalog read path (5 min), cart (3), checkout saga (12), scaling and failure (10). <strong>Follow-ups:</strong> How do you prevent a double charge? (idempotency key end-to-end, ledger uniqueness). How do you do global inventory across warehouses? (inventory per fulfilment center, allocate nearest). How do you handle price changes during checkout? (price snapshot on cart add with expiry, re-validate at pay). How would you implement search ranking? (BM25 plus behavioural signals, course 10).</p>
 
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">lua</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-lua"><span class="hljs-comment">-- Atomic Lua Script executed on Redis cluster:</span>
-<span class="hljs-keyword">local</span> sku = KEYS[<span class="hljs-number">1</span>]
-<span class="hljs-keyword">local</span> quantity = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>])
-<span class="hljs-keyword">local</span> current_stock = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">&#x27;GET&#x27;</span>, sku) <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;0&quot;</span>)
-
-<span class="hljs-keyword">if</span> current_stock &gt;= quantity <span class="hljs-keyword">then</span>
-    redis.call(<span class="hljs-string">&#x27;DECRBY&#x27;</span>, sku, quantity)
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-comment">-- Success: Reserved!</span>
-<span class="hljs-keyword">else</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-comment">-- Out of stock!</span>
-<span class="hljs-keyword">end</span></code></pre>
-  </div><p><em>Because Redis executes Lua scripts as a single atomic operation without interleaving, race conditions and overselling are physically impossible, and throughput exceeds <strong>100,000+ operations/second</strong>!</em></p>
-<hr>
-<h2 id="4-the-complete-checkout-saga-orchestration"><a href="#4-the-complete-checkout-saga-orchestration" class="header-anchor">#</a>4. The Complete Checkout Saga Orchestration</h2>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor User
-    participant Orch as Checkout Saga Orchestrator
-    participant Inv as Inventory Service
-    participant Pay as Payment Gateway
-    participant Order as Order DB
-
-    User-&gt;&gt;Orch: CheckoutCart(cart_id)
-    Orch-&gt;&gt;Inv: ReserveStock(sku, qty)
-    alt Stock Available
-        Inv--&gt;&gt;Orch: StockReserved(reservation_id)
-        Orch-&gt;&gt;Pay: AuthorizeAndCapture(amount, idempotency_key)
-        alt Payment Succeeded
-            Pay--&gt;&gt;Orch: PaymentCaptured(tx_id)
-            Orch-&gt;&gt;Order: MarkOrderConfirmed()
-            Orch--&gt;&gt;User: 201 Created (Order Confirmed!)
-        else Payment Declined / Gateway Timeout
-            Pay--&gt;&gt;Orch: PaymentFailed
-            Note over Orch: Run Compensating Rollback!
-            Orch-&gt;&gt;Inv: ReleaseStock(reservation_id)
-            Orch-&gt;&gt;Order: MarkOrderCancelled()
-            Orch--&gt;&gt;User: 400 Bad Request (Payment failed, cart released)
-        end
-    else Out of Stock
-        Inv--&gt;&gt;Orch: OutOfStock
-        Orch--&gt;&gt;User: 409 Conflict (Item no longer available)
-    end
-</div>
-      </div>
-    </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1386,7 +1427,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-functional-requirements" class="toc-link">1. Problem Statement & Functional Requirements</a></li><li class="toc-item level-3"><a href="#requirements" class="toc-link">Requirements:</a></li><li class="toc-item level-2"><a href="#2-high-level-architecture-diagram" class="toc-link">2. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#3-high-concurrency-flash-sale-inventory-reservation" class="toc-link">3. High-Concurrency Flash Sale Inventory Reservation</a></li><li class="toc-item level-3"><a href="#the-in-memory-atomic-lua-script-solution-redis" class="toc-link">The In-Memory Atomic Lua Script Solution (Redis)</a></li><li class="toc-item level-2"><a href="#4-the-complete-checkout-saga-orchestration" class="toc-link">4. The Complete Checkout Saga Orchestration</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-estimates" class="toc-link">2. Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model-and-service-boundaries" class="toc-link">4. Data Model and Service Boundaries</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-checkout-as-a-saga" class="toc-link">6. Deep Dive: Checkout as a Saga</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs" class="toc-link">9. Trade-offs</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-and-follow-ups" class="toc-link">10. Interview Timeline and Follow-ups</a></li></ul>
     </aside>
   </div>
 

@@ -1421,6 +1421,22 @@ flowchart LR
 <td align="left">Optimal: Guarantees exact Top-$K$ while preserving $O(\log N)$ graph search speeds.</td>
 </tr>
 </tbody></table>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/1603.09320">HNSW paper</a></li>
+<li><a href="https://www.pinecone.io/learn/series/faiss/hnsw/">Pinecone: HNSW explained</a></li>
+<li><a href="https://github.com/facebookresearch/faiss/wiki">FAISS wiki</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What does HNSW trade for speed?</summary><p>Memory and a small loss of recall; it builds a layered proximity graph for logarithmic-time search.</p>
+</details><details>
+<summary><strong>2.</strong> What does `efSearch` control?</summary><p>The candidate list size at query time: higher means better recall and higher latency.</p>
+</details><details>
+<summary><strong>3.</strong> Why normalise vectors for cosine similarity?</summary><p>After L2 normalisation, dot product equals cosine similarity and is cheaper to compute.</p>
+</details><details>
+<summary><strong>4.</strong> How does product quantization save memory?</summary><p>It splits vectors into sub-vectors and stores each as a small codebook ID, e.g. 1024 floats to 64 bytes.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1443,7 +1459,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-distance-metrics-cosine-vs-dot-product-vs-euclidean-math7" class="toc-link">1. Distance Metrics: Cosine vs. Dot Product vs. Euclidean ($L2$)</a></li><li class="toc-item level-2"><a href="#2-the-hnsw-algorithm-multi-layer-skip-graphs" class="toc-link">2. The HNSW Algorithm: Multi-Layer Skip-Graphs</a></li><li class="toc-item level-3"><a href="#the-express-train-vs-local-walking-metaphor" class="toc-link">The "Express Train vs. Local Walking" Metaphor</a></li><li class="toc-item level-3"><a href="#the-search-mechanics" class="toc-link">The Search Mechanics:</a></li><li class="toc-item level-2"><a href="#3-product-quantization-ivf-pq-compressing-vectors" class="toc-link">3. Product Quantization (IVF-PQ): Compressing Vectors</a></li><li class="toc-item level-2"><a href="#4-metadata-filtering-pre-filtering-vs-single-stage-hybrid-search" class="toc-link">4. Metadata Filtering: Pre-Filtering vs. Single-Stage Hybrid Search</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-distance-metrics-cosine-vs-dot-product-vs-euclidean-math7" class="toc-link">1. Distance Metrics: Cosine vs. Dot Product vs. Euclidean ($L2$)</a></li><li class="toc-item level-2"><a href="#2-the-hnsw-algorithm-multi-layer-skip-graphs" class="toc-link">2. The HNSW Algorithm: Multi-Layer Skip-Graphs</a></li><li class="toc-item level-3"><a href="#the-express-train-vs-local-walking-metaphor" class="toc-link">The "Express Train vs. Local Walking" Metaphor</a></li><li class="toc-item level-3"><a href="#the-search-mechanics" class="toc-link">The Search Mechanics:</a></li><li class="toc-item level-2"><a href="#3-product-quantization-ivf-pq-compressing-vectors" class="toc-link">3. Product Quantization (IVF-PQ): Compressing Vectors</a></li><li class="toc-item level-2"><a href="#4-metadata-filtering-pre-filtering-vs-single-stage-hybrid-search" class="toc-link">4. Metadata Filtering: Pre-Filtering vs. Single-Stage Hybrid Search</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

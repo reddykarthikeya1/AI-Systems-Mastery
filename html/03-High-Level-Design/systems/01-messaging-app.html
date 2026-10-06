@@ -1242,32 +1242,59 @@ h2:hover .header-anchor, h3:hover .header-anchor {
     <main class="main-wrapper" id="main-content" tabindex="-1">
       <div class="content-container">
         <article class="markdown-body">
-          <h1 id="hld-case-study-1-real-time-messaging-platform-whatsapp-discord"><a href="#hld-case-study-1-real-time-messaging-platform-whatsapp-discord" class="header-anchor">#</a>HLD Case Study 1: Real-Time Messaging Platform (WhatsApp / Discord)</h1><blockquote>
-<p><strong>Key Focus Areas:</strong> Real-time WebSockets, message delivery guarantees (sent, delivered, read), distributed connection servers, and offline message synchronization.</p>
+          <h1 id="hld-case-study-1-messaging-app-whatsapp-messenger"><a href="#hld-case-study-1-messaging-app-whatsapp-messenger" class="header-anchor">#</a>HLD Case Study 1: Messaging App (WhatsApp / Messenger)</h1><blockquote>
+<p><strong>Key Focus Areas:</strong> Persistent connections, per-conversation ordering, delivery receipts, offline delivery, fan-out for groups, and end-to-end encryption trade-offs.</p>
 </blockquote>
 <hr>
-<h2 id="1-problem-statement-requirements"><a href="#1-problem-statement-requirements" class="header-anchor">#</a>1. Problem Statement & Requirements</h2><p>Design a global real-time chat platform supporting 1-on-1 and group messaging with delivery receipts.</p>
-<h3 id="functional-requirements"><a href="#functional-requirements" class="header-anchor">#</a>Functional Requirements:</h3><ol>
-<li>Low-latency 1-on-1 and group messaging ($&lt; 100\text{ms}$ delivery).</li>
-<li>Message status tracking: <code>Sent</code> $\rightarrow$ <code>Delivered</code> $\rightarrow$ <code>Read</code>.</li>
-<li>Support offline users (queue messages until user reconnects).</li>
-<li>Media sharing (images/videos up to 100MB).</li>
-</ol>
-<h3 id="non-functional-requirements"><a href="#non-functional-requirements" class="header-anchor">#</a>Non-Functional Requirements:</h3><ol>
-<li>High availability ($99.99\%$).</li>
-<li>Low latency worldwide.</li>
-<li>End-to-End Encryption (E2EE) support.</li>
-</ol>
-<hr>
-<h2 id="2-back-of-the-envelope-estimations"><a href="#2-back-of-the-envelope-estimations" class="header-anchor">#</a>2. Back-of-the-Envelope Estimations</h2><ul>
-<li><strong>DAU:</strong> $500 \text{ Million}$ active users.</li>
-<li><strong>Message Volume:</strong> 40 messages per user/day $\rightarrow 20 \text{ Billion messages/day}$.</li>
-<li><strong>Write QPS:</strong> $\frac{20 \times 10^9}{10^5} \approx \mathbf{200,000 \text{ QPS}}$ (Peak = $400,000\text{ QPS}$).</li>
-<li><strong>Storage per day:</strong> Average message size $100 \text{ bytes} \rightarrow 20 \text{ Billion} \times 100 \text{ bytes} = \mathbf{2 \text{ TB/day}}$ text storage.</li>
-<li><strong>Concurrent Connections:</strong> $\sim 50 \text{ Million}$ simultaneous WebSocket connections.</li>
+<h2 id="1-requirements-and-scope"><a href="#1-requirements-and-scope" class="header-anchor">#</a>1. Requirements and Scope</h2><p><strong>Functional:</strong> 1:1 and group chat (up to 1,000 members), delivery states (sent, delivered, read), offline delivery, media attachments, presence (&quot;online/last seen&quot;), multi-device sync.
+<strong>Non-functional:</strong> message latency under 200 ms p99 when both users are online; messages are <strong>never lost</strong> once acknowledged; <strong>per-conversation ordering</strong>; availability over strict consistency for presence; 99.99% availability.
+<strong>Out of scope for this answer:</strong> voice/video calls, payments, search over message content (it is encrypted).</p>
+<h2 id="2-back-of-the-envelope-estimates"><a href="#2-back-of-the-envelope-estimates" class="header-anchor">#</a>2. Back-of-the-Envelope Estimates</h2><p>Assume 500M daily active users sending 40 messages/day each, average 100 bytes of text, 5% of messages carry media (average 200 KB, stored in object storage).</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python">dau, msgs_per_user, msg_bytes = <span class="hljs-number">500e6</span>, <span class="hljs-number">40</span>, <span class="hljs-number">100</span>
+msgs_per_day = dau * msgs_per_user                 <span class="hljs-comment"># 2e10</span>
+avg_qps = msgs_per_day / <span class="hljs-number">86400</span>                      <span class="hljs-comment"># ~231,000 msg/s</span>
+peak_qps = avg_qps * <span class="hljs-number">3</span>                              <span class="hljs-comment"># ~694,000 msg/s at peak</span>
+text_per_day_tb = msgs_per_day * msg_bytes / <span class="hljs-number">1e12</span>   <span class="hljs-comment"># 2 TB/day of text</span>
+media_per_day_tb = msgs_per_day * <span class="hljs-number">0.05</span> * <span class="hljs-number">200e3</span> / <span class="hljs-number">1e12</span>  <span class="hljs-comment"># 200 TB/day of media</span>
+concurrent_conns = dau * <span class="hljs-number">0.2</span>                        <span class="hljs-comment"># 20% online at once = 100M sockets</span>
+conns_per_server = <span class="hljs-number">200_000</span>                          <span class="hljs-comment"># tuned epoll-based gateway</span>
+gateway_servers = concurrent_conns / conns_per_server  <span class="hljs-comment"># ~500 servers</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(avg_qps), <span class="hljs-built_in">round</span>(peak_qps), text_per_day_tb, media_per_day_tb, gateway_servers)
+<span class="hljs-keyword">assert</span> <span class="hljs-number">230_000</span> &lt; avg_qps &lt; <span class="hljs-number">232_000</span> <span class="hljs-keyword">and</span> gateway_servers == <span class="hljs-number">500</span></code></pre>
+  </div><p>Takeaways: the system is <strong>connection-bound</strong> (100M sockets, about 500 gateway servers), media dominates storage (about 73 PB/year), and text storage (about 0.7 PB/year) is small enough to keep forever.</p>
+<h2 id="3-api-design"><a href="#3-api-design" class="header-anchor">#</a>3. API Design</h2><table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WebSocket (or MQTT/XMPP over TCP)</td>
+<td><code>send {conv_id, client_msg_id, ciphertext, ts}</code>; server pushes <code>msg</code>, <code>ack</code>, <code>receipt {msg_id, state}</code>, <code>presence</code></td>
+</tr>
+<tr>
+<td>REST (HTTPS)</td>
+<td><code>POST /media</code> returns an upload URL and <code>media_id</code> (client uploads encrypted blob directly to object storage); <code>GET /conversations/{id}/messages?before=cursor&amp;limit=50</code> for history sync</td>
+</tr>
+</tbody></table>
+<p><code>client_msg_id</code> (UUID generated on the device) makes <code>send</code> <strong>idempotent</strong>: a retry after a network drop must not create a duplicate.</p>
+<h2 id="4-data-model"><a href="#4-data-model" class="header-anchor">#</a>4. Data Model</h2><ul>
+<li><strong>messages</strong> (wide-column store such as Cassandra or ScyllaDB): partition key <code>conv_id</code>, clustering key <code>msg_seq</code> (monotonic per conversation), columns <code>sender_id, client_msg_id, ciphertext, type, created_at</code>. Reads are &quot;latest N messages of a conversation&quot;, which is one partition range scan.</li>
+<li><strong>inbox/offline queue</strong>: <code>(user_id, device_id) -&gt; ordered list of undelivered msg ids</code>, deleted on device ack.</li>
+<li><strong>conversations / membership</strong>: relational or KV (<code>conv_id -&gt; members</code>, <code>user_id -&gt; conv_ids</code>).</li>
+<li><strong>presence</strong>: in-memory store (Redis) with TTL keys, <code>user_id -&gt; {gateway_id, last_heartbeat}</code>.</li>
 </ul>
-<hr>
-<h2 id="3-high-level-architecture-diagram"><a href="#3-high-level-architecture-diagram" class="header-anchor">#</a>3. High-Level Architecture Diagram</h2>
+<h2 id="5-architecture"><a href="#5-architecture" class="header-anchor">#</a>5. Architecture</h2>
     <div class="mermaid-container">
       <div class="diagram-toolbar">
         <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
@@ -1288,86 +1315,105 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    ClientA["Sender Client A"] --&gt;|1. WebSocket Connection| WS_Gateway["WebSocket Gateway Cluster&lt;br/&gt;(Maintains open TCP sockets)"]
-    WS_Gateway --&gt; SessionSvc["Session Registry (Redis Cluster)&lt;br/&gt;User -&gt; Connected WS Gateway IP"]
-    WS_Gateway --&gt; MsgSvc["Message Ingestion Service"]
-    MsgSvc --&gt; Kafka["Kafka Topic: chat_events"]
-    
-    Kafka --&gt; MsgStoreWorker["Message Store Worker"]
-    MsgStoreWorker --&gt; Cassandra["Cassandra Cluster (Messages DB)&lt;br/&gt;(Partition: chat_id, Cluster: message_id DESC)"]
-
-    Kafka --&gt; PushRouter["Push / Route Worker"]
-    PushRouter --&gt; SessionSvc
-    PushRouter --&gt;|If Receiver Online| WS_Gateway_B["Receiver's WS Gateway"]
-    WS_Gateway_B --&gt; ClientB["Receiver Client B"]
-    
-    PushRouter --&gt;|If Receiver Offline| APNS["APNs / FCM (Push Notification Gateway)"]
+    Client["Client app"] --&gt;|"WebSocket"| GW["Connection Gateway (stateful, ~500 servers)"]
+    GW --&gt; Router["Session Router: user_id -&gt; gateway_id (Redis)"]
+    GW --&gt; Chat["Chat Service (validate, assign msg_seq)"]
+    Chat --&gt; Store[("Message Store: Cassandra, partition = conv_id")]
+    Chat --&gt; Queue["Delivery Queue (Kafka, keyed by conv_id)"]
+    Queue --&gt; Fan["Fan-out Workers"]
+    Fan --&gt; Router
+    Router --&gt;|"online: push"| GW
+    Fan --&gt;|"offline"| Inbox[("Offline Inbox")]
+    Inbox --&gt; Push["Push Notification Service (APNs / FCM)"]
+    Client --&gt;|"upload encrypted blob"| Obj[("Object Storage + CDN")]
 </div>
       </div>
-    </div><hr>
-<h2 id="4-database-schema-design-apache-cassandra"><a href="#4-database-schema-design-apache-cassandra" class="header-anchor">#</a>4. Database Schema Design (Apache Cassandra)</h2><p>Cassandra is selected because it excels at ultra-high write throughput (LSM-Tree) and sequential range queries by time:</p>
+    </div><h2 id="6-deep-dive-ordering-delivery-and-offline"><a href="#6-deep-dive-ordering-delivery-and-offline" class="header-anchor">#</a>6. Deep Dive: Ordering, Delivery and Offline</h2><p><strong>Ordering.</strong> Messages in one conversation must appear in the same order for every member. Route all messages of a <code>conv_id</code> through the same Kafka partition (hash of <code>conv_id</code>) and a single consumer assigns the next <code>msg_seq</code>. Ordering across conversations is not needed, so throughput scales by partition count.</p>
+<p><strong>Delivery pipeline.</strong> (1) Sender gateway forwards <code>send</code> to Chat Service; (2) Chat Service <strong>persists first</strong>, then acks the sender (&quot;sent&quot;, one tick); (3) the fan-out worker looks up each recipient device in the session router: if online, push through that gateway and wait for the device ack (&quot;delivered&quot;); if offline, append to the inbox and trigger a push notification; (4) when the recipient opens the chat, a &quot;read&quot; receipt flows back as a normal small message.</p>
+<p><strong>At-least-once plus idempotency.</strong> Every hop retries until acked, so duplicates are possible; devices de-duplicate by <code>msg_id</code>. This gives <strong>effectively exactly-once</strong> display.</p>
+<p><strong>Groups.</strong> Fan-out on write: one stored copy, one delivery task per member. For 1,000-member groups this is 1,000 deliveries per message, which is acceptable because groups are a small share of traffic; very large broadcast channels instead use fan-out on read (members pull).</p>
+<h2 id="7-scaling-and-bottlenecks"><a href="#7-scaling-and-bottlenecks" class="header-anchor">#</a>7. Scaling and Bottlenecks</h2><ul>
+<li><strong>Gateways</strong> scale horizontally; a user reconnects to any gateway and re-registers in the session router. Use consistent hashing or a registry so the router lookup stays O(1).</li>
+<li><strong>Hot conversations</strong> (a viral group) concentrate load on one partition: cap group size, and shard fan-out work across workers while keeping only the <code>msg_seq</code> assignment serialized.</li>
+<li><strong>Thundering herd after an outage:</strong> millions of clients reconnect at once. Use exponential backoff with jitter on clients and connection-admission limits on gateways.</li>
+<li><strong>History sync:</strong> serve from the wide-column store with cursor pagination; cache the latest page of active conversations in Redis.</li>
+</ul>
+<h2 id="8-failure-modes-and-mitigations"><a href="#8-failure-modes-and-mitigations" class="header-anchor">#</a>8. Failure Modes and Mitigations</h2><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Effect</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Gateway crash</td>
+<td>200K connections drop</td>
+<td>clients auto-reconnect; undelivered messages still in inbox</td>
+</tr>
+<tr>
+<td>Chat Service crash after persist, before ack</td>
+<td>sender retries</td>
+<td>idempotent <code>client_msg_id</code> dedupes</td>
+</tr>
+<tr>
+<td>Kafka partition leader loss</td>
+<td>brief ordering stall</td>
+<td>replication factor 3, <code>acks=all</code>, leader election</td>
+</tr>
+<tr>
+<td>Message store node loss</td>
+<td>read/write errors</td>
+<td>RF=3, quorum writes (<code>LOCAL_QUORUM</code>), hinted handoff</td>
+</tr>
+<tr>
+<td>Push provider outage</td>
+<td>offline users not notified</td>
+<td>message stays in inbox; delivered on next connect</td>
+</tr>
+<tr>
+<td>Split-brain presence</td>
+<td>stale &quot;online&quot;</td>
+<td>TTL heartbeats, presence is explicitly best-effort</td>
+</tr>
+</tbody></table>
+<h2 id="9-trade-offs-and-alternatives"><a href="#9-trade-offs-and-alternatives" class="header-anchor">#</a>9. Trade-offs and Alternatives</h2><ul>
+<li><strong>Server-assigned sequence vs client timestamps:</strong> timestamps are skewed and unordered; a server sequence per conversation gives a total order at the cost of a single-writer partition.</li>
+<li><strong>End-to-end encryption (Signal protocol):</strong> the server stores only ciphertext, so it cannot search, moderate, or sync history to a new device without client help; backups need user-held keys. Trade privacy for server-side features.</li>
+<li><strong>WebSocket vs long polling vs MQTT:</strong> WebSocket is lowest latency; MQTT is lighter on battery and mobile networks; long polling is a fallback behind restrictive proxies.</li>
+<li><strong>Fan-out on write vs read:</strong> write is fast to read but expensive for huge groups; read is cheap to write but slower to load.</li>
+<li><strong>Wide-column vs relational store:</strong> wide-column wins on write throughput and partition scans; relational wins on ad-hoc queries (not needed here).</li>
+</ul>
+<h2 id="10-interview-timeline-45-minutes-and-follow-ups"><a href="#10-interview-timeline-45-minutes-and-follow-ups" class="header-anchor">#</a>10. Interview Timeline (45 minutes) and Follow-ups</h2><table>
+<thead>
+<tr>
+<th>Minutes</th>
+<th>Do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 to 5</td>
+<td>Clarify scope, scale, 1:1 vs groups, E2EE</td>
+</tr>
+<tr>
+<td>5 to 10</td>
+<td>Estimates (connections, QPS, storage)</td>
+</tr>
+<tr>
+<td>10 to 20</td>
+<td>API plus data model plus diagram</td>
+</tr>
+<tr>
+<td>20 to 35</td>
+<td>Deep dive: ordering, delivery states, offline</td>
+</tr>
+<tr>
+<td>35 to 45</td>
+<td>Failures, scaling, trade-offs, questions</td>
+</tr>
+</tbody></table>
+<p><strong>Likely follow-ups:</strong> How do you guarantee ordering in a group? (one partition per <code>conv_id</code>, server <code>msg_seq</code>). How do multi-device read states sync? (receipts are messages addressed to the user&#39;s other devices). How do you do &quot;typing...&quot; indicators? (ephemeral, not persisted, rate-limited, sent over the same socket). How would you add message search with E2EE? (client-side index on device).</p>
 
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">sql</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE TABLE</span> messages (
-    chat_id uuid,
-    message_id timeuuid, <span class="hljs-comment">-- Guarantees time-ordered monotonic sorting</span>
-    sender_id uuid,
-    content text,
-    media_url text,
-    status text, <span class="hljs-comment">-- SENT, DELIVERED, READ</span>
-    created_at <span class="hljs-type">timestamp</span>,
-    <span class="hljs-keyword">PRIMARY KEY</span> ((chat_id), message_id)
-) <span class="hljs-keyword">WITH</span> CLUSTERING <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> (message_id <span class="hljs-keyword">DESC</span>);</code></pre>
-  </div><hr>
-<h2 id="5-deep-dive-delivery-guarantees-sync"><a href="#5-deep-dive-delivery-guarantees-sync" class="header-anchor">#</a>5. Deep-Dive: Delivery Guarantees & Sync</h2>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-sequenceDiagram
-    autonumber
-    actor A as User A
-    participant Svr as Message Server
-    participant DB as Cassandra
-    actor B as User B
-
-    A-&gt;&gt;Svr: send_message(payload, client_msg_id)
-    Svr-&gt;&gt;DB: persist_message(status = SENT)
-    Svr--&gt;&gt;A: ACK: status = SENT (Single checkmark)
-    
-    alt User B Online
-        Svr-&gt;&gt;B: deliver_message(payload)
-        B--&gt;&gt;Svr: ACK: delivered
-        Svr-&gt;&gt;DB: update status = DELIVERED
-        Svr--&gt;&gt;A: notification: status = DELIVERED (Double checkmarks)
-    else User B Offline
-        Note over Svr: Store in pending queue and trigger Push Notification
-    end
-</div>
-      </div>
-    </div>
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1389,7 +1435,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-problem-statement-requirements" class="toc-link">1. Problem Statement & Requirements</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements:</a></li><li class="toc-item level-3"><a href="#non-functional-requirements" class="toc-link">Non-Functional Requirements:</a></li><li class="toc-item level-2"><a href="#2-back-of-the-envelope-estimations" class="toc-link">2. Back-of-the-Envelope Estimations</a></li><li class="toc-item level-2"><a href="#3-high-level-architecture-diagram" class="toc-link">3. High-Level Architecture Diagram</a></li><li class="toc-item level-2"><a href="#4-database-schema-design-apache-cassandra" class="toc-link">4. Database Schema Design (Apache Cassandra)</a></li><li class="toc-item level-2"><a href="#5-deep-dive-delivery-guarantees-sync" class="toc-link">5. Deep-Dive: Delivery Guarantees & Sync</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-and-scope" class="toc-link">1. Requirements and Scope</a></li><li class="toc-item level-2"><a href="#2-back-of-the-envelope-estimates" class="toc-link">2. Back-of-the-Envelope Estimates</a></li><li class="toc-item level-2"><a href="#3-api-design" class="toc-link">3. API Design</a></li><li class="toc-item level-2"><a href="#4-data-model" class="toc-link">4. Data Model</a></li><li class="toc-item level-2"><a href="#5-architecture" class="toc-link">5. Architecture</a></li><li class="toc-item level-2"><a href="#6-deep-dive-ordering-delivery-and-offline" class="toc-link">6. Deep Dive: Ordering, Delivery and Offline</a></li><li class="toc-item level-2"><a href="#7-scaling-and-bottlenecks" class="toc-link">7. Scaling and Bottlenecks</a></li><li class="toc-item level-2"><a href="#8-failure-modes-and-mitigations" class="toc-link">8. Failure Modes and Mitigations</a></li><li class="toc-item level-2"><a href="#9-trade-offs-and-alternatives" class="toc-link">9. Trade-offs and Alternatives</a></li><li class="toc-item level-2"><a href="#10-interview-timeline-45-minutes-and-follow-ups" class="toc-link">10. Interview Timeline (45 minutes) and Follow-ups</a></li></ul>
     </aside>
   </div>
 

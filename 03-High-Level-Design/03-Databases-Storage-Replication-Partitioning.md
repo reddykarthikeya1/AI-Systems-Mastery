@@ -145,3 +145,45 @@ ring.add_node("DB_Shard_C")
 print("Key 'user_10291' maps to:", ring.get_node("user_10291"))
 print("Key 'order_99812' maps to:", ring.get_node("order_99812"))
 ```
+
+
+## Further Reading
+
+- [PostgreSQL: high availability and replication](https://www.postgresql.org/docs/current/high-availability.html)
+- [MongoDB sharding](https://www.mongodb.com/docs/manual/sharding/)
+- [DynamoDB partition key design](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Replication versus partitioning (sharding)?</summary>
+
+Replication copies the same data for availability and read scale; partitioning splits different data across nodes for write and storage scale.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What makes a good shard key?</summary>
+
+High cardinality and even distribution of load, aligned with the dominant query pattern; avoid monotonic keys that create hot shards.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is read-your-writes consistency?</summary>
+
+A client always sees its own writes, e.g. by reading from the primary or sticky routing after a write.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why does a cross-shard transaction hurt?</summary>
+
+It needs coordination (2PC or sagas), adding latency and failure modes.
+
+</details>

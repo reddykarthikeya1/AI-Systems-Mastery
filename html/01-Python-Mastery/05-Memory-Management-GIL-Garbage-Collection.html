@@ -1280,8 +1280,8 @@ When you need a screw, you reach into the tray and grab one in <strong>0.001 sec
         <div class="mermaid">
 flowchart TD
     OS["Operating System Virtual Memory"] --&gt; Layer0["Layer 0: OS malloc() / free()&lt;br&gt;(The Giant Steel Factory)"]
-    Layer0 --&gt; Arenas["Arenas (256 KB Chunks)&lt;br&gt;(The Big Storage Pallet)"]
-    Arenas --&gt; Pools["Pools (4 KB Pages aligned within Arenas)&lt;br&gt;(The Organizer Trays)"]
+    Layer0 --&gt; Arenas["Arenas (1 MiB on 3.10+ 64-bit builds; 256 KiB before)&lt;br&gt;(The Big Storage Pallet)"]
+    Arenas --&gt; Pools["Pools (16 KiB on 3.10+; 4 KiB before)&lt;br&gt;(The Organizer Trays)"]
     Pools --&gt; Blocks["Blocks (Uniform sizes from 8 to 512 bytes)&lt;br&gt;(The Pre-Cut Screw Slots)"]
     Blocks --&gt; Objects["Small PyObjects (Integers, Floats, Strings, Small Lists)"]
 </div>
@@ -1532,11 +1532,54 @@ p_slot = SlottedPoint(<span class="hljs-number">1.0</span>, <span class="hljs-nu
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Standard instance size: <span class="hljs-subst">{sys.getsizeof(p_std)}</span> bytes + dict size: <span class="hljs-subst">{sys.getsizeof(p_std.__dict__)}</span> bytes&quot;</span>)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Slotted instance size:  <span class="hljs-subst">{sys.getsizeof(p_slot)}</span> bytes (Has no __dict__!)&quot;</span>)</code></pre>
-  </div><p><em>Memory Impact in Scale Systems:</em></p>
-<ul>
-<li>10 million <code>StandardPoint</code> instances: $\approx 1.6 \text{ GB}$ of RAM.</li>
-<li>10 million <code>SlottedPoint</code> instances: $\approx 500 \text{ MB}$ of RAM (<strong>$&gt; 68\%$ memory reduction!</strong>).</li>
-</ul>
+  </div><p><em>Memory Impact in Scale Systems:</em>
+<strong>Measured, not remembered.</strong> Run <a href="labs/04_measure_memory_claims.py"><code>labs/04_measure_memory_claims.py</code></a> on your interpreter. On CPython 3.11.9 (64-bit Windows), two <code>float</code> attributes per object, including the two float objects themselves:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Bytes per instance (measured)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>StandardPoint</code> (with <code>__dict__</code>)</td>
+<td>about 144</td>
+</tr>
+<tr>
+<td><code>SlottedPoint</code> (<code>__slots__</code>)</td>
+<td>about 104 (<strong>about 28% smaller</strong>)</td>
+</tr>
+</tbody></table>
+<p>Scaled to 10 million instances that is roughly 1.4 GB versus 1.0 GB. The saving is real but <strong>version-dependent</strong> and smaller than the old &quot;70%&quot; folklore: CPython 3.11+ stores instance attributes inline and shares key tables between instances of the same class, which shrank the cost of <code>__dict__</code>. The saving grows with the number of attributes and is largest when the values themselves are small or shared (ints, interned strings). Always measure on your version before promising a number.</p>
+<hr>
+<h2 id="version-notes-what-changed-in-cpython-and-what-to-check-on-your-version"><a href="#version-notes-what-changed-in-cpython-and-what-to-check-on-your-version" class="header-anchor">#</a>Version Notes (what changed in CPython, and what to check on your version)</h2><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What to know</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pymalloc</code> sizes</td>
+<td>64-bit builds since 3.10 use <strong>1 MiB arenas and 16 KiB pools</strong> (earlier: 256 KiB and 4 KiB). Check <code>sys._debugmallocstats()</code>.</td>
+</tr>
+<tr>
+<td>GC thresholds</td>
+<td>Default <code>gc.get_threshold()</code> is <code>(700, 10, 10)</code> on 3.11. The collector has been reworked in newer releases (3.14 introduces an incremental collector), so treat numbers as version-specific and print them on your interpreter.</td>
+</tr>
+<tr>
+<td>The GIL</td>
+<td>Python 3.13 added an <strong>experimental free-threaded build</strong> (PEP 703, no GIL, <code>python3.13t</code>); it is officially supported (but optional) from 3.14 (PEP 779). Single-thread speed and C-extension compatibility are the trade-offs. Detect it with <code>sys._is_gil_enabled()</code>.</td>
+</tr>
+<tr>
+<td>Subinterpreters</td>
+<td>3.12 gave each subinterpreter its <strong>own GIL</strong> (PEP 684); 3.14 exposes a high-level API (PEP 734, <code>concurrent.interpreters</code>), a third way to use multiple cores besides threads (free-threaded) and processes.</td>
+</tr>
+<tr>
+<td>JIT</td>
+<td>3.13 ships an <strong>experimental copy-and-patch JIT</strong> (PEP 744), off by default.</td>
+</tr>
+</tbody></table>
 <hr>
 <h2 id="practice-drills-interview-verifications"><a href="#practice-drills-interview-verifications" class="header-anchor">#</a>Practice Drills & Interview Verifications</h2><h3 id="drill-1-tracing-memory-leaks-with-tracemalloc"><a href="#drill-1-tracing-memory-leaks-with-tracemalloc" class="header-anchor">#</a>Drill 1: Tracing Memory Leaks with `tracemalloc`</h3><p>How do you programmatically detect memory leaks in a running Python application?</p>
 
@@ -1571,6 +1614,22 @@ top_stats = snapshot2.compare_to(snapshot1, <span class="hljs-string">&#x27;line
 
 tracemalloc.stop()</code></pre>
   </div><p><em>Output clearly pinpoints the exact file and line number generating net memory increases!</em></p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://docs.python.org/3/library/gc.html">gc module</a></li>
+<li><a href="https://peps.python.org/pep-0703/">PEP 703: making the GIL optional</a></li>
+<li><a href="https://peps.python.org/pep-0779/">PEP 779: free-threaded Python support criteria</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> What are the two mechanisms CPython uses to reclaim memory?</summary><p>Reference counting (immediate, handles most objects) plus a cyclic garbage collector for reference cycles.</p>
+</details><details>
+<summary><strong>2.</strong> Why can a free-threaded (no-GIL) build be slower for single-threaded code?</summary><p>It needs atomic or biased reference counting and finer-grained locking, which add overhead per operation; the benefit appears when threads run CPU-bound Python code in parallel.</p>
+</details><details>
+<summary><strong>3.</strong> What does `weakref` solve?</summary><p>It references an object without increasing its reference count, so caches and observer lists do not keep objects alive or create cycles.</p>
+</details><details>
+<summary><strong>4.</strong> Run `labs/04_measure_memory_claims.py`: why is the `__slots__` saving smaller than older articles claim?</summary><p>CPython 3.11+ stores instance attributes inline and shares key tables, shrinking <code>__dict__</code> overhead; the measured saving on small objects is tens of percent, not 70%.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1593,7 +1652,7 @@ tracemalloc.stop()</code></pre>
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-cpython-memory-architecture-pymalloc" class="toc-link">1. The CPython Memory Architecture: PyMalloc</a></li><li class="toc-item level-3"><a href="#hierarchy-breakdown" class="toc-link">Hierarchy Breakdown:</a></li><li class="toc-item level-2"><a href="#2-reference-counting-the-primary-reclaimer" class="toc-link">2. Reference Counting: The Primary Reclaimer</a></li><li class="toc-item level-3"><a href="#reference-increments-decrements" class="toc-link">Reference Increments & Decrements</a></li><li class="toc-item level-3"><a href="#the-achilles-heel-cyclical-references" class="toc-link">The Achilles' Heel: Cyclical References</a></li><li class="toc-item level-2"><a href="#3-the-generational-cyclical-garbage-collector" class="toc-link">3. The Generational Cyclical Garbage Collector</a></li><li class="toc-item level-3"><a href="#the-three-generations-heuristic" class="toc-link">The Three Generations Heuristic</a></li><li class="toc-item level-3"><a href="#the-cycle-detection-algorithm" class="toc-link">The Cycle Detection Algorithm</a></li><li class="toc-item level-2"><a href="#4-preventing-leaks-with-weak-references" class="toc-link">4. Preventing Leaks with Weak References</a></li><li class="toc-item level-3"><a href="#weakref-weakvaluedictionary" class="toc-link">`weakref.WeakValueDictionary`</a></li><li class="toc-item level-2"><a href="#5-the-global-interpreter-lock-gil-demystified" class="toc-link">5. The Global Interpreter Lock (GIL) Demystified</a></li><li class="toc-item level-3"><a href="#why-the-gil-exists" class="toc-link">Why the GIL Exists</a></li><li class="toc-item level-3"><a href="#when-does-multithreading-actually-help" class="toc-link">When Does Multithreading Actually Help?</a></li><li class="toc-item level-2"><a href="#6-massive-memory-optimization-slots" class="toc-link">6. Massive Memory Optimization: `__slots__`</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verifications" class="toc-link">Practice Drills & Interview Verifications</a></li><li class="toc-item level-3"><a href="#drill-1-tracing-memory-leaks-with-tracemalloc" class="toc-link">Drill 1: Tracing Memory Leaks with `tracemalloc`</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-cpython-memory-architecture-pymalloc" class="toc-link">1. The CPython Memory Architecture: PyMalloc</a></li><li class="toc-item level-3"><a href="#hierarchy-breakdown" class="toc-link">Hierarchy Breakdown:</a></li><li class="toc-item level-2"><a href="#2-reference-counting-the-primary-reclaimer" class="toc-link">2. Reference Counting: The Primary Reclaimer</a></li><li class="toc-item level-3"><a href="#reference-increments-decrements" class="toc-link">Reference Increments & Decrements</a></li><li class="toc-item level-3"><a href="#the-achilles-heel-cyclical-references" class="toc-link">The Achilles' Heel: Cyclical References</a></li><li class="toc-item level-2"><a href="#3-the-generational-cyclical-garbage-collector" class="toc-link">3. The Generational Cyclical Garbage Collector</a></li><li class="toc-item level-3"><a href="#the-three-generations-heuristic" class="toc-link">The Three Generations Heuristic</a></li><li class="toc-item level-3"><a href="#the-cycle-detection-algorithm" class="toc-link">The Cycle Detection Algorithm</a></li><li class="toc-item level-2"><a href="#4-preventing-leaks-with-weak-references" class="toc-link">4. Preventing Leaks with Weak References</a></li><li class="toc-item level-3"><a href="#weakref-weakvaluedictionary" class="toc-link">`weakref.WeakValueDictionary`</a></li><li class="toc-item level-2"><a href="#5-the-global-interpreter-lock-gil-demystified" class="toc-link">5. The Global Interpreter Lock (GIL) Demystified</a></li><li class="toc-item level-3"><a href="#why-the-gil-exists" class="toc-link">Why the GIL Exists</a></li><li class="toc-item level-3"><a href="#when-does-multithreading-actually-help" class="toc-link">When Does Multithreading Actually Help?</a></li><li class="toc-item level-2"><a href="#6-massive-memory-optimization-slots" class="toc-link">6. Massive Memory Optimization: `__slots__`</a></li><li class="toc-item level-2"><a href="#version-notes-what-changed-in-cpython-and-what-to-check-on-your-version" class="toc-link">Version Notes (what changed in CPython, and what to check on your version)</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verifications" class="toc-link">Practice Drills & Interview Verifications</a></li><li class="toc-item level-3"><a href="#drill-1-tracing-memory-leaks-with-tracemalloc" class="toc-link">Drill 1: Tracing Memory Leaks with `tracemalloc`</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

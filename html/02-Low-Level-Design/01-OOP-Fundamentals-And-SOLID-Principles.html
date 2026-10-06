@@ -1664,7 +1664,23 @@ flowchart TD
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">save_order</span>(<span class="hljs-params">self, order_id: <span class="hljs-built_in">str</span>, amount: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
         <span class="hljs-variable language_">self</span>.saved.append((order_id, amount))
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></code></pre>
-  </div>
+  </div><h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/SOLID">Wikipedia: SOLID</a></li>
+<li><a href="https://refactoring.guru/design-patterns">Refactoring Guru: SOLID principles</a></li>
+<li><a href="https://docs.python.org/3/library/abc.html">Python abc module</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> State the Single Responsibility Principle with an example.</summary><p>A class should have one reason to change. A <code>Report</code> class that both formats and emails reports changes for two reasons; split into <code>ReportFormatter</code> and <code>ReportMailer</code>.</p>
+</details><details>
+<summary><strong>2.</strong> What does the Liskov Substitution Principle forbid?</summary><p>Subclasses that break the base class contract, e.g. a <code>Square</code> subclass of <code>Rectangle</code> that surprises callers by coupling width and height.</p>
+</details><details>
+<summary><strong>3.</strong> What does Dependency Inversion mean in practice?</summary><p>High-level code depends on abstractions (interfaces/Protocols), and concrete implementations are injected, so they can be swapped and tested.</p>
+</details><details>
+<summary><strong>4.</strong> When does Open/Closed push you toward a pattern?</summary><p>When new variants arrive frequently (payment methods, pricing rules): add new classes implementing an interface (Strategy) instead of editing an <code>if/else</code> chain.</p>
+</details>
+
         </article>
         <div class="bottom-completion-wrap">
           <button id="bottom-mark-read-btn" class="btn-mark-read btn-mark-read-large" onclick="toggleCurrentChapterRead()">
@@ -1686,7 +1702,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-oop-in-modern-python" class="toc-link">1. The Four Pillars of OOP in Modern Python</a></li><li class="toc-item level-3"><a href="#1-encapsulation-protecting-internal-invariants" class="toc-link">1. Encapsulation: Protecting Internal Invariants</a></li><li class="toc-item level-3"><a href="#2-abstraction-contract-over-implementation" class="toc-link">2. Abstraction: Contract over Implementation</a></li><li class="toc-item level-3"><a href="#3-inheritance-vs-composition-favor-composition" class="toc-link">3. Inheritance vs Composition: Favor Composition</a></li><li class="toc-item level-3"><a href="#4-polymorphism-duck-typing-dynamic-dispatch" class="toc-link">4. Polymorphism: Duck Typing & Dynamic Dispatch</a></li><li class="toc-item level-2"><a href="#2-the-solid-principles-masterclass" class="toc-link">2. The SOLID Principles Masterclass</a></li><li class="toc-item level-3"><a href="#s-single-responsibility-principle-srp" class="toc-link">S: Single Responsibility Principle (SRP)</a></li><li class="toc-item level-3"><a href="#o-open-closed-principle-ocp" class="toc-link">O: Open/Closed Principle (OCP)</a></li><li class="toc-item level-3"><a href="#l-liskov-substitution-principle-lsp" class="toc-link">L: Liskov Substitution Principle (LSP)</a></li><li class="toc-item level-3"><a href="#i-interface-segregation-principle-isp" class="toc-link">I: Interface Segregation Principle (ISP)</a></li><li class="toc-item level-3"><a href="#d-dependency-inversion-principle-dip" class="toc-link">D: Dependency Inversion Principle (DIP)</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-four-pillars-of-oop-in-modern-python" class="toc-link">1. The Four Pillars of OOP in Modern Python</a></li><li class="toc-item level-3"><a href="#1-encapsulation-protecting-internal-invariants" class="toc-link">1. Encapsulation: Protecting Internal Invariants</a></li><li class="toc-item level-3"><a href="#2-abstraction-contract-over-implementation" class="toc-link">2. Abstraction: Contract over Implementation</a></li><li class="toc-item level-3"><a href="#3-inheritance-vs-composition-favor-composition" class="toc-link">3. Inheritance vs Composition: Favor Composition</a></li><li class="toc-item level-3"><a href="#4-polymorphism-duck-typing-dynamic-dispatch" class="toc-link">4. Polymorphism: Duck Typing & Dynamic Dispatch</a></li><li class="toc-item level-2"><a href="#2-the-solid-principles-masterclass" class="toc-link">2. The SOLID Principles Masterclass</a></li><li class="toc-item level-3"><a href="#s-single-responsibility-principle-srp" class="toc-link">S: Single Responsibility Principle (SRP)</a></li><li class="toc-item level-3"><a href="#o-open-closed-principle-ocp" class="toc-link">O: Open/Closed Principle (OCP)</a></li><li class="toc-item level-3"><a href="#l-liskov-substitution-principle-lsp" class="toc-link">L: Liskov Substitution Principle (LSP)</a></li><li class="toc-item level-3"><a href="#i-interface-segregation-principle-isp" class="toc-link">I: Interface Segregation Principle (ISP)</a></li><li class="toc-item level-3"><a href="#d-dependency-inversion-principle-dip" class="toc-link">D: Dependency Inversion Principle (DIP)</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

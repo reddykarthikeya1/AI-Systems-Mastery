@@ -130,3 +130,45 @@ During an interview, do not spend 20 minutes drawing exhaustive getter/setter de
 1. **Pass 1 (Core Entities):** Draw 3 to 5 primary noun classes with their core responsibility.
 2. **Pass 2 (Relationships & Multiplicity):** Connect classes with correct lines (`*--` composition for components, `-->` association for collaborators, `1 to *` multiplicity).
 3. **Pass 3 (Behavior & Patterns):** Add interfaces for Strategy, Observer, or Factory patterns where flexibility is needed.
+
+
+## Further Reading
+
+- [UML diagrams reference](https://www.uml-diagrams.org/)
+- [Mermaid sequence diagrams](https://mermaid.js.org/syntax/sequenceDiagram.html)
+- [Mermaid state diagrams](https://mermaid.js.org/syntax/stateDiagram.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Composition versus aggregation in a class diagram?</summary>
+
+Composition (filled diamond): the part cannot outlive the whole. Aggregation (hollow diamond): the part can exist independently.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What does a dashed arrow with a hollow head mean?</summary>
+
+Realization: a class implements an interface.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When is a sequence diagram more useful than a class diagram?</summary>
+
+When explaining time-ordered interactions: a request flow, locking, retries.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does a state diagram model?</summary>
+
+States of one object and the events that move it between them, e.g. an order from NEW to PAID to SHIPPED.
+
+</details>

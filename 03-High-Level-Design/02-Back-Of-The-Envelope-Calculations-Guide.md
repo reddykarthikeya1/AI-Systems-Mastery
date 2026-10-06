@@ -88,3 +88,45 @@ $$\text{Read QPS} = \frac{6 \times 10^9}{10^5} = \mathbf{60,000 \text{ QPS}} \qu
 * **Cache 20% of Hot Daily Data:** $120 \text{ TB} \times 0.20 = \mathbf{24 \text{ TB of RAM}}$.
 * If each Redis cache server has $256 \text{ GB}$ of RAM:
 $$\text{Number of Redis Nodes} = \frac{24 \text{ TB}}{0.256 \text{ TB}} \approx \mathbf{94 \text{ Cache Instances}}$$.
+
+
+## Further Reading
+
+- [Latency numbers every programmer should know](https://gist.github.com/jboner/2841832)
+- [System Design Primer: appendix](https://github.com/donnemartin/system-design-primer)
+- [AWS Builders' Library](https://aws.amazon.com/builders-library/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Approximate seconds in a day, for QPS maths?</summary>
+
+About 86,400 (use 100,000 for quick estimates).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> 1M requests per day is roughly how many QPS?</summary>
+
+About 12 per second on average (1,000,000 / 86,400); size for peak, often 3 to 10 times average.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How much storage is 1 KB per record for 1 billion records?</summary>
+
+About 1 TB.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why show your arithmetic in an interview?</summary>
+
+It reveals your assumptions and lets the interviewer correct them; the design choices follow from the numbers.
+
+</details>

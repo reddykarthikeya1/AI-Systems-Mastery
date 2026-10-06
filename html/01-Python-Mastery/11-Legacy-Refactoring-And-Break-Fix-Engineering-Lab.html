@@ -1642,6 +1642,22 @@ logger = structlog.get_logger()
 <td align="left">Structured logging with contextual JSON metadata (<code>structlog</code>)</td>
 </tr>
 </tbody></table>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://refactoring.com/catalog/">Refactoring catalog (Martin Fowler)</a></li>
+<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Strangler Fig pattern</a></li>
+<li><a href="https://michaelfeathers.silvrback.com/characterization-testing">Characterization tests</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why write characterization tests before refactoring legacy code?</summary><p>They pin down current behaviour so you can refactor safely and detect unintended changes.</p>
+</details><details>
+<summary><strong>2.</strong> What is the 'strangler fig' approach?</summary><p>Route new behaviour to new code path by path while the old code keeps serving the rest, until the old code can be removed.</p>
+</details><details>
+<summary><strong>3.</strong> What is a seam?</summary><p>A place where you can alter behaviour without editing the code under test (dependency injection point, overridable method).</p>
+</details><details>
+<summary><strong>4.</strong> Name two refactoring moves that reduce coupling.</summary><p>Extract interface/Protocol and inject the dependency; move logic out of global state into a function taking parameters.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1664,7 +1680,7 @@ logger = structlog.get_logger()
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-hazardous-legacy-codebase" class="toc-link">1. The Hazardous Legacy Codebase</a></li><li class="toc-item level-2"><a href="#2-the-golden-rule-characterization-tests-first" class="toc-link">2. The Golden Rule: Characterization Tests First</a></li><li class="toc-item level-3"><a href="#writing-the-pinning-harness-with-pytest" class="toc-link">Writing the Pinning Harness with `pytest`</a></li><li class="toc-item level-2"><a href="#3-surgical-modernization-step-by-step" class="toc-link">3. Surgical Modernization Step-by-Step</a></li><li class="toc-item level-2"><a href="#4-the-pristine-refactored-implementation" class="toc-link">4. The Pristine Refactored Implementation</a></li><li class="toc-item level-2"><a href="#5-comparative-architectural-review" class="toc-link">5. Comparative Architectural Review</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-hazardous-legacy-codebase" class="toc-link">1. The Hazardous Legacy Codebase</a></li><li class="toc-item level-2"><a href="#2-the-golden-rule-characterization-tests-first" class="toc-link">2. The Golden Rule: Characterization Tests First</a></li><li class="toc-item level-3"><a href="#writing-the-pinning-harness-with-pytest" class="toc-link">Writing the Pinning Harness with `pytest`</a></li><li class="toc-item level-2"><a href="#3-surgical-modernization-step-by-step" class="toc-link">3. Surgical Modernization Step-by-Step</a></li><li class="toc-item level-2"><a href="#4-the-pristine-refactored-implementation" class="toc-link">4. The Pristine Refactored Implementation</a></li><li class="toc-item level-2"><a href="#5-comparative-architectural-review" class="toc-link">5. Comparative Architectural Review</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

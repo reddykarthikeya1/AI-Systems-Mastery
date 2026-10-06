@@ -234,3 +234,45 @@ if __name__ == "__main__":
     print("Optimal Traveling Salesperson Tour Cost:", min_tour) # 80
 ```
 This reduces $O(N!)$ time down to $O(N^2 2^N)$, making problems up to $N = 20$ solvable in milliseconds!
+
+
+## Further Reading
+
+- [CP-Algorithms: segment tree](https://cp-algorithms.com/data_structures/segment_tree.html)
+- [CP-Algorithms: Fenwick tree](https://cp-algorithms.com/data_structures/fenwick.html)
+- [CP-Algorithms: DSU](https://cp-algorithms.com/data_structures/disjoint_set_union.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does a segment tree support?</summary>
+
+Range queries and point or range updates in O(log n).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Fenwick tree versus segment tree?</summary>
+
+Fenwick (BIT) is simpler and smaller for prefix sums with point updates; a segment tree is more general (range min/max, lazy updates).
+
+</details>
+
+<details>
+<summary><strong>3.</strong> When use bitmask DP?</summary>
+
+When the state is a subset of a small set (n up to about 20), e.g. TSP-style problems.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is the complexity of union-find with path compression and union by rank?</summary>
+
+Nearly constant per operation (inverse Ackermann).
+
+</details>

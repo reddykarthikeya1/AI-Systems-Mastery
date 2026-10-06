@@ -1413,6 +1413,22 @@ flowchart TD
 </div>
       </div>
     </div><p><em>By reading its own previous mistakes in memory, the model refactors its code and avoids repeating bugs, increasing complex coding benchmark accuracy by $&gt; 30\%$.</em></p>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://arxiv.org/abs/2210.03629">ReAct paper</a></li>
+<li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: building effective agents</a></li>
+<li><a href="https://lilianweng.github.io/posts/2023-06-23-agent/">Lilian Weng: LLM powered autonomous agents</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> ReAct in one sentence?</summary><p>The model alternates reasoning steps and tool actions, using each observation to decide the next step.</p>
+</details><details>
+<summary><strong>2.</strong> Plan-and-solve versus ReAct?</summary><p>Plan-and-solve writes a full plan first (fewer calls, reviewable); ReAct decides step by step (more adaptive).</p>
+</details><details>
+<summary><strong>3.</strong> Why do agents need step budgets?</summary><p>To stop infinite loops and runaway cost when the model cannot make progress.</p>
+</details><details>
+<summary><strong>4.</strong> Why model an agent as a state machine?</summary><p>Explicit states and transitions make behaviour testable, resumable and debuggable.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1435,7 +1451,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-react-pattern-reasoning-acting" class="toc-link">1. The ReAct Pattern (Reasoning + Acting)</a></li><li class="toc-item level-3"><a href="#complete-react-loop-implementation-in-python" class="toc-link">Complete ReAct Loop Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-plan-and-solve-architecture" class="toc-link">2. Plan-and-Solve Architecture</a></li><li class="toc-item level-2"><a href="#3-reflexion-iterative-self-correction" class="toc-link">3. Reflexion: Iterative Self-Correction</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-react-pattern-reasoning-acting" class="toc-link">1. The ReAct Pattern (Reasoning + Acting)</a></li><li class="toc-item level-3"><a href="#complete-react-loop-implementation-in-python" class="toc-link">Complete ReAct Loop Implementation in Python</a></li><li class="toc-item level-2"><a href="#2-plan-and-solve-architecture" class="toc-link">2. Plan-and-Solve Architecture</a></li><li class="toc-item level-2"><a href="#3-reflexion-iterative-self-correction" class="toc-link">3. Reflexion: Iterative Self-Correction</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

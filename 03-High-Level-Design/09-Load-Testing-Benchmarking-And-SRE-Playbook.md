@@ -154,3 +154,45 @@ When p99 alerts trigger at 2:00 AM, follow this systematic triage loop:
    * Is Pod restarting due to `OOMKilled` (Exit code 137)?
    * Is container CPU throttled (`container_cpu_cfs_throttled_periods_total`)?
 4. **Isolate Recent Changes:** Did a deployment or database schema migration occur in the last 60 minutes? If yes, **rollback first, ask questions later.**
+
+
+## Further Reading
+
+- [Google SRE book: service level objectives](https://sre.google/sre-book/service-level-objectives/)
+- [Gil Tene: How NOT to measure latency](https://www.youtube.com/watch?v=lJ8ydIuPFeU)
+- [k6 documentation](https://grafana.com/docs/k6/latest/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why measure percentiles instead of averages?</summary>
+
+Tail latency (p95/p99) is what users feel; averages hide slow outliers.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is coordinated omission?</summary>
+
+A closed-loop load generator slows down when the system does, under-reporting latency; use open-loop arrival rates.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is an SLO versus an SLA?</summary>
+
+An SLO is an internal reliability target; an SLA is an external commitment with consequences.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is an error budget?</summary>
+
+The allowed unreliability (1 minus the SLO); spend it on releases, stop risky changes when exhausted.
+
+</details>

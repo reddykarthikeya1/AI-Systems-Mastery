@@ -1393,6 +1393,22 @@ flowchart TD
 <li>If the key exists, return the cached result immediately without re-executing.</li>
 <li>If the key is new, execute the transaction, persist the result, and reply.</li>
 </ol>
+<h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
+<li><a href="https://microservices.io/patterns/data/saga.html">Saga pattern</a></li>
+<li><a href="https://microservices.io/patterns/data/transactional-outbox.html">Transactional outbox</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/saga">Azure: Saga pattern</a></li>
+</ul>
+<hr>
+<h2 id="check-yourself"><a href="#check-yourself" class="header-anchor">#</a>Check Yourself</h2><p>Answer in your head or on paper first, then open each answer.</p>
+<details>
+<summary><strong>1.</strong> Why not use two-phase commit across microservices?</summary><p>It blocks on coordinator failure and couples availability of all participants; sagas with compensations are more resilient.</p>
+</details><details>
+<summary><strong>2.</strong> Orchestration versus choreography saga?</summary><p>Orchestration uses a central coordinator that issues commands; choreography has services react to each other&#39;s events.</p>
+</details><details>
+<summary><strong>3.</strong> What problem does the transactional outbox solve?</summary><p>Atomically updating state and publishing an event by writing both in one local transaction and publishing from the outbox table.</p>
+</details><details>
+<summary><strong>4.</strong> What makes a saga step safe to retry?</summary><p>Idempotency (idempotency keys) and a defined compensating action.</p>
+</details>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1415,7 +1431,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-dual-write-problem-the-fall-of-2-phase-commit-2pc" class="toc-link">1. The Dual-Write Problem & The Fall of 2-Phase Commit (2PC)</a></li><li class="toc-item level-3"><a href="#why-2-phase-commit-2pc-fails-in-production" class="toc-link">Why 2-Phase Commit (2PC) Fails in Production</a></li><li class="toc-item level-2"><a href="#2-the-saga-pattern-orchestration-vs-choreography" class="toc-link">2. The Saga Pattern: Orchestration vs Choreography</a></li><li class="toc-item level-3"><a href="#choreography-vs-orchestration" class="toc-link">Choreography vs Orchestration</a></li><li class="toc-item level-2"><a href="#3-the-transactional-outbox-pattern-eliminating-dual-write-bugs" class="toc-link">3. The Transactional Outbox Pattern (Eliminating Dual-Write Bugs)</a></li><li class="toc-item level-3"><a href="#the-outbox-solution" class="toc-link">The Outbox Solution</a></li><li class="toc-item level-2"><a href="#4-idempotency-keys-defending-against-duplicate-retries" class="toc-link">4. Idempotency Keys: Defending Against Duplicate Retries</a></li><li class="toc-item level-3"><a href="#production-idempotency-key-architecture" class="toc-link">Production Idempotency Key Architecture:</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-dual-write-problem-the-fall-of-2-phase-commit-2pc" class="toc-link">1. The Dual-Write Problem & The Fall of 2-Phase Commit (2PC)</a></li><li class="toc-item level-3"><a href="#why-2-phase-commit-2pc-fails-in-production" class="toc-link">Why 2-Phase Commit (2PC) Fails in Production</a></li><li class="toc-item level-2"><a href="#2-the-saga-pattern-orchestration-vs-choreography" class="toc-link">2. The Saga Pattern: Orchestration vs Choreography</a></li><li class="toc-item level-3"><a href="#choreography-vs-orchestration" class="toc-link">Choreography vs Orchestration</a></li><li class="toc-item level-2"><a href="#3-the-transactional-outbox-pattern-eliminating-dual-write-bugs" class="toc-link">3. The Transactional Outbox Pattern (Eliminating Dual-Write Bugs)</a></li><li class="toc-item level-3"><a href="#the-outbox-solution" class="toc-link">The Outbox Solution</a></li><li class="toc-item level-2"><a href="#4-idempotency-keys-defending-against-duplicate-retries" class="toc-link">4. Idempotency Keys: Defending Against Duplicate Retries</a></li><li class="toc-item level-3"><a href="#production-idempotency-key-architecture" class="toc-link">Production Idempotency Key Architecture:</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

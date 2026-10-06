@@ -345,3 +345,45 @@ class ModernOrderProcessor:
 | **Security** | Vulnerable to SQL injection via format strings | Isolated behind Repository with parameterized query abstractions |
 | **Testability** | Requires live SQLite file and real SMTP server | 100% testable in memory using mock/stub protocols in under 5ms |
 | **Observability** | Swallowed errors (`except Exception: pass`) | Structured logging with contextual JSON metadata (`structlog`) |
+
+
+## Further Reading
+
+- [Refactoring catalog (Martin Fowler)](https://refactoring.com/catalog/)
+- [Strangler Fig pattern](https://martinfowler.com/bliki/StranglerFigApplication.html)
+- [Characterization tests](https://michaelfeathers.silvrback.com/characterization-testing)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> Why write characterization tests before refactoring legacy code?</summary>
+
+They pin down current behaviour so you can refactor safely and detect unintended changes.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is the 'strangler fig' approach?</summary>
+
+Route new behaviour to new code path by path while the old code keeps serving the rest, until the old code can be removed.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is a seam?</summary>
+
+A place where you can alter behaviour without editing the code under test (dependency injection point, overridable method).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Name two refactoring moves that reduce coupling.</summary>
+
+Extract interface/Protocol and inject the dependency; move logic out of global state into a function taking parameters.
+
+</details>

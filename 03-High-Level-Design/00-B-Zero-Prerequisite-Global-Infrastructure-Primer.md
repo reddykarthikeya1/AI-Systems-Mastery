@@ -104,3 +104,45 @@ You now understand:
 2. The exact mechanical difference between **TCP** (reliability) and **UDP** (speed).
 3. Why companies use **Layer-4 for raw network routing** and **Layer-7 for smart application routing**.
 4. The exact 5-minute opening script to dominate any High-Level Design interview.
+
+
+## Further Reading
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [Cloudflare: what is a CDN](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/)
+- [AWS: what is load balancing](https://aws.amazon.com/what-is/load-balancing/)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What is the difference between latency and throughput?</summary>
+
+Latency is time per request; throughput is requests per unit time. A system can have high throughput and high latency (batching).
+
+</details>
+
+<details>
+<summary><strong>2.</strong> What is the purpose of a load balancer?</summary>
+
+Distribute requests across servers for capacity and availability, with health checks to remove bad instances.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> Vertical versus horizontal scaling?</summary>
+
+Vertical adds resources to one machine (limits, single point of failure); horizontal adds machines (needs stateless design or partitioning).
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What does a CDN cache and why?</summary>
+
+Static or cacheable content at edge locations near users to cut latency and origin load.
+
+</details>

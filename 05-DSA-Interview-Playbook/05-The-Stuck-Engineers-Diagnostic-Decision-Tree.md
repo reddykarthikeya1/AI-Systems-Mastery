@@ -86,3 +86,45 @@ Before telling your interviewer your code is ready, run through this mental chec
 ```
 
 Running through this checklist out loud demonstrates true principal-level engineering rigor.
+
+
+## Further Reading
+
+- [CP-Algorithms](https://cp-algorithms.com/)
+- [Wikipedia: Algorithm design](https://en.wikipedia.org/wiki/Algorithm_design)
+- [Wikipedia: Greedy algorithm](https://en.wikipedia.org/wiki/Greedy_algorithm)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What question do you ask when you do not recognise a problem?</summary>
+
+What is the input structure (array, graph, tree, string) and what is being optimised?
+
+</details>
+
+<details>
+<summary><strong>2.</strong> When do you suspect greedy versus DP?</summary>
+
+Greedy when a local choice is provably safe; DP when choices interact through overlapping subproblems.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> How do you decompose a hard problem?</summary>
+
+Solve a smaller version, find the invariant, then generalise.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> Why write down the brute force even if slow?</summary>
+
+It gives a baseline and test oracle for the optimised version.
+
+</details>

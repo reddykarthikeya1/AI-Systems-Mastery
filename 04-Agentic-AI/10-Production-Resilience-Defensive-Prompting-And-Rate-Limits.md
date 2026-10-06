@@ -199,3 +199,45 @@ class AgentExecutionCircuitBreaker:
 ```
 
 Every production agent loop must wrap its execution inside this circuit breaker!
+
+
+## Further Reading
+
+- [AWS: exponential backoff and jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/)
+- [OWASP Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/)
+- [Martin Fowler: circuit breaker](https://martinfowler.com/bliki/CircuitBreaker.html)
+
+
+---
+
+## Check Yourself
+
+Answer in your head or on paper first, then open each answer.
+
+<details>
+<summary><strong>1.</strong> What does exponential backoff with jitter avoid?</summary>
+
+Synchronised retry storms that overload a recovering service.
+
+</details>
+
+<details>
+<summary><strong>2.</strong> Why set timeouts on every LLM and tool call?</summary>
+
+To bound latency and free resources when a dependency hangs.
+
+</details>
+
+<details>
+<summary><strong>3.</strong> What is defensive prompting?</summary>
+
+Structuring prompts so untrusted content is delimited and treated as data, plus validating outputs; it reduces but does not remove injection risk.
+
+</details>
+
+<details>
+<summary><strong>4.</strong> What is a circuit breaker?</summary>
+
+A component that stops calling a failing dependency for a period so it can recover and callers fail fast.
+
+</details>
