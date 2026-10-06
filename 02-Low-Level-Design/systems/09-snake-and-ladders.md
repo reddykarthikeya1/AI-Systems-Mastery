@@ -189,3 +189,86 @@ if __name__ == "__main__":
     while not game.take_turn() and rounds < 50:
         rounds += 1
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Rules the implementation has to get right
+
+| Case | What the code does | Note |
+| :--- | :--- | :--- |
+| Roll overshoots 100 | Player stays put; turn passes | Matches the "exact finish" house rule; some variants bounce back instead |
+| Landing on a snake head or ladder base | One jump is applied | **A ladder whose top is a snake head is not chained**: the player stops on the snake head and is not bitten |
+| Two jumps share the same start cell | The second `add_*` silently overwrites the first | Reject at board-build time |
+| Jump starting on cell 100 | Winner check happens after the jump, so a snake on 100 would undo a win | Reject at board-build time |
+| Game already won | `take_turn()` returns `True` without mutating anything | Idempotent end state |
+
+The first three are board-validation problems, not game-loop problems. Validating once when the board is built is cheaper and safer than adding checks to every turn.
+
+### Tests with rigged dice
+
+`DeterministicDice` exists so that a game is a pure function of the roll sequence. This block extends the implementation above.
+
+```python
+# continues: snake and ladders implementation above
+import io, contextlib
+
+def play(rolls, players=("A",), setup=lambda g: None):
+    g = SnakeAndLaddersGame(list(players), DeterministicDice(rolls))
+    setup(g)
+    with contextlib.redirect_stdout(io.StringIO()):
+        for _ in range(len(rolls)):
+            if g.take_turn():
+                break
+    return g
+
+g = play([4], setup=lambda g: g.add_ladder(4, 25))
+assert g.players[0].position == 25                       # ladder applied
+
+g = play([5], setup=lambda g: g.add_snake(5, 2))
+assert g.players[0].position == 2                        # snake applied
+
+def near_end(g):
+    g.players[0].position = 98
+g = play([6], setup=near_end)
+assert g.players[0].position == 98 and g.winner is None  # overshoot: stays put
+g = play([2], setup=near_end)
+assert g.winner is not None and g.winner.name == "A"     # exact roll wins
+
+g = play([4], setup=lambda g: (g.add_ladder(4, 25), g.add_snake(25, 3)))
+assert g.players[0].position == 25                       # documented limitation: jumps do not chain
+
+# Hardening: validate the board once, up front
+def validate_board(snakes, ladders, size=100):
+    problems, starts = [], {}
+    for kind, pairs in (("snake", snakes), ("ladder", ladders)):
+        for a, b in pairs:
+            if a == size:
+                problems.append(f"{kind} starts on the final cell")
+            if a in starts:
+                problems.append(f"two jumps start at {a}")
+            starts[a] = b
+    for a, b in starts.items():
+        if b in starts:
+            problems.append(f"jump {a}->{b} lands on another jump start")
+    return problems
+
+assert validate_board([(25, 3)], [(4, 25)]) == ["jump 4->25 lands on another jump start"]
+assert validate_board([(100, 5)], []) == ["snake starts on the final cell"]
+assert validate_board([(50, 5)], [(4, 25)]) == []
+print("snake and ladders tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Multiple dice, or "roll again on a six":** only `DiceStrategy` and the turn loop change; keep a `Turn` object that can request an extra roll.
+2. **Board of arbitrary size:** pass `size` into the game instead of the class constant; `validate_board` already takes it.
+3. **Persist and resume a game:** the state is the player positions, the queue order and the dice sequence position; serialise those three.
+4. **Simulate a million games for statistics:** inject a seeded `random.Random` into `StandardDice` so runs are reproducible, and expect the average game to take about 40 turns on the classic board (measure it, it depends on the board).
+
+### Follow-up questions
+
+- *Why is the dice a strategy rather than a call to `random`?* Testability: randomness is the only non-determinism in the game, so injecting it makes every test exact.
+- *What makes a board unwinnable?* Snakes and ladders that form a cycle, or a snake on the last reachable cells combined with exact-finish rules; `validate_board` catches the first kind, a reachability search (BFS over cells 1 to 100 with dice outcomes 1 to 6) catches both.

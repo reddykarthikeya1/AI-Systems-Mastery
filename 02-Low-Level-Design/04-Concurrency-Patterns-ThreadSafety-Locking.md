@@ -155,6 +155,104 @@ class HeavyResourcePool:
 ```
 
 
+## 5. Check-Then-Act: The Race You Will Be Asked to Fix
+
+The most common concurrency bug in a design interview is a check followed by an action with a gap between them. A barrier forces the bad interleaving every time, so the bug is reproducible:
+
+```python
+import threading
+
+balance = {"v": 100}
+barrier = threading.Barrier(2)
+
+def withdraw_unsafe(amount):
+    if balance["v"] >= amount:          # check
+        barrier.wait(timeout=5)         # both threads pass the check before either acts
+        balance["v"] -= amount          # act
+
+ts = [threading.Thread(target=withdraw_unsafe, args=(80,)) for _ in range(2)]
+for t in ts: t.start()
+for t in ts: t.join()
+assert balance["v"] == -60              # overdrawn: both withdrawals "succeeded"
+
+balance["v"] = 100
+lock = threading.Lock()
+results = []
+
+def withdraw_safe(amount):
+    with lock:                          # check and act are one atomic step
+        if balance["v"] >= amount:
+            balance["v"] -= amount
+            results.append(True)
+        else:
+            results.append(False)
+
+ts = [threading.Thread(target=withdraw_safe, args=(80,)) for _ in range(2)]
+for t in ts: t.start()
+for t in ts: t.join()
+assert balance["v"] == 20 and sorted(results) == [False, True]
+```
+
+The same shape appears as "check seat available, then book", "check stock, then deduct" and "`if key not in cache`, then compute and store". The fix is always one of three moves: hold a lock across both steps, use one atomic operation (`dict.setdefault`, `queue.Queue.put`, a database `UPDATE ... WHERE balance >= :amount`), or make the operation idempotent.
+
+## 6. Producer-Consumer with a Bounded Queue
+
+```python
+import queue
+import threading
+
+q = queue.Queue(maxsize=5)               # the bound is the backpressure: put() blocks when full
+DONE = object()                          # sentinel that tells a consumer to stop
+consumed = []
+lock = threading.Lock()
+
+def producer(start):
+    for i in range(start, start + 20):
+        q.put(i)
+
+def consumer():
+    while True:
+        item = q.get()
+        if item is DONE:
+            q.task_done()
+            return
+        with lock:
+            consumed.append(item)
+        q.task_done()
+
+producers = [threading.Thread(target=producer, args=(s,)) for s in (0, 100)]
+consumers = [threading.Thread(target=consumer) for _ in range(3)]
+for t in producers + consumers: t.start()
+for t in producers: t.join()
+for _ in consumers: q.put(DONE)          # one sentinel per consumer
+for t in consumers: t.join()
+assert sorted(consumed) == list(range(20)) + list(range(100, 120))
+```
+
+Points to say aloud: the queue does its own locking, the bound prevents unbounded memory growth, and **one sentinel per consumer** is the clean shutdown. This is the skeleton behind the logging framework, the job scheduler and the message broker case studies.
+
+## 7. Choosing a Concurrency Tool
+
+| Workload | Tool | Why |
+| :--- | :--- | :--- |
+| Many waiting I/O calls (HTTP, DB) | `asyncio` or a thread pool | Waiting releases the GIL or yields; the CPU is idle anyway |
+| CPU-bound pure Python | `multiprocessing` or `ProcessPoolExecutor` | The GIL prevents threads from running Python bytecode in parallel (on free-threaded builds this changes) |
+| Shared mutable state, few writers | `threading.Lock` or `RLock` | Smallest correct tool |
+| Many readers, rare writers | A readers-writer lock (section 2) | Readers do not block each other |
+| Hand work between threads | `queue.Queue` | Built-in locking and backpressure |
+| Wait for an event once | `threading.Event` | No polling |
+| Limit concurrent access to a resource | `threading.Semaphore` | Counted permits (connection pool) |
+
+### Lock hygiene checklist
+
+1. Hold locks for as short a time as possible and never across network or disk I/O.
+2. Acquire multiple locks in one global order (the sorted seat ids in the booking system).
+3. Prefer `with lock:` so an exception cannot leave a lock held.
+4. Never call unknown code (callbacks, observers) while holding a lock: it can re-enter and deadlock, as the job scheduler case study shows.
+5. Make shared state immutable where you can; an immutable object needs no lock.
+
+---
+
 ## Further Reading
 
 - [threading module](https://docs.python.org/3/library/threading.html)

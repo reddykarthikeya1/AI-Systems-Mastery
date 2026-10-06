@@ -184,3 +184,106 @@ if __name__ == "__main__":
     res2.pickup()
     bill2 = res2.complete_return(miles_driven=40)
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### What the model gets right and what it hides
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Pricing variants | Good | `PricingStrategy` keeps daily, surge and mileage pricing out of the reservation |
+| Double booking | **Missing** | `Reservation.__init__` never checks `vehicle.is_available`, so the same car can be reserved twice |
+| Future bookings | **Missing** | A boolean flag cannot say "free Monday, booked Tuesday"; availability must be a date range |
+| Cancellation | **Missing** | `CANCELLED` exists but no method reaches it, and the vehicle would stay unavailable |
+| Money as `float` | Risky | `0.1 + 0.2 != 0.3`; bill in `Decimal` or integer cents and round once |
+| Late return, damage fee | Not modelled | Extra charge after the agreed return time; compute from timestamps, not days alone |
+
+### Tests: pricing, lifecycle, and the double-booking bug
+
+This block extends the implementation above. The last part adds a `RentalDesk` that owns date-range availability.
+
+```python
+# continues: car rental implementation above
+import io, contextlib
+from decimal import Decimal, ROUND_HALF_UP
+
+def close(a, b): return abs(a - b) < 1e-9
+
+eco = VehicleFactory.create_vehicle(VehicleType.ECONOMY, "ECO-1")
+assert close(DailyPricingStrategy().calculate_price(eco, 3, 0), 135.0)
+assert close(SurgePricingStrategy(1.4).calculate_price(eco, 3, 0), 189.0)
+assert close(MileageHybridStrategy().calculate_price(eco, 2, 100), 88.0)
+
+with contextlib.redirect_stdout(io.StringIO()):
+    r = Reservation("ana", eco, 2, DailyPricingStrategy())
+    try:
+        r.complete_return(10)                      # cannot return before pickup
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+    r.pickup()
+    assert close(r.complete_return(10), 90.0) and eco.is_available
+    try:
+        r.complete_return(10)                      # cannot return twice
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+
+# The bug: nothing stops two reservations of the same car
+suv = VehicleFactory.create_vehicle(VehicleType.SUV, "SUV-1")
+Reservation("a", suv, 1, DailyPricingStrategy())
+Reservation("b", suv, 1, DailyPricingStrategy())      # silently accepted
+
+# The fix: availability is a date range, checked by one owner
+class RentalDesk:
+    def __init__(self):
+        self.bookings = {}                                    # plate -> [(start, end, reservation_id)]
+
+    def reserve(self, customer, vehicle, start_day, days, pricing):
+        end = start_day + days
+        slots = self.bookings.setdefault(vehicle.license_plate, [])
+        if any(start_day < e and s < end for s, e, _ in slots):
+            raise ValueError("vehicle already booked for those dates")
+        with contextlib.redirect_stdout(io.StringIO()):
+            res = Reservation(customer, vehicle, days, pricing)
+        vehicle.is_available = True                           # the flag is replaced by the date check
+        slots.append((start_day, end, res.reservation_id))
+        return res
+
+    def cancel(self, vehicle, res):
+        self.bookings[vehicle.license_plate] = [b for b in self.bookings[vehicle.license_plate] if b[2] != res.reservation_id]
+        res.status = ReservationStatus.CANCELLED
+
+desk, car = RentalDesk(), VehicleFactory.create_vehicle(VehicleType.ECONOMY, "ECO-2")
+first = desk.reserve("a", car, start_day=1, days=3, pricing=DailyPricingStrategy())    # days 1..3
+desk.reserve("b", car, start_day=4, days=2, pricing=DailyPricingStrategy())            # back to back is fine
+try:
+    desk.reserve("c", car, start_day=3, days=2, pricing=DailyPricingStrategy())        # overlaps
+    raise AssertionError("expected ValueError")
+except ValueError:
+    pass
+desk.cancel(car, first)
+desk.reserve("c", car, start_day=2, days=2, pricing=DailyPricingStrategy())            # freed by the cancellation
+
+# Money: float surprises versus Decimal
+assert 0.1 + 0.2 != 0.3
+q = lambda x: x.quantize(Decimal("0.01"), ROUND_HALF_UP)
+assert q(Decimal("45.00") * Decimal("0.7") * 2 + Decimal(100) * Decimal("0.25")) == Decimal("88.00")
+print("car rental tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Pickup and drop-off at different branches:** add a `Branch` and a location on each `Vehicle`; availability then depends on where the previous rental ended, and a relocation fee becomes a pricing input.
+2. **Insurance and add-ons:** wrap the price with the Decorator pattern (`GpsAddOn(InsuranceAddOn(base_price))`) so add-ons compose without subclass explosions.
+3. **Concurrent bookings:** the overlap check and the insert must be atomic; in-process use a lock per vehicle, in a database use an exclusion constraint on `(vehicle_id, daterange)` so the database rejects overlaps itself.
+4. **Dynamic pricing:** feed utilisation and the date into a `PricingStrategy`; keep the quoted price on the reservation so later strategy changes never alter an existing booking.
+
+### Follow-up questions
+
+- *Why is the overlap test `start < other_end and other_start < end`?* It treats intervals as half-open `[start, end)`, so a rental ending on day 4 and one starting on day 4 do not clash.
+- *Where does a lock on the whole fleet hurt?* Every booking serialises behind every other one; locking per vehicle (or per vehicle-and-date bucket) keeps unrelated bookings parallel.
+- *How do you price a late return?* Store the due timestamp, charge `ceil(hours_late)` times an hourly rate beyond a grace period, and add it as a separate line on the bill.

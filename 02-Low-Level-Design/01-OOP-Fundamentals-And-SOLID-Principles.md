@@ -254,6 +254,8 @@ class SimpleDeskPrinter(MultiFunctionPrinter):
 
 #### Production Refactor (Granular Interfaces):
 ```python
+from typing import Protocol
+
 class Printer(Protocol):
     def print_document(self, doc) -> None: ...
 

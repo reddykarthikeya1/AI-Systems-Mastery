@@ -194,3 +194,119 @@ if __name__ == "__main__":
         trip.start_trip()
         trip.complete_trip(actual_duration_mins=25.0)
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Review of the model
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Matching and pricing as strategies | Good | Swap nearest-driver for rating-weighted matching without touching `Trip` |
+| Distance formula | Approximate | `69 miles per degree of latitude` is right everywhere; `55 miles per degree of longitude` is only right near 37 degrees latitude. Use the haversine formula in production |
+| Same driver matched twice | **Bug** | `assign_driver` does not check `is_available`, and matching is not atomic, so two simultaneous requests can get one driver |
+| Illegal transitions | **Bug** | `complete_trip()` on a `REQUESTED` trip crashes with `AttributeError` because `driver` is `None` |
+| Surge | Hard-coded 1.2 | Should come from a demand service per zone and be locked in when the rider accepts the quote |
+| Searching all drivers | O(n) per request | Use a geospatial index (grid cells, geohash or quadtree) |
+
+### Tests: matching, fares, the double assignment, the state guard
+
+This block extends the implementation above.
+
+```python
+# continues: ride sharing implementation above
+import io, contextlib, threading
+
+def quiet(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+def close(a, b): return abs(a - b) < 1e-6
+
+assert close(Location(0, 0).distance_to(Location(1, 0)), 69.0)
+
+d1 = Driver("d1", "Near", Location(37.77, -122.41))
+d2 = Driver("d2", "Far", Location(37.80, -122.40))
+pickup = Location(37.78, -122.41)
+assert NearestDriverStrategy().match_driver(pickup, [d2, d1]) is d1
+d1.is_available = False
+assert NearestDriverStrategy().match_driver(pickup, [d1, d2]) is d2        # skips unavailable drivers
+assert NearestDriverStrategy().match_driver(pickup, []) is None
+
+std = StandardPricingStrategy()
+assert close(std.calculate_fare(10.0, 20, 1.2), (2.5 + 17.5 + 7.0) * 1.2)
+assert std.calculate_fare(0.1, 1, 1.0) == 5.0                              # minimum fare
+
+# Bug: two trips accept the same driver
+drv = Driver("d9", "Solo", Location(0, 0))
+t1 = Trip(Rider("r1", "A"), Location(0, 0), Location(0.1, 0), std)
+t2 = Trip(Rider("r2", "B"), Location(0, 0), Location(0.1, 0), std)
+quiet(t1.assign_driver, drv); quiet(t2.assign_driver, drv)
+assert t1.driver is t2.driver                                              # accepted twice
+
+# Bug: completing a trip that never had a driver
+t3 = Trip(Rider("r3", "C"), Location(0, 0), Location(0.1, 0), std)
+try:
+    quiet(t3.complete_trip, 5)
+    raise AssertionError("expected AttributeError")
+except AttributeError:
+    pass
+
+# Fix 1: one owner makes match-and-assign atomic
+class Dispatcher:
+    def __init__(self, strategy, drivers):
+        self.strategy, self.drivers, self._lock = strategy, drivers, threading.Lock()
+
+    def request(self, trip):
+        with self._lock:
+            driver = self.strategy.match_driver(trip.pickup, self.drivers)
+            if driver is None:
+                return None
+            quiet(trip.assign_driver, driver)
+            return driver
+
+drivers = [Driver(f"d{i}", f"D{i}", Location(0.001 * i, 0)) for i in range(3)]
+disp, got = Dispatcher(NearestDriverStrategy(), drivers), []
+trips = [Trip(Rider(f"r{i}", f"R{i}"), Location(0, 0), Location(0.1, 0), std) for i in range(8)]
+ts = [threading.Thread(target=lambda t=t: got.append(disp.request(t))) for t in trips]
+[t.start() for t in ts]; [t.join() for t in ts]
+assigned = [g for g in got if g is not None]
+assert len(assigned) == 3 and len({id(g) for g in assigned}) == 3          # three drivers, three distinct assignments
+
+# Fix 2: an explicit transition table
+class GuardedTrip(Trip):
+    ALLOWED = {TripStatus.REQUESTED: {TripStatus.ACCEPTED}, TripStatus.ACCEPTED: {TripStatus.IN_PROGRESS},
+               TripStatus.IN_PROGRESS: {TripStatus.COMPLETED}, TripStatus.COMPLETED: set()}
+    def _go(self, target):
+        if target not in self.ALLOWED[self.status]:
+            raise ValueError(f"illegal transition {self.status.name} -> {target.name}")
+    def assign_driver(self, driver):
+        self._go(TripStatus.ACCEPTED); super().assign_driver(driver)
+    def start_trip(self):
+        self._go(TripStatus.IN_PROGRESS); super().start_trip()
+    def complete_trip(self, mins):
+        self._go(TripStatus.COMPLETED); return super().complete_trip(mins)
+
+g = GuardedTrip(Rider("r", "R"), Location(0, 0), Location(0.1, 0), std)
+try:
+    g.complete_trip(5)
+    raise AssertionError("expected ValueError")
+except ValueError:
+    pass
+print("ride sharing tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Geospatial index:** bucket drivers into grid cells (for example 1 km squares); a request searches its own cell and the eight neighbours, expanding outward only when empty. That turns O(drivers) into O(drivers in a few cells).
+2. **Offer and timeout:** do not force-assign. Send the request to the best driver, wait for accept or timeout, then offer the next; this needs an `OFFERED` state and a timer.
+3. **Pooled rides:** matching becomes a route-insertion problem; keep the same `MatchingStrategy` interface but return a driver plus the updated route.
+4. **Fare integrity:** persist the quote (distance estimate, surge, strategy name) on the trip when it is accepted so a later pricing change cannot alter an in-flight fare.
+
+### Follow-up questions
+
+- *Why is `is_available` alone not enough to prevent double assignment?* Check and set are two steps; without a lock or an atomic compare-and-set, two requests can both observe `True`.
+- *Where should the dispatcher state live at scale?* Partition drivers by geographic cell and run one single-writer dispatcher per partition, which removes the global lock without losing atomicity inside a cell.
+- *How do you keep driver locations fresh?* Drivers push a ping every few seconds to an in-memory store with a TTL; a driver without a recent ping is treated as unavailable.

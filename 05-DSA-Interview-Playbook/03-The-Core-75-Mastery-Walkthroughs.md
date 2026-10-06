@@ -2,6 +2,8 @@
 
 > **Core Learning Objective:** Master every single archetype among the canonical **Core 75** coding interview questions. Every problem features the precise problem statement, brute force analysis, core algorithmic breakthrough, optimal typed Python solution, edge-case unit assertions, runtime-generated execution trace, Big-O complexity breakdown, and follow-up interviewer variants.
 
+> **Conventions used by every snippet below:** `from typing import List, Optional` is assumed, and `ListNode`, `TreeNode`, `GraphNode` and the other helper classes are the standard LeetCode-style definitions from `practice/problems/`. Each solution is tested by `python practice/run_tests.py <n> --fuzz`, so run it there rather than pasting a snippet alone.
+
 ---
 
 ## Master Core 75 Architecture & Category Blueprint

@@ -17,7 +17,7 @@
 | Track | Beginner friendliness | Technical depth | Accuracy and currency | Practice and active learning | Biggest remaining gap |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | Python Mastery | 8.5 | 8 | 8.5 | 9 | 18 environment-dependent snippets (DB, CUDA, brokers) are not runnable offline; exercises are not auto-graded in the portal or CI |
-| Low-Level Design | 7.5 | 6.5 | 7.5 | 6.5 | UML and design-pattern chapters are short; 14 systems under 1,000 words |
+| Low-Level Design | 8 | 8 | 8.5 | 8 | case studies 12, 15, 17 and 18 still lack the tested edge-case section; patterns chapter covers 21 of 23 GoF patterns |
 | High-Level Design | 7 | 7.5 | 7.5 | 7 | five classic systems still missing (news feed, notifications, typeahead, file storage, object store) |
 | Agentic AI | 7 | 7.5 | 8 | 8 | chapters 02 to 07 are still short; one provider adapter only |
 | DSA Playbook | 6.5 | 6.5 | 8 | 8.5 | 36 dry-run traces are narrated, not generated from the solution; terse per-problem text |
@@ -98,6 +98,7 @@ flowchart TD
 * **[01-OOP-Fundamentals-And-SOLID-Principles.md](02-Low-Level-Design/01-OOP-Fundamentals-And-SOLID-Principles.md):** OOP principles, DRY/KISS, SOLID anti-patterns and Python refactors.
 * **[02-UML-Modeling-Class-Sequence-State-Diagrams.md](02-Low-Level-Design/02-UML-Modeling-Class-Sequence-State-Diagrams.md):** Class diagrams, sequence diagrams, state-machine diagrams, and the 5-minute drawing strategy.
 * **[03-Design-Patterns-Catalog-Python-Implementations.md](02-Low-Level-Design/03-Design-Patterns-Catalog-Python-Implementations.md):** Creational, Structural, and Behavioral patterns implemented in modern Python.
+* **[03-B-Design-Patterns-Catalog-Part-2.md](02-Low-Level-Design/03-B-Design-Patterns-Catalog-Part-2.md):** Singleton, Prototype, Decorator, Facade, Composite, Bridge, Flyweight, Template Method, Chain of Responsibility, Iterator, Mediator, Memento and Visitor, every example runnable.
 * **[04-Concurrency-Patterns-ThreadSafety-Locking.md](02-Low-Level-Design/04-Concurrency-Patterns-ThreadSafety-Locking.md):** Complete Readers-Writer Lock (RWLock) implementation from scratch, double-checked locking, and deadlock elimination.
 * **[05-Curveball-Requirement-Evolution-Mastery.md](02-Low-Level-Design/05-Curveball-Requirement-Evolution-Mastery.md):** How to handle mid-interview requirement pivots (Surge pricing, temporary seat holds, firefighter elevator emergency modes) without rewriting code.
 * **[06-Legacy-Code-Refactoring-To-Design-Patterns.md](02-Low-Level-Design/06-Legacy-Code-Refactoring-To-Design-Patterns.md):** Decomposing a 500-line monolithic checkout God-class using Strategy, Factory, and Observer patterns.

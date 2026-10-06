@@ -222,3 +222,107 @@ if __name__ == "__main__":
     t1.join()
     t2.join()
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### What the design guarantees and where it needs help
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Two users, one seat | Safe | Per-seat locks plus a status check inside the lock: only one `lock_seats` call succeeds |
+| Deadlock across multi-seat requests | Safe | Seat ids are sorted before locking, so every thread acquires locks in the same global order |
+| Abandoned checkout | Safe | A lock older than `LOCK_TTL_SECONDS` is treated as free by the next user |
+| Unknown seat id | Safe | `KeyError` is raised and the `finally` block releases the locks acquired so far |
+| Payment fails | By design | Seats stay `LOCKED` so the user can retry until the TTL runs out |
+| Payment called while holding seat locks | **Weak** | A slow gateway blocks every other request touching those seats; real systems release locks, call the gateway, then re-verify |
+| Charged but not booked | **Not handled** | A crash between `process_payment` and the status change loses the booking; use an idempotency key and reconcile |
+
+### Tests
+
+This block extends the implementation above (clock patched for the TTL tests).
+
+```python
+# continues: movie booking implementation above
+import io, contextlib, threading
+from unittest import mock
+
+def quiet(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+def new_service():
+    return BookingService([Seat("A1", 10.0), Seat("A2", 10.0), Seat("B1", 15.0)])
+
+class Declined(PaymentStrategy):
+    def process_payment(self, amount): return False
+
+svc = new_service()
+assert quiet(svc.lock_seats, ["A1", "A2"], "u1") is True
+assert quiet(svc.lock_seats, ["A2"], "u2") is False                      # already locked
+assert quiet(svc.confirm_booking, ["A2"], "u2", CreditCardPayment()) is False   # u2 does not own the lock
+assert quiet(svc.confirm_booking, ["A1", "A2"], "u1", Declined()) is False
+assert svc.seats["A1"].status is SeatStatus.LOCKED                       # failed payment keeps the lock
+assert quiet(svc.confirm_booking, ["A1", "A2"], "u1", CreditCardPayment()) is True
+assert svc.seats["A1"].status is SeatStatus.BOOKED
+assert quiet(svc.lock_seats, ["A1"], "u3") is False                      # booked seats cannot be locked
+
+# TTL: an abandoned lock is healed by the next user, and the first user's checkout then fails
+clock = [0.0]
+with mock.patch("time.monotonic", lambda: clock[0]):
+    svc = new_service()
+    assert quiet(svc.lock_seats, ["B1"], "u1") is True
+    clock[0] = 6.0                                                       # beyond the 5 second TTL
+    assert quiet(svc.lock_seats, ["B1"], "u2") is True
+    assert quiet(svc.confirm_booking, ["B1"], "u1", CreditCardPayment()) is False
+
+    svc = new_service()
+    quiet(svc.lock_seats, ["A1"], "u1")
+    clock[0] = 12.0
+    assert quiet(svc.confirm_booking, ["A1"], "u1", CreditCardPayment()) is False   # expired before checkout
+    assert svc.seats["A1"].status is SeatStatus.AVAILABLE
+
+# Unknown seat: error, but nothing stays locked
+svc = new_service()
+try:
+    quiet(svc.lock_seats, ["A1", "ZZ"], "u1")
+    raise AssertionError("expected KeyError")
+except KeyError:
+    pass
+assert svc.seats["A1"].lock.acquire(blocking=False)                      # lock was released
+svc.seats["A1"].lock.release()
+
+# Concurrency: 20 users race for one seat, exactly one wins
+svc = new_service()
+wins = []
+ts = [threading.Thread(target=lambda i=i: wins.append(quiet(svc.lock_seats, ["A1"], f"u{i}"))) for i in range(20)]
+[t.start() for t in ts]; [t.join() for t in ts]
+assert sum(wins) == 1
+
+# Deadlock freedom: opposite seat orders from two threads still terminate
+svc = BookingService([Seat("A1", 1.0), Seat("B1", 1.0)])
+def hammer(order, user):
+    for _ in range(200):
+        quiet(svc.lock_seats, order, user)
+t1 = threading.Thread(target=hammer, args=(["A1", "B1"], "x"), daemon=True)
+t2 = threading.Thread(target=hammer, args=(["B1", "A1"], "y"), daemon=True)
+t1.start(); t2.start(); t1.join(10); t2.join(10)
+assert not t1.is_alive() and not t2.is_alive()
+print("movie booking tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Shows, screens and theatres:** seats belong to a `Show` (a movie at a time on a screen), not to a theatre; the same physical seat is a different bookable object per show.
+2. **Seat maps and pricing tiers:** price comes from a `PricingStrategy` using seat class, show time and demand, evaluated when the lock is taken and stored with the lock.
+3. **Distributed deployment:** move seat state to a database; the lock becomes `UPDATE seat SET status='LOCKED', locked_by=?, locked_until=? WHERE id=? AND (status='AVAILABLE' OR locked_until < now())` and the affected row count says who won.
+4. **Waiting room under flash-sale load:** put a queue in front of the lock endpoint so a popular release does not hammer the seat table.
+5. **Refunds and cancellation:** a `BOOKED -> CANCELLED -> AVAILABLE` path with a refund call that is idempotent.
+
+### Follow-up questions
+
+- *Why lock seats in sorted order?* A global ordering of lock acquisition removes circular waits, one of the four conditions for deadlock.
+- *Why a TTL instead of waiting for the user to cancel?* Users abandon checkouts silently; without expiry, popular seats would stay blocked forever.
+- *How do you avoid charging twice on retry?* Send an idempotency key (booking id) to the payment provider so a repeated charge returns the first result.

@@ -132,6 +132,97 @@ During an interview, do not spend 20 minutes drawing exhaustive getter/setter de
 3. **Pass 3 (Behavior & Patterns):** Add interfaces for Strategy, Observer, or Factory patterns where flexibility is needed.
 
 
+## 5. From Diagram to Code: What Each Arrow Means in Python
+
+Interviewers check that your arrows mean what they say. The same six relationships, with the Python each one implies:
+
+| Relationship | Arrow (Mermaid) | Meaning | Lifetime rule | Python shape |
+| :--- | :--- | :--- | :--- | :--- |
+| Inheritance | `A <\|-- B` | B is an A | n/a | `class B(A)` |
+| Realisation | `A <\|.. B` | B implements interface A | n/a | `class B(A)` where A is an ABC or Protocol |
+| Association | `A --> B` | A holds a reference to B | independent | `self.b = b` passed in |
+| Aggregation | `A o-- B` | A has B, B can exist elsewhere | B outlives A | `self.items = items` (shared list) |
+| Composition | `A *-- B` | A owns B | B dies with A | `self.engine = Engine()` created inside |
+| Dependency | `A ..> B` | A uses B briefly | none | `B` appears only as a parameter or local |
+
+```python
+from abc import ABC, abstractmethod
+
+class Engine:                                    # composed: created and owned by Car
+    def start(self) -> str:
+        return "vroom"
+
+class Driver:                                    # associated: exists before and after the Car
+    def __init__(self, name: str):
+        self.name = name
+
+class Payment(ABC):                              # interface
+    @abstractmethod
+    def pay(self, cents: int) -> str: ...
+
+class Card(Payment):                             # realisation
+    def pay(self, cents: int) -> str:
+        return f"card:{cents}"
+
+class Car:
+    def __init__(self, driver: Driver):
+        self.engine = Engine()                   # composition: no outside code ever sees this Engine
+        self.driver = driver                     # association/aggregation: supplied from outside
+
+    def refuel(self, payment: Payment, cents: int) -> str:   # dependency: Payment only as a parameter
+        return payment.pay(cents)
+
+ana = Driver("Ana")
+car = Car(ana)
+assert car.engine.start() == "vroom"
+assert car.driver is ana                         # the same Driver, not a copy
+assert car.refuel(Card(), 4500) == "card:4500"
+del car
+assert ana.name == "Ana"                         # the driver survives the car; the engine did not need to
+```
+
+The test that separates composition from aggregation is **who creates the part and who can still see it after the whole is gone**.
+
+### Multiplicity and navigability
+
+Write multiplicities on the ends of an association (`1`, `0..1`, `*`, `1..*`). A `1..*` end means the constructor or a validation step must reject an empty collection; a `0..1` end means the attribute may be `None` and every use needs a check. Arrow direction shows who knows whom: `Order --> Customer` means an `Order` holds a customer reference but a `Customer` does not hold orders, so listing a customer's orders needs a query or a separate index.
+
+### Sequence diagram fragments you are expected to know
+
+```mermaid
+sequenceDiagram
+    actor U as User
+    participant S as BookingService
+    participant P as PaymentGateway
+    U->>S: lockSeats(A1)
+    alt seat is available
+        S-->>U: locked (TTL 5 min)
+        U->>S: confirm(A1)
+        S->>P: charge(amount)
+        alt payment succeeds
+            P-->>S: ok
+            S-->>U: booked
+        else payment declined
+            P-->>S: declined
+            S-->>U: failed, lock kept
+        end
+    else seat taken
+        S-->>U: rejected
+    end
+```
+
+Use `alt/else` for exclusive branches, `opt` for an optional step, `loop` for repetition and `par` for concurrent work. A sequence diagram should show **who calls whom and in which order**, so draw one for the single most important use case rather than for everything.
+
+### Five mistakes that cost marks
+
+1. Drawing every getter and setter; show only behaviour that matters to the design.
+2. Using inheritance arrows for "has-a" relationships.
+3. Giving two classes a bidirectional association without saying which side owns it.
+4. Putting the same responsibility in several boxes; each class gets one sentence of purpose.
+5. A state diagram with an unreachable state or a state with no exit and no "terminal" mark.
+
+---
+
 ## Further Reading
 
 - [UML diagrams reference](https://www.uml-diagrams.org/)

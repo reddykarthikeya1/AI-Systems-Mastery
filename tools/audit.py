@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TRACKS = ["01-Python-Mastery", "02-Low-Level-Design", "03-High-Level-Design", "04-Agentic-AI", "05-DSA-Interview-Playbook"]
 BAR = {"median_words": 1200, "check_yourself": 1.0, "references": 0.8, "code_pass_rate": 0.9, "min_system_words": 1000}
 RUN = "--no-run" not in sys.argv
+SUSPECTS: list[str] = []
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}
 
 
@@ -49,8 +50,12 @@ def code_blocks(track: str) -> tuple[int, int, int]:
     tmp = Path(tempfile.mkdtemp())
     for md in md_files(track):
         text = md.read_text(encoding="utf-8", errors="ignore")
-        for m in re.finditer(r"^```python\n(.*?)^```", text, re.S | re.M):
-            code = m.group(1)
+        blocks = [m.group(1) for m in re.finditer(r"^```python\n(.*?)^```", text, re.S | re.M)]
+        # a block starting with "# continues" (a test) or a bare __main__ driver extends the file's first block
+        prelude = blocks[0].split('\nif __name__ == "__main__":')[0] if blocks else ""
+        for code in blocks:
+            if code.startswith("# continues") or code.startswith('if __name__ == "__main__":'):
+                code = prelude + "\n\n" + code
             if len(code.strip().splitlines()) < 3:
                 continue
             if not RUN:
@@ -69,7 +74,11 @@ def code_blocks(track: str) -> tuple[int, int, int]:
                     err = "Timeout"
                 finally:
                     os.unlink(p)
-                if re.search(r"NameError|ModuleNotFoundError|ImportError|IndentationError|'return' outside|'await' outside|Timeout|not compiled with CUDA|DatabaseError|Connection refused", err):
+                nm = re.search(r"NameError: name '(\w+)' is not defined", err)
+                if nm and not re.search(rf"(class|def)\s+\b{nm.group(1)}\b|\b{nm.group(1)}\b\s*=|import\s+.*\b{nm.group(1)}\b", text):
+                    SUSPECTS.append(f"{md.relative_to(ROOT).as_posix()}: undefined name {nm.group(1)}")
+                    bad += 1
+                elif re.search(r"NameError|ModuleNotFoundError|ImportError|IndentationError|'return' outside|'await' outside|Timeout|not compiled with CUDA|DatabaseError|Connection refused", err):
                     frag += 1
                 else:
                     bad += 1
@@ -155,6 +164,8 @@ def main() -> None:
               f"- KaTeX vendored (offline): {(html / 'assets' / 'katex' / 'katex.min.js').exists()}",
               "- Browser-verified separately (not in this script): 0 KaTeX/Mermaid errors across all pages; axe-core WCAG 2.2 AA clean on sampled pages in light and dark."]
 
+    if SUSPECTS:
+        lines += ["", "## Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)", ""] + [f"- {s}" for s in sorted(set(SUSPECTS))]
     lines += ["", "## Remaining gaps against the bar", ""]
     for t, g in gaps_all.items():
         lines.append(f"- **{t}**: " + ("; ".join(g) if g else "none against the measured bar"))

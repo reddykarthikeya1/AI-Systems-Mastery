@@ -190,3 +190,88 @@ if __name__ == "__main__":
         print(f"\n[Tick {cycle + 1}]")
         controller.simulate_step()
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Behaviour of the LOOK algorithm as implemented
+
+| Situation | What the code does | Check |
+| :--- | :--- | :--- |
+| Requests above and below | Finishes all stops in the current direction, then reverses | Tested below |
+| New request behind the car while moving | Goes to the opposite-direction set and is served after the reversal | Tested below |
+| Request for the current floor | Prints "doors opening" and does nothing else | Correct, but no door state is modelled |
+| Idle car after the last stop | `direction` becomes `IDLE` and the car stops moving | Tested below |
+| Dispatch tie | `min` keeps the first car, so car 1 gets every tie | Fine for fairness-insensitive demos; real systems also balance load |
+| Concurrency | **Not thread-safe**: `add_destination` and `step` mutate the same sets | One controller thread, or one lock per car |
+
+### Tests
+
+This block extends the implementation above. It records door-open events by reading the printed lines, so it also checks the messages the demo prints.
+
+```python
+# continues: elevator implementation above
+import io, contextlib, re
+
+def run_until_idle(car, limit=200):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        for _ in range(limit):
+            if car.direction == Direction.IDLE:
+                break
+            car.step()
+    return [int(n) for n in re.findall(r"Arrived at Floor (\d+)", buf.getvalue())]
+
+def quiet_add(car, floor):
+    with contextlib.redirect_stdout(io.StringIO()):
+        car.add_destination(floor)
+
+# Serves upward stops in floor order, not request order
+car = ElevatorCar(1)
+quiet_add(car, 5); quiet_add(car, 3)
+assert run_until_idle(car) == [3, 5] and car.direction == Direction.IDLE and car.current_floor == 5
+
+# A request behind a moving car waits until the car reverses
+car = ElevatorCar(1)
+quiet_add(car, 4)
+for _ in range(2):
+    car.step()                                           # now at floor 3, still going up
+assert car.current_floor == 3
+quiet_add(car, 2)                                        # behind us: goes to the down set
+assert run_until_idle(car) == [4, 2] and car.current_floor == 2
+
+# Dispatch: prefer the car already heading toward the floor in the same direction
+ctl = ElevatorController(2)
+a, b = ctl.cars
+a.current_floor = 1                                      # idle
+b.current_floor, b.direction, b.up_stops = 4, Direction.UP, {9}
+assert ctl.strategy.pick_car(ctl.cars, 5, Direction.UP) is b      # distance 1, same direction, ahead of it
+assert ctl.strategy.pick_car(ctl.cars, 2, Direction.UP) is a      # b has already passed floor 2
+assert ctl.strategy.pick_car(ctl.cars, 1, Direction.DOWN) is a
+
+# Controller wiring: hall call, then an internal button, then simulate
+ctl = ElevatorController(1)
+with contextlib.redirect_stdout(io.StringIO()):
+    ctl.handle_hall_call(3, Direction.UP)
+    ctl.handle_internal_button(1, 6)
+    for _ in range(50):
+        ctl.simulate_step()
+assert ctl.cars[0].current_floor == 6 and ctl.cars[0].direction == Direction.IDLE
+print("elevator tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Capacity and weight:** give each car a load; a full car skips hall calls (a high score penalty) but still serves its internal stops.
+2. **Door and motion timing:** replace instantaneous `step()` with states (`MOVING`, `DOORS_OPENING`, `DOORS_OPEN`, `DOORS_CLOSING`) driven by a clock; this is the State pattern again and is easiest to test with a fake clock.
+3. **Peak traffic modes:** morning rush parks idle cars at the lobby; evening rush spreads them. Add a `DispatchStrategy` per mode and switch by schedule.
+4. **Destination dispatch:** riders enter the destination floor at the lobby and the system groups them by direction and floor range; the assignment becomes an optimisation across all pending riders, not a nearest-car rule.
+5. **Fault handling:** mark a car out of service, redistribute its pending stops to other cars, and stop assigning it.
+
+### Follow-up questions
+
+- *Why LOOK rather than SCAN or FCFS?* FCFS zig-zags and starves far floors. SCAN travels to the end of the shaft even with no requests there. LOOK reverses at the last pending stop, which saves the wasted travel.
+- *Can a request starve under LOOK?* Not indefinitely: each reversal clears one direction's set, so a waiting stop is served within two sweeps, assuming the car does not stay permanently busy above it.
+- *How would you make the controller thread-safe?* Make the controller the only writer: a queue of commands consumed by one thread that also runs the step clock, which removes locking from the car objects entirely.

@@ -207,3 +207,126 @@ You now understand:
 2. Why **Stop-The-World** rebalances caused multi-minute production outages in legacy systems.
 3. How the **Cooperative Sticky Assignor** preserves live partition assignments while transferring only orphaned partitions.
 4. How **Generation IDs** prevent stale writes from zombie workers that temporarily disconnected.
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### What the assignor guarantees and where it falls short
+
+| Property | Status | Detail |
+| :--- | :--- | :--- |
+| Even spread when members join or leave | Mostly | Shares differ by at most one in the common cases |
+| Stickiness | Good | Members keep partitions they already hold, so only the necessary ones move |
+| Balance when the partition count is not divisible | **Bug** | The retention cap is `target + 1` for every member whenever there is a remainder, so several members can keep the extra partition: 7 partitions split 3, 3, 1 instead of 3, 2, 2 |
+| Which partition is dropped when trimming | Arbitrary | `set.pop()` order is not deterministic across runs; sort for reproducibility |
+| Failure detection | Good | A missed `session_timeout_sec` removes the member and triggers a rebalance |
+| "Cooperative" in the class name | Overstated | A truly cooperative protocol revokes in a first round and assigns in a second, so unaffected consumers never stop; this simulation does one assignment step |
+
+### Tests, including the imbalance bug
+
+This block extends the implementation above. The last section replaces the retention cap with proper per-member quotas and checks the result on randomised scenarios.
+
+```python
+# continues: rebalance implementation above
+import io, contextlib, random
+from unittest import mock
+
+def counts(assignments):
+    return sorted(len(v) for v in assignments.values())
+
+def members(*held):
+    out = []
+    for i, parts in enumerate(held):
+        m = ConsumerMember(f"m{i}"); m.assigned_partitions = set(parts); out.append(m)
+    return out
+
+P = [Partition("orders", i) for i in range(6)]
+
+# Fresh join: 6 partitions over 2 members is 3 / 3, and every partition is assigned once
+a = CooperativeStickyAssignor.assign(P, members([], []))
+assert counts(a) == [3, 3] and set().union(*a.values()) == set(P)
+
+# A third member joins: shares become 2 / 2 / 2 and only two partitions move
+before = members(P[:3], P[3:], [])
+a = CooperativeStickyAssignor.assign(P, before)
+assert counts(a) == [2, 2, 2]
+moved = sum(len(m.assigned_partitions - a[m.member_id]) for m in before)
+assert moved == 2
+
+# A member dies: survivors keep everything they had
+survivors = members(P[:2], P[4:])                       # m1 (P2, P3) is gone
+a = CooperativeStickyAssignor.assign(P, survivors)
+assert set(P[:2]) <= a["m0"] and set(P[4:]) <= a["m1"] and counts(a) == [3, 3]
+
+# Bug: 7 partitions, holders 4 / 3 / 0, end up 3 / 3 / 1
+P7 = [Partition("t", i) for i in range(7)]
+a = CooperativeStickyAssignor.assign(P7, members(P7[:4], P7[4:], []))
+assert counts(a) == [1, 3, 3]
+
+# Fix: quota per member. The first `extra` members (largest current holders first) may keep base + 1
+def balanced_sticky_assign(all_partitions, active):
+    base, extra = divmod(len(all_partitions), len(active))
+    everything = set(all_partitions)
+    order = sorted(active, key=lambda m: (-len(m.assigned_partitions & everything), m.member_id))
+    quota = {m.member_id: base + (1 if i < extra else 0) for i, m in enumerate(order)}
+    out, free = {}, set(everything)
+    for m in order:
+        keep = sorted(m.assigned_partitions & free, key=lambda p: p.partition_id)[:quota[m.member_id]]
+        out[m.member_id] = set(keep); free -= set(keep)
+    for p in sorted(free, key=lambda p: p.partition_id):
+        m = min(order, key=lambda m: (len(out[m.member_id]) - quota[m.member_id], m.member_id))
+        out[m.member_id].add(p)
+    return out
+
+a = balanced_sticky_assign(P7, members(P7[:4], P7[4:], []))
+assert counts(a) == [2, 2, 3]
+
+rng = random.Random(7)
+for _ in range(300):
+    n_parts, n_members = rng.randint(1, 30), rng.randint(1, 8)
+    parts = [Partition("x", i) for i in range(n_parts)]
+    held = [set() for _ in range(n_members)]
+    for p in parts:
+        if rng.random() < 0.8:
+            held[rng.randrange(n_members)].add(p)
+    ms = members(*held)
+    out = balanced_sticky_assign(parts, ms)
+    sizes = [len(v) for v in out.values()]
+    assert max(sizes) - min(sizes) <= 1                                   # balanced
+    assert sorted(p.partition_id for v in out.values() for p in v) == list(range(n_parts))   # every partition exactly once
+    base, extra = divmod(n_parts, n_members)
+    for m in ms:                                                          # sticky: keeps min(held, quota)
+        assert len(out[m.member_id] & m.assigned_partitions) >= min(len(m.assigned_partitions), base)
+
+# Failure detection with a fake clock
+clock = [0.0]
+with mock.patch("time.monotonic", lambda: clock[0]), contextlib.redirect_stdout(io.StringIO()):
+    gc = GroupCoordinator("g", P, session_timeout_sec=1.0)
+    gc.register_member("A"); gc.register_member("B")
+    gen = gc.generation_id
+    clock[0] = 0.5
+    gc.heartbeat("A"); gc.heartbeat("B"); gc.check_failures_and_rebalance()
+    assert gc.generation_id == gen                                        # healthy group: no rebalance
+    clock[0] = 1.7
+    gc.heartbeat("A")                                                     # B stays silent for 1.2 s
+    gc.check_failures_and_rebalance()
+    assert "B" not in gc.members and gc.generation_id == gen + 1
+    assert gc.members["A"].assigned_partitions == set(P)                 # A inherits everything
+print("rebalance tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **True cooperative rebalancing:** in round one the coordinator tells owners which partitions to revoke; in round two, after owners release them, the new owners receive them. Consumers that keep their partitions never pause.
+2. **Static membership:** a restarting consumer with the same `group.instance.id` gets its old partitions back within the session timeout, avoiding a rebalance for a rolling restart.
+3. **Generation fencing:** every commit carries the generation id; a commit from an older generation is rejected, which stops a zombie consumer from overwriting offsets after it was replaced.
+4. **Rack awareness and weights:** extend the quota so heavier consumers receive proportionally more partitions, and prefer partitions in the consumer's zone.
+5. **Rebalance storms:** flapping members cause repeated reassignments; add a minimum interval and a longer `session_timeout` than the longest GC or processing pause.
+
+### Follow-up questions
+
+- *Why is stickiness valuable?* Moving a partition means committing offsets, closing readers and rebuilding local caches or state stores; keeping assignments stable keeps lag low during a rebalance.
+- *What triggers a rebalance?* A member joining, leaving, or timing out, a change in the subscribed topics, or a change in partition count.
+- *Heartbeat timeout versus processing time?* Heartbeats come from a separate thread, so a long batch does not by itself look like a failure; a separate `max.poll.interval` bounds how long processing may take between polls.

@@ -178,7 +178,7 @@ class ParkingLot:
         if ParkingLot._instance is not None:
             raise RuntimeError("Cannot instantiate Singleton directly! Use get_instance().")
         self.spots = spots
-        self.allocation_strategy: SpotAllocationStrategy = LowestFloorFirstStrategy()
+        self.allocation_strategy: SpotAllocationStrategy = NaiveLinearSearchStrategy()
         self.active_tickets: Dict[str, ParkingTicket] = {}
         self.hourly_rate = 5.0
 
@@ -225,3 +225,113 @@ if __name__ == "__main__":
     if ticket:
         lot.exit_vehicle(ticket.ticket_id)
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### A bug the audit found, and the design issues behind it
+
+The first version of this chapter set `LowestFloorFirstStrategy()` as the default strategy, a class that was never defined, so the demo crashed with `NameError` on the first car. The fix is to use the `NaiveLinearSearchStrategy` defined above. It is a good reminder that a case study is not finished until its driver has been run: the repository's audit script now flags code blocks that fail on a name defined nowhere in their file.
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Smallest fitting spot first | Good | The naive strategy sorts by floor, then spot size, then id, so a compact car takes a compact spot before a large one |
+| Heap strategy loses spots | **Bug** | `find_spot` pops a spot from the heap; if the later `spot.park()` fails, nothing pushes it back, so a free spot disappears |
+| Stale choice under concurrency | **Weak** | The strategy picks a spot without holding its lock; if another thread parks there first, `park_vehicle` returns `None` even though other spots are free |
+| Fee uses the spot size | Questionable | A motorcycle in a large spot pays the large rate; most lots charge by vehicle type |
+| `return_spot` never called on exit | **Bug** (heap only) | `exit_vehicle` frees the spot but does not return it to the heap strategy |
+| Singleton | Works, hurts tests | Global state means tests must reset `ParkingLot._instance` |
+
+### Tests
+
+This block extends the implementation above (it uses `unittest.mock` to control the clock).
+
+```python
+# continues: parking lot implementation above
+import io, contextlib
+from unittest import mock
+
+def quiet(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+def new_lot():
+    ParkingLot._instance = None                       # reset the singleton between tests
+    spots = [ParkingSpot(1, 101, VehicleSize.MOTORCYCLE), ParkingSpot(1, 102, VehicleSize.COMPACT), ParkingSpot(2, 201, VehicleSize.LARGE)]
+    return ParkingLot.get_instance(spots), spots
+
+clock = [0.0]
+with mock.patch("time.monotonic", lambda: clock[0]):
+    lot, spots = new_lot()
+    car = Vehicle("CAR-1", VehicleSize.COMPACT)
+    t1 = quiet(lot.park_vehicle, car)
+    assert t1.spot.spot_id == 102                      # smallest spot that fits
+    t2 = quiet(lot.park_vehicle, Vehicle("CAR-2", VehicleSize.COMPACT))
+    assert t2.spot.spot_id == 201                      # compact spot is taken: falls back to a large one
+    assert quiet(lot.park_vehicle, Vehicle("CAR-3", VehicleSize.COMPACT)) is None      # lot is full for cars
+    assert quiet(lot.park_vehicle, Vehicle("BIKE", VehicleSize.MOTORCYCLE)).spot.spot_id == 101
+
+    clock[0] = 60.0                                    # one minute later: minimum one hour is charged
+    assert abs(quiet(lot.exit_vehicle, t1.ticket_id) - 10.0) < 1e-9          # 1h x $5 x size 2
+    assert t1.spot.is_occupied is False
+    assert quiet(lot.park_vehicle, Vehicle("CAR-4", VehicleSize.COMPACT)).spot.spot_id == 102   # the freed spot is reused
+
+    clock[0] = 7200.0                                  # two hours
+    assert abs(quiet(lot.exit_vehicle, t2.ticket_id) - 2 * 5.0 * 3) < 1e-9   # priced by the LARGE spot it occupied
+    try:
+        quiet(lot.exit_vehicle, "no-such-ticket")
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
+
+# Bug: a spot popped from the heap and never parked is lost
+s = ParkingSpot(1, 1, VehicleSize.COMPACT)
+heap = HeapOptimizedAllocationStrategy([s])
+v = Vehicle("X", VehicleSize.COMPACT)
+assert heap.find_spot([s], v) is s
+assert heap.find_spot([s], v) is None                  # s is free, yet it can no longer be allocated
+heap.return_spot(s)                                    # the missing step
+assert heap.find_spot([s], v) is s
+
+# Bug: a stale choice makes park_vehicle give up although another spot is free
+class StaleOnce(SpotAllocationStrategy):
+    def __init__(self, first, second): self.queue = [first, second]
+    def find_spot(self, spots, vehicle): return self.queue.pop(0) if self.queue else None
+
+lot, spots = new_lot()
+taken, free = spots[1], ParkingSpot(1, 103, VehicleSize.COMPACT)
+taken.park(Vehicle("OTHER", VehicleSize.COMPACT))      # another thread parked here between find and park
+lot.allocation_strategy = StaleOnce(taken, free)
+assert quiet(lot.park_vehicle, Vehicle("ME", VehicleSize.COMPACT)) is None      # lost the entry
+
+# Fix: retry with a fresh choice a bounded number of times
+class RetryingLot(ParkingLot):
+    def park_vehicle(self, vehicle, attempts=3):
+        for _ in range(attempts):
+            ticket = super().park_vehicle(vehicle)
+            if ticket:
+                return ticket
+        return None
+
+ParkingLot._instance = None
+rl = RetryingLot([taken, free])
+rl.allocation_strategy = StaleOnce(taken, free)
+assert quiet(rl.park_vehicle, Vehicle("ME", VehicleSize.COMPACT)).spot is free
+print("parking lot tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Pricing by vehicle type and duration tiers:** pass the vehicle size, not the spot size, to a `PricingStrategy`; add tiers (first hour flat, then per 30 minutes, daily cap).
+2. **Multiple entrances and exits:** the lot owns the allocation lock; each gate is a thin client holding a ticket printer, so gates never share state beyond the lot.
+3. **EV charging and reserved spots:** add spot attributes (`has_charger`, `reserved_for`) and make eligibility a predicate list instead of the single `can_fit` rule.
+4. **Reservations:** a `Reservation` holds a spot for a time window; the allocator excludes held spots, and a sweeper releases no-shows.
+5. **Display board:** an observer updates free-spot counts per floor on every park and exit, using counters instead of scanning.
+
+### Follow-up questions
+
+- *Why is the naive search acceptable for a few hundred spots?* O(N) over a few hundred items is microseconds; a heap per size becomes worthwhile at tens of thousands of spots, and only if you fix the lost-spot bug above.
+- *Is the Singleton needed?* A lot is naturally one object per site, but passing it in explicitly gives the same effect without global state and makes the tests simpler.
+- *How do you make allocation race-free?* Allocate and park under one lock (or atomic compare-and-set on the spot) so the choice cannot go stale, rather than retrying afterwards.

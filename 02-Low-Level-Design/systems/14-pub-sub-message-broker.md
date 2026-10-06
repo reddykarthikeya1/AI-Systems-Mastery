@@ -251,3 +251,124 @@ if __name__ == "__main__":
         print(f"  Offset {m.offset}: {m.payload}")
 ```
 Both consumer groups read the exact same data without interfering with each other's reading progress!
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Semantics and the weak spots
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Per-key ordering | Good | Same key goes to the same partition, and a partition is an append-only log |
+| Independent consumer groups | Good | Each group has its own offsets, so fraud and analytics both see every message |
+| Key to partition mapping | **Bug across restarts** | `hash(key)` for a `str` is randomised per process (hash randomisation), so after a restart the same key can land on a different partition and order is lost |
+| Keyless messages | Hot partition | `key=None` always goes to partition 0; round-robin spreads the load |
+| Offset committed on read | At-most-once | `consume` advances the offset before the caller has processed the batch; a crash loses messages. Kafka separates `poll` from `commit` |
+| Two consumers in one group on one partition | **Duplicates** | `get_offset` and `commit_offset` are separate lock acquisitions, so both can read the same batch |
+| Retention | None | The log grows forever; real brokers delete or compact by size, time or key |
+
+### Tests
+
+This block extends the implementation above. It starts subprocesses with different `PYTHONHASHSEED` values to show the partitioning bug for real.
+
+```python
+# continues: pub/sub implementation above
+import os, subprocess, sys, threading, zlib
+
+b = InMemoryBroker()
+b.create_topic("t", num_partitions=3)
+try:
+    b.create_topic("t"); raise AssertionError("expected ValueError")
+except ValueError:
+    pass
+try:
+    b.publish("missing", "x"); raise AssertionError("expected KeyError")
+except KeyError:
+    pass
+
+# Per-key ordering and independent groups
+for i in range(5):
+    b.publish("t", f"a{i}", key="alice")
+p = b.topics["t"]._get_partition_index("alice")
+first = b.consume("t", "g1", p, limit=3)
+assert [m.payload for m in first] == ["a0", "a1", "a2"]
+assert [m.payload for m in b.consume("t", "g1", p, limit=10)] == ["a3", "a4"]    # continues from the committed offset
+assert b.consume("t", "g1", p) == []                                              # drained
+assert len(b.consume("t", "g2", p, limit=10)) == 5                                # another group starts at 0
+
+# Keyless messages all land on partition 0 (a hot partition)
+b2 = InMemoryBroker(); b2.create_topic("k", 4)
+for i in range(20):
+    b2.publish("k", str(i))
+assert [len(p._log) for p in b2.topics["k"].partitions] == [20, 0, 0, 0]
+
+# Bug: the same key maps to different partitions in different processes
+code = "print(hash('user_alice') % 3)"
+seen = {subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env={**os.environ, "PYTHONHASHSEED": str(s)}).stdout.strip() for s in range(1, 9)}
+assert len(seen) > 1
+
+# Fix: a stable hash, and round-robin for keyless messages
+class StableTopic(Topic):
+    def __init__(self, name, num_partitions=3):
+        super().__init__(name, num_partitions); self._rr = 0; self._rr_lock = threading.Lock()
+    def _get_partition_index(self, key):
+        if key is None:
+            with self._rr_lock:
+                self._rr += 1
+                return self._rr % self.num_partitions
+        return zlib.crc32(key.encode("utf-8")) % self.num_partitions
+
+t = StableTopic("s", 5)
+assert t._get_partition_index("user_alice") == zlib.crc32(b"user_alice") % 5      # same in every process
+for i in range(20):
+    t.publish(None, str(i))
+assert all(len(p._log) == 4 for p in t.partitions)
+
+# Duplicates: two consumers of one group both read offset 0 before either commits
+g = ConsumerGroup("dup")
+o1, o2 = g.get_offset(0), g.get_offset(0)
+assert o1 == o2 == 0
+
+# Fix: make read-and-advance atomic per group
+class SafeBroker(InMemoryBroker):
+    def consume(self, topic_name, group_id, partition_id, limit=5):
+        with self._lock:
+            self.consumer_groups.setdefault(group_id, ConsumerGroup(group_id))
+            group = self.consumer_groups[group_id]
+        with group._lock:
+            start = group.offsets.get(partition_id, 0)
+            msgs = self.topics[topic_name].partitions[partition_id].read_from(start, limit)
+            if msgs:
+                group.offsets[partition_id] = msgs[-1].offset + 1
+            return msgs
+
+sb = SafeBroker(); sb.create_topic("t", 1)
+for i in range(300):
+    sb.publish("t", str(i), key="k")
+got = []
+def worker():
+    while True:
+        m = sb.consume("t", "grp", 0, limit=1)
+        if not m: return
+        got.append(m[0].offset)
+ts = [threading.Thread(target=worker) for _ in range(4)]
+[x.start() for x in ts]; [x.join() for x in ts]
+assert sorted(got) == list(range(300))            # every message exactly once across the four consumers
+print("pub/sub tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **At-least-once with explicit commit:** split `consume` into `poll` (returns messages and a token) and `commit(token)`; on restart the group resumes from the last commit, so messages may repeat and handlers must be idempotent.
+2. **Consumer group membership:** assign partitions to the consumers of a group with the rebalance logic from the Kafka case study, so two consumers never read the same partition.
+3. **Retention and compaction:** delete segments older than N hours, or keep only the latest message per key for a "current state" topic.
+4. **Backpressure and slow consumers:** because consumers pull, a slow one just lags; expose lag (`log_end_offset - committed_offset`) as the key health metric.
+5. **Delivery guarantees summary:** at-most-once (commit before processing), at-least-once (commit after), effectively-once (at-least-once plus idempotent processing or transactions).
+
+### Follow-up questions
+
+- *Why partition at all?* One log has one writer-ordering point; partitions give parallelism while preserving order per key, and are the unit of consumer scaling.
+- *What limits consumer parallelism?* The partition count: a group cannot usefully have more active consumers than partitions.
+- *Why must the key hash be stable?* Ordering per key depends on the key always reaching the same partition; a hash that changes between runs silently breaks it.

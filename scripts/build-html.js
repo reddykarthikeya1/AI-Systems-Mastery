@@ -192,6 +192,7 @@ const TRACKS = [
       { name: "01-OOP-Fundamentals-And-SOLID-Principles.md", label: "01: OOP & SOLID Principles" },
       { name: "02-UML-Modeling-Class-Sequence-State-Diagrams.md", label: "02: UML Modeling Masterclass" },
       { name: "03-Design-Patterns-Catalog-Python-Implementations.md", label: "03: Design Patterns Catalog" },
+      { name: "03-B-Design-Patterns-Catalog-Part-2.md", label: "03-B: Design Patterns, Part 2" },
       { name: "04-Concurrency-Patterns-ThreadSafety-Locking.md", label: "04: Concurrency & Thread-Safety" },
       { name: "05-Curveball-Requirement-Evolution-Mastery.md", label: "05: Mid-Interview Curveball Drills" },
       { name: "06-Legacy-Code-Refactoring-To-Design-Patterns.md", label: "06: Legacy Spaghetti Refactoring" },

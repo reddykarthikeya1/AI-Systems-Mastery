@@ -162,3 +162,92 @@ if __name__ == "__main__":
     manager.fulfill_order(customer_city="San Francisco", sku="MACBOOK-PRO-16", qty=8)
     # Remaining in SF is 4 (triggers low stock observer!)
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Where the design is right and where it leaks
+
+| Concern | Status | Detail |
+| :--- | :--- | :--- |
+| Overselling under concurrency | Safe | `deduct` checks and subtracts inside one lock, so two threads can never both take the last unit |
+| Pick-then-deduct race | **Weak** | `pick_warehouse` reads stock without holding the lock; the winner can be drained before `deduct` runs, and `fulfill_order` then fails the whole order even though another warehouse could serve it |
+| Low-stock alert | Fires after every deduction at or below the threshold | Alert storms: fire once per crossing, then re-arm when stock rises above the threshold |
+| Multi-line orders | Not modelled | Reserve all lines or none; otherwise partial fulfilment strands stock |
+| Reservations vs stock | Not modelled | Carts need a time-limited reservation, separate from on-hand quantity |
+
+### Tests, including the race
+
+The first test proves there is no overselling. The second reproduces the pick-then-deduct race deterministically, and shows the fix: try candidates in preference order until one deduction succeeds. This block extends the implementation above.
+
+```python
+# continues: inventory implementation above
+import io, contextlib, threading
+
+def quiet(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+# 1. No overselling: 20 racing orders for 1 unit each, 10 in stock
+wh = Warehouse("W1", "Austin"); wh.set_stock("SKU", 10, threshold=0)
+mgr = InventoryManager(NearestWarehouseStrategy()); mgr.add_warehouse(wh)
+ok = []
+ts = [threading.Thread(target=lambda: ok.append(quiet(mgr.fulfill_order, "Austin", "SKU", 1))) for _ in range(20)]
+[t.start() for t in ts]; [t.join() for t in ts]
+assert sum(ok) == 10 and wh.get_stock("SKU") == 0
+
+# 2. The race: the chosen warehouse is drained between pick and deduct
+class DrainAfterPick(NearestWarehouseStrategy):
+    def pick_warehouse(self, warehouses, city, sku, qty):
+        w = super().pick_warehouse(warehouses, city, sku, qty)
+        w.deduct(sku, w.get_stock(sku))          # a competing order empties it
+        return w
+
+a, b = Warehouse("A", "Austin"), Warehouse("B", "Boston")
+a.set_stock("SKU", 5); b.set_stock("SKU", 5)
+m1 = InventoryManager(DrainAfterPick()); m1.add_warehouse(a); m1.add_warehouse(b)
+assert quiet(m1.fulfill_order, "Austin", "SKU", 1) is False      # order lost although B has stock
+
+# Fix: iterate over candidates in preference order
+class RobustInventoryManager(InventoryManager):
+    def fulfill_order(self, customer_city, sku, qty):
+        ranked = sorted(self.warehouses, key=lambda w: w.city.lower() != customer_city.lower())
+        for w in ranked:
+            ok, remaining = w.deduct(sku, qty)
+            if ok:
+                if remaining <= w.thresholds.get(sku, 10):
+                    for o in self.observers:
+                        o.on_low_stock(w.warehouse_id, sku, remaining)
+                return True
+        return False
+
+a2, b2 = Warehouse("A", "Austin"), Warehouse("B", "Boston")
+a2.set_stock("SKU", 0); b2.set_stock("SKU", 5)
+m2 = RobustInventoryManager(NearestWarehouseStrategy()); m2.add_warehouse(a2); m2.add_warehouse(b2)
+assert quiet(m2.fulfill_order, "Austin", "SKU", 1) is True and b2.get_stock("SKU") == 4
+
+# 3. Observer fires at the threshold
+class Recorder(StockAlertObserver):
+    def __init__(self): self.calls = []
+    def on_low_stock(self, wid, sku, qty): self.calls.append((wid, sku, qty))
+rec = Recorder(); w3 = Warehouse("W3", "Reno"); w3.set_stock("S", 6, threshold=5)
+m3 = InventoryManager(NearestWarehouseStrategy()); m3.add_warehouse(w3); m3.register_observer(rec)
+quiet(m3.fulfill_order, "Reno", "S", 1)
+assert rec.calls == [("W3", "S", 5)]
+print("inventory tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Reservations:** add `reserve(sku, qty, ttl)` that moves units from `available` to `reserved`; a background sweep returns expired reservations. Checkout converts a reservation into a deduction.
+2. **Atomic multi-warehouse split orders:** if no single warehouse has 5 units, take 3 from one and 2 from another; do it as a two-phase reserve-then-commit so a failure rolls everything back.
+3. **Database-backed stock:** replace the in-process lock with `UPDATE stock SET qty = qty - :n WHERE sku = :s AND qty >= :n` and check the affected row count; the database performs the same check-and-subtract atomically.
+4. **Cheapest shipping instead of nearest:** swap the `FulfillmentStrategy`; nothing else changes, which is the point of the pattern.
+
+### Follow-up questions
+
+- *Why is a lock per warehouse better than one global lock?* Orders for different warehouses never contend; the cost is that cross-warehouse operations need a consistent lock order to avoid deadlock.
+- *How do you stop alert storms?* Keep a per-SKU `alerted` flag, set it on the downward crossing, clear it when stock goes back above the threshold.
+- *What changes when stock lives in a database?* The check-and-subtract moves into one SQL statement or a `SELECT ... FOR UPDATE` transaction; the in-memory lock disappears and idempotency keys on orders become the new concern.

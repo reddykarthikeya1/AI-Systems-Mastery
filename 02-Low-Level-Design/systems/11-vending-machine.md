@@ -210,3 +210,84 @@ if __name__ == "__main__":
     machine.insert_coin(1.00)
     machine.select_item("A1")
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### State-machine review
+
+| State | `insert_coin` | `select_item` | `refund` | Failure to watch for |
+| :--- | :--- | :--- | :--- | :--- |
+| Idle | to HasMoney | prompt only | returns 0 | none |
+| HasMoney | adds balance | dispense, sold out, or short of funds | returns balance, to Idle | **float balance can look short by a tiny amount** |
+| Dispense | rejected | rejected | rejected | power loss mid-dispense: persist the transaction first |
+
+Every illegal operation in a state is handled by that state class, so there is no `if state == ...` ladder in the context object. That is the point of the State pattern, and it is the property to point out in an interview.
+
+Two weaknesses: money is stored as `float` dollars, and the machine returns "change" as a number without checking that it holds the coins to pay it.
+
+### Tests
+
+This block extends the implementation above. The bug test shows the float problem; the next test shows that the same machine is exact when the amounts are integer cents.
+
+```python
+# continues: vending machine implementation above
+import io, contextlib
+
+def quiet(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+# Happy path with change
+vm = VendingMachine(); vm.add_item("A1", Item("Chips", 0.75), 2)
+quiet(vm.insert_coin, 1.00); quiet(vm.select_item, "A1")
+assert vm.inventory["A1"].quantity == 1 and vm.balance == 0.0 and isinstance(vm.state, IdleState)
+
+# Short of funds: stays in HasMoney, refund returns exactly what was inserted
+vm = VendingMachine(); vm.add_item("A1", Item("Chips", 0.75), 1)
+quiet(vm.insert_coin, 0.50); quiet(vm.select_item, "A1")
+assert isinstance(vm.state, HasMoneyState) and vm.inventory["A1"].quantity == 1
+assert quiet(vm.refund) == 0.50 and isinstance(vm.state, IdleState)
+
+# Sold out
+vm = VendingMachine(); vm.add_item("A1", Item("Chips", 0.75), 0)
+quiet(vm.insert_coin, 1.00); quiet(vm.select_item, "A1")
+assert isinstance(vm.state, HasMoneyState) and vm.balance == 1.00
+
+# Illegal operations are no-ops, not crashes
+vm = VendingMachine()
+quiet(vm.select_item, "A1"); quiet(vm.dispense)
+assert quiet(vm.refund) == 0.0 and isinstance(vm.state, IdleState)
+
+# The bug: seven 10-cent coins are 0.7999999999999999 dollars, so an 80-cent item looks unaffordable
+vm = VendingMachine(); vm.add_item("B1", Item("Gum", 0.80), 1)
+for _ in range(7):
+    quiet(vm.insert_coin, 0.10)
+quiet(vm.select_item, "B1")
+assert vm.inventory["B1"].quantity == 1               # nothing was dispensed
+
+# The fix needs no new class: use integer cents everywhere
+vm = VendingMachine(); vm.add_item("B1", Item("Gum", 80), 1)
+for _ in range(7):
+    quiet(vm.insert_coin, 10)
+quiet(vm.select_item, "B1")
+assert vm.inventory["B1"].quantity == 1               # 70 < 80: still short, correctly
+quiet(vm.insert_coin, 10); quiet(vm.select_item, "B1")
+assert vm.inventory["B1"].quantity == 0 and vm.balance == 0
+print("vending machine tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **Make change from a coin inventory:** add a `CoinBank` with counts per denomination and a greedy or dynamic-programming change-maker; refuse the sale (or demand exact change) when change cannot be formed. Greedy is correct for canonical coin systems such as US coins and wrong for arbitrary ones, so say which you assume.
+2. **Timeouts:** an unselected balance should refund after 30 seconds; give the machine a clock and a `tick()` that moves HasMoney to Idle, tested with a fake clock like the rate limiter.
+3. **Payment by card:** a `PaymentStrategy` (cash, card, mobile) so `HasMoneyState` stops assuming coins.
+4. **Remote monitoring:** emit events (`ItemSold`, `LowStock`, `Jammed`) to observers, which is the same Observer shape used in the inventory case study.
+
+### Follow-up questions
+
+- *State pattern or an enum with a switch?* A switch is fine for three states and one method; the pattern pays off when states multiply, because each new state is a new class and existing ones stay untouched.
+- *What if the machine loses power while dispensing?* Write the sale intent to durable storage before moving the motor, and on boot reconcile: either complete the dispense or refund.
+- *Where would you add a maintenance mode?* A fourth state (`OutOfServiceState`) that rejects coins and allows only restocking commands.

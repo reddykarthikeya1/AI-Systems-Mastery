@@ -272,3 +272,107 @@ if __name__ == "__main__":
     print(f"\nTotal JSON logs in memory buffer: {len(mem_sink.entries)}")
     print("Sample JSON entry:\n" + mem_sink.entries[0])
 ```
+
+
+---
+
+## 4. Edge Cases, Tests and Extensions
+
+### Behaviour under pressure
+
+| Situation | What happens | Verdict |
+| :--- | :--- | :--- |
+| Level below the threshold | Dropped before any allocation | Correct and cheap |
+| Queue full | `put_nowait` raises `queue.Full`; the record is dropped and a warning is printed | A deliberate overload policy: logging must never block the request path. Count the drops and expose the counter |
+| A sink raises | The error is printed and the other sinks still receive the record | Isolation is right; add a circuit breaker so a dead sink is not retried every record |
+| `shutdown()` | Sets the event, joins the worker for up to 2 seconds, then flushes sinks | A long backlog can outlive the 2 second join and lose records |
+| `log()` after `shutdown()` | Record is queued and never emitted | Silent loss; reject or warn instead |
+| Process exit without `shutdown()` | Worker is a daemon thread, so queued records vanish | Register `atexit(logger.shutdown)` |
+| Ordering | Preserved per producer thread (FIFO queue), interleaved across threads | Good enough; do not promise a global order |
+
+### Tests
+
+This block extends the implementation above. `GateSink` blocks the worker so the overflow behaviour is deterministic.
+
+```python
+# continues: logging implementation above
+import io, contextlib, json, threading
+
+class GateSink(LogSink):
+    """A sink that blocks until released, so we can fill the queue on purpose."""
+    def __init__(self):
+        super().__init__(TextFormatter())
+        self.gate, self.entered, self.records = threading.Event(), threading.Event(), []
+    def emit(self, record):
+        self.entered.set(); self.gate.wait(5); self.records.append(record.message)
+    def flush(self): pass
+
+class BoomSink(LogSink):
+    def emit(self, record): raise RuntimeError("disk full")
+    def flush(self): pass
+
+def quiet_call(fn, *a):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*a)
+
+# 1. Concurrency: 8 threads x 100 records, nothing lost after shutdown
+lg = AsyncLogger("t", threshold=LogLevel.DEBUG, max_buffer_size=10_000)
+mem = MemoryBufferSink(JSONFormatter()); lg.add_sink(mem)
+ts = [threading.Thread(target=lambda i=i: [lg.info(f"{i}-{k}") for k in range(100)]) for i in range(8)]
+[t.start() for t in ts]; [t.join() for t in ts]
+lg.shutdown()
+assert len(mem.entries) == 800
+assert all(json.loads(e)["level"] == "INFO" for e in mem.entries)        # JSON formatter emits valid JSON
+
+# 2. Per-thread FIFO order is preserved
+lg = AsyncLogger("o"); mem = MemoryBufferSink(JSONFormatter()); lg.add_sink(mem)
+for k in range(200):
+    lg.info(str(k))
+lg.shutdown()
+assert [json.loads(e)["message"] for e in mem.entries] == [str(k) for k in range(200)]
+
+# 3. Threshold filter
+lg = AsyncLogger("f", threshold=LogLevel.WARN); mem = MemoryBufferSink(JSONFormatter()); lg.add_sink(mem)
+lg.debug("no"); lg.info("no"); lg.warn("yes"); lg.error("yes")
+lg.shutdown()
+assert [json.loads(e)["message"] for e in mem.entries] == ["yes", "yes"]
+
+# 4. Overload: capacity 1 and a blocked sink. record 1 is in the worker's hands, 2 fills the queue, 3 is dropped
+gate = GateSink()
+lg = AsyncLogger("g", max_buffer_size=1); lg.add_sink(gate)
+lg.info("r1"); assert gate.entered.wait(2)
+lg.info("r2")
+out = io.StringIO()
+with contextlib.redirect_stdout(out):
+    lg.info("r3")
+assert "LOGGER OVERLOAD" in out.getvalue()
+gate.gate.set(); lg.shutdown()
+assert gate.records == ["r1", "r2"]
+
+# 5. A failing sink does not stop the others
+lg = AsyncLogger("b"); mem = MemoryBufferSink(TextFormatter())
+lg.add_sink(BoomSink(TextFormatter())); lg.add_sink(mem)
+quiet_call(lg.info, "hello"); quiet_call(lg.shutdown)
+assert len(mem.entries) == 1 and "hello" in mem.entries[0]
+
+# 6. Documented gap: records logged after shutdown are silently lost
+lg = AsyncLogger("late"); mem = MemoryBufferSink(TextFormatter()); lg.add_sink(mem)
+lg.shutdown(); lg.info("too late")
+import time; time.sleep(0.3)
+assert mem.entries == []
+print("logging tests passed")
+```
+
+### Extensions interviewers ask for
+
+1. **File sink with rotation:** rotate by size or time; write to a temporary name and rename, and keep `flush()` meaningful (`fsync` on shutdown).
+2. **Batching:** drain up to N records per wake-up and write them in one call; this is how throughput climbs from thousands to hundreds of thousands of records per second.
+3. **Structured context (request id, user id):** use `contextvars.ContextVar` so the id is attached automatically in every thread or task without passing it around.
+4. **Dropped-record metric:** increment a counter in the `queue.Full` branch and log it once per second from the worker, so an overload is visible instead of silent.
+5. **Multiprocess safety:** several processes writing one file need a single writer process or a socket handler; two processes appending with their own buffers will interleave lines.
+
+### Follow-up questions
+
+- *Why a queue and a background thread rather than writing in the caller?* Disk and network latency would otherwise land on the request path. The queue decouples producer latency from sink latency at the cost of possible loss on a crash.
+- *Block or drop when the buffer is full?* Dropping protects availability; blocking protects completeness. Choose per level: never drop `ERROR`, freely drop `DEBUG`.
+- *How does Python's own `logging.handlers.QueueHandler` relate?* It is the same design: handlers enqueue records and a `QueueListener` thread owns the slow handlers.

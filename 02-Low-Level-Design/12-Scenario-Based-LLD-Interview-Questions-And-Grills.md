@@ -68,6 +68,64 @@ def lock_seats_deadlock_free(seat_ids: list[str], seat_pool: dict):
   * This allows running 1,000 test cases in 50 milliseconds in CI/CD without external network dependencies.
 
 
+## 2. Failure, Extension and Test Questions
+
+### Question 5: "Your payment call succeeds but the process crashes before the seat is marked booked. What now?"
+
+This is the **dual write** problem: two systems change and no transaction spans both. State the options in order of preference:
+
+1. **Idempotency key:** send the booking id with the charge; on restart, retry the whole confirm step and the gateway returns the first result instead of charging twice.
+2. **Record intent first:** write `PAYMENT_PENDING` to durable storage before calling the gateway; a recovery job finds pending bookings and asks the gateway what happened.
+3. **Outbox or saga:** write the booking change and an event to the same database transaction; a relay publishes the event, and a compensating action refunds when the booking cannot complete.
+
+Say plainly that "make it atomic" is not available across a network, and name the compromise you chose.
+
+### Question 6: "A teammate adds a new vehicle type and has to edit six `if/elif` blocks. How do you fix the design?"
+
+The design violates the Open/Closed Principle: adding a case should not edit existing code. Move the varying rule behind a lookup keyed by the type, so a new type is one new entry:
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Rate:
+    per_day: int
+    deposit: int
+
+RATES = {"economy": Rate(45, 100), "suv": Rate(85, 200)}
+
+def quote(vehicle_type: str, days: int) -> int:
+    rate = RATES[vehicle_type]                   # unknown type raises KeyError: fail loudly
+    return rate.per_day * days + rate.deposit
+
+assert quote("economy", 3) == 235
+RATES["van"] = Rate(120, 300)                    # extension without touching quote()
+assert quote("van", 2) == 540
+```
+
+When the rule is behaviour rather than data, register a strategy object in the same kind of table. Mention the trade-off: a registry is easy to extend but spreads the rules across files, so keep one place that lists them.
+
+### Question 7: "How would you make your in-memory rate limiter work across ten servers?"
+
+Local counters give each server its own limit, so the real limit is ten times higher. Options: a central store with an atomic script (Redis), sticky routing by client key so each client always hits the same server, or a hybrid where servers keep a local allowance and refill it from the central store in batches. State what you give up with each: the central store adds latency and a dependency, sticky routing breaks when a server dies, the hybrid allows a bounded overshoot.
+
+### Question 8: "What do you write first when asked to design a system in 45 minutes?"
+
+A defensible order: requirements and non-goals (5 minutes), entities and relationships (5), the main interface and the one hard algorithm or concurrency point (15), code or pseudo-code for that part (15), then edge cases and extensions (5). Interviewers score clarifying questions, a design that survives the follow-up requirement, correct handling of the hard part, and visible testing thought, more than the number of patterns used.
+
+## 3. What Interviewers Actually Score
+
+| Dimension | Strong signal | Weak signal |
+| :--- | :--- | :--- |
+| Requirements | Asks about scale, concurrency, failure before drawing | Starts coding at once |
+| Modelling | Small classes with one reason to change | One class that does everything, or a class per noun with no behaviour |
+| Patterns | Names the force, then the pattern, and says when not to use it | Pattern name-dropping |
+| Concurrency | Finds the check-then-act and lock-ordering hazards unprompted | Adds locks everywhere or nowhere |
+| Extensibility | Handles the curveball by adding code, not editing | Rewrites the design |
+| Testing | Injects clocks, randomness and I/O so tests are deterministic | "I would test it manually" |
+
+---
+
 ## Further Reading
 
 - [Refactoring Guru: pattern catalog](https://refactoring.guru/design-patterns/catalog)
