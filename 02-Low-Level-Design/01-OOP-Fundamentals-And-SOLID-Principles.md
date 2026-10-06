@@ -66,6 +66,11 @@ class PaymentGateway(ABC):
 Inheritance creates a tight coupling ("is-a" relationship). In 95% of enterprise systems, **composition ("has-a" relationship)** yields significantly more maintainable architectures:
 
 ```python
+class Database: pass
+class DatabaseClient: pass
+class AuthProvider: pass
+class Logger: pass
+
 # ANTI-PATTERN (Tight Coupling via Inheritance)
 class AuthenticatedLoggingDatabase(Database):
     pass # Bloated class hierarchy!

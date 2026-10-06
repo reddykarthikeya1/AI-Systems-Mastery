@@ -1416,7 +1416,9 @@ truncated = <span class="hljs-built_in">int</span>(-<span class="hljs-number">3<
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> Creates a new string copy on every iteration</span>
+    <pre><code class="hljs language-python">chars = [<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>]
+
+<span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> Creates a new string copy on every iteration</span>
 s = <span class="hljs-string">&quot;&quot;</span>
 <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> chars:
     s += char
@@ -1432,11 +1434,14 @@ s = <span class="hljs-string">&quot;&quot;</span>.join(chars)</code></pre>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> Infinite loop!</span>
-<span class="hljs-keyword">while</span> left &lt; right:
-    <span class="hljs-keyword">if</span> nums[left] + nums[right] == target:
-        <span class="hljs-keyword">return</span> [left, right]
-    <span class="hljs-comment"># Forgetting to advance left or decrement right!</span></code></pre>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_two_sum</span>(<span class="hljs-params">nums, target</span>):
+    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> Infinite loop if pointers aren&#x27;t updated!</span>
+    <span class="hljs-keyword">while</span> left &lt; right:
+        <span class="hljs-keyword">if</span> nums[left] + nums[right] == target:
+            <span class="hljs-keyword">return</span> [left, right]
+        left += <span class="hljs-number">1</span>  <span class="hljs-comment"># MUST advance pointer</span>
+    <span class="hljs-keyword">return</span> []</code></pre>
   </div><hr>
 <h2 id="3-the-mental-dry-run-execution-protocol"><a href="#3-the-mental-dry-run-execution-protocol" class="header-anchor">#</a>3. The Mental Dry-Run Execution Protocol</h2><p>Before you tell the interviewer you have finished, execute this 4-step mental dry-run:</p>
 

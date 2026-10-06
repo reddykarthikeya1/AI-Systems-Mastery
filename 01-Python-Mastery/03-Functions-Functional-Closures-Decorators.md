@@ -159,6 +159,9 @@ print(f"Cell contents: {closure_cells[0].cell_contents}") # 12
 A decorator is a callable that takes a function as input, extends or modifies its behavior, and returns a callable.
 The `@decorator` syntax is pure syntactic sugar:
 ```python
+def my_decorator(fn):
+    return fn
+
 @my_decorator
 def target():
     pass

@@ -1483,7 +1483,10 @@ The <code>@decorator</code> syntax is pure syntactic sugar:</p>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-meta">@my_decorator</span>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">my_decorator</span>(<span class="hljs-params">fn</span>):
+    <span class="hljs-keyword">return</span> fn
+
+<span class="hljs-meta">@my_decorator</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">target</span>():
     <span class="hljs-keyword">pass</span>
 

@@ -44,7 +44,7 @@ def main():
                 continue
             work = f"{WORK}_{n}_{len(outcomes)}"
             shutil.rmtree(work, ignore_errors=True)
-            shutil.copytree(os.path.join(PRACTICE, "solutions"), work, ignore=shutil.ignore_patterns("__pycache__"))
+            shutil.copytree(os.path.join(PRACTICE, "solutions"), work, ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
             mutated = head[:idx] + new + head[idx + len(old):] + original[len(head):]
             open(os.path.join(work, os.path.basename(src)), "w", encoding="utf-8").write(mutated)
             outcomes.append((old.strip(), run_fuzz(n, work)))

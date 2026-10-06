@@ -1338,7 +1338,12 @@ flowchart TD
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># ANTI-PATTERN (Tight Coupling via Inheritance)</span>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Database</span>: <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DatabaseClient</span>: <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthProvider</span>: <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Logger</span>: <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># ANTI-PATTERN (Tight Coupling via Inheritance)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthenticatedLoggingDatabase</span>(<span class="hljs-title class_ inherited__">Database</span>):
     <span class="hljs-keyword">pass</span> <span class="hljs-comment"># Bloated class hierarchy!</span>
 

@@ -125,6 +125,8 @@ Avoid naming variables `list`, `dict`, `min`, `max`, `sum`, `id`, `type`, or `st
 
 ### 9. String Concatenation Inside Loops ($O(N^2)$ Trap)
 ```python
+chars = ["a", "b", "c"]
+
 # BUG: Creates a new string copy on every iteration
 s = ""
 for char in chars:
@@ -136,11 +138,14 @@ s = "".join(chars)
 
 ### 10. Forgetting to Update Pointers in `while` Loops
 ```python
-# BUG: Infinite loop!
-while left < right:
-    if nums[left] + nums[right] == target:
-        return [left, right]
-    # Forgetting to advance left or decrement right!
+def find_two_sum(nums, target):
+    left, right = 0, len(nums) - 1
+    # BUG: Infinite loop if pointers aren't updated!
+    while left < right:
+        if nums[left] + nums[right] == target:
+            return [left, right]
+        left += 1  # MUST advance pointer
+    return []
 ```
 
 ---

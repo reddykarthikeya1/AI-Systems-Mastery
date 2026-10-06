@@ -1247,7 +1247,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 <p><strong>Zero Gaps Guarantee:</strong> This curriculum covers not only theoretical blueprints, but also live execution feedback loops: dependency hell diagnostics, post-mortem chaos engineering, multi-threaded race condition reproductions, automated CI/CD evaluation harnesses, and 45-minute ticking-clock interview simulations.</p>
 </blockquote>
 <hr>
-<h2 id="quality-what-is-measured-and-what-is-judged"><a href="#quality-what-is-measured-and-what-is-judged" class="header-anchor">#</a>Quality: what is measured and what is judged</h2><p><strong>Measured</strong> (regenerate with <code>python tools/audit.py</code>, output in <a href="QUALITY_REPORT.html">QUALITY_REPORT.md</a>): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 34 brute-force cross-checks), chapters with <em>Check Yourself</em> and <em>Further Reading</em> (every link checked to resolve), the portal&#39;s search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.</p>
+<h2 id="quality-what-is-measured-and-what-is-judged"><a href="#quality-what-is-measured-and-what-is-judged" class="header-anchor">#</a>Quality: what is measured and what is judged</h2><p><strong>Measured</strong> (regenerate with <code>python tools/audit.py</code>, output in <a href="QUALITY_REPORT.html">QUALITY_REPORT.md</a>): words per chapter, code blocks that execute, labs and simulations that run, the DSA Core 75 (asserts plus 70 brute-force cross-checks, mutation-tested), chapters with <em>Check Yourself</em> and <em>Further Reading</em> (every link checked to resolve), the portal&#39;s search index and offline assets. Browser-verified: all 111 pages render with zero KaTeX or Mermaid errors; axe-core reports no WCAG 2.2 AA violations on sampled pages in light and dark themes.</p>
 <p><strong>Editor&#39;s assessment</strong> (a judgment, not a measurement, out of 10; the gaps column is what stops a higher score):</p>
 <table>
 <thead>
@@ -1294,11 +1294,11 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 </tr>
 <tr>
 <td align="left">DSA Playbook</td>
-<td align="center">6.5</td>
-<td align="center">6.5</td>
+<td align="center">7.5</td>
 <td align="center">8</td>
 <td align="center">8.5</td>
-<td align="left">36 dry-run traces are narrated, not generated from the solution; terse per-problem text</td>
+<td align="center">9</td>
+<td align="left">the 36 written dry-run traces remain hand-written (a generator, <code>practice/trace.py</code>, now produces faithful ones on demand); 5 unfuzzed design problems (trie, word dictionary, word search II, clone graph, alien dictionary) rely on asserts</td>
 </tr>
 <tr>
 <td align="left">Portal (HTML/PDF)</td>
@@ -1306,7 +1306,7 @@ h2:hover .header-anchor, h3:hover .header-anchor {
 <td align="center">n/a</td>
 <td align="center">9</td>
 <td align="center">n/a</td>
-<td align="left">PDFs print answers collapsed; no automated browser test suite in CI yet</td>
+<td align="left">the CI workflow (<code>.github/workflows/quality.yml</code>) has been written but not yet run on GitHub; axe-core accessibility checks are manual</td>
 </tr>
 </tbody></table>
 <p>Verified runnable material: <code>04-Agentic-AI/examples/</code> (pinned <code>langgraph==1.2.13</code>, <code>mcp==2.3.0</code>; run with <code>pytest -q</code>), <code>01-Python-Mastery/exercises/</code> (60 graded exercises across 20 chapters, 95 hidden tests: <code>python exercises/run.py --init</code> then <code>python exercises/run.py 06</code>), <code>05-DSA-Interview-Playbook/practice/</code> (<code>python run_tests.py 12 --stub</code>, <code>--fuzz</code>, <code>--hint 12</code>), and the labs and simulations in each track.</p>

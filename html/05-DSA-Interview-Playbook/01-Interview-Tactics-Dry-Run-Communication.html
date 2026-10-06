@@ -1401,6 +1401,32 @@ Edge Case Verification:
 <td align="left">$O(N \cdot W)$</td>
 </tr>
 </tbody></table>
+<h2 id="generated-dry-run-traces"><a href="#generated-dry-run-traces" class="header-anchor">#</a>Generated Dry-Run Traces</h2><p>A dry run is only useful if it is faithful to the code. The repository includes a tracer that <strong>generates</strong> the trace from the actual solution, so it cannot drift from what the code does:</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">text</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-text">$ python practice/trace.py 1 &quot;[2,7,11,15]&quot; 9
+two_sum([2, 7, 11, 15], 9)
+  line  46  seen: dict[int, int] = {}                        nums=[2, 7, 11, 15]  target=9
+  line  47  for i, num in enumerate(nums):                   seen={2: 0}
+  line  48  complement = target - num                        seen={2: 0}  i=0  num=2
+  line  49  if complement in seen:                           seen={2: 0}  complement=7
+  line  51  seen[num] = i                                    seen={2: 0}
+  line  47  for i, num in enumerate(nums):                   seen={2: 0}
+  line  48  complement = target - num                        seen={2: 0}  i=1  num=7
+  line  49  if complement in seen:                           seen={2: 0}  complement=2
+  line  50  return [seen[complement], i]                     seen={2: 0}
+  line  50  return [0, 1]
+=&gt; [0, 1]</code></pre>
+  </div><p>How to read it: each row is a line about to execute, and the values next to it are the variables that changed since the previous line (so they show the effect of the line above). Here you can watch <code>seen</code> fill with <code>{2: 0}</code>, then <code>complement</code> become <code>2</code> on the second pass and the function return <code>[0, 1]</code>.</p>
+<p>Use it three ways: trace the reference solution on the example to learn the mechanism, trace <strong>your own stub</strong> with <code>--stub</code> to see where it diverges, and trace a failing fuzz input (the harness prints the counterexample) to find the exact line where your variable goes wrong. Arguments after the problem number are Python literals, for example <code>python practice/trace.py 20 &quot;[1,3,5,7,9]&quot; 7</code>.</p>
+<hr>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
 <li><a href="https://www.bigocheatsheet.com/">Big-O cheat sheet</a></li>
 <li><a href="https://wiki.python.org/moin/TimeComplexity">Python time complexity</a></li>
@@ -1438,7 +1464,7 @@ Edge Case Verification:
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-5-step-interview-communication-loop" class="toc-link">1. The 5-Step Interview Communication Loop</a></li><li class="toc-item level-3"><a href="#step-1-clarify-propose-the-brute-force" class="toc-link">Step 1: Clarify & Propose the Brute Force</a></li><li class="toc-item level-3"><a href="#step-2-discuss-tc-sc-of-brute-force" class="toc-link">Step 2: Discuss TC & SC of Brute Force</a></li><li class="toc-item level-3"><a href="#step-3-convey-clearly-why-brute-force-breaks-under-high-traffic" class="toc-link">Step 3: Convey Clearly Why Brute Force Breaks Under High Traffic</a></li><li class="toc-item level-3"><a href="#step-4-incremental-optimization" class="toc-link">Step 4: Incremental Optimization</a></li><li class="toc-item level-3"><a href="#step-5-the-structured-dry-run-most-important-step" class="toc-link">Step 5: The Structured Dry-Run (Most Important Step)</a></li><li class="toc-item level-2"><a href="#2-the-universal-dry-run-trace-matrix" class="toc-link">2. The Universal Dry-Run Trace Matrix</a></li><li class="toc-item level-3"><a href="#example-problem-two-sum-find-indices-summing-to-target-9-in-nums-2-7-11-15" class="toc-link">Example Problem: Two Sum (Find indices summing to target = 9 in `nums = [2, 7, 11, 15]`)</a></li><li class="toc-item level-2"><a href="#3-high-frequency-pattern-reference-cheat-sheet" class="toc-link">3. High-Frequency Pattern Reference Cheat Sheet</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-5-step-interview-communication-loop" class="toc-link">1. The 5-Step Interview Communication Loop</a></li><li class="toc-item level-3"><a href="#step-1-clarify-propose-the-brute-force" class="toc-link">Step 1: Clarify & Propose the Brute Force</a></li><li class="toc-item level-3"><a href="#step-2-discuss-tc-sc-of-brute-force" class="toc-link">Step 2: Discuss TC & SC of Brute Force</a></li><li class="toc-item level-3"><a href="#step-3-convey-clearly-why-brute-force-breaks-under-high-traffic" class="toc-link">Step 3: Convey Clearly Why Brute Force Breaks Under High Traffic</a></li><li class="toc-item level-3"><a href="#step-4-incremental-optimization" class="toc-link">Step 4: Incremental Optimization</a></li><li class="toc-item level-3"><a href="#step-5-the-structured-dry-run-most-important-step" class="toc-link">Step 5: The Structured Dry-Run (Most Important Step)</a></li><li class="toc-item level-2"><a href="#2-the-universal-dry-run-trace-matrix" class="toc-link">2. The Universal Dry-Run Trace Matrix</a></li><li class="toc-item level-3"><a href="#example-problem-two-sum-find-indices-summing-to-target-9-in-nums-2-7-11-15" class="toc-link">Example Problem: Two Sum (Find indices summing to target = 9 in `nums = [2, 7, 11, 15]`)</a></li><li class="toc-item level-2"><a href="#3-high-frequency-pattern-reference-cheat-sheet" class="toc-link">3. High-Frequency Pattern Reference Cheat Sheet</a></li><li class="toc-item level-2"><a href="#generated-dry-run-traces" class="toc-link">Generated Dry-Run Traces</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 
