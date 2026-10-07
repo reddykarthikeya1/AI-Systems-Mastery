@@ -641,7 +641,474 @@ async def create_order_endpoint(
 
 ---
 
-## Master Checklist for Chapter 18
+## 7. Production Observability: Endpoint Monitoring with the PLG Stack (Prometheus, Loki, Grafana)
+
+In an enterprise environment, deploying a high-performance FastAPI service without observability is flying blind. When an incident occurs at 2:00 AM, you cannot SSH into production containers or manually run `grep` on massive log files.
+
+Production observability unifies two complementary channels:
+1. **Metrics (Prometheus):** Lightweight numbers aggregated over time (request rates, latency histograms, error counts).
+2. **Logs (Grafana Loki):** Discrete contextual text events (full error stack traces, JSON metadata, user IDs, failure reasons).
+3. **Dashboards & Alerts (Grafana):** The central visualization engine connecting metrics and logs on a single screen.
+
+```mermaid
+flowchart TD
+    subgraph Client_Traffic ["Client Requests"]
+        Req["HTTP POST /api/v1/checkout"]
+    end
+
+    subgraph App_Container ["FastAPI Microservice (Docker)"]
+        MW["Observability Middleware"]
+        PromMetrics["/metrics Endpoint<br/>(Counters & Histograms)"]
+        StdoutStream["stdout Log Stream<br/>(Structured JSON Lines)"]
+    end
+
+    subgraph Ingestion_Pipeline ["Log & Metric Shipper"]
+        PromtailAgent["Promtail Agent<br/>(Tails Docker stdout files)"]
+    end
+
+    subgraph Storage_Engines ["Observability Storage Tier"]
+        PromDB["<b>Prometheus TSDB</b><br/>Pulls /metrics every 15s<br/>(Stores Float64 Time-Series)"]
+        LokiDB["<b>Grafana Loki</b><br/>Receives pushed log streams<br/>(Stores Compressed Log Chunks)"]
+    end
+
+    subgraph Visualization ["Unified Operations Portal"]
+        GrafanaUI["<b>Grafana Dashboard</b><br/>Correlates PromQL graphs with LogQL logs"]
+    end
+
+    Req --> MW
+    MW -->|Updates In-Memory State| PromMetrics
+    MW -->|Writes Structured Event| StdoutStream
+
+    PromDB -. "Scrapes GET /metrics (Pull)" .-> PromMetrics
+    StdoutStream -. "Watched by Promtail" .-> PromtailAgent
+    PromtailAgent -- "HTTP POST /loki/api/v1/push" --> LokiDB
+
+    PromDB -->|PromQL Queries| GrafanaUI
+    LokiDB -->|LogQL Queries| GrafanaUI
+```
+
+---
+
+### Clearing Up the Two Biggest Architecture Misconceptions
+
+Before diving into configuration, let's address two common misunderstandings about Loki:
+
+#### Misconception 1: "Does Loki write logs to a file?"
+**No, absolutely not.** 
+* **Your application** writes logs (either to `stdout` in a container, or to a disk file like `/var/log/app.log`).
+* **The Log Shipper (Promtail, Grafana Alloy, or Docker Log Driver)** reads those lines and forwards them over HTTP (`POST /loki/api/v1/push`) to Loki.
+* **Loki** receives those log streams over the network, buffers them in an in-memory ring, compresses them into chunks (using Snappy or Gzip), and flushes the compressed chunks directly to cheap object storage (Amazon S3, Google Cloud Storage, or local disk directory). Loki never maintains text `.log` files.
+
+#### Misconception 2: "Does Loki send logs to Grafana?"
+**No.** Loki is a storage engine, not a push notifier.
+* Loki sits passively waiting for queries.
+* **Grafana pulls data from Loki on demand.** When an engineer opens a dashboard or adjusts the time-picker to *"Last 15 minutes"*, Grafana issues an HTTP request (`GET /loki/api/v1/query_range`) to Loki. Loki scans the relevant chunks, filters the matching lines, and sends the JSON result back to Grafana for rendering.
+
+---
+
+### Step 1: Building Dual-Channel Observability in FastAPI
+
+Below is a production-grade FastAPI service that simultaneously feeds **Prometheus** (for high-speed numeric alerts) and **Loki** (for deep root-cause error traces) using a single non-blocking middleware:
+
+```python
+import time
+import json
+import logging
+import io
+from fastapi import FastAPI, Request, Response
+from fastapi.testclient import TestClient
+from prometheus_client import Counter, Histogram, generate_latest, CollectorRegistry
+
+# 1. Isolated Prometheus Collector Registry
+registry = CollectorRegistry()
+
+REQUEST_COUNT = Counter(
+    "http_requests_total",
+    "Total HTTP Requests",
+    ["method", "endpoint", "status_code"],
+    registry=registry
+)
+
+REQUEST_LATENCY = Histogram(
+    "http_request_duration_seconds",
+    "HTTP Request Latency in Seconds",
+    ["endpoint"],
+    buckets=[0.01, 0.05, 0.1, 0.25, 0.5, 1.0],
+    registry=registry
+)
+
+# 2. Structured JSON Logger (Formats output for Promtail/Loki ingestion)
+log_buffer = io.StringIO()
+logger = logging.getLogger("api_observability")
+logger.setLevel(logging.INFO)
+stream_handler = logging.StreamHandler(log_buffer)
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        log_obj = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(record.created)),
+            "level": record.levelname,
+            "message": record.getMessage()
+        }
+        return json.dumps(log_obj)
+
+stream_handler.setFormatter(JSONFormatter())
+logger.addHandler(stream_handler)
+
+app = FastAPI()
+
+# 3. Observability Middleware: Instruments every single incoming request
+@app.middleware("http")
+async def monitor_endpoints(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    duration = time.perf_counter() - start
+    duration_ms = round(duration * 1000, 2)
+
+    # A. Feed Prometheus: Update numeric time-series
+    REQUEST_COUNT.labels(
+        method=request.method,
+        endpoint=request.url.path,
+        status_code=response.status_code
+    ).inc()
+    REQUEST_LATENCY.labels(endpoint=request.url.path).observe(duration)
+
+    # B. Feed Loki: Emit structured JSON log event to stdout
+    log_payload = {
+        "event": "http_request",
+        "method": request.method,
+        "endpoint": request.url.path,
+        "status_code": response.status_code,
+        "duration_ms": duration_ms
+    }
+    
+    if response.status_code >= 500:
+        logger.error(json.dumps(log_payload))
+    else:
+        logger.info(json.dumps(log_payload))
+
+    return response
+
+# 4. Production Business Endpoints
+@app.post("/api/v1/checkout")
+def checkout():
+    return {"status": "SUCCESS", "order_id": 9841}
+
+@app.get("/metrics")
+def metrics():
+    """Prometheus Scrape Target: Exposes raw time-series counters."""
+    return Response(content=generate_latest(registry), media_type="text/plain; version=0.0.4")
+
+# Verification Test: Simulating production traffic
+client = TestClient(app)
+res = client.post("/api/v1/checkout")
+assert res.status_code == 200
+
+# Verify Prometheus metrics recorded
+metrics_output = generate_latest(registry).decode("utf-8")
+assert 'http_requests_total{endpoint="/api/v1/checkout"' in metrics_output
+
+# Verify Loki structured JSON output generated
+log_output = log_buffer.getvalue()
+assert '"endpoint": "/api/v1/checkout"' in log_output
+assert '"status_code": 200' in log_output
+```
+
+---
+
+### Step 2: How Loki Monitors an Endpoint (LogQL Queries)
+
+Once your container logs are shipped by Promtail to Loki with the label `{app="order-service"}`, you can query them inside Grafana using **LogQL** (Loki Query Language).
+
+LogQL supports two types of queries: **Log Queries** (streaming text) and **Metric Queries** (turning text logs into numeric curves).
+
+#### 1. Live Error Inspection for a Specific Endpoint
+To see only the failed requests on your checkout endpoint in real time:
+```logql
+{app="order-service"} | json | endpoint = "/api/v1/checkout" | status_code >= 500
+```
+*What happens under the hood:* Loki uses its label index to find only the chunks for `app="order-service"`, streams them in parallel, extracts the JSON fields `endpoint` and `status_code`, and filters matching lines in milliseconds.
+
+#### 2. Graphing Endpoint Request Rate (RPS) from Logs
+To calculate how many times `/api/v1/checkout` is called per second:
+```logql
+sum(rate({app="order-service"} | json | endpoint = "/api/v1/checkout" [1m]))
+```
+*Result:* Grafana renders a smooth line chart of real-time throughput hitting that specific route.
+
+#### 3. Graphing Endpoint Error Rate Percentage
+To track the percentage of checkout requests failing with 5xx errors:
+```logql
+sum(rate({app="order-service"} | json | endpoint = "/api/v1/checkout" | status_code >= 500 [1m]))
+/
+sum(rate({app="order-service"} | json | endpoint = "/api/v1/checkout" [1m])) * 100
+```
+
+#### 4. Calculating 95th-Percentile Latency ($p_{95}$) Directly from Logs
+Because our middleware logs `"duration_ms": 48.5`, Loki can extract that number (`unwrap duration_ms`) and calculate statistical percentiles:
+```logql
+quantile_over_time(0.95, 
+  {app="order-service"} | json | endpoint = "/api/v1/checkout" | unwrap duration_ms [5m]
+)
+```
+*Result:* A graph showing the $p_{95}$ latency of the checkout endpoint without needing a separate metrics collector!
+
+#### 5. Defining an Automated Alert Rule in Grafana
+In Grafana's **Alerting** tab, configure a rule:
+```logql
+count_over_time({app="order-service"} | json | endpoint = "/api/v1/checkout" | status_code >= 500 [2m]) > 10
+```
+*Trigger:* If more than 10 errors occur on `/api/v1/checkout` within any 2-minute rolling window, Grafana fires a high-priority alert directly to Slack or PagerDuty with a direct link to the dashboard.
+
+---
+
+### Step 3: Prometheus vs Loki — When to Use Which for Endpoint Monitoring?
+
+| Monitoring Goal | Use Prometheus (PromQL) | Use Loki (LogQL) | Why? |
+| :--- | :---: | :---: | :--- |
+| **High-frequency traffic rate (RPS)** | **Yes (Preferred)** | Possible | Prometheus counters require zero string parsing and consume minimal CPU. |
+| **High-cardinality endpoint params** (e.g. `/users/{uuid}`) | No | **Yes (Preferred)** | Storing UUIDs in Prometheus labels causes **cardinality explosion**; Loki handles high-cardinality values with zero memory penalty. |
+| **Detailed stack traces & failure reasons** | No | **Yes (Preferred)** | Prometheus only stores numbers; Loki stores the exact exception message and traceback. |
+| **System health & CPU/RAM saturation** | **Yes (Preferred)** | No | Prometheus scrapes Linux node and container vitals directly. |
+
+---
+
+### Step 4: The Split-View Correlation Workflow (The 30-Second Triage)
+
+In production, the real superpower of having Prometheus, Loki, and Grafana working together is the **Split-View Correlation**:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Prom as Prometheus (Metrics TSDB)
+    participant Grafana as Grafana Dashboard
+    participant Loki as Grafana Loki (Log Engine)
+    participant SRE as On-Call Engineer
+
+    Prom->>Grafana: PromQL alert trips: "Checkout latency p95 > 1000ms"
+    Grafana->>SRE: Dispatches alert notification with dashboard URL
+    SRE->>Grafana: Opens Grafana dashboard; sees red latency spike at 14:02 UTC
+    Note over Grafana,SRE: SRE clicks "Explore in Split View" on the latency spike
+    Grafana->>Loki: Auto-queries Loki using matching labels {app="order-service"} & timestamp
+    Loki-->>Grafana: Returns matching log lines: "Deadlock detected on account_id=402"
+    Note over SRE: Root cause isolated in under 30 seconds!
+```
+
+---
+
+### Complete Free Local `docker-compose.yml`
+
+To test this complete stack locally, create a `docker-compose.yml` file:
+
+```yaml
+version: "3.8"
+
+services:
+  # 1. The FastAPI Microservice
+  app:
+    build: .
+    container_name: order_service_app
+    ports:
+      - "8000:8000"
+
+  # 2. Prometheus (Metrics TSDB)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    depends_on:
+      - app
+
+  # 3. Grafana Loki (Compressed Log Storage)
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  # 4. Promtail (Tails container logs and pushes to Loki)
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+
+  # 5. Grafana (Unified Dashboard Portal)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - loki
+```
+
+#### Accompanying Turnkey Configuration Files
+
+To run the containers above locally, save the following two configuration files in the same directory as `docker-compose.yml`:
+
+##### 1. `prometheus.yml` (Scrape Configuration)
+```yaml
+global:
+  scrape_interval: 15s     # Scrape metrics every 15 seconds
+  evaluation_interval: 15s # Evaluate alert rules every 15 seconds
+
+scrape_configs:
+  - job_name: "fastapi_order_service"
+    scrape_interval: 5s    # Faster scrape interval for local testing
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["app:8000"]
+        labels:
+          app: "order-service"
+          environment: "production"
+```
+
+##### 2. `promtail-config.yml` (Log Shipper Pipeline)
+```yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml  # Tracks byte offsets to prevent duplicate log pushes
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: container_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: containerlogs
+          app: order-service
+          __path__: /var/lib/docker/containers/*/*-json.log
+
+    pipeline_stages:
+      # Step A: Parse Docker daemon JSON wrapper
+      - json:
+          expressions:
+            raw_log: log
+            stream: stream
+            docker_time: time
+      # Step B: Parse our application's nested JSON log line
+      - json:
+          expressions:
+            level: level
+            endpoint: endpoint
+            status_code: status_code
+            duration_ms: duration_ms
+          source: raw_log
+      # Step C: Promote status code and level to indexed stream labels
+      - labels:
+          level:
+          status_code:
+```
+
+---
+
+### Step 5: Under the Hood — How Each Component is Implemented Internally
+
+To speak authoritatively as a Staff engineer, you need to understand the internal data structures, storage engines, and network protocols powering each component:
+
+#### 1. Prometheus: Inverted Index & Gorilla Compressed TSDB
+* **The Pull Scrape Loop:** Every 15 seconds, a Prometheus goroutine issues an HTTP `GET /metrics` against registered targets. It parses the Prometheus text exposition format into `(Timestamp, Value)` tuples.
+* **The Head Block & Write-Ahead Log (WAL):** Incoming samples land in an in-memory Head chunk. Simultaneously, they append to an on-disk WAL (`wal/00000001` on NVMe SSD) via sequential writes. If the server loses power, Prometheus re-plays the WAL on reboot with zero data loss.
+* **Gorilla Floating-Point Compression:**
+  Standard 64-bit timestamps and 64-bit float values require 16 bytes per sample. Prometheus compresses this down to **~1.37 bytes per sample** (83%–90% reduction) using the Facebook Gorilla TSDB algorithm:
+  * *Delta-of-Delta for Timestamps:* Timestamps arrive in predictable 15-second intervals. Prometheus computes:
+    $$D = (T_{\text{curr}} - T_{\text{prev}}) - (T_{\text{prev}} - T_{\text{prev2}})$$
+    When intervals are uniform ($D=0$), it writes a **single `0` bit** instead of 64 bits.
+  * *XOR Value Compression:* Floats from adjacent scrapes change very little (e.g. CPU 42.1% $\to$ 42.2%). Prometheus computes the bitwise XOR between the current and previous IEEE-754 float ($V_{\text{curr}} \oplus V_{\text{prev}}$). Identical bits cancel out to leading and trailing zeros. Prometheus discards the zeros and packs only the variable middle bits.
+* **Inverted Index (Posting Lists):** Every unique label pair (e.g. `endpoint="/api/v1/checkout"`) maps to a Roaring Bitmap of 32-bit Series IDs. A PromQL label filter performs an $O(\log N)$ bitwise intersection across posting lists, finding candidate time series in sub-millisecond time.
+* **2-Hour Block Compactor:** Every 2 hours, the active Head block is frozen into an immutable directory containing chunk files, index, and `meta.json`. Background workers periodically compact three 2-hour blocks into an 8-hour block, and three 8-hour blocks into a 24-hour block.
+
+#### 2. Grafana Loki: The Zero-Full-Text-Index Philosophy vs Elasticsearch
+* **The Elasticsearch Paradigm:** Elasticsearch parses every incoming log message into individual words/tokens and inserts them into massive inverted indexes (Lucene). While this makes arbitrary keyword search fast, the index consumes **100%–150% as much disk space as the raw data**, causes massive JVM garbage-collection pauses, and demands heavy CPU during write spikes.
+* **The Loki Paradigm ("Like Prometheus, But for Logs"):**
+  Loki completely rejects indexing log content. Instead, it **only indexes stream labels** (e.g. `{app="order-service", env="production"}`).
+  * The actual log messages are simply concatenated, compressed into chunks (using Snappy or Gzip), and flushed directly to cheap object storage (AWS S3, Google Cloud Storage, or MinIO).
+  * Storage overhead is reduced by **up to 90%** compared to Elasticsearch.
+  * Ingestion requires almost zero CPU, eliminating write-path bottlenecks during incident traffic spikes.
+* **Loki Internal Microservices:**
+  * **Distributor:** Stateless frontend receiving `POST /loki/api/v1/push`. Hashes stream labels to determine the responsible Ingesters using a consistent hashing ring.
+  * **Ingester:** Stateful buffer holding active chunks in RAM. Appends incoming log entries to open chunks until they reach 1.5 MB or reach the idle cutoff (e.g. 2 hours), then compresses and flushes them to object storage.
+  * **Querier:** Stateless query worker. When Grafana issues a LogQL query like `{app="order-service"} |= "Deadlock"`, the Querier:
+    1. Looks up the TSDB index to find which compressed chunk IDs match the `{app="order-service"}` label stream within the requested time range.
+    2. Downloads those chunks in parallel from S3 / disk cache.
+    3. Decompresses the chunks in memory and spawns worker threads across CPU cores to execute vectorized `grep` / regex filtering on the fly ("grep as a service").
+
+#### 3. Promtail: The Asynchronous Log Shipper
+* **Why Decouple Logging from the API Thread?**
+  Never make synchronous HTTP calls to Loki from inside your FastAPI request handler! If Loki is restarting or experiencing network jitter, your API worker threads will stall, queue requests, and crash the service.
+  Instead, use **asynchronous decoupled logging**:
+  1. FastAPI writes a JSON string to `stdout` (a non-blocking kernel buffer write taking $<0.02\text{ms}$).
+  2. Docker engine routes stdout to a local disk log file.
+  3. Promtail runs as an independent OS process or daemonset, reading the log file asynchronously.
+* **The Positions File (`/tmp/positions.yaml`):**
+  Promtail tracks the exact file byte offset it has read and acknowledged. If Promtail crashes or the node reboots, it reads `positions.yaml` and picks up precisely where it left off, guaranteeing zero lost logs and avoiding costly duplicates.
+
+#### 4. Grafana: Unified Visualization, Alerting, and Correlation
+* **Backend Query Proxy:** Grafana is an open-source TypeScript / Go web server. It does not store metrics or logs; it translates UI dashboard panels into native PromQL requests sent to Prometheus (`/api/v1/query_range`) and LogQL requests sent to Loki (`/loki/api/v1/query_range`).
+* **Unified Alerting Engine:** Periodically evaluates configured threshold expressions (e.g., `rate(...) > 10`). When an alert triggers, Grafana formats rich notification cards with dashboard snapshot links and dispatches them to Slack, PagerDuty, or webhooks.
+* **Split-View Correlation:** In Grafana Explore mode, the engineer places a Prometheus latency graph on the left and a Loki log panel on the right. Synchronized time-scrubbing ensures that zooming into a 30-second Prometheus anomaly instantly highlights the exact corresponding log lines in Loki.
+
+---
+
+### Step 6: End-to-End Incident Walkthrough: The 60-Second Root Cause Discovery
+
+Here is what happens during a real production incident when an upstream database connection pool is exhausted:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Client
+    participant API as FastAPI App
+    participant Prom as Prometheus
+    participant Shipper as Promtail
+    participant Loki as Grafana Loki
+    participant SRE as On-Call Engineer (Grafana)
+
+    User->>API: POST /api/v1/checkout
+    API->>API: DB Connection Pool Exhausted (Timeout 5000ms)
+    API->>API: Middleware catches 500 status code
+    API-->>User: HTTP 500 Internal Server Error
+    API->>API: Increments Prometheus Counter: status_code=500
+    API->>API: Writes structured JSON error to stdout
+
+    Prom->>API: Periodic scrape (GET /metrics)
+    API-->>Prom: Returns http_requests_total{status_code="500"} = 142
+    Prom->>Prom: Alert rule evaluates: error_rate > 5% for 1m => FIRES ALERT!
+
+    Shipper->>API: Tails Docker stdout log file
+    Shipper->>Loki: POST /loki/api/v1/push (Snappy-compressed JSON log event)
+    Loki->>Loki: Appends line to in-memory chunk ring
+
+    Prom-->>SRE: PagerDuty alert: "Checkout 5xx spike detected"
+    SRE->>SRE: Opens Grafana Incident Dashboard; sees 500 error spike at 14:02:15 UTC
+    SRE->>SRE: Clicks "Split View -> Query Loki Logs" for timestamp 14:02:15
+    Loki-->>SRE: Returns logs: {"error": "PoolTimeout: QueuePool limit of 20 overflow 10 reached"}
+    Note over SRE: Root cause identified in under 60 seconds without SSHing into any server!
+```
+
+---
+
+## 8. Master Checklist for Chapter 13
 
 | Concept | Entry-Level Mental Model | Senior / Staff Production Rule |
 | :--- | :--- | :--- |
@@ -651,6 +1118,7 @@ async def create_order_endpoint(
 | **Dependency Injection** | Handing ingredients to the chef when needed | Declared via `Depends()`; use `yield` for bulletproof connection pool cleanup |
 | **Lifespan Manager** | Turning lights on/off when kitchen opens/closes | Prevents cross-process file-descriptor corruption caused by `os.fork()` |
 | **Streaming Responses** | Sipping water through a straw instead of swallowing a lake | Keeps RAM footprint flat at $O(1)$ constant size for multi-gigabyte exports |
+| **Endpoint Observability** | Hospital ICU heart monitor & medical chart | Use Prometheus for numbers & counters; use Loki for structured JSON logs & traces |
 
 
 ## Version Notes

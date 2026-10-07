@@ -1440,6 +1440,152 @@ sequenceDiagram
 <li>How the <strong>Redlock Algorithm</strong> reaches consensus across independent Redis nodes ($N/2 + 1$).</li>
 <li>Why <strong>Fencing Tokens</strong> are mandatory to prevent split-brain write corruption during long Garbage Collection pauses.</li>
 </ol>
+<hr>
+<h2 id="5-edge-cases-tests-and-extensions"><a href="#5-edge-cases-tests-and-extensions" class="header-anchor">#</a>5. Edge Cases, Tests and Extensions</h2><h3 id="what-redlock-gives-you-and-what-this-model-gets-wrong"><a href="#what-redlock-gives-you-and-what-this-model-gets-wrong" class="header-anchor">#</a>What Redlock gives you, and what this model gets wrong</h3><table>
+<thead>
+<tr>
+<th align="left">Concern</th>
+<th align="left">Status</th>
+<th align="left">Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Mutual exclusion for the TTL</td>
+<td align="left">Good</td>
+<td align="left"><code>SET NX PX</code> is atomic per node and a majority is required</td>
+</tr>
+<tr>
+<td align="left">Releasing someone else&#39;s lock</td>
+<td align="left">Safe</td>
+<td align="left"><code>release_if_owner</code> compares the random token</td>
+</tr>
+<tr>
+<td align="left">Partial acquisition</td>
+<td align="left">Handled</td>
+<td align="left">A failed quorum releases whatever was taken</td>
+</tr>
+<tr>
+<td align="left">Validity time</td>
+<td align="left">Good</td>
+<td align="left">Elapsed time and a drift allowance are subtracted from the TTL</td>
+</tr>
+<tr>
+<td align="left"><strong>Fencing token</strong></td>
+<td align="left"><strong>Wrong across clients</strong></td>
+<td align="left"><code>_global_fence</code> lives in each manager instance, so two clients both start at 1; tokens are not monotonic across clients, so they cannot protect storage from a stale writer</td>
+</tr>
+<tr>
+<td align="left">Paused client (GC pause, VM stall)</td>
+<td align="left">Not protected by the lock alone</td>
+<td align="left">The lock can expire while the holder sleeps; only a fencing token checked by the <em>resource</em> makes the stale write fail</td>
+</tr>
+<tr>
+<td align="left">Clock assumptions</td>
+<td align="left">Real</td>
+<td align="left">Redlock relies on bounded clock drift; this is the core of the long-running debate about it</td>
+</tr>
+</tbody></table>
+<h3 id="tests-including-the-fencing-bug"><a href="#tests-including-the-fencing-bug" class="header-anchor">#</a>Tests, including the fencing bug</h3><p>This block extends the implementation above and controls time with a fake monotonic clock.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># continues: lock manager implementation above</span>
+<span class="hljs-keyword">from</span> unittest <span class="hljs-keyword">import</span> mock
+
+now = [<span class="hljs-number">0.0</span>]
+<span class="hljs-keyword">with</span> mock.patch(<span class="hljs-string">&quot;time.monotonic&quot;</span>, <span class="hljs-keyword">lambda</span>: now[<span class="hljs-number">0</span>]):
+    nodes = [SimulatedRedisNode(<span class="hljs-string">f&quot;n<span class="hljs-subst">{i}</span>&quot;</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)]
+    mgr = RedlockManager(nodes)
+
+    a = mgr.acquire(<span class="hljs-string">&quot;job-42&quot;</span>, ttl_ms=<span class="hljs-number">1000</span>)
+    <span class="hljs-keyword">assert</span> a <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt; a.validity_ms &lt; <span class="hljs-number">1000</span>                  <span class="hljs-comment"># validity is the TTL minus elapsed time and drift</span>
+    <span class="hljs-keyword">assert</span> mgr.acquire(<span class="hljs-string">&quot;job-42&quot;</span>, ttl_ms=<span class="hljs-number">1000</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>                  <span class="hljs-comment"># held: a second client cannot get it</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(<span class="hljs-string">&quot;job-42&quot;</span> <span class="hljs-keyword">in</span> n._store <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nodes)                    <span class="hljs-comment"># the failed attempt did not disturb the holder</span>
+
+    mgr.release(LockHandle(<span class="hljs-string">&quot;job-42&quot;</span>, <span class="hljs-string">&quot;wrong-token&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>))             <span class="hljs-comment"># someone else&#x27;s token releases nothing</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(<span class="hljs-string">&quot;job-42&quot;</span> <span class="hljs-keyword">in</span> n._store <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nodes)
+    mgr.release(a)
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(<span class="hljs-string">&quot;job-42&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> n._store <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nodes)
+
+    b = mgr.acquire(<span class="hljs-string">&quot;job-42&quot;</span>, ttl_ms=<span class="hljs-number">1000</span>)
+    <span class="hljs-keyword">assert</span> b <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>
+    now[<span class="hljs-number">0</span>] = <span class="hljs-number">1.5</span>                                                       <span class="hljs-comment"># 1,500 ms later: the TTL has passed</span>
+    c = mgr.acquire(<span class="hljs-string">&quot;job-42&quot;</span>, ttl_ms=<span class="hljs-number">1000</span>)
+    <span class="hljs-keyword">assert</span> c <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> c.token != b.token                        <span class="hljs-comment"># the lock expired by itself and was re-acquired</span>
+
+    <span class="hljs-comment"># Quorum: two of three nodes are held by another owner, so one success is not enough and it must be rolled back</span>
+    nodes2 = [SimulatedRedisNode(<span class="hljs-string">f&quot;m<span class="hljs-subst">{i}</span>&quot;</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)]
+    nodes2[<span class="hljs-number">0</span>].set_nx_px(<span class="hljs-string">&quot;r&quot;</span>, <span class="hljs-string">&quot;other&quot;</span>, <span class="hljs-number">10_000</span>); nodes2[<span class="hljs-number">1</span>].set_nx_px(<span class="hljs-string">&quot;r&quot;</span>, <span class="hljs-string">&quot;other&quot;</span>, <span class="hljs-number">10_000</span>)
+    <span class="hljs-keyword">assert</span> RedlockManager(nodes2).acquire(<span class="hljs-string">&quot;r&quot;</span>, <span class="hljs-number">1000</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;r&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> nodes2[<span class="hljs-number">2</span>]._store                                 <span class="hljs-comment"># no stray lock left on the node we did win</span>
+
+    <span class="hljs-comment"># One node down: a majority is still reachable</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">DownNode</span>(<span class="hljs-title class_ inherited__">SimulatedRedisNode</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_nx_px</span>(<span class="hljs-params">self, key, value, ttl_ms</span>): <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    nodes3 = [SimulatedRedisNode(<span class="hljs-string">&quot;p0&quot;</span>), SimulatedRedisNode(<span class="hljs-string">&quot;p1&quot;</span>), DownNode(<span class="hljs-string">&quot;p2&quot;</span>)]
+    <span class="hljs-keyword">assert</span> RedlockManager(nodes3).acquire(<span class="hljs-string">&quot;r&quot;</span>, <span class="hljs-number">1000</span>) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>
+
+    <span class="hljs-comment"># The bug: two clients with their own managers over the same nodes get the SAME fencing token</span>
+    shared = [SimulatedRedisNode(<span class="hljs-string">f&quot;s<span class="hljs-subst">{i}</span>&quot;</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)]
+    client_a, client_b = RedlockManager(shared), RedlockManager(shared)
+    first = client_a.acquire(<span class="hljs-string">&quot;db-row&quot;</span>, <span class="hljs-number">1000</span>)
+    now[<span class="hljs-number">0</span>] = <span class="hljs-number">10.0</span>                                                      <span class="hljs-comment"># a&#x27;s lock expires while a is paused</span>
+    second = client_b.acquire(<span class="hljs-string">&quot;db-row&quot;</span>, <span class="hljs-number">1000</span>)
+    <span class="hljs-keyword">assert</span> first.fencing_token == second.fencing_token == <span class="hljs-number">1</span>            <span class="hljs-comment"># not monotonic: storage cannot tell who is newer</span>
+
+    <span class="hljs-comment"># The fix: one shared monotonic counter (in a real system, a consensus-backed service or the storage itself)</span>
+    <span class="hljs-keyword">import</span> itertools, threading
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">SharedFence</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>): <span class="hljs-variable language_">self</span>._c, <span class="hljs-variable language_">self</span>._lock = itertools.count(<span class="hljs-number">1</span>), threading.Lock()
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
+            <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">next</span>(<span class="hljs-variable language_">self</span>._c)
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">FencedRedlock</span>(<span class="hljs-title class_ inherited__">RedlockManager</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nodes, fence</span>): <span class="hljs-built_in">super</span>().__init__(nodes); <span class="hljs-variable language_">self</span>.fence = fence
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">acquire</span>(<span class="hljs-params">self, resource, ttl_ms</span>):
+            handle = <span class="hljs-built_in">super</span>().acquire(resource, ttl_ms)
+            <span class="hljs-keyword">if</span> handle <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                handle.fencing_token = <span class="hljs-variable language_">self</span>.fence.<span class="hljs-built_in">next</span>()
+            <span class="hljs-keyword">return</span> handle
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Storage</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>): <span class="hljs-variable language_">self</span>.highest, <span class="hljs-variable language_">self</span>.value = <span class="hljs-number">0</span>, <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">write</span>(<span class="hljs-params">self, token, value</span>):
+            <span class="hljs-keyword">if</span> token &lt; <span class="hljs-variable language_">self</span>.highest:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>                                           <span class="hljs-comment"># a stale writer is refused</span>
+            <span class="hljs-variable language_">self</span>.highest, <span class="hljs-variable language_">self</span>.value = token, value
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    fence, storage = SharedFence(), Storage()
+    nodes4 = [SimulatedRedisNode(<span class="hljs-string">f&quot;f<span class="hljs-subst">{i}</span>&quot;</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)]
+    ca, cb = FencedRedlock(nodes4, fence), FencedRedlock(nodes4, fence)
+    old = ca.acquire(<span class="hljs-string">&quot;row&quot;</span>, <span class="hljs-number">1000</span>)
+    now[<span class="hljs-number">0</span>] = <span class="hljs-number">20.0</span>                                                      <span class="hljs-comment"># a is paused past its TTL</span>
+    new = cb.acquire(<span class="hljs-string">&quot;row&quot;</span>, <span class="hljs-number">1000</span>)
+    <span class="hljs-keyword">assert</span> new.fencing_token &gt; old.fencing_token
+    <span class="hljs-keyword">assert</span> storage.write(new.fencing_token, <span class="hljs-string">&quot;from b&quot;</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">assert</span> storage.write(old.fencing_token, <span class="hljs-string">&quot;from the paused a&quot;</span>) <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>      <span class="hljs-comment"># the paused client wakes up and is rejected</span>
+    <span class="hljs-keyword">assert</span> storage.value == <span class="hljs-string">&quot;from b&quot;</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;lock manager tests passed&quot;</span>)</code></pre>
+  </div><h3 id="extensions-interviewers-ask-for"><a href="#extensions-interviewers-ask-for" class="header-anchor">#</a>Extensions interviewers ask for</h3><ol>
+<li><strong>Lock extension (watchdog):</strong> a background thread renews the TTL while the work continues, and the holder checks its remaining validity before every critical write.</li>
+<li><strong>A single-node lock with a database:</strong> an <code>INSERT</code> of the resource name with a unique constraint, plus an expiry column; simpler and consistent, but the database is a single point of failure.</li>
+<li><strong>A consensus-backed lock (etcd, ZooKeeper):</strong> leases and ephemeral nodes give stronger guarantees than timing assumptions; fencing comes from the monotonically increasing revision or zxid.</li>
+<li><strong>Reentrant and fair locks:</strong> store an owner and a count, and a queue of waiters so the next waiter is woken instead of everyone polling.</li>
+<li><strong>Lock-free alternatives:</strong> a conditional write (compare-and-set on a version column) often removes the need for a distributed lock at all.</li>
+</ol>
+<h3 id="follow-up-questions"><a href="#follow-up-questions" class="header-anchor">#</a>Follow-up questions</h3><ul>
+<li><em>Is a distributed lock enough to guarantee correctness?</em> Not by itself. A lock bounded by a TTL can be lost while its holder is paused, so correctness needs a fencing token checked by the resource, or an idempotent operation.</li>
+<li><em>Why a random token instead of a fixed owner id?</em> It proves ownership of <strong>this</strong> acquisition; a client that lost the lock and re-acquired later must not be able to release or extend the earlier one by mistake.</li>
+<li><em>Efficiency lock or correctness lock?</em> If the lock only avoids duplicate work, a simple single-node lock is fine; if a violation corrupts data, use a consensus system and fencing.</li>
+</ul>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1462,7 +1608,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-zero-prerequisite-intuition-the-hotel-keycard-rogue-maid" class="toc-link">1. Zero-Prerequisite Intuition: The "Hotel Keycard & Rogue Maid"</a></li><li class="toc-item level-3"><a href="#the-problem-why-simple-locks-break-in-distributed-systems" class="toc-link">The Problem: Why Simple Locks Break in Distributed Systems</a></li><li class="toc-item level-2"><a href="#2-requirements-architecture" class="toc-link">2. Requirements & Architecture</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements:</a></li><li class="toc-item level-2"><a href="#3-production-grade-python-implementation" class="toc-link">3. Production-Grade Python Implementation</a></li><li class="toc-item level-2"><a href="#4-milestone-check-what-you-just-mastered" class="toc-link">4. Milestone Check: What You Just Mastered!</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-zero-prerequisite-intuition-the-hotel-keycard-rogue-maid" class="toc-link">1. Zero-Prerequisite Intuition: The "Hotel Keycard & Rogue Maid"</a></li><li class="toc-item level-3"><a href="#the-problem-why-simple-locks-break-in-distributed-systems" class="toc-link">The Problem: Why Simple Locks Break in Distributed Systems</a></li><li class="toc-item level-2"><a href="#2-requirements-architecture" class="toc-link">2. Requirements & Architecture</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements:</a></li><li class="toc-item level-2"><a href="#3-production-grade-python-implementation" class="toc-link">3. Production-Grade Python Implementation</a></li><li class="toc-item level-2"><a href="#4-milestone-check-what-you-just-mastered" class="toc-link">4. Milestone Check: What You Just Mastered!</a></li><li class="toc-item level-2"><a href="#5-edge-cases-tests-and-extensions" class="toc-link">5. Edge Cases, Tests and Extensions</a></li><li class="toc-item level-3"><a href="#what-redlock-gives-you-and-what-this-model-gets-wrong" class="toc-link">What Redlock gives you, and what this model gets wrong</a></li><li class="toc-item level-3"><a href="#tests-including-the-fencing-bug" class="toc-link">Tests, including the fencing bug</a></li><li class="toc-item level-3"><a href="#extensions-interviewers-ask-for" class="toc-link">Extensions interviewers ask for</a></li><li class="toc-item level-3"><a href="#follow-up-questions" class="toc-link">Follow-up questions</a></li></ul>
     </aside>
   </div>
 

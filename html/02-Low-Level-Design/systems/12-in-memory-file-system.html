@@ -1538,6 +1538,159 @@ classDiagram
 </ul>
 </li>
 </ol>
+<hr>
+<h2 id="5-edge-cases-tests-and-extensions"><a href="#5-edge-cases-tests-and-extensions" class="header-anchor">#</a>5. Edge Cases, Tests and Extensions</h2><h3 id="what-the-implementation-does-and-where-it-surprises"><a href="#what-the-implementation-does-and-where-it-surprises" class="header-anchor">#</a>What the implementation does, and where it surprises</h3><table>
+<thead>
+<tr>
+<th align="left">Behaviour</th>
+<th align="left">Result</th>
+<th align="left">Comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>write_file</code> on an existing file</td>
+<td align="left"><strong>Appends</strong>, it does not overwrite</td>
+<td align="left">The name suggests overwrite; callers will be surprised. Make the mode explicit</td>
+</tr>
+<tr>
+<td align="left">Path with repeated slashes (<code>//a///b/</code>)</td>
+<td align="left">Same as <code>/a/b</code></td>
+<td align="left">Normalised by dropping empty parts</td>
+</tr>
+<tr>
+<td align="left"><code>.</code> and <code>..</code> in a path</td>
+<td align="left">Treated as ordinary names</td>
+<td align="left"><code>/a/../b</code> creates a directory literally called <code>..</code></td>
+</tr>
+<tr>
+<td align="left">File used as a directory (<code>/f/x</code> when <code>/f</code> is a file)</td>
+<td align="left"><code>ValueError</code></td>
+<td align="left">Correct, and checked while walking</td>
+</tr>
+<tr>
+<td align="left">Read of a directory or a missing path</td>
+<td align="left"><code>IsADirectoryError</code>, <code>FileNotFoundError</code></td>
+<td align="left">Matches the OS exceptions callers already know</td>
+</tr>
+<tr>
+<td align="left">Size of a directory</td>
+<td align="left">Recomputed by walking every child</td>
+<td align="left">O(size of subtree) per call; cache sizes if it is queried often</td>
+</tr>
+<tr>
+<td align="left">Concurrency</td>
+<td align="left">One re-entrant lock for the whole tree</td>
+<td align="left">Correct and simple; writers to unrelated files wait for each other</td>
+</tr>
+<tr>
+<td align="left"><code>rm</code>, <code>mv</code>, <code>find</code></td>
+<td align="left">Not implemented</td>
+<td align="left">The usual follow-up requests</td>
+</tr>
+</tbody></table>
+<h3 id="tests-plus-an-explicit-overwrite-mode-and-rm"><a href="#tests-plus-an-explicit-overwrite-mode-and-rm" class="header-anchor">#</a>Tests, plus an explicit overwrite mode and `rm`</h3><p>This block extends the implementation above.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># continues: in-memory file system implementation above</span>
+<span class="hljs-keyword">import</span> threading
+
+fs = InMemoryFileSystem()
+fs.mkdir(<span class="hljs-string">&quot;/a/b/c&quot;</span>)
+fs.write_file(<span class="hljs-string">&quot;/a/b/c/notes.txt&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>)
+<span class="hljs-keyword">assert</span> fs.read_file(<span class="hljs-string">&quot;/a/b/c/notes.txt&quot;</span>) == <span class="hljs-string">&quot;hello&quot;</span>
+<span class="hljs-keyword">assert</span> fs.ls(<span class="hljs-string">&quot;/a&quot;</span>) == [<span class="hljs-string">&quot;b&quot;</span>] <span class="hljs-keyword">and</span> fs.ls(<span class="hljs-string">&quot;/a/b/c&quot;</span>) == [<span class="hljs-string">&quot;notes.txt&quot;</span>] <span class="hljs-keyword">and</span> fs.ls(<span class="hljs-string">&quot;/a/b/c/notes.txt&quot;</span>) == [<span class="hljs-string">&quot;notes.txt&quot;</span>]
+
+fs.write_file(<span class="hljs-string">&quot;//a///b//c/notes.txt&quot;</span>, <span class="hljs-string">&quot; world&quot;</span>)                  <span class="hljs-comment"># repeated slashes: the same file, and the write APPENDS</span>
+<span class="hljs-keyword">assert</span> fs.read_file(<span class="hljs-string">&quot;/a/b/c/notes.txt&quot;</span>) == <span class="hljs-string">&quot;hello world&quot;</span>
+
+fs.write_file(<span class="hljs-string">&quot;/x/y/z.txt&quot;</span>, <span class="hljs-string">&quot;created with parents&quot;</span>)              <span class="hljs-comment"># missing parents are created</span>
+<span class="hljs-keyword">assert</span> fs.ls(<span class="hljs-string">&quot;/x/y&quot;</span>) == [<span class="hljs-string">&quot;z.txt&quot;</span>]
+
+<span class="hljs-keyword">for</span> bad, exc <span class="hljs-keyword">in</span> [(<span class="hljs-keyword">lambda</span>: fs.read_file(<span class="hljs-string">&quot;/a&quot;</span>), IsADirectoryError), (<span class="hljs-keyword">lambda</span>: fs.read_file(<span class="hljs-string">&quot;/nope&quot;</span>), FileNotFoundError),
+                 (<span class="hljs-keyword">lambda</span>: fs.write_file(<span class="hljs-string">&quot;/a/b/c/notes.txt/inner&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>), ValueError), (<span class="hljs-keyword">lambda</span>: fs.write_file(<span class="hljs-string">&quot;/a&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>), ValueError),
+                 (<span class="hljs-keyword">lambda</span>: fs.write_file(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>), ValueError), (<span class="hljs-keyword">lambda</span>: fs.mkdir(<span class="hljs-string">&quot;/a/b/c/notes.txt/d&quot;</span>), ValueError)]:
+    <span class="hljs-keyword">try</span>:
+        bad()
+        <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected &quot;</span> + exc.__name__)
+    <span class="hljs-keyword">except</span> exc:
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-keyword">assert</span> fs.root.get_child(<span class="hljs-string">&quot;a&quot;</span>).get_size() == <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;hello world&quot;</span>)        <span class="hljs-comment"># directory size is the sum of its files</span>
+fs.write_file(<span class="hljs-string">&quot;/a/two.txt&quot;</span>, <span class="hljs-string">&quot;héllo&quot;</span>)
+<span class="hljs-keyword">assert</span> fs.root.get_child(<span class="hljs-string">&quot;a&quot;</span>).get_size() == <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;hello world&quot;</span>) + <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;héllo&quot;</span>.encode(<span class="hljs-string">&quot;utf-8&quot;</span>))   <span class="hljs-comment"># bytes, not characters</span>
+
+fs.write_file(<span class="hljs-string">&quot;/a/../b.txt&quot;</span>, <span class="hljs-string">&quot;dotdot&quot;</span>)                              <span class="hljs-comment"># documented limitation: &#x27;..&#x27; is just a name</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-string">&quot;..&quot;</span> <span class="hljs-keyword">in</span> fs.ls(<span class="hljs-string">&quot;/a&quot;</span>) <span class="hljs-keyword">and</span> fs.ls(<span class="hljs-string">&quot;/&quot;</span>) == [<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>]
+
+<span class="hljs-comment"># Concurrency: 8 threads append 100 chunks each to one file; nothing is lost or interleaved mid-chunk</span>
+fs2 = InMemoryFileSystem()
+fs2.write_file(<span class="hljs-string">&quot;/log.txt&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">writer</span>(<span class="hljs-params">tag</span>): [fs2.write_file(<span class="hljs-string">&quot;/log.txt&quot;</span>, <span class="hljs-string">f&quot;[<span class="hljs-subst">{tag}</span>]&quot;</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">100</span>)]
+ts = [threading.Thread(target=writer, args=(i,)) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>)]
+[t.start() <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> ts]; [t.join() <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> ts]
+text = fs2.read_file(<span class="hljs-string">&quot;/log.txt&quot;</span>)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(text) == <span class="hljs-number">8</span> * <span class="hljs-number">100</span> * <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">all</span>(text.count(<span class="hljs-string">f&quot;[<span class="hljs-subst">{i}</span>]&quot;</span>) == <span class="hljs-number">100</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>))
+
+<span class="hljs-comment"># Extension: explicit overwrite mode and rm</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">EditableFS</span>(<span class="hljs-title class_ inherited__">InMemoryFileSystem</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_find</span>(<span class="hljs-params">self, path</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> part <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>._normalize_path(path):
+            node = node.get_child(part) <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> node.is_directory() <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">return</span> node
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">write_file</span>(<span class="hljs-params">self, path, content, append=<span class="hljs-literal">False</span></span>):
+        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+            node = <span class="hljs-variable language_">self</span>._find(path)
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.is_directory():
+                node.write(content, append=append)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-built_in">super</span>().write_file(path, content)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rm</span>(<span class="hljs-params">self, path</span>):
+        <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>._lock:
+            parts = <span class="hljs-variable language_">self</span>._normalize_path(path)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> parts:
+                <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;cannot remove the root&quot;</span>)
+            parent = <span class="hljs-variable language_">self</span>._find(<span class="hljs-string">&quot;/&quot;</span>.join(parts[:-<span class="hljs-number">1</span>]))
+            <span class="hljs-keyword">if</span> parent <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> parent.is_directory() <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> parent.remove_child(parts[-<span class="hljs-number">1</span>]):
+                <span class="hljs-keyword">raise</span> FileNotFoundError(path)
+
+e = EditableFS()
+e.write_file(<span class="hljs-string">&quot;/f.txt&quot;</span>, <span class="hljs-string">&quot;one&quot;</span>); e.write_file(<span class="hljs-string">&quot;/f.txt&quot;</span>, <span class="hljs-string">&quot;two&quot;</span>)
+<span class="hljs-keyword">assert</span> e.read_file(<span class="hljs-string">&quot;/f.txt&quot;</span>) == <span class="hljs-string">&quot;two&quot;</span>                               <span class="hljs-comment"># overwrite is now the default</span>
+e.write_file(<span class="hljs-string">&quot;/f.txt&quot;</span>, <span class="hljs-string">&quot;+three&quot;</span>, append=<span class="hljs-literal">True</span>)
+<span class="hljs-keyword">assert</span> e.read_file(<span class="hljs-string">&quot;/f.txt&quot;</span>) == <span class="hljs-string">&quot;two+three&quot;</span>
+e.mkdir(<span class="hljs-string">&quot;/d/e&quot;</span>); e.write_file(<span class="hljs-string">&quot;/d/e/g.txt&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>)
+e.rm(<span class="hljs-string">&quot;/d&quot;</span>)                                                          <span class="hljs-comment"># removing a directory removes its subtree</span>
+<span class="hljs-keyword">assert</span> e.ls(<span class="hljs-string">&quot;/&quot;</span>) == [<span class="hljs-string">&quot;f.txt&quot;</span>]
+<span class="hljs-keyword">try</span>:
+    e.rm(<span class="hljs-string">&quot;/d&quot;</span>)
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected FileNotFoundError&quot;</span>)
+<span class="hljs-keyword">except</span> FileNotFoundError:
+    <span class="hljs-keyword">pass</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;file system tests passed&quot;</span>)</code></pre>
+  </div><h3 id="extensions-interviewers-ask-for"><a href="#extensions-interviewers-ask-for" class="header-anchor">#</a>Extensions interviewers ask for</h3><ol>
+<li><strong>Move and rename:</strong> detach the node from its old parent and attach it to the new one inside one lock acquisition, rejecting a move of a directory into its own subtree.</li>
+<li><strong><code>find</code> and <code>du</code>:</strong> a depth-first walk with a visitor (the Visitor pattern from the second patterns chapter); <code>du</code> can cache each directory&#39;s size and invalidate it on writes below it.</li>
+<li><strong>Permissions and ownership:</strong> add an owner and a mode to <code>FSNode</code>, check them in one <code>_authorize(node, user, action)</code> method so the rule lives in one place.</li>
+<li><strong>Hard and symbolic links:</strong> a symbolic link is a node holding a path (resolve with a hop limit to stop cycles); a hard link is two directory entries pointing to one <code>FileNode</code>.</li>
+<li><strong>Finer locking:</strong> replace the global lock with per-directory read-write locks, acquiring them top-down in path order so two operations cannot deadlock.</li>
+</ol>
+<h3 id="follow-up-questions"><a href="#follow-up-questions" class="header-anchor">#</a>Follow-up questions</h3><ul>
+<li><em>Why is Composite the right pattern here?</em> Files and directories share the operations &quot;name&quot; and &quot;size&quot;, and a directory&#39;s behaviour is defined recursively over its children, so clients can treat both uniformly.</li>
+<li><em>Why a re-entrant lock?</em> Public methods call each other (<code>write_file</code> walking the same path logic); a plain <code>Lock</code> would deadlock when one locked method calls another.</li>
+<li><em>How would you persist it?</em> Write a journal of operations and snapshot periodically; on start, load the snapshot and replay the journal.</li>
+</ul>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1560,7 +1713,7 @@ classDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-system-boundaries" class="toc-link">1. Requirements & System Boundaries</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements</a></li><li class="toc-item level-3"><a href="#non-functional-requirements" class="toc-link">Non-Functional Requirements</a></li><li class="toc-item level-2"><a href="#2-design-pattern-blueprint-the-composite-pattern" class="toc-link">2. Design Pattern Blueprint: The Composite Pattern</a></li><li class="toc-item level-2"><a href="#3-complete-python-implementation" class="toc-link">3. Complete Python Implementation</a></li><li class="toc-item level-2"><a href="#4-verification-common-interview-follow-ups" class="toc-link">4. Verification & Common Interview Follow-Ups</a></li><li class="toc-item level-3"><a href="#classic-senior-interview-follow-ups" class="toc-link">Classic Senior Interview Follow-Ups</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-requirements-system-boundaries" class="toc-link">1. Requirements & System Boundaries</a></li><li class="toc-item level-3"><a href="#functional-requirements" class="toc-link">Functional Requirements</a></li><li class="toc-item level-3"><a href="#non-functional-requirements" class="toc-link">Non-Functional Requirements</a></li><li class="toc-item level-2"><a href="#2-design-pattern-blueprint-the-composite-pattern" class="toc-link">2. Design Pattern Blueprint: The Composite Pattern</a></li><li class="toc-item level-2"><a href="#3-complete-python-implementation" class="toc-link">3. Complete Python Implementation</a></li><li class="toc-item level-2"><a href="#4-verification-common-interview-follow-ups" class="toc-link">4. Verification & Common Interview Follow-Ups</a></li><li class="toc-item level-3"><a href="#classic-senior-interview-follow-ups" class="toc-link">Classic Senior Interview Follow-Ups</a></li><li class="toc-item level-2"><a href="#5-edge-cases-tests-and-extensions" class="toc-link">5. Edge Cases, Tests and Extensions</a></li><li class="toc-item level-3"><a href="#what-the-implementation-does-and-where-it-surprises" class="toc-link">What the implementation does, and where it surprises</a></li><li class="toc-item level-3"><a href="#tests-plus-an-explicit-overwrite-mode-and-rm" class="toc-link">Tests, plus an explicit overwrite mode and `rm`</a></li><li class="toc-item level-3"><a href="#extensions-interviewers-ask-for" class="toc-link">Extensions interviewers ask for</a></li><li class="toc-item level-3"><a href="#follow-up-questions" class="toc-link">Follow-up questions</a></li></ul>
     </aside>
   </div>
 

@@ -1663,6 +1663,186 @@ flowchart LR
 </ul>
 </li>
 </ol>
+<hr>
+<h2 id="5-edge-cases-tests-and-extensions"><a href="#5-edge-cases-tests-and-extensions" class="header-anchor">#</a>5. Edge Cases, Tests and Extensions</h2><h3 id="correctness-issues-to-know-about"><a href="#correctness-issues-to-know-about" class="header-anchor">#</a>Correctness issues to know about</h3><table>
+<thead>
+<tr>
+<th align="left">Concern</th>
+<th align="left">Status</th>
+<th align="left">Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Equal split remainders</td>
+<td align="left">Handled</td>
+<td align="left">The leftover cent goes to the first participant</td>
+</tr>
+<tr>
+<td align="left">Percent split rounding</td>
+<td align="left"><strong>Bug</strong></td>
+<td align="left">Each share is rounded independently, so the shares can add up to a cent more or less than the expense; the group&#39;s balances then no longer sum to zero</td>
+</tr>
+<tr>
+<td align="left">Money as <code>float</code></td>
+<td align="left">Risky</td>
+<td align="left">Rounding to two places after every operation hides but does not remove binary error; integer cents are safer</td>
+</tr>
+<tr>
+<td align="left"><code>simplify_debts</code></td>
+<td align="left">Good but not minimal</td>
+<td align="left">Greedy largest-debtor-with-largest-creditor settles in at most <code>n - 1</code> payments; finding the true minimum is NP-hard (it is a partition into zero-sum groups)</td>
+</tr>
+<tr>
+<td align="left">Payer not in the group</td>
+<td align="left">Rejected</td>
+<td align="left"><code>ValueError</code></td>
+</tr>
+<tr>
+<td align="left">Concurrency</td>
+<td align="left">Safe</td>
+<td align="left">One re-entrant lock around group state</td>
+</tr>
+</tbody></table>
+<h3 id="tests-including-the-rounding-bug-and-a-search-for-a-non-minimal-settlement"><a href="#tests-including-the-rounding-bug-and-a-search-for-a-non-minimal-settlement" class="header-anchor">#</a>Tests, including the rounding bug and a search for a non-minimal settlement</h3><p>This block extends the implementation above.</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># continues: expense sharing implementation above</span>
+<span class="hljs-keyword">import</span> itertools, random, threading
+
+alice, bob, cy, dee = (User(<span class="hljs-string">f&quot;u<span class="hljs-subst">{i}</span>&quot;</span>, n) <span class="hljs-keyword">for</span> i, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>([<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-string">&quot;Cy&quot;</span>, <span class="hljs-string">&quot;Dee&quot;</span>], <span class="hljs-number">1</span>))
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">group</span>(<span class="hljs-params">*users</span>):
+    g = SplitwiseGroup(<span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-string">&quot;trip&quot;</span>)
+    <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> users:
+        g.add_member(u)
+    <span class="hljs-keyword">return</span> g
+
+<span class="hljs-comment"># Equal split: the remainder cent goes to the first participant, and the shares add up exactly</span>
+g = group(alice, bob, cy)
+e = g.add_expense(<span class="hljs-string">&quot;e1&quot;</span>, <span class="hljs-string">&quot;dinner&quot;</span>, <span class="hljs-number">100.00</span>, alice, [EqualSplit(alice), EqualSplit(bob), EqualSplit(cy)], EqualSplitStrategy())
+<span class="hljs-keyword">assert</span> e.shares == {<span class="hljs-string">&quot;u1&quot;</span>: <span class="hljs-number">33.34</span>, <span class="hljs-string">&quot;u2&quot;</span>: <span class="hljs-number">33.33</span>, <span class="hljs-string">&quot;u3&quot;</span>: <span class="hljs-number">33.33</span>} <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(<span class="hljs-built_in">sum</span>(e.shares.values()), <span class="hljs-number">2</span>) == <span class="hljs-number">100.00</span>
+bal = g.compute_net_balances()
+<span class="hljs-keyword">assert</span> bal == {<span class="hljs-string">&quot;u1&quot;</span>: <span class="hljs-number">66.66</span>, <span class="hljs-string">&quot;u2&quot;</span>: -<span class="hljs-number">33.33</span>, <span class="hljs-string">&quot;u3&quot;</span>: -<span class="hljs-number">33.33</span>} <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(<span class="hljs-built_in">sum</span>(bal.values()), <span class="hljs-number">2</span>) == <span class="hljs-number">0</span>
+
+<span class="hljs-comment"># Exact and percent splits validate their inputs</span>
+<span class="hljs-keyword">for</span> strategy, splits, total <span class="hljs-keyword">in</span> [(ExactSplitStrategy(), [ExactSplit(alice, <span class="hljs-number">10</span>), ExactSplit(bob, <span class="hljs-number">5</span>)], <span class="hljs-number">20</span>),
+                                (PercentSplitStrategy(), [PercentSplit(alice, <span class="hljs-number">60</span>), PercentSplit(bob, <span class="hljs-number">30</span>)], <span class="hljs-number">20</span>),
+                                (EqualSplitStrategy(), [], <span class="hljs-number">20</span>)]:
+    <span class="hljs-keyword">try</span>:
+        strategy.validate_and_compute(total, splits)
+        <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected ValueError&quot;</span>)
+    <span class="hljs-keyword">except</span> ValueError:
+        <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">try</span>:
+    group(alice).add_expense(<span class="hljs-string">&quot;e&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">10</span>, bob, [EqualSplit(alice)], EqualSplitStrategy())
+    <span class="hljs-keyword">raise</span> AssertionError(<span class="hljs-string">&quot;expected ValueError&quot;</span>)
+<span class="hljs-keyword">except</span> ValueError:
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># The rounding bug: 10.01 split 33.33 / 33.33 / 33.34 percent produces shares worth 10.02</span>
+shares = PercentSplitStrategy().validate_and_compute(<span class="hljs-number">10.01</span>, [PercentSplit(alice, <span class="hljs-number">33.33</span>), PercentSplit(bob, <span class="hljs-number">33.33</span>), PercentSplit(cy, <span class="hljs-number">33.34</span>)])
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(<span class="hljs-built_in">sum</span>(shares.values()), <span class="hljs-number">2</span>) == <span class="hljs-number">10.02</span> != <span class="hljs-number">10.01</span>               <span class="hljs-comment"># a cent appears from nowhere</span>
+g = group(alice, bob, cy)
+g.add_expense(<span class="hljs-string">&quot;e2&quot;</span>, <span class="hljs-string">&quot;snacks&quot;</span>, <span class="hljs-number">10.01</span>, alice, [PercentSplit(alice, <span class="hljs-number">33.33</span>), PercentSplit(bob, <span class="hljs-number">33.33</span>), PercentSplit(cy, <span class="hljs-number">33.34</span>)], PercentSplitStrategy())
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">round</span>(<span class="hljs-built_in">sum</span>(g.compute_net_balances().values()), <span class="hljs-number">2</span>) == -<span class="hljs-number">0.01</span>       <span class="hljs-comment"># the group no longer balances</span>
+
+<span class="hljs-comment"># The fix: allocate in integer cents with the largest-remainder method so the parts always sum to the total</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">allocate_cents</span>(<span class="hljs-params">total_cents, weights</span>):
+    total_w = <span class="hljs-built_in">sum</span>(weights)
+    raw = [total_cents * w / total_w <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> weights]
+    parts = [<span class="hljs-built_in">int</span>(r) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> raw]
+    order = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(weights)), key=<span class="hljs-keyword">lambda</span> i: (raw[i] - parts[i], -i), reverse=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> order[: total_cents - <span class="hljs-built_in">sum</span>(parts)]:
+        parts[i] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> parts
+
+<span class="hljs-keyword">assert</span> allocate_cents(<span class="hljs-number">1001</span>, [<span class="hljs-number">33.33</span>, <span class="hljs-number">33.33</span>, <span class="hljs-number">33.34</span>]) == [<span class="hljs-number">334</span>, <span class="hljs-number">333</span>, <span class="hljs-number">334</span>] <span class="hljs-keyword">or</span> <span class="hljs-built_in">sum</span>(allocate_cents(<span class="hljs-number">1001</span>, [<span class="hljs-number">33.33</span>, <span class="hljs-number">33.33</span>, <span class="hljs-number">33.34</span>])) == <span class="hljs-number">1001</span>
+rng = random.Random(<span class="hljs-number">11</span>)
+<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">500</span>):
+    w = [rng.randint(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rng.randint(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>))]
+    total = rng.randint(<span class="hljs-number">0</span>, <span class="hljs-number">100_000</span>)
+    parts = allocate_cents(total, w)
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">sum</span>(parts) == total <span class="hljs-keyword">and</span> <span class="hljs-built_in">all</span>(p &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> parts)          <span class="hljs-comment"># never loses or invents a cent</span>
+
+<span class="hljs-comment"># Settlements: applying them clears every balance, and there are at most n - 1 of them</span>
+g = group(alice, bob, cy, dee)
+g.add_expense(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;hotel&quot;</span>, <span class="hljs-number">120</span>, alice, [EqualSplit(u) <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> (alice, bob, cy, dee)], EqualSplitStrategy())
+g.add_expense(<span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;taxi&quot;</span>, <span class="hljs-number">40</span>, bob, [EqualSplit(u) <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> (bob, cy)], EqualSplitStrategy())
+g.add_expense(<span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;food&quot;</span>, <span class="hljs-number">90</span>, cy, [EqualSplit(u) <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> (alice, cy, dee)], EqualSplitStrategy())
+settlements = g.simplify_debts()
+names = {u.name: u.user_id <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> (alice, bob, cy, dee)}
+after = <span class="hljs-built_in">dict</span>(g.compute_net_balances())
+<span class="hljs-keyword">for</span> debtor, creditor, amount <span class="hljs-keyword">in</span> settlements:
+    after[names[debtor]] = <span class="hljs-built_in">round</span>(after[names[debtor]] + amount, <span class="hljs-number">2</span>)
+    after[names[creditor]] = <span class="hljs-built_in">round</span>(after[names[creditor]] - amount, <span class="hljs-number">2</span>)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(<span class="hljs-built_in">abs</span>(v) &lt; <span class="hljs-number">0.011</span> <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> after.values()) <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(settlements) &lt;= <span class="hljs-number">3</span>
+
+<span class="hljs-comment"># Greedy is not always minimal: search small cases against the true optimum (n minus the most zero-sum groups)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">greedy_count</span>(<span class="hljs-params">bals</span>):
+    cr = <span class="hljs-built_in">sorted</span>([b <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> bals <span class="hljs-keyword">if</span> b &gt; <span class="hljs-number">0</span>], reverse=<span class="hljs-literal">True</span>)
+    de = <span class="hljs-built_in">sorted</span>([-b <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> bals <span class="hljs-keyword">if</span> b &lt; <span class="hljs-number">0</span>], reverse=<span class="hljs-literal">True</span>)
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> cr <span class="hljs-keyword">and</span> de:
+        c, d = cr.pop(<span class="hljs-number">0</span>), de.pop(<span class="hljs-number">0</span>)
+        count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> c &gt; d: cr.append(c - d); cr.sort(reverse=<span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">elif</span> d &gt; c: de.append(d - c); de.sort(reverse=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">return</span> count
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">optimal_count</span>(<span class="hljs-params">bals</span>):
+    bals = [b <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> bals <span class="hljs-keyword">if</span> b]
+    n, best = <span class="hljs-built_in">len</span>(bals), {<span class="hljs-number">0</span>: <span class="hljs-number">0</span>}
+    full = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>
+    sums = {m: <span class="hljs-built_in">sum</span>(bals[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> m &gt;&gt; i &amp; <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span> &lt;&lt; n)}
+    groups = [<span class="hljs-number">0</span>] * (<span class="hljs-number">1</span> &lt;&lt; n)
+    <span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span> &lt;&lt; n):                                      <span class="hljs-comment"># most disjoint zero-sum groups inside each subset</span>
+        m_best = <span class="hljs-number">0</span>
+        sub = mask
+        <span class="hljs-keyword">while</span> sub:
+            <span class="hljs-keyword">if</span> sums[sub] == <span class="hljs-number">0</span>:
+                m_best = <span class="hljs-built_in">max</span>(m_best, <span class="hljs-number">1</span> + groups[mask ^ sub])
+            sub = (sub - <span class="hljs-number">1</span>) &amp; mask
+        groups[mask] = m_best
+    <span class="hljs-keyword">return</span> n - groups[full]
+
+rng = random.Random(<span class="hljs-number">3</span>)
+found = <span class="hljs-literal">None</span>
+<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4000</span>):
+    bals = [rng.randint(-<span class="hljs-number">9</span>, <span class="hljs-number">9</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rng.randint(<span class="hljs-number">3</span>, <span class="hljs-number">7</span>))]
+    bals.append(-<span class="hljs-built_in">sum</span>(bals))
+    <span class="hljs-keyword">if</span> greedy_count(bals) &gt; optimal_count(bals):
+        found = bals
+        <span class="hljs-keyword">break</span>
+<span class="hljs-keyword">assert</span> found <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> greedy_count(found) &gt; optimal_count(found)  <span class="hljs-comment"># greedy can use more payments than necessary</span>
+
+<span class="hljs-comment"># Concurrency: 8 threads add 25 expenses each, and the group still balances</span>
+g = group(alice, bob, cy)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">worker</span>(<span class="hljs-params">k</span>):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">25</span>):
+        g.add_expense(<span class="hljs-string">f&quot;<span class="hljs-subst">{k}</span>-<span class="hljs-subst">{i}</span>&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">9.00</span>, alice, [EqualSplit(u) <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> (alice, bob, cy)], EqualSplitStrategy())
+ts = [threading.Thread(target=worker, args=(k,)) <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>)]
+[t.start() <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> ts]; [t.join() <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> ts]
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(g.expenses) == <span class="hljs-number">200</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">round</span>(<span class="hljs-built_in">sum</span>(g.compute_net_balances().values()), <span class="hljs-number">2</span>) == <span class="hljs-number">0</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;expense sharing tests passed&quot;</span>)</code></pre>
+  </div><h3 id="extensions-interviewers-ask-for"><a href="#extensions-interviewers-ask-for" class="header-anchor">#</a>Extensions interviewers ask for</h3><ol>
+<li><strong>Integer cents everywhere:</strong> store amounts as <code>int</code> cents and convert only for display; allocation by largest remainder guarantees that parts sum to the whole.</li>
+<li><strong>Multiple currencies:</strong> keep balances per currency and settle within a currency, or convert at an explicit, recorded rate.</li>
+<li><strong>Edit and delete an expense:</strong> keep expenses immutable and add reversal entries (like an accounting ledger) so history and balances stay auditable.</li>
+<li><strong>Recurring and partial payments:</strong> a <code>Settlement</code> record that reduces balances, so &quot;who owes whom&quot; is always derived from the ledger, not stored.</li>
+<li><strong>Fewer payments than greedy:</strong> try to partition the members into zero-sum groups first (exponential in the worst case, fine for a group of ten or so), then settle each group greedily.</li>
+</ol>
+<h3 id="follow-up-questions"><a href="#follow-up-questions" class="header-anchor">#</a>Follow-up questions</h3><ul>
+<li><em>Why can the sum of balances drift?</em> Because each share is rounded separately; the fix is to allocate in whole cents so the parts sum to the total by construction.</li>
+<li><em>Is the minimum number of settlements computable?</em> Yes but hard: it equals <code>n</code> minus the maximum number of disjoint zero-sum subsets, which is NP-hard in general, so products use the greedy answer.</li>
+<li><em>Why a ledger rather than stored balances?</em> A ledger can be audited and corrected by adding entries; a stored balance is a cached result that can silently go wrong.</li>
+</ul>
 
         </article>
         <div class="bottom-completion-wrap">
@@ -1685,7 +1865,7 @@ flowchart LR
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-dinner-bill-the-roommate-whiteboard" class="toc-link">2. Spoon-Fed Mental Model: The Dinner Bill & The Roommate Whiteboard</a></li><li class="toc-item level-3"><a href="#the-naive-pairwise-settlement-junior-approach" class="toc-link">The Naive Pairwise Settlement (Junior Approach):</a></li><li class="toc-item level-3"><a href="#the-debt-simplification-engine-staff-approach" class="toc-link">The Debt Simplification Engine (Staff Approach):</a></li><li class="toc-item level-2"><a href="#3-core-architecture-design-patterns" class="toc-link">3. Core Architecture & Design Patterns</a></li><li class="toc-item level-3"><a href="#applied-patterns" class="toc-link">Applied Patterns:</a></li><li class="toc-item level-2"><a href="#4-junior-vs-staff-implementation" class="toc-link">4. Junior vs Staff Implementation</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation" class="toc-link">5. Complete Runnable Implementation</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-plain-english-jargon-demystifier" class="toc-link">1. Plain-English Jargon Demystifier</a></li><li class="toc-item level-2"><a href="#2-spoon-fed-mental-model-the-dinner-bill-the-roommate-whiteboard" class="toc-link">2. Spoon-Fed Mental Model: The Dinner Bill & The Roommate Whiteboard</a></li><li class="toc-item level-3"><a href="#the-naive-pairwise-settlement-junior-approach" class="toc-link">The Naive Pairwise Settlement (Junior Approach):</a></li><li class="toc-item level-3"><a href="#the-debt-simplification-engine-staff-approach" class="toc-link">The Debt Simplification Engine (Staff Approach):</a></li><li class="toc-item level-2"><a href="#3-core-architecture-design-patterns" class="toc-link">3. Core Architecture & Design Patterns</a></li><li class="toc-item level-3"><a href="#applied-patterns" class="toc-link">Applied Patterns:</a></li><li class="toc-item level-2"><a href="#4-junior-vs-staff-implementation" class="toc-link">4. Junior vs Staff Implementation</a></li><li class="toc-item level-2"><a href="#5-complete-runnable-implementation" class="toc-link">5. Complete Runnable Implementation</a></li><li class="toc-item level-2"><a href="#6-chapter-milestone-check" class="toc-link">6. Chapter Milestone Check</a></li><li class="toc-item level-2"><a href="#5-edge-cases-tests-and-extensions" class="toc-link">5. Edge Cases, Tests and Extensions</a></li><li class="toc-item level-3"><a href="#correctness-issues-to-know-about" class="toc-link">Correctness issues to know about</a></li><li class="toc-item level-3"><a href="#tests-including-the-rounding-bug-and-a-search-for-a-non-minimal-settlement" class="toc-link">Tests, including the rounding bug and a search for a non-minimal settlement</a></li><li class="toc-item level-3"><a href="#extensions-interviewers-ask-for" class="toc-link">Extensions interviewers ask for</a></li><li class="toc-item level-3"><a href="#follow-up-questions" class="toc-link">Follow-up questions</a></li></ul>
     </aside>
   </div>
 
