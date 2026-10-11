@@ -43,6 +43,33 @@ flowchart TD
 > [!NOTE]
 > For objects larger than 512 bytes, PyMalloc steps aside and delegates directly to the standard system `malloc()`.
 
+### The PyObject Memory Anatomy: Why is a Python Integer 28 Bytes?
+
+In C or Rust, a 32-bit integer occupies exactly **4 bytes** of RAM. In CPython on a 64-bit operating system, typing `x = 42` allocates **28 bytes**!
+
+```text
++-------------------------------------------------------------+
+| CPrimitive (int32_t): [ 4 Bytes raw binary value ]          |
++-------------------------------------------------------------+
+
+vs.
+
++-------------------------------------------------------------+
+| CPython PyLongObject (28 Bytes total):                      |
+| +-------------------------+-------------------------------+ |
+| | ob_refcnt (8 bytes)     | Reference count integer       | |
+| +-------------------------+-------------------------------+ |
+| | ob_type   (8 bytes)     | Pointer to <class 'int'>      | |
+| +-------------------------+-------------------------------+ |
+| | ob_size   (8 bytes)     | Number of digits / sign       | |
+| +-------------------------+-------------------------------+ |
+| | ob_digit  (4 bytes)     | Actual numeric value array    | |
+| +-------------------------+-------------------------------+ |
++-------------------------------------------------------------+
+```
+
+Every single item in Python carries this `PyObject_HEAD` header (`ob_refcnt` + `ob_type`). This 16-byte metadata tax is the architectural price of dynamic typing and automatic reference counting.
+
 ---
 
 ## 2. Reference Counting: The Primary Reclaimer
@@ -193,6 +220,44 @@ In CPython, if two threads concurrently modified `ob_refcnt` of a shared object 
 ### When Does Multithreading Actually Help?
 * **CPU-Bound Tasks (Math, Image processing, Compression):** Threads do **not** run in parallel across CPU cores. They contend for the GIL and execute *slower* than single-threaded code due to lock context-switching overhead.
 * **I/O-Bound Tasks (Network HTTP requests, Database queries, Disk I/O):** Threads are **highly effective**! Whenever a thread executes an I/O system call or `time.sleep()`, CPython **explicitly releases the GIL**, allowing other threads to run concurrently on the CPU while the first thread waits for the network.
+
+### PEP 703 & The Frontier: Silent Data Races in Free-Threaded Python 3.13t
+
+Python 3.13 introduces an experimental build without the GIL (`python3.13t`).
+While this allows multi-core CPU scaling on threads, it removes the safety net that Python developers took for granted for 30 years:
+
+> [!WARNING]
+> **Under the GIL:** Operations like `list.append()` or `dict[k] = v` were implicitly atomic in single bytecode steps.
+> **Without the GIL (Python 3.13t):** Concurrent threads executing on separate CPU cores can now trigger **real memory races and lost updates** on pure Python data structures!
+
+```python
+import threading
+
+# Unsynchronized shared counter
+counter = 0
+lock = threading.Lock()
+
+def worker_unsafe():
+    global counter
+    for _ in range(10_000):
+        # In free-threaded Python, += is 3 bytecodes (LOAD, BINARY_OP, STORE)
+        # Without GIL or lock, concurrent threads interleave and lose increments!
+        counter += 1
+
+def worker_safe():
+    global counter
+    for _ in range(10_000):
+        with lock:
+            counter += 1
+
+# Testing safe concurrent execution
+threads = [threading.Thread(target=worker_safe) for _ in range(5)]
+for t in threads: t.start()
+for t in threads: t.join()
+assert counter == 50_000 # Deterministically accurate
+```
+
+**Staff Rule for Free-Threaded Python:** Never assume built-in collections are thread-safe across concurrent threads in 3.13t. Always protect shared mutable state with `threading.Lock`, thread-safe queues (`queue.Queue`), or design immutable message-passing architectures.
 
 ---
 

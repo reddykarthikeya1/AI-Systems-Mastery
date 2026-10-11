@@ -205,6 +205,65 @@ flowchart TD
     NonData -->|Not Found| GetAttr["Run class.__getattr__(instance, 'attribute')"]
 ```
 
+### The 4-Step Descriptor Desugaring Walkthrough
+
+Before writing complex descriptors, let's trace the evolutionary ladder showing *why* descriptors exist by desugaring `@property`:
+
+```python
+# Level 1: Java-style Getter / Setter (Verbose, un-Pythonic)
+class ProductLevel1:
+    def __init__(self, price: float):
+        self._price = price
+    def get_price(self) -> float:
+        return self._price
+    def set_price(self, val: float):
+        if val <= 0: raise ValueError("Price must be positive")
+        self._price = val
+
+# Level 2: Pythonic @property Decorator (Clean interface, but not reusable across 50 attributes)
+class ProductLevel2:
+    def __init__(self, price: float):
+        self._price = price
+    @property
+    def price(self) -> float:
+        return self._price
+    @price.setter
+    def price(self, val: float):
+        if val <= 0: raise ValueError("Price must be positive")
+        self._price = val
+
+# Level 3: Desugaring @property from scratch!
+# Notice: @property is NOT magical compiler syntax. It is just a class implementing __get__ and __set__!
+class DesugaredProperty:
+    def __init__(self, fget, fset=None):
+        self.fget = fget
+        self.fset = fset
+    def __get__(self, instance, owner):
+        if instance is None: return self
+        return self.fget(instance)
+    def __set__(self, instance, value):
+        if self.fset is None: raise AttributeError("can't set attribute")
+        self.fset(instance, value)
+
+class ProductLevel3:
+    def __init__(self, price: float):
+        self._price = price
+    def _get_price(self): return self._price
+    def _set_price(self, val):
+        if val <= 0: raise ValueError("Price must be positive")
+        self._price = val
+    # Assign descriptor to class attribute
+    price = DesugaredProperty(_get_price, _set_price)
+
+p = ProductLevel3(99.0)
+assert p.price == 99.0
+p.price = 149.0
+assert p.price == 149.0
+
+# Level 4: Reusable Domain Descriptors (The ORM Pattern)
+# Instead of rewriting getters/setters for every column, create a reusable descriptor class!
+```
+
 ### Real-World Production Descriptor: Type-Checked ORM Fields
 ```python
 class IntegerField:

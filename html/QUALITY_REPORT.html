@@ -1263,12 +1263,12 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 <td>01-Python-Mastery</td>
 <td>23</td>
 <td>0</td>
-<td>58,642</td>
-<td>2238</td>
+<td>60,058</td>
+<td>2255</td>
 <td>100%</td>
 <td>100%</td>
-<td>0/0</td>
-<td>0</td>
+<td>110/110</td>
+<td>6</td>
 </tr>
 <tr>
 <td>02-Low-Level-Design</td>
@@ -1278,8 +1278,8 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 <td>1348</td>
 <td>100%</td>
 <td>100%</td>
-<td>0/0</td>
-<td>0</td>
+<td>87/88</td>
+<td>4</td>
 </tr>
 <tr>
 <td>03-High-Level-Design</td>
@@ -1289,8 +1289,8 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 <td>1280</td>
 <td>100%</td>
 <td>100%</td>
-<td>0/0</td>
-<td>0</td>
+<td>36/36</td>
+<td>1</td>
 </tr>
 <tr>
 <td>04-Agentic-AI</td>
@@ -1300,8 +1300,8 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 <td>1571</td>
 <td>100%</td>
 <td>100%</td>
-<td>0/0</td>
-<td>0</td>
+<td>42/42</td>
+<td>2</td>
 </tr>
 <tr>
 <td>05-DSA-Interview-Playbook</td>
@@ -1311,22 +1311,32 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 <td>1245</td>
 <td>100%</td>
 <td>100%</td>
-<td>0/0</td>
-<td>0</td>
+<td>72/73</td>
+<td>97</td>
 </tr>
 </tbody></table>
 <h2 id="executable-assets"><a href="#executable-assets" class="header-anchor">#</a>Executable assets</h2><ul>
-<li>Python labs: skipped (--no-run)</li>
-<li>LLD lab: skipped (--no-run)</li>
-<li>HLD simulations: skipped (--no-run)</li>
-<li>Agentic HNSW simulation: skipped (--no-run)</li>
-<li>DSA benchmarks: skipped (--no-run)</li>
+<li>Python labs: 5/5 scripts run clean</li>
+<li>LLD lab: 1/1 scripts run clean</li>
+<li>HLD simulations: 4/4 scripts run clean</li>
+<li>Agentic HNSW simulation: 1/1 scripts run clean</li>
+<li>DSA benchmarks: 1/1 scripts run clean</li>
+<li>DSA Core 75 (asserts + 70 brute-force cross-checks): Results: 75 PASSED, 0 FAILED out of 75 tests.</li>
+<li>DSA dry-run trace generator (practice/trace.py): works</li>
+<li>DSA fuzz oracles mutation-tested with <code>python tools/mutation_dsa.py</code> (64 of 70 mutants killed on the last run; survivors are equivalent boundary mutations or weak oracles)</li>
+<li>Python exercises (23 chapters, 2 coding + 1 debugging each, hidden tests; reference solutions): Results: 105 passed, 0 failed, 0 skipped</li>
+<li>Python chapters with a Version Notes section: 23</li>
+<li>Agentic examples (pinned langgraph/mcp, offline): run <code>cd 04-Agentic-AI/examples &amp;&amp; pytest -q</code> (needs <code>pip install -r requirements.txt</code>)</li>
 </ul>
 <h2 id="portal-static-checks"><a href="#portal-static-checks" class="header-anchor">#</a>Portal (static checks)</h2><ul>
 <li>HTML pages: 125; PDFs: 118</li>
 <li>Full-text search index present: True</li>
 <li>KaTeX vendored (offline): True</li>
 <li>Accessibility: axe-core WCAG 2.2 AA clean on sampled pages in light and dark (verified manually; not part of this script).</li>
+<li>Render check in headless Chrome (<code>tools/portal_check.py</code>, KaTeX, Mermaid, landmarks; sample of 12 pages here, run it without --sample for all): checked 12 pages, 0 failed</li>
+</ul>
+<h2 id="code-blocks-that-fail-on-a-name-defined-nowhere-in-their-file-real-bugs-not-fragments"><a href="#code-blocks-that-fail-on-a-name-defined-nowhere-in-their-file-real-bugs-not-fragments" class="header-anchor">#</a>Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)</h2><ul>
+<li>05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md: undefined name n</li>
 </ul>
 <h2 id="remaining-gaps-against-the-bar"><a href="#remaining-gaps-against-the-bar" class="header-anchor">#</a>Remaining gaps against the bar</h2><ul>
 <li><strong>01-Python-Mastery</strong>: none against the measured bar</li>
@@ -1357,7 +1367,7 @@ Bar used for &#39;gaps&#39;: median chapter &gt;= 1200 words, 100% of chapters w
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#per-track-measurements" class="toc-link">Per-track measurements</a></li><li class="toc-item level-2"><a href="#executable-assets" class="toc-link">Executable assets</a></li><li class="toc-item level-2"><a href="#portal-static-checks" class="toc-link">Portal (static checks)</a></li><li class="toc-item level-2"><a href="#remaining-gaps-against-the-bar" class="toc-link">Remaining gaps against the bar</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#per-track-measurements" class="toc-link">Per-track measurements</a></li><li class="toc-item level-2"><a href="#executable-assets" class="toc-link">Executable assets</a></li><li class="toc-item level-2"><a href="#portal-static-checks" class="toc-link">Portal (static checks)</a></li><li class="toc-item level-2"><a href="#code-blocks-that-fail-on-a-name-defined-nowhere-in-their-file-real-bugs-not-fragments" class="toc-link">Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)</a></li><li class="toc-item level-2"><a href="#remaining-gaps-against-the-bar" class="toc-link">Remaining gaps against the bar</a></li></ul>
     </aside>
   </div>
 

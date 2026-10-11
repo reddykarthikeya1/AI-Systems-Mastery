@@ -141,14 +141,21 @@ print(f"Expected 500,000, but got: {counter} (Race Condition Bug!)")
 
 #### 1. Mutual Exclusion: `threading.Lock`
 ```python
+import threading
+
 lock = threading.Lock()
 safe_counter = 0
 
 def safe_worker():
     global safe_counter
-    for _ in range(100_000):
+    for _ in range(1_000):
         with lock: # Guarantees atomic update block
             safe_counter += 1
+
+threads = [threading.Thread(target=safe_worker) for _ in range(5)]
+for t in threads: t.start()
+for t in threads: t.join()
+assert safe_counter == 5_000
 ```
 
 #### 2. Reentrant Lock: `threading.RLock`

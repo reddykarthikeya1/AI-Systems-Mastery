@@ -170,65 +170,42 @@ In interviews, senior candidates frequently fail at mocking because of Python's 
 ### The Golden Rule of `unittest.mock.patch`
 > **"Patch where the object is LOOKED UP, not where it is DEFINED."**
 
-Suppose you have two files:
+Suppose you have two modules: `payment_gateway` and `checkout_service`. Here is how Python's module namespace binding works under the hood:
 
 ```python
-# payment_gateway.py
-class StripeClient:
-    def charge(self, amount: int) -> str:
-        # In real life, hits https://api.stripe.com
-        return "real_stripe_charge_id"
-```
-
-```python
-# checkout_service.py
-from payment_gateway import StripeClient  # <-- LOOKUP HAPPENS HERE!
-
-def process_order(amount: int) -> str:
-    client = StripeClient()
-    return client.charge(amount)
-```
-
-```mermaid
-flowchart TD
-    subgraph WrongWay["❌ The Common Trap: Patching Definition"]
-        W1["@patch('payment_gateway.StripeClient')"]
-        W2["Modifies payment_gateway module namespace"]
-        W3["checkout_service ALREADY bound its own local pointer to the real StripeClient!"]
-        W4["Result: Real Stripe API is still called in production!"]
-        W1 --> W2 --> W3 --> W4
-    end
-
-    subgraph RightWay["✅ The Senior Rule: Patching Lookup"]
-        R1["@patch('checkout_service.StripeClient')"]
-        R2["Replaces the pointer inside checkout_service's namespace!"]
-        R3["process_order() resolves the Mock directly!"]
-        R4["Result: Safe, zero network calls, 100% reliable!"]
-        R1 --> R2 --> R3 --> R4
-    end
-```
-
-#### The Fatal Mistake:
-```python
+import sys
+import types
 from unittest.mock import patch
 
-# ❌ FATAL ERROR: Patches where defined, but checkout_service already imported its own pointer!
-@patch("payment_gateway.StripeClient") 
-def test_checkout_fails(mock_stripe):
-    process_order(100) # FAILS! Still hits real Stripe!
-```
+# Step 1: Simulate payment_gateway module in sys.modules
+pg_mod = types.ModuleType("payment_gateway")
+class StripeClient:
+    def charge(self, amount: int) -> str:
+        return "real_stripe_charge_id"
+pg_mod.StripeClient = StripeClient
+sys.modules["payment_gateway"] = pg_mod
 
-#### The Senior Solution:
-```python
-# ✅ CORRECT: Patch where checkout_service LOOKS IT UP!
-@patch("checkout_service.StripeClient")
-def test_checkout_properly_mocked(mock_stripe_cls):
-    mock_instance = mock_stripe_cls.return_value
-    mock_instance.charge.return_value = "mock_tx_999"
-    
-    result = process_order(100)
-    assert result == "mock_tx_999"
-    mock_instance.charge.assert_called_once_with(100)
+# Step 2: Simulate checkout_service looking up StripeClient in its own namespace
+cs_mod = types.ModuleType("checkout_service")
+def process_order(amount: int) -> str:
+    # In a real module file, functions look up globals from their own module namespace:
+    client = sys.modules["checkout_service"].StripeClient()
+    return client.charge(amount)
+cs_mod.StripeClient = StripeClient
+cs_mod.process_order = process_order
+sys.modules["checkout_service"] = cs_mod
+
+# The Common Trap: Patching where DEFINED (payment_gateway)
+with patch("payment_gateway.StripeClient") as mock_pg:
+    mock_pg.return_value.charge.return_value = "mock_charge"
+    # Fails to intercept! checkout_service still uses its own local bound pointer:
+    assert cs_mod.process_order(100) == "real_stripe_charge_id"
+
+# The Senior Solution: Patching where LOOKED UP (checkout_service)
+with patch("checkout_service.StripeClient") as mock_cs:
+    mock_cs.return_value.charge.return_value = "mock_charge"
+    # Intercepted cleanly!
+    assert cs_mod.process_order(100) == "mock_charge"
 ```
 
 ---

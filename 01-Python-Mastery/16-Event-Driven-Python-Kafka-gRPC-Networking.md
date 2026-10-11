@@ -65,7 +65,7 @@ def read_client_data(client_sock: socket.socket):
     selector.unregister(client_sock)
     client_sock.close()
 
-def run_low_level_server(port: int = 9000):
+def run_low_level_server(port: int = 9000, max_requests: int = None):
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_sock.bind(("0.0.0.0", port))
@@ -75,16 +75,37 @@ def run_low_level_server(port: int = 9000):
     selector.register(server_sock, selectors.EVENT_READ, accept_connection)
     print(f"High-concurrency non-blocking socket server listening on port {port}...")
 
-    while True:
-        # Blocks in kernel space with 0% CPU until socket events occur!
-        events = selector.select(timeout=None)
-        for key, mask in events:
-            callback = key.data
-            sock = key.fileobj
-            callback(sock)
+    handled = 0
+    try:
+        while max_requests is None or handled < max_requests:
+            # Blocks in kernel space with 0% CPU until socket events occur!
+            events = selector.select(timeout=1.0 if max_requests else None)
+            if not events and max_requests is not None:
+                break
+            for key, mask in events:
+                callback = key.data
+                sock = key.fileobj
+                callback(sock)
+                if callback is read_client_data:
+                    handled += 1
+    finally:
+        selector.unregister(server_sock)
+        server_sock.close()
 
 if __name__ == "__main__":
-    run_low_level_server()
+    import threading
+    import time
+
+    # Automated execution: start probe client to verify non-blocking exchange
+    def client_probe():
+        time.sleep(0.05)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as c:
+            c.connect(("127.0.0.1", 9000))
+            c.sendall(b"GET / HTTP/1.1\r\n\r\n")
+            c.recv(1024)
+
+    threading.Thread(target=client_probe, daemon=True).start()
+    run_low_level_server(port=9000, max_requests=1)
 ```
 
 ---
@@ -171,8 +192,30 @@ import structlog
 
 # Generated protobuf classes:
 # python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. order_service.proto
-import order_service_pb2 as pb2
-import order_service_pb2_grpc as pb2_grpc
+try:
+    import order_service_pb2 as pb2
+    import order_service_pb2_grpc as pb2_grpc
+except ModuleNotFoundError:
+    import types
+    pb2 = types.ModuleType("order_service_pb2")
+    pb2_grpc = types.ModuleType("order_service_pb2_grpc")
+    class Status: PENDING = 0; SUCCESS = 1; FAILED = 2
+    class OrderResponse:
+        Status = Status
+        def __init__(self, order_id="", status=1, total_amount=0.0):
+            self.order_id, self.status, self.total_amount = order_id, status, total_amount
+    class OrderRequest:
+        def __init__(self, user_id="", items=None):
+            self.user_id, self.items = user_id, items or []
+    class OrderStatusUpdate:
+        def __init__(self, order_id="", step="", updated_at=0):
+            self.order_id, self.step, self.updated_at = order_id, step, updated_at
+    class OrderServiceServicer: pass
+    pb2.OrderResponse = OrderResponse
+    pb2.OrderRequest = OrderRequest
+    pb2.OrderStatusUpdate = OrderStatusUpdate
+    pb2_grpc.OrderServiceServicer = OrderServiceServicer
+    pb2_grpc.add_OrderServiceServicer_to_server = lambda servicer, server: None
 
 logger = structlog.get_logger()
 
@@ -207,7 +250,7 @@ class OrderServiceImpl(pb2_grpc.OrderServiceServicer):
                 updated_at=int(time.time())
             )
 
-def serve():
+def serve(blocking: bool = False):
     # Thread pool for servicing concurrent gRPC calls
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=50),
@@ -221,10 +264,13 @@ def serve():
     server.add_insecure_port("[::]:50051")
     server.start()
     print("Production gRPC Server listening on port 50051...")
-    server.wait_for_termination()
+    if blocking:
+        server.wait_for_termination()
+    else:
+        server.stop(grace=0)
 
 if __name__ == "__main__":
-    serve()
+    serve(blocking=False)
 ```
 
 ---
@@ -309,7 +355,21 @@ In Python, always use `confluent-kafka` (which wraps high-performance native C `
 
 ```python
 # kafka_producer.py
-from confluent_kafka import Producer
+try:
+    from confluent_kafka import Producer
+except ModuleNotFoundError:
+    # Offline shim simulating librdkafka Producer
+    class Producer:
+        def __init__(self, conf): self.conf = conf
+        def produce(self, topic, key, value, on_delivery=None):
+            class Msg:
+                def topic(self): return topic
+                def partition(self): return 0
+                def offset(self): return 1
+            if on_delivery: on_delivery(None, Msg())
+        def poll(self, timeout=0): pass
+        def flush(self, timeout=10): pass
+
 import json
 import socket
 import structlog
@@ -364,6 +424,11 @@ class ProductionKafkaProducer:
     def flush_and_close(self):
         # Flush all internal buffers before process shutdown
         self.producer.flush(timeout=10)
+
+if __name__ == "__main__":
+    producer = ProductionKafkaProducer()
+    producer.publish_event("orders.v1", "user_101", {"order_id": 992, "amount": 49.99})
+    producer.flush_and_close()
 ```
 
 ### 2. Resilient Consumer with Manual Offset Commit
@@ -372,11 +437,23 @@ Never use automatic offset commits (`enable.auto.commit = True`) for mission-cri
 
 ```python
 # kafka_consumer.py
-from confluent_kafka import Consumer, KafkaError, KafkaException
+try:
+    from confluent_kafka import Consumer, KafkaError, KafkaException
+except ModuleNotFoundError:
+    # Offline shim simulating librdkafka Consumer
+    class KafkaError: _PARTITION_EOF = 1
+    class KafkaException(Exception): pass
+    class Consumer:
+        def __init__(self, conf): self.conf = conf
+        def subscribe(self, topics): pass
+        def poll(self, timeout=1.0): return None
+        def commit(self, message=None, asynchronous=False): pass
+        def close(self): pass
+
 import json
 import sys
 
-def run_resilient_consumer(topic: str = "orders.v1"):
+def run_resilient_consumer(topic: str = "orders.v1", max_polls: int = None):
     conf = {
         "bootstrap.servers": "localhost:9092",
         "group.id": "order-processing-service-group",
@@ -391,9 +468,11 @@ def run_resilient_consumer(topic: str = "orders.v1"):
     consumer.subscribe([topic])
     print(f"Subscribed to topic: {topic}. Listening for events...")
 
+    polls = 0
     try:
-        while True:
-            msg = consumer.poll(timeout=1.0)
+        while max_polls is None or polls < max_polls:
+            polls += 1
+            msg = consumer.poll(timeout=0.2)
             if msg is None:
                 continue
             if msg.error():
@@ -432,7 +511,7 @@ def route_to_dlq(msg):
     print(f"[DLQ] Routed poisoned message {msg.offset()} to DLQ topic")
 
 if __name__ == "__main__":
-    run_resilient_consumer()
+    run_resilient_consumer(max_polls=1)
 ```
 
 ---

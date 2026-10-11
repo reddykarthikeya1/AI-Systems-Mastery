@@ -1565,33 +1565,31 @@ PCIe bandwidth (64 GB/s) is 50x slower than internal GPU HBM memory (3,000 GB/s)
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> torch
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> torch
 
-<span class="hljs-comment"># Benchmark GPU Tensor Compute</span>
+<span class="hljs-comment"># Benchmark Tensor Compute</span>
 device = torch.device(<span class="hljs-string">&quot;cuda&quot;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;cpu&quot;</span>)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active Compute Device: <span class="hljs-subst">{device}</span>&quot;</span>)
 
-<span class="hljs-comment"># Allocate 10,000 x 10,000 matrix directly in GPU VRAM</span>
-N = <span class="hljs-number">10_000</span>
+<span class="hljs-comment"># Allocate matrix directly in target device RAM</span>
+N = <span class="hljs-number">5_000</span> <span class="hljs-keyword">if</span> device.<span class="hljs-built_in">type</span> == <span class="hljs-string">&quot;cuda&quot;</span> <span class="hljs-keyword">else</span> <span class="hljs-number">500</span>
 A = torch.randn((N, N), device=device, dtype=torch.float32)
 B = torch.randn((N, N), device=device, dtype=torch.float32)
 
-<span class="hljs-comment"># Warmup CUDA context</span>
+<span class="hljs-comment"># Warmup compute context</span>
 _ = torch.matmul(A[:<span class="hljs-number">100</span>, :<span class="hljs-number">100</span>], B[:<span class="hljs-number">100</span>, :<span class="hljs-number">100</span>])
-torch.cuda.synchronize()
+<span class="hljs-keyword">if</span> device.<span class="hljs-built_in">type</span> == <span class="hljs-string">&quot;cuda&quot;</span>:
+    torch.cuda.synchronize()
 
-<span class="hljs-comment"># High-Performance GEMM (General Matrix Multiply) on GPU</span>
-start_event = torch.cuda.Event(enable_timing=<span class="hljs-literal">True</span>)
-end_event = torch.cuda.Event(enable_timing=<span class="hljs-literal">True</span>)
+<span class="hljs-comment"># High-Performance GEMM (General Matrix Multiply)</span>
+t0 = time.perf_counter()
+C = torch.matmul(A, B)
+<span class="hljs-keyword">if</span> device.<span class="hljs-built_in">type</span> == <span class="hljs-string">&quot;cuda&quot;</span>:
+    torch.cuda.synchronize()
+elapsed_ms = (time.perf_counter() - t0) * <span class="hljs-number">1000</span>
 
-start_event.record()
-C = torch.matmul(A, B) <span class="hljs-comment"># Executes across thousands of CUDA Tensor Cores</span>
-end_event.record()
-
-torch.cuda.synchronize()
-elapsed_ms = start_event.elapsed_time(end_event)
-
-<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Matrix Multiply (10,000 x 10,000) completed in <span class="hljs-subst">{elapsed_ms:<span class="hljs-number">.2</span>f}</span> ms on GPU!&quot;</span>)</code></pre>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Matrix Multiply (<span class="hljs-subst">{N}</span> x <span class="hljs-subst">{N}</span>) completed in <span class="hljs-subst">{elapsed_ms:<span class="hljs-number">.2</span>f}</span> ms on <span class="hljs-subst">{device.<span class="hljs-built_in">type</span>.upper()}</span>!&quot;</span>)</code></pre>
   </div><hr>
 <h2 id="8-python-3-13-subinterpreters-pep-554-684-the-tier-2-jit-pep-744"><a href="#8-python-3-13-subinterpreters-pep-554-684-the-tier-2-jit-pep-744" class="header-anchor">#</a>8. Python 3.13 Subinterpreters (PEP 554 / 684) & The Tier-2 JIT (PEP 744)</h2><p>The CPython runtime is undergoing the greatest performance evolution in its 35-year history. In addition to the free-threaded build (<code>python3.13t</code>), two groundbreaking architectural features have emerged:</p>
 <h3 id="1-subinterpreters-with-per-interpreter-gil-pep-554-pep-684"><a href="#1-subinterpreters-with-per-interpreter-gil-pep-554-pep-684" class="header-anchor">#</a>1. Subinterpreters with Per-Interpreter GIL (PEP 554 / PEP 684)</h3><p>Historically, if you wanted to bypass the GIL, you were forced to use <code>multiprocessing</code>. But processes are heavy: they copy memory, require slow IPC serialization (<code>pickle</code>), and have separate process IDs.</p>

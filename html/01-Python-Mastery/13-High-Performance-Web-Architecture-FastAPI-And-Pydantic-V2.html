@@ -2118,12 +2118,21 @@ stream_handler = logging.StreamHandler(log_buffer)
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">JSONFormatter</span>(logging.Formatter):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">format</span>(<span class="hljs-params">self, record</span>):
-        log_obj = {
+        <span class="hljs-keyword">try</span>:
+            payload = json.loads(record.getMessage())
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(payload, <span class="hljs-built_in">dict</span>):
+                <span class="hljs-keyword">return</span> json.dumps({
+                    <span class="hljs-string">&quot;timestamp&quot;</span>: time.strftime(<span class="hljs-string">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>, time.gmtime(record.created)),
+                    <span class="hljs-string">&quot;level&quot;</span>: record.levelname,
+                    **payload
+                })
+        <span class="hljs-keyword">except</span> Exception:
+            <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">return</span> json.dumps({
             <span class="hljs-string">&quot;timestamp&quot;</span>: time.strftime(<span class="hljs-string">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span>, time.gmtime(record.created)),
             <span class="hljs-string">&quot;level&quot;</span>: record.levelname,
             <span class="hljs-string">&quot;message&quot;</span>: record.getMessage()
-        }
-        <span class="hljs-keyword">return</span> json.dumps(log_obj)
+        })
 
 stream_handler.setFormatter(JSONFormatter())
 logger.addHandler(stream_handler)

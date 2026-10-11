@@ -40,8 +40,11 @@ if __name__ == "__main__":
         process_cart(4092)
     except Exception:
         import pdb
-        # Immediately enters the post-mortem debugger using the active traceback!
-        pdb.post_mortem(sys.exc_info()[2])
+        # Enters the post-mortem debugger using the active traceback when interactive
+        if sys.stdin.isatty():
+            pdb.post_mortem(sys.exc_info()[2])
+        else:
+            print(f"Captured crash in {sys.exc_info()[0].__name__}: discount code missing")
 ```
 
 ### Essential `pdb` Command Cheat-Sheet
@@ -279,18 +282,19 @@ if __name__ == "__main__":
     # Dump thread stacks if SIGALRM or timeout occurs (or dump to stderr on demand)
     faulthandler.enable()
 
-    t1 = threading.Thread(target=thread_1_work, name="Worker-1")
-    t2 = threading.Thread(target=thread_2_work, name="Worker-2")
+    t1 = threading.Thread(target=thread_1_work, name="Worker-1", daemon=True)
+    t2 = threading.Thread(target=thread_2_work, name="Worker-2", daemon=True)
 
     t1.start()
     t2.start()
 
-    time.sleep(0.5)
+    time.sleep(0.2)
     print("\n--- INITIATING EMERGENCY THREAD DUMP ---")
     faulthandler.dump_traceback()
 
-    t1.join()
-    t2.join()
+    t1.join(timeout=0.1)
+    t2.join(timeout=0.1)
+    assert t1.is_alive() and t2.is_alive(), "Both threads deadlocked as expected"
 ```
 
 ### Traceback Dump in Terminal:

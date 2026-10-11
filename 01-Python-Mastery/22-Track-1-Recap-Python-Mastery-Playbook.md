@@ -202,7 +202,22 @@ These 10 advanced architectural grills test your ability to synthesize language 
 
 ---
 
-## 7. Track 1 Graduation Milestone Check
+## 7. The Cumulative Capstone: AeroTrade Core
+
+Before closing Track 1, synthesize everything you have mastered into **AeroTrade Core** ([capstone/](capstone/README.md)), a complete, production-grade financial exchange and real-time ledger engine:
+* **Memory Architecture**: Orders compacted with `__slots__` and validated with custom descriptors (`PositiveNumericDescriptor`).
+* **Concurrency**: Non-blocking asynchronous matching loop using `asyncio` and Price-Time priority limit order book.
+* **Accounting Integrity**: Double-entry ledger with mathematical conservation invariant checking ($Assets - Liabilities = Equity$).
+* **Persistence & Analytics**: ACID trade store with composite indexes and real-time VWAP analytics powered by Polars.
+* **Run the Capstone**:
+  ```bash
+  python capstone/test_capstone.py   # Run full test suite (100% pass)
+  python capstone/demo.py            # Run live interactive simulation
+  ```
+
+---
+
+## 8. Track 1 Graduation Milestone Check
 
 Before you proceed to **Track 2: Low-Level Design (LLD)**, verify that you can comfortably answer these 4 mastery questions:
 - [x] *Can you trace the exact journey of code from source characters to AST, bytecode, and `ceval.c` evaluation stack?*

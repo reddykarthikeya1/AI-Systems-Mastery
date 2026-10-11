@@ -1564,10 +1564,11 @@ RETURNING <span class="hljs-operator">*</span>;</code></pre>
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># THE DISASTER: Generates 1 initial query + 500 subsequent queries!</span>
-users = <span class="hljs-keyword">await</span> session.scalars(select(User).limit(<span class="hljs-number">500</span>))
-<span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users:
-    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">len</span>(user.orders)) <span class="hljs-comment"># Triggers a separate SELECT query for every user!</span></code></pre>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">demonstrate_n_plus_one</span>(<span class="hljs-params">session</span>):
+    <span class="hljs-comment"># THE DISASTER: Generates 1 initial query + 500 subsequent queries!</span>
+    users = <span class="hljs-keyword">await</span> session.scalars(select(User).limit(<span class="hljs-number">500</span>))
+    <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users:
+        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">len</span>(user.orders)) <span class="hljs-comment"># Triggers a separate SELECT query for every user!</span></code></pre>
   </div><h3 id="the-production-solution-explicit-eager-loading-strategies"><a href="#the-production-solution-explicit-eager-loading-strategies" class="header-anchor">#</a>The Production Solution: Explicit Eager Loading Strategies</h3>
   <div class="code-block-wrapper">
     <div class="code-header">

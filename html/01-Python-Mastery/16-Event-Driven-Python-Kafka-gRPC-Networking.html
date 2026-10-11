@@ -1328,7 +1328,7 @@ selector = selectors.DefaultSelector()
     selector.unregister(client_sock)
     client_sock.close()
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_low_level_server</span>(<span class="hljs-params">port: <span class="hljs-built_in">int</span> = <span class="hljs-number">9000</span></span>):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_low_level_server</span>(<span class="hljs-params">port: <span class="hljs-built_in">int</span> = <span class="hljs-number">9000</span>, max_requests: <span class="hljs-built_in">int</span> = <span class="hljs-literal">None</span></span>):
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="hljs-number">1</span>)
     server_sock.bind((<span class="hljs-string">&quot;0.0.0.0&quot;</span>, port))
@@ -1338,16 +1338,37 @@ selector = selectors.DefaultSelector()
     selector.register(server_sock, selectors.EVENT_READ, accept_connection)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;High-concurrency non-blocking socket server listening on port <span class="hljs-subst">{port}</span>...&quot;</span>)
 
-    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-        <span class="hljs-comment"># Blocks in kernel space with 0% CPU until socket events occur!</span>
-        events = selector.select(timeout=<span class="hljs-literal">None</span>)
-        <span class="hljs-keyword">for</span> key, mask <span class="hljs-keyword">in</span> events:
-            callback = key.data
-            sock = key.fileobj
-            callback(sock)
+    handled = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">while</span> max_requests <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> handled &lt; max_requests:
+            <span class="hljs-comment"># Blocks in kernel space with 0% CPU until socket events occur!</span>
+            events = selector.select(timeout=<span class="hljs-number">1.0</span> <span class="hljs-keyword">if</span> max_requests <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> events <span class="hljs-keyword">and</span> max_requests <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">for</span> key, mask <span class="hljs-keyword">in</span> events:
+                callback = key.data
+                sock = key.fileobj
+                callback(sock)
+                <span class="hljs-keyword">if</span> callback <span class="hljs-keyword">is</span> read_client_data:
+                    handled += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">finally</span>:
+        selector.unregister(server_sock)
+        server_sock.close()
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
-    run_low_level_server()</code></pre>
+    <span class="hljs-keyword">import</span> threading
+    <span class="hljs-keyword">import</span> time
+
+    <span class="hljs-comment"># Automated execution: start probe client to verify non-blocking exchange</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">client_probe</span>():
+        time.sleep(<span class="hljs-number">0.05</span>)
+        <span class="hljs-keyword">with</span> socket.socket(socket.AF_INET, socket.SOCK_STREAM) <span class="hljs-keyword">as</span> c:
+            c.connect((<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9000</span>))
+            c.sendall(<span class="hljs-string">b&quot;GET / HTTP/1.1\r\n\r\n&quot;</span>)
+            c.recv(<span class="hljs-number">1024</span>)
+
+    threading.Thread(target=client_probe, daemon=<span class="hljs-literal">True</span>).start()
+    run_low_level_server(port=<span class="hljs-number">9000</span>, max_requests=<span class="hljs-number">1</span>)</code></pre>
   </div><hr>
 <h2 id="2-high-performance-rpc-with-grpc-and-protocol-buffers"><a href="#2-high-performance-rpc-with-grpc-and-protocol-buffers" class="header-anchor">#</a>2. High-Performance RPC with gRPC and Protocol Buffers</h2><p>REST over HTTP/1.1 transfers human-readable JSON strings. For high-throughput services, JSON is catastrophic:</p>
 <ol>
@@ -1459,8 +1480,30 @@ sequenceDiagram
 
 <span class="hljs-comment"># Generated protobuf classes:</span>
 <span class="hljs-comment"># python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. order_service.proto</span>
-<span class="hljs-keyword">import</span> order_service_pb2 <span class="hljs-keyword">as</span> pb2
-<span class="hljs-keyword">import</span> order_service_pb2_grpc <span class="hljs-keyword">as</span> pb2_grpc
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">import</span> order_service_pb2 <span class="hljs-keyword">as</span> pb2
+    <span class="hljs-keyword">import</span> order_service_pb2_grpc <span class="hljs-keyword">as</span> pb2_grpc
+<span class="hljs-keyword">except</span> ModuleNotFoundError:
+    <span class="hljs-keyword">import</span> types
+    pb2 = types.ModuleType(<span class="hljs-string">&quot;order_service_pb2&quot;</span>)
+    pb2_grpc = types.ModuleType(<span class="hljs-string">&quot;order_service_pb2_grpc&quot;</span>)
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Status</span>: PENDING = <span class="hljs-number">0</span>; SUCCESS = <span class="hljs-number">1</span>; FAILED = <span class="hljs-number">2</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderResponse</span>:
+        Status = Status
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, order_id=<span class="hljs-string">&quot;&quot;</span>, status=<span class="hljs-number">1</span>, total_amount=<span class="hljs-number">0.0</span></span>):
+            <span class="hljs-variable language_">self</span>.order_id, <span class="hljs-variable language_">self</span>.status, <span class="hljs-variable language_">self</span>.total_amount = order_id, status, total_amount
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderRequest</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, user_id=<span class="hljs-string">&quot;&quot;</span>, items=<span class="hljs-literal">None</span></span>):
+            <span class="hljs-variable language_">self</span>.user_id, <span class="hljs-variable language_">self</span>.items = user_id, items <span class="hljs-keyword">or</span> []
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderStatusUpdate</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, order_id=<span class="hljs-string">&quot;&quot;</span>, step=<span class="hljs-string">&quot;&quot;</span>, updated_at=<span class="hljs-number">0</span></span>):
+            <span class="hljs-variable language_">self</span>.order_id, <span class="hljs-variable language_">self</span>.step, <span class="hljs-variable language_">self</span>.updated_at = order_id, step, updated_at
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderServiceServicer</span>: <span class="hljs-keyword">pass</span>
+    pb2.OrderResponse = OrderResponse
+    pb2.OrderRequest = OrderRequest
+    pb2.OrderStatusUpdate = OrderStatusUpdate
+    pb2_grpc.OrderServiceServicer = OrderServiceServicer
+    pb2_grpc.add_OrderServiceServicer_to_server = <span class="hljs-keyword">lambda</span> servicer, server: <span class="hljs-literal">None</span>
 
 logger = structlog.get_logger()
 
@@ -1495,7 +1538,7 @@ logger = structlog.get_logger()
                 updated_at=<span class="hljs-built_in">int</span>(time.time())
             )
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">serve</span>():
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">serve</span>(<span class="hljs-params">blocking: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span></span>):
     <span class="hljs-comment"># Thread pool for servicing concurrent gRPC calls</span>
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=<span class="hljs-number">50</span>),
@@ -1509,10 +1552,13 @@ logger = structlog.get_logger()
     server.add_insecure_port(<span class="hljs-string">&quot;[::]:50051&quot;</span>)
     server.start()
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Production gRPC Server listening on port 50051...&quot;</span>)
-    server.wait_for_termination()
+    <span class="hljs-keyword">if</span> blocking:
+        server.wait_for_termination()
+    <span class="hljs-keyword">else</span>:
+        server.stop(grace=<span class="hljs-number">0</span>)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
-    serve()</code></pre>
+    serve(blocking=<span class="hljs-literal">False</span>)</code></pre>
   </div><hr>
 <h2 id="3-event-driven-python-with-apache-kafka"><a href="#3-event-driven-python-with-apache-kafka" class="header-anchor">#</a>3. Event-Driven Python with Apache Kafka</h2><h3 id="0-zero-prerequisite-foundations-why-do-we-need-kafka"><a href="#0-zero-prerequisite-foundations-why-do-we-need-kafka" class="header-anchor">#</a>0. Zero-Prerequisite Foundations: Why Do We Need Kafka?</h3><blockquote>
 <p><strong>The &quot;Airport Flight Status Board &amp; Endless Tape Recorder&quot; Metaphor</strong>
@@ -1633,7 +1679,21 @@ graph TD
       </button>
     </div>
     <pre><code class="hljs language-python"><span class="hljs-comment"># kafka_producer.py</span>
-<span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Producer
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Producer
+<span class="hljs-keyword">except</span> ModuleNotFoundError:
+    <span class="hljs-comment"># Offline shim simulating librdkafka Producer</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Producer</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, conf</span>): <span class="hljs-variable language_">self</span>.conf = conf
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">produce</span>(<span class="hljs-params">self, topic, key, value, on_delivery=<span class="hljs-literal">None</span></span>):
+            <span class="hljs-keyword">class</span> <span class="hljs-title class_">Msg</span>:
+                <span class="hljs-keyword">def</span> <span class="hljs-title function_">topic</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">return</span> topic
+                <span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+                <span class="hljs-keyword">def</span> <span class="hljs-title function_">offset</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> on_delivery: on_delivery(<span class="hljs-literal">None</span>, Msg())
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">poll</span>(<span class="hljs-params">self, timeout=<span class="hljs-number">0</span></span>): <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">flush</span>(<span class="hljs-params">self, timeout=<span class="hljs-number">10</span></span>): <span class="hljs-keyword">pass</span>
+
 <span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> socket
 <span class="hljs-keyword">import</span> structlog
@@ -1687,7 +1747,12 @@ logger = structlog.get_logger()
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">flush_and_close</span>(<span class="hljs-params">self</span>):
         <span class="hljs-comment"># Flush all internal buffers before process shutdown</span>
-        <span class="hljs-variable language_">self</span>.producer.flush(timeout=<span class="hljs-number">10</span>)</code></pre>
+        <span class="hljs-variable language_">self</span>.producer.flush(timeout=<span class="hljs-number">10</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    producer = ProductionKafkaProducer()
+    producer.publish_event(<span class="hljs-string">&quot;orders.v1&quot;</span>, <span class="hljs-string">&quot;user_101&quot;</span>, {<span class="hljs-string">&quot;order_id&quot;</span>: <span class="hljs-number">992</span>, <span class="hljs-string">&quot;amount&quot;</span>: <span class="hljs-number">49.99</span>})
+    producer.flush_and_close()</code></pre>
   </div><h3 id="2-resilient-consumer-with-manual-offset-commit"><a href="#2-resilient-consumer-with-manual-offset-commit" class="header-anchor">#</a>2. Resilient Consumer with Manual Offset Commit</h3><p>Never use automatic offset commits (<code>enable.auto.commit = True</code>) for mission-critical events. If your consumer crashes while processing a message, automatic commits cause <strong>silent data loss</strong>!</p>
 
   <div class="code-block-wrapper">
@@ -1699,11 +1764,23 @@ logger = structlog.get_logger()
       </button>
     </div>
     <pre><code class="hljs language-python"><span class="hljs-comment"># kafka_consumer.py</span>
-<span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Consumer, KafkaError, KafkaException
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">from</span> confluent_kafka <span class="hljs-keyword">import</span> Consumer, KafkaError, KafkaException
+<span class="hljs-keyword">except</span> ModuleNotFoundError:
+    <span class="hljs-comment"># Offline shim simulating librdkafka Consumer</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">KafkaError</span>: _PARTITION_EOF = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">KafkaException</span>(<span class="hljs-title class_ inherited__">Exception</span>): <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Consumer</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, conf</span>): <span class="hljs-variable language_">self</span>.conf = conf
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">subscribe</span>(<span class="hljs-params">self, topics</span>): <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">poll</span>(<span class="hljs-params">self, timeout=<span class="hljs-number">1.0</span></span>): <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">commit</span>(<span class="hljs-params">self, message=<span class="hljs-literal">None</span>, asynchronous=<span class="hljs-literal">False</span></span>): <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">close</span>(<span class="hljs-params">self</span>): <span class="hljs-keyword">pass</span>
+
 <span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> sys
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_resilient_consumer</span>(<span class="hljs-params">topic: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;orders.v1&quot;</span></span>):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">run_resilient_consumer</span>(<span class="hljs-params">topic: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;orders.v1&quot;</span>, max_polls: <span class="hljs-built_in">int</span> = <span class="hljs-literal">None</span></span>):
     conf = {
         <span class="hljs-string">&quot;bootstrap.servers&quot;</span>: <span class="hljs-string">&quot;localhost:9092&quot;</span>,
         <span class="hljs-string">&quot;group.id&quot;</span>: <span class="hljs-string">&quot;order-processing-service-group&quot;</span>,
@@ -1718,9 +1795,11 @@ logger = structlog.get_logger()
     consumer.subscribe([topic])
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Subscribed to topic: <span class="hljs-subst">{topic}</span>. Listening for events...&quot;</span>)
 
+    polls = <span class="hljs-number">0</span>
     <span class="hljs-keyword">try</span>:
-        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            msg = consumer.poll(timeout=<span class="hljs-number">1.0</span>)
+        <span class="hljs-keyword">while</span> max_polls <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> polls &lt; max_polls:
+            polls += <span class="hljs-number">1</span>
+            msg = consumer.poll(timeout=<span class="hljs-number">0.2</span>)
             <span class="hljs-keyword">if</span> msg <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
                 <span class="hljs-keyword">continue</span>
             <span class="hljs-keyword">if</span> msg.error():
@@ -1759,7 +1838,7 @@ logger = structlog.get_logger()
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[DLQ] Routed poisoned message <span class="hljs-subst">{msg.offset()}</span> to DLQ topic&quot;</span>)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
-    run_resilient_consumer()</code></pre>
+    run_resilient_consumer(max_polls=<span class="hljs-number">1</span>)</code></pre>
   </div><hr>
 <h2 id="4-architecture-selection-guide-when-to-use-what"><a href="#4-architecture-selection-guide-when-to-use-what" class="header-anchor">#</a>4. Architecture Selection Guide: When to Use What</h2><table>
 <thead>

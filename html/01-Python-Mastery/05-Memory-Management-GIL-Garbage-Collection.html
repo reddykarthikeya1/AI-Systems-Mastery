@@ -1302,6 +1302,35 @@ flowchart TD
         <div class="callout-body"><p>For objects larger than 512 bytes, PyMalloc steps aside and delegates directly to the standard system <code>malloc()</code>.</p>
 </div>
       </div>
+<h3 id="the-pyobject-memory-anatomy-why-is-a-python-integer-28-bytes"><a href="#the-pyobject-memory-anatomy-why-is-a-python-integer-28-bytes" class="header-anchor">#</a>The PyObject Memory Anatomy: Why is a Python Integer 28 Bytes?</h3><p>In C or Rust, a 32-bit integer occupies exactly <strong>4 bytes</strong> of RAM. In CPython on a 64-bit operating system, typing <code>x = 42</code> allocates <strong>28 bytes</strong>!</p>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">text</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-text">+-------------------------------------------------------------+
+| CPrimitive (int32_t): [ 4 Bytes raw binary value ]          |
++-------------------------------------------------------------+
+
+vs.
+
++-------------------------------------------------------------+
+| CPython PyLongObject (28 Bytes total):                      |
+| +-------------------------+-------------------------------+ |
+| | ob_refcnt (8 bytes)     | Reference count integer       | |
+| +-------------------------+-------------------------------+ |
+| | ob_type   (8 bytes)     | Pointer to &lt;class &#x27;int&#x27;&gt;      | |
+| +-------------------------+-------------------------------+ |
+| | ob_size   (8 bytes)     | Number of digits / sign       | |
+| +-------------------------+-------------------------------+ |
+| | ob_digit  (4 bytes)     | Actual numeric value array    | |
+| +-------------------------+-------------------------------+ |
++-------------------------------------------------------------+</code></pre>
+  </div><p>Every single item in Python carries this <code>PyObject_HEAD</code> header (<code>ob_refcnt</code> + <code>ob_type</code>). This 16-byte metadata tax is the architectural price of dynamic typing and automatic reference counting.</p>
 <hr>
 <h2 id="2-reference-counting-the-primary-reclaimer"><a href="#2-reference-counting-the-primary-reclaimer" class="header-anchor">#</a>2. Reference Counting: The Primary Reclaimer</h2><p>CPython&#39;s first and immediate line of defense for memory reclamation is <strong>Deterministic Reference Counting</strong>.</p>
 
@@ -1508,6 +1537,48 @@ flowchart TD
 <li><strong>CPU-Bound Tasks (Math, Image processing, Compression):</strong> Threads do <strong>not</strong> run in parallel across CPU cores. They contend for the GIL and execute <em>slower</em> than single-threaded code due to lock context-switching overhead.</li>
 <li><strong>I/O-Bound Tasks (Network HTTP requests, Database queries, Disk I/O):</strong> Threads are <strong>highly effective</strong>! Whenever a thread executes an I/O system call or <code>time.sleep()</code>, CPython <strong>explicitly releases the GIL</strong>, allowing other threads to run concurrently on the CPU while the first thread waits for the network.</li>
 </ul>
+<h3 id="pep-703-the-frontier-silent-data-races-in-free-threaded-python-3-13t"><a href="#pep-703-the-frontier-silent-data-races-in-free-threaded-python-3-13t" class="header-anchor">#</a>PEP 703 & The Frontier: Silent Data Races in Free-Threaded Python 3.13t</h3><p>Python 3.13 introduces an experimental build without the GIL (<code>python3.13t</code>).
+While this allows multi-core CPU scaling on threads, it removes the safety net that Python developers took for granted for 30 years:</p>
+<div class="callout callout-warning">
+        <div class="callout-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> <span>WARNING</span></div>
+        <div class="callout-body"><p><strong>Under the GIL:</strong> Operations like <code>list.append()</code> or <code>dict[k] = v</code> were implicitly atomic in single bytecode steps.
+<strong>Without the GIL (Python 3.13t):</strong> Concurrent threads executing on separate CPU cores can now trigger <strong>real memory races and lost updates</strong> on pure Python data structures!</p>
+</div>
+      </div>
+
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> threading
+
+<span class="hljs-comment"># Unsynchronized shared counter</span>
+counter = <span class="hljs-number">0</span>
+lock = threading.Lock()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">worker_unsafe</span>():
+    <span class="hljs-keyword">global</span> counter
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10_000</span>):
+        <span class="hljs-comment"># In free-threaded Python, += is 3 bytecodes (LOAD, BINARY_OP, STORE)</span>
+        <span class="hljs-comment"># Without GIL or lock, concurrent threads interleave and lose increments!</span>
+        counter += <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">worker_safe</span>():
+    <span class="hljs-keyword">global</span> counter
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10_000</span>):
+        <span class="hljs-keyword">with</span> lock:
+            counter += <span class="hljs-number">1</span>
+
+<span class="hljs-comment"># Testing safe concurrent execution</span>
+threads = [threading.Thread(target=worker_safe) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]
+<span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads: t.start()
+<span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads: t.join()
+<span class="hljs-keyword">assert</span> counter == <span class="hljs-number">50_000</span> <span class="hljs-comment"># Deterministically accurate</span></code></pre>
+  </div><p><strong>Staff Rule for Free-Threaded Python:</strong> Never assume built-in collections are thread-safe across concurrent threads in 3.13t. Always protect shared mutable state with <code>threading.Lock</code>, thread-safe queues (<code>queue.Queue</code>), or design immutable message-passing architectures.</p>
 <hr>
 <h2 id="6-massive-memory-optimization-slots"><a href="#6-massive-memory-optimization-slots" class="header-anchor">#</a>6. Massive Memory Optimization: `__slots__`</h2><p>By default, every Python instance stores its attributes in an internal dictionary (<code>self.__dict__</code>). A dictionary has substantial overhead (indices array, entries array, hash keys).</p>
 <p>By declaring <code>__slots__</code>, you instruct CPython to discard <code>__dict__</code> and instead reserve a <strong>fixed, static C array of pointers</strong> directly inside the instance struct:</p>
@@ -1671,7 +1742,7 @@ python exercises/run.py 05       <span class="hljs-comment"># run the hidden tes
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-cpython-memory-architecture-pymalloc" class="toc-link">1. The CPython Memory Architecture: PyMalloc</a></li><li class="toc-item level-3"><a href="#hierarchy-breakdown" class="toc-link">Hierarchy Breakdown:</a></li><li class="toc-item level-2"><a href="#2-reference-counting-the-primary-reclaimer" class="toc-link">2. Reference Counting: The Primary Reclaimer</a></li><li class="toc-item level-3"><a href="#reference-increments-decrements" class="toc-link">Reference Increments & Decrements</a></li><li class="toc-item level-3"><a href="#the-achilles-heel-cyclical-references" class="toc-link">The Achilles' Heel: Cyclical References</a></li><li class="toc-item level-2"><a href="#3-the-generational-cyclical-garbage-collector" class="toc-link">3. The Generational Cyclical Garbage Collector</a></li><li class="toc-item level-3"><a href="#the-three-generations-heuristic" class="toc-link">The Three Generations Heuristic</a></li><li class="toc-item level-3"><a href="#the-cycle-detection-algorithm" class="toc-link">The Cycle Detection Algorithm</a></li><li class="toc-item level-2"><a href="#4-preventing-leaks-with-weak-references" class="toc-link">4. Preventing Leaks with Weak References</a></li><li class="toc-item level-3"><a href="#weakref-weakvaluedictionary" class="toc-link">`weakref.WeakValueDictionary`</a></li><li class="toc-item level-2"><a href="#5-the-global-interpreter-lock-gil-demystified" class="toc-link">5. The Global Interpreter Lock (GIL) Demystified</a></li><li class="toc-item level-3"><a href="#why-the-gil-exists" class="toc-link">Why the GIL Exists</a></li><li class="toc-item level-3"><a href="#when-does-multithreading-actually-help" class="toc-link">When Does Multithreading Actually Help?</a></li><li class="toc-item level-2"><a href="#6-massive-memory-optimization-slots" class="toc-link">6. Massive Memory Optimization: `__slots__`</a></li><li class="toc-item level-2"><a href="#version-notes-what-changed-in-cpython-and-what-to-check-on-your-version" class="toc-link">Version Notes (what changed in CPython, and what to check on your version)</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verifications" class="toc-link">Practice Drills & Interview Verifications</a></li><li class="toc-item level-3"><a href="#drill-1-tracing-memory-leaks-with-tracemalloc" class="toc-link">Drill 1: Tracing Memory Leaks with `tracemalloc`</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-the-cpython-memory-architecture-pymalloc" class="toc-link">1. The CPython Memory Architecture: PyMalloc</a></li><li class="toc-item level-3"><a href="#hierarchy-breakdown" class="toc-link">Hierarchy Breakdown:</a></li><li class="toc-item level-3"><a href="#the-pyobject-memory-anatomy-why-is-a-python-integer-28-bytes" class="toc-link">The PyObject Memory Anatomy: Why is a Python Integer 28 Bytes?</a></li><li class="toc-item level-2"><a href="#2-reference-counting-the-primary-reclaimer" class="toc-link">2. Reference Counting: The Primary Reclaimer</a></li><li class="toc-item level-3"><a href="#reference-increments-decrements" class="toc-link">Reference Increments & Decrements</a></li><li class="toc-item level-3"><a href="#the-achilles-heel-cyclical-references" class="toc-link">The Achilles' Heel: Cyclical References</a></li><li class="toc-item level-2"><a href="#3-the-generational-cyclical-garbage-collector" class="toc-link">3. The Generational Cyclical Garbage Collector</a></li><li class="toc-item level-3"><a href="#the-three-generations-heuristic" class="toc-link">The Three Generations Heuristic</a></li><li class="toc-item level-3"><a href="#the-cycle-detection-algorithm" class="toc-link">The Cycle Detection Algorithm</a></li><li class="toc-item level-2"><a href="#4-preventing-leaks-with-weak-references" class="toc-link">4. Preventing Leaks with Weak References</a></li><li class="toc-item level-3"><a href="#weakref-weakvaluedictionary" class="toc-link">`weakref.WeakValueDictionary`</a></li><li class="toc-item level-2"><a href="#5-the-global-interpreter-lock-gil-demystified" class="toc-link">5. The Global Interpreter Lock (GIL) Demystified</a></li><li class="toc-item level-3"><a href="#why-the-gil-exists" class="toc-link">Why the GIL Exists</a></li><li class="toc-item level-3"><a href="#when-does-multithreading-actually-help" class="toc-link">When Does Multithreading Actually Help?</a></li><li class="toc-item level-3"><a href="#pep-703-the-frontier-silent-data-races-in-free-threaded-python-3-13t" class="toc-link">PEP 703 & The Frontier: Silent Data Races in Free-Threaded Python 3.13t</a></li><li class="toc-item level-2"><a href="#6-massive-memory-optimization-slots" class="toc-link">6. Massive Memory Optimization: `__slots__`</a></li><li class="toc-item level-2"><a href="#version-notes-what-changed-in-cpython-and-what-to-check-on-your-version" class="toc-link">Version Notes (what changed in CPython, and what to check on your version)</a></li><li class="toc-item level-2"><a href="#practice-drills-interview-verifications" class="toc-link">Practice Drills & Interview Verifications</a></li><li class="toc-item level-3"><a href="#drill-1-tracing-memory-leaks-with-tracemalloc" class="toc-link">Drill 1: Tracing Memory Leaks with `tracemalloc`</a></li><li class="toc-item level-2"><a href="#exercises" class="toc-link">Exercises</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

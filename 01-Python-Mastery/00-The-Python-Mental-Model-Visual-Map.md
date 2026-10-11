@@ -260,7 +260,19 @@ flowchart TD
     end
 
     Phase1 --> Phase2 --> Phase3 --> Phase4
+    Phase4 --> Capstone["<b>Cumulative Production Capstone: AeroTrade Core</b><br/>Ultra-Low-Latency Order Book & Ledger Engine"]
 ```
+
+### The Cumulative Capstone Project: "AeroTrade Core"
+
+As you progress through the 23 chapters, you will build and assemble **AeroTrade Core** ([capstone/](capstone/README.md)), a complete, production-grade financial exchange and real-time ledger engine:
+* **Chapters 01–05**: Memory-compacted order domain entities with `__slots__` and price/quantity descriptor validation.
+* **Chapter 06**: Non-blocking asynchronous matching engine with price-time priority queues.
+* **Chapter 09**: Property-based automated test suites with `Hypothesis` proving mathematical conservation of funds.
+* **Chapter 12**: ACID trade persistence with relational schema and index tuning.
+* **Chapter 13**: High-throughput FastAPI ASGI interface with Prometheus metrics and Loki logs.
+* **Chapter 17**: Columnar market analytics (VWAP calculation) powered by Polars.
+* **Verify anytime**: Run `python capstone/demo.py` to see the live order book simulation in action.
 
 ---
 

@@ -1449,7 +1449,7 @@ graph TD
 <h3 id="the-golden-rule-of-unittest-mock-patch"><a href="#the-golden-rule-of-unittest-mock-patch" class="header-anchor">#</a>The Golden Rule of `unittest.mock.patch`</h3><blockquote>
 <p><strong>&quot;Patch where the object is LOOKED UP, not where it is DEFINED.&quot;</strong></p>
 </blockquote>
-<p>Suppose you have two files:</p>
+<p>Suppose you have two modules: <code>payment_gateway</code> and <code>checkout_service</code>. Here is how Python&#39;s module namespace binding works under the hood:</p>
 
   <div class="code-block-wrapper">
     <div class="code-header">
@@ -1459,97 +1459,39 @@ graph TD
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># payment_gateway.py</span>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> types
+<span class="hljs-keyword">from</span> unittest.mock <span class="hljs-keyword">import</span> patch
+
+<span class="hljs-comment"># Step 1: Simulate payment_gateway module in sys.modules</span>
+pg_mod = types.ModuleType(<span class="hljs-string">&quot;payment_gateway&quot;</span>)
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeClient</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">charge</span>(<span class="hljs-params">self, amount: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span>:
-        <span class="hljs-comment"># In real life, hits https://api.stripe.com</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;real_stripe_charge_id&quot;</span></code></pre>
-  </div>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># checkout_service.py</span>
-<span class="hljs-keyword">from</span> payment_gateway <span class="hljs-keyword">import</span> StripeClient  <span class="hljs-comment"># &lt;-- LOOKUP HAPPENS HERE!</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;real_stripe_charge_id&quot;</span>
+pg_mod.StripeClient = StripeClient
+sys.modules[<span class="hljs-string">&quot;payment_gateway&quot;</span>] = pg_mod
 
+<span class="hljs-comment"># Step 2: Simulate checkout_service looking up StripeClient in its own namespace</span>
+cs_mod = types.ModuleType(<span class="hljs-string">&quot;checkout_service&quot;</span>)
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_order</span>(<span class="hljs-params">amount: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span>:
-    client = StripeClient()
-    <span class="hljs-keyword">return</span> client.charge(amount)</code></pre>
-  </div>
-    <div class="mermaid-container">
-      <div class="diagram-toolbar">
-        <button class="diagram-btn" onclick="zoomDiagram(this, -0.2)" title="Zoom Out (-)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <span class="diagram-zoom-level">100%</span>
-        <button class="diagram-btn" onclick="zoomDiagram(this, 0.2)" title="Zoom In (+)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button class="diagram-btn" onclick="resetDiagramZoom(this)" title="Reset Zoom">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-        </button>
-        <button class="diagram-btn diagram-btn-expand" onclick="openDiagramFullscreen(this)" title="Full Resolution Modal">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-          <span>Expand</span>
-        </button>
-      </div>
-      <div class="mermaid-viewport">
-        <div class="mermaid">
-flowchart TD
-    subgraph WrongWay["❌ The Common Trap: Patching Definition"]
-        W1["@patch('payment_gateway.StripeClient')"]
-        W2["Modifies payment_gateway module namespace"]
-        W3["checkout_service ALREADY bound its own local pointer to the real StripeClient!"]
-        W4["Result: Real Stripe API is still called in production!"]
-        W1 --&gt; W2 --&gt; W3 --&gt; W4
-    end
+    <span class="hljs-comment"># In a real module file, functions look up globals from their own module namespace:</span>
+    client = sys.modules[<span class="hljs-string">&quot;checkout_service&quot;</span>].StripeClient()
+    <span class="hljs-keyword">return</span> client.charge(amount)
+cs_mod.StripeClient = StripeClient
+cs_mod.process_order = process_order
+sys.modules[<span class="hljs-string">&quot;checkout_service&quot;</span>] = cs_mod
 
-    subgraph RightWay["✅ The Senior Rule: Patching Lookup"]
-        R1["@patch('checkout_service.StripeClient')"]
-        R2["Replaces the pointer inside checkout_service's namespace!"]
-        R3["process_order() resolves the Mock directly!"]
-        R4["Result: Safe, zero network calls, 100% reliable!"]
-        R1 --&gt; R2 --&gt; R3 --&gt; R4
-    end
-</div>
-      </div>
-    </div><h4 id="the-fatal-mistake"><a href="#the-fatal-mistake" class="header-anchor">#</a>The Fatal Mistake:</h4>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> unittest.mock <span class="hljs-keyword">import</span> patch
+<span class="hljs-comment"># The Common Trap: Patching where DEFINED (payment_gateway)</span>
+<span class="hljs-keyword">with</span> patch(<span class="hljs-string">&quot;payment_gateway.StripeClient&quot;</span>) <span class="hljs-keyword">as</span> mock_pg:
+    mock_pg.return_value.charge.return_value = <span class="hljs-string">&quot;mock_charge&quot;</span>
+    <span class="hljs-comment"># Fails to intercept! checkout_service still uses its own local bound pointer:</span>
+    <span class="hljs-keyword">assert</span> cs_mod.process_order(<span class="hljs-number">100</span>) == <span class="hljs-string">&quot;real_stripe_charge_id&quot;</span>
 
-<span class="hljs-comment"># ❌ FATAL ERROR: Patches where defined, but checkout_service already imported its own pointer!</span>
-<span class="hljs-meta">@patch(<span class="hljs-params"><span class="hljs-string">&quot;payment_gateway.StripeClient&quot;</span></span>) </span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_checkout_fails</span>(<span class="hljs-params">mock_stripe</span>):
-    process_order(<span class="hljs-number">100</span>) <span class="hljs-comment"># FAILS! Still hits real Stripe!</span></code></pre>
-  </div><h4 id="the-senior-solution"><a href="#the-senior-solution" class="header-anchor">#</a>The Senior Solution:</h4>
-  <div class="code-block-wrapper">
-    <div class="code-header">
-      <span class="code-lang">python</span>
-      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Copy</span>
-      </button>
-    </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># ✅ CORRECT: Patch where checkout_service LOOKS IT UP!</span>
-<span class="hljs-meta">@patch(<span class="hljs-params"><span class="hljs-string">&quot;checkout_service.StripeClient&quot;</span></span>)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_checkout_properly_mocked</span>(<span class="hljs-params">mock_stripe_cls</span>):
-    mock_instance = mock_stripe_cls.return_value
-    mock_instance.charge.return_value = <span class="hljs-string">&quot;mock_tx_999&quot;</span>
-    
-    result = process_order(<span class="hljs-number">100</span>)
-    <span class="hljs-keyword">assert</span> result == <span class="hljs-string">&quot;mock_tx_999&quot;</span>
-    mock_instance.charge.assert_called_once_with(<span class="hljs-number">100</span>)</code></pre>
+<span class="hljs-comment"># The Senior Solution: Patching where LOOKED UP (checkout_service)</span>
+<span class="hljs-keyword">with</span> patch(<span class="hljs-string">&quot;checkout_service.StripeClient&quot;</span>) <span class="hljs-keyword">as</span> mock_cs:
+    mock_cs.return_value.charge.return_value = <span class="hljs-string">&quot;mock_charge&quot;</span>
+    <span class="hljs-comment"># Intercepted cleanly!</span>
+    <span class="hljs-keyword">assert</span> cs_mod.process_order(<span class="hljs-number">100</span>) == <span class="hljs-string">&quot;mock_charge&quot;</span></code></pre>
   </div><hr>
 <h2 id="4-async-mocking-asyncmock-coroutine-testing"><a href="#4-async-mocking-asyncmock-coroutine-testing" class="header-anchor">#</a>4. Async Mocking (`AsyncMock`) & Coroutine Testing</h2><p>When testing modern <code>asyncio</code> code, a standard <code>MagicMock</code> will crash with:
 <code>TypeError: object MagicMock can&#39;t be used in &#39;await&#39; expression</code>. </p>

@@ -244,10 +244,11 @@ Modern high-concurrency Python backends use SQLAlchemy 2.0 in async mode with `a
 The $N+1$ problem happens when querying a list of $N$ parent entities, and then lazily fetching child records in a loop, generating $N+1$ roundtrips to the database:
 
 ```python
-# THE DISASTER: Generates 1 initial query + 500 subsequent queries!
-users = await session.scalars(select(User).limit(500))
-for user in users:
-    print(len(user.orders)) # Triggers a separate SELECT query for every user!
+async def demonstrate_n_plus_one(session):
+    # THE DISASTER: Generates 1 initial query + 500 subsequent queries!
+    users = await session.scalars(select(User).limit(500))
+    for user in users:
+        print(len(user.orders)) # Triggers a separate SELECT query for every user!
 ```
 
 ### The Production Solution: Explicit Eager Loading Strategies

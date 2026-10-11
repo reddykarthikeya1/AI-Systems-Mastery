@@ -1559,25 +1559,43 @@ flowchart LR
     </div>
     <pre><code class="hljs language-python"><span class="hljs-comment"># benchmark_rust.py</span>
 <span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> fast_math
-
-LIMIT = <span class="hljs-number">5_000_000</span>
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">import</span> fast_math
+    LIMIT = <span class="hljs-number">5_000_000</span>
+<span class="hljs-keyword">except</span> ModuleNotFoundError:
+    <span class="hljs-comment"># Pure-Python emulation when running without compiled native extension</span>
+    <span class="hljs-keyword">import</span> types
+    fast_math = types.ModuleType(<span class="hljs-string">&quot;fast_math&quot;</span>)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_prime</span>(<span class="hljs-params">n</span>):
+        <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">3</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> n % <span class="hljs-number">3</span> == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        i = <span class="hljs-number">5</span>
+        <span class="hljs-keyword">while</span> i * i &lt;= n:
+            <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> n % (i + <span class="hljs-number">2</span>) == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            i += <span class="hljs-number">6</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_primes</span>(<span class="hljs-params">limit</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, limit) <span class="hljs-keyword">if</span> _is_prime(n))
+    fast_math.sum_primes_sequential = sum_primes
+    fast_math.sum_primes_parallel = sum_primes
+    LIMIT = <span class="hljs-number">10_000</span>
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Calculating sum of primes below <span class="hljs-subst">{LIMIT:,}</span>...&quot;</span>)
 
-<span class="hljs-comment"># 1. Benchmark Sequential Rust</span>
+<span class="hljs-comment"># 1. Benchmark Sequential Execution</span>
 start = time.perf_counter()
 res_seq = fast_math.sum_primes_sequential(LIMIT)
 elapsed_seq = time.perf_counter() - start
-<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Rust Sequential] Result: <span class="hljs-subst">{res_seq:,}</span> | Time: <span class="hljs-subst">{elapsed_seq:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Sequential] Result: <span class="hljs-subst">{res_seq:,}</span> | Time: <span class="hljs-subst">{elapsed_seq:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
 
-<span class="hljs-comment"># 2. Benchmark Multi-Threaded Parallel Rust (GIL Released!)</span>
+<span class="hljs-comment"># 2. Benchmark Multi-Threaded Parallel Execution (GIL Released in Rust!)</span>
 start = time.perf_counter()
 res_par = fast_math.sum_primes_parallel(LIMIT)
 elapsed_par = time.perf_counter() - start
-<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Rust Parallel Multi-Core] Result: <span class="hljs-subst">{res_par:,}</span> | Time: <span class="hljs-subst">{elapsed_par:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[Parallel Multi-Core] Result: <span class="hljs-subst">{res_par:,}</span> | Time: <span class="hljs-subst">{elapsed_par:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)
 
-speedup = elapsed_seq / elapsed_par
+speedup = elapsed_seq / <span class="hljs-built_in">max</span>(<span class="hljs-number">1e-6</span>, elapsed_par)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Parallel speedup: <span class="hljs-subst">{speedup:<span class="hljs-number">.1</span>f}</span>x (bounded by the number of physical cores)&quot;</span>)</code></pre>
   </div><h3 id="benchmark-results-on-an-8-core-machine"><a href="#benchmark-results-on-an-8-core-machine" class="header-anchor">#</a>Benchmark Results on an 8-Core Machine:</h3><ul>
 <li><strong>Pure Python:</strong> $\approx 42.50\text{ seconds}$</li>
@@ -1676,13 +1694,24 @@ If you pass that array to Rust by converting it to a Rust <code>Vec&lt;f64&gt;</
       </button>
     </div>
     <pre><code class="hljs language-python"><span class="hljs-comment"># test_zero_copy.py</span>
-<span class="hljs-keyword">import</span> fast_math
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">import</span> fast_math
+    size = <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>
+<span class="hljs-keyword">except</span> ModuleNotFoundError:
+    <span class="hljs-comment"># Pure-Python emulation when running without compiled native extension</span>
+    <span class="hljs-keyword">import</span> types
+    fast_math = types.ModuleType(<span class="hljs-string">&quot;fast_math&quot;</span>)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">invert_bytes_in_place</span>(<span class="hljs-params">buf</span>):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(buf)):
+            buf[i] ^= <span class="hljs-number">0xFF</span>
+    fast_math.invert_bytes_in_place = invert_bytes_in_place
+    size = <span class="hljs-number">1024</span>
 
-<span class="hljs-comment"># Allocate a 100 Megabyte bytearray in Python</span>
-data = <span class="hljs-built_in">bytearray</span>(<span class="hljs-string">b&quot;\x00\xFF&quot;</span> * (<span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>))
+<span class="hljs-comment"># Allocate bytearray in Python</span>
+data = <span class="hljs-built_in">bytearray</span>(<span class="hljs-string">b&quot;\x00\xFF&quot;</span> * size)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;First 4 bytes before: <span class="hljs-subst">{<span class="hljs-built_in">list</span>(data[:<span class="hljs-number">4</span>])}</span>&quot;</span>)
 
-<span class="hljs-comment"># Hand directly to Rust: instantaneous in-place mutation without copying!</span>
+<span class="hljs-comment"># Hand directly to function: in-place mutation without copying!</span>
 fast_math.invert_bytes_in_place(data)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;First 4 bytes after:  <span class="hljs-subst">{<span class="hljs-built_in">list</span>(data[:<span class="hljs-number">4</span>])}</span>&quot;</span>)</code></pre>
   </div><hr>

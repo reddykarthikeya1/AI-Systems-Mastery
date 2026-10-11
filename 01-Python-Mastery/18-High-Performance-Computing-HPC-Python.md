@@ -262,33 +262,31 @@ sequenceDiagram
 PCIe bandwidth (64 GB/s) is 50x slower than internal GPU HBM memory (3,000 GB/s). Perform all allocations, transformations, and reductions directly on the GPU device:
 
 ```python
+import time
 import torch
 
-# Benchmark GPU Tensor Compute
+# Benchmark Tensor Compute
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Active Compute Device: {device}")
 
-# Allocate 10,000 x 10,000 matrix directly in GPU VRAM
-N = 10_000
+# Allocate matrix directly in target device RAM
+N = 5_000 if device.type == "cuda" else 500
 A = torch.randn((N, N), device=device, dtype=torch.float32)
 B = torch.randn((N, N), device=device, dtype=torch.float32)
 
-# Warmup CUDA context
+# Warmup compute context
 _ = torch.matmul(A[:100, :100], B[:100, :100])
-torch.cuda.synchronize()
+if device.type == "cuda":
+    torch.cuda.synchronize()
 
-# High-Performance GEMM (General Matrix Multiply) on GPU
-start_event = torch.cuda.Event(enable_timing=True)
-end_event = torch.cuda.Event(enable_timing=True)
+# High-Performance GEMM (General Matrix Multiply)
+t0 = time.perf_counter()
+C = torch.matmul(A, B)
+if device.type == "cuda":
+    torch.cuda.synchronize()
+elapsed_ms = (time.perf_counter() - t0) * 1000
 
-start_event.record()
-C = torch.matmul(A, B) # Executes across thousands of CUDA Tensor Cores
-end_event.record()
-
-torch.cuda.synchronize()
-elapsed_ms = start_event.elapsed_time(end_event)
-
-print(f"Matrix Multiply (10,000 x 10,000) completed in {elapsed_ms:.2f} ms on GPU!")
+print(f"Matrix Multiply ({N} x {N}) completed in {elapsed_ms:.2f} ms on {device.type.upper()}!")
 ```
 
 ---

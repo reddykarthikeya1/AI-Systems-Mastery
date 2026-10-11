@@ -1464,14 +1464,21 @@ threads = [threading.Thread(target=unsafe_worker) <span class="hljs-keyword">for
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python">lock = threading.Lock()
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> threading
+
+lock = threading.Lock()
 safe_counter = <span class="hljs-number">0</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">safe_worker</span>():
     <span class="hljs-keyword">global</span> safe_counter
-    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">100_000</span>):
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1_000</span>):
         <span class="hljs-keyword">with</span> lock: <span class="hljs-comment"># Guarantees atomic update block</span>
-            safe_counter += <span class="hljs-number">1</span></code></pre>
+            safe_counter += <span class="hljs-number">1</span>
+
+threads = [threading.Thread(target=safe_worker) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]
+<span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads: t.start()
+<span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads: t.join()
+<span class="hljs-keyword">assert</span> safe_counter == <span class="hljs-number">5_000</span></code></pre>
   </div><h4 id="2-reentrant-lock-threading-rlock"><a href="#2-reentrant-lock-threading-rlock" class="header-anchor">#</a>2. Reentrant Lock: `threading.RLock`</h4><p>A standard <code>Lock</code> cannot be acquired twice by the same thread—attempting to do so causes an immediate <strong>deadlock</strong>. An <code>RLock</code> tracks ownership and allows the owning thread to acquire it multiple times recursively:</p>
 
   <div class="code-block-wrapper">

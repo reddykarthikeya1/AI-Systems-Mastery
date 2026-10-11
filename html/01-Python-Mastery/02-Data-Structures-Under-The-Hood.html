@@ -1529,7 +1529,7 @@ $$j = (5 \times j + 1 + \text{perturb}) \pmod{\text{mask}}$$</p>
 <span class="hljs-keyword">import</span> time
 
 <span class="hljs-comment"># Benchmark list.pop(0) vs deque.popleft()</span>
-n = <span class="hljs-number">100_000</span>
+n = <span class="hljs-number">10_000</span>
 
 lst = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
 t0 = time.perf_counter()

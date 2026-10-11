@@ -1284,8 +1284,11 @@ Anyone can write code that works under ideal conditions. A senior engineer shine
         process_cart(<span class="hljs-number">4092</span>)
     <span class="hljs-keyword">except</span> Exception:
         <span class="hljs-keyword">import</span> pdb
-        <span class="hljs-comment"># Immediately enters the post-mortem debugger using the active traceback!</span>
-        pdb.post_mortem(sys.exc_info()[<span class="hljs-number">2</span>])</code></pre>
+        <span class="hljs-comment"># Enters the post-mortem debugger using the active traceback when interactive</span>
+        <span class="hljs-keyword">if</span> sys.stdin.isatty():
+            pdb.post_mortem(sys.exc_info()[<span class="hljs-number">2</span>])
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Captured crash in <span class="hljs-subst">{sys.exc_info()[<span class="hljs-number">0</span>].__name__}</span>: discount code missing&quot;</span>)</code></pre>
   </div><h3 id="essential-pdb-command-cheat-sheet"><a href="#essential-pdb-command-cheat-sheet" class="header-anchor">#</a>Essential `pdb` Command Cheat-Sheet</h3><p>When dropped into the debugger:</p>
 <ul>
 <li><code>w</code> (where): Prints the complete call stack trace from top to bottom.</li>
@@ -1552,18 +1555,19 @@ lock_b = threading.Lock()
     <span class="hljs-comment"># Dump thread stacks if SIGALRM or timeout occurs (or dump to stderr on demand)</span>
     faulthandler.enable()
 
-    t1 = threading.Thread(target=thread_1_work, name=<span class="hljs-string">&quot;Worker-1&quot;</span>)
-    t2 = threading.Thread(target=thread_2_work, name=<span class="hljs-string">&quot;Worker-2&quot;</span>)
+    t1 = threading.Thread(target=thread_1_work, name=<span class="hljs-string">&quot;Worker-1&quot;</span>, daemon=<span class="hljs-literal">True</span>)
+    t2 = threading.Thread(target=thread_2_work, name=<span class="hljs-string">&quot;Worker-2&quot;</span>, daemon=<span class="hljs-literal">True</span>)
 
     t1.start()
     t2.start()
 
-    time.sleep(<span class="hljs-number">0.5</span>)
+    time.sleep(<span class="hljs-number">0.2</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n--- INITIATING EMERGENCY THREAD DUMP ---&quot;</span>)
     faulthandler.dump_traceback()
 
-    t1.join()
-    t2.join()</code></pre>
+    t1.join(timeout=<span class="hljs-number">0.1</span>)
+    t2.join(timeout=<span class="hljs-number">0.1</span>)
+    <span class="hljs-keyword">assert</span> t1.is_alive() <span class="hljs-keyword">and</span> t2.is_alive(), <span class="hljs-string">&quot;Both threads deadlocked as expected&quot;</span></code></pre>
   </div><h3 id="traceback-dump-in-terminal"><a href="#traceback-dump-in-terminal" class="header-anchor">#</a>Traceback Dump in Terminal:</h3>
   <div class="code-block-wrapper">
     <div class="code-header">

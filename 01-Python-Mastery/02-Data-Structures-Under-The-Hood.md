@@ -201,7 +201,7 @@ from collections import deque
 import time
 
 # Benchmark list.pop(0) vs deque.popleft()
-n = 100_000
+n = 10_000
 
 lst = list(range(n))
 t0 = time.perf_counter()

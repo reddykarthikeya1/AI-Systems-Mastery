@@ -291,6 +291,17 @@ In distributed architectures, **at-least-once delivery** is the standard guarant
 Every task modifying state (e.g. charging a payment, creating an invoice) must track an **Idempotency Key** in Redis:
 
 ```python
+# continues from tasks.py above
+from celery import Celery
+import redis
+import structlog
+
+app = Celery("billing_service")
+logger = structlog.get_logger()
+
+def execute_stripe_charge(account_id: str, amount_cents: int) -> str:
+    return f"ch_mock_{account_id}_{amount_cents}"
+
 @app.task(bind=True)
 def process_billing_transaction(self, idempotency_key: str, account_id: str, amount_cents: int):
     redis_client = redis.Redis(host="localhost", port=6379, db=3)
@@ -299,7 +310,10 @@ def process_billing_transaction(self, idempotency_key: str, account_id: str, amo
     idemp_key = f"idempotency:billing:{idempotency_key}"
     
     # SET with NX: returns True only if this is the FIRST time we see this key
-    is_new = redis_client.set(idemp_key, "PROCESSING", nx=True, ex=86400) # 24h TTL
+    try:
+        is_new = redis_client.set(idemp_key, "PROCESSING", nx=True, ex=86400) # 24h TTL
+    except (redis.ConnectionError, redis.TimeoutError):
+        is_new = True
     
     if not is_new:
         status = redis_client.get(idemp_key).decode()
@@ -309,11 +323,17 @@ def process_billing_transaction(self, idempotency_key: str, account_id: str, amo
     try:
         # Execute non-reversible external financial mutation
         charge_id = execute_stripe_charge(account_id, amount_cents)
-        redis_client.set(idemp_key, f"COMPLETED:{charge_id}", ex=86400)
+        try:
+            redis_client.set(idemp_key, f"COMPLETED:{charge_id}", ex=86400)
+        except (redis.ConnectionError, redis.TimeoutError):
+            pass
         return {"status": "SUCCESS", "charge_id": charge_id}
     except Exception as e:
         # Clear key or flag failure to allow retry
-        redis_client.delete(idemp_key)
+        try:
+            redis_client.delete(idemp_key)
+        except (redis.ConnectionError, redis.TimeoutError):
+            pass
         raise e
 ```
 

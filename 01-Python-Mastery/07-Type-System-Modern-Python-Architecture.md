@@ -128,13 +128,17 @@ from typing import TypeVar, Generic
 
 T_contra = TypeVar("T_contra", contravariant=True)
 
+class Animal: pass
+class Dog(Animal): pass
+
 class Sink(Generic[T_contra]):
     def consume(self, item: T_contra) -> None:
-        print(f"Consumed: {item}")
+        pass
 
 # A sink that can consume ANY Animal can safely be used where a Dog sink is expected!
 animal_sink: Sink[Animal] = Sink()
 dog_sink: Sink[Dog] = animal_sink  # Valid under contravariant typing
+assert isinstance(dog_sink, Sink)
 ```
 
 ---
@@ -202,6 +206,12 @@ assert round(calculate_tax(100.0, 0.05), 2) == 5.0
 If a decorator consumes or injects an argument (such as an active database session or authentication context), use `Concatenate`:
 
 ```python
+import functools
+from typing import Callable, Concatenate, ParamSpec, TypeVar
+
+P = ParamSpec("P")
+R = TypeVar("R")
+
 class DbContext:
     def execute(self, query: str) -> str:
         return f"result_of_{query}"

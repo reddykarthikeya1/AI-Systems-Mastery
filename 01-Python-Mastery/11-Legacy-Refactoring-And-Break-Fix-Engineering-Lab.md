@@ -98,6 +98,7 @@ class OrderProcessor:
 > Before altering a single character of production code, write **Characterization Tests** (also called "Pinning Tests"). The goal is not to test what the code *should* do, but to lock down what it *currently* does, bugs and all, so any behavioral change is immediately flagged.
 
 ```python
+# continues from legacy_order_processor above
 import sqlite3
 
 def run_characterization_test():

@@ -745,12 +745,21 @@ stream_handler = logging.StreamHandler(log_buffer)
 
 class JSONFormatter(logging.Formatter):
     def format(self, record):
-        log_obj = {
+        try:
+            payload = json.loads(record.getMessage())
+            if isinstance(payload, dict):
+                return json.dumps({
+                    "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(record.created)),
+                    "level": record.levelname,
+                    **payload
+                })
+        except Exception:
+            pass
+        return json.dumps({
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(record.created)),
             "level": record.levelname,
             "message": record.getMessage()
-        }
-        return json.dumps(log_obj)
+        })
 
 stream_handler.setFormatter(JSONFormatter())
 logger.addHandler(stream_handler)

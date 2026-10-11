@@ -1421,13 +1421,17 @@ animal_stream: ReadOnlyStream[Animal] = dog_stream  <span class="hljs-comment">#
 
 T_contra = TypeVar(<span class="hljs-string">&quot;T_contra&quot;</span>, contravariant=<span class="hljs-literal">True</span>)
 
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span>: <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span>(<span class="hljs-title class_ inherited__">Animal</span>): <span class="hljs-keyword">pass</span>
+
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sink</span>(<span class="hljs-type">Generic</span>[T_contra]):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">consume</span>(<span class="hljs-params">self, item: T_contra</span>) -&gt; <span class="hljs-literal">None</span>:
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Consumed: <span class="hljs-subst">{item}</span>&quot;</span>)
+        <span class="hljs-keyword">pass</span>
 
 <span class="hljs-comment"># A sink that can consume ANY Animal can safely be used where a Dog sink is expected!</span>
 animal_sink: Sink[Animal] = Sink()
-dog_sink: Sink[Dog] = animal_sink  <span class="hljs-comment"># Valid under contravariant typing</span></code></pre>
+dog_sink: Sink[Dog] = animal_sink  <span class="hljs-comment"># Valid under contravariant typing</span>
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(dog_sink, Sink)</code></pre>
   </div><hr>
 <h2 id="3-python-3-12-pep-695-modern-type-parameter-syntax"><a href="#3-python-3-12-pep-695-modern-type-parameter-syntax" class="header-anchor">#</a>3. Python 3.12 PEP 695: Modern Type Parameter Syntax</h2><p>Python 3.12 revolutionized typing by eliminating the verbose <code>TypeVar</code> declarations in favor of inline square bracket syntax <code>[T]</code>:</p>
 
@@ -1503,7 +1507,13 @@ R = TypeVar(<span class="hljs-string">&quot;R&quot;</span>)
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DbContext</span>:
+    <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> functools
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Callable</span>, Concatenate, ParamSpec, TypeVar
+
+P = ParamSpec(<span class="hljs-string">&quot;P&quot;</span>)
+R = TypeVar(<span class="hljs-string">&quot;R&quot;</span>)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DbContext</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">execute</span>(<span class="hljs-params">self, query: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;result_of_<span class="hljs-subst">{query}</span>&quot;</span>
 

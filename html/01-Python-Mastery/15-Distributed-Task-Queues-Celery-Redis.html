@@ -1604,7 +1604,18 @@ app.conf.update(
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-meta">@app.task(<span class="hljs-params">bind=<span class="hljs-literal">True</span></span>)</span>
+    <pre><code class="hljs language-python"><span class="hljs-comment"># continues from tasks.py above</span>
+<span class="hljs-keyword">from</span> celery <span class="hljs-keyword">import</span> Celery
+<span class="hljs-keyword">import</span> redis
+<span class="hljs-keyword">import</span> structlog
+
+app = Celery(<span class="hljs-string">&quot;billing_service&quot;</span>)
+logger = structlog.get_logger()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">execute_stripe_charge</span>(<span class="hljs-params">account_id: <span class="hljs-built_in">str</span>, amount_cents: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;ch_mock_<span class="hljs-subst">{account_id}</span>_<span class="hljs-subst">{amount_cents}</span>&quot;</span>
+
+<span class="hljs-meta">@app.task(<span class="hljs-params">bind=<span class="hljs-literal">True</span></span>)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_billing_transaction</span>(<span class="hljs-params">self, idempotency_key: <span class="hljs-built_in">str</span>, account_id: <span class="hljs-built_in">str</span>, amount_cents: <span class="hljs-built_in">int</span></span>):
     redis_client = redis.Redis(host=<span class="hljs-string">&quot;localhost&quot;</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">3</span>)
     
@@ -1612,7 +1623,10 @@ app.conf.update(
     idemp_key = <span class="hljs-string">f&quot;idempotency:billing:<span class="hljs-subst">{idempotency_key}</span>&quot;</span>
     
     <span class="hljs-comment"># SET with NX: returns True only if this is the FIRST time we see this key</span>
-    is_new = redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">&quot;PROCESSING&quot;</span>, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-number">86400</span>) <span class="hljs-comment"># 24h TTL</span>
+    <span class="hljs-keyword">try</span>:
+        is_new = redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">&quot;PROCESSING&quot;</span>, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-number">86400</span>) <span class="hljs-comment"># 24h TTL</span>
+    <span class="hljs-keyword">except</span> (redis.ConnectionError, redis.TimeoutError):
+        is_new = <span class="hljs-literal">True</span>
     
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_new:
         status = redis_client.get(idemp_key).decode()
@@ -1622,11 +1636,17 @@ app.conf.update(
     <span class="hljs-keyword">try</span>:
         <span class="hljs-comment"># Execute non-reversible external financial mutation</span>
         charge_id = execute_stripe_charge(account_id, amount_cents)
-        redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">f&quot;COMPLETED:<span class="hljs-subst">{charge_id}</span>&quot;</span>, ex=<span class="hljs-number">86400</span>)
+        <span class="hljs-keyword">try</span>:
+            redis_client.<span class="hljs-built_in">set</span>(idemp_key, <span class="hljs-string">f&quot;COMPLETED:<span class="hljs-subst">{charge_id}</span>&quot;</span>, ex=<span class="hljs-number">86400</span>)
+        <span class="hljs-keyword">except</span> (redis.ConnectionError, redis.TimeoutError):
+            <span class="hljs-keyword">pass</span>
         <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;charge_id&quot;</span>: charge_id}
     <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
         <span class="hljs-comment"># Clear key or flag failure to allow retry</span>
-        redis_client.delete(idemp_key)
+        <span class="hljs-keyword">try</span>:
+            redis_client.delete(idemp_key)
+        <span class="hljs-keyword">except</span> (redis.ConnectionError, redis.TimeoutError):
+            <span class="hljs-keyword">pass</span>
         <span class="hljs-keyword">raise</span> e</code></pre>
   </div><hr>
 <h2 id="5-senior-production-runbook-triage-common-celery-disasters"><a href="#5-senior-production-runbook-triage-common-celery-disasters" class="header-anchor">#</a>5. Senior Production Runbook: Triage Common Celery Disasters</h2><table>
