@@ -415,6 +415,129 @@ if __name__ == "__main__":
 
 ---
 
+## 9. The 10 Essential Muscle-Memory Fluency Drills
+
+Reading code creates an illusion of understanding. True mastery only happens when your fingers type the logic on a blank canvas. 
+
+Here are the **10 fundamental fluency drills** that bridge the gap between basic syntax and professional systems programming. Run this block to verify all 10 self-grading assertions pass on your machine:
+
+```python
+# The 10 Essential Muscle-Memory Fluency Drills
+
+def drill_01_fizzbuzz(n: int) -> list[str]:
+    """Drill 1: Pure control flow & modulo invariants."""
+    res = []
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            res.append("FizzBuzz")
+        elif i % 3 == 0:
+            res.append("Fizz")
+        elif i % 5 == 0:
+            res.append("Buzz")
+        else:
+            res.append(str(i))
+    return res
+
+def drill_02_is_palindrome(s: str) -> bool:
+    """Drill 2: Two-pointer string validation without slicing shortcuts."""
+    cleaned = [c.lower() for c in s if c.isalnum()]
+    left, right = 0, len(cleaned) - 1
+    while left < right:
+        if cleaned[left] != cleaned[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+def drill_03_word_frequencies(words: list[str]) -> dict[str, int]:
+    """Drill 3: Dictionary accumulation using safe default fallback."""
+    counts = {}
+    for w in words:
+        counts[w] = counts.get(w, 0) + 1
+    return counts
+
+def drill_04_find_duplicates(nums: list[int]) -> set[int]:
+    """Drill 4: O(1) set membership to detect duplicate items."""
+    seen = set()
+    dups = set()
+    for n in nums:
+        if n in seen:
+            dups.add(n)
+        seen.add(n)
+    return dups
+
+def drill_05_square_evens(nums: list[int]) -> list[int]:
+    """Drill 5: Idiomatic list comprehension combining filtering and transformation."""
+    return [x * x for x in nums if x % 2 == 0]
+
+def drill_06_safe_nested_get(d: dict, *keys, default=None):
+    """Drill 6: Defensive navigation through arbitrarily nested JSON/dictionaries."""
+    curr = d
+    for k in keys:
+        if isinstance(curr, dict) and k in curr:
+            curr = curr[k]
+        else:
+            return default
+    return curr
+
+def drill_07_flatten_matrix(matrix: list[list[int]]) -> list[int]:
+    """Drill 7: Nested iteration flattening a 2D grid into a 1D sequence."""
+    out = []
+    for row in matrix:
+        for val in row:
+            out.append(val)
+    return out
+
+def drill_08_fibonacci(count: int) -> list[int]:
+    """Drill 8: Iterative state accumulation avoiding recursive stack overflow."""
+    if count <= 0:
+        return []
+    if count == 1:
+        return [0]
+    fib = [0, 1]
+    while len(fib) < count:
+        fib.append(fib[-1] + fib[-2])
+    return fib
+
+def drill_09_metrics_collector(service_name: str, *measurements: float, **tags) -> dict:
+    """Drill 9: Dynamic argument aggregation using *args and **kwargs."""
+    return {
+        "service": service_name,
+        "count": len(measurements),
+        "avg": (sum(measurements) / len(measurements)) if measurements else 0.0,
+        "tags": tags
+    }
+
+def drill_10_safe_divide(a: float, b: float) -> tuple[bool, float]:
+    """Drill 10: Complete try/except/else error recovery pattern."""
+    try:
+        val = a / b
+    except ZeroDivisionError:
+        return (False, 0.0)
+    else:
+        return (True, val)
+
+# Self-grading execution verification
+assert drill_01_fizzbuzz(5) == ["1", "2", "Fizz", "4", "Buzz"]
+assert drill_02_is_palindrome("A man, a plan, a canal: Panama") is True
+assert drill_02_is_palindrome("race a car") is False
+assert drill_03_word_frequencies(["apple", "banana", "apple"]) == {"apple": 2, "banana": 1}
+assert drill_04_find_duplicates([1, 2, 3, 2, 4, 1]) == {1, 2}
+assert drill_05_square_evens([1, 2, 3, 4, 5]) == [4, 16]
+payload = {"user": {"profile": {"age": 28}}}
+assert drill_06_safe_nested_get(payload, "user", "profile", "age") == 28
+assert drill_06_safe_nested_get(payload, "user", "settings", default=-1) == -1
+assert drill_07_flatten_matrix([[1, 2], [3, 4]]) == [1, 2, 3, 4]
+assert drill_08_fibonacci(7) == [0, 1, 1, 2, 3, 5, 8]
+m = drill_09_metrics_collector("auth_svc", 10.0, 20.0, 30.0, env="prod")
+assert m["avg"] == 20.0 and m["tags"]["env"] == "prod"
+assert drill_10_safe_divide(10, 2) == (True, 5.0)
+assert drill_10_safe_divide(10, 0) == (False, 0.0)
+print("[OK] All 10 Fundamental Fluency Drills Passed Cleanly!")
+```
+
+---
+
 ## Check Yourself
 
 1. **Why does Python not copy the integer `42` when you write `b = a` where `a = 42`?**

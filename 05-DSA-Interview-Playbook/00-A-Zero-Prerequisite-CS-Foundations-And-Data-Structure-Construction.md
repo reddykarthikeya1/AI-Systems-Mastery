@@ -327,6 +327,22 @@ if __name__ == "__main__":
 
 ---
 
+## 6. The 4-Phase DSA Mastery Roadmap (From Zero to FAANG Offer)
+
+Do not attempt to solve 500 random LeetCode problems blindly. Follow this structured 4-phase progression:
+
+```mermaid
+flowchart TD
+    P1["Phase 1: Hardware Memory & Bare Construction (00-A)<br/>• Physical RAM layout & pointer arithmetic<br/>• Build Array, LinkedList, Stack, Queue, BST from scratch"]
+    P2["Phase 2: Algorithmic Patterns & Dry-Run Discipline (01 & 02)<br/>• 14 Core Patterns (Two Pointers, Sliding Window, Fast/Slow, Monotonic)<br/>• Master the 5-step communication & dry-run matrix"]
+    P3["Phase 3: The Core 75 Deep Dives (03 & Practice Suite)<br/>• 75 high-yield problems across all patterns<br/>• Automated asserts + 70 random brute-force fuzz cross-checks"]
+    P4["Phase 4: Pressure Simulation & Whiteboard Coding (04, 05, 06)<br/>• 45-minute timed mock interview execution<br/>• Google Doc / whiteboard discipline without an IDE compiler<br/>• The 'Stuck Engineer' unblocking decision tree"]
+
+    P1 --> P2 --> P3 --> P4
+```
+
+---
+
 ## Check Yourself
 
 1. **Why does physical memory layout make Array index lookup $O(1)$ constant time?**

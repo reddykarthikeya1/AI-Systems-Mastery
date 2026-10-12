@@ -7,11 +7,11 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 | Track | Chapters | Case studies | Total words | Median chapter words | Check Yourself | References section | Python blocks passing | Fragments |
 |---|---|---|---|---|---|---|---|---|
-| 01-Python-Mastery | 25 | 0 | 64,948 | 2255 | 100% | 100% | 132/132 | 0 |
-| 02-Low-Level-Design | 12 | 19 | 48,905 | 1356 | 100% | 100% | 95/95 | 4 |
-| 03-High-Level-Design | 13 | 20 | 44,143 | 1331 | 100% | 100% | 36/36 | 1 |
-| 04-Agentic-AI | 22 | 0 | 34,257 | 1584 | 100% | 100% | 44/44 | 2 |
-| 05-DSA-Interview-Playbook | 10 | 0 | 39,961 | 1270 | 100% | 100% | 75/75 | 97 |
+| 01-Python-Mastery | 25 | 0 | 65,502 | 2331 | 100% | 100% | 133/133 | 0 |
+| 02-Low-Level-Design | 12 | 19 | 49,139 | 1356 | 100% | 100% | 95/95 | 4 |
+| 03-High-Level-Design | 13 | 20 | 44,316 | 1331 | 100% | 100% | 36/36 | 1 |
+| 04-Agentic-AI | 22 | 0 | 34,407 | 1584 | 100% | 100% | 44/44 | 2 |
+| 05-DSA-Interview-Playbook | 10 | 0 | 40,103 | 1270 | 100% | 100% | 75/75 | 97 |
 
 ## Executable assets
 

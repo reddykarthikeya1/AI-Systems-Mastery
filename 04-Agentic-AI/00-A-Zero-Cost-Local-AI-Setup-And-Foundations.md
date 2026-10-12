@@ -241,6 +241,22 @@ if __name__ == "__main__":
 
 ---
 
+## 6. The 4-Tier Agentic AI Progression Roadmap
+
+Agentic AI moves far beyond simple chatbot prompts. Follow this 4-tier architectural progression across Track 4:
+
+```mermaid
+flowchart TD
+    Tier1["Tier 1: Local Foundations & Deterministic ReAct (00-A, 01, 02)<br/>• Run Ollama locally with zero cloud bills<br/>• Autoregressive sampling, logits, temperature<br/>• Structured tool schemas & JSON extraction"]
+    Tier2["Tier 2: Retrieval & State Graph Control Loops (03, 04, 05)<br/>• Vector & Vectorless RAG pipelines<br/>• ReAct & Plan-and-Solve architectures<br/>• Cyclical state machines via LangGraph"]
+    Tier3["Tier 3: Enterprise Resilience & Evaluation (06, 10, 11, 12, 13)<br/>• Hierarchical episodic memory & guardrail gateways<br/>• Automated LLM-as-a-judge CI/CD eval harnesses<br/>• Vector DB internals (HNSW math) & Human-In-The-Loop"]
+    Tier4["Tier 4: Multi-Agent Swarms & Autonomous Systems (07, 08, 16, 17, 18, 19)<br/>• Model Context Protocol (MCP) tool integration<br/>• Consensus protocols & specialist agent swarms<br/>• Test-time compute (GRPO) & GPU serving (vLLM PagedAttention)"]
+
+    Tier1 --> Tier2 --> Tier3 --> Tier4
+```
+
+---
+
 ## Check Yourself
 
 1. **Why does setting `temperature = 0.0` make an LLM's responses deterministic?**

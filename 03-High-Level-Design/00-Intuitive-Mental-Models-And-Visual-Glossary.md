@@ -1,6 +1,7 @@
 # HLD Chapter 0: Intuitive Distributed Systems Primer & Visual Metaphors
 
-> **Core Learning Objective:** Eliminate the abstract intimidation of High-Level Design. Master every core distributed systems building block using vivid real-world analogies, understand the 10 systems side-by-side in a single matrix, and practice with the 45-minute blank interview template.
+> **Core Learning Objective:** Eliminate the abstract intimidation of High-Level Design. Master every core distributed systems building block using vivid real-world analogies, understand the 13 systems side-by-side in a single matrix, and practice with the 45-minute blank interview template.
+> **Prerequisites & Runnable Hands-On Labs:** If you are new to servers, networking, and distributed systems, start with **[Chapter 00-B: Zero-Prerequisite Global Infrastructure Primer](00-B-Zero-Prerequisite-Global-Infrastructure-Primer.md)** to run the 3 offline distributed labs (Load Balancer Failover, Replication Lag, Cache Stampede)!
 
 ---
 
@@ -44,7 +45,22 @@ Click on any system to jump directly into its end-to-end architecture, back-of-t
 
 ---
 
-## 3. The 45-Minute Printable Interview Cheat Template
+## 3. The Recommended 3-Tier Study Progression for High-Level Design
+
+Do not try to master all 13 systems at once. Follow this natural cognitive progression:
+
+```mermaid
+flowchart TD
+    Tier1["Tier 1: Read-Heavy Edge & Feed Caching Systems<br/>• System 05: Video Streaming (YouTube)<br/>• System 10: Social Feed (Twitter/X)<br/>• System 03: Photo Feed (Instagram)"]
+    Tier2["Tier 2: Real-Time State & High-Write Geospatial Engines<br/>• System 01: Messaging App (WhatsApp)<br/>• System 09: Ride Dispatch (Uber)<br/>• System 08: Mutual Match (Tinder)<br/>• System 07: Proximity Service (Yelp)"]
+    Tier3["Tier 3: Extreme Spikes, ACID Consistency & Core Infrastructure<br/>• System 02: Ticketing Platform (Flash Spikes & Distributed Locks)<br/>• System 06: E-Commerce (Amazon Saga Distributed Transactions)<br/>• System 11: Distributed Cache (Redis Cluster Internals)<br/>• System 12: Search Engine (Elasticsearch Inverted Indices)<br/>• System 04: Distributed Task Scheduler<br/>• System 13: Time-Series Metrics TSDB"]
+
+    Tier1 --> Tier2 --> Tier3
+```
+
+---
+
+## 4. The 45-Minute Printable Interview Cheat Template
 
 Print this 1-page canvas to structure your whiteboard during mock interviews:
 

@@ -56,12 +56,13 @@ flowchart TD
 
 ---
 
-## 3. The 14 Core Systems Rosetta Stone Matrix
+## 3. The 19 Industrial Systems Rosetta Stone Matrix
 
 Click on any system to jump directly into its complete, runnable Python implementation with full class hierarchies, design patterns, and thread-safety tests:
 
 | System | Primary Pattern | Secondary Pattern | The Critical Concurrency Trap |
 | :--- | :--- | :--- | :--- |
+| **[0. Modular Board Game (Tic-Tac-Toe)](systems/00-modular-tic-tac-toe-engine.md)** | **Strategy** (AI & Win rules) | **State** (Game lifecycle) | Mutex lock on room moves for concurrent multiplayer |
 | **[1. Distributed Job Scheduler](systems/01-distributed-job-scheduler.md)** | **Command** (Jobs) | **Strategy** (FCFS / Priority) | Worker race on queue; Lock during dispatch |
 | **[2. Library Management](systems/02-library-management-system.md)** | **State** (Available/Reserved) | **Observer** (Hold notification) | Race on last available physical book copy |
 | **[3. Movie Ticket Booking](systems/03-movie-booking-system.md)** | **State Machine** (Held/Booked) | **Strategy** (Payment) | **Critical:** 1,000 users booking seat A1; fine-grained mutex + TTL |
@@ -76,6 +77,25 @@ Click on any system to jump directly into its complete, runnable Python implemen
 | **[12. In-Memory File System](systems/12-in-memory-file-system.md)** | **Composite** (Files & Dirs) | **Trie** (Path traversal) | Concurrency lock on parent directory path mutations |
 | **[13. High-Throughput Logger](systems/13-high-throughput-logging-framework.md)** | **Singleton** + **Observer** | **RingBuffer** (Zero-lock queue) | Producer-consumer backpressure & buffer overflow |
 | **[14. Pub-Sub Message Broker](systems/14-pub-sub-message-broker.md)** | **Observer** (Subscribers) | **Strategy** (Partitioning) | Fan-out race conditions & consumer offset tracking |
+| **[15. Distributed Lock Manager](systems/15-distributed-lock-manager.md)** | **Redlock** (Quorum consensus) | **Fencing Tokens** (Monotonic) | Client GC pause causing expired lease writes |
+| **[16. Kafka Consumer Group](systems/16-kafka-consumer-group-rebalance.md)**| **State Machine** (Rebalance) | **Sticky Assignor** (Partitions)| Stop-the-world partition rebalance latency |
+| **[17. Splitwise Expense Sharing](systems/17-splitwise-expense-sharing.md)**| **Strategy** (Split calculations) | **Greedy Min-Heap** (Simplification)| Cyclic debt settlement race conditions |
+| **[18. Notification Alerting](systems/18-notification-alerting-service.md)** | **Adapter** (Multi-channel SMS/Email)| **PriorityQueue** + **Sliding Window**| Downstream provider rate limits & alert fatigue |
+
+---
+
+## 4. The Recommended 3-Tier Study Progression for Beginners
+
+Do **NOT** jump straight into Distributed Schedulers or Kafka Rebalancing on Day 1! Follow this battle-tested 3-tier sequence:
+
+```mermaid
+flowchart TD
+    Tier1["Tier 1: Foundations & State Machines<br/>• System 00: Modular Board Game Engine (Tic-Tac-Toe)<br/>• System 11: Vending Machine<br/>• System 09: Snake and Ladders<br/>• System 05: Parking Lot"]
+    Tier2["Tier 2: Real-World Commercial Services<br/>• System 02: Library Management<br/>• System 03: Movie Ticket Booking<br/>• System 04: Car Rental<br/>• System 06: Inventory Management<br/>• System 07: Ride-Sharing (Uber LLD)<br/>• System 10: Elevator System"]
+    Tier3["Tier 3: High-Concurrency & Infrastructure Engineering<br/>• System 01: Distributed Job Scheduler<br/>• System 08: API Rate Limiter<br/>• System 12: In-Memory File System<br/>• System 13: High-Throughput Logger<br/>• System 14: Pub-Sub Message Broker<br/>• Systems 15–18: Distributed Locks, Kafka, Splitwise, Notifications"]
+
+    Tier1 --> Tier2 --> Tier3
+```
 
 
 ## Further Reading

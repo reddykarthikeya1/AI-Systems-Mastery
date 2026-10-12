@@ -1298,7 +1298,8 @@ graph LR
         <span>Copy</span>
       </button>
     </div>
-    <pre><code class="hljs language-python"><span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> All rows reference the EXACT same list in memory!</span>
+    <pre><code class="hljs language-python">n, m = <span class="hljs-number">3</span>, <span class="hljs-number">3</span>
+<span class="hljs-comment"># <span class="hljs-doctag">BUG:</span> All rows reference the EXACT same list in memory!</span>
 matrix = [[<span class="hljs-number">0</span>] * n] * m 
 matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">99</span> <span class="hljs-comment"># Mutates index 0 of EVERY row!</span>
 
