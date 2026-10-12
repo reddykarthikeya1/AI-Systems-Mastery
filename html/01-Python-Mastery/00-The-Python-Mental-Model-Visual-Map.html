@@ -1244,8 +1244,8 @@ h2:hover .header-anchor, h3:hover .header-anchor {
       <div class="content-container">
         <article class="markdown-body">
           <h1 id="chapter-0-the-unified-python-mental-map-intuitive-primer"><a href="#chapter-0-the-unified-python-mental-map-intuitive-primer" class="header-anchor">#</a>Chapter 0: The Unified Python Mental Map & Intuitive Primer</h1><blockquote>
-<p><strong>What you will be able to do:</strong> Form an indestructible, intuitive mental model of Python execution, trace variable nametags to heap objects, pinpoint where variables live across function calls, calibrate your learning path across all 23 chapters, and assess your current baseline with a 15-question placement diagnostic.
-<strong>What you must already know:</strong> Basic programming concepts (what variables, loops, and functions are in any language) and comfort running basic commands in a terminal.</p>
+<p><strong>What you will be able to do:</strong> Form an indestructible, intuitive mental model of Python execution, trace variable nametags to heap objects, pinpoint where variables live across function calls, calibrate your learning path across all chapters, and assess your baseline with a placement diagnostic.
+<strong>What you must already know:</strong> Absolutely nothing! If you have never typed a terminal command or written a line of code, start with <strong><a href="00-A-Zero-Prerequisite-Terminal-Environment-And-Execution-Primer.html">Chapter 00-A: Environment &amp; Terminal Primer</a></strong> and <strong><a href="00-B-Zero-Prerequisite-Syntax-Control-Flow-And-Functions-Primer.html">Chapter 00-B: Programming 101 Primer</a></strong>. If you already know syntax basics, dive straight into Chapter 00 below!</p>
 </blockquote>
 <hr>
 <h2 id="0-zero-prerequisite-primer-what-on-earth-is-the-heap"><a href="#0-zero-prerequisite-primer-what-on-earth-is-the-heap" class="header-anchor">#</a>0. Zero-Prerequisite Primer: What on Earth is "The Heap"?</h2><p>Before we look at Python&#39;s rules, let&#39;s understand how your computer&#39;s memory (RAM) actually works. </p>
@@ -1739,8 +1739,13 @@ flowchart TD
       <div class="mermaid-viewport">
         <div class="mermaid">
 flowchart TD
-    subgraph Phase1 ["Phase 1: Foundations &amp; Memory Architecture (Ch 00-05)"]
-        M0["00: Mental Model &amp; Visual Map"] --&gt; M1["01: Foundations &amp; Memory"]
+    subgraph Phase0 ["Phase 0: Ground-Floor On-Ramp (For Absolute Beginners)"]
+        M0A["00-A: Terminal, Shell &amp; Setup"] --&gt; M0B["00-B: Programming 101: Syntax &amp; Loops"]
+        M0B --&gt; M0["00: Mental Model &amp; Visual Map"]
+    end
+
+    subgraph Phase1 ["Phase 1: Foundations &amp; Memory Architecture (Ch 01-05)"]
+        M0 --&gt; M1["01: Foundations &amp; Memory"]
         M1 --&gt; M2["02: Data Structures Under the Hood"]
         M2 --&gt; M3["03: Closures, Scopes &amp; Decorators"]
         M3 --&gt; M4["04: OOP, Dunders &amp; Metaclasses"]

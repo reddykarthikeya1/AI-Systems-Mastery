@@ -1,6 +1,7 @@
 # Agentic AI Chapter 1: LLM Foundations, Tokenization & Inference Mechanics
 
 > **Core Learning Objective:** Understand the internal mechanics of Large Language Models (LLMs) from the transformer architecture up. Learn how Byte-Pair Encoding (BPE) tokenizes text, how autoregressive generation works, why the KV-Cache is critical to inference speed, and how sampling parameters (temperature, top-p) shape model outputs.
+> **Prerequisites:** If you are new to running models locally with zero cloud bills, start with **[Chapter 00-A: Zero-Cost Local AI Setup & Foundations](00-A-Zero-Cost-Local-AI-Setup-And-Foundations.md)** to set up Ollama on your machine!
 
 ---
 

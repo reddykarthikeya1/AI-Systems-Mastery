@@ -7,8 +7,8 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 | Track | Chapters | Case studies | Total words | Median chapter words | Check Yourself | References section | Python blocks passing | Fragments |
 |---|---|---|---|---|---|---|---|---|
-| 01-Python-Mastery | 23 | 0 | 60,058 | 2255 | 100% | 100% | 110/110 | 6 |
-| 02-Low-Level-Design | 12 | 18 | 46,851 | 1348 | 100% | 100% | 87/88 | 4 |
+| 01-Python-Mastery | 23 | 0 | 60,400 | 2255 | 100% | 100% | 116/116 | 0 |
+| 02-Low-Level-Design | 12 | 18 | 46,851 | 1348 | 100% | 100% | 88/88 | 4 |
 | 03-High-Level-Design | 13 | 20 | 43,902 | 1280 | 100% | 100% | 36/36 | 1 |
 | 04-Agentic-AI | 21 | 0 | 32,576 | 1571 | 100% | 100% | 42/42 | 2 |
 | 05-DSA-Interview-Playbook | 9 | 0 | 38,339 | 1245 | 100% | 100% | 72/73 | 97 |

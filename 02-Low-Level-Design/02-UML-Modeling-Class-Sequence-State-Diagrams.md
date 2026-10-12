@@ -56,7 +56,72 @@ classDiagram
 | **Composition** | `*--` | Whole-part relationship ("owns-a"). If parent dies, child dies! | Strict ownership (Child cannot exist without Parent) |
 | **Aggregation** | `o--` | Whole-part relationship ("has-a"). Child can exist independently. | Loose ownership (e.g. Department has Professors) |
 | **Association** | `-->` | Class $A$ holds a reference to Class $B$ | Reference holding |
-| **Dependency** | `..>` | Method in Class $A$ receives Class $B$ as transient parameter | Temporary runtime coupling |
+### The Visual UML Rosetta Stone: Diagram to Python Code
+
+Every beginner in LLD wonders: *"When I see an arrow on an architectural diagram, what exact Python code does that translate to?"*
+Here is the definitive Rosetta Stone:
+
+#### 1. Inheritance (Generalization) `Child --|> Parent` ("IS-A")
+```python
+class Vehicle:
+    def move(self) -> str:
+        return "Moving on terrain"
+
+class ElectricCar(Vehicle):  # ElectricCar IS-A Vehicle
+    def charge(self) -> str:
+        return "Charging battery"
+```
+
+#### 2. Realization (Interface Contract) `Class ..|> Interface` ("CAN-DO")
+```python
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    @abstractmethod
+    def pay(self, amount: float) -> bool: ...
+
+class StripePayment(PaymentProcessor):  # REALIZES the interface contract
+    def pay(self, amount: float) -> bool:
+        return True
+```
+
+#### 3. Composition (Strict Whole-Part Ownership) `Parent *-- Child` ("OWNS-A")
+```python
+class Room:
+    def __init__(self, name: str):
+        self.name = name
+
+class House:
+    def __init__(self):
+        # House OWNS the rooms. If the House is destroyed, the rooms die with it!
+        self.rooms = [Room("Living Room"), Room("Master Bedroom")]
+```
+
+#### 4. Aggregation (Loose Shared Association) `Parent o-- Child` ("HAS-A")
+```python
+class Professor:
+    def __init__(self, name: str):
+        self.name = name
+
+class Department:
+    def __init__(self, faculty: list[Professor]):
+        # Department HAS professors, but if the Department closes,
+        # the professors continue to exist independently!
+        self.faculty = faculty
+```
+
+#### 5. Dependency (Transient Parameter) `ClassA ..> ClassB` ("USES-A")
+```python
+class Invoice:
+    def __init__(self, amount: float):
+        self.amount = amount
+
+class PDFGenerator:
+    # PDFGenerator does NOT store the invoice in self._invoice.
+    # It only depends on it temporarily as a method argument!
+    def generate(self, invoice: Invoice) -> bytes:
+        return f"PDF data for ${invoice.amount}".encode("utf-8")
+```
 
 ---
 

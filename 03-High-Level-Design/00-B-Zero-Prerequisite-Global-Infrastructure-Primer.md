@@ -97,13 +97,44 @@ When an interviewer asks: *"Design Netflix"* or *"Design Twitter"*, never jump i
 
 ---
 
-## 4. Milestone Check: What You Just Mastered!
+## 4. Hands-On Distributed Systems Labs (Executable Architecture)
+
+Reading about distributed systems is not enough; you must experience system failures live on your machine! Track 3 includes 3 dedicated, runnable architecture labs:
+
+### Lab 1: Load Balancer & Automatic Circuit Breaker Failover
+* **File:** [`labs/01_load_balancer_failover.py`](labs/01_load_balancer_failover.py)
+* **What it proves:** Simulates 300 concurrent client requests hitting a 3-node cluster. Halfway through, Node 2 crashes due to an Out-Of-Memory (OOM) kill. The load balancer detects the crash via health-check probes, opens the circuit breaker, and routes 100% of remaining traffic to healthy nodes with 0 dropped requests.
+* **Run command:**
+  ```bash
+  python 03-High-Level-Design/labs/01_load_balancer_failover.py
+  ```
+
+### Lab 2: Database Replication Lag & Read-Your-Own-Writes Anomaly
+* **File:** [`labs/02_database_replication_lag.py`](labs/02_database_replication_lag.py)
+* **What it proves:** Demonstrates why users frequently complain: *"I just updated my profile, hit refresh, and my changes disappeared!"* Reproduces the $50\text{ms}$ replication delay between Primary and Read-Replicas, and verifies the production fix: Sticky-Session User Routing.
+* **Run command:**
+  ```bash
+  python 03-High-Level-Design/labs/02_database_replication_lag.py
+  ```
+
+### Lab 3: Cache Stampede (Dogpiling) & Mutex Locking
+* **File:** [`labs/03_cache_stampede_and_avalanche.py`](labs/03_cache_stampede_and_avalanche.py)
+* **What it proves:** Simulates 200 concurrent requests hitting an expired hot product cache. In a naive cache, all 200 requests hammer the backend database simultaneously. With Mutex Double-Checked Locking, exactly 1 query hits the database (a 99.5% reduction in database load).
+* **Run command:**
+  ```bash
+  python 03-High-Level-Design/labs/03_cache_stampede_and_avalanche.py
+  ```
+
+---
+
+## 5. Milestone Check: What You Just Mastered!
 
 You now understand:
 1. The global postal metaphor behind DNS, load balancers, and reverse proxies.
 2. The exact mechanical difference between **TCP** (reliability) and **UDP** (speed).
 3. Why companies use **Layer-4 for raw network routing** and **Layer-7 for smart application routing**.
-4. The exact 5-minute opening script to dominate any High-Level Design interview.
+4. How load balancers isolate crashed servers, how replication lag causes stale reads, and how distributed mutex locks prevent cache stampedes.
+5. The exact 5-minute opening script to dominate any High-Level Design interview.
 
 
 ## Further Reading

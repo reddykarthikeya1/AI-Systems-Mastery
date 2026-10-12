@@ -1414,11 +1414,59 @@ flowchart TD
 </ul>
 </blockquote>
 <hr>
-<h2 id="4-milestone-check-what-you-just-mastered"><a href="#4-milestone-check-what-you-just-mastered" class="header-anchor">#</a>4. Milestone Check: What You Just Mastered!</h2><p>You now understand:</p>
+<h2 id="4-hands-on-distributed-systems-labs-executable-architecture"><a href="#4-hands-on-distributed-systems-labs-executable-architecture" class="header-anchor">#</a>4. Hands-On Distributed Systems Labs (Executable Architecture)</h2><p>Reading about distributed systems is not enough; you must experience system failures live on your machine! Track 3 includes 3 dedicated, runnable architecture labs:</p>
+<h3 id="lab-1-load-balancer-automatic-circuit-breaker-failover"><a href="#lab-1-load-balancer-automatic-circuit-breaker-failover" class="header-anchor">#</a>Lab 1: Load Balancer & Automatic Circuit Breaker Failover</h3><ul>
+<li><strong>File:</strong> <a href="labs/01_load_balancer_failover.py"><code>labs/01_load_balancer_failover.py</code></a></li>
+<li><strong>What it proves:</strong> Simulates 300 concurrent client requests hitting a 3-node cluster. Halfway through, Node 2 crashes due to an Out-Of-Memory (OOM) kill. The load balancer detects the crash via health-check probes, opens the circuit breaker, and routes 100% of remaining traffic to healthy nodes with 0 dropped requests.</li>
+<li><strong>Run command:</strong>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python 03-High-Level-Design/labs/01_load_balancer_failover.py</code></pre>
+  </div></li>
+</ul>
+<h3 id="lab-2-database-replication-lag-read-your-own-writes-anomaly"><a href="#lab-2-database-replication-lag-read-your-own-writes-anomaly" class="header-anchor">#</a>Lab 2: Database Replication Lag & Read-Your-Own-Writes Anomaly</h3><ul>
+<li><strong>File:</strong> <a href="labs/02_database_replication_lag.py"><code>labs/02_database_replication_lag.py</code></a></li>
+<li><strong>What it proves:</strong> Demonstrates why users frequently complain: <em>&quot;I just updated my profile, hit refresh, and my changes disappeared!&quot;</em> Reproduces the $50\text{ms}$ replication delay between Primary and Read-Replicas, and verifies the production fix: Sticky-Session User Routing.</li>
+<li><strong>Run command:</strong>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python 03-High-Level-Design/labs/02_database_replication_lag.py</code></pre>
+  </div></li>
+</ul>
+<h3 id="lab-3-cache-stampede-dogpiling-mutex-locking"><a href="#lab-3-cache-stampede-dogpiling-mutex-locking" class="header-anchor">#</a>Lab 3: Cache Stampede (Dogpiling) & Mutex Locking</h3><ul>
+<li><strong>File:</strong> <a href="labs/03_cache_stampede_and_avalanche.py"><code>labs/03_cache_stampede_and_avalanche.py</code></a></li>
+<li><strong>What it proves:</strong> Simulates 200 concurrent requests hitting an expired hot product cache. In a naive cache, all 200 requests hammer the backend database simultaneously. With Mutex Double-Checked Locking, exactly 1 query hits the database (a 99.5% reduction in database load).</li>
+<li><strong>Run command:</strong>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-bash">python 03-High-Level-Design/labs/03_cache_stampede_and_avalanche.py</code></pre>
+  </div></li>
+</ul>
+<hr>
+<h2 id="5-milestone-check-what-you-just-mastered"><a href="#5-milestone-check-what-you-just-mastered" class="header-anchor">#</a>5. Milestone Check: What You Just Mastered!</h2><p>You now understand:</p>
 <ol>
 <li>The global postal metaphor behind DNS, load balancers, and reverse proxies.</li>
 <li>The exact mechanical difference between <strong>TCP</strong> (reliability) and <strong>UDP</strong> (speed).</li>
 <li>Why companies use <strong>Layer-4 for raw network routing</strong> and <strong>Layer-7 for smart application routing</strong>.</li>
+<li>How load balancers isolate crashed servers, how replication lag causes stale reads, and how distributed mutex locks prevent cache stampedes.</li>
 <li>The exact 5-minute opening script to dominate any High-Level Design interview.</li>
 </ol>
 <h2 id="further-reading"><a href="#further-reading" class="header-anchor">#</a>Further Reading</h2><ul>
@@ -1459,7 +1507,7 @@ flowchart TD
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-the-jargon-demystifier-the-global-logistics-postal-network" class="toc-link">0. The Jargon Demystifier: The "Global Logistics & Postal Network"</a></li><li class="toc-item level-2"><a href="#1-network-protocols-tcp-vs-udp-spoon-fed" class="toc-link">1. Network Protocols: TCP vs. UDP (Spoon-Fed)</a></li><li class="toc-item level-3"><a href="#1-tcp-transmission-control-protocol-registered-certified-mail" class="toc-link">1. TCP (Transmission Control Protocol) = "Registered Certified Mail"</a></li><li class="toc-item level-3"><a href="#2-udp-user-datagram-protocol-live-radio-broadcast" class="toc-link">2. UDP (User Datagram Protocol) = "Live Radio Broadcast"</a></li><li class="toc-item level-2"><a href="#2-load-balancing-layer-4-vs-layer-7-spoon-fed" class="toc-link">2. Load Balancing: Layer-4 vs. Layer-7 (Spoon-Fed)</a></li><li class="toc-item level-2"><a href="#3-the-45-minute-hld-interview-survival-script" class="toc-link">3. The 45-Minute HLD Interview Survival Script</a></li><li class="toc-item level-3"><a href="#step-1-scope-functional-boundaries-minutes-0-3" class="toc-link">Step 1: Scope & Functional Boundaries (Minutes 0 – 3)</a></li><li class="toc-item level-3"><a href="#step-2-back-of-the-envelope-estimation-minutes-3-5" class="toc-link">Step 2: Back-of-the-Envelope Estimation (Minutes 3 – 5)</a></li><li class="toc-item level-2"><a href="#4-milestone-check-what-you-just-mastered" class="toc-link">4. Milestone Check: What You Just Mastered!</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#0-the-jargon-demystifier-the-global-logistics-postal-network" class="toc-link">0. The Jargon Demystifier: The "Global Logistics & Postal Network"</a></li><li class="toc-item level-2"><a href="#1-network-protocols-tcp-vs-udp-spoon-fed" class="toc-link">1. Network Protocols: TCP vs. UDP (Spoon-Fed)</a></li><li class="toc-item level-3"><a href="#1-tcp-transmission-control-protocol-registered-certified-mail" class="toc-link">1. TCP (Transmission Control Protocol) = "Registered Certified Mail"</a></li><li class="toc-item level-3"><a href="#2-udp-user-datagram-protocol-live-radio-broadcast" class="toc-link">2. UDP (User Datagram Protocol) = "Live Radio Broadcast"</a></li><li class="toc-item level-2"><a href="#2-load-balancing-layer-4-vs-layer-7-spoon-fed" class="toc-link">2. Load Balancing: Layer-4 vs. Layer-7 (Spoon-Fed)</a></li><li class="toc-item level-2"><a href="#3-the-45-minute-hld-interview-survival-script" class="toc-link">3. The 45-Minute HLD Interview Survival Script</a></li><li class="toc-item level-3"><a href="#step-1-scope-functional-boundaries-minutes-0-3" class="toc-link">Step 1: Scope & Functional Boundaries (Minutes 0 – 3)</a></li><li class="toc-item level-3"><a href="#step-2-back-of-the-envelope-estimation-minutes-3-5" class="toc-link">Step 2: Back-of-the-Envelope Estimation (Minutes 3 – 5)</a></li><li class="toc-item level-2"><a href="#4-hands-on-distributed-systems-labs-executable-architecture" class="toc-link">4. Hands-On Distributed Systems Labs (Executable Architecture)</a></li><li class="toc-item level-3"><a href="#lab-1-load-balancer-automatic-circuit-breaker-failover" class="toc-link">Lab 1: Load Balancer & Automatic Circuit Breaker Failover</a></li><li class="toc-item level-3"><a href="#lab-2-database-replication-lag-read-your-own-writes-anomaly" class="toc-link">Lab 2: Database Replication Lag & Read-Your-Own-Writes Anomaly</a></li><li class="toc-item level-3"><a href="#lab-3-cache-stampede-dogpiling-mutex-locking" class="toc-link">Lab 3: Cache Stampede (Dogpiling) & Mutex Locking</a></li><li class="toc-item level-2"><a href="#5-milestone-check-what-you-just-mastered" class="toc-link">5. Milestone Check: What You Just Mastered!</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

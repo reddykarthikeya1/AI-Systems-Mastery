@@ -1,6 +1,7 @@
 # DSA Interview Playbook: Communication, Optimization & The Dry-Run Framework
 
 > **Core Objective:** Master the behavioral and technical execution framework required to clear Data Structures & Algorithms rounds at top-tier Product-Based Companies (Google, Meta, Uber, Amazon).
+> **Prerequisites:** If you have never built data structures from scratch or need a memory pointers & recursion refresh, review **[Chapter 00-A: CS Foundations & Data Structure Construction](00-A-Zero-Prerequisite-CS-Foundations-And-Data-Structure-Construction.md)** first!
 
 ---
 

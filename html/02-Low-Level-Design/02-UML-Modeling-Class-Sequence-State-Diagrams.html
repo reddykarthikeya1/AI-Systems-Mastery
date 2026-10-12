@@ -1345,14 +1345,97 @@ classDiagram
 <td align="left">Class $A$ holds a reference to Class $B$</td>
 <td align="left">Reference holding</td>
 </tr>
-<tr>
-<td align="left"><strong>Dependency</strong></td>
-<td align="left"><code>..&gt;</code></td>
-<td align="left">Method in Class $A$ receives Class $B$ as transient parameter</td>
-<td align="left">Temporary runtime coupling</td>
-</tr>
 </tbody></table>
-<hr>
+<h3 id="the-visual-uml-rosetta-stone-diagram-to-python-code"><a href="#the-visual-uml-rosetta-stone-diagram-to-python-code" class="header-anchor">#</a>The Visual UML Rosetta Stone: Diagram to Python Code</h3><p>Every beginner in LLD wonders: <em>&quot;When I see an arrow on an architectural diagram, what exact Python code does that translate to?&quot;</em>
+Here is the definitive Rosetta Stone:</p>
+<h4 id="1-inheritance-generalization-child-parent-is-a"><a href="#1-inheritance-generalization-child-parent-is-a" class="header-anchor">#</a>1. Inheritance (Generalization) `Child --|> Parent` ("IS-A")</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vehicle</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">move</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">str</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Moving on terrain&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ElectricCar</span>(<span class="hljs-title class_ inherited__">Vehicle</span>):  <span class="hljs-comment"># ElectricCar IS-A Vehicle</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">charge</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">str</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Charging battery&quot;</span></code></pre>
+  </div><h4 id="2-realization-interface-contract-class-interface-can-do"><a href="#2-realization-interface-contract-class-interface-can-do" class="header-anchor">#</a>2. Realization (Interface Contract) `Class ..|> Interface` ("CAN-DO")</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">from</span> abc <span class="hljs-keyword">import</span> ABC, abstractmethod
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PaymentProcessor</span>(<span class="hljs-title class_ inherited__">ABC</span>):
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pay</span>(<span class="hljs-params">self, amount: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">bool</span>: ...
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StripePayment</span>(<span class="hljs-title class_ inherited__">PaymentProcessor</span>):  <span class="hljs-comment"># REALIZES the interface contract</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pay</span>(<span class="hljs-params">self, amount: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></code></pre>
+  </div><h4 id="3-composition-strict-whole-part-ownership-parent-child-owns-a"><a href="#3-composition-strict-whole-part-ownership-parent-child-owns-a" class="header-anchor">#</a>3. Composition (Strict Whole-Part Ownership) `Parent *-- Child` ("OWNS-A")</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Room</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.name = name
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">House</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># House OWNS the rooms. If the House is destroyed, the rooms die with it!</span>
+        <span class="hljs-variable language_">self</span>.rooms = [Room(<span class="hljs-string">&quot;Living Room&quot;</span>), Room(<span class="hljs-string">&quot;Master Bedroom&quot;</span>)]</code></pre>
+  </div><h4 id="4-aggregation-loose-shared-association-parent-o-child-has-a"><a href="#4-aggregation-loose-shared-association-parent-o-child-has-a" class="header-anchor">#</a>4. Aggregation (Loose Shared Association) `Parent o-- Child` ("HAS-A")</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Professor</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.name = name
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, faculty: <span class="hljs-built_in">list</span>[Professor]</span>):
+        <span class="hljs-comment"># Department HAS professors, but if the Department closes,</span>
+        <span class="hljs-comment"># the professors continue to exist independently!</span>
+        <span class="hljs-variable language_">self</span>.faculty = faculty</code></pre>
+  </div><h4 id="5-dependency-transient-parameter-classa-classb-uses-a"><a href="#5-dependency-transient-parameter-classa-classb-uses-a" class="header-anchor">#</a>5. Dependency (Transient Parameter) `ClassA ..> ClassB` ("USES-A")</h4>
+  <div class="code-block-wrapper">
+    <div class="code-header">
+      <span class="code-lang">python</span>
+      <button class="copy-btn" onclick="copyCode(this)" title="Copy code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Invoice</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, amount: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.amount = amount
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PDFGenerator</span>:
+    <span class="hljs-comment"># PDFGenerator does NOT store the invoice in self._invoice.</span>
+    <span class="hljs-comment"># It only depends on it temporarily as a method argument!</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>(<span class="hljs-params">self, invoice: Invoice</span>) -&gt; <span class="hljs-built_in">bytes</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;PDF data for $<span class="hljs-subst">{invoice.amount}</span>&quot;</span>.encode(<span class="hljs-string">&quot;utf-8&quot;</span>)</code></pre>
+  </div><hr>
 <h2 id="2-sequence-diagrams-behavioral-flow-coordination"><a href="#2-sequence-diagrams-behavioral-flow-coordination" class="header-anchor">#</a>2. Sequence Diagrams: Behavioral Flow & Coordination</h2><p>Sequence diagrams capture <strong>time-ordered object interactions</strong> across lifelines. Essential for explaining API request flows, payment checkout, and distributed locking.</p>
 
     <div class="mermaid-container">
@@ -1638,7 +1721,7 @@ sequenceDiagram
 
     <!-- Right Table of Contents -->
     <aside class="toc-sidebar" aria-label="On this page">
-      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-class-diagrams-structural-relationships" class="toc-link">1. Class Diagrams: Structural Relationships</a></li><li class="toc-item level-3"><a href="#uml-relationship-taxonomy" class="toc-link">UML Relationship Taxonomy</a></li><li class="toc-item level-2"><a href="#2-sequence-diagrams-behavioral-flow-coordination" class="toc-link">2. Sequence Diagrams: Behavioral Flow & Coordination</a></li><li class="toc-item level-2"><a href="#3-state-machine-diagrams-entity-lifecycle-transitions" class="toc-link">3. State Machine Diagrams: Entity Lifecycle Transitions</a></li><li class="toc-item level-2"><a href="#4-the-5-minute-lld-interview-drawing-strategy" class="toc-link">4. The 5-Minute LLD Interview Drawing Strategy</a></li><li class="toc-item level-2"><a href="#5-from-diagram-to-code-what-each-arrow-means-in-python" class="toc-link">5. From Diagram to Code: What Each Arrow Means in Python</a></li><li class="toc-item level-3"><a href="#multiplicity-and-navigability" class="toc-link">Multiplicity and navigability</a></li><li class="toc-item level-3"><a href="#sequence-diagram-fragments-you-are-expected-to-know" class="toc-link">Sequence diagram fragments you are expected to know</a></li><li class="toc-item level-3"><a href="#five-mistakes-that-cost-marks" class="toc-link">Five mistakes that cost marks</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
+      <div class="toc-title">On This Page</div><ul class="toc-list"><li class="toc-item level-2"><a href="#1-class-diagrams-structural-relationships" class="toc-link">1. Class Diagrams: Structural Relationships</a></li><li class="toc-item level-3"><a href="#uml-relationship-taxonomy" class="toc-link">UML Relationship Taxonomy</a></li><li class="toc-item level-3"><a href="#the-visual-uml-rosetta-stone-diagram-to-python-code" class="toc-link">The Visual UML Rosetta Stone: Diagram to Python Code</a></li><li class="toc-item level-2"><a href="#2-sequence-diagrams-behavioral-flow-coordination" class="toc-link">2. Sequence Diagrams: Behavioral Flow & Coordination</a></li><li class="toc-item level-2"><a href="#3-state-machine-diagrams-entity-lifecycle-transitions" class="toc-link">3. State Machine Diagrams: Entity Lifecycle Transitions</a></li><li class="toc-item level-2"><a href="#4-the-5-minute-lld-interview-drawing-strategy" class="toc-link">4. The 5-Minute LLD Interview Drawing Strategy</a></li><li class="toc-item level-2"><a href="#5-from-diagram-to-code-what-each-arrow-means-in-python" class="toc-link">5. From Diagram to Code: What Each Arrow Means in Python</a></li><li class="toc-item level-3"><a href="#multiplicity-and-navigability" class="toc-link">Multiplicity and navigability</a></li><li class="toc-item level-3"><a href="#sequence-diagram-fragments-you-are-expected-to-know" class="toc-link">Sequence diagram fragments you are expected to know</a></li><li class="toc-item level-3"><a href="#five-mistakes-that-cost-marks" class="toc-link">Five mistakes that cost marks</a></li><li class="toc-item level-2"><a href="#further-reading" class="toc-link">Further Reading</a></li><li class="toc-item level-2"><a href="#check-yourself" class="toc-link">Check Yourself</a></li></ul>
     </aside>
   </div>
 

@@ -45,6 +45,7 @@ Every system you mastered in Track 2 solves a distinct engineering challenge:
 
 | System # | System Name | Primary Patterns | Concurrency & Thread-Safety | Key Invariant / Algorithmic Trick |
 | :---: | :--- | :--- | :--- | :--- |
+| **00** | **Modular Board Game Engine** | Strategy, State | Thread-safe Room Mutex | Pluggable bot heuristic & win condition strategies with turn rotation. |
 | **01** | **Distributed Job Scheduler** | Strategy, Command, Observer | ThreadPoolExecutor + PriorityQueue | Min-heap ordered by next execution timestamp ($O(\log N)$). |
 | **02** | **Library Management** | Observer, State, Factory | Re-entrant Lock (`threading.RLock`) | Multi-book checkout atomic reservations with due-date alerts. |
 | **03** | **Movie Booking System** | State Machine, Strategy, Factory | Fine-grained Seat Mutex Locks | 10-minute temporary seat hold with automatic timer expiry. |

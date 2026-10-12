@@ -1,7 +1,7 @@
 # Chapter 0: The Unified Python Mental Map & Intuitive Primer
 
-> **What you will be able to do:** Form an indestructible, intuitive mental model of Python execution, trace variable nametags to heap objects, pinpoint where variables live across function calls, calibrate your learning path across all 23 chapters, and assess your current baseline with a 15-question placement diagnostic.
-> **What you must already know:** Basic programming concepts (what variables, loops, and functions are in any language) and comfort running basic commands in a terminal.
+> **What you will be able to do:** Form an indestructible, intuitive mental model of Python execution, trace variable nametags to heap objects, pinpoint where variables live across function calls, calibrate your learning path across all chapters, and assess your baseline with a placement diagnostic.
+> **What you must already know:** Absolutely nothing! If you have never typed a terminal command or written a line of code, start with **[Chapter 00-A: Environment & Terminal Primer](00-A-Zero-Prerequisite-Terminal-Environment-And-Execution-Primer.md)** and **[Chapter 00-B: Programming 101 Primer](00-B-Zero-Prerequisite-Syntax-Control-Flow-And-Functions-Primer.md)**. If you already know syntax basics, dive straight into Chapter 00 below!
 
 ---
 
@@ -228,8 +228,13 @@ Here is your complete 4-phase, 23-chapter roadmap to Staff-level Python engineer
 
 ```mermaid
 flowchart TD
-    subgraph Phase1 ["Phase 1: Foundations & Memory Architecture (Ch 00-05)"]
-        M0["00: Mental Model & Visual Map"] --> M1["01: Foundations & Memory"]
+    subgraph Phase0 ["Phase 0: Ground-Floor On-Ramp (For Absolute Beginners)"]
+        M0A["00-A: Terminal, Shell & Setup"] --> M0B["00-B: Programming 101: Syntax & Loops"]
+        M0B --> M0["00: Mental Model & Visual Map"]
+    end
+
+    subgraph Phase1 ["Phase 1: Foundations & Memory Architecture (Ch 01-05)"]
+        M0 --> M1["01: Foundations & Memory"]
         M1 --> M2["02: Data Structures Under the Hood"]
         M2 --> M3["03: Closures, Scopes & Decorators"]
         M3 --> M4["04: OOP, Dunders & Metaclasses"]

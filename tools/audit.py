@@ -137,6 +137,7 @@ def main() -> None:
                          ROOT / "01-Python-Mastery/labs/03_memory_leak_debugger.py", ROOT / "01-Python-Mastery/labs/04_measure_memory_claims.py", ROOT / "01-Python-Mastery/labs/05_benchmarks.py"]),
         ("LLD lab", [ROOT / "02-Low-Level-Design/labs/01_concurrency_stress_test.py"]),
         ("HLD simulations", sorted((ROOT / "03-High-Level-Design/simulations").glob("*.py"))),
+        ("HLD labs", sorted((ROOT / "03-High-Level-Design/labs").glob("*.py"))),
         ("Agentic HNSW simulation", [ROOT / "04-Agentic-AI/simulations/pure_python_hnsw.py"]),
         ("DSA benchmarks", [ROOT / "05-DSA-Interview-Playbook/simulations/run_all_dsa_benchmarks.py"]),
     ]
