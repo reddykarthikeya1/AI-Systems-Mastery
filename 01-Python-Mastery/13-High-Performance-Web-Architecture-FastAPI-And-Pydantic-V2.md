@@ -667,21 +667,21 @@ flowchart TD
     end
 
     subgraph Storage_Engines ["Observability Storage Tier"]
-        PromDB["<b>Prometheus TSDB</b><br/>Pulls /metrics every 15s<br/>(Stores Float64 Time-Series)"]
-        LokiDB["<b>Grafana Loki</b><br/>Receives pushed log streams<br/>(Stores Compressed Log Chunks)"]
+        PromDB["Prometheus TSDB<br/>Pulls /metrics every 15s<br/>(Stores Float64 Time-Series)"]
+        LokiDB["Grafana Loki<br/>Receives pushed log streams<br/>(Stores Compressed Log Chunks)"]
     end
 
     subgraph Visualization ["Unified Operations Portal"]
-        GrafanaUI["<b>Grafana Dashboard</b><br/>Correlates PromQL graphs with LogQL logs"]
+        GrafanaUI["Grafana Dashboard<br/>Correlates PromQL graphs with LogQL logs"]
     end
 
     Req --> MW
     MW -->|Updates In-Memory State| PromMetrics
     MW -->|Writes Structured Event| StdoutStream
 
-    PromDB -. "Scrapes GET /metrics (Pull)" .-> PromMetrics
-    StdoutStream -. "Watched by Promtail" .-> PromtailAgent
-    PromtailAgent -- "HTTP POST /loki/api/v1/push" --> LokiDB
+    PromDB -.->|Scrapes GET /metrics Pull| PromMetrics
+    StdoutStream -.->|Watched by Promtail| PromtailAgent
+    PromtailAgent -->|HTTP POST /loki/api/v1/push| LokiDB
 
     PromDB -->|PromQL Queries| GrafanaUI
     LokiDB -->|LogQL Queries| GrafanaUI
@@ -894,12 +894,12 @@ sequenceDiagram
     participant Loki as Grafana Loki (Log Engine)
     participant SRE as On-Call Engineer
 
-    Prom->>Grafana: PromQL alert trips: "Checkout latency p95 > 1000ms"
+    Prom->>Grafana: PromQL alert trips: Checkout latency p95 exceeds 1000ms
     Grafana->>SRE: Dispatches alert notification with dashboard URL
-    SRE->>Grafana: Opens Grafana dashboard; sees red latency spike at 14:02 UTC
-    Note over Grafana,SRE: SRE clicks "Explore in Split View" on the latency spike
-    Grafana->>Loki: Auto-queries Loki using matching labels {app="order-service"} & timestamp
-    Loki-->>Grafana: Returns matching log lines: "Deadlock detected on account_id=402"
+    SRE->>Grafana: Opens Grafana dashboard, sees red latency spike at 14:02 UTC
+    Note over Grafana,SRE: SRE clicks Explore in Split View on the latency spike
+    Grafana->>Loki: Auto-queries Loki using matching labels app=order-service and timestamp
+    Loki-->>Grafana: Returns matching log lines: Deadlock detected on account_id=402
     Note over SRE: Root cause isolated in under 30 seconds!
 ```
 
@@ -1101,17 +1101,17 @@ sequenceDiagram
     API->>API: Writes structured JSON error to stdout
 
     Prom->>API: Periodic scrape (GET /metrics)
-    API-->>Prom: Returns http_requests_total{status_code="500"} = 142
-    Prom->>Prom: Alert rule evaluates: error_rate > 5% for 1m => FIRES ALERT!
+    API-->>Prom: Returns http_requests_total status_code 500 = 142
+    Prom->>Prom: Alert rule evaluates: error_rate exceeds 5 percent for 1m => FIRES ALERT!
 
     Shipper->>API: Tails Docker stdout log file
     Shipper->>Loki: POST /loki/api/v1/push (Snappy-compressed JSON log event)
     Loki->>Loki: Appends line to in-memory chunk ring
 
-    Prom-->>SRE: PagerDuty alert: "Checkout 5xx spike detected"
-    SRE->>SRE: Opens Grafana Incident Dashboard; sees 500 error spike at 14:02:15 UTC
-    SRE->>SRE: Clicks "Split View -> Query Loki Logs" for timestamp 14:02:15
-    Loki-->>SRE: Returns logs: {"error": "PoolTimeout: QueuePool limit of 20 overflow 10 reached"}
+    Prom-->>SRE: PagerDuty alert: Checkout 5xx spike detected
+    SRE->>SRE: Opens Grafana Incident Dashboard, sees 500 error spike at 14:02:15 UTC
+    SRE->>SRE: Clicks Split View to Query Loki Logs for timestamp 14:02:15
+    Loki-->>SRE: Returns logs: PoolTimeout QueuePool limit of 20 overflow 10 reached
     Note over SRE: Root cause identified in under 60 seconds without SSHing into any server!
 ```
 

@@ -158,6 +158,8 @@ const TRACKS = [
     title: "Track 1: Python Engineering Mastery",
     dir: "01-Python-Mastery",
     files: [
+      { name: "00-A-Zero-Prerequisite-Terminal-Environment-And-Execution-Primer.md", label: "00-A: Terminal, Environment & Execution Primer" },
+      { name: "00-B-Zero-Prerequisite-Syntax-Control-Flow-And-Functions-Primer.md", label: "00-B: Syntax, Control Flow & Functions Primer" },
       { name: "00-The-Python-Mental-Model-Visual-Map.md", label: "00: Mental Model & Visual Map" },
       { name: "01-Foundations-Syntax-Primitives.md", label: "01: Foundations & Memory Model" },
       { name: "02-Data-Structures-Under-The-Hood.md", label: "02: Data Structures Under the Hood" },
@@ -198,6 +200,7 @@ const TRACKS = [
       { name: "05-Curveball-Requirement-Evolution-Mastery.md", label: "05: Mid-Interview Curveball Drills" },
       { name: "06-Legacy-Code-Refactoring-To-Design-Patterns.md", label: "06: Legacy Spaghetti Refactoring" },
       { name: "07-Concurrency-Stress-Testing-And-Race-Condition-Labs.md", label: "07: Concurrency Stress-Testing Lab" },
+      { name: "systems/00-modular-tic-tac-toe-engine.md", label: "Sys 00: Modular Board Game Engine (Tic-Tac-Toe)" },
       { name: "systems/01-distributed-job-scheduler.md", label: "Sys 01: Distributed Job Scheduler" },
       { name: "systems/02-library-management-system.md", label: "Sys 02: Library Management System" },
       { name: "systems/03-movie-booking-system.md", label: "Sys 03: Movie Booking System" },
@@ -265,6 +268,7 @@ const TRACKS = [
     title: "Track 4: Agentic AI Engineering",
     dir: "04-Agentic-AI",
     files: [
+      { name: "00-A-Zero-Cost-Local-AI-Setup-And-Foundations.md", label: "00-A: Zero-Cost Local AI Setup & Foundations" },
       { name: "01-LLM-Foundations-Tokenization-Inference.md", label: "01: LLM Foundations & KV-Cache" },
       { name: "02-Prompt-Engineering-To-Tool-Calling.md", label: "02: Tool Calling & Structured Output" },
       { name: "03-RAG-And-Vectorless-RAG-Deep-Dive.md", label: "03: Advanced & Vectorless RAG" },
@@ -293,6 +297,7 @@ const TRACKS = [
     title: "Track 5: DSA Interview Playbook",
     dir: "05-DSA-Interview-Playbook",
     files: [
+      { name: "00-A-Zero-Prerequisite-CS-Foundations-And-Data-Structure-Construction.md", label: "00-A: CS Foundations & Data Structure Construction" },
       { name: "01-Interview-Tactics-Dry-Run-Communication.md", label: "01: 5-Step Interview Strategy" },
       { name: "02-Essential-Patterns-Cheat-Sheet.md", label: "02: 15 Master Pattern Templates" },
       { name: "03-The-Core-75-Mastery-Walkthroughs.md", label: "03: Core 75 Visual Dry-Runs" },
