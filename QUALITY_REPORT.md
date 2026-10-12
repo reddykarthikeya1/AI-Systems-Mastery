@@ -7,7 +7,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 | Track | Chapters | Case studies | Total words | Median chapter words | Check Yourself | References section | Python blocks passing | Fragments |
 |---|---|---|---|---|---|---|---|---|
-| 01-Python-Mastery | 25 | 0 | 65,502 | 2331 | 100% | 100% | 133/133 | 0 |
+| 01-Python-Mastery | 25 | 0 | 65,498 | 2331 | 100% | 100% | 133/133 | 0 |
 | 02-Low-Level-Design | 12 | 19 | 49,139 | 1356 | 100% | 100% | 95/95 | 4 |
 | 03-High-Level-Design | 13 | 20 | 44,316 | 1331 | 100% | 100% | 36/36 | 1 |
 | 04-Agentic-AI | 22 | 0 | 34,407 | 1584 | 100% | 100% | 44/44 | 2 |
@@ -30,7 +30,7 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 ## Portal (static checks)
 
-- HTML pages: 125; PDFs: 118
+- HTML pages: 130; PDFs: 118
 - Full-text search index present: True
 - KaTeX vendored (offline): True
 - Accessibility: axe-core WCAG 2.2 AA clean on sampled pages in light and dark (verified manually; not part of this script).
