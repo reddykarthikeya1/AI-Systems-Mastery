@@ -7,17 +7,18 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 
 | Track | Chapters | Case studies | Total words | Median chapter words | Check Yourself | References section | Python blocks passing | Fragments |
 |---|---|---|---|---|---|---|---|---|
-| 01-Python-Mastery | 23 | 0 | 60,400 | 2255 | 100% | 100% | 116/116 | 0 |
-| 02-Low-Level-Design | 12 | 18 | 46,851 | 1348 | 100% | 100% | 88/88 | 4 |
-| 03-High-Level-Design | 13 | 20 | 43,902 | 1280 | 100% | 100% | 36/36 | 1 |
-| 04-Agentic-AI | 21 | 0 | 32,576 | 1571 | 100% | 100% | 42/42 | 2 |
-| 05-DSA-Interview-Playbook | 9 | 0 | 38,339 | 1245 | 100% | 100% | 72/73 | 97 |
+| 01-Python-Mastery | 25 | 0 | 64,948 | 2255 | 100% | 100% | 132/132 | 0 |
+| 02-Low-Level-Design | 12 | 19 | 48,905 | 1356 | 100% | 100% | 95/95 | 4 |
+| 03-High-Level-Design | 13 | 20 | 44,143 | 1331 | 100% | 100% | 36/36 | 1 |
+| 04-Agentic-AI | 22 | 0 | 34,257 | 1584 | 100% | 100% | 44/44 | 2 |
+| 05-DSA-Interview-Playbook | 10 | 0 | 39,961 | 1270 | 100% | 100% | 75/75 | 97 |
 
 ## Executable assets
 
 - Python labs: 5/5 scripts run clean
 - LLD lab: 1/1 scripts run clean
 - HLD simulations: 4/4 scripts run clean
+- HLD labs: 3/3 scripts run clean
 - Agentic HNSW simulation: 1/1 scripts run clean
 - DSA benchmarks: 1/1 scripts run clean
 - DSA Core 75 (asserts + 70 brute-force cross-checks): Results: 75 PASSED, 0 FAILED out of 75 tests.
@@ -34,10 +35,6 @@ Bar used for 'gaps': median chapter >= 1200 words, 100% of chapters with *Check 
 - KaTeX vendored (offline): True
 - Accessibility: axe-core WCAG 2.2 AA clean on sampled pages in light and dark (verified manually; not part of this script).
 - Render check in headless Chrome (`tools/portal_check.py`, KaTeX, Mermaid, landmarks; sample of 12 pages here, run it without --sample for all): checked 12 pages, 0 failed
-
-## Code blocks that fail on a name defined nowhere in their file (real bugs, not fragments)
-
-- 05-DSA-Interview-Playbook/06-Whiteboard-And-Google-Doc-Coding-Discipline.md: undefined name n
 
 ## Remaining gaps against the bar
 

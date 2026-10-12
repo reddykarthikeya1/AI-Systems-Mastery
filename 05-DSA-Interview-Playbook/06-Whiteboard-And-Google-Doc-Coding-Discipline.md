@@ -39,6 +39,7 @@ In a Google Doc, the compiler will not warn you about these 10 classic traps. Me
 
 ### 1. The 2D Matrix Shallow Copy Trap
 ```python
+n, m = 3, 3
 # BUG: All rows reference the EXACT same list in memory!
 matrix = [[0] * n] * m 
 matrix[0][0] = 99 # Mutates index 0 of EVERY row!
