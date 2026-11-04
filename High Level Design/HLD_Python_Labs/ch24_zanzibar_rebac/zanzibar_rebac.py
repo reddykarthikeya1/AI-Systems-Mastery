@@ -1,5 +1,27 @@
 """Google Zanzibar: Relationship-Based Access Control (ReBAC) Graph Engine.
 
+Educational Simulator vs. Production Google Zanzibar Architecture:
+-------------------------------------------------------------------
+1. Educational Simulator (This Module):
+   - In-memory relationship tuple store (`(object, relation) -> Set[user/userset]`).
+   - Breadth-First Search (BFS) graph traversal with visited sets for cycle detection.
+   - Evaluates direct relations, userset rewrites (inheritance: owner -> editor -> viewer),
+     and subject-set group memberships in pure Python.
+   - Fail-closed security design: if the authorization service is unavailable, all checks fail closed.
+
+2. Production Google Zanzibar Architecture (Global Distributed System):
+   - Global Scale & TrueTime: Stores trillions of relation tuples and processes millions of
+     QPS globally across Google services (Drive, Cloud IAM, YouTube, Maps). Relies on
+     Google Cloud Spanner with TrueTime atomic/GPS synchronized clocks for externally consistent reads.
+   - Zookies (Consistency Tokens): Clients supply opaque snapshot tokens ("zookies") containing
+     a Spanner timestamp to ensure authorization checks reflect a snapshot at least as fresh
+     as the requested content version, completely preventing the "New Enemy" problem (stale ACL reads).
+   - Leopard Indexing System: Zanzibar precomputes and flattens transitive group reachability
+     into an offline indexing layer called Leopard. Reachability checks evaluate in sub-millisecond
+     time via set-intersection operations rather than live graph traversals.
+   - Distributed Call Graphs & Caching: Traversal trees are executed across thousands of RPC
+     workers with deduplicated sub-problem evaluation and multi-level distributed caches.
+
 Foundational Principles:
 ------------------------
 1. Relation Tuples:
@@ -75,6 +97,7 @@ class ZanzibarEngine:
         # (object_str, relation) -> list of users/usersets
         self.tuples: Dict[Tuple[str, str], Set[str]] = {}
         self.namespace_configs: Dict[str, NamespaceConfig] = {}
+        self.is_available: bool = True
         self._setup_default_configs()
 
     def _setup_default_configs(self) -> None:
@@ -114,7 +137,11 @@ class ZanzibarEngine:
         """Evaluates whether `user` holds `relation` on `object_str`.
 
         Utilizes BFS traversal over the relation graph with cycle detection.
+        Fails closed with RuntimeError if the ReBAC service is marked unavailable.
         """
+        if not self.is_available:
+            raise RuntimeError("Zanzibar authorization service unavailable")
+
         # Ensure user format has prefix, e.g. "user:alice"
         target_user = user if ":" in user else f"user:{user}"
 

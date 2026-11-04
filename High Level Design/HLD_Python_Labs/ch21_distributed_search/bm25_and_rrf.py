@@ -6,18 +6,26 @@ Mathematical Formulation:
    For query Q with terms {q_1, q_2, ... q_n} and document D:
        BM25(D, Q) = sum_{q_i in Q} IDF(q_i) * [ f(q_i, D) * (k1 + 1) ] / [ f(q_i, D) + k1 * (1 - b + b * (|D| / avgdl)) ]
    where:
-       IDF(q_i) = ln( (N - n(q_i) + 0.5) / (n(q_i) + 0.5) + 1 )
        f(q_i, D) = term frequency of q_i in document D
        |D| = document length (number of tokens in D)
        avgdl = average document length across all documents in corpus
        k1 = term saturation parameter (default 1.5)
        b = length normalization parameter (default 0.75)
 
+   Robertson Smoothed IDF Variant:
+       IDF(q_i) = ln( 1.0 + (N - n(q_i) + 0.5) / (n(q_i) + 0.5) )
+   * Architectural Note on IDF Smoothing:
+     Classic Robertson IDF ln((N - n + 0.5) / (n + 0.5)) becomes negative when a term
+     appears in more than half of corpus documents (n > N/2). Negative IDF wrongfully
+     penalizes documents containing frequent query terms. Modern search engines
+     (Lucene, Elasticsearch, Vespa) add +1.0 inside the logarithm, guaranteeing non-negative
+     IDF for all term distributions.
+
 2. Dense Vector Cosine Similarity:
    Cosine(u, v) = (u . v) / ( ||u||_2 * ||v||_2 )
 
 3. Reciprocal Rank Fusion (RRF) (Cormack, Clarke, Buettcher):
-   Combines disparate ranked result sets without score calibration:
+   Combines disparate ranked result sets without cross-modal score calibration:
        RRF_Score(d) = sum_{m in Models} [ 1.0 / (k + rank_m(d)) ]
    where k is a constant penalty parameter (default k = 60), rank_m(d) is 1-based rank.
 """
@@ -56,9 +64,14 @@ def cosine_similarity(v1: Sequence[float], v2: Sequence[float]) -> float:
 
 
 class BM25Index:
-    """Production Inverted Index implementing Okapi BM25."""
+    """Production Inverted Index implementing Okapi BM25 with Robertson Smoothed IDF."""
 
     def __init__(self, k1: float = 1.5, b: float = 0.75) -> None:
+        if k1 < 0.0:
+            raise ValueError(f"k1 must be >= 0.0, got {k1}")
+        if not (0.0 <= b <= 1.0):
+            raise ValueError(f"b must be between 0.0 and 1.0, got {b}")
+
         self.k1 = k1
         self.b = b
         self.doc_lengths: Dict[str, int] = {}
@@ -77,8 +90,37 @@ class BM25Index:
             return 0.0
         return self.total_tokens / float(len(self.doc_lengths))
 
+    def remove_document(self, doc_id: str) -> bool:
+        """Removes a document, updates total tokens, and cleans up inverted index postings."""
+        if doc_id not in self.doc_lengths:
+            return False
+
+        old_len = self.doc_lengths.pop(doc_id)
+        self.total_tokens -= old_len
+        self.doc_contents.pop(doc_id, None)
+
+        terms_to_delete = []
+        for term, postings in self.inverted_index.items():
+            if doc_id in postings:
+                del postings[doc_id]
+                if not postings:
+                    terms_to_delete.append(term)
+
+        for term in terms_to_delete:
+            del self.inverted_index[term]
+
+        return True
+
     def add_document(self, doc_id: str, content: str) -> None:
-        """Indexes a document into inverted index."""
+        """Indexes or re-indexes a document into inverted index.
+
+        CRITICAL BUG FIX:
+        If doc_id already exists in the index, we atomically purge its previous postings
+        and document length contribution before indexing the new content.
+        """
+        if doc_id in self.doc_lengths:
+            self.remove_document(doc_id)
+
         tokens = tokenize(content)
         doc_len = len(tokens)
         self.doc_lengths[doc_id] = doc_len
@@ -90,12 +132,15 @@ class BM25Index:
             self.inverted_index[term][doc_id] = count
 
     def _idf(self, term: str) -> float:
-        """Compute Lucene/Robertson IDF:
+        """Compute Robertson Smoothed IDF:
 
-        ln( (N - n + 0.5) / (n + 0.5) + 1 )
+        ln( 1.0 + (N - n + 0.5) / (n + 0.5) )
+        Guarantees non-negative IDF even when term appears in > 50% of documents.
         """
         n = len(self.inverted_index.get(term, {}))
         total_docs = self.total_docs
+        if total_docs == 0:
+            return 0.0
         return math.log(((total_docs - n + 0.5) / (n + 0.5)) + 1.0)
 
     def search(self, query: str, top_k: int = 10) -> List[SearchResult]:
@@ -142,6 +187,13 @@ class DenseVectorIndex:
         self.doc_vectors[doc_id] = list(vector)
         if content:
             self.doc_contents[doc_id] = content
+
+    def remove_document(self, doc_id: str) -> bool:
+        if doc_id in self.doc_vectors:
+            del self.doc_vectors[doc_id]
+            self.doc_contents.pop(doc_id, None)
+            return True
+        return False
 
     def search(self, query_vector: List[float], top_k: int = 10) -> List[SearchResult]:
         """Search nearest documents by cosine similarity."""
@@ -205,6 +257,10 @@ class HybridSearchEngine:
     def add_document(self, doc_id: str, content: str, embedding: List[float]) -> None:
         self.bm25.add_document(doc_id, content)
         self.vector_index.add_document(doc_id, embedding, content=content)
+
+    def remove_document(self, doc_id: str) -> None:
+        self.bm25.remove_document(doc_id)
+        self.vector_index.remove_document(doc_id)
 
     def search_hybrid(
         self,

@@ -133,3 +133,125 @@ def test_expired_reservation_reconciliation_daemon():
     assert restored_late == 3
     # Stock restored to 10
     assert svc.get_stock("item_watch") == 10
+
+
+def test_idempotency_parameter_mismatch_rejected():
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_laptop", 10)
+
+    # Initial reservation: qty=2, user=user_1
+    res1 = svc.reserve("item_laptop", "user_1", quantity=2, idempotency_key="idemp_fixed_key")
+    assert res1.success is True
+
+    # Re-use same key with mismatched quantity (requested 5 instead of 2)
+    res_mismatch_qty = svc.reserve("item_laptop", "user_1", quantity=5, idempotency_key="idemp_fixed_key")
+    assert res_mismatch_qty.success is False
+    assert res_mismatch_qty.status == "ERROR"
+    assert "parameter mismatch" in (res_mismatch_qty.message or "").lower()
+
+    # Re-use same key with mismatched user (user_2 instead of user_1)
+    res_mismatch_user = svc.reserve("item_laptop", "user_2", quantity=2, idempotency_key="idemp_fixed_key")
+    assert res_mismatch_user.success is False
+    assert res_mismatch_user.status == "ERROR"
+    assert "parameter mismatch" in (res_mismatch_user.message or "").lower()
+
+    # Stock must remain 8 (deducted only once)
+    assert svc.get_stock("item_laptop") == 8
+
+
+def test_duplicate_confirmation_rejected():
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_speaker", 5)
+
+    res = svc.reserve("item_speaker", "user_dup", quantity=1, idempotency_key="pay_dup_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+
+    # 1st confirm -> Success
+    c1 = svc.confirm("item_speaker", res_id)
+    assert c1.success is True
+    assert c1.status == "CONFIRMED"
+
+    # 2nd confirm on already CONFIRMED reservation -> Rejected
+    c2 = svc.confirm("item_speaker", res_id)
+    assert c2.success is False
+    assert c2.status == "INVALID_STATE"
+
+
+def test_duplicate_release_rejected():
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_headphone", 5)
+
+    res = svc.reserve("item_headphone", "user_rel", quantity=2, idempotency_key="rel_dup_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_headphone") == 3
+
+    # 1st release -> Success, restores stock
+    r1 = svc.release("item_headphone", res_id)
+    assert r1.success is True
+    assert svc.get_stock("item_headphone") == 5
+
+    # 2nd release on already RELEASED reservation -> Rejected, stock not incremented again!
+    r2 = svc.release("item_headphone", res_id)
+    assert r2.success is False
+    assert r2.status == "INVALID_STATE"
+    assert svc.get_stock("item_headphone") == 5
+
+
+def test_race_between_confirm_and_expire():
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_limited", 5)
+
+    base_time = 2000.0
+    res = svc.reserve(
+        "item_limited",
+        "user_slow",
+        quantity=2,
+        idempotency_key="race_key_1",
+        ttl_seconds=30.0,
+        now=base_time,
+    )
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_limited") == 3
+
+    # Background reconciliation worker runs at base_time + 40 (reservation has expired)
+    restored = svc.reconcile_expired_reservations("item_limited", now=base_time + 40.0)
+    assert restored == 2
+    assert svc.get_stock("item_limited") == 5
+
+    # User attempts to confirm AFTER expiration reconciliation has processed
+    confirm_late = svc.confirm("item_limited", res_id, now=base_time + 41.0)
+    assert confirm_late.success is False
+    assert confirm_late.status == "INVALID_STATE"
+    # PostgreSQL ledger must not have recorded this late order
+    assert res_id not in pg.orders
+    assert svc.get_stock("item_limited") == 5
+
+
+def test_postgres_reconciliation_failure_rejects_confirmation():
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_authoritative", 10)
+
+    res = svc.reserve("item_authoritative", "user_pg_fail", quantity=4, idempotency_key="pg_fail_1")
+    res_id = res.record.reservation_id
+
+    # Simulate an authoritative discrepancy: Postgres ledger stock was reduced externally
+    # (e.g. warehouse physical damage or failover data loss)
+    pg.inventory["item_authoritative"] = 2  # Less than reservation quantity of 4!
+
+    confirm_res = svc.confirm("item_authoritative", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "RECONCILIATION_FAILED"
+    assert "PostgreSQL authoritative ledger" in confirm_res.message
+    # Redis reservation status is rolled back / released
+    assert confirm_res.record.status == ReservationState.RELEASED
+    # Redis stock is restored
+    assert svc.get_stock("item_authoritative") == 10
+

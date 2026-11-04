@@ -1,26 +1,46 @@
 """Memory-Efficient KV-Cache Block Manager Simulating vLLM PagedAttention & Radix Tree Routing.
 
-Core Innovations:
------------------
-1. PagedAttention Memory Management:
+Architectural Guarantees & Educational Context:
+----------------------------------------------
+1. Educational Simulator vs. Production vLLM C++ / CUDA Architecture:
+   - Logical Simulation (This Module):
+     Models the virtual memory abstractions of LLM serving: logical-to-physical block mapping,
+     dynamic page allocation, reference counting, Copy-on-Write (CoW) parallel sampling,
+     watermark-based LRU cache eviction, and sequence preemption in pure Python.
+   - Production vLLM (Custom CUDA Kernels + C++ Engine):
+     * Non-Contiguous Attention Kernels: Production vLLM uses custom CUDA / Triton kernels where
+       the attention operator (Q * K^T * V) fetches non-contiguous KV-cache pages directly from
+       GPU High Bandwidth Memory (HBM) using physical memory address lookup tables inside the warp.
+       No contiguous KV concatenation is performed.
+     * Zero-GIL C++ Execution: Production schedulers and block managers run in C++ with nanobind/pybind11
+       bindings, avoiding Python GIL stalls during sub-millisecond per-token decoding iterations.
+     * Hierarchical Memory Tiers: Production vLLM manages physical allocations across GPU VRAM (HBM),
+       host CPU pinned memory (swap space via unified memory / PCIe DMA transfers), and NVMe disk offload.
+     * Tensor Parallelism: In distributed inference (TP > 1), KV blocks are sharded across multiple GPUs,
+       requiring lockstep block tables across distributed worker ranks.
+
+2. PagedAttention Memory Virtualization:
    Standard transformer attention requires contiguous GPU memory allocations for the KV cache.
    Because generation lengths are unpredictable, systems pre-allocate maximum sequence lengths
    (e.g., 4096 tokens), wasting 60-80% of GPU memory to external and internal fragmentation.
    PagedAttention segments KV cache into fixed-size physical blocks (e.g. 16 tokens/block),
    mapped dynamically via a page table like virtual memory in operating systems.
 
-2. Copy-on-Write (CoW) Parallel Sampling:
+3. Copy-on-Write (CoW) Parallel Sampling (n > 1):
    When generating multiple completions for the same prompt (beam search or parallel sampling n > 1),
    child sequences share the prompt's physical blocks with incremented reference counts.
    A new physical block is only allocated when a branch diverges and appends its own tokens.
 
-3. Watermark-based Eviction & LRU Prefix Caching:
-   Maintains a high/low watermark buffer of free blocks. Least-recently-used completed prefix
-   blocks are recycled when memory pressure exceeds thresholds.
+4. Partial Final Block Handling:
+   Sequences whose prompt lengths are not exact multiples of block_size allocate a partially filled
+   physical block. Newly generated tokens append to this partial block until it reaches capacity.
+   Only completed (full) blocks are retained in the reusable prefix cache.
 
-4. Prefix-Aware Radix Tree Routing:
-   Global router maps incoming prompt tokens through a Radix tree (trie) to find the worker node
-   holding the longest common cached prefix, maximizing KV-cache reuse.
+5. Watermark-based Eviction, Preemption & Double-Free Protection:
+   - High/Low watermark buffers trigger proactive LRU eviction of completed, unreferenced prefix blocks.
+   - Sequence preemption reclaims active blocks under memory exhaustion without corrupting state.
+   - Releasing an already-freed block (ref_count <= 0) raises a ValueError double-free error,
+     preventing duplicate entries in the free block pool.
 """
 
 from __future__ import annotations
@@ -44,6 +64,7 @@ class SequenceContext:
     tokens: List[int]
     # Maps logical_block_idx -> physical_block_id
     block_table: List[int] = field(default_factory=list)
+    is_preempted: bool = False
 
 
 class BlockManager:
@@ -64,7 +85,7 @@ class BlockManager:
             i: PhysicalBlock(block_id=i) for i in range(num_blocks)
         }
         self.free_block_ids: List[int] = list(range(num_blocks))
-        # Cached reusable prefix blocks with ref_count == 0
+        # Cached reusable full prefix blocks with ref_count == 0
         self.cached_prefix_blocks: Dict[Tuple[int, ...], int] = {}
         # Sequences: seq_id -> SequenceContext
         self.sequences: Dict[str, SequenceContext] = {}
@@ -85,13 +106,16 @@ class BlockManager:
         _, evicted_id, prefix = candidates[0]
         del self.cached_prefix_blocks[prefix]
         self.blocks[evicted_id].token_ids.clear()
-        self.free_block_ids.append(evicted_id)
+        if evicted_id not in self.free_block_ids:
+            self.free_block_ids.append(evicted_id)
         return evicted_id
 
     def allocate_block(self) -> int:
-        """Allocates a free physical block, evicting cold cached blocks if below watermark."""
-        if len(self.free_block_ids) <= self.watermark_blocks:
-            self._evict_lru_cached_block()
+        """Allocates a free physical block, evicting cold cached blocks if at or below watermark."""
+        while len(self.free_block_ids) <= self.watermark_blocks:
+            evicted = self._evict_lru_cached_block()
+            if evicted is None:
+                break
 
         if not self.free_block_ids:
             raise MemoryError("Out of physical KV-cache blocks (GPU OOM)")
@@ -104,15 +128,23 @@ class BlockManager:
         return block_id
 
     def free_block(self, block_id: int) -> None:
-        """Decrements reference count; recycles when ref_count reaches 0."""
+        """Decrements reference count; recycles when ref_count reaches 0 with double-free protection."""
+        if block_id not in self.blocks:
+            raise KeyError(f"Invalid block_id {block_id}")
+
         block = self.blocks[block_id]
-        block.ref_count = max(0, block.ref_count - 1)
+        if block.ref_count <= 0:
+            raise ValueError(f"Double-free detected for block {block_id}: ref_count is already {block.ref_count}")
+
+        block.ref_count -= 1
         if block.ref_count == 0:
-            if block.token_ids:
-                # Retain in prefix cache for potential prompt reuse
+            # Only cache completely full blocks for prefix sharing
+            if len(block.token_ids) == self.block_size:
                 self.cached_prefix_blocks[tuple(block.token_ids)] = block_id
             else:
-                self.free_block_ids.append(block_id)
+                block.token_ids.clear()
+                if block_id not in self.free_block_ids:
+                    self.free_block_ids.append(block_id)
 
     def register_sequence(self, seq_id: str, prompt_tokens: List[int]) -> SequenceContext:
         """Allocates and maps blocks for an incoming prompt sequence."""
@@ -124,8 +156,8 @@ class BlockManager:
             chunk = prompt_tokens[i : i + self.block_size]
             chunk_tuple = tuple(chunk)
 
-            # Check if identical prefix chunk is already cached
-            if chunk_tuple in self.cached_prefix_blocks:
+            # Check if identical prefix chunk is already cached (full blocks only)
+            if len(chunk) == self.block_size and chunk_tuple in self.cached_prefix_blocks:
                 p_block_id = self.cached_prefix_blocks[chunk_tuple]
                 p_block = self.blocks[p_block_id]
                 p_block.ref_count += 1
@@ -152,7 +184,7 @@ class BlockManager:
         last_block = self.blocks[last_block_id]
 
         if len(last_block.token_ids) < self.block_size:
-            # Block has available capacity in this page
+            # Partial block has available capacity
             if last_block.ref_count > 1:
                 # Copy-on-Write: block is shared with other branches
                 new_block_id = self.allocate_block()
@@ -163,6 +195,7 @@ class BlockManager:
                 self.free_block(last_block_id)
                 seq.block_table[-1] = new_block_id
             else:
+                # Exclusive ownership of partial block: append in-place
                 last_block.token_ids.append(token_id)
                 last_block.last_accessed = time.monotonic()
         else:
@@ -188,12 +221,30 @@ class BlockManager:
         self.sequences[child_seq_id] = child
         return child
 
+    def preempt_sequence(self, seq_id: str) -> List[int]:
+        """Preempts an active sequence under memory exhaustion, reclaiming its blocks.
+        
+        Clears the sequence's block table and marks it as preempted.
+        Returns the list of freed block IDs.
+        """
+        seq = self.sequences.get(seq_id)
+        if not seq:
+            raise KeyError(f"Sequence '{seq_id}' not found")
+
+        freed_blocks = list(seq.block_table)
+        for block_id in seq.block_table:
+            self.free_block(block_id)
+        seq.block_table.clear()
+        seq.is_preempted = True
+        return freed_blocks
+
     def free_sequence(self, seq_id: str) -> None:
         """Frees all resources associated with a finished sequence."""
         seq = self.sequences.pop(seq_id, None)
         if seq:
             for block_id in seq.block_table:
                 self.free_block(block_id)
+
 
 
 class RadixTreeNode:

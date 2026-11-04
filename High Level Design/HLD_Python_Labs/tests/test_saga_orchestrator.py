@@ -1,4 +1,5 @@
 """Tests for Distributed Saga Orchestrator Pattern (Chapter 18)."""
+import asyncio
 import pytest
 from ch18_saga_orchestrator.saga_orchestrator import (
     SagaOrchestrator,
@@ -87,3 +88,64 @@ def test_saga_step_retry_before_abort():
     assert result.status == SagaStatus.COMPLETED
     assert attempts == 3
     assert result.step_results["FlakyStep"] == "success_on_attempt_3"
+
+
+def test_saga_compensation_retry():
+    """Verify that a transient error during compensation is retried and succeeds."""
+    orchestrator = SagaOrchestrator(name="CompRetrySaga")
+    comp_attempts = 0
+
+    def step1_forward(ctx):
+        return "step1_ok"
+
+    def flaky_compensation(ctx):
+        nonlocal comp_attempts
+        comp_attempts += 1
+        if comp_attempts < 2:
+            raise ConnectionError("Payment gateway busy during refund")
+        return "refund_ok"
+
+    def step2_failing(ctx):
+        raise RuntimeError("Fraud check failed")
+
+    orchestrator.add_step(
+        SagaStep(
+            "PaymentStep",
+            step1_forward,
+            flaky_compensation,
+            compensation_retries=2,
+            retry_delay_seconds=0.01,
+        )
+    )
+    orchestrator.add_step(SagaStep("FraudStep", step2_failing))
+
+    result = orchestrator.execute(initial_payload={})
+    assert result.status == SagaStatus.COMPENSATED
+    assert comp_attempts == 2
+
+
+@pytest.mark.asyncio
+async def test_async_saga_execution():
+    """Verify asynchronous execution and non-blocking asyncio.sleep."""
+    orchestrator = SagaOrchestrator(name="AsyncSaga")
+    timeline = []
+
+    async def async_step1(ctx):
+        await asyncio.sleep(0.01)
+        timeline.append("async_step1")
+        return {"account": "A1"}
+
+    async def async_comp1(ctx):
+        await asyncio.sleep(0.01)
+        timeline.append("async_comp1")
+
+    async def async_step2(ctx):
+        await asyncio.sleep(0.01)
+        raise RuntimeError("Service offline")
+
+    orchestrator.add_step(SagaStep("Step1", async_step1, async_comp1))
+    orchestrator.add_step(SagaStep("Step2", async_step2))
+
+    result = await orchestrator.execute_async(initial_payload={})
+    assert result.status == SagaStatus.COMPENSATED
+    assert timeline == ["async_step1", "async_comp1"]

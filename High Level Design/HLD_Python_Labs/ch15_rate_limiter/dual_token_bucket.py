@@ -15,6 +15,17 @@ Both buckets MUST be checked and decremented atomically.
 If either RPM or TPM is exhausted:
   - ZERO tokens are deducted (all-or-nothing rollback).
   - The request is rejected with `retry_after_seconds`.
+
+CRITICAL ARCHITECTURAL DISTINCTION:
+------------------------------------
+RPM and TPM quotas enforced by this dual-token bucket are APPLICATION-LEVEL TENANCY QUOTAS
+(typically deployed at API Gateways like Kong, Envoy, Cloudflare, or FastAPI middleware).
+They do NOT represent or guarantee real-time GPU hardware capacity or VRAM safety!
+Actual GPU serving protection requires:
+1. PagedAttention and physical KV-cache memory allocation (preventing Out-Of-Memory CUDA aborts).
+2. Continuous iteration-level batching (e.g., vLLM, TensorRT-LLM, TGI).
+3. Preemption, recompute, and swap-to-host memory managers.
+4. Concurrency limiters monitoring actual active GPU context slots.
 """
 
 from __future__ import annotations
@@ -24,20 +35,29 @@ import time
 from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
+# Production Redis Lua Script with Server-Side TIME
 LUA_DUAL_TOKEN_BUCKET = """
 -- KEYS[1]: Redis hash key for the client bucket
--- ARGV[1]: Current timestamp (floating point seconds)
+-- ARGV[1]: Fallback timestamp (if TIME unsupported)
 -- ARGV[2]: Max RPM (capacity)
 -- ARGV[3]: Max TPM (capacity)
 -- ARGV[4]: Requested RPM cost (usually 1)
 -- ARGV[5]: Requested TPM cost (e.g., prompt + max completion tokens)
 
 local key = KEYS[1]
-local now = tonumber(ARGV[1])
 local max_rpm = tonumber(ARGV[2])
 local max_tpm = tonumber(ARGV[3])
 local cost_rpm = tonumber(ARGV[4])
 local cost_tpm = tonumber(ARGV[5])
+
+-- Determine time strictly from Redis server to eliminate client clock-skew exploits
+local now
+local ok, time_res = pcall(redis.call, 'TIME')
+if ok and time_res then
+    now = tonumber(time_res[1]) + (tonumber(time_res[2]) / 1000000.0)
+else
+    now = tonumber(ARGV[1])
+end
 
 -- Refill rates per second
 local rpm_refill_rate = max_rpm / 60.0
@@ -59,6 +79,13 @@ else
     last_updated = now
 end
 
+-- Permanent capacity check: request exceeds total bucket maximum
+if (cost_rpm > max_rpm) or (cost_tpm > max_tpm) then
+    redis.call('HMSET', key, 'rpm_tokens', rpm_tokens, 'tpm_tokens', tpm_tokens, 'last_updated', last_updated)
+    redis.call('EXPIRE', key, 120)
+    return {0, rpm_tokens, tpm_tokens, -1} -- -1 sentinel indicates impossible capacity
+end
+
 -- Atomic check: Both must be sufficient
 if (rpm_tokens >= cost_rpm) and (tpm_tokens >= cost_tpm) then
     rpm_tokens = rpm_tokens - cost_rpm
@@ -70,8 +97,8 @@ else
     -- Compute retry_after based on whichever bucket is deficient
     local rpm_deficit = math.max(0, cost_rpm - rpm_tokens)
     local tpm_deficit = math.max(0, cost_tpm - tpm_tokens)
-    local wait_rpm = rpm_deficit / rpm_refill_rate
-    local wait_tpm = tpm_deficit / tpm_refill_rate
+    local wait_rpm = (rpm_deficit > 0) and (rpm_deficit / rpm_refill_rate) or 0
+    local wait_tpm = (tpm_deficit > 0) and (tpm_deficit / tpm_refill_rate) or 0
     local retry_after = math.max(wait_rpm, wait_tpm)
     
     -- Save refilled tokens even on rejection
@@ -100,6 +127,11 @@ class DualTokenBucketLimiter:
         max_tpm: float = 10_000.0,
         redis_client: Any = None,
     ) -> None:
+        if max_rpm <= 0:
+            raise ValueError("max_rpm must be > 0")
+        if max_tpm <= 0:
+            raise ValueError("max_tpm must be > 0")
+
         self.max_rpm = float(max_rpm)
         self.max_tpm = float(max_tpm)
         self.redis = redis_client
@@ -129,6 +161,9 @@ class DualTokenBucketLimiter:
         if now is None:
             now = time.monotonic()
 
+        cost_rpm = 1.0
+        cost_tpm = float(tokens_requested)
+
         if self.redis is not None:
             key = f"rate_limit:{client_id}"
             res = self.redis.eval(
@@ -138,14 +173,17 @@ class DualTokenBucketLimiter:
                 now,
                 self.max_rpm,
                 self.max_tpm,
-                1,
-                tokens_requested,
+                cost_rpm,
+                cost_tpm,
             )
             allowed = bool(res[0] == 1)
             rem_rpm = float(res[1])
             rem_tpm = float(res[2])
-            retry_after = float(res[3])
-            reason = None if allowed else ("RPM Exceeded" if rem_rpm < 1 else "TPM Exceeded")
+            raw_retry = float(res[3])
+            retry_after = float("inf") if raw_retry < 0 else raw_retry
+            reason = None
+            if not allowed:
+                reason = "RPM Exceeded" if (cost_rpm > self.max_rpm or rem_rpm < cost_rpm) else "TPM Exceeded"
             return RateLimitResult(
                 allowed=allowed,
                 remaining_rpm=rem_rpm,
@@ -165,11 +203,20 @@ class DualTokenBucketLimiter:
                 rpm_tokens, tpm_tokens = self._refill(rpm_tokens, tpm_tokens, elapsed)
                 last_updated = now
 
-            cost_rpm = 1.0
-            cost_tpm = float(tokens_requested)
-
             rpm_refill_rate = self.max_rpm / 60.0
             tpm_refill_rate = self.max_tpm / 60.0
+
+            # Check if requested cost exceeds bucket's maximum capacity permanently
+            if cost_rpm > self.max_rpm or cost_tpm > self.max_tpm:
+                self._buckets[client_id] = (rpm_tokens, tpm_tokens, last_updated)
+                reason = "RPM Exceeded" if cost_rpm > self.max_rpm else "TPM Exceeded"
+                return RateLimitResult(
+                    allowed=False,
+                    remaining_rpm=rpm_tokens,
+                    remaining_tpm=tpm_tokens,
+                    retry_after_seconds=float("inf"),
+                    reason=reason,
+                )
 
             if rpm_tokens >= cost_rpm and tpm_tokens >= cost_tpm:
                 rpm_tokens -= cost_rpm

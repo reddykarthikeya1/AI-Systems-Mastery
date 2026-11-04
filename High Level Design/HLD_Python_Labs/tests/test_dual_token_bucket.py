@@ -44,6 +44,8 @@ def test_tpm_exhaustion_atomic_rollback():
     # Since TPM failed, RPM tokens must NOT be deducted!
     assert res.remaining_rpm == 10.0
     assert res.remaining_tpm == 100.0
+    # Over-capacity request permanently exceeds bucket capacity
+    assert res.retry_after_seconds == float("inf")
 
 
 def test_refill_over_time():
@@ -65,7 +67,45 @@ def test_refill_over_time():
     assert res_refilled.remaining_rpm >= 28.0
 
 
+def test_refill_boundaries_and_cap():
+    """Verify that tokens cannot accumulate beyond the configured max capacity."""
+    limiter = DualTokenBucketLimiter(max_rpm=60.0, max_tpm=1000.0)
+    now = 1000.0
+
+    # Consume 100 tokens
+    limiter.acquire("client_cap", tokens_requested=100, now=now)
+
+    # Fast forward by 10 hours
+    now_way_later = now + 36000.0
+    res = limiter.acquire("client_cap", tokens_requested=10, now=now_way_later)
+    assert res.allowed is True
+    # Tokens refilled to max capacity minus cost
+    assert res.remaining_rpm == pytest.approx(59.0)
+    assert res.remaining_tpm == pytest.approx(990.0)
+
+
+def test_clock_skew_tolerance():
+    """Verify that client clock drifting backwards does not cause errors or negative refill."""
+    limiter = DualTokenBucketLimiter(max_rpm=60.0, max_tpm=1000.0)
+    now = 2000.0
+
+    res1 = limiter.acquire("client_skew", tokens_requested=100, now=now)
+    assert res1.allowed is True
+
+    # Clock skews backwards by 50 seconds
+    res2 = limiter.acquire("client_skew", tokens_requested=100, now=now - 50.0)
+    assert res2.allowed is True
+    # Decremented safely from previous state without negative elapsed glitch
+    assert res2.remaining_rpm == pytest.approx(58.0)
+    assert res2.remaining_tpm == pytest.approx(800.0)
+
+
 def test_invalid_parameters():
+    with pytest.raises(ValueError):
+        DualTokenBucketLimiter(max_rpm=-1.0)
+    with pytest.raises(ValueError):
+        DualTokenBucketLimiter(max_tpm=0.0)
+
     limiter = DualTokenBucketLimiter()
     with pytest.raises(ValueError):
         limiter.acquire("client_X", tokens_requested=0)

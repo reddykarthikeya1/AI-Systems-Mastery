@@ -1,25 +1,45 @@
 """Enterprise RAG and Agentic Workflow Orchestration Engine.
 
-Integrated Architecture:
-------------------------
+Integrated Architecture & Architectural Guarantees:
+----------------------------------------------------
 1. Hybrid Information Retrieval:
    Combines Okapi BM25 inverted lexical indexing with dense vector cosine similarity
    fused through Reciprocal Rank Fusion (RRF, k=60) to eliminate score calibration bias.
 
-2. Authoritative Zanzibar ReBAC Policy Enforcement:
+2. Authoritative Fail-Closed Zanzibar ReBAC Authorization:
    CRITICAL SECURITY INVARIANT: Unfiltered semantic retrieval is a major vector for
    tenant data exfiltration. Retrieved chunks MUST be strictly authorized against
    Zanzibar relationship tuples before entering the LLM prompt context window.
-   If user X lacks 'viewer' on document Y, chunk is eliminated before LLM sees it.
+   - If user X lacks 'viewer' on document Y, chunk is eliminated before the LLM sees it.
+   - Fail-Closed Policy: If the ReBAC authorization service is offline, unreachable, or
+     throws an exception, access is strictly denied. Never include unauthorized chunks
+     in the LLM context!
 
-3. Transactional Outbox for Agent Actions & Tool Side Effects:
-   Any downstream state change or external tool invocation triggered by the agent
-   is committed atomically with an outbox event, guaranteeing reliable messaging
-   without dual-write inconsistencies.
+3. Educational Zanzibar Simulator vs. Production Google Zanzibar Architecture:
+   - Educational Simulator (This Engine):
+     Models the fundamental ReBAC relational tuple graph (`(object, relation) -> user/userset`),
+     userset rewrites (owner -> editor -> viewer), and cyclic group traversals via in-memory BFS.
+   - Production Google Zanzibar (Global Infrastructure):
+     * Globally Distributed Spanner: Operates across global datacenters with TrueTime atomic clocks.
+     * Snapshot Consistency Tokens ("Zookies"): Eliminates the "New Enemy" problem by enforcing
+       bounded staleness snapshots across distributed document edits and ACL updates.
+     * Leopard Reachability Index: Precomputes and flattens transitive group reachability into an offline
+       index for sub-millisecond set-intersection evaluation, replacing live graph traversals.
+     * Distributed Call DAGs & Hedged Requests: Traversal requests are sharded, deduplicated, and cached.
+
+4. Transactional Outbox Pattern for Agent Actions & Tool Side Effects:
+   CRITICAL ARCHITECTURAL GUARANTEE: The agent must commit tool execution intent to the transactional
+   outbox BEFORE invoking external side effects to eliminate dual-write vulnerabilities.
+   Sequence:
+   (1) Record Intent in DB Outbox: Atomically commit the pending action and idempotency token.
+   (2) Worker Dispatches Tool: Dispatch external tool request carrying the idempotency token.
+   (3) External Confirmation: Await verified response from external service.
+   (4) Record Verified Outcome: Persist confirmed execution result and update outbox status.
 """
 
 from __future__ import annotations
 import sys
+import uuid
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional
@@ -108,12 +128,78 @@ class AgentRAGEngine:
         )
         self.zanzibar.write_tuple(t)
 
+    def revoke_document_access(self, doc_id: str, relation: str, user: str) -> None:
+        """Revokes permission on document from user or group via Zanzibar."""
+        t = RelationTuple(
+            object_namespace="doc",
+            object_id=doc_id,
+            relation=relation,
+            user=user,
+        )
+        self.zanzibar.delete_tuple(t)
+
     def _default_llm_synthesizer(self, query: str, context_chunks: List[str]) -> str:
         """Deterministic context synthesizer for testing and demonstration."""
         if not context_chunks:
             return "No authorized context found to answer the query."
         joined = " ".join(context_chunks)
         return f"Synthesized Answer for '{query}' based on: {joined[:120]}..."
+
+    def dispatch_tool_with_outbox(
+        self, tool_name: str, tool_input: Dict[str, Any], user_id: str
+    ) -> AgentToolExecution:
+        """Executes a tool with strict transactional outbox sequence:
+        
+        1. Record Intent in DB Outbox: Commits intent to outbox BEFORE external execution.
+        2. Worker Dispatches Tool: Invocations pass idempotency token to target tool.
+        3. External Confirmation: External side effect confirms execution.
+        4. Record Verified Outcome: Persists verified outcome to entity store and confirms outbox.
+        """
+        idempotency_token = f"tool_idem_{uuid.uuid4()}"
+        intent_payload = {
+            "input": dict(tool_input),
+            "idempotency_token": idempotency_token,
+            "status": "INTENT_RECORDED",
+        }
+
+        # Step 1: Record intent in DB outbox BEFORE invoking external side effects
+        with self.rdbms.begin() as tx:
+            tx.save_entity("tool_intents", idempotency_token, intent_payload)
+            outbox_rec = tx.append_outbox(
+                aggregate_type="AgentAction",
+                aggregate_id=user_id,
+                event_type="RAGQueryExecuted",
+                payload=intent_payload,
+            )
+
+        # Step 2: Worker dispatches tool request with idempotency token
+        dispatch_payload = dict(tool_input)
+        dispatch_payload["idempotency_token"] = idempotency_token
+
+        # Step 3: External confirmation (invoking external side effect)
+        tool_fn = self.tools[tool_name]
+        tool_res = tool_fn(dispatch_payload)
+
+        # Step 4: Record verified outcome in DB
+        with self.rdbms.begin() as tx:
+            tx.save_entity("audit_records", user_id, {
+                **tool_input,
+                "result": tool_res,
+                "idempotency_token": idempotency_token,
+                "status": "CONFIRMED",
+            })
+            with self.rdbms._lock:
+                if outbox_rec.event_id in self.rdbms.outbox_table:
+                    entry = self.rdbms.outbox_table[outbox_rec.event_id]
+                    entry.payload["result"] = tool_res
+                    entry.payload["status"] = "CONFIRMED"
+
+        return AgentToolExecution(
+            tool_name=tool_name,
+            parameters=tool_input,
+            result=tool_res,
+            outbox_event_id=outbox_rec.event_id,
+        )
 
     def query(self, request: AgentQueryRequest) -> AgentQueryResponse:
         """Executes Hybrid Search -> ReBAC Filtering -> Context Augmentation -> Outbox-backed Tooling."""
@@ -124,7 +210,7 @@ class AgentRAGEngine:
             top_k=request.top_k * 2,
         )
 
-        # 2. Authoritative Zanzibar ReBAC Policy Enforcement
+        # 2. Authoritative Fail-Closed Zanzibar ReBAC Policy Enforcement
         authorized_chunks: List[SearchResult] = []
         filtered_count = 0
 
@@ -132,8 +218,18 @@ class AgentRAGEngine:
             doc_id = self.chunk_to_doc_id.get(cand.doc_id, cand.doc_id)
             object_str = f"doc:{doc_id}"
 
-            # Strict security gate: Check if user has 'viewer' permission on document
-            if self.zanzibar.check(user=request.user_id, relation="viewer", object_str=object_str):
+            # Strict fail-closed security gate:
+            # If Zanzibar is down or raises an error, deny access. Never include unauthorized chunks!
+            is_authorized = False
+            try:
+                if self.zanzibar and getattr(self.zanzibar, "is_available", True):
+                    is_authorized = self.zanzibar.check(
+                        user=request.user_id, relation="viewer", object_str=object_str
+                    )
+            except Exception:
+                is_authorized = False
+
+            if is_authorized:
                 authorized_chunks.append(cand)
                 if len(authorized_chunks) >= request.top_k:
                     break
@@ -144,7 +240,7 @@ class AgentRAGEngine:
         context_texts = [c.content for c in authorized_chunks if c.content]
         answer = self.llm_fn(request.query, context_texts)
 
-        # 4. Agent Tool Execution with Transactional Outbox
+        # 4. Agent Tool Execution with Transactional Outbox (Intent committed before side effects)
         tool_executions: List[AgentToolExecution] = []
         if request.execute_tools and "audit_log" in self.tools:
             tool_input = {
@@ -152,25 +248,12 @@ class AgentRAGEngine:
                 "query": request.query,
                 "authorized_chunks": len(authorized_chunks),
             }
-            tool_res = self.tools["audit_log"](tool_input)
-
-            # Record tool side effect atomically in transactional outbox
-            with self.rdbms.begin() as tx:
-                tx.save_entity("audit_records", request.user_id, tool_input)
-                outbox_rec = tx.append_outbox(
-                    aggregate_type="AgentAction",
-                    aggregate_id=request.user_id,
-                    event_type="RAGQueryExecuted",
-                    payload={"input": tool_input, "result": tool_res},
-                )
-                tool_executions.append(
-                    AgentToolExecution(
-                        tool_name="audit_log",
-                        parameters=tool_input,
-                        result=tool_res,
-                        outbox_event_id=outbox_rec.event_id,
-                    )
-                )
+            exec_record = self.dispatch_tool_with_outbox(
+                tool_name="audit_log",
+                tool_input=tool_input,
+                user_id=request.user_id,
+            )
+            tool_executions.append(exec_record)
 
         return AgentQueryResponse(
             user_id=request.user_id,

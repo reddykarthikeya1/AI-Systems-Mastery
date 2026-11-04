@@ -71,3 +71,37 @@ def test_list_authorized_objects():
 
     authorized = engine.list_authorized_objects("user:alice", "viewer", "doc")
     assert authorized == ["doc:doc_A", "doc:doc_B"]
+
+
+def test_nested_group_expansion():
+    """Multi-tier nested groups: doc -> group:a#member -> group:b#member -> user:dave"""
+    engine = ZanzibarEngine()
+    engine.write_tuple(RelationTuple("doc", "secret_project", "viewer", "group:core#member"))
+    engine.write_tuple(RelationTuple("group", "core", "member", "group:backend#member"))
+    engine.write_tuple(RelationTuple("group", "backend", "member", "user:dave"))
+
+    assert engine.check("user:dave", "viewer", "doc:secret_project") is True
+    assert engine.check("user:stranger", "viewer", "doc:secret_project") is False
+
+
+def test_delete_tuple_revocation():
+    """Verify revoking tuple immediately removes access."""
+    engine = ZanzibarEngine()
+    t = RelationTuple("doc", "report_q3", "viewer", "user:grace")
+    engine.write_tuple(t)
+    assert engine.check("user:grace", "viewer", "doc:report_q3") is True
+
+    # Revoke
+    engine.delete_tuple(t)
+    assert engine.check("user:grace", "viewer", "doc:report_q3") is False
+
+
+def test_service_unavailability_raises_error():
+    """Fail-closed: service unavailability must raise error."""
+    engine = ZanzibarEngine()
+    engine.write_tuple(RelationTuple("doc", "public_doc", "viewer", "user:anyone"))
+
+    engine.is_available = False
+    with pytest.raises(RuntimeError, match="service unavailable"):
+        engine.check("user:anyone", "viewer", "doc:public_doc")
+

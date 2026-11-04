@@ -2,6 +2,7 @@
 import pytest
 from ch16_bloom_filter.bloom_and_minhash import (
     BloomFilter,
+    CountingBloomFilter,
     MinHash,
     LSHIndex,
     calculate_optimal_bloom_params,
@@ -35,6 +36,45 @@ def test_optimal_bloom_params():
     # For p=0.01, k is typically around 7
     assert 5 <= k <= 10
 
+    with pytest.raises(ValueError):
+        calculate_optimal_bloom_params(n=0, p=0.01)
+    with pytest.raises(ValueError):
+        calculate_optimal_bloom_params(n=100, p=1.5)
+
+
+def test_counting_bloom_filter_add_and_remove():
+    cbf = CountingBloomFilter.from_capacity(expected_items=100, false_positive_rate=0.01)
+
+    # Add item
+    cbf.add("user:alpha")
+    assert cbf.contains("user:alpha") is True
+    assert cbf.contains("user:beta") is False
+
+    # Remove item
+    removed = cbf.remove("user:alpha")
+    assert removed is True
+    assert cbf.contains("user:alpha") is False
+
+    # Remove non-existent item
+    assert cbf.remove("user:beta") is False
+
+
+def test_counting_bloom_filter_duplicates():
+    cbf = CountingBloomFilter.from_capacity(expected_items=50, false_positive_rate=0.01)
+
+    # Add duplicate item twice
+    cbf.add("order:101")
+    cbf.add("order:101")
+    assert cbf.contains("order:101") is True
+
+    # First removal decrements counter, item still exists
+    assert cbf.remove("order:101") is True
+    assert cbf.contains("order:101") is True
+
+    # Second removal decrements counter to zero
+    assert cbf.remove("order:101") is True
+    assert cbf.contains("order:101") is False
+
 
 def test_minhash_jaccard_similarity():
     text1 = "distributed systems high level design microservices architecture event driven"
@@ -63,9 +103,8 @@ def test_minhash_jaccard_similarity():
     assert sim_disjoint < 0.1
 
 
-def test_lsh_candidate_retrieval():
-    lsh = LSHIndex(bands=16, rows_per_band=8)  # 128 total hashes
-
+def test_lsh_candidate_retrieval_and_determinism():
+    """Verify LSH candidate retrieval and ensure deterministic hashing across index instances."""
     doc_base = "paged attention memory management for large language model serving"
     doc_near = "paged attention memory management for large language model serving with vllm"
     doc_diff = "quantum computing topological qubits condensed matter physics"
@@ -79,15 +118,37 @@ def test_lsh_candidate_retrieval():
     mh_near = make_mh(doc_near)
     mh_diff = make_mh(doc_diff)
 
-    lsh.insert("doc_base", mh_base)
-    lsh.insert("doc_diff", mh_diff)
+    lsh1 = LSHIndex(bands=16, rows_per_band=8)
+    lsh2 = LSHIndex(bands=16, rows_per_band=8)
+
+    lsh1.insert("doc_base", mh_base)
+    lsh1.insert("doc_diff", mh_diff)
+
+    lsh2.insert("doc_base", mh_base)
+    lsh2.insert("doc_diff", mh_diff)
+
+    # Determinism: Both indices must have identical bucket keys
+    assert set(lsh1.buckets.keys()) == set(lsh2.buckets.keys())
 
     # Query with near duplicate
-    candidates = lsh.query_candidates(mh_near)
-    assert "doc_base" in candidates
-    assert "doc_diff" not in candidates
+    candidates1 = lsh1.query_candidates(mh_near)
+    assert "doc_base" in candidates1
+    assert "doc_diff" not in candidates1
 
     # Query similar with threshold
-    results = lsh.query_similar(mh_near, threshold=0.5)
+    results = lsh1.query_similar(mh_near, threshold=0.5)
     doc_ids = [doc_id for doc_id, _ in results]
     assert "doc_base" in doc_ids
+
+
+def test_parameter_validations():
+    with pytest.raises(ValueError):
+        BloomFilter(size_m=0, hash_count_k=5)
+    with pytest.raises(ValueError):
+        BloomFilter(size_m=100, hash_count_k=0)
+    with pytest.raises(ValueError):
+        CountingBloomFilter(size_m=-1, hash_count_k=2)
+    with pytest.raises(ValueError):
+        MinHash(num_hashes=0)
+    with pytest.raises(ValueError):
+        LSHIndex(bands=0, rows_per_band=5)

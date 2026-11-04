@@ -9,19 +9,41 @@ Architectural Guarantees:
        `{item:<id>}:stock`
        `{item:<id>}:reserves`
        `{item:<id>}:idempotency`
+       `{item:<id>}:expirations` (Sorted Set for TTL expiration indexing)
 
-2. Idempotency Key De-duplication:
-   Re-submitting the same checkout idempotency key returns the original reservation
-   without deducting inventory twice.
+2. Strict Two-Phase Reservation State Machine:
+   Enforces valid state transitions:
+       `HELD -> CONFIRMED` (successful payment)
+       `HELD -> RELEASED`  (explicit user cancellation)
+       `HELD -> EXPIRED`   (TTL expiration via background reconciliation daemon)
+   Any transition from a terminal or non-HELD state (e.g. duplicate confirm, duplicate release,
+   or confirm after expire) is strictly rejected with `INVALID_STATE`.
 
-3. Complete Two-Phase Reservation Lifecycle:
-   - Initial Hold: HELD (with TTL, e.g. 10 minutes)
-   - Payment Success: CONFIRMED
-   - User Cancellation: RELEASED (stock replenished immediately)
-   - Payment Timeout: EXPIRED (reconciliation daemon restores stock)
+3. Idempotency Key De-duplication & Parameter Validation:
+   - Quantity must be strictly > 0 (rejects qty <= 0).
+   - Re-submitting the exact same request with the same idempotency key returns the original
+     reservation without deducting inventory twice.
+   - Re-using an existing idempotency key with DIFFERENT parameters (e.g. changed item_id,
+     user_id, or quantity) is rejected as an idempotency conflict.
 
-4. Database Eventual Consistency Layer:
-   Syncs high-throughput Redis state to PostgreSQL persistent store.
+4. Expiration Indexing via Redis Sorted Set (ZSET):
+   Reservations are indexed in `{item:<id>}:expirations` with score = `expires_at` epoch timestamp.
+   The background reconciliation worker scans expired reservations atomically via Lua script,
+   restores uncommitted inventory, and transitions state to `EXPIRED`.
+   A confirmation-vs-expiration race is handled atomically: once expired in reconciliation,
+   any subsequent confirmation attempt is rejected.
+
+5. Redis In-Memory Execution vs Replica Failover vs PostgreSQL Authoritative Ledger:
+   - Redis In-Memory Atomicity: Single-threaded Lua script execution guarantees serialized,
+     race-free stock reservation and state transitions within a Redis hash slot.
+   - Replica Failover Data Loss: Redis asynchronous replication means that if the master node
+     crashes before replicating writes to a replica, failover may result in lost reservations
+     (phantom inventory availability). Redis serves as a high-throughput write-ahead reservation cache.
+   - PostgreSQL Authoritative Ledger: PostgreSQL with ACID transactions, row-level locks,
+     and durable WAL is the authoritative financial and inventory ledger. The confirmation
+     path MUST inspect and respect the boolean return from PostgreSQL reconciliation. If PostgreSQL
+     reconciliation returns False (e.g. authoritative ledger exhausted due to a prior failover discrepancy),
+     the reservation confirmation is rejected and Redis state is rolled back.
 """
 
 from __future__ import annotations
@@ -37,6 +59,7 @@ LUA_RESERVE_INVENTORY = """
 -- KEYS[1]: {item:<id>}:stock
 -- KEYS[2]: {item:<id>}:reserves
 -- KEYS[3]: {item:<id>}:idempotency
+-- KEYS[4]: {item:<id>}:expirations
 -- ARGV[1]: idempotency_key
 -- ARGV[2]: reservation_id
 -- ARGV[3]: user_id
@@ -47,6 +70,7 @@ LUA_RESERVE_INVENTORY = """
 local stock_key = KEYS[1]
 local reserves_key = KEYS[2]
 local idemp_key = KEYS[3]
+local expirations_key = KEYS[4]
 
 local idem_key_val = ARGV[1]
 local res_id = ARGV[2]
@@ -56,16 +80,21 @@ local ttl = tonumber(ARGV[5])
 local now = tonumber(ARGV[6])
 
 -- 1. Validation
-if qty <= 0 then
+if not qty or qty <= 0 then
     return cjson.encode({status = "ERROR", message = "Quantity must be > 0"})
 end
 
 -- 2. Idempotency Check
 local existing_res_id = redis.call('HGET', idemp_key, idem_key_val)
 if existing_res_id then
-    local existing_record = redis.call('HGET', reserves_key, existing_res_id)
-    if existing_record then
-        return existing_record -- Return idempotent response
+    local existing_record_str = redis.call('HGET', reserves_key, existing_res_id)
+    if existing_record_str then
+        local existing_record = cjson.decode(existing_record_str)
+        -- Validate parameter consistency
+        if existing_record.quantity ~= qty or existing_record.user_id ~= user_id then
+            return cjson.encode({status = "ERROR", message = "Idempotency key parameter mismatch"})
+        end
+        return existing_record_str -- Return idempotent response
     end
 end
 
@@ -91,15 +120,57 @@ local record_json = cjson.encode(record)
 
 redis.call('HSET', reserves_key, res_id, record_json)
 redis.call('HSET', idemp_key, idem_key_val, res_id)
+if expirations_key then
+    redis.call('ZADD', expirations_key, expires_at, res_id)
+end
 
 return record_json
 """
 
 LUA_CONFIRM_RESERVATION = """
 -- KEYS[1]: {item:<id>}:reserves
+-- KEYS[2]: {item:<id>}:expirations
 -- ARGV[1]: reservation_id
+-- ARGV[2]: current_time (optional)
 
 local reserves_key = KEYS[1]
+local expirations_key = KEYS[2]
+local res_id = ARGV[1]
+local now = tonumber(ARGV[2])
+
+local record_json = redis.call('HGET', reserves_key, res_id)
+if not record_json then
+    return cjson.encode({status = "NOT_FOUND"})
+end
+
+local record = cjson.decode(record_json)
+if record.status ~= "HELD" then
+    return cjson.encode({status = "INVALID_STATE", current_status = record.status})
+end
+
+-- Check if already expired by wall-clock timestamp
+if now and now > record.expires_at then
+    return cjson.encode({status = "INVALID_STATE", current_status = "EXPIRED"})
+end
+
+record.status = "CONFIRMED"
+if expirations_key then
+    redis.call('ZREM', expirations_key, res_id)
+end
+local updated_json = cjson.encode(record)
+redis.call('HSET', reserves_key, res_id, updated_json)
+return updated_json
+"""
+
+LUA_RELEASE_RESERVATION = """
+-- KEYS[1]: {item:<id>}:stock
+-- KEYS[2]: {item:<id>}:reserves
+-- KEYS[3]: {item:<id>}:expirations
+-- ARGV[1]: reservation_id
+
+local stock_key = KEYS[1]
+local reserves_key = KEYS[2]
+local expirations_key = KEYS[3]
 local res_id = ARGV[1]
 
 local record_json = redis.call('HGET', reserves_key, res_id)
@@ -112,13 +183,50 @@ if record.status ~= "HELD" then
     return cjson.encode({status = "INVALID_STATE", current_status = record.status})
 end
 
-record.status = "CONFIRMED"
+record.status = "RELEASED"
+redis.call('INCRBY', stock_key, record.quantity)
+if expirations_key then
+    redis.call('ZREM', expirations_key, res_id)
+end
 local updated_json = cjson.encode(record)
 redis.call('HSET', reserves_key, res_id, updated_json)
 return updated_json
 """
 
-LUA_RELEASE_RESERVATION = """
+LUA_RECONCILE_EXPIRED = """
+-- KEYS[1]: {item:<id>}:stock
+-- KEYS[2]: {item:<id>}:reserves
+-- KEYS[3]: {item:<id>}:expirations
+-- ARGV[1]: current_time
+-- ARGV[2]: batch_size
+
+local stock_key = KEYS[1]
+local reserves_key = KEYS[2]
+local expirations_key = KEYS[3]
+local now = tonumber(ARGV[1])
+local batch_size = tonumber(ARGV[2]) or 100
+
+local expired_ids = redis.call('ZRANGEBYSCORE', expirations_key, '-inf', now, 'LIMIT', 0, batch_size)
+local restored_qty = 0
+
+for _, res_id in ipairs(expired_ids) do
+    redis.call('ZREM', expirations_key, res_id)
+    local rec_json = redis.call('HGET', reserves_key, res_id)
+    if rec_json then
+        local rec = cjson.decode(rec_json)
+        if rec.status == "HELD" then
+            rec.status = "EXPIRED"
+            redis.call('HSET', reserves_key, res_id, cjson.encode(rec))
+            redis.call('INCRBY', stock_key, rec.quantity)
+            restored_qty = restored_qty + rec.quantity
+        end
+    end
+end
+
+return restored_qty
+"""
+
+LUA_ROLLBACK_CONFIRMATION = """
 -- KEYS[1]: {item:<id>}:stock
 -- KEYS[2]: {item:<id>}:reserves
 -- ARGV[1]: reservation_id
@@ -133,10 +241,6 @@ if not record_json then
 end
 
 local record = cjson.decode(record_json)
-if record.status ~= "HELD" then
-    return cjson.encode({status = "INVALID_STATE", current_status = record.status})
-end
-
 record.status = "RELEASED"
 redis.call('INCRBY', stock_key, record.quantity)
 local updated_json = cjson.encode(record)
@@ -209,19 +313,21 @@ class FlashSaleInventoryService:
         self._stock_store: Dict[str, int] = {}
         self._reserves_store: Dict[str, Dict[str, ReservationRecord]] = {}
         self._idemp_store: Dict[str, Dict[str, str]] = {}
+        self._expirations_store: Dict[str, Dict[str, float]] = {}
 
-    def _keys(self, item_id: str) -> Tuple[str, str, str]:
+    def _keys(self, item_id: str) -> Tuple[str, str, str, str]:
         """Cluster hash tags guarantee all keys reside on the same cluster slot."""
         return (
             f"{{item:{item_id}}}:stock",
             f"{{item:{item_id}}}:reserves",
             f"{{item:{item_id}}}:idempotency",
+            f"{{item:{item_id}}}:expirations",
         )
 
     def initialize_stock(self, item_id: str, stock: int) -> None:
         """Seed stock in both Redis and PostgreSQL."""
         self.postgres_db.set_initial_inventory(item_id, stock)
-        stock_key, _, _ = self._keys(item_id)
+        stock_key, _, _, _ = self._keys(item_id)
         if self.redis is not None:
             self.redis.set(stock_key, stock)
         else:
@@ -229,9 +335,10 @@ class FlashSaleInventoryService:
                 self._stock_store[stock_key] = stock
                 self._reserves_store[item_id] = {}
                 self._idemp_store[item_id] = {}
+                self._expirations_store[item_id] = {}
 
     def get_stock(self, item_id: str) -> int:
-        stock_key, _, _ = self._keys(item_id)
+        stock_key, _, _, _ = self._keys(item_id)
         if self.redis is not None:
             val = self.redis.get(stock_key)
             return int(val) if val else 0
@@ -247,7 +354,7 @@ class FlashSaleInventoryService:
         ttl_seconds: float = 600.0,
         now: Optional[float] = None,
     ) -> ReservationResult:
-        """Reserve inventory under hold with idempotency."""
+        """Reserve inventory under hold with idempotency and parameter validation."""
         if quantity <= 0:
             return ReservationResult(
                 success=False,
@@ -259,15 +366,16 @@ class FlashSaleInventoryService:
             now = time.time()
 
         res_id = str(uuid.uuid4())
-        stock_k, reserves_k, idemp_k = self._keys(item_id)
+        stock_k, reserves_k, idemp_k, exp_k = self._keys(item_id)
 
         if self.redis is not None:
             raw = self.redis.eval(
                 LUA_RESERVE_INVENTORY,
-                3,
+                4,
                 stock_k,
                 reserves_k,
                 idemp_k,
+                exp_k,
                 idempotency_key,
                 res_id,
                 user_id,
@@ -303,12 +411,20 @@ class FlashSaleInventoryService:
         with self._lock:
             idemp_map = self._idemp_store.setdefault(item_id, {})
             reserves_map = self._reserves_store.setdefault(item_id, {})
+            exp_map = self._expirations_store.setdefault(item_id, {})
 
             # Check idempotency
             if idempotency_key in idemp_map:
                 existing_id = idemp_map[idempotency_key]
                 existing_rec = reserves_map.get(existing_id)
                 if existing_rec:
+                    # Parameter mismatch check: same key with different quantity or user_id is rejected
+                    if existing_rec.quantity != quantity or existing_rec.user_id != user_id:
+                        return ReservationResult(
+                            success=False,
+                            status="ERROR",
+                            message="Idempotency key parameter mismatch",
+                        )
                     return ReservationResult(
                         success=True,
                         status=existing_rec.status.value,
@@ -325,29 +441,43 @@ class FlashSaleInventoryService:
 
             # Deduct stock
             self._stock_store[stock_k] = current_stock - quantity
+            expires_at = now + ttl_seconds
             rec = ReservationRecord(
                 reservation_id=res_id,
                 user_id=user_id,
                 quantity=quantity,
                 status=ReservationState.HELD,
                 created_at=now,
-                expires_at=now + ttl_seconds,
+                expires_at=expires_at,
             )
             reserves_map[res_id] = rec
             idemp_map[idempotency_key] = res_id
+            exp_map[res_id] = expires_at
             return ReservationResult(success=True, status="HELD", record=rec)
 
-    def confirm(self, item_id: str, reservation_id: str) -> ReservationResult:
-        """Transitions reservation from HELD to CONFIRMED and syncs to DB."""
-        _, reserves_k, _ = self._keys(item_id)
+    def confirm(
+        self,
+        item_id: str,
+        reservation_id: str,
+        now: Optional[float] = None,
+    ) -> ReservationResult:
+        """Transitions reservation from HELD to CONFIRMED and reconciles with PostgreSQL ledger."""
+        stock_k, reserves_k, _, exp_k = self._keys(item_id)
         if self.redis is not None:
-            raw = self.redis.eval(LUA_CONFIRM_RESERVATION, 1, reserves_k, reservation_id)
+            raw = self.redis.eval(
+                LUA_CONFIRM_RESERVATION,
+                2,
+                reserves_k,
+                exp_k,
+                reservation_id,
+                now if now is not None else time.time(),
+            )
             data = json.loads(raw)
             if "status" in data and data["status"] in ("NOT_FOUND", "INVALID_STATE"):
                 return ReservationResult(
                     success=False,
                     status=data["status"],
-                    message=data.get("current_status"),
+                    message=f"Status is {data.get('current_status')}",
                 )
             rec = ReservationRecord(
                 reservation_id=data["reservation_id"],
@@ -357,7 +487,18 @@ class FlashSaleInventoryService:
                 created_at=data["created_at"],
                 expires_at=data["expires_at"],
             )
-            self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            # Reconcile against PostgreSQL authoritative ledger
+            pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            if not pg_success:
+                # Rollback Redis confirmation to maintain ledger consistency
+                self.redis.eval(LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id)
+                rec.status = ReservationState.RELEASED
+                return ReservationResult(
+                    success=False,
+                    status="RECONCILIATION_FAILED",
+                    message="PostgreSQL authoritative ledger reconciliation failed",
+                    record=rec,
+                )
             return ReservationResult(success=True, status="CONFIRMED", record=rec)
 
         with self._lock:
@@ -365,27 +506,57 @@ class FlashSaleInventoryService:
             rec = reserves_map.get(reservation_id)
             if not rec:
                 return ReservationResult(success=False, status="NOT_FOUND")
+
+            # Enforce state machine: only HELD reservations can be confirmed
             if rec.status != ReservationState.HELD:
                 return ReservationResult(
                     success=False,
                     status="INVALID_STATE",
                     message=f"Status is {rec.status.value}",
+                    record=rec,
+                )
+
+            # Check if reservation has expired by timestamp
+            if now is not None and now > rec.expires_at:
+                return ReservationResult(
+                    success=False,
+                    status="INVALID_STATE",
+                    message="Status is EXPIRED",
+                    record=rec,
+                )
+
+            # Attempt PostgreSQL authoritative ledger reconciliation
+            pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            if not pg_success:
+                # Reconcile failure: authoritative ledger exhausted; release Redis stock hold
+                rec.status = ReservationState.RELEASED
+                self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
+                self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+                return ReservationResult(
+                    success=False,
+                    status="RECONCILIATION_FAILED",
+                    message="PostgreSQL authoritative ledger reconciliation failed",
+                    record=rec,
                 )
 
             rec.status = ReservationState.CONFIRMED
-            self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            self._expirations_store.get(item_id, {}).pop(reservation_id, None)
             return ReservationResult(success=True, status="CONFIRMED", record=rec)
 
     def release(self, item_id: str, reservation_id: str) -> ReservationResult:
         """Manually releases HELD inventory and restores stock."""
-        stock_k, reserves_k, _ = self._keys(item_id)
+        stock_k, reserves_k, _, exp_k = self._keys(item_id)
         if self.redis is not None:
             raw = self.redis.eval(
-                LUA_RELEASE_RESERVATION, 2, stock_k, reserves_k, reservation_id
+                LUA_RELEASE_RESERVATION, 3, stock_k, reserves_k, exp_k, reservation_id
             )
             data = json.loads(raw)
             if "status" in data and data["status"] in ("NOT_FOUND", "INVALID_STATE"):
-                return ReservationResult(success=False, status=data["status"])
+                return ReservationResult(
+                    success=False,
+                    status=data["status"],
+                    message=f"Status is {data.get('current_status')}",
+                )
             rec = ReservationRecord(
                 reservation_id=data["reservation_id"],
                 user_id=data["user_id"],
@@ -401,31 +572,58 @@ class FlashSaleInventoryService:
             rec = reserves_map.get(reservation_id)
             if not rec:
                 return ReservationResult(success=False, status="NOT_FOUND")
+
+            # Enforce state machine: only HELD reservations can be released
             if rec.status != ReservationState.HELD:
                 return ReservationResult(
                     success=False,
                     status="INVALID_STATE",
                     message=f"Status is {rec.status.value}",
+                    record=rec,
                 )
 
             rec.status = ReservationState.RELEASED
             self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
+            self._expirations_store.get(item_id, {}).pop(reservation_id, None)
             return ReservationResult(success=True, status="RELEASED", record=rec)
 
     def reconcile_expired_reservations(
-        self, item_id: str, now: Optional[float] = None
+        self,
+        item_id: str,
+        now: Optional[float] = None,
+        batch_size: int = 100,
     ) -> int:
-        """Daemon worker: scans HELD reservations whose TTL expired and restores stock."""
+        """Daemon worker: scans expired reservations from sorted set, restores inventory atomically, marks EXPIRED."""
         if now is None:
             now = time.time()
 
-        stock_k, _, _ = self._keys(item_id)
-        restored_count = 0
+        stock_k, reserves_k, _, exp_k = self._keys(item_id)
 
+        if self.redis is not None:
+            restored = self.redis.eval(
+                LUA_RECONCILE_EXPIRED,
+                3,
+                stock_k,
+                reserves_k,
+                exp_k,
+                now,
+                batch_size,
+            )
+            return int(restored) if restored else 0
+
+        restored_count = 0
         with self._lock:
             reserves_map = self._reserves_store.get(item_id, {})
-            for rec in reserves_map.values():
-                if rec.status == ReservationState.HELD and now > rec.expires_at:
+            exp_map = self._expirations_store.get(item_id, {})
+            expired_ids = [
+                res_id for res_id, exp_time in exp_map.items()
+                if now >= exp_time
+            ]
+
+            for res_id in expired_ids:
+                exp_map.pop(res_id, None)
+                rec = reserves_map.get(res_id)
+                if rec and rec.status == ReservationState.HELD:
                     rec.status = ReservationState.EXPIRED
                     self._stock_store[stock_k] = (
                         self._stock_store.get(stock_k, 0) + rec.quantity
@@ -433,3 +631,4 @@ class FlashSaleInventoryService:
                     restored_count += rec.quantity
 
         return restored_count
+

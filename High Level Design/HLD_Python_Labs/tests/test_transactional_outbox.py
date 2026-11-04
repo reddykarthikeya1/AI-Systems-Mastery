@@ -1,17 +1,24 @@
 """Tests for Transactional Outbox Pattern & SKIP LOCKED Semantics (Chapter 12)."""
+import time
+from concurrent.futures import ThreadPoolExecutor
+from unittest.mock import MagicMock
 import pytest
 from ch12_event_driven.transactional_outbox import (
+    InMemoryOutboxSimulator,
     SimulatedRDBMS,
     TransactionalOutboxRepository,
     MessageBus,
     OutboxPollerWorker,
     IdempotentConsumer,
+    IdempotentConsumerInbox,
+    PostgresTransactionalOutbox,
     OutboxStatus,
+    InboxStatus,
 )
 
 
 def test_atomic_transaction_and_rollback():
-    db = SimulatedRDBMS()
+    db = InMemoryOutboxSimulator()
 
     # Commit case
     with db.begin() as tx:
@@ -36,7 +43,7 @@ def test_atomic_transaction_and_rollback():
 
 
 def test_concurrent_pollers_skip_locked():
-    db = SimulatedRDBMS()
+    db = InMemoryOutboxSimulator()
     bus = MessageBus()
 
     # Populate 6 pending outbox records
@@ -62,7 +69,7 @@ def test_concurrent_pollers_skip_locked():
 
 
 def test_poller_dispatch_and_dlq_on_repeated_failure():
-    db = SimulatedRDBMS()
+    db = InMemoryOutboxSimulator()
     # Message bus that always fails
     failing_bus = MessageBus(failure_rate=1.0)
 
@@ -92,7 +99,7 @@ def test_idempotent_consumer():
         nonlocal consumed_count
         consumed_count += 1
 
-    db = SimulatedRDBMS()
+    db = InMemoryOutboxSimulator()
     with db.begin() as tx:
         rec = tx.append_outbox("User", "u1", "UserSignedUp", {"email": "u1@example.com"})
 
@@ -105,3 +112,47 @@ def test_idempotent_consumer():
     second_ok = consumer.handle(rec, handler)
     assert second_ok is False  # Deduplicated!
     assert consumed_count == 1
+
+
+def test_idempotent_consumer_inbox_concurrency():
+    """Verify that concurrent duplicate events are deduplicated by IdempotentConsumerInbox."""
+    inbox = IdempotentConsumerInbox()
+    call_count = 0
+
+    def business_action(amount: int):
+        nonlocal call_count
+        call_count += 1
+        time.sleep(0.02)
+        return f"credited_{amount}"
+
+    # Launch 5 concurrent threads trying to process the exact same event_id
+    event_id = "evt_dedup_100"
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = [executor.submit(inbox.process, event_id, business_action, 50) for _ in range(5)]
+        results = [f.result() for f in futures]
+
+    # Exactly one thread executed the action
+    executed_count = sum(1 for executed, _ in results if executed)
+    assert executed_count == 1
+    assert call_count == 1
+    assert inbox.duplicate_count == 4
+    assert inbox.inbox[event_id]["status"] == InboxStatus.PROCESSED
+    assert inbox.inbox[event_id]["result"] == "credited_50"
+
+
+def test_postgres_outbox_reference_sql():
+    """Test PostgresTransactionalOutbox query generation and execution against a mock cursor."""
+    mock_cursor = MagicMock()
+    eid = PostgresTransactionalOutbox.append_in_transaction(
+        cursor=mock_cursor,
+        aggregate_type="Order",
+        aggregate_id="ord_456",
+        event_type="OrderConfirmed",
+        payload_json='{"total": 99.9}',
+    )
+    assert eid is not None
+    mock_cursor.execute.assert_called_once()
+    sql_called, params = mock_cursor.execute.call_args[0]
+    assert "INSERT INTO outbox_events" in sql_called
+    assert params[1] == "Order"
+    assert params[2] == "ord_456"
