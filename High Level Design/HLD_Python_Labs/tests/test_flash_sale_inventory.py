@@ -7,6 +7,7 @@ from workshop_ecommerce.flash_sale_inventory import (
     PostgresInventoryStore,
     SimulatedPostgresLedger,
     ReservationState,
+    ReservationRecord,
 )
 
 
@@ -332,5 +333,157 @@ def test_dual_write_crash_window_simulation():
     assert svc.inconsistencies[0]["reservation_id"] == res_id
     assert "connection timeout" in svc.inconsistencies[0]["error"].lower()
     assert res_id not in pg.orders
+
+
+def test_idempotent_confirmation_rollback():
+    """Verify that confirmation rollback is idempotent and never restores stock more than once."""
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_rollback", 10)
+
+    res = svc.reserve("item_rollback", "user_rb", quantity=3, idempotency_key="idemp_rb_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_rollback") == 7
+
+    # Confirm reservation
+    confirm_res = svc.confirm("item_rollback", res_id)
+    assert confirm_res.success is True
+    assert svc.get_stock("item_rollback") == 7
+
+    # First rollback call: restores 3 items to stock (7 + 3 = 10)
+    rb1 = svc.rollback_confirmation("item_rollback", res_id)
+    assert rb1.success is True
+    assert rb1.record.status == ReservationState.RELEASED
+    assert svc.get_stock("item_rollback") == 10
+    assert res_id in svc._rolled_back_reservations
+
+    # Second rollback call: idempotent, must NOT restore inventory a second time (stock remains 10)
+    rb2 = svc.rollback_confirmation("item_rollback", res_id)
+    assert rb2.success is True
+    assert svc.get_stock("item_rollback") == 10
+
+    # Third rollback call using alias or single parameter: still strictly 10
+    rb3 = svc.rollback(res_id)
+    assert rb3.success is True
+    assert svc.get_stock("item_rollback") == 10
+
+
+def test_exact_expiry_boundary_condition():
+    """Verify that a reservation with expires_at = T is strictly expired when now == T (now >= expires_at)."""
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_boundary", 10)
+
+    base_time = 1000.0
+    ttl = 30.0
+    res = svc.reserve(
+        "item_boundary",
+        "user_bound",
+        quantity=2,
+        idempotency_key="bound_key_1",
+        ttl_seconds=ttl,
+        now=base_time,
+    )
+    assert res.success is True
+    res_id = res.record.reservation_id
+    expires_at = res.record.expires_at
+    assert expires_at == base_time + ttl  # 1030.0
+
+    # Before boundary: now = 1029.9 -> Not expired
+    # At exact boundary: now = 1030.0 -> Strictly expired (now >= expires_at)
+    confirm_boundary = svc.confirm("item_boundary", res_id, now=expires_at)
+    assert confirm_boundary.success is False
+    assert confirm_boundary.status == "INVALID_STATE"
+    assert "EXPIRED" in (confirm_boundary.message or "")
+    assert res_id not in pg.orders
+
+    # Verify reconciliation daemon also strictly handles now == expires_at
+    res2 = svc.reserve(
+        "item_boundary",
+        "user_bound2",
+        quantity=3,
+        idempotency_key="bound_key_2",
+        ttl_seconds=ttl,
+        now=base_time,
+    )
+    assert res2.success is True
+    res2_id = res2.record.reservation_id
+    expires_at_2 = res2.record.expires_at
+
+    restored = svc.reconcile_expired_reservations("item_boundary", now=expires_at_2)
+    assert restored >= 3
+
+
+def test_idempotent_postgres_reconciliation():
+    """Verify that calling reconcile_confirmed_order multiple times with the same reservation ID
+    succeeds idempotently without double-decrementing the DB ledger stock."""
+    pg = PostgresInventoryStore()
+    pg.set_initial_inventory("item_ledger", 10)
+
+    rec = ReservationRecord(
+        reservation_id="res_pg_idem_999",
+        user_id="user_pg",
+        quantity=3,
+        status=ReservationState.HELD,
+        created_at=100.0,
+        expires_at=200.0,
+    )
+
+    # 1st reconciliation: decrements stock from 10 to 7
+    ok1 = pg.reconcile_confirmed_order("item_ledger", rec)
+    assert ok1 is True
+    assert pg.inventory["item_ledger"] == 7
+    assert "res_pg_idem_999" in pg.orders
+    assert "res_pg_idem_999" in pg._reconciled_reservations
+
+    # 2nd reconciliation: returns cached success, stock stays at 7
+    ok2 = pg.reconcile_confirmed_order("item_ledger", rec)
+    assert ok2 is True
+    assert pg.inventory["item_ledger"] == 7
+
+    # 3rd reconciliation: still stays at 7
+    ok3 = pg.reconcile_confirmed_order("item_ledger", rec)
+    assert ok3 is True
+    assert pg.inventory["item_ledger"] == 7
+
+
+def test_ambiguous_postgres_timeout_marks_pending_reconciliation():
+    """Simulates a timeout exception during PostgreSQL reconciliation, verifying that:
+    1. Status is transitioned to PENDING_RECONCILIATION.
+    2. Stock is NOT restored prematurely.
+    3. The inconsistency is queued in self.inconsistencies for manual/daemon reconciliation.
+    """
+    class TimingOutPostgresLedger(SimulatedPostgresLedger):
+        def reconcile_confirmed_order(self, item_id, reservation):
+            raise TimeoutError("PostgreSQL commit timed out awaiting socket response")
+
+    pg = TimingOutPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_timeout", 5)
+
+    res = svc.reserve("item_timeout", "user_timeout", quantity=2, idempotency_key="timeout_key_1")
+    assert res.success is True
+    assert svc.get_stock("item_timeout") == 3
+    res_id = res.record.reservation_id
+
+    # Confirm triggers simulated ambiguous timeout
+    confirm_res = svc.confirm("item_timeout", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "PENDING_RECONCILIATION"
+    assert confirm_res.record.status == ReservationState.PENDING_RECONCILIATION
+    assert "timeout" in (confirm_res.message or "").lower()
+
+    # Ambiguous timeout: do NOT blindly restore stock! Stock must remain 3
+    assert svc.get_stock("item_timeout") == 3
+
+    # Inconsistency is queued for manual/daemon resolution
+    assert len(svc.inconsistencies) == 1
+    inc = svc.inconsistencies[0]
+    assert inc["reservation_id"] == res_id
+    assert inc["status"] == "PENDING_RECONCILIATION"
+    assert "timed out" in inc["error"].lower() or "timeout" in inc["error"].lower()
+    assert res_id not in pg.orders
+
 
 

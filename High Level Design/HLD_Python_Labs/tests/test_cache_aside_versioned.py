@@ -1,4 +1,4 @@
-"""Tests for Versioned Cache-Aside and Dogpile SingleFlight (Chapter 03)."""
+"""Tests for Versioned Cache-Aside, Generation Fence, and Dogpile SingleFlight (Chapter 03)."""
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -64,10 +64,10 @@ def test_stale_fill_race_prevention():
 def test_stale_fill_rejected_after_invalidation_regression():
     """EXACT REGRESSION TEST:
 
-    Reader A reads v1 from DB
+    Reader A captures generation and reads v1 from DB
     -> Writer B commits v2 to DB
     -> Writer B invalidates cache (watermark=2)
-    -> Reader A attempts to fill cache with v1
+    -> Reader A attempts to fill cache with v1 and captured gen
     -> Verify Stale fill is REJECTED and cache remains empty or updated to v2!
     """
     db = SimulatedDatabase()
@@ -75,7 +75,8 @@ def test_stale_fill_rejected_after_invalidation_regression():
 
     cache = VersionedCacheAside(db)
 
-    # 1. Reader A reads v1 from DB
+    # 1. Reader A captures generation fence before reading DB
+    reader_a_gen = cache.get_generation("item:99")
     reader_a_data, reader_a_version = db.read("item:99")
     assert reader_a_data == {"desc": "Original v1"}
     assert reader_a_version == 1
@@ -85,13 +86,14 @@ def test_stale_fill_rejected_after_invalidation_regression():
     assert writer_b_version == 2
 
     # 3. Writer B invalidates cache with watermark=2
-    # Invalidation removes data key, but preserves/advances watermark=2
+    # Invalidation removes data key, advances generation fence, and preserves/advances watermark=2
     cache.invalidate("item:99", watermark=writer_b_version)
     assert cache.get_watermark("item:99") == 2
+    assert cache.get_generation("item:99") == 1
     assert cache._read_cache("item:99") is None
 
-    # 4. Reader A (delayed) attempts to fill cache with v1
-    accepted = cache.put_cache("item:99", reader_a_data, version=reader_a_version)
+    # 4. Reader A (delayed) attempts to fill cache with v1 and captured gen
+    accepted = cache.put_cache("item:99", reader_a_data, version=reader_a_version, captured_gen=reader_a_gen)
 
     # 5. Verify stale fill is REJECTED!
     assert accepted is False
@@ -106,15 +108,65 @@ def test_stale_fill_rejected_after_invalidation_regression():
     assert cache.get_watermark("item:99") == 2
 
 
-def test_default_invalidation_without_version_advances_watermark():
-    """REGRESSION TEST FOR DANGEROUS DEFAULT INVALIDATION:
+def test_cold_cache_invalidation_race_prevention():
+    """REGRESSION TEST: Prevention of cold-cache invalidation race via generation fence.
 
-    1. Reader A reads v1 from DB.
-    2. Cache is populated at v1 (watermark=1).
+    Scenario:
+    1. Cold cache: data empty, watermark=0, gen=0.
+    2. Reader A begins: captures gen=0, reads DB v1 (delayed before writing to cache).
+    3. Writer updates DB to v2 and calls cache.invalidate("rec1")
+       - increments gen to 1, deletes data, does NOT invent fake DB versions.
+    4. Reader A attempts to fill cache with v1 and its captured gen=0.
+    5. Assert fill is REJECTED (accepted=False), stale_fill_rejections=1, cache does NOT contain stale v1.
+    6. Subsequent reader reads fresh v2 from DB and successfully fills cache.
+    """
+    db = SimulatedDatabase()
+    db.write("rec1", {"payload": "version_1"})  # DB version 1
+
+    cache = VersionedCacheAside(db)
+    assert cache.get_watermark("rec1") == 0
+    assert cache.get_generation("rec1") == 0
+
+    # 1. Reader A captures generation fence before querying DB
+    captured_gen_a = cache.get_generation("rec1")
+    assert captured_gen_a == 0
+
+    # Reader A reads DB v1
+    data_v1, ver_1 = db.read("rec1")
+    assert ver_1 == 1
+
+    # 2. Writer updates DB to v2 and calls cache.invalidate("rec1")
+    db.write("rec1", {"payload": "version_2"})
+    cache.invalidate("rec1")
+    assert cache.get_generation("rec1") == 1
+    assert cache._read_cache("rec1") is None
+
+    # 3. Delayed Reader A attempts to fill cache with v1 and captured gen=0
+    accepted = cache.put_cache("rec1", data_v1, version=ver_1, captured_gen=captured_gen_a)
+
+    # 4. Assert fill is REJECTED and stale fill counted
+    assert accepted is False
+    assert cache.stale_fill_rejections == 1
+    assert cache._read_cache("rec1") is None
+
+    # 5. Subsequent reader fetches fresh v2 through cache.get()
+    fresh_val = cache.get("rec1")
+    assert fresh_val == {"payload": "version_2"}
+    assert cache.get_watermark("rec1") == 2
+    assert cache._read_cache("rec1") is not None
+    assert cache._read_cache("rec1").value == {"payload": "version_2"}
+
+
+def test_default_invalidation_without_version_advances_generation_fence():
+    """REGRESSION TEST: Default invalidation without version advances generation fence.
+
+    1. Cache is populated at v1 (watermark=1, gen=0).
+    2. Reader A captures generation fence (gen=0) and reads v1 data.
     3. Writer invalidates cache without providing a watermark (watermark=None).
-       - Invalidation MUST increment the watermark to v1 + 1 = 2!
-    4. Reader A (delayed) attempts to put v1 into cache.
-    5. Reader A's fill is strictly REJECTED because 1 < 2!
+       - Invalidation MUST increment the generation fence to gen=1!
+       - Invalidation MUST NOT invent fake database versions (watermark remains 1).
+    4. Reader A (delayed) attempts to put v1 into cache with captured gen=0.
+    5. Reader A's fill is strictly REJECTED because captured_gen (0) != current_gen (1)!
     """
     db = SimulatedDatabase()
     db.write("item:default_inv", {"val": "version_1"})  # DB version 1
@@ -125,20 +177,24 @@ def test_default_invalidation_without_version_advances_watermark():
     val = cache.get("item:default_inv")
     assert val == {"val": "version_1"}
     assert cache.get_watermark("item:default_inv") == 1
+    assert cache.get_generation("item:default_inv") == 0
 
-    # Reader A reads v1 data
+    # Reader A captures generation and reads v1 data
+    reader_a_gen = cache.get_generation("item:default_inv")
     reader_a_data, reader_a_version = db.read("item:default_inv")
     assert reader_a_version == 1
 
     # Writer invalidates WITHOUT specifying version
     cache.invalidate("item:default_inv", watermark=None)
 
-    # Watermark must have auto-advanced from 1 to 2
-    assert cache.get_watermark("item:default_inv") == 2
+    # Generation fence must have auto-advanced from 0 to 1
+    assert cache.get_generation("item:default_inv") == 1
+    # Watermark does NOT invent database versions
+    assert cache.get_watermark("item:default_inv") == 1
     assert cache._read_cache("item:default_inv") is None
 
     # Reader A attempts to fill with stale v1
-    accepted = cache.put_cache("item:default_inv", reader_a_data, version=reader_a_version)
+    accepted = cache.put_cache("item:default_inv", reader_a_data, version=reader_a_version, captured_gen=reader_a_gen)
     assert accepted is False
     assert cache.stale_fill_rejections == 1
     assert cache._read_cache("item:default_inv") is None

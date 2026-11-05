@@ -1,70 +1,135 @@
 # High-Level Design for Python & AI Engineers
 ### Version 3.0: Definitive Learning Edition (`AI-Systems-Mastery`)
 
-An authoritative, mathematically grounded, and code-verified curriculum in modern distributed systems, cloud resilience patterns, and AI infrastructure engineering.
+An authoritative, mathematically grounded, and code-verified curriculum in modern distributed systems, cloud resilience patterns, and AI systems infrastructure engineering.
 
 ---
 
-## 1. Curriculum Overview
+## 1. What This Curriculum Teaches
 
-**High-Level Design for Python & AI Engineers** bridges the gap between classic web-scale distributed architectures and modern AI systems infrastructure. Built for senior, staff, and principal engineers, this repository provides:
+**High-Level Design for Python & AI Engineers** bridges classic web-scale distributed systems with state-of-the-art AI systems infrastructure. Built for senior, staff, and principal engineers, it provides first-principles mental models, rigorous mathematics, and runnable Python implementations for:
 
-- **The Master Textbook (195 Pages, Letter Format):** `HLD_Python_Master_Textbook_Final.pdf`, featuring 25 foundational and supplementary chapters, 6 production workshops, 31 publication-grade symmetrical vector SVG blueprints, and the disciplined 9-step FAANG Staff/Principal whiteboard interview framework.
-- **The Interactive Python Laboratory (`HLD_Python_Labs`):** A fully tested companion codebase spanning 13 packages and 106 automated unit and integration tests (100% passing) verifying concurrency controls, cache fencing, probabilistic data structures, and virtual memory KV-cache allocation.
-- **Authoritative Engineering Audits:** Rigorous technical documentation including `HLD_Technical_Audit_Report.md`, `HLD_PDF_QA_Report.md`, and `HLD_Revision_Changelog.md`.
+- **Distributed Systems Foundations:** Little's Law ($L = \lambda W$), queuing saturation, L4/L7 ingress fabric, versioned cache-aside invalidation, database sharding geometry, replication topologies, consistent hash rings with virtual nodes, CAP/PACELC trade-offs, and consistency models (Linearizable to Eventual).
+- **Asynchronous & Resilient Primitives:** Partitioned append-only commit logs (Kafka), Transactional Outbox with `FOR UPDATE SKIP LOCKED` poller, Kirsch-Mitzenmacher Bloom filters, MinHash & LSH banding, thread-safe single-probe circuit breakers, and orchestrated Sagas with reverse compensation logs.
+- **Modern Distributed Engines:** Okapi BM25 and hybrid Reciprocal Rank Fusion (RRF), Raft consensus leader election, Apache Flink event-time watermarks, Google Zanzibar Relationship-Based Access Control (ReBAC), and LSM-Tree leveled compaction vs B+Trees.
+- **AI Systems Infrastructure:** GPU HBM budget calculations ($M_{\text{weights}} + M_{\text{KV}} + M_{\text{activations}}$), vLLM PagedAttention virtual memory block allocation, Copy-on-Write (CoW) parallel sampling, Radix tree prefix caching, and fail-closed multi-tenant RAG agent platforms.
+- **Whiteboard Interview Mastery:** The disciplined 9-step FAANG whiteboard interview method with 45-minute clock allocation rubrics, interviewer negotiation scripts, and a 30-day deliberate practice curriculum.
 
 ---
 
-## 2. The 3-Tier Educational Framework
+## 2. Master Textbook PDF
 
-The curriculum is structured around a progressive, three-tier engineering framework:
+The complete, publication-grade textbook is included directly in the root of this repository:
 
-```
-+---------------------------------------------------------------------------------------------------+
-| LEVEL 3: MODERN AI INFRASTRUCTURE, HYPERSCALE WORKSHOPS & STAFF WHITEBOARD MASTERY                |
-| - Vector DBs & HNSW Graph Complexity Bounds (Empirical O(log N) vs O(N))                         |
-| - Google Zanzibar Relationship-Based Access Control (ReBAC) & Fail-Closed Multi-Tenant Gates       |
-| - vLLM PagedAttention KV-Cache Management, Copy-on-Write (CoW) Parallel Sampling & Radix Routing  |
-| - 6 End-to-End Production Workshops (Flash Sales, 50M Chat, Video, Ride-Hailing, LLM, Agent RAG)  |
-| - Disciplined 9-Step FAANG Whiteboard Interview Playbook with 45-Minute Time Allocation Rubrics   |
-+---------------------------------------------------------------------------------------------------+
-                                                  ^
-                                                  |
-+---------------------------------------------------------------------------------------------------+
-| LEVEL 2: ADVANCED CONCURRENCY, EVENT-DRIVEN PRIMITIVES & RESILIENCE                               |
-| - CAP & PACELC Trade-Offs (DynamoDB PA/EL vs MongoDB PC/EC vs Bigtable PC/EC)                    |
-| - Consistency Models Spectrum (Linearizability -> Sequential -> Causal -> Eventual)               |
-| - Distributed Commit Logs & Kafka Cooperative Sticky Assignor (Eliminating Rebalance STW)         |
-| - Transactional Outbox Pattern with Concurrent PostgreSQL `FOR UPDATE SKIP LOCKED` Polling        |
-| - Thread-Safe Circuit Breakers with Atomic Single-Probe `HALF_OPEN` Admission Gating              |
-| - Orchestrated Sagas with Structured State Logging & Strict Reverse Compensation DAGs            |
-| - Multi-Dimensional Token Buckets (RPM + TPM) with Server-Side Time Synchronization               |
-+---------------------------------------------------------------------------------------------------+
-                                                  ^
-                                                  |
-+---------------------------------------------------------------------------------------------------+
-| LEVEL 1: DISTRIBUTED SYSTEMS CORE FOUNDATIONS                                                     |
-| - Scaling Laws: Little's Law (L = λW), Amdahl's Law, and Universal Scalability Law (USL)          |
-| - Multi-Tier Ingress Fabric: Layer 4 DSR (Maglev/IPVS) vs Layer 7 Envoy Mesh vs Prefix Routers   |
-| - Versioned Cache-Aside Invalidation with Monotonic Watermark Key Preservation                    |
-| - Database Sharding Geometry & Scatter-Gather Latency Amplification Bounds                        |
-| - Database Replication Topologies, Async Replica Lag, and Monotonic Fencing Token Epochs         |
-| - Consistent Hash Rings with Virtual Nodes (Vnodes) & Google Bounded-Load Spillover               |
-+---------------------------------------------------------------------------------------------------+
+📄 **[`HLD_Python_Master_Textbook_Final.pdf`](./HLD_Python_Master_Textbook_Final.pdf)**
+
+- **Format:** 195 Pages, Letter Format, high-density professional typography
+- **Visuals:** 31 publication-grade symmetrical vector SVG architectural blueprints
+- **Structure:** 25 deep-dive core chapters, 6 full-system production blueprints (Workshops A–F), and the Staff/Principal Whiteboard Playbook & Practice Bank.
+
+---
+
+## 3. Python Laboratory Quickstart (Zero-DevOps Learner Path)
+
+All laboratory exercises and simulations run in memory in pure Python without requiring Docker, external databases, message brokers, or cloud credentials.
+
+### 1. Minimal Setup
+
+```bash
+# Navigate to the laboratory
+cd HLD_Python_Labs
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# On Windows:
+.venv\Scripts\activate
+# On Linux / macOS:
+source .venv/bin/activate
+
+# Install minimal dependencies
+pip install -r requirements.txt
 ```
 
+### 2. Run All Tests
+
+Run the full automated test suite (124 tests across all 25 chapters and 6 workshops):
+
+```bash
+pytest -q
+```
+
+*Expected output:*
+```
+........................................................................ [ 58%]
+....................................................                     [100%]
+124 passed in 1.45s
+```
+
+All 124 unit tests execute and pass in under 2 seconds.
+
+### 3. Run an Individual Chapter's Test
+
+You can test any single chapter directly:
+
+```bash
+# Test Chapter 03 (Versioned Cache-Aside & SingleFlight)
+pytest tests/test_cache_aside_versioned.py -q
+
+# Test Chapter 01 (Vegas Adaptive Concurrency Limiter)
+pytest tests/test_concurrency_limiter.py -q
+
+# Test Chapter 24 (Google Zanzibar ReBAC Engine)
+pytest tests/test_zanzibar_rebac.py -q
+
+# Test Workshop E (vLLM PagedAttention KV-Cache Simulator)
+pytest tests/test_paged_attention_simulator.py -q
+```
+
+To run individual reference solution exercises:
+
+```bash
+# Run all reference solution exercises
+pytest tests/test_chapter_reference_solutions.py -v
+
+# Run only Round-Robin load balancing (Chapter 02)
+pytest tests/test_chapter_reference_solutions.py::test_round_robin_load_balancing -v
+```
+
 ---
 
-## 3. Curriculum Roadmap & Chapter Index
+## 4. How to Find the Solution for Any Exercise
+
+Each chapter in the textbook presents architectural challenges, concurrency hazards, and design exercises. Follow this simple 4-step workflow:
+
+```
+[1. Read Chapter in PDF] ──> [2. Attempt Exercise] ──> [3. Open Solution in HLD_Python_Labs] ──> [4. Run pytest & Inspect]
+```
+
+1. **Read the chapter** in [`HLD_Python_Master_Textbook_Final.pdf`](./HLD_Python_Master_Textbook_Final.pdf).
+2. **Attempt the exercise** at the end of the chapter on paper or in code.
+3. **Open the referenced solution** script inside `HLD_Python_Labs/` indicated on the chapter's Revision Summary sheet.
+4. **Run the companion pytest test** to verify invariants, explore edge cases, and inspect assertions.
+
+### Direct Exercise-to-Solution Map
+
+For the complete, granular index mapping every single chapter and workshop to its runnable solution script and test command, consult:
+
+👉 **[TEXTBOOK_EXERCISE_SOLUTIONS.md](./TEXTBOOK_EXERCISE_SOLUTIONS.md)**
+
+---
+
+## 5. Chapter & Workshop Roadmap
 
 ```
 High Level Design/
-├── HLD_Python_Master_Textbook_Final.pdf  # The Definitive 195-Page Master Textbook
-├── HLD_Technical_Audit_Report.md        # Engineering Audit & Latest Review Findings
-├── HLD_PDF_QA_Report.md                 # Publication Quality Assurance & Layout Report
+├── HLD_Python_Master_Textbook_Final.pdf  # The 195-Page Master Textbook
+├── TEXTBOOK_EXERCISE_SOLUTIONS.md        # Granular Chapter-to-Script Index
+├── HLD_Technical_Audit_Report.md        # Technical Audit & Systems Verification Report
+├── HLD_PDF_QA_Report.md                 # Publication Quality Assurance Report
 ├── HLD_Revision_Changelog.md            # Version 3.0 Milestone Changelog
 ├── README.md                            # Repository Overview & Quickstart Guide
-└── HLD_Python_Labs/                     # Complete Runnable Python Laboratory
+└── HLD_Python_Labs/                     # Executable Python Laboratory
     ├── ch01_scalability/                # Little's Law, AIMD & Vegas Adaptive Limiters
     ├── ch03_caching/                    # Versioned Cache-Aside & SingleFlight Stampede Defense
     ├── ch07_consistent_hashing/         # Murmur/SHA-256 Hash Ring & Google Bounded Loads
@@ -78,9 +143,8 @@ High Level Design/
     ├── workshop_ecommerce/              # Flash Sale Redis Inventory & Postgres Reconciliation
     ├── workshop_llm_serving/            # vLLM PagedAttention KV-Cache, CoW & Radix Router
     ├── workshop_rag_agents/             # Enterprise RAG Orchestrator (Zanzibar + Outbox)
-    ├── tests/                           # Pytest Test Suite (106 Tests Passing)
-    ├── docker-compose.yml               # Local Infrastructure (Redis 7, Postgres 16, Kafka)
-    └── requirements.txt                 # Dependencies
+    ├── chapter_reference_solutions.py   # Reference models for Chapters 02, 04-06, 08-11, 13-14, 19-20, 22-23, 25 & Workshops B-D
+    └── tests/                           # Complete Pytest Test Suite (124 Tests Passing)
 ```
 
 ### Granular Chapter Index (195 Pages)
@@ -140,66 +204,9 @@ High Level Design/
 
 ---
 
-## 4. Laboratory Quickstart & Setup
+## 6. Educational Simulations vs Production Infrastructure
 
-### Requirements
-- Python 3.11+
-- Optional: Docker & Docker Compose (for live Redis 7, PostgreSQL 16, Kafka instances)
-
-### 1. Installation
-Clone the repository and install dependencies:
-```bash
-git clone <repo-url>
-cd "High Level Design/HLD_Python_Labs"
-pip install -r requirements.txt
-```
-
-### 2. Execute the Test Suite
-Run the comprehensive 106-test automated test suite:
-```bash
-pytest tests -v
-```
-
-Output:
-```
-============================= test session starts =============================
-platform win32 -- Python 3.11.9, pytest-8.0.0, pluggy-1.6.0
-collected 106 items
-
-tests/test_agent_rag_engine.py .............. [  7%] (7 passed)
-tests/test_bloom_and_minhash.py ............. [ 15%] (9 passed)
-tests/test_bm25_and_rrf.py .................. [ 21%] (6 passed)
-tests/test_cache_aside_versioned.py ......... [ 27%] (7 passed)
-tests/test_circuit_breaker.py ............... [ 38%] (11 passed)
-tests/test_concurrency_limiter.py ........... [ 42%] (4 passed)
-tests/test_dual_token_bucket.py ............. [ 48%] (7 passed)
-tests/test_flash_sale_inventory.py .......... [ 61%] (14 passed)
-tests/test_hash_ring.py ..................... [ 70%] (9 passed)
-tests/test_paged_attention_simulator.py ..... [ 81%] (12 passed)
-tests/test_saga_orchestrator.py ............. [ 87%] (6 passed)
-tests/test_transactional_outbox.py .......... [ 92%] (6 passed)
-tests/test_zanzibar_rebac.py ................ [100%] (8 passed)
-
-============================ 106 passed in 1.44s =============================
-```
-
-All 106 unit tests run in memory without requiring external daemon infrastructure.
-
-### 3. Spin Up Local Infrastructure (Optional)
-To test against real database and message broker containers:
-```bash
-docker-compose up -d
-```
-Spins up:
-- **Redis 7** on port `6379`
-- **PostgreSQL 16** on port `5432` (`hld_user` / `hld_password`)
-- **Apache Kafka 7.5** on port `9092`
-
----
-
-## 5. Educational Simulations vs Production Infrastructure
-
-To ensure clear engineering integrity, the laboratory codebase strictly distinguishes between **educational in-memory architecture simulations** and **production cloud infrastructure**:
+To ensure engineering integrity, this laboratory codebase explicitly separates **educational architecture simulators** from **production database and cluster engines**:
 
 | Laboratory Module | Educational Simulator Class | Production Contrast / Reference Class | Key Architectural Difference |
 |---|---|---|---|
@@ -213,64 +220,20 @@ To ensure clear engineering integrity, the laboratory codebase strictly distingu
 
 ---
 
-## 6. Key Code Examples
+## 7. Optional Infrastructure (Docker Compose)
 
-### 1. Versioned Cache-Aside with Monotonic Watermark Key (`ch03_caching`)
-```python
-from ch03_caching.cache_aside_versioned import VersionedCacheAside, SimulatedDatabase
+For advanced learners wishing to verify live network integrations against real database and message broker daemons:
 
-db = SimulatedDatabase()
-db.write("item:100", {"price": 50})
-
-cache = VersionedCacheAside(db)
-
-# Cache miss fills cache with version 1
-val = cache.get("item:100")
-
-# Invalidation advances watermark key to v2 and deletes data key
-cache.invalidate("item:100", watermark=2)
-
-# A delayed reader attempting to write stale v1 is rejected!
-rejected = cache.put_cache("item:100", {"price": 50}, version=1)
-assert rejected is False
+```bash
+docker-compose up -d
 ```
 
-### 2. Thread-Safe Single-Probe Circuit Breaker (`ch17_circuit_breaker`)
-```python
-from ch17_circuit_breaker.circuit_breaker import CircuitBreaker, CircuitBreakerProbeInFlightException
+This spins up:
+- **Redis 7** on port `6379`
+- **PostgreSQL 16** on port `5432` (`hld_user` / `hld_password`)
+- **Apache Kafka 7.5** on port `9092`
 
-cb = CircuitBreaker(failure_threshold=5, base_cooldown_seconds=10.0)
-
-@cb
-def call_external_payment_gateway():
-    # Downstream network call
-    return execute_remote_rpc()
-```
-
-### 3. Fail-Closed Google Zanzibar ReBAC Authorization (`ch24_zanzibar_rebac`)
-```python
-from ch24_zanzibar_rebac.zanzibar_rebac import ZanzibarEngine, RelationTuple
-
-engine = ZanzibarEngine()
-# doc:annual_report#viewer -> group:finance#member
-engine.write_tuple(RelationTuple("doc", "annual_report", "viewer", "group:finance#member"))
-# group:finance#member -> user:alice
-engine.write_tuple(RelationTuple("group", "finance", "member", "user:alice"))
-
-# Evaluates transitive group expansion:
-assert engine.check(user="user:alice", relation="viewer", object_str="doc:annual_report") is True
-assert engine.check(user="user:mallory", relation="viewer", object_str="doc:annual_report") is False
-```
-
----
-
-## 7. Audit & Verification Documents
-
-For deep-dive technical evaluations, inspect the companion verification artifacts:
-
-- **[HLD_Technical_Audit_Report.md](./HLD_Technical_Audit_Report.md):** Comprehensive engineering audit report detailing the resolution of issues A through K with honest verification categories.
-- **[HLD_PDF_QA_Report.md](./HLD_PDF_QA_Report.md):** Publication QA report documenting 195 verified pages, typography hierarchies, and 31 SVG blueprints.
-- **[HLD_Revision_Changelog.md](./HLD_Revision_Changelog.md):** Granular changelog tracking the architectural evolution across all editions.
+*(Note: Docker is 100% optional. The core test suite and exercises run completely in memory without containers.)*
 
 ---
 

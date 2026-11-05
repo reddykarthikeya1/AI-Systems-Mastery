@@ -85,7 +85,7 @@ import threading
 import time
 import uuid
 from dataclasses import asdict, dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 LUA_RESERVE_INVENTORY = """
 -- KEYS[1]: {item:<id>}:stock
@@ -181,7 +181,7 @@ if record.status ~= "HELD" then
 end
 
 -- Check if already expired by wall-clock timestamp
-if now and now > record.expires_at then
+if now and now >= record.expires_at then
     return cjson.encode({status = "INVALID_STATE", current_status = "EXPIRED"})
 end
 
@@ -273,6 +273,17 @@ if not record_json then
 end
 
 local record = cjson.decode(record_json)
+
+-- Rollback can only succeed if the reservation is in a roll-backable state and hasn't been rolled back already.
+if record.status ~= "CONFIRMED" and record.status ~= "HELD" and record.status ~= "PENDING_RECONCILIATION" then
+    return cjson.encode({
+        status = "ALREADY_ROLLED_BACK",
+        current_status = record.status,
+        reservation_id = res_id,
+        quantity = record.quantity
+    })
+end
+
 record.status = "RELEASED"
 redis.call('INCRBY', stock_key, record.quantity)
 local updated_json = cjson.encode(record)
@@ -286,6 +297,17 @@ class ReservationState(str, enum.Enum):
     CONFIRMED = "CONFIRMED"
     RELEASED = "RELEASED"
     EXPIRED = "EXPIRED"
+    PENDING_RECONCILIATION = "PENDING_RECONCILIATION"
+
+
+def _is_ambiguous_timeout(exc: Exception) -> bool:
+    """Identifies ambiguous timeout and network partition errors during database reconciliation."""
+    if isinstance(exc, TimeoutError):
+        return True
+    exc_type_name = type(exc).__name__.lower()
+    if "timeout" in exc_type_name:
+        return True
+    return False
 
 
 @dataclass
@@ -310,15 +332,18 @@ class ReservationResult:
 class PostgresInventoryStore:
     """Educational In-Memory Simulation for Local Testing and Demonstration.
 
-    Simulates a PostgreSQL durable relational database with row-level locking (SELECT FOR UPDATE)
-    and transactional order persistence. In a production deployment, this would be an actual ACID-compliant
-    RDBMS connection pool (e.g. asyncpg or psycopg) writing durably to Write-Ahead Logs (WAL).
+    Simulates a PostgreSQL durable relational database with row-level locking (SELECT FOR UPDATE),
+    transactional order persistence, and idempotent reconciliation tracking.
+    NOTE: This is an educational in-memory simulation component. In a production deployment,
+    this would be an actual ACID-compliant RDBMS connection pool (e.g. asyncpg or psycopg)
+    writing durably to Write-Ahead Logs (WAL) on disk.
     """
 
     def __init__(self) -> None:
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
         self.inventory: Dict[str, int] = {}
         self.orders: Dict[str, Dict[str, Any]] = {}
+        self._reconciled_reservations: Dict[str, Any] = {}
 
     def set_initial_inventory(self, item_id: str, quantity: int) -> None:
         with self._lock:
@@ -326,11 +351,15 @@ class PostgresInventoryStore:
 
     def reconcile_confirmed_order(self, item_id: str, reservation: ReservationRecord) -> bool:
         with self._lock:
+            if reservation.reservation_id in self._reconciled_reservations:
+                return True
             current = self.inventory.get(item_id, 0)
             if current < reservation.quantity:
                 return False
             self.inventory[item_id] -= reservation.quantity
-            self.orders[reservation.reservation_id] = asdict(reservation)
+            order_data = asdict(reservation)
+            self.orders[reservation.reservation_id] = order_data
+            self._reconciled_reservations[reservation.reservation_id] = order_data
             return True
 
 
@@ -343,6 +372,9 @@ class FlashSaleInventoryService:
 
     Coordinates high-concurrency inventory reservation using Redis Cluster hash tags,
     Lua script atomic execution, and PostgreSQL authoritative reconciliation.
+    NOTE: When redis_client is None, this service uses internal dictionaries
+    (_stock_store, _reserves_store, _idemp_store, _expirations_store) as an educational in-memory
+    Redis simulation for local testing and demonstration without requiring a running Redis cluster.
     """
 
     def __init__(
@@ -352,7 +384,7 @@ class FlashSaleInventoryService:
     ) -> None:
         self.postgres_db = postgres_db
         self.redis = redis_client
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
         # In-memory cluster hash simulation
         self._stock_store: Dict[str, int] = {}
@@ -361,6 +393,7 @@ class FlashSaleInventoryService:
         self._expirations_store: Dict[str, Dict[str, float]] = {}
         self._res_to_item: Dict[str, str] = {}
         self.inconsistencies: List[Dict[str, Any]] = []
+        self._rolled_back_reservations: Set[str] = set()
 
     def _keys(self, item_id: str) -> Tuple[str, str, str, str]:
         """Cluster hash tags guarantee all keys reside on the same cluster slot."""
@@ -504,6 +537,96 @@ class FlashSaleInventoryService:
             self._res_to_item[res_id] = item_id
             return ReservationResult(success=True, status="HELD", record=rec)
 
+    def rollback_confirmation(
+        self,
+        item_id: str,
+        reservation_id: Optional[str] = None,
+    ) -> ReservationResult:
+        """Rolls back a confirmation idempotently, restoring inventory at most once."""
+        if reservation_id is None:
+            res_id = item_id
+            target_item_id = self._res_to_item.get(res_id)
+            if target_item_id is None:
+                for it_id, rmap in self._reserves_store.items():
+                    if res_id in rmap:
+                        target_item_id = it_id
+                        break
+            item_id = target_item_id or res_id
+            reservation_id = res_id
+
+        stock_k, reserves_k, _, _ = self._keys(item_id)
+
+        if self.redis is not None:
+            if reservation_id in self._rolled_back_reservations:
+                return ReservationResult(
+                    success=True,
+                    status="RELEASED",
+                    message="Reservation already rolled back",
+                )
+            raw = self.redis.eval(
+                LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id
+            )
+            data = json.loads(raw)
+            if data.get("status") in ("NOT_FOUND", "ALREADY_ROLLED_BACK", "INVALID_STATE"):
+                if data.get("status") == "ALREADY_ROLLED_BACK":
+                    self._rolled_back_reservations.add(reservation_id)
+                    return ReservationResult(
+                        success=True,
+                        status="RELEASED",
+                        message="Reservation already rolled back",
+                    )
+                return ReservationResult(
+                    success=False,
+                    status=data["status"],
+                    message=data.get("message", "Rollback failed"),
+                )
+            self._rolled_back_reservations.add(reservation_id)
+            rec = ReservationRecord(
+                reservation_id=data["reservation_id"],
+                user_id=data["user_id"],
+                quantity=data["quantity"],
+                status=ReservationState(data["status"]),
+                created_at=data["created_at"],
+                expires_at=data["expires_at"],
+            )
+            return ReservationResult(success=True, status="RELEASED", record=rec)
+
+        with self._lock:
+            if reservation_id in self._rolled_back_reservations:
+                reserves_map = self._reserves_store.get(item_id, {})
+                rec = reserves_map.get(reservation_id)
+                return ReservationResult(
+                    success=True,
+                    status="RELEASED",
+                    record=rec,
+                    message="Reservation already rolled back",
+                )
+
+            reserves_map = self._reserves_store.get(item_id, {})
+            rec = reserves_map.get(reservation_id)
+            if not rec:
+                return ReservationResult(success=False, status="NOT_FOUND")
+
+            if rec.status not in (
+                ReservationState.CONFIRMED,
+                ReservationState.HELD,
+                ReservationState.PENDING_RECONCILIATION,
+            ):
+                return ReservationResult(
+                    success=False,
+                    status="INVALID_STATE",
+                    message=f"Cannot rollback reservation with status {rec.status.value}",
+                    record=rec,
+                )
+
+            rec.status = ReservationState.RELEASED
+            self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
+            self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+            self._rolled_back_reservations.add(reservation_id)
+            return ReservationResult(success=True, status="RELEASED", record=rec)
+
+    rollback = rollback_confirmation
+
     def confirm(
         self,
         item_id: str,
@@ -559,8 +682,27 @@ class FlashSaleInventoryService:
             try:
                 pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
             except Exception as exc:
-                # Dual-write crash / ambiguous timeout window: attempt rollback and record inconsistency
-                self.redis.eval(LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id)
+                if _is_ambiguous_timeout(exc):
+                    # Ambiguous timeout: do NOT blindly restore stock!
+                    rec.status = ReservationState.PENDING_RECONCILIATION
+                    rec_dict = asdict(rec)
+                    rec_dict["status"] = "PENDING_RECONCILIATION"
+                    self.redis.hset(reserves_k, reservation_id, json.dumps(rec_dict))
+                    self.inconsistencies.append({
+                        "reservation_id": reservation_id,
+                        "item_id": item_id,
+                        "error": str(exc),
+                        "timestamp": now,
+                        "status": "PENDING_RECONCILIATION",
+                    })
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_RECONCILIATION",
+                        message=f"PostgreSQL reconciliation timeout: {exc}",
+                        record=rec,
+                    )
+                # Dual-write crash window: attempt rollback and record inconsistency
+                rb_res = self.rollback_confirmation(item_id, reservation_id)
                 rec.status = ReservationState.RELEASED
                 self.inconsistencies.append({
                     "reservation_id": reservation_id,
@@ -572,18 +714,18 @@ class FlashSaleInventoryService:
                     success=False,
                     status="RECONCILIATION_FAILED",
                     message=f"PostgreSQL reconciliation error: {exc}",
-                    record=rec,
+                    record=rb_res.record or rec,
                 )
 
             if not pg_success:
                 # Rollback Redis confirmation to maintain ledger consistency
-                self.redis.eval(LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id)
+                rb_res = self.rollback_confirmation(item_id, reservation_id)
                 rec.status = ReservationState.RELEASED
                 return ReservationResult(
                     success=False,
                     status="RECONCILIATION_FAILED",
                     message="PostgreSQL authoritative ledger reconciliation failed",
-                    record=rec,
+                    record=rb_res.record or rec,
                 )
             return ReservationResult(success=True, status="CONFIRMED", record=rec)
 
@@ -602,8 +744,8 @@ class FlashSaleInventoryService:
                     record=rec,
                 )
 
-            # Check if reservation has expired by timestamp
-            if now > rec.expires_at:
+            # Check if reservation has expired by timestamp (strictly expired at now >= expires_at)
+            if now >= rec.expires_at:
                 return ReservationResult(
                     success=False,
                     status="INVALID_STATE",
@@ -618,10 +760,25 @@ class FlashSaleInventoryService:
             try:
                 pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
             except Exception as exc:
-                # Crash / unhandled network timeout simulation: rollback in-memory state and log inconsistency
-                rec.status = ReservationState.RELEASED
-                self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
-                self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+                if _is_ambiguous_timeout(exc):
+                    # Ambiguous timeout: do NOT blindly restore stock!
+                    rec.status = ReservationState.PENDING_RECONCILIATION
+                    self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+                    self.inconsistencies.append({
+                        "reservation_id": reservation_id,
+                        "item_id": item_id,
+                        "error": str(exc),
+                        "timestamp": now,
+                        "status": "PENDING_RECONCILIATION",
+                    })
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_RECONCILIATION",
+                        message=f"PostgreSQL reconciliation timeout: {exc}",
+                        record=rec,
+                    )
+                # Crash / unhandled network error: rollback in-memory state and log inconsistency
+                rb_res = self.rollback_confirmation(item_id, reservation_id)
                 self.inconsistencies.append({
                     "reservation_id": reservation_id,
                     "item_id": item_id,
@@ -632,19 +789,17 @@ class FlashSaleInventoryService:
                     success=False,
                     status="RECONCILIATION_FAILED",
                     message=f"PostgreSQL reconciliation error: {exc}",
-                    record=rec,
+                    record=rb_res.record or rec,
                 )
 
             if not pg_success:
                 # Reconcile failure: authoritative ledger exhausted; release Redis stock hold
-                rec.status = ReservationState.RELEASED
-                self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
-                self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+                rb_res = self.rollback_confirmation(item_id, reservation_id)
                 return ReservationResult(
                     success=False,
                     status="RECONCILIATION_FAILED",
                     message="PostgreSQL authoritative ledger reconciliation failed",
-                    record=rec,
+                    record=rb_res.record or rec,
                 )
 
             rec.status = ReservationState.CONFIRMED

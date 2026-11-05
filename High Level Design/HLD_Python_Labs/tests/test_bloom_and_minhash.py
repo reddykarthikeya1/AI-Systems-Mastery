@@ -50,13 +50,22 @@ def test_counting_bloom_filter_add_and_remove():
     assert cbf.contains("user:alpha") is True
     assert cbf.contains("user:beta") is False
 
-    # Remove item
-    removed = cbf.remove("user:alpha")
-    assert removed is True
+    # Calling remove without verified_present raises TypeError (no default allowed)
+    with pytest.raises(TypeError):
+        cbf.remove("user:alpha")
+
+    # Calling remove with verified_present=False raises ValueError
+    with pytest.raises(ValueError) as excinfo:
+        cbf.remove("user:alpha", verified_present=False)
+    assert "requires explicit verified_present=True proof of prior insertion" in str(excinfo.value)
+
+    # Legitimate removal with explicit verified_present=True
+    cbf.remove("user:alpha", verified_present=True)
     assert cbf.contains("user:alpha") is False
 
-    # Remove non-existent item
-    assert cbf.remove("user:beta") is False
+    # Remove non-existent item with verified_present=True does not error
+    cbf.remove("user:beta", verified_present=True)
+    assert cbf.contains("user:beta") is False
 
 
 def test_counting_bloom_filter_false_positive_removal_risk():
@@ -64,9 +73,10 @@ def test_counting_bloom_filter_false_positive_removal_risk():
 
     1. Legitimate item A is inserted.
     2. Item B was NEVER inserted, but contains(Item B) returns True due to a false-positive hash collision.
-    3. Blindly removing Item B decrements the shared counter.
-    4. Legitimate Item A now returns contains(Item A) == False -> A FALSE NEGATIVE has been created!
-    5. Also validates that remove_safe(item, verified_present=False) raises ValueError to guard against this.
+    3. Calling remove() or remove_safe() without keyword arguments raises TypeError.
+    4. Calling remove() or remove_safe() with verified_present=False raises ValueError.
+    5. If a caller erroneously forces removal with verified_present=True (falsely assuming existence),
+       decrementing shared counters corrupts the filter and creates a FALSE NEGATIVE for legitimate Item A!
     """
     cbf = CountingBloomFilter(size_m=16, hash_count_k=1)
 
@@ -87,14 +97,23 @@ def test_counting_bloom_filter_false_positive_removal_risk():
     # Probabilistic false positive: contains() returns True even though it was never added!
     assert cbf.contains(colliding_uninserted) is True
 
-    # remove_safe with verified_present=False blocks the dangerous unverified removal
+    # Omitting keyword argument raises TypeError
+    with pytest.raises(TypeError):
+        cbf.remove(colliding_uninserted)
+    with pytest.raises(TypeError):
+        cbf.remove_safe(colliding_uninserted)
+
+    # remove and remove_safe with verified_present=False block the unverified removal
     with pytest.raises(ValueError) as excinfo:
         cbf.remove_safe(colliding_uninserted, verified_present=False)
-    assert "False-Positive Removal Hazard" in str(excinfo.value)
+    assert "requires explicit verified_present=True proof of prior insertion" in str(excinfo.value)
 
-    # If blindly removed via remove():
-    removed = cbf.remove(colliding_uninserted)
-    assert removed is True
+    with pytest.raises(ValueError) as excinfo:
+        cbf.remove(colliding_uninserted, verified_present=False)
+    assert "requires explicit verified_present=True proof of prior insertion" in str(excinfo.value)
+
+    # If mistakenly verified and removed:
+    cbf.remove(colliding_uninserted, verified_present=True)
 
     # THE HAZARD DEMONSTRATED: Legitimate item_a now suffers a FALSE NEGATIVE!
     assert cbf.contains(item_a) is False
@@ -109,11 +128,11 @@ def test_counting_bloom_filter_duplicates():
     assert cbf.contains("order:101") is True
 
     # First removal decrements counter, item still exists
-    assert cbf.remove("order:101") is True
+    cbf.remove("order:101", verified_present=True)
     assert cbf.contains("order:101") is True
 
     # Second removal decrements counter to zero
-    assert cbf.remove("order:101") is True
+    cbf.remove("order:101", verified_present=True)
     assert cbf.contains("order:101") is False
 
 

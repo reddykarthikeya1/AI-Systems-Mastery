@@ -133,12 +133,14 @@ class CountingBloomFilter:
        return contains() == False!
     4. Result: A FALSE NEGATIVE is induced, violating the fundamental guarantee of Bloom filters!
 
-    SAFETY CONTRACT:
-    ================
+    SAFETY CONTRACT & EXPLICIT VERIFICATION:
+    ========================================
     Callers MUST NOT remove unverified items blindly based solely on contains(item) == True.
     Removal requires external proof of prior insertion (e.g. authoritative database record
-    or primary key lookup before removing from the cache/filter). Use `remove_safe()` to
-    enforce this architectural contract.
+    or primary key lookup before removing from the cache/filter). Both `remove()` and
+    `remove_safe()` require explicit, keyword-only `verified_present=True` confirmation with
+    NO default. Omitting this parameter or passing `verified_present=False` raises a ValueError,
+    preventing accidental blind removals from poisoning the filter.
     """
 
     def __init__(self, size_m: int, hash_count_k: int, counter_max: int = 255) -> None:
@@ -186,45 +188,44 @@ class CountingBloomFilter:
                 return False
         return True
 
-    def remove(self, item: str) -> bool:
-        """Decrement counters for the item if present in filter.
+    def remove(self, item: str, *, verified_present: bool) -> None:
+        """Decrement counters for the item with explicit prior existence verification.
 
-        WARNING - False-Positive Removal Hazard:
-        If `item` was not actually added previously and this is a false positive collision,
-        decrementing its counters will corrupt the filter and induce false negatives
-        for other legitimately added items. External verification of prior insertion is required.
+        FALSE-POSITIVE REMOVAL HAZARD:
+        If an uninserted item is removed because contains(item) was True (a false positive collision),
+        decrementing counters belonging to other legitimate items will corrupt the filter and induce
+        FALSE NEGATIVES for those legitimate items.
+        Therefore, callers MUST verify prior insertion proof externally (e.g., authoritative DB lookup)
+        and explicitly pass `verified_present=True`.
 
-        Returns:
-            True if item was present according to filter and counters decremented, False otherwise.
+        Args:
+            item: Element to remove.
+            verified_present: Keyword-only boolean with NO default. Must be True, confirming the caller
+                has verified the item's prior existence in the authoritative system of record.
+
+        Raises:
+            ValueError: If `verified_present` is not True.
         """
+        if not verified_present:
+            raise ValueError(
+                "CountingBloomFilter.remove() requires explicit verified_present=True proof of prior insertion. "
+                "Removing an unverified false-positive match corrupts counters and induces false negatives for legitimate items."
+            )
+
         if not self.contains(item):
-            return False
+            return
 
         for idx in self._get_hashes(item):
             if self.counters[idx] > 0:
                 self.counters[idx] -= 1
         self.items_count = max(0, self.items_count - 1)
-        return True
 
-    def remove_safe(self, item: str, verified_present: bool = True) -> bool:
+    def remove_safe(self, item: str, *, verified_present: bool) -> None:
         """Safely remove an item with explicit contract of external prior insertion proof.
 
-        Args:
-            item: Element to remove.
-            verified_present: True indicates the caller verified external proof of existence
-                (e.g., via primary database record lookup). If False, raises ValueError to
-                prevent the False-Positive Removal Hazard.
-
-        Returns:
-            True if removed, False if not present in the filter.
+        Delegates directly to `remove(item, verified_present=verified_present)`.
         """
-        if not verified_present:
-            raise ValueError(
-                f"Cannot safely remove '{item}' without external proof of prior insertion. "
-                "Blind removal on a false positive collision decrements shared counters and "
-                "causes false negatives for other legitimately stored items (False-Positive Removal Hazard)."
-            )
-        return self.remove(item)
+        self.remove(item, verified_present=verified_present)
 
 
 class MinHash:
