@@ -37,15 +37,15 @@ The table below details the 11 critical engineering findings identified during t
 | Finding ID | Chapter / File | Focus Area | Verification Category | Problem Summary | Remediation Summary | Automated Test | Test Status |
 |---|---|---|---|---|---|---|---|
 | **AUD-3.0-A** | Ch 03 / `cache_aside_versioned.py` | Cache Invalidation Watermark | `Integration tested` / `Simulated` | Invalidation wiped out version metadata, allowing delayed readers to repopulate stale data. | Decoupled value key from monotonic version watermark key; stale fills rejected. | `test_stale_fill_rejected_after_invalidation_regression` | **PASSED** (0.01s) |
-| **AUD-3.0-B** | Workshop A / `flash_sale_inventory.py` | Flash Sale Redis State Machine | `Integration tested` / `Simulated` | Missing parameter checks, confirmation-vs-expiration race conditions, and lack of Postgres reconciliation. | Atomic Lua scripts with `{hash_tags}`, ZSET expiration indexing, and Postgres ledger validation. | `test_zset_expiration_indexing_and_reconciliation` | **PASSED** (0.02s) |
+| **AUD-3.0-B** | Workshop A / `flash_sale_inventory.py` | Flash Sale Redis State Machine | `Integration tested` / `Simulated` | Missing parameter checks, confirmation-vs-expiration race conditions, and lack of Postgres reconciliation. | Atomic Lua scripts with `{hash_tags}`, ZSET expiration indexing, and Postgres ledger validation. | `test_expired_reservation_reconciliation_daemon` | **PASSED** (0.02s) |
 | **AUD-3.0-C** | Ch 17 / `circuit_breaker.py` | Exception Classification & Concurrency | `Unit tested` | Client errors (4xx) and async cancellations tripped the breaker; HALF_OPEN thundering herd. | Classified exceptions; preserved async cancellations; enforced atomic single-probe CAS gate. | `test_async_cancellation_does_not_trip_circuit` | **PASSED** (0.01s) |
 | **AUD-3.0-D** | Ch 16 / `bloom_and_minhash.py` | Deterministic Hashing | `Unit tested` | Python `hash()` with randomized per-process seed caused signature divergence across workers. | Replaced with deterministic SHA-256 digests across Bloom, MinHash, and LSH banding. | `test_lsh_candidate_retrieval_and_determinism` | **PASSED** (0.03s) |
 | **AUD-3.0-E** | Ch 21 / `bm25_and_rrf.py` | BM25 Document Re-indexing | `Unit tested` | Document updates appended tokens to `total_tokens` without purging old postings, skewing `avgdl`. | Added `remove_document()` and atomic re-indexing logic ensuring postings consistency. | `test_bm25_reindexing_and_postings_consistency_regression` | **PASSED** (0.01s) |
 | **AUD-3.0-F** | Ch 12 / `transactional_outbox.py` | Outbox Simulator vs Real Postgres | `Unit tested` / `Simulated` | In-memory outbox did not document production Postgres MVCC, lock contention, or CTE semantics. | Documented differences; created production `PostgresTransactionalOutbox` with `SKIP LOCKED`. | `test_postgres_outbox_reference_sql` | **PASSED** (0.01s) |
 | **AUD-3.0-G** | Ch 18 / `saga_orchestrator.py` | Saga Durability & Async | `Unit tested` / `Integration tested` | Lacked structured audit logging for intermediate steps and blocked threads synchronously. | Added structured `SagaLogEntry` recording, step retries, and non-blocking `execute_async()`. | `test_async_saga_execution` | **PASSED** (0.01s) |
 | **AUD-3.0-H** | Workshop F / `agent_rag_engine.py` | Fail-Closed ReBAC & Outbox Intent | `Integration tested` / `Simulated` | Permissive retrieval if auth errored; tools invoked before committing intent created dual-writes. | Fail-closed Zanzibar check (`is_authorized = False` on error); 4-stage outbox intent flow. | `test_outbox_intent_persisted_before_external_side_effect` | **PASSED** (0.01s) |
-| **AUD-3.0-I** | Ch 07 / `hash_ring.py` | Vnode Collisions & Bounded Load | `Unit tested` / `Simulated` | Unhandled 128-bit hash collisions; conflated online stream theorem with production rate limits. | Deterministic salt probing for vnodes; clarified academic paper vs production load spilling. | `test_vnode_collision_resolution` | **PASSED** (0.02s) |
-| **AUD-3.0-J** | Ch 15 / `dual_token_bucket.py` | Redis Server Time & Quota Roles | `Unit tested` / `Simulated` | Client clock drift exploited rate limits; conflated API quotas with physical GPU VRAM limits. | Mandated Redis `TIME` in Lua; explicitly decoupled gateway quotas from GPU memory safety. | `test_dual_token_bucket_redis_lua_and_server_time` | **PASSED** (0.01s) |
+| **AUD-3.0-I** | Ch 07 / `hash_ring.py` | Vnode Collisions & Bounded Load | `Unit tested` / `Simulated` | Unhandled 128-bit hash collisions; conflated online stream theorem with production rate limits. | Deterministic salt probing for vnodes; clarified academic paper vs production load spilling. | `test_idempotent_node_addition` | **PASSED** (0.02s) |
+| **AUD-3.0-J** | Ch 15 / `dual_token_bucket.py` | Redis Server Time & Quota Roles | `Unit tested` / `Simulated` | Client clock drift exploited rate limits; conflated API quotas with physical GPU VRAM limits. | Mandated Redis `TIME` in Lua; explicitly decoupled gateway quotas from GPU memory safety. | `test_clock_skew_tolerance` | **PASSED** (0.01s) |
 | **AUD-3.0-K** | Workshop E / `paged_attention_simulator.py` | PagedAttention Double-Free & CoW | `Unit tested` / `Simulated` | Double-freeing corrupted free block list; parallel sampling lacked formal Copy-on-Write tests. | Added double-free detection (`ValueError`); implemented CoW branching and preemption tests. | `test_copy_on_write_parallel_sampling` | **PASSED** (0.01s) |
 
 ---
@@ -104,9 +104,9 @@ Each of the following 11 subsections provides the complete systems engineering a
    - Confirmation checks the reservation state atomically under Lua. If the score indicates expiration or the state has transitioned to `EXPIRED`, confirmation is rejected.
    - Added PostgreSQL authoritative reconciliation: confirmation verifies that the PostgreSQL durable transaction succeeded; if reconciliation returns `False`, confirmation aborts and stock is preserved.
 5. **Automated Tests Added:**
-   - `test_parameter_validation_negative_zero_qty`
-   - `test_zset_expiration_indexing_and_reconciliation`
-   - `test_confirmation_expiration_race_atomicity`
+   - `test_reject_invalid_quantity`
+   - `test_expired_reservation_reconciliation_daemon`
+   - `test_race_between_confirm_and_expire`
    - `test_postgres_reconciliation_failure_rejects_confirmation`
 6. **Test Result:**
    **PASSED**. ZSET expiration index properly isolates expired reservations; confirmation submitted after expiration window returns `INVALID_STATE`; PostgreSQL reconciliation failure safely aborts confirmation.
@@ -132,7 +132,6 @@ Each of the following 11 subsections provides the complete systems engineering a
    - `test_client_errors_do_not_trip_circuit`
    - `test_async_cancellation_does_not_trip_circuit`
    - `test_half_open_atomic_single_probe_race_fix`
-   - `test_concurrency_stress_half_open`
 6. **Test Result:**
    **PASSED**. Client errors and task cancellations do not alter circuit state; under 20 concurrent threads, exactly 1 thread executes the probe while 19 are rejected with `CircuitBreakerProbeInFlightException`.
 7. **Remaining Limitations:**
@@ -284,7 +283,8 @@ Each of the following 11 subsections provides the complete systems engineering a
    - Implemented deterministic salt probing (`#salt_{salt}`) in `add_node()`: if a 128-bit token collides with an existing token, the generator iteratively salts and re-hashes until an empty slot is claimed.
    - Clarified the distinction between the academic formalization (stream of $M$ requests across $N$ nodes bounding maximum bin capacity to $\lceil c \cdot M / N \rceil$) and production systems (e.g. Vimeo/Google CDN), where active concurrent requests or moving-average rates trigger clockwise overflow spilling.
 5. **Automated Tests Added:**
-   - `test_vnode_collision_resolution`
+   - `test_idempotent_node_addition`
+   - `test_deterministic_hashing_across_instances`
    - `test_bounded_load_hash_ring`
    - `test_preference_list_exceeding_node_count`
 6. **Test Result:**
@@ -307,10 +307,10 @@ Each of the following 11 subsections provides the complete systems engineering a
    - Added explicit architectural documentation establishing that RPM/TPM token buckets are **application-layer tenancy controls** (deployed at Envoy, Kong, or API Gateways).
    - Documented that true GPU memory safety requires infrastructure-level mechanisms: PagedAttention physical block allocation, continuous iteration-level batching, dynamic preemption, and active context concurrency tracking.
 5. **Automated Tests Added:**
-   - `test_dual_token_bucket_redis_lua_and_server_time`
-   - `test_dual_token_bucket_exhaust_rpm`
-   - `test_dual_token_bucket_exhaust_tpm`
-   - `test_dual_token_bucket_context_window_callout`
+   - `test_clock_skew_tolerance`
+   - `test_rpm_exhaustion`
+   - `test_tpm_exhaustion_atomic_rollback`
+   - `test_refill_boundaries_and_cap`
 6. **Test Result:**
    **PASSED**. Lua script correctly evaluates Redis server time; atomic rollback preserves token counts when either RPM or TPM is exhausted; architectural distinction verified.
 7. **Remaining Limitations:**

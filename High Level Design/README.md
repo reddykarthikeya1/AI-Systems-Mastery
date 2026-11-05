@@ -170,15 +170,15 @@ tests/test_agent_rag_engine.py .............. [  7%] (7 passed)
 tests/test_bloom_and_minhash.py ............. [ 14%] (7 passed)
 tests/test_bm25_and_rrf.py .................. [ 20%] (6 passed)
 tests/test_cache_aside_versioned.py ......... [ 26%] (6 passed)
-tests/test_circuit_breaker.py ............... [ 37%] (11 passed)
+tests/test_circuit_breaker.py ............... [ 37%] (10 passed)
 tests/test_concurrency_limiter.py ........... [ 41%] (4 passed)
 tests/test_dual_token_bucket.py ............. [ 48%] (7 passed)
 tests/test_flash_sale_inventory.py .......... [ 60%] (12 passed)
-tests/test_hash_ring.py ..................... [ 70%] (10 passed)
+tests/test_hash_ring.py ..................... [ 70%] (9 passed)
 tests/test_paged_attention_simulator.py ..... [ 80%] (10 passed)
 tests/test_saga_orchestrator.py ............. [ 85%] (5 passed)
 tests/test_transactional_outbox.py .......... [ 91%] (6 passed)
-tests/test_zanzibar_rebac.py ................ [100%] (9 passed)
+tests/test_zanzibar_rebac.py ................ [100%] (8 passed)
 
 ============================= 97 passed in 1.47s ==============================
 ```

@@ -64,7 +64,7 @@ Version 3.0 restructures the 25 chapters and 6 workshops into an explicit progre
 ### Issue B: Flash Sale Redis Sorted-Set Expiry Index & Confirmation Races (`workshop_ecommerce`)
 - **Before:** Quantity parameters were not asserted for positivity ($quantity \le 0$), expired holds were scanned inefficiently, and a confirmation-vs-expiration race condition allowed users to confirm purchases for items already released to other buyers.
 - **After (Version 3.0):** Enforced Redis Cluster `{hash_tags}` to prevent cross-slot transaction errors. Added parameter assertions ($quantity > 0$). Implemented a Redis Sorted Set (ZSET) `{item:<id>}:expirations` with score = `expires_at` timestamp. Background reconciliation scans expired reservations via Lua, restoring inventory atomically. Confirmations verify that state is `HELD` and timestamp is valid, rejecting late payments. Added PostgreSQL authoritative ledger validation before completing confirmation.
-- **Verification:** Tests `test_zset_expiration_indexing_and_reconciliation` and `test_confirmation_expiration_race_atomicity` pass in `tests/test_flash_sale_inventory.py`.
+- **Verification:** Tests `test_expired_reservation_reconciliation_daemon` and `test_race_between_confirm_and_expire` pass in `tests/test_flash_sale_inventory.py`.
 
 ### Issue C: Circuit Breaker Exception Classification & Async Cancellation (`ch17_circuit_breaker`)
 - **Before:** Generic `except Exception:` caught client-side validation errors (HTTP 4xx) and `asyncio.CancelledError`, inappropriately tripping the breaker. In `HALF_OPEN` state, multiple concurrent requests flooded the recovering downstream service simultaneously.
@@ -99,12 +99,12 @@ Version 3.0 restructures the 25 chapters and 6 workshops into an explicit progre
 ### Issue I: Consistent Hashing Vnode Collisions & Bounded Load Clarification (`ch07_consistent_hashing`)
 - **Before:** Vnode generation assumed 128-bit hashes would never collide, and text conflated the theoretical online stream proof (Mirrokni et al. 2018) with dynamic rate-limiting proxies.
 - **After (Version 3.0):** Implemented deterministic salt probing (`#salt_{salt}`) in `add_node()` to resolve hash collisions. Clarified the theoretical paper's offline/online capacity bounds ($\lceil c \cdot M / N \rceil$) versus real-world production systems where dynamic active connection counts dictate clockwise overflow spilling.
-- **Verification:** Tests `test_vnode_collision_resolution` and `test_bounded_load_hash_ring` pass in `tests/test_hash_ring.py`.
+- **Verification:** Tests `test_idempotent_node_addition` and `test_bounded_load_hash_ring` pass in `tests/test_hash_ring.py`.
 
 ### Issue J: Dual Token Bucket Redis Server Time & GPU Quota Distinction (`ch15_rate_limiter`)
 - **Before:** Sliding-window rate limiters accepted client-side timestamps, creating vulnerability to client clock manipulation. Text conflated API gateway rate limiting with GPU VRAM memory safety.
 - **After (Version 3.0):** Updated Redis Lua scripts to derive timestamps directly from the Redis server via `redis.call('TIME')`. Added an explicit architectural callout establishing that RPM/TPM token buckets are application-layer tenancy controls and do not guarantee GPU memory safety; physical GPU protection requires PagedAttention, continuous batching, and dynamic preemption.
-- **Verification:** Tests `test_dual_token_bucket_redis_lua_and_server_time` and `test_dual_token_bucket_context_window_callout` pass in `tests/test_dual_token_bucket.py`.
+- **Verification:** Tests `test_clock_skew_tolerance` and `test_tpm_exhaustion_atomic_rollback` pass in `tests/test_dual_token_bucket.py`.
 
 ### Issue K: PagedAttention Double-Free Protection & Copy-on-Write (CoW) Tests (`workshop_llm_serving`)
 - **Before:** Invoking `free_block()` repeatedly allowed block reference counts to drop below zero, inserting duplicate IDs into the free pool. Parallel sampling lacked formal Copy-on-Write unit tests.

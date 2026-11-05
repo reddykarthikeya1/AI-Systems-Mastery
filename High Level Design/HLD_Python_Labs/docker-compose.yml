@@ -1,6 +1,15 @@
+# High-Level Design (HLD) Python Labs - Educational Infrastructure
+# Provisions local instances of Redis, PostgreSQL, and Kafka for hands-on systems design labs.
 version: '3.8'
 
 services:
+  # ============================================================================
+  # 1. REDIS: In-Memory Key-Value Store & Distributed Coordination
+  # Educational Roles:
+  #   - Chapter 03 (Caching): Versioned Cache-Aside & Atomic Stale-Fill Rejection (Lua)
+  #   - Chapter 15 (Rate Limiting): Dual Token Bucket (RPM + TPM) with server-side TIME
+  #   - Workshop E-Commerce: Flash Sale High-Throughput Write-Ahead Inventory Reservation
+  # ============================================================================
   redis:
     image: redis:7.2-alpine
     container_name: hld_redis
@@ -15,6 +24,13 @@ services:
       timeout: 3s
       retries: 5
 
+  # ============================================================================
+  # 2. POSTGRESQL: Authoritative ACID Relational Ledger & Outbox
+  # Educational Roles:
+  #   - Chapter 12 (Event-Driven): Transactional Outbox with 'FOR UPDATE SKIP LOCKED'
+  #   - Chapter 24 (Authorization): Zanzibar ReBAC relational tuple storage
+  #   - Workshop E-Commerce: Durable, authoritative financial and inventory ledger
+  # ============================================================================
   postgres:
     image: postgres:16-alpine
     container_name: hld_postgres
@@ -32,6 +48,13 @@ services:
       timeout: 3s
       retries: 5
 
+  # ============================================================================
+  # 3. KAFKA & ZOOKEEPER: Distributed Event Streaming & Outbox Message Broker
+  # Educational Roles:
+  #   - Chapter 12 (Event-Driven): High-throughput append-only message log for
+  #     asynchronous Transactional Outbox publishing and Idempotent Consumer Inboxes
+  #   - Chapter 18 (Sagas): Distributed choreography/orchestration event backbone
+  # ============================================================================
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: hld_zookeeper
@@ -58,3 +81,4 @@ services:
 volumes:
   redis_data:
   postgres_data:
+
