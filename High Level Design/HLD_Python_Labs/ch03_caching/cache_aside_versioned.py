@@ -20,13 +20,25 @@ To eliminate this race:
 1. Separate Cached Value Key from Monotonic Version Watermark Key:
    - Data Key: `{entity}:data`
    - Watermark Key: `{entity}:v_watermark`
-2. Invalidation removes `{entity}:data`, but ADVANCES or RETAINS `{entity}:v_watermark`.
+2. Invalidation removes `{entity}:data`, but STRICTLY ADVANCES `{entity}:v_watermark`.
+   - If invalidating without an explicit version (watermark=None), the watermark is automatically
+     incremented (watermark = current + 1 / Redis INCR) so in-flight readers are rejected.
+   - If invalidating with an explicit version V, the watermark advances to max(current + 1, V).
 3. Incoming cache fills atomically compare `incoming_version >= watermark` via Lua script.
    Stale fills (`incoming_version < watermark`) are unconditionally REJECTED!
 4. SingleFlight Coalescing Mutex:
    Protects against cache stampedes / dogpile effect by coalescing concurrent misses.
    (Documented: in-process SingleFlight is process-local and does NOT coordinate across
    multiple server instances without a distributed lock).
+
+WATERMARK EXPIRY TIME WINDOW HEURISTIC:
+---------------------------------------
+In Redis deployments, setting a watermark expiry (e.g., 2 * data TTL) represents a practical
+heuristic time window, NOT an unconditional guarantee against arbitrarily delayed readers.
+If a reader is delayed (e.g., multi-minute stop-the-world GC pause) beyond the watermark TTL,
+the watermark key expires and evicts. A delayed fill arriving after watermark eviction would
+then repopulate stale data. Absolute protection against arbitrary delays requires persistent
+tombstones or infinite TTL watermarks.
 """
 
 from __future__ import annotations
@@ -69,11 +81,11 @@ else
 end
 """
 
-# Production Redis Lua Script for Safe Invalidation (retaining/advancing watermark)
+# Production Redis Lua Script for Safe Invalidation (advancing watermark)
 LUA_INVALIDATE = """
 -- KEYS[1]: Data key (e.g. record:{id}:data)
 -- KEYS[2]: Watermark key (e.g. record:{id}:v_watermark)
--- ARGV[1]: New watermark version (optional, 0 to retain current)
+-- ARGV[1]: New watermark version (optional, 0 to auto-increment)
 
 local data_key = KEYS[1]
 local watermark_key = KEYS[2]
@@ -84,7 +96,11 @@ if new_ver and new_ver > 0 then
     local current_watermark = tonumber(redis.call('GET', watermark_key) or '0')
     if new_ver > current_watermark then
         redis.call('SET', watermark_key, new_ver)
+    else
+        redis.call('INCR', watermark_key)
     end
+else
+    redis.call('INCR', watermark_key)
 end
 return 1
 """
@@ -314,7 +330,25 @@ class VersionedCacheAside:
         watermark: Optional[int] = None,
         new_version: Optional[int] = None,
     ) -> None:
-        """Evicts cached value data while retaining or advancing the watermark.
+        """Evicts cached value data while strictly advancing the watermark.
+
+        Safety Contract:
+        ----------------
+        1. Default Invalidation (watermark=None):
+           Automatically increments the watermark (`current_watermark + 1`). This guarantees
+           that any in-flight Reader reading prior to this invalidation (with version <= current_watermark)
+           is strictly rejected when attempting a delayed cache fill.
+        2. Explicit Version Invalidation (watermark=V):
+           Sets the watermark to max(current_watermark + 1, V) or V if V > current_watermark.
+           This ensures monotonicity and prevents delayed stale fills from preceding DB states.
+
+        Watermark Expiry Limitation (Heuristic Window):
+        -----------------------------------------------
+        In Redis deployments, setting a watermark TTL (e.g., 2 * data TTL) provides a heuristic
+        safety window rather than an unconditional mathematical guarantee. If a reader is paused
+        (e.g., severe GC pause or network partition) longer than the watermark TTL, the watermark key
+        evicts, leaving the entity vulnerable to a stale fill upon wakeup. Eliminating this completely
+        requires persistent tombstones or indefinite/infinite watermark TTLs.
 
         Args:
             record_id: Entity ID to invalidate.
@@ -331,15 +365,18 @@ class VersionedCacheAside:
                 2,
                 data_key,
                 watermark_key,
-                target_wm or 0,
+                target_wm if target_wm is not None else 0,
             )
         else:
             with self._cache_lock:
                 self._memory_cache.pop(data_key, None)
-                if target_wm is not None:
-                    curr_wm = self._watermarks.get(watermark_key, 0)
-                    if target_wm > curr_wm:
-                        self._watermarks[watermark_key] = target_wm
+                curr_wm = self._watermarks.get(watermark_key, 0)
+                if target_wm is None:
+                    self._watermarks[watermark_key] = curr_wm + 1
+                else:
+                    self._watermarks[watermark_key] = (
+                        target_wm if target_wm > curr_wm else curr_wm + 1
+                    )
 
     def get_watermark(self, record_id: str) -> int:
         """Returns the current watermark version for a record."""

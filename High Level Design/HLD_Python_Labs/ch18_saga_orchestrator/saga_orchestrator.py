@@ -105,6 +105,22 @@ class SagaStep:
         self.compensation_retries = max(0, compensation_retries)
         self.retry_delay_seconds = max(0.0, retry_delay_seconds)
 
+    @property
+    def action(self) -> Callable[[SagaContext], Any]:
+        return self.forward_action
+
+    @action.setter
+    def action(self, val: Callable[[SagaContext], Any]) -> None:
+        self.forward_action = val
+
+    @property
+    def compensation(self) -> Callable[[SagaContext], Any]:
+        return self.compensating_action
+
+    @compensation.setter
+    def compensation(self, val: Callable[[SagaContext], Any]) -> None:
+        self.compensating_action = val
+
 
 class InMemorySagaLog:
     """In-memory thread-safe state log simulator for Sagas."""
@@ -142,7 +158,7 @@ class InMemorySagaLog:
 
 
 class SagaOrchestrator:
-    """Production-grade orchestrator executing steps and reverse compensations."""
+    """Educational Architecture Simulator & Saga Reference Pattern executing steps and reverse compensations."""
 
     def __init__(self, name: str = "OrderSaga", log_store: Optional[InMemorySagaLog] = None) -> None:
         self.name = name
@@ -308,10 +324,11 @@ class SagaOrchestrator:
             while attempt <= step.max_retries:
                 try:
                     self._log(saga_id, step.name, "FORWARD", "STARTED")
-                    if asyncio.iscoroutinefunction(step.forward_action):
-                        result = await step.forward_action(context)
+                    action_fn = step.action
+                    if asyncio.iscoroutinefunction(action_fn):
+                        result = await action_fn(context)
                     else:
-                        result = step.forward_action(context)
+                        result = await asyncio.to_thread(action_fn, context)
                     context.step_results[step.name] = result
                     self._log(saga_id, step.name, "FORWARD", "COMPLETED")
                     completed_steps.append(step)
@@ -358,10 +375,11 @@ class SagaOrchestrator:
             while comp_attempt <= step.compensation_retries:
                 try:
                     self._log(saga_id, step.name, "COMPENSATION", "STARTED")
-                    if asyncio.iscoroutinefunction(step.compensating_action):
-                        await step.compensating_action(context)
+                    comp_fn = step.compensation
+                    if asyncio.iscoroutinefunction(comp_fn):
+                        await comp_fn(context)
                     else:
-                        step.compensating_action(context)
+                        await asyncio.to_thread(comp_fn, context)
                     context.compensations_run.append(step.name)
                     self._log(saga_id, step.name, "COMPENSATION", "COMPLETED")
                     comp_success = True

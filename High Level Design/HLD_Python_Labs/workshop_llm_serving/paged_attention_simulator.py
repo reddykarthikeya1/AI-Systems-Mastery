@@ -1,4 +1,4 @@
-"""Memory-Efficient KV-Cache Block Manager Simulating vLLM PagedAttention & Radix Tree Routing.
+"""Educational Architecture Simulator & Reference Pattern: Memory-Efficient KV-Cache Block Manager Simulating vLLM PagedAttention & Radix Tree Routing.
 
 Architectural Guarantees & Educational Context:
 ----------------------------------------------
@@ -45,9 +45,12 @@ Architectural Guarantees & Educational Context:
 
 from __future__ import annotations
 import copy
+import logging
 import time
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -148,6 +151,10 @@ class BlockManager:
 
     def register_sequence(self, seq_id: str, prompt_tokens: List[int]) -> SequenceContext:
         """Allocates and maps blocks for an incoming prompt sequence."""
+        if seq_id in self.sequences:
+            logger.info("Sequence '%s' already exists; releasing old blocks before re-registration.", seq_id)
+            self.free_sequence(seq_id)
+
         seq = SequenceContext(seq_id=seq_id, tokens=list(prompt_tokens))
         self.sequences[seq_id] = seq
 
@@ -207,6 +214,12 @@ class BlockManager:
 
     def fork_sequence(self, parent_seq_id: str, child_seq_id: str) -> SequenceContext:
         """Creates a parallel branch sharing parent's physical blocks via reference counting."""
+        if parent_seq_id not in self.sequences:
+            raise KeyError(f"Parent sequence '{parent_seq_id}' not found")
+        if child_seq_id in self.sequences:
+            logger.info("Child sequence '%s' already exists; releasing old blocks before forking.", child_seq_id)
+            self.free_sequence(child_seq_id)
+
         parent = self.sequences[parent_seq_id]
         child = SequenceContext(
             seq_id=child_seq_id,
@@ -343,7 +356,7 @@ class RadixTreeRouter:
 
 
 class PagedAttentionSimulator:
-    """End-to-end multi-worker LLM serving simulator with PagedAttention and Radix routing."""
+    """Educational Architecture Simulator & Reference Pattern: End-to-end multi-worker LLM serving simulator with PagedAttention and Radix routing."""
 
     def __init__(self, worker_ids: List[str], num_blocks_per_worker: int = 64) -> None:
         self.workers: Dict[str, BlockManager] = {

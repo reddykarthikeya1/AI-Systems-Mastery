@@ -1,6 +1,6 @@
 # High-Level Design (HLD) Python Labs
 
-A production-grade reference implementation and interactive laboratory codebase for modern distributed systems, resilient cloud design patterns, and AI systems infrastructure.
+An Educational Architecture Simulator & Reference Pattern codebase for modern distributed systems, resilient cloud design patterns, and AI systems infrastructure.
 
 ---
 
@@ -49,7 +49,7 @@ HLD_Python_Labs/
 ├── workshop_rag_agents/
 │   ├── __init__.py
 │   └── agent_rag_engine.py          # Enterprise RAG Orchestrator (Hybrid Search + Zanzibar + Outbox)
-├── tests/                           # Complete pytest unit test suite (55 tests)
+├── tests/                           # Complete pytest unit test suite (106 tests across 13 modules)
 ├── docker-compose.yml               # Local infrastructure (Redis, PostgreSQL, Kafka)
 ├── requirements.txt                 # Dependencies
 └── README.md
@@ -72,19 +72,62 @@ HLD_Python_Labs/
 
 ### 2. Versioned Cache-Aside (`ch03_caching`)
 - **Stale-Fill Race Problem**: Reader reads DB at version 1, writer updates DB and cache to version 2, then delayed reader overwrites cache with version 1.
-- **Atomic Lua Solution**:
-  ```lua
-  if (not current_ver) or (ver > tonumber(current_ver)) then
-      redis.call('HSET', key, 'data', val, '_version', ver)
-      return 1
-  else
-      return 0 -- Stale fill rejected!
-  end
-  ```
-- **SingleFlight**: Coalesces concurrent cache misses on hot keys into a single in-flight DB query.
+- **Decoupled Watermark Architecture**:
+  In naive caching where `_version` is stored inside the data hash/key, cache invalidation (`DEL {entity}`) wipes out the version metadata. A delayed reader can then repopulate the empty cache with stale version 1 data.
+  To eliminate this race, decouple the data key from the monotonic version watermark key:
+  - **Data Key**: `{entity}:data` (evicted on invalidation)
+  - **Watermark Key**: `{entity}:v_watermark` (advanced monotonic integer)
+- **Atomic Lua Scripts**:
+  - **Cache Fill / Set Script (`LUA_VERSIONED_SET`)**:
+    ```lua
+    -- KEYS[1]: Data key (e.g. record:{id}:data)
+    -- KEYS[2]: Watermark key (e.g. record:{id}:v_watermark)
+    -- ARGV[1]: Serialized value, ARGV[2]: Incoming Version, ARGV[3]: TTL (seconds)
+    local data_key = KEYS[1]
+    local watermark_key = KEYS[2]
+    local val = ARGV[1]
+    local incoming_ver = tonumber(ARGV[2])
+    local ttl = tonumber(ARGV[3])
+
+    local current_watermark = tonumber(redis.call('GET', watermark_key) or '0')
+
+    if incoming_ver >= current_watermark then
+        redis.call('SET', data_key, val)
+        if incoming_ver > current_watermark then
+            redis.call('SET', watermark_key, incoming_ver)
+        end
+        if ttl and ttl > 0 then
+            redis.call('EXPIRE', data_key, ttl)
+            -- Watermark TTL multiplier protects against stale fills after data eviction
+            redis.call('EXPIRE', watermark_key, ttl * 2)
+        end
+        return 1 -- Accepted
+    else
+        return 0 -- Rejected: Stale fill attempt!
+    end
+    ```
+  - **Cache Invalidation Script (`LUA_INVALIDATE`)**:
+    ```lua
+    -- KEYS[1]: Data key (e.g. record:{id}:data)
+    -- KEYS[2]: Watermark key (e.g. record:{id}:v_watermark)
+    -- ARGV[1]: New watermark version (optional, 0 to retain current)
+    local data_key = KEYS[1]
+    local watermark_key = KEYS[2]
+    local new_ver = tonumber(ARGV[1] or '0')
+
+    redis.call('DEL', data_key)
+    if new_ver and new_ver > 0 then
+        local current_watermark = tonumber(redis.call('GET', watermark_key) or '0')
+        if new_ver > current_watermark then
+            redis.call('SET', watermark_key, new_ver)
+        end
+    end
+    return 1
+    ```
+- **SingleFlight**: Coalesces concurrent cache misses on hot keys into a single in-flight DB query (process-local coalescing mutex).
 
 ### 3. Consistent Hashing with Google Bounded Loads (`ch07_consistent_hashing`)
-- **Virtual Nodes**: $V$ tokens per node distributed on $[0, 2^{32}-1]$ via SHA256/MD5.
+- **Virtual Nodes**: $V$ tokens per node distributed on $[0, 2^{32}-1]$ via SHA256/MD5 with deterministic collision salt probing (`#salt_{salt}`).
 - **Clockwise Lookup**: $\mathcal{O}(\log(N \cdot V))$ via binary search (`bisect_right`).
 - **Bounded-Load Invariant (Mirrokni et al.)**:
   $$\text{max\_load} = \left\lceil c \cdot \frac{\text{total\_load}}{N} \right\rceil \quad (c \ge 1.0)$$
@@ -103,6 +146,7 @@ HLD_Python_Labs/
   - **RPM (Requests Per Minute)**: Throttles API call counts.
   - **TPM (Tokens Per Minute)**: Throttles context prompt + completion token usage.
 - **Atomic Check**: Both buckets must have sufficient capacity; otherwise, **zero tokens** are deducted (all-or-nothing rollback).
+- Uses Redis server-side `redis.call('TIME')` to eliminate client clock skew vulnerabilities.
 
 ### 6. Bloom Filter vs. MinHash & LSH (`ch16_bloom_filter`)
 - **Bloom Filter (Membership Testing)**:
@@ -113,18 +157,23 @@ HLD_Python_Labs/
   $$P(\text{min\_hash}(A) == \text{min\_hash}(B)) = J(A, B) = \frac{|A \cap B|}{|A \cup B|}$$
 - **LSH Banding (Candidate Pair Retrieval)**:
   $$P(\text{candidate collision}) = 1 - (1 - s^r)^b \quad (k = b \cdot r)$$
+  Deterministic band hashing replaces Python's randomized per-process `hash()`.
 
 ### 7. Circuit Breaker with Single-Probe HALF_OPEN (`ch17_circuit_breaker`)
-- **Half-Open Race Fix**: When OPEN cooldown expires, only **one single probe** is admitted using atomic mutex / CAS. Concurrent requests arriving while the probe is in flight are immediately rejected with `CircuitBreakerProbeInFlightException`, preventing downstream services from being overwhelmed.
+- **Half-Open Race Fix**: When OPEN cooldown expires, only **one single probe** is admitted using atomic mutex / CAS (`_probe_in_flight`). Concurrent requests arriving while the probe is in flight are immediately rejected with `CircuitBreakerProbeInFlightException`.
+- **Exception Classification**: Client errors (4xx) and `asyncio.CancelledError` do not increment failure counters.
+- **Synchronous Timeout Isolation**: Executes calls inside a worker thread pool (`ThreadPoolExecutor`) to enforce timeouts without blocking the calling thread.
 
 ### 8. Saga Orchestration (`ch18_saga_orchestrator`)
-- Orchestrates multi-step distributed workflows.
+- Orchestrates multi-step distributed workflows without 2PC.
 - On step $k$ failure, executes compensations $C_{k-1}, C_{k-2}, \dots, C_1$ in **strict reverse order**.
 - Forward and compensating actions are idempotent.
+- Structured execution audit logging (`SagaLogEntry`) and non-blocking asynchronous execution.
 
 ### 9. Okapi BM25 & Reciprocal Rank Fusion (`ch21_distributed_search`)
 - **BM25 Lexical Ranking**:
   $$\text{BM25}(D, Q) = \sum_{q_i \in Q} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}$$
+- Consistent document updates: `remove_document()` prunes inverted index postings and updates `total_tokens` to prevent `avgdl` drift.
 - **Reciprocal Rank Fusion (RRF)**:
   $$\text{RRF}(d) = \sum_{m \in M} \frac{1}{k + r_m(d)} \quad (k=60)$$
 
@@ -132,21 +181,39 @@ HLD_Python_Labs/
 - Relation Tuples: `object_namespace:object_id#relation@user_or_subject_set`
 - Directed Graph BFS traversal with cycle detection.
 - Relation rewrites: `owner` $\rightarrow$ `editor` $\rightarrow$ `viewer`.
+- Fail-closed security evaluation on service unavailability.
 
 ### 11. Flash Sale Inventory System (`workshop_ecommerce`)
-- **Redis Cluster Hash Tags**: `{item:<id>}:stock`, `{item:<id>}:reserves`, `{item:<id>}:idempotency` guarantee multi-key transactions hash to the same cluster slot (avoids `CROSSSLOT` error).
+- **Redis Cluster Hash Tags**: `{item:<id>}:stock`, `{item:<id>}:reserves`, `{item:<id>}:idempotency`, `{item:<id>}:expirations` guarantee multi-key transactions hash to the same cluster slot (avoids `CROSSSLOT` error).
 - **Two-Phase Hold Lifecycle**: `HELD` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED`.
-- Background reconciliation worker restores stock from expired holds.
+- Background reconciliation worker scans ZSET expirations and restores stock from expired holds.
+- Authoritative PostgreSQL ledger reconciliation verifies database transactions before confirming reservations.
 
 ### 12. PagedAttention KV-Cache Simulator (`workshop_llm_serving`)
 - Virtual memory paging for transformer KV cache (avoids 60-80% memory fragmentation).
-- Copy-on-Write (CoW) for parallel sampling branches ($n > 1$).
+- Dynamic Copy-on-Write (CoW) branching for parallel sampling ($n > 1$).
+- Double-free protection and sequence preemption under memory exhaustion.
 - Radix tree prefix router for directing prompts sharing prefixes to the same worker node.
 
 ### 13. Enterprise RAG & Agentic Engine (`workshop_rag_agents`)
 - Integrates Hybrid Search (BM25 + Dense Vector + RRF).
-- Enforces **authoritative Zanzibar ReBAC**: candidate chunks are authorized before entering LLM context.
-- Agent tool side effects are committed atomically to a Transactional Outbox.
+- Enforces **authoritative fail-closed Zanzibar ReBAC**: candidate chunks are authorized before entering LLM context.
+- Agent tool side effects are committed atomically to a Transactional Outbox before dispatching external side effects.
+
+---
+
+## Educational Simulators vs. Production Infrastructure
+
+To ensure engineering integrity, this laboratory codebase explicitly separates **educational architecture simulators** from **production database and cluster engines**:
+
+| Laboratory Module | Educational Simulator Class | Production Reference Architecture | Key Architectural Differences |
+|---|---|---|---|
+| `ch03_caching` | `SingleFlight`, `VersionedCacheAside` | Redis Cluster / Envoy / Memcached Leases | Simulator uses process-local threading locks; multi-instance distributed production clusters require distributed locks (e.g. Redlock), probabilistic early expiration (XFetch), or cluster lease tokens. |
+| `ch12_event_driven` | `InMemoryOutboxSimulator` | PostgreSQL + Debezium CDC + Kafka | Simulator models ACID boundaries with in-memory dictionaries; production systems use PostgreSQL MVCC, partial indexes (`WHERE status = 'PENDING'`), CTE `FOR UPDATE SKIP LOCKED`, or Debezium WAL tailing. |
+| `ch17_circuit_breaker` | `CircuitBreaker` | Envoy Proxy / Istio Service Mesh | Simulator manages process-local failure counters; production microservices delegate circuit breaking to sidecar proxies coordinating across thousands of instances. |
+| `ch18_saga_orchestrator` | `SagaOrchestrator`, `InMemorySagaLog` | Temporal / Cadence / AWS Step Functions | Simulator stores logs in Python memory; production distributed orchestrators durably append state transitions to an external WAL/RDBMS before dispatching RPCs. |
+| `ch24_zanzibar_rebac` | `ZanzibarEngine` | Google Zanzibar Infrastructure | Simulator evaluates tuples via in-memory BFS; production Zanzibar runs across globally distributed Spanner with TrueTime tokens (Zookies) and an offline Leopard reachability index. |
+| `workshop_llm_serving` | `BlockManager` | vLLM Engine (C++ & CUDA Kernels) | Simulator models block allocation and CoW in pure Python; production vLLM executes custom C++/CUDA kernels reading non-contiguous GPU HBM pages directly inside warp lookup tables without GIL delays. |
 
 ---
 
@@ -174,7 +241,7 @@ Spins up:
 ```bash
 pytest tests -v
 ```
-All **55 unit tests** run and pass in ~1.0 second without requiring external daemon services.
+All **106 automated unit tests** across the 13 laboratory packages execute and pass in ~1.5 to 2.0 seconds without requiring external daemon services.
 
 ---
 
@@ -225,4 +292,4 @@ print(f"Can Bob view design doc? {can_view}") # True
 ---
 
 ## License & Attribution
-Designed for the High-Level Design (HLD) curriculum. Developed for production-grade educational use.
+Designed for the High-Level Design (HLD) curriculum. Developed as an educational architecture simulator and reference pattern.

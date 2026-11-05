@@ -9,8 +9,8 @@ An authoritative, mathematically grounded, and code-verified curriculum in moder
 
 **High-Level Design for Python & AI Engineers** bridges the gap between classic web-scale distributed architectures and modern AI systems infrastructure. Built for senior, staff, and principal engineers, this repository provides:
 
-- **The Master Textbook (195 Pages, Letter Format):** `HLD_Python_Master_Textbook_Final.pdf`, featuring 25 foundational and supplementary chapters, 6 production workshops, 30 publication-grade symmetrical vector SVG blueprints, and the disciplined 9-step FAANG Staff/Principal whiteboard interview framework.
-- **The Interactive Python Laboratory (`HLD_Python_Labs`):** A fully tested companion codebase spanning 13 packages and 97 automated unit and integration tests (100% passing) verifying concurrency controls, cache fencing, probabilistic data structures, and virtual memory KV-cache allocation.
+- **The Master Textbook (195 Pages, Letter Format):** `HLD_Python_Master_Textbook_Final.pdf`, featuring 25 foundational and supplementary chapters, 6 production workshops, 31 publication-grade symmetrical vector SVG blueprints, and the disciplined 9-step FAANG Staff/Principal whiteboard interview framework.
+- **The Interactive Python Laboratory (`HLD_Python_Labs`):** A fully tested companion codebase spanning 13 packages and 106 automated unit and integration tests (100% passing) verifying concurrency controls, cache fencing, probabilistic data structures, and virtual memory KV-cache allocation.
 - **Authoritative Engineering Audits:** Rigorous technical documentation including `HLD_Technical_Audit_Report.md`, `HLD_PDF_QA_Report.md`, and `HLD_Revision_Changelog.md`.
 
 ---
@@ -60,7 +60,7 @@ The curriculum is structured around a progressive, three-tier engineering framew
 ```
 High Level Design/
 ├── HLD_Python_Master_Textbook_Final.pdf  # The Definitive 195-Page Master Textbook
-├── HLD_Technical_Audit_Report.md        # Engineering Audit & Issue 2.1 A–K Findings
+├── HLD_Technical_Audit_Report.md        # Engineering Audit & Latest Review Findings
 ├── HLD_PDF_QA_Report.md                 # Publication Quality Assurance & Layout Report
 ├── HLD_Revision_Changelog.md            # Version 3.0 Milestone Changelog
 ├── README.md                            # Repository Overview & Quickstart Guide
@@ -78,7 +78,7 @@ High Level Design/
     ├── workshop_ecommerce/              # Flash Sale Redis Inventory & Postgres Reconciliation
     ├── workshop_llm_serving/            # vLLM PagedAttention KV-Cache, CoW & Radix Router
     ├── workshop_rag_agents/             # Enterprise RAG Orchestrator (Zanzibar + Outbox)
-    ├── tests/                           # Pytest Test Suite (97 Tests Passing)
+    ├── tests/                           # Pytest Test Suite (106 Tests Passing)
     ├── docker-compose.yml               # Local Infrastructure (Redis 7, Postgres 16, Kafka)
     └── requirements.txt                 # Dependencies
 ```
@@ -150,12 +150,12 @@ High Level Design/
 Clone the repository and install dependencies:
 ```bash
 git clone <repo-url>
-cd Subject/High\ Level\ Design/HLD_Python_Labs
+cd "High Level Design/HLD_Python_Labs"
 pip install -r requirements.txt
 ```
 
 ### 2. Execute the Test Suite
-Run the comprehensive 97-test automated test suite:
+Run the comprehensive 106-test automated test suite:
 ```bash
 pytest tests -v
 ```
@@ -164,26 +164,26 @@ Output:
 ```
 ============================= test session starts =============================
 platform win32 -- Python 3.11.9, pytest-8.0.0, pluggy-1.6.0
-collected 97 items
+collected 106 items
 
 tests/test_agent_rag_engine.py .............. [  7%] (7 passed)
-tests/test_bloom_and_minhash.py ............. [ 14%] (7 passed)
-tests/test_bm25_and_rrf.py .................. [ 20%] (6 passed)
-tests/test_cache_aside_versioned.py ......... [ 26%] (6 passed)
-tests/test_circuit_breaker.py ............... [ 37%] (10 passed)
-tests/test_concurrency_limiter.py ........... [ 41%] (4 passed)
+tests/test_bloom_and_minhash.py ............. [ 15%] (9 passed)
+tests/test_bm25_and_rrf.py .................. [ 21%] (6 passed)
+tests/test_cache_aside_versioned.py ......... [ 27%] (7 passed)
+tests/test_circuit_breaker.py ............... [ 38%] (11 passed)
+tests/test_concurrency_limiter.py ........... [ 42%] (4 passed)
 tests/test_dual_token_bucket.py ............. [ 48%] (7 passed)
-tests/test_flash_sale_inventory.py .......... [ 60%] (12 passed)
+tests/test_flash_sale_inventory.py .......... [ 61%] (14 passed)
 tests/test_hash_ring.py ..................... [ 70%] (9 passed)
-tests/test_paged_attention_simulator.py ..... [ 80%] (10 passed)
-tests/test_saga_orchestrator.py ............. [ 85%] (5 passed)
-tests/test_transactional_outbox.py .......... [ 91%] (6 passed)
+tests/test_paged_attention_simulator.py ..... [ 81%] (12 passed)
+tests/test_saga_orchestrator.py ............. [ 87%] (6 passed)
+tests/test_transactional_outbox.py .......... [ 92%] (6 passed)
 tests/test_zanzibar_rebac.py ................ [100%] (8 passed)
 
-============================= 97 passed in 1.47s ==============================
+============================ 106 passed in 1.44s =============================
 ```
 
-All 97 unit tests run in memory without requiring external daemon infrastructure.
+All 106 unit tests run in memory without requiring external daemon infrastructure.
 
 ### 3. Spin Up Local Infrastructure (Optional)
 To test against real database and message broker containers:
@@ -199,11 +199,14 @@ Spins up:
 
 ## 5. Educational Simulations vs Production Infrastructure
 
-To ensure clear engineering integrity, the laboratory codebase strictly distinguishes between **educational in-memory simulations** and **production cloud infrastructure**:
+To ensure clear engineering integrity, the laboratory codebase strictly distinguishes between **educational in-memory architecture simulations** and **production cloud infrastructure**:
 
 | Laboratory Module | Educational Simulator Class | Production Contrast / Reference Class | Key Architectural Difference |
 |---|---|---|---|
+| `ch03_caching` | `SingleFlight`, `VersionedCacheAside` | Distributed Redlock / Redis Cluster / Memcached Leases | Simulator uses process-local locks; production distributed systems require distributed locks, probabilistic early expiration (XFetch), or cluster lease tokens. |
 | `ch12_event_driven` | `InMemoryOutboxSimulator` | `PostgresTransactionalOutbox` | Simulator models ACID transactions with mutexes; production class details PostgreSQL MVCC, partial indexing on `WHERE status = 'PENDING'`, and CTE `FOR UPDATE SKIP LOCKED`. |
+| `ch17_circuit_breaker` | `CircuitBreaker` | Envoy Proxy / Service Mesh Sidecars | Simulator tracks process-local state; production deployments coordinate circuit breaking at the mesh proxy layer across fleets. |
+| `ch18_saga_orchestrator` | `SagaOrchestrator`, `InMemorySagaLog` | Temporal / Cadence / AWS Step Functions | Simulator uses in-memory log; production orchestrators durably append state transitions to an external database or WAL. |
 | `ch24_zanzibar_rebac` | `ZanzibarEngine` | Google Zanzibar Infrastructure | Simulator evaluates tuples via in-memory BFS with cycle detection; production Zanzibar utilizes globally distributed Spanner with TrueTime tokens (Zookies) and an offline Leopard reachability index. |
 | `workshop_llm_serving` | `BlockManager` | vLLM C++ Engine & CUDA Kernels | Simulator models virtual memory paging, block mapping, and Copy-on-Write in pure Python; production vLLM executes custom CUDA kernels accessing non-contiguous HBM pages directly via warp lookup tables without CPU GIL delays. |
 | `ch15_rate_limiter` | `DualTokenBucketLimiter` | API Gateway Rate Limiting Middleware | In-memory token bucket; production version provides Redis Lua scripts using Redis server-side `TIME` commands. |
@@ -265,12 +268,12 @@ assert engine.check(user="user:mallory", relation="viewer", object_str="doc:annu
 
 For deep-dive technical evaluations, inspect the companion verification artifacts:
 
-- **[HLD_Technical_Audit_Report.md](file:///C:/Users/Karthikeya%20Reddy/OneDrive%20-%20RITE/Desktop/Office%20Work/Subject/High%20Level%20Design/HLD_Technical_Audit_Report.md):** Comprehensive SRE engineering audit report detailing the resolution of issues 2.1 A through K with honest verification categories.
-- **[HLD_PDF_QA_Report.md](file:///C:/Users/Karthikeya%20Reddy/OneDrive%20-%20RITE/Desktop/Office%20Work/Subject/High%20Level%20Design/HLD_PDF_QA_Report.md):** Publication QA report documenting 195 verified pages, typography hierarchies, and SVG blueprint clarity.
-- **[HLD_Revision_Changelog.md](file:///C:/Users/Karthikeya%20Reddy/OneDrive%20-%20RITE/Desktop/Office%20Work/Subject/High%20Level%20Design/HLD_Revision_Changelog.md):** Granular changelog tracking the architectural evolution across all editions.
+- **[HLD_Technical_Audit_Report.md](./HLD_Technical_Audit_Report.md):** Comprehensive engineering audit report detailing the resolution of issues A through K with honest verification categories.
+- **[HLD_PDF_QA_Report.md](./HLD_PDF_QA_Report.md):** Publication QA report documenting 195 verified pages, typography hierarchies, and 31 SVG blueprints.
+- **[HLD_Revision_Changelog.md](./HLD_Revision_Changelog.md):** Granular changelog tracking the architectural evolution across all editions.
 
 ---
 
 ## 8. License & Attribution
 
-Designed and maintained for advanced distributed systems and AI systems infrastructure engineering education. Developed for production-grade educational use.
+Designed and maintained for advanced distributed systems and AI systems infrastructure engineering education. Developed as an educational architecture simulator and reference pattern.

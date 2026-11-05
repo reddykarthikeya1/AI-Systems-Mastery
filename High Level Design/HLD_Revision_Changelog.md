@@ -1,11 +1,11 @@
 # Definitive Learning Edition: Comprehensive Revision Changelog
 
 **Document Title:** High-Level Design for Python & AI Engineers: Definitive Learning Edition — Comprehensive Revision Changelog  
-**Author / Editor:** Staff Technical Writer, SRE & Principal Distributed Systems Architect  
+**Classification:** Architecture & Engineering Revision Changelog  
 **Document Release:** Version 3.0.0 (Definitive Learning Edition)  
 **Baseline Compared Against:** Version 2.0.0 (Definitive Masterwork Edition) & Version 1.0.0 (Initial Draft)  
 **Target Publication:** 195 Pages (Letter Format, Full Coverage)  
-**Date of Ratification:** November 2026  
+**Verification Date:** November 2026  
 
 ---
 
@@ -20,7 +20,7 @@
 |               |               | and missing failure models.                                       |
 +---------------+---------------+-------------------------------------------------------------------+
 | 2.0.0         | Nov 04, 2026  | Definitive Edition (184 pages). Added Part VII (Modern            |
-|               |               | Primitives), 30 SVG blueprints, and AI Infrastructure Lens across   |
+|               |               | Primitives), 31 SVG blueprints, and AI Infrastructure Lens across |
 |               |               | all chapters. Addressed initial concurrency race conditions.      |
 +---------------+---------------+-------------------------------------------------------------------+
 | 3.0.0 (FINAL) | Nov 04, 2026  | Definitive Learning Edition (195 pages).                          |
@@ -28,7 +28,7 @@
 |               |               | - Full resolution of 11 critical code flaws (Issues 2.1 A–K).    |
 |               |               | - Deterministic hashing across all probabilistic data structures. |
 |               |               | - Explicit educational simulation vs production code labeling.    |
-|               |               | - 97 automated unit & integration tests (100% passing).           |
+|               |               | - 106 automated unit & integration tests (100% passing).          |
 |               |               | - Complete elimination of exaggerated marketing claims.           |
 +---------------+---------------+-------------------------------------------------------------------+
 ```
@@ -68,7 +68,7 @@ Version 3.0 restructures the 25 chapters and 6 workshops into an explicit progre
 
 ### Issue C: Circuit Breaker Exception Classification & Async Cancellation (`ch17_circuit_breaker`)
 - **Before:** Generic `except Exception:` caught client-side validation errors (HTTP 4xx) and `asyncio.CancelledError`, inappropriately tripping the breaker. In `HALF_OPEN` state, multiple concurrent requests flooded the recovering downstream service simultaneously.
-- **After (Version 3.0):** Implemented explicit exception filtering: client validation errors do not trip the circuit. In asynchronous calls, `asyncio.CancelledError` is caught and re-raised without incrementing failure counters. Enforced atomic single-probe admission (`_probe_in_flight` under mutex/CAS) in `HALF_OPEN`, fast-failing concurrent requests with `CircuitBreakerProbeInFlightException`.
+- **After (Version 3.0):** Implemented explicit exception filtering: client validation errors do not trip the circuit. In asynchronous calls, `asyncio.CancelledError` is caught and re-raised without incrementing failure counters. Enforced atomic single-probe admission (`_probe_in_flight` under mutex/CAS) in `HALF_OPEN`, fast-failing concurrent requests with `CircuitBreakerProbeInFlightException`. Added non-blocking synchronous timeout execution via a worker thread pool (`ThreadPoolExecutor`).
 - **Verification:** Tests `test_client_errors_do_not_trip_circuit`, `test_async_cancellation_does_not_trip_circuit`, and `test_half_open_atomic_single_probe_race_fix` pass in `tests/test_circuit_breaker.py`.
 
 ### Issue D: Deterministic Hashing in Bloom Filter, MinHash, and LSH (`ch16_bloom_filter`)
@@ -88,7 +88,7 @@ Version 3.0 restructures the 25 chapters and 6 workshops into an explicit progre
 
 ### Issue G: Saga Orchestrator Durable Logging & Non-Blocking Async (`ch18_saga_orchestrator`)
 - **Before:** The saga orchestrator lacked structured audit logging for state transitions and executed steps strictly synchronously, blocking worker threads during network I/O.
-- **After (Version 3.0):** Added structured `SagaLogEntry` recording `timestamp`, `saga_id`, `step_name`, `action_type`, `status`, and `error`. Implemented step-level retry loops with backoff before aborting. Added `execute_async()` supporting native `asyncio` coroutines for non-blocking asynchronous execution.
+- **After (Version 3.0):** Added structured `SagaLogEntry` recording `timestamp`, `saga_id`, `step_name`, `action_type`, `status`, and `error`. Implemented step-level retry loops with backoff before aborting. Added `execute_async()` supporting native `asyncio` coroutines and `asyncio.to_thread` for non-blocking asynchronous execution.
 - **Verification:** Tests `test_saga_reverse_compensation_on_failure` and `test_async_saga_execution` pass in `tests/test_saga_orchestrator.py`.
 
 ### Issue H: Enterprise RAG Fail-Closed ReBAC & Outbox Intent Sequence (`workshop_rag_agents`)
@@ -134,20 +134,52 @@ To ensure clear pedagogical integrity, Version 3.0 introduces an explicit archit
 ## 5. Visual System & Typography Verification
 
 Version 3.0 was typeset and verified against the final 195-page PDF artifact (`HLD_Python_Master_Textbook_Final.pdf`):
-- **30 Publication-Grade Symmetrical SVG Diagrams:** All blueprints follow standardized color conventions (Blue for Ingress, Green for Normal/Success, Orange for Asynchronous Processing, Red for Failure/Shedding).
+- **31 Publication-Grade Symmetrical SVG Diagrams:** All blueprints follow standardized color conventions (Blue for Ingress, Green for Normal/Success, Orange for Asynchronous Processing, Red for Failure/Shedding) spanning 25 chapter blueprints and 6 workshop blueprints.
 - **Four Distinct Callout Categories:** Explicit visual containers for Mental Models (Mint), Architectural Clinics (Ice Blue), AI Infrastructure Lens (Lavender), and Production Warnings (Rose).
-- **Mathematical kaTeX Glyphs:** Formulas across Little's Law, Bloom filter false positives, GPU memory allocation, and Write Amplification render as crisp scalable vector glyphs with zero delimiter leaks.
+- **Mathematical KaTeX Glyphs:** Formulas across Little's Law, Bloom filter false positives, GPU memory allocation, and Write Amplification render as crisp scalable vector glyphs with zero delimiter leaks.
 - **Zero Typographic Anomalies:** Verified zero orphaned headings, zero clipped code blocks, and zero table overflows across all 195 pages.
 
 ---
 
-## 6. Ratification Sign-Off
+## 6. Verification & Quality Assurance Summary
 
-All revisions documented in this changelog have been implemented, tested, and validated against the final compiled artifact and automated laboratory test suite.
+### 6.1 What Was Checked
+Every component, algorithm, and failure boundary across the 13 laboratory modules and 25 textbook chapters was audited and verified:
+1. `ch01_scalability/concurrency_limiter.py`: Little's Law invariant ($L = \lambda W$), TCP Vegas queue sizing, AIMD multiplicative backoff, hard SLO load shedding.
+2. `ch03_caching/cache_aside_versioned.py`: Decoupled watermark architecture (`{entity}:data` vs `{entity}:v_watermark`), stale-fill race rejection via Lua script, SingleFlight coalescing mutex.
+3. `ch07_consistent_hashing/hash_ring.py`: Virtual node token distribution, deterministic salt probing (`#salt_{salt}`) on hash collision, Google Bounded-Load clockwise spillover routing.
+4. `ch12_event_driven/transactional_outbox.py`: Dual-write elimination, atomic outbox persistence, concurrent `SKIP LOCKED` batch claiming, idempotent consumer inbox deduplication.
+5. `ch15_rate_limiter/dual_token_bucket.py`: RPM and TPM dual token buckets, atomic all-or-nothing rollback, Redis server-side `TIME` command script.
+6. `ch16_bloom_filter/bloom_and_minhash.py`: Kirsch-Mitzenmacher dual-hashing Bloom filter (zero false negatives), Counting Bloom Filter removal safety, MinHash Jaccard similarity, LSH banding candidate retrieval with deterministic SHA-256 digests.
+7. `ch17_circuit_breaker/circuit_breaker.py`: State transitions (CLOSED, OPEN, HALF_OPEN), atomic single-probe CAS gate (`_probe_in_flight`), exception classification (4xx client errors ignored), `asyncio.CancelledError` safety, synchronous timeout isolation via worker thread pool (`ThreadPoolExecutor`).
+8. `ch18_saga_orchestrator/saga_orchestrator.py`: Forward action DAG, strict reverse compensation order ($C_{k-1} \dots C_1$), structured execution audit logging (`SagaLogEntry`), step retries, async non-blocking execution (`asyncio.to_thread`).
+9. `ch21_distributed_search/bm25_and_rrf.py`: Okapi BM25 lexical ranking, document re-indexing with posting list cleanup and `avgdl` consistency, dense vector cosine similarity, Reciprocal Rank Fusion (RRF).
+10. `ch24_zanzibar_rebac/zanzibar_rebac.py`: Relation tuples, userset rewrite inheritance, directed graph BFS traversal with cycle detection, fail-closed evaluation on service unavailability.
+11. `workshop_ecommerce/flash_sale_inventory.py`: Redis Cluster `{hash_tags}`, stock reservation state machine (`HELD` -> `CONFIRMED` / `RELEASED` / `EXPIRED`), ZSET expiration index, background reconciliation daemon, PostgreSQL ledger reconciliation.
+12. `workshop_llm_serving/paged_attention_simulator.py`: Virtual memory paging for KV-cache, physical block table allocation, double-free validation, Copy-on-Write (CoW) parallel sampling, radix tree prefix routing, watermark LRU cache eviction, sequence preemption.
+13. `workshop_rag_agents/agent_rag_engine.py`: Hybrid search (BM25 + Dense + RRF), authoritative fail-closed Zanzibar ReBAC authorization gate, 4-stage Transactional Outbox tool execution sequence.
 
-**Ratification Signatures:**
+### 6.2 How to Reproduce the Checks
+All test suites, algorithms, and visual layout assertions can be verified independently using standard command-line tools:
 
-*Staff Technical Writer & Distributed Systems Auditor*  
-*Principal Infrastructure Architect & SRE Lead*  
-*Definitive Learning Edition Educational Board*  
-*November 4, 2026*  
+1. **Run Laboratory Automated Test Suite (106 Tests Passing):**
+   ```bash
+   cd "High Level Design/HLD_Python_Labs"
+   pip install -r requirements.txt
+   pytest tests -v
+   ```
+2. **Verify PDF Artifact Page Count & Layout via PyPDF:**
+   ```bash
+   python -c "import pypdf; reader = pypdf.PdfReader('HLD_Python_Master_Textbook_Final.pdf'); print(f'Total pages: {len(reader.pages)}')"
+   ```
+3. **Verify Headless Chromium Rendering & Layout via Playwright:**
+   ```bash
+   playwright test --browser=chromium
+   ```
+
+### 6.3 Known Limitations & Trade-offs
+To maintain technical honesty, the following constraints and trade-offs are explicitly documented:
+- **In-Memory Simulation Limits:** Process-local synchronization primitives (such as `SingleFlight` locks, in-memory `ZanzibarEngine` BFS, and `InMemoryOutboxSimulator`) operate within a single Python runtime and do not coordinate across multiple distributed instances without external distributed locks (e.g., Redlock or ZooKeeper recipes).
+- **TTL Heuristic Boundaries:** The watermark key `{entity}:v_watermark` uses a heuristic TTL ($2\times$ data TTL). Under aggressive Redis memory pressure (`allkeys-lru`), if watermark keys are evicted before delayed readers terminate, stale-fill race windows can theoretically reopen.
+- **Single-Node Docker Setup:** The companion `docker-compose.yml` provides single-node container instances of Redis, PostgreSQL, and Kafka for local development and functional testing, not production multi-region cluster topologies with split-brain, raft quorums, or cross-AZ replication lag.
+- **Python GIL & CUDA Kernels:** The PagedAttention simulator demonstrates memory paging and prefix routing in Python; production vLLM executes custom C++/CUDA kernels operating directly on GPU HBM without GIL latency.

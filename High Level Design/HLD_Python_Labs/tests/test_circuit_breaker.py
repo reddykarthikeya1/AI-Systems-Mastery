@@ -175,6 +175,30 @@ def test_call_timeout_synchronous():
     assert cb.state == CircuitState.OPEN
 
 
+def test_strict_synchronous_call_timeout_elapsed_time():
+    """Verify synchronous call timeout returns promptly without waiting for slow thread.
+
+    Regression test: Previously, exiting `with ThreadPoolExecutor(...)` invoked
+    `shutdown(wait=True)`, causing the caller to block until the slow function (0.5s)
+    finished, completely defeating the timeout deadline (0.05s).
+    """
+    cb = CircuitBreaker(failure_threshold=1, call_timeout_seconds=0.05)
+
+    def very_slow_fn():
+        time.sleep(0.5)
+        return "slow_result"
+
+    start = time.perf_counter()
+    with pytest.raises(TimeoutError):
+        cb.call(very_slow_fn)
+    elapsed = time.perf_counter() - start
+
+    # Caller must return promptly near 0.05s, strictly well under 0.25s!
+    assert elapsed < 0.25, f"Expected timeout elapsed < 0.25s, but took {elapsed:.3f}s"
+    assert cb.state == CircuitState.OPEN
+    cb.close(wait=False)
+
+
 @pytest.mark.asyncio
 async def test_async_circuit_breaker():
     cb = CircuitBreaker(failure_threshold=2)

@@ -1,4 +1,5 @@
 """Tests for Versioned Cache-Aside and Dogpile SingleFlight (Chapter 03)."""
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 import pytest
@@ -105,6 +106,44 @@ def test_stale_fill_rejected_after_invalidation_regression():
     assert cache.get_watermark("item:99") == 2
 
 
+def test_default_invalidation_without_version_advances_watermark():
+    """REGRESSION TEST FOR DANGEROUS DEFAULT INVALIDATION:
+
+    1. Reader A reads v1 from DB.
+    2. Cache is populated at v1 (watermark=1).
+    3. Writer invalidates cache without providing a watermark (watermark=None).
+       - Invalidation MUST increment the watermark to v1 + 1 = 2!
+    4. Reader A (delayed) attempts to put v1 into cache.
+    5. Reader A's fill is strictly REJECTED because 1 < 2!
+    """
+    db = SimulatedDatabase()
+    db.write("item:default_inv", {"val": "version_1"})  # DB version 1
+
+    cache = VersionedCacheAside(db)
+
+    # Reader initial fill
+    val = cache.get("item:default_inv")
+    assert val == {"val": "version_1"}
+    assert cache.get_watermark("item:default_inv") == 1
+
+    # Reader A reads v1 data
+    reader_a_data, reader_a_version = db.read("item:default_inv")
+    assert reader_a_version == 1
+
+    # Writer invalidates WITHOUT specifying version
+    cache.invalidate("item:default_inv", watermark=None)
+
+    # Watermark must have auto-advanced from 1 to 2
+    assert cache.get_watermark("item:default_inv") == 2
+    assert cache._read_cache("item:default_inv") is None
+
+    # Reader A attempts to fill with stale v1
+    accepted = cache.put_cache("item:default_inv", reader_a_data, version=reader_a_version)
+    assert accepted is False
+    assert cache.stale_fill_rejections == 1
+    assert cache._read_cache("item:default_inv") is None
+
+
 def test_singleflight_dogpile_prevention():
     db = SimulatedDatabase()
     db.write("hot:item", {"stock": 50})
@@ -118,9 +157,15 @@ def test_singleflight_dogpile_prevention():
         time.sleep(0.05)
         return "heavy_data"
 
-    # Launch 10 concurrent threads requesting the exact same key
+    # Synchronize all threads with a barrier so they call sf.do simultaneously
+    barrier = threading.Barrier(10)
+
+    def worker():
+        barrier.wait()
+        return sf.do("hot:item", slow_db_read)
+
     with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(sf.do, "hot:item", slow_db_read) for _ in range(10)]
+        futures = [executor.submit(worker) for _ in range(10)]
         results = [f.result() for f in futures]
 
     assert all(r == "heavy_data" for r in results)

@@ -1,7 +1,14 @@
-"""Production Flash Sale Inventory Reservation System.
+"""Educational Architecture Simulator & Reference Pattern: Flash Sale Inventory Reservation System.
 
-Architectural Guarantees:
--------------------------
+Architectural Guarantees & Educational Context:
+----------------------------------------------
+Educational Simulator vs. Production Flash Sale Architecture:
+- Logical Simulation (This Module):
+  Demonstrates high-concurrency two-phase inventory reservation using Redis Cluster
+  hash tags, Lua script atomic execution, Sorted Set expiration indexing, idempotency
+  de-duplication, and relational ledger reconciliation in Python.
+- Production Deployment Considerations & Boundaries:
+
 1. Redis Cluster Hash Tags:
    Multi-key transactions in Redis Cluster fail with `CROSSSLOT Keys in request don't hash
    to the same slot` unless hash tags `{...}` are used.
@@ -44,6 +51,31 @@ Architectural Guarantees:
      path MUST inspect and respect the boolean return from PostgreSQL reconciliation. If PostgreSQL
      reconciliation returns False (e.g. authoritative ledger exhausted due to a prior failover discrepancy),
      the reservation confirmation is rejected and Redis state is rolled back.
+
+6. The Cross-Database Dual-Write Consistency Gap & Production Mitigations:
+   - The Dual-Write Problem:
+     Redis Lua and PostgreSQL cannot achieve distributed two-phase commit (2PC) atomicity
+     without an external distributed coordinator or transactional outbox. Redis and PostgreSQL
+     are distinct distributed databases with separate storage engines, network connections,
+     and transaction lifecycles.
+   - Crash / Ambiguous Timeout Failure Window:
+     If the application server successfully executes the Redis Lua confirmation script
+     (transitioning the reservation to `CONFIRMED` and removing it from the TTL index),
+     but crashes (e.g., process termination, host failure) or encounters an unhandled network
+     timeout before committing the PostgreSQL transaction, Redis holds a `CONFIRMED`
+     reservation while PostgreSQL lacks the corresponding order row. A client retry or
+     subsequent query creates split-brain state between cache and durable ledger.
+   - Production Mitigation Patterns:
+     (A) Asynchronous Cross-System Reconciliation Daemon:
+         A periodic background reconciliation job scans reservations marked `CONFIRMED` in Redis
+         against PostgreSQL `orders` table. Any confirmed reservation lacking a corresponding
+         committed order after a grace period is identified as an orphaned confirmation and is
+         resolved by either inserting the missing order or rolling back the Redis reservation.
+     (B) Database-Authoritative Reservation with Redis as Read-Only Rate Limiter:
+         Redis is used solely as a high-throughput admission control filter / counter.
+         The actual atomic stock deduction and reservation lock are executed inside PostgreSQL
+         via `SELECT quantity FROM inventory WHERE item_id = $1 FOR UPDATE`. This eliminates
+         distributed state synchronization because PostgreSQL is the single authoritative source of truth.
 """
 
 from __future__ import annotations
@@ -276,7 +308,12 @@ class ReservationResult:
 
 
 class PostgresInventoryStore:
-    """Simulated PostgreSQL durable relational database with row locking."""
+    """Educational In-Memory Simulation for Local Testing and Demonstration.
+
+    Simulates a PostgreSQL durable relational database with row-level locking (SELECT FOR UPDATE)
+    and transactional order persistence. In a production deployment, this would be an actual ACID-compliant
+    RDBMS connection pool (e.g. asyncpg or psycopg) writing durably to Write-Ahead Logs (WAL).
+    """
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -297,8 +334,16 @@ class PostgresInventoryStore:
             return True
 
 
+# Alias for educational and workshop clarity
+SimulatedPostgresLedger = PostgresInventoryStore
+
+
 class FlashSaleInventoryService:
-    """Flash sale inventory coordinator with Redis Cluster hash tags and reconciliation."""
+    """Educational Architecture Simulator & Reference Pattern: Flash Sale Inventory Service.
+
+    Coordinates high-concurrency inventory reservation using Redis Cluster hash tags,
+    Lua script atomic execution, and PostgreSQL authoritative reconciliation.
+    """
 
     def __init__(
         self,
@@ -314,6 +359,8 @@ class FlashSaleInventoryService:
         self._reserves_store: Dict[str, Dict[str, ReservationRecord]] = {}
         self._idemp_store: Dict[str, Dict[str, str]] = {}
         self._expirations_store: Dict[str, Dict[str, float]] = {}
+        self._res_to_item: Dict[str, str] = {}
+        self.inconsistencies: List[Dict[str, Any]] = []
 
     def _keys(self, item_id: str) -> Tuple[str, str, str, str]:
         """Cluster hash tags guarantee all keys reside on the same cluster slot."""
@@ -405,6 +452,7 @@ class FlashSaleInventoryService:
                 created_at=data["created_at"],
                 expires_at=data["expires_at"],
             )
+            self._res_to_item[rec.reservation_id] = item_id
             return ReservationResult(success=True, status=rec.status.value, record=rec)
 
         # In-memory execution
@@ -453,15 +501,35 @@ class FlashSaleInventoryService:
             reserves_map[res_id] = rec
             idemp_map[idempotency_key] = res_id
             exp_map[res_id] = expires_at
+            self._res_to_item[res_id] = item_id
             return ReservationResult(success=True, status="HELD", record=rec)
 
     def confirm(
         self,
         item_id: str,
-        reservation_id: str,
+        reservation_id: Optional[str] = None,
         now: Optional[float] = None,
     ) -> ReservationResult:
         """Transitions reservation from HELD to CONFIRMED and reconciles with PostgreSQL ledger."""
+        # Normalize arguments to allow confirm(item_id, reservation_id, now=None) or confirm(reservation_id, now=None)
+        if reservation_id is None or isinstance(reservation_id, (int, float)):
+            if isinstance(reservation_id, (int, float)):
+                now = float(reservation_id)
+            res_id = item_id
+            target_item_id = self._res_to_item.get(res_id)
+            if target_item_id is None:
+                for it_id, rmap in self._reserves_store.items():
+                    if res_id in rmap:
+                        target_item_id = it_id
+                        break
+            if target_item_id is None:
+                target_item_id = res_id
+            item_id = target_item_id
+            reservation_id = res_id
+
+        if now is None:
+            now = time.time()
+
         stock_k, reserves_k, _, exp_k = self._keys(item_id)
         if self.redis is not None:
             raw = self.redis.eval(
@@ -470,7 +538,7 @@ class FlashSaleInventoryService:
                 reserves_k,
                 exp_k,
                 reservation_id,
-                now if now is not None else time.time(),
+                now,
             )
             data = json.loads(raw)
             if "status" in data and data["status"] in ("NOT_FOUND", "INVALID_STATE"):
@@ -488,7 +556,25 @@ class FlashSaleInventoryService:
                 expires_at=data["expires_at"],
             )
             # Reconcile against PostgreSQL authoritative ledger
-            pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            try:
+                pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            except Exception as exc:
+                # Dual-write crash / ambiguous timeout window: attempt rollback and record inconsistency
+                self.redis.eval(LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id)
+                rec.status = ReservationState.RELEASED
+                self.inconsistencies.append({
+                    "reservation_id": reservation_id,
+                    "item_id": item_id,
+                    "error": str(exc),
+                    "timestamp": now,
+                })
+                return ReservationResult(
+                    success=False,
+                    status="RECONCILIATION_FAILED",
+                    message=f"PostgreSQL reconciliation error: {exc}",
+                    record=rec,
+                )
+
             if not pg_success:
                 # Rollback Redis confirmation to maintain ledger consistency
                 self.redis.eval(LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id)
@@ -517,7 +603,7 @@ class FlashSaleInventoryService:
                 )
 
             # Check if reservation has expired by timestamp
-            if now is not None and now > rec.expires_at:
+            if now > rec.expires_at:
                 return ReservationResult(
                     success=False,
                     status="INVALID_STATE",
@@ -525,8 +611,30 @@ class FlashSaleInventoryService:
                     record=rec,
                 )
 
+            # Optimistically update to CONFIRMED (simulating Redis Lua confirmation)
+            rec.status = ReservationState.CONFIRMED
+
             # Attempt PostgreSQL authoritative ledger reconciliation
-            pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            try:
+                pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+            except Exception as exc:
+                # Crash / unhandled network timeout simulation: rollback in-memory state and log inconsistency
+                rec.status = ReservationState.RELEASED
+                self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
+                self._expirations_store.get(item_id, {}).pop(reservation_id, None)
+                self.inconsistencies.append({
+                    "reservation_id": reservation_id,
+                    "item_id": item_id,
+                    "error": str(exc),
+                    "timestamp": now,
+                })
+                return ReservationResult(
+                    success=False,
+                    status="RECONCILIATION_FAILED",
+                    message=f"PostgreSQL reconciliation error: {exc}",
+                    record=rec,
+                )
+
             if not pg_success:
                 # Reconcile failure: authoritative ledger exhausted; release Redis stock hold
                 rec.status = ReservationState.RELEASED
@@ -631,4 +739,9 @@ class FlashSaleInventoryService:
                     restored_count += rec.quantity
 
         return restored_count
+
+
+# Educational and architectural aliases
+FlashSaleInventory = FlashSaleInventoryService
+
 

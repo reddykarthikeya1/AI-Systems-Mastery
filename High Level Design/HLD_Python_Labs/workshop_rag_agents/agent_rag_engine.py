@@ -1,40 +1,23 @@
-"""Enterprise RAG and Agentic Workflow Orchestration Engine.
+"""Educational Architecture Simulator & Reference Pattern: Enterprise RAG and Agentic Workflow Orchestration Engine.
 
 Integrated Architecture & Architectural Guarantees:
 ----------------------------------------------------
-1. Hybrid Information Retrieval:
-   Combines Okapi BM25 inverted lexical indexing with dense vector cosine similarity
-   fused through Reciprocal Rank Fusion (RRF, k=60) to eliminate score calibration bias.
-
-2. Authoritative Fail-Closed Zanzibar ReBAC Authorization:
-   CRITICAL SECURITY INVARIANT: Unfiltered semantic retrieval is a major vector for
-   tenant data exfiltration. Retrieved chunks MUST be strictly authorized against
-   Zanzibar relationship tuples before entering the LLM prompt context window.
-   - If user X lacks 'viewer' on document Y, chunk is eliminated before the LLM sees it.
-   - Fail-Closed Policy: If the ReBAC authorization service is offline, unreachable, or
-     throws an exception, access is strictly denied. Never include unauthorized chunks
-     in the LLM context!
-
-3. Educational Zanzibar Simulator vs. Production Google Zanzibar Architecture:
-   - Educational Simulator (This Engine):
-     Models the fundamental ReBAC relational tuple graph (`(object, relation) -> user/userset`),
-     userset rewrites (owner -> editor -> viewer), and cyclic group traversals via in-memory BFS.
-   - Production Google Zanzibar (Global Infrastructure):
-     * Globally Distributed Spanner: Operates across global datacenters with TrueTime atomic clocks.
-     * Snapshot Consistency Tokens ("Zookies"): Eliminates the "New Enemy" problem by enforcing
-       bounded staleness snapshots across distributed document edits and ACL updates.
-     * Leopard Reachability Index: Precomputes and flattens transitive group reachability into an offline
-       index for sub-millisecond set-intersection evaluation, replacing live graph traversals.
-     * Distributed Call DAGs & Hedged Requests: Traversal requests are sharded, deduplicated, and cached.
-
-4. Transactional Outbox Pattern for Agent Actions & Tool Side Effects:
-   CRITICAL ARCHITECTURAL GUARANTEE: The agent must commit tool execution intent to the transactional
-   outbox BEFORE invoking external side effects to eliminate dual-write vulnerabilities.
-   Sequence:
-   (1) Record Intent in DB Outbox: Atomically commit the pending action and idempotency token.
-   (2) Worker Dispatches Tool: Dispatch external tool request carrying the idempotency token.
-   (3) External Confirmation: Await verified response from external service.
-   (4) Record Verified Outcome: Persist confirmed execution result and update outbox status.
+Educational Simulator vs. Production Enterprise Architecture:
+- Logical Simulation (This Module):
+  Demonstrates secure, tenant-isolated Retrieval-Augmented Generation (RAG) by
+  combining hybrid lexical/semantic retrieval (BM25 + Cosine RRF), authoritative
+  fail-closed Google Zanzibar ReBAC authorization filtering, and transactional outbox
+  intent recording for agentic tool side effects in Python.
+- Production Deployment Considerations & Boundaries:
+  1. Authoritative ReBAC ACL Evaluation:
+     Retrieved chunks are filtered before prompt synthesis. In production, this relies on
+     globally distributed Spanner instances with TrueTime snapshot tokens (Zookies) and
+     offline reachability indexes (Leopard) rather than live in-memory BFS graph traversals.
+  2. Transactional Outbox Tool Execution:
+     Tool intent is recorded to durable relational storage with an idempotency token before
+     external side effects are dispatched, preventing distributed dual-write inconsistency.
+  3. Hybrid Retrieval:
+     BM25 inverted index and vector search are fused using Reciprocal Rank Fusion (RRF, k=60).
 """
 
 from __future__ import annotations
@@ -92,7 +75,7 @@ class AgentQueryResponse:
 
 
 class AgentRAGEngine:
-    """Production Enterprise RAG and Agentic Orchestrator."""
+    """Educational Architecture Simulator & Reference Pattern: Enterprise RAG and Agentic Orchestrator."""
 
     def __init__(
         self,

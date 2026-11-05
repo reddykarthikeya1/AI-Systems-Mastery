@@ -226,3 +226,79 @@ def test_sequence_preemption_on_memory_exhaustion():
     assert len(seq_c.block_table) == 1
     assert seq_c.block_table[0] in freed
 
+
+def test_re_register_sequence_releases_old_blocks():
+    """Register sequence s1 with 8 tokens (2 blocks). Overwrite s1 with a new sequence of 4 tokens (1 block).
+    Verify that previous blocks are freed and bm.get_num_free_blocks() does not leak blocks."""
+    # 8 blocks total, block_size = 4, watermark = 0
+    bm = BlockManager(num_blocks=8, block_size=4, watermark_blocks=0)
+    assert bm.get_num_free_blocks() == 8
+
+    # 1. Register s1 with 8 tokens -> 2 full blocks
+    s1 = bm.register_sequence("s1", [1, 2, 3, 4, 5, 6, 7, 8])
+    assert len(s1.block_table) == 2
+    old_b0, old_b1 = s1.block_table[0], s1.block_table[1]
+    assert bm.blocks[old_b0].ref_count == 1
+    assert bm.blocks[old_b1].ref_count == 1
+    assert bm.get_num_free_blocks() == 6
+
+    # 2. Overwrite s1 with new sequence of 4 tokens (1 block)
+    # The previous 2 blocks must be freed before allocating the new sequence
+    s1_new = bm.register_sequence("s1", [10, 20, 30, 40])
+    assert len(s1_new.block_table) == 1
+    new_b = s1_new.block_table[0]
+
+    # Verify that previous blocks were released (ref_count == 0) and not leaked
+    assert bm.blocks[old_b0].ref_count == 0
+    assert bm.blocks[old_b1].ref_count == 0
+    assert bm.blocks[new_b].ref_count == 1
+
+    # Overwrite again with partial block tokens (e.g. 2 tokens)
+    s1_partial = bm.register_sequence("s1", [100, 101])
+    assert len(s1_partial.block_table) == 1
+    partial_b = s1_partial.block_table[0]
+
+    # new_b (full block) ref_count dropped to 0
+    assert bm.blocks[new_b].ref_count == 0
+
+    # Finally free s1
+    bm.free_sequence("s1")
+    # partial_b had < block_size tokens, so upon freeing it returns directly to free_block_ids
+    assert partial_b in bm.free_block_ids
+
+    # All blocks ever allocated for s1 have ref_count == 0 (zero leaked block references)
+    for b_id in [old_b0, old_b1, new_b, partial_b]:
+        assert bm.blocks[b_id].ref_count == 0
+
+
+def test_fork_sequence_existing_child_cleaned_up():
+    """Fork to an already existing sequence ID and verify no leaked block references."""
+    bm = BlockManager(num_blocks=8, block_size=4, watermark_blocks=1)
+
+    # Register parent sequence
+    parent = bm.register_sequence("parent_seq", [1, 2, 3, 4])
+    parent_b = parent.block_table[0]
+    assert bm.blocks[parent_b].ref_count == 1
+
+    # Register an initial child sequence that holds a distinct block
+    initial_child = bm.register_sequence("child_seq", [10, 20, 30, 40])
+    child_old_b = initial_child.block_table[0]
+    assert bm.blocks[child_old_b].ref_count == 1
+
+    # Fork parent to child_seq (overwriting existing child_seq)
+    forked_child = bm.fork_sequence("parent_seq", "child_seq")
+
+    # The old block held by child_seq must be cleanly freed (ref_count == 0)
+    assert bm.blocks[child_old_b].ref_count == 0
+
+    # The forked child now shares the parent block (ref_count == 2)
+    assert forked_child.block_table[0] == parent_b
+    assert bm.blocks[parent_b].ref_count == 2
+
+    # Clean up both sequences
+    bm.free_sequence("child_seq")
+    assert bm.blocks[parent_b].ref_count == 1
+    bm.free_sequence("parent_seq")
+    assert bm.blocks[parent_b].ref_count == 0
+
+

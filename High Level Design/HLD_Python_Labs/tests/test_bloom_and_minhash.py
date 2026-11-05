@@ -59,6 +59,47 @@ def test_counting_bloom_filter_add_and_remove():
     assert cbf.remove("user:beta") is False
 
 
+def test_counting_bloom_filter_false_positive_removal_risk():
+    """Demonstrate the False-Positive Removal Hazard in Counting Bloom Filters:
+
+    1. Legitimate item A is inserted.
+    2. Item B was NEVER inserted, but contains(Item B) returns True due to a false-positive hash collision.
+    3. Blindly removing Item B decrements the shared counter.
+    4. Legitimate Item A now returns contains(Item A) == False -> A FALSE NEGATIVE has been created!
+    5. Also validates that remove_safe(item, verified_present=False) raises ValueError to guard against this.
+    """
+    cbf = CountingBloomFilter(size_m=16, hash_count_k=1)
+
+    item_a = "legitimate_key"
+    cbf.add(item_a)
+    slot_a = cbf._get_hashes(item_a)[0]
+    assert cbf.contains(item_a) is True
+
+    # Find an uninserted item that collides on the same slot
+    colliding_uninserted = None
+    for i in range(1000):
+        probe = f"unseen_key_{i}"
+        if cbf._get_hashes(probe)[0] == slot_a:
+            colliding_uninserted = probe
+            break
+
+    assert colliding_uninserted is not None
+    # Probabilistic false positive: contains() returns True even though it was never added!
+    assert cbf.contains(colliding_uninserted) is True
+
+    # remove_safe with verified_present=False blocks the dangerous unverified removal
+    with pytest.raises(ValueError) as excinfo:
+        cbf.remove_safe(colliding_uninserted, verified_present=False)
+    assert "False-Positive Removal Hazard" in str(excinfo.value)
+
+    # If blindly removed via remove():
+    removed = cbf.remove(colliding_uninserted)
+    assert removed is True
+
+    # THE HAZARD DEMONSTRATED: Legitimate item_a now suffers a FALSE NEGATIVE!
+    assert cbf.contains(item_a) is False
+
+
 def test_counting_bloom_filter_duplicates():
     cbf = CountingBloomFilter.from_capacity(expected_items=50, false_positive_rate=0.01)
 
@@ -139,6 +180,44 @@ def test_lsh_candidate_retrieval_and_determinism():
     results = lsh1.query_similar(mh_near, threshold=0.5)
     doc_ids = [doc_id for doc_id, _ in results]
     assert "doc_base" in doc_ids
+
+
+def test_lsh_index_reindexing_and_removal():
+    """Verify that updating a document's MinHash cleans up old buckets and does not match old query signatures."""
+    lsh = LSHIndex(bands=16, rows_per_band=8)
+
+    text_v1 = "distributed transactional database with multi version concurrency control"
+    text_v2 = "baking sourdough bread with organic flour water salt and yeast"
+
+    def make_sig(text: str) -> MinHash:
+        mh = MinHash(num_hashes=128, seed=42)
+        mh.update(MinHash.shingle_text(text, n_gram=2))
+        return mh
+
+    sig_v1 = make_sig(text_v1)
+    sig_v2 = make_sig(text_v2)
+
+    # 1. Insert doc_1 with v1 signature
+    lsh.insert("doc_1", sig_v1)
+    candidates_v1 = lsh.query_candidates(sig_v1)
+    assert "doc_1" in candidates_v1
+
+    # 2. Re-index doc_1 with completely different v2 signature
+    lsh.insert("doc_1", sig_v2)
+
+    # 3. Old query signature MUST NOT match doc_1 anymore! Old buckets must be cleaned up!
+    candidates_after_reindex = lsh.query_candidates(sig_v1)
+    assert "doc_1" not in candidates_after_reindex
+
+    # 4. New query signature MUST match doc_1
+    candidates_v2 = lsh.query_candidates(sig_v2)
+    assert "doc_1" in candidates_v2
+
+    # 5. Remove doc_1 explicitly
+    removed = lsh.remove("doc_1")
+    assert removed is True
+    assert "doc_1" not in lsh.query_candidates(sig_v2)
+    assert lsh.remove("doc_1") is False  # Already removed
 
 
 def test_parameter_validations():

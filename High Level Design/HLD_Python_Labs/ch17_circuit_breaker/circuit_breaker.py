@@ -27,6 +27,11 @@ Production Hardening:
    Coroutine cancellation must NOT count as a dependency failure, and probe slot is released.
 3. Call Timeout Protection:
    Both synchronous and asynchronous executions support strict request timeouts.
+4. Python OS Thread Cancellation Semantics:
+   Python OS threads cannot be preemptively killed from the outside. When a synchronous
+   call times out via ThreadPoolExecutor, or an async call via asyncio.to_thread(), control
+   is returned immediately to the caller without blocking, but any uncooperative thread
+   will continue running in the background until completion.
 """
 
 from __future__ import annotations
@@ -69,6 +74,7 @@ class CircuitBreaker:
         failure_exceptions: Optional[Tuple[Type[BaseException], ...]] = None,
         ignored_exceptions: Optional[Tuple[Type[BaseException], ...]] = None,
         failure_predicate: Optional[Callable[[BaseException], bool]] = None,
+        executor: Optional[ThreadPoolExecutor] = None,
     ) -> None:
         if failure_threshold < 1:
             raise ValueError(f"failure_threshold must be >= 1, got {failure_threshold}")
@@ -94,6 +100,10 @@ class CircuitBreaker:
         self.ignored_exceptions = ignored_exceptions
         self.failure_predicate = failure_predicate
 
+        self._executor = executor
+        self._owns_executor = executor is None
+        self._executor_lock = threading.Lock()
+
         self._lock = threading.Lock()
         self._state = CircuitState.CLOSED
         self._consecutive_failures = 0
@@ -102,6 +112,26 @@ class CircuitBreaker:
         self._cooldown_deadline: float = 0.0
         self._total_requests = 0
         self._total_rejections = 0
+
+    def _get_executor(self) -> ThreadPoolExecutor:
+        if self._executor is None:
+            with self._executor_lock:
+                if self._executor is None:
+                    self._executor = ThreadPoolExecutor(thread_name_prefix=f"cb-{self.name}")
+        return self._executor
+
+    def close(self, wait: bool = False) -> None:
+        """Shutdown the underlying thread pool executor without blocking caller unless wait=True."""
+        with self._executor_lock:
+            if self._executor is not None and self._owns_executor:
+                self._executor.shutdown(wait=wait, cancel_futures=True)
+                self._executor = None
+
+    def __del__(self) -> None:
+        try:
+            self.close(wait=False)
+        except Exception:
+            pass
 
     @property
     def state(self) -> CircuitState:
@@ -207,24 +237,35 @@ class CircuitBreaker:
                     self._cooldown_deadline = now + backoff
 
     def call(self, func: Callable, *args: Any, timeout: Optional[float] = None, **kwargs: Any) -> Any:
-        """Synchronously execute wrapped function protected by circuit breaker."""
+        """Synchronously execute wrapped function protected by circuit breaker.
+
+        Strict Timeout Semantics:
+        -------------------------
+        When eff_timeout is set, the function runs on a dedicated ThreadPoolExecutor.
+        If fut.result(timeout=eff_timeout) raises TimeoutError, the method cancels the
+        future (if pending), records the failure, and raises TimeoutError IMMEDIATELY.
+        It does NOT wait for the underlying slow OS thread to finish.
+        Note: Python OS threads cannot be preemptively killed; uncooperative threads
+        will complete their work in the background.
+        """
         self.pre_call()
         eff_timeout = timeout if timeout is not None else self.call_timeout_seconds
 
         if eff_timeout is not None and eff_timeout > 0:
-            with ThreadPoolExecutor(max_workers=1) as executor:
-                fut = executor.submit(func, *args, **kwargs)
-                try:
-                    result = fut.result(timeout=eff_timeout)
-                    self.post_call(success=True)
-                    return result
-                except FutureTimeoutError as te:
-                    timeout_exc = TimeoutError(f"Call exceeded timeout of {eff_timeout}s")
-                    self.post_call(success=False, exception=timeout_exc)
-                    raise timeout_exc from te
-                except Exception as ex:
-                    self.post_call(success=False, exception=ex)
-                    raise
+            executor = self._get_executor()
+            fut = executor.submit(func, *args, **kwargs)
+            try:
+                result = fut.result(timeout=eff_timeout)
+                self.post_call(success=True)
+                return result
+            except FutureTimeoutError as te:
+                fut.cancel()
+                timeout_exc = TimeoutError(f"Call exceeded timeout of {eff_timeout}s")
+                self.post_call(success=False, exception=timeout_exc)
+                raise timeout_exc from te
+            except Exception as ex:
+                self.post_call(success=False, exception=ex)
+                raise
         else:
             try:
                 result = func(*args, **kwargs)
@@ -237,7 +278,16 @@ class CircuitBreaker:
     async def call_async(
         self, func: Callable, *args: Any, timeout: Optional[float] = None, **kwargs: Any
     ) -> Any:
-        """Asynchronously execute wrapped function protected by circuit breaker."""
+        """Asynchronously execute wrapped function protected by circuit breaker.
+
+        Async Cancellation & Thread Semantics:
+        --------------------------------------
+        If func is a coroutine function, asyncio cancellation and wait_for timeouts
+        cancel the coroutine natively. If func is a synchronous callable run via
+        asyncio.to_thread(), cancelling or timing out stops waiting in the event loop,
+        but the underlying OS thread cannot be preemptively stopped and will continue
+        running in the background until completion.
+        """
         self.pre_call()
         eff_timeout = timeout if timeout is not None else self.call_timeout_seconds
 

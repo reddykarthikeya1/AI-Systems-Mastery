@@ -1,8 +1,11 @@
 """Tests for E-Commerce Flash Sale Inventory Reservation System (Workshop 11)."""
+import time
 import pytest
 from workshop_ecommerce.flash_sale_inventory import (
     FlashSaleInventoryService,
+    FlashSaleInventory,
     PostgresInventoryStore,
+    SimulatedPostgresLedger,
     ReservationState,
 )
 
@@ -254,4 +257,80 @@ def test_postgres_reconciliation_failure_rejects_confirmation():
     assert confirm_res.record.status == ReservationState.RELEASED
     # Redis stock is restored
     assert svc.get_stock("item_authoritative") == 10
+
+
+def test_confirm_expiration_default_time():
+    """Verify that calling confirm() without passing now still strictly rejects expired reservations."""
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_exp", 5)
+
+    # Reserve with expires_at in the past relative to current wall-clock time
+    res = svc.reserve(
+        "item_exp",
+        "user_exp",
+        quantity=1,
+        idempotency_key="exp_default_1",
+        ttl_seconds=10.0,
+        now=time.time() - 100.0,
+    )
+    assert res.success is True
+    res_id = res.record.reservation_id
+
+    # Calling confirm without passing `now` defaults to time.time(), strictly rejecting expired reservation
+    confirm_res = svc.confirm("item_exp", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "INVALID_STATE"
+    assert "EXPIRED" in (confirm_res.message or "")
+    assert res_id not in pg.orders
+
+    # Also test calling confirm with single argument confirm(res_id)
+    res2 = svc.reserve(
+        "item_exp",
+        "user_exp2",
+        quantity=1,
+        idempotency_key="exp_default_2",
+        ttl_seconds=5.0,
+        now=time.time() - 50.0,
+    )
+    assert res2.success is True
+    res2_id = res2.record.reservation_id
+    confirm_res2 = svc.confirm(res2_id)
+    assert confirm_res2.success is False
+    assert confirm_res2.status == "INVALID_STATE"
+    assert "EXPIRED" in (confirm_res2.message or "")
+
+
+def test_dual_write_crash_window_simulation():
+    """Simulates a failure where PostgreSQL reconciliation raises an unhandled exception or connection error,
+    verifying how the system rolls back Redis/in-memory state and records the inconsistency."""
+    class FaultyPostgresLedger(SimulatedPostgresLedger):
+        def reconcile_confirmed_order(self, item_id, reservation):
+            raise ConnectionError("PostgreSQL connection timeout / network partition during confirmation commit")
+
+    pg = FaultyPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_dual_write", 5)
+
+    res = svc.reserve("item_dual_write", "user_crash", quantity=2, idempotency_key="crash_1")
+    assert res.success is True
+    assert svc.get_stock("item_dual_write") == 3
+    res_id = res.record.reservation_id
+
+    # Confirm triggers simulated crash/network partition in PostgreSQL reconciliation
+    confirm_res = svc.confirm("item_dual_write", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "RECONCILIATION_FAILED"
+    assert "PostgreSQL reconciliation error" in (confirm_res.message or "")
+
+    # State is safely rolled back to RELEASED and stock is restored
+    assert confirm_res.record.status == ReservationState.RELEASED
+    assert svc.get_stock("item_dual_write") == 5
+
+    # Verifies the system recorded the inconsistency for asynchronous reconciliation
+    assert len(svc.inconsistencies) == 1
+    assert svc.inconsistencies[0]["reservation_id"] == res_id
+    assert "connection timeout" in svc.inconsistencies[0]["error"].lower()
+    assert res_id not in pg.orders
+
 

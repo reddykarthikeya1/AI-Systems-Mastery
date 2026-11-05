@@ -116,7 +116,30 @@ class BloomFilter:
 
 
 class CountingBloomFilter:
-    """Counting Bloom Filter supporting item removal/deletion via counter array."""
+    """Counting Bloom Filter supporting item removal/deletion via counter array.
+
+    FALSE-POSITIVE REMOVAL HAZARD:
+    ==============================
+    A Counting Bloom Filter replaces bits with fixed-width counters (e.g. 8-bit integers)
+    to enable item removal without corrupting other items under normal operation.
+    However, like standard Bloom filters, membership testing has a bounded false positive
+    rate (contains(X) returns True even when X was never inserted).
+
+    If a caller attempts to remove an item X that was NEVER inserted, but contains(X) is True
+    due to a false positive hash collision:
+    1. The counters corresponding to X's hash slots are decremented.
+    2. These decremented counters belong to OTHER legitimate elements that actually were inserted.
+    3. If any shared counter drops to zero, those other legitimate elements will subsequently
+       return contains() == False!
+    4. Result: A FALSE NEGATIVE is induced, violating the fundamental guarantee of Bloom filters!
+
+    SAFETY CONTRACT:
+    ================
+    Callers MUST NOT remove unverified items blindly based solely on contains(item) == True.
+    Removal requires external proof of prior insertion (e.g. authoritative database record
+    or primary key lookup before removing from the cache/filter). Use `remove_safe()` to
+    enforce this architectural contract.
+    """
 
     def __init__(self, size_m: int, hash_count_k: int, counter_max: int = 255) -> None:
         if size_m <= 0:
@@ -164,10 +187,15 @@ class CountingBloomFilter:
         return True
 
     def remove(self, item: str) -> bool:
-        """Decrement counters for the item if present.
+        """Decrement counters for the item if present in filter.
+
+        WARNING - False-Positive Removal Hazard:
+        If `item` was not actually added previously and this is a false positive collision,
+        decrementing its counters will corrupt the filter and induce false negatives
+        for other legitimately added items. External verification of prior insertion is required.
 
         Returns:
-            True if item was present and removed, False otherwise.
+            True if item was present according to filter and counters decremented, False otherwise.
         """
         if not self.contains(item):
             return False
@@ -177,6 +205,26 @@ class CountingBloomFilter:
                 self.counters[idx] -= 1
         self.items_count = max(0, self.items_count - 1)
         return True
+
+    def remove_safe(self, item: str, verified_present: bool = True) -> bool:
+        """Safely remove an item with explicit contract of external prior insertion proof.
+
+        Args:
+            item: Element to remove.
+            verified_present: True indicates the caller verified external proof of existence
+                (e.g., via primary database record lookup). If False, raises ValueError to
+                prevent the False-Positive Removal Hazard.
+
+        Returns:
+            True if removed, False if not present in the filter.
+        """
+        if not verified_present:
+            raise ValueError(
+                f"Cannot safely remove '{item}' without external proof of prior insertion. "
+                "Blind removal on a false positive collision decrements shared counters and "
+                "causes false negatives for other legitimately stored items (False-Positive Removal Hazard)."
+            )
+        return self.remove(item)
 
 
 class MinHash:
@@ -263,14 +311,44 @@ class LSHIndex:
         # (band_idx, deterministic_bucket_hash) -> set of doc_ids
         self.buckets: Dict[Tuple[int, int], Set[str]] = {}
         self.doc_signatures: Dict[str, MinHash] = {}
+        # doc_id -> list of (band_idx, bucket_hash) for precise re-indexing and deletion
+        self._doc_bands: Dict[str, List[Tuple[int, int]]] = {}
+
+    def remove(self, doc_id: str) -> bool:
+        """Removes a document from the LSH index and all its bucket sets.
+
+        Returns:
+            True if the document was present and removed, False otherwise.
+        """
+        if doc_id not in self.doc_signatures:
+            return False
+
+        old_buckets = self._doc_bands.pop(doc_id, [])
+        for bucket_key in old_buckets:
+            if bucket_key in self.buckets:
+                self.buckets[bucket_key].discard(doc_id)
+                if not self.buckets[bucket_key]:
+                    del self.buckets[bucket_key]
+
+        self.doc_signatures.pop(doc_id, None)
+        return True
 
     def insert(self, doc_id: str, minhash: MinHash) -> None:
-        """Index a document MinHash into the LSH bands."""
+        """Index a document MinHash into the LSH bands.
+
+        If doc_id was previously indexed, it is removed from all old buckets first
+        to prevent stale bucket entries and false matches.
+        """
         if minhash.num_hashes != self.num_hashes:
             raise ValueError(
                 f"MinHash length {minhash.num_hashes} must match bands*rows={self.num_hashes}"
             )
+
+        if doc_id in self.doc_signatures:
+            self.remove(doc_id)
+
         self.doc_signatures[doc_id] = minhash
+        doc_bucket_keys: List[Tuple[int, int]] = []
 
         for band_idx in range(self.bands):
             start = band_idx * self.rows_per_band
@@ -282,6 +360,9 @@ class LSHIndex:
             if bucket_key not in self.buckets:
                 self.buckets[bucket_key] = set()
             self.buckets[bucket_key].add(doc_id)
+            doc_bucket_keys.append(bucket_key)
+
+        self._doc_bands[doc_id] = doc_bucket_keys
 
     def query_candidates(self, minhash: MinHash) -> Set[str]:
         """Find all document IDs that collide in at least one band."""

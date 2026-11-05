@@ -1,5 +1,6 @@
 """Tests for Distributed Saga Orchestrator Pattern (Chapter 18)."""
 import asyncio
+import time
 import pytest
 from ch18_saga_orchestrator.saga_orchestrator import (
     SagaOrchestrator,
@@ -149,3 +150,55 @@ async def test_async_saga_execution():
     result = await orchestrator.execute_async(initial_payload={})
     assert result.status == SagaStatus.COMPENSATED
     assert timeline == ["async_step1", "async_comp1"]
+
+
+@pytest.mark.asyncio
+async def test_async_saga_with_sync_callables_does_not_block_loop():
+    """Verify that synchronous step actions and compensations execute via asyncio.to_thread.
+
+    This ensures that synchronous blocking operations inside steps do not block
+    the main asyncio event loop, allowing concurrent coroutines to make progress.
+    """
+    orchestrator = SagaOrchestrator(name="SyncCallablesInAsyncSaga")
+    timeline = []
+
+    def blocking_sync_step(ctx):
+        # Synchronous sleep simulates a blocking database call
+        time.sleep(0.06)
+        timeline.append("sync_forward")
+        return {"db_row": 42}
+
+    def failing_step(ctx):
+        timeline.append("failing_step")
+        raise RuntimeError("Downstream rejection")
+
+    def blocking_sync_comp(ctx):
+        time.sleep(0.04)
+        timeline.append("sync_comp")
+
+    orchestrator.add_step(SagaStep("SyncStep", blocking_sync_step, blocking_sync_comp))
+    orchestrator.add_step(SagaStep("FailStep", failing_step))
+
+    # Concurrently run a background asyncio ticker to verify event loop responsiveness
+    ticker_count = 0
+    stop_ticker = False
+
+    async def background_ticker():
+        nonlocal ticker_count
+        while not stop_ticker:
+            await asyncio.sleep(0.01)
+            ticker_count += 1
+
+    ticker_task = asyncio.create_task(background_ticker())
+
+    try:
+        result = await orchestrator.execute_async(initial_payload={})
+        assert result.status == SagaStatus.COMPENSATED
+        assert result.step_results["SyncStep"] == {"db_row": 42}
+        assert timeline == ["sync_forward", "failing_step", "sync_comp"]
+        # If the event loop were blocked by time.sleep, the ticker wouldn't run.
+        # With asyncio.to_thread, ticker ticks concurrently during the 0.06s + 0.04s sleeps.
+        assert ticker_count >= 3
+    finally:
+        stop_ticker = True
+        await ticker_task
