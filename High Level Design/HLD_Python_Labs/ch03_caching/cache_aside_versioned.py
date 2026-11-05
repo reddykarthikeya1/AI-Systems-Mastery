@@ -114,6 +114,9 @@ local new_ver = tonumber(ARGV[1] or '0')
 
 redis.call('DEL', data_key)
 redis.call('INCR', gen_key)
+-- Persist fence metadata to ensure it does not prematurely expire while delayed readers are in flight
+redis.call('PERSIST', gen_key)
+redis.call('PERSIST', watermark_key)
 
 if new_ver and new_ver > 0 then
     local current_watermark = tonumber(redis.call('GET', watermark_key) or '0')
@@ -387,9 +390,11 @@ class VersionedCacheAside:
     def update(self, record_id: str, new_data: Any, ttl_seconds: float = 300.0) -> int:
         """Write-through DB update with cache synchronization."""
         new_version = self.db.write(record_id, new_data)
+        # Capture current generation at write time so update never uses an obsolete fence
+        current_gen = self.get_generation(record_id)
         flight_key = f"record:{record_id}"
-        # Update cache atomically with the new version
-        self.put_cache(flight_key, new_data, new_version, ttl_seconds=ttl_seconds)
+        # Update cache atomically with the new version and active generation fence
+        self.put_cache(flight_key, new_data, new_version, captured_gen=current_gen, ttl_seconds=ttl_seconds)
         return new_version
 
     def invalidate(

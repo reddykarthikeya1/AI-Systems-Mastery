@@ -274,8 +274,19 @@ end
 
 local record = cjson.decode(record_json)
 
+-- Rollback CANNOT proceed if the reservation is in PENDING_RECONCILIATION.
+-- An ambiguous database timeout must be resolved by authoritative reconciliation, NOT ordinary rollback!
+if record.status == "PENDING_RECONCILIATION" then
+    return cjson.encode({
+        status = "PENDING_RECONCILIATION",
+        message = "Cannot rollback reservation pending reconciliation without authoritative ledger resolution",
+        reservation_id = res_id,
+        current_status = record.status
+    })
+end
+
 -- Rollback can only succeed if the reservation is in a roll-backable state and hasn't been rolled back already.
-if record.status ~= "CONFIRMED" and record.status ~= "HELD" and record.status ~= "PENDING_RECONCILIATION" then
+if record.status ~= "CONFIRMED" and record.status ~= "HELD" then
     return cjson.encode({
         status = "ALREADY_ROLLED_BACK",
         current_status = record.status,
@@ -289,6 +300,50 @@ redis.call('INCRBY', stock_key, record.quantity)
 local updated_json = cjson.encode(record)
 redis.call('HSET', reserves_key, res_id, updated_json)
 return updated_json
+"""
+
+LUA_RECONCILE_PENDING = """
+-- KEYS[1]: {item:<id>}:stock
+-- KEYS[2]: {item:<id>}:reserves
+-- ARGV[1]: reservation_id
+-- ARGV[2]: resolution ("CONFIRM", "RELEASE", or "CHECK")
+
+local stock_key = KEYS[1]
+local reserves_key = KEYS[2]
+local res_id = ARGV[1]
+local resolution = ARGV[2]
+
+local record_json = redis.call('HGET', reserves_key, res_id)
+if not record_json then
+    return cjson.encode({status = "NOT_FOUND"})
+end
+
+local record = cjson.decode(record_json)
+
+-- Idempotent transitions
+if record.status == "CONFIRMED" then
+    return cjson.encode({status = "ALREADY_CONFIRMED", record = record})
+end
+if record.status == "RELEASED" then
+    return cjson.encode({status = "ALREADY_RELEASED", record = record})
+end
+
+if record.status ~= "PENDING_RECONCILIATION" then
+    return cjson.encode({status = "INVALID_STATE", current_status = record.status, record = record})
+end
+
+if resolution == "CONFIRM" then
+    record.status = "CONFIRMED"
+    redis.call('HSET', reserves_key, res_id, cjson.encode(record))
+    return cjson.encode({status = "CONFIRMED", record = record})
+elseif resolution == "RELEASE" then
+    record.status = "RELEASED"
+    redis.call('INCRBY', stock_key, record.quantity)
+    redis.call('HSET', reserves_key, res_id, cjson.encode(record))
+    return cjson.encode({status = "RELEASED", record = record})
+else
+    return cjson.encode({status = "PENDING_RECONCILIATION", record = record})
+end
 """
 
 
@@ -361,6 +416,16 @@ class PostgresInventoryStore:
             self.orders[reservation.reservation_id] = order_data
             self._reconciled_reservations[reservation.reservation_id] = order_data
             return True
+
+    def get_order(self, reservation_id: str) -> Optional[Dict[str, Any]]:
+        """Authoritative lookup of an order by reservation ID."""
+        with self._lock:
+            return self.orders.get(reservation_id)
+
+    def has_order(self, reservation_id: str) -> bool:
+        """Checks if the order was committed to the authoritative ledger."""
+        with self._lock:
+            return reservation_id in self.orders
 
 
 # Alias for educational and workshop clarity
@@ -567,13 +632,19 @@ class FlashSaleInventoryService:
                 LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id
             )
             data = json.loads(raw)
-            if data.get("status") in ("NOT_FOUND", "ALREADY_ROLLED_BACK", "INVALID_STATE"):
+            if data.get("status") in ("NOT_FOUND", "ALREADY_ROLLED_BACK", "INVALID_STATE", "PENDING_RECONCILIATION"):
                 if data.get("status") == "ALREADY_ROLLED_BACK":
                     self._rolled_back_reservations.add(reservation_id)
                     return ReservationResult(
                         success=True,
                         status="RELEASED",
                         message="Reservation already rolled back",
+                    )
+                if data.get("status") == "PENDING_RECONCILIATION":
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_RECONCILIATION",
+                        message=data.get("message", "Cannot rollback reservation pending reconciliation without authoritative ledger resolution"),
                     )
                 return ReservationResult(
                     success=False,
@@ -607,10 +678,17 @@ class FlashSaleInventoryService:
             if not rec:
                 return ReservationResult(success=False, status="NOT_FOUND")
 
+            if rec.status == ReservationState.PENDING_RECONCILIATION:
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_RECONCILIATION",
+                    message="Cannot rollback reservation pending reconciliation without authoritative ledger resolution",
+                    record=rec,
+                )
+
             if rec.status not in (
                 ReservationState.CONFIRMED,
                 ReservationState.HELD,
-                ReservationState.PENDING_RECONCILIATION,
             ):
                 return ReservationResult(
                     success=False,
@@ -626,6 +704,176 @@ class FlashSaleInventoryService:
             return ReservationResult(success=True, status="RELEASED", record=rec)
 
     rollback = rollback_confirmation
+
+    def reconcile_pending_reservation(
+        self,
+        item_id: str,
+        reservation_id: Optional[str] = None,
+        *,
+        final_absence_confirmed: bool = False,
+    ) -> ReservationResult:
+        """Authoritative reconciliation flow for reservations in PENDING_RECONCILIATION.
+
+        Educational Concurrency & Fault-Tolerance Contract:
+        ---------------------------------------------------
+        1. While database outcome is unknown (e.g. database still times out), keep reservation
+           in PENDING_RECONCILIATION. Never release stock on a timeout.
+        2. Query authoritative ledger by reservation_id.
+        3. If order exists: mark reservation CONFIRMED without deducting stock again.
+        4. If order is definitively absent and failure is known to be final: release hold exactly once
+           and restore stock.
+        5. If database query fails or outcome remains unknown: leave pending.
+        6. Idempotent: repeated reconciliation attempts return consistent state without double-restoring stock.
+        7. Ordinary rollback is prohibited from releasing pending reservations without authoritative resolution.
+        """
+        if reservation_id is None:
+            res_id = item_id
+            target_item_id = self._res_to_item.get(res_id)
+            if target_item_id is None:
+                for it_id, rmap in self._reserves_store.items():
+                    if res_id in rmap:
+                        target_item_id = it_id
+                        break
+            item_id = target_item_id or res_id
+            reservation_id = res_id
+
+        stock_k, reserves_k, _, _ = self._keys(item_id)
+
+        # 1. Authoritative ledger lookup
+        is_committed = False
+        try:
+            if hasattr(self.postgres_db, "has_order"):
+                is_committed = self.postgres_db.has_order(reservation_id)
+            elif hasattr(self.postgres_db, "get_order"):
+                is_committed = self.postgres_db.get_order(reservation_id) is not None
+            else:
+                is_committed = reservation_id in getattr(self.postgres_db, "orders", {})
+        except Exception as exc:
+            if _is_ambiguous_timeout(exc):
+                # Authoritative DB still timing out: outcome remains unknown!
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_RECONCILIATION",
+                    message=f"PostgreSQL still unreachable: {exc}",
+                )
+            raise
+
+        # 2. Redis execution
+        if self.redis is not None:
+            resolution = "CHECK"
+            if is_committed:
+                resolution = "CONFIRM"
+            elif final_absence_confirmed:
+                resolution = "RELEASE"
+
+            raw = self.redis.eval(
+                LUA_RECONCILE_PENDING,
+                2,
+                stock_k,
+                reserves_k,
+                reservation_id,
+                resolution,
+            )
+            data = json.loads(raw)
+            status = data.get("status")
+            rec_data = data.get("record")
+            rec = None
+            if rec_data:
+                rec = ReservationRecord(
+                    reservation_id=rec_data["reservation_id"],
+                    user_id=rec_data["user_id"],
+                    quantity=rec_data["quantity"],
+                    status=ReservationState(rec_data["status"]),
+                    created_at=rec_data["created_at"],
+                    expires_at=rec_data["expires_at"],
+                )
+
+            if status in ("CONFIRMED", "ALREADY_CONFIRMED"):
+                return ReservationResult(
+                    success=True,
+                    status="CONFIRMED",
+                    record=rec,
+                    message="Reconciled: order confirmed in authoritative ledger",
+                )
+            elif status in ("RELEASED", "ALREADY_RELEASED"):
+                self._rolled_back_reservations.add(reservation_id)
+                return ReservationResult(
+                    success=True,
+                    status="RELEASED",
+                    record=rec,
+                    message="Reconciled: order absent, hold released and stock restored exactly once",
+                )
+            elif status == "PENDING_RECONCILIATION":
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_RECONCILIATION",
+                    record=rec,
+                    message="Reservation remains in PENDING_RECONCILIATION awaiting final resolution",
+                )
+            else:
+                return ReservationResult(
+                    success=False,
+                    status=status,
+                    record=rec,
+                    message=data.get("message", "Reconciliation error"),
+                )
+
+        # 3. In-memory execution
+        with self._lock:
+            reserves_map = self._reserves_store.get(item_id, {})
+            rec = reserves_map.get(reservation_id)
+            if not rec:
+                return ReservationResult(success=False, status="NOT_FOUND")
+
+            # Idempotency checks
+            if rec.status == ReservationState.CONFIRMED:
+                return ReservationResult(
+                    success=True,
+                    status="CONFIRMED",
+                    record=rec,
+                    message="Reservation already confirmed",
+                )
+            if rec.status == ReservationState.RELEASED:
+                return ReservationResult(
+                    success=True,
+                    status="RELEASED",
+                    record=rec,
+                    message="Reservation already released",
+                )
+
+            if rec.status != ReservationState.PENDING_RECONCILIATION:
+                return ReservationResult(
+                    success=False,
+                    status="INVALID_STATE",
+                    record=rec,
+                    message=f"Cannot reconcile reservation in state {rec.status.value}",
+                )
+
+            if is_committed:
+                rec.status = ReservationState.CONFIRMED
+                return ReservationResult(
+                    success=True,
+                    status="CONFIRMED",
+                    record=rec,
+                    message="Reconciled: order confirmed in authoritative ledger",
+                )
+            elif final_absence_confirmed:
+                rec.status = ReservationState.RELEASED
+                self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
+                self._rolled_back_reservations.add(reservation_id)
+                return ReservationResult(
+                    success=True,
+                    status="RELEASED",
+                    record=rec,
+                    message="Reconciled: order absent, hold released and stock restored exactly once",
+                )
+            else:
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_RECONCILIATION",
+                    record=rec,
+                    message="Reservation remains in PENDING_RECONCILIATION awaiting final resolution",
+                )
 
     def confirm(
         self,

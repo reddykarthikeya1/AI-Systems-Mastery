@@ -28,7 +28,7 @@
 |               |               | - Full resolution of 11 critical code flaws (Issues 2.1 A–K).    |
 |               |               | - Deterministic hashing across all probabilistic data structures. |
 |               |               | - Explicit educational simulation vs production code labeling.    |
-|               |               | - 106 automated unit & integration tests (100% passing).          |
+|               |               | - 139 automated unit & integration tests (100% passing).          |
 |               |               | - Complete elimination of exaggerated marketing claims.           |
 +---------------+---------------+-------------------------------------------------------------------+
 ```
@@ -144,7 +144,7 @@ Version 3.0 was typeset and verified against the final 195-page PDF artifact (`H
 ## 6. Verification & Quality Assurance Summary
 
 ### 6.1 What Was Checked
-Every component, algorithm, and failure boundary across the 13 laboratory modules and 25 textbook chapters was audited and verified:
+Every component, algorithm, and failure boundary across the 14 laboratory test modules and 25 textbook chapters was audited and verified:
 1. `ch01_scalability/concurrency_limiter.py`: Little's Law invariant ($L = \lambda W$), TCP Vegas queue sizing, AIMD multiplicative backoff, hard SLO load shedding.
 2. `ch03_caching/cache_aside_versioned.py`: Decoupled watermark architecture (`{entity}:data` vs `{entity}:v_watermark`), stale-fill race rejection via Lua script, SingleFlight coalescing mutex.
 3. `ch07_consistent_hashing/hash_ring.py`: Virtual node token distribution, deterministic salt probing (`#salt_{salt}`) on hash collision, Google Bounded-Load clockwise spillover routing.
@@ -158,11 +158,12 @@ Every component, algorithm, and failure boundary across the 13 laboratory module
 11. `workshop_ecommerce/flash_sale_inventory.py`: Redis Cluster `{hash_tags}`, stock reservation state machine (`HELD` -> `CONFIRMED` / `RELEASED` / `EXPIRED`), ZSET expiration index, background reconciliation daemon, PostgreSQL ledger reconciliation.
 12. `workshop_llm_serving/paged_attention_simulator.py`: Virtual memory paging for KV-cache, physical block table allocation, double-free validation, Copy-on-Write (CoW) parallel sampling, radix tree prefix routing, watermark LRU cache eviction, sequence preemption.
 13. `workshop_rag_agents/agent_rag_engine.py`: Hybrid search (BM25 + Dense + RRF), authoritative fail-closed Zanzibar ReBAC authorization gate, 4-stage Transactional Outbox tool execution sequence.
+14. `chapter_reference_solutions.py`: Reference implementations for Chapters 02, 04-06, 08-11, 13-14, 19-20, 22-23, 25 & Workshops B-D (Round-Robin balancer, CDN caching, hash sharding, replica lag & read repair, CAP/PACELC decisions, vector clocks, partitioned log, service discovery, API gateway auth boundary, multipart uploads, back-of-envelope estimation, Raft elections, tumbling event-time windows, LSM store flush/compaction, chat presence TTL, and ride-hailing cell indexing).
 
 ### 6.2 How to Reproduce the Checks
 All test suites, algorithms, and visual layout assertions can be verified independently using standard command-line tools:
 
-1. **Run Laboratory Automated Test Suite (106 Tests Passing):**
+1. **Run Laboratory Automated Test Suite (139 Tests Passing):**
    ```bash
    cd "High Level Design/HLD_Python_Labs"
    pip install -r requirements.txt

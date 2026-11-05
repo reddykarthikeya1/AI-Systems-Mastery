@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ### Step 2: Run All Tests
 
-Verify that all 124 unit tests pass in memory across all chapters and workshops:
+Verify that all 139 tests pass in memory across all chapters and workshops:
 
 ```bash
 pytest -q
@@ -37,12 +37,12 @@ pytest -q
 
 *Expected output:*
 ```
-........................................................................ [ 58%]
-....................................................                     [100%]
-124 passed in 1.45s
+........................................................................ [ 51%]
+...................................................................      [100%]
+139 passed in 1.42s
 ```
 
-All 124 unit tests execute in ~1.5 seconds.
+All 139 tests execute in ~1.5 seconds.
 
 ### Step 3: Run Individual Chapter Tests
 
@@ -133,7 +133,7 @@ HLD_Python_Labs/
 ├── workshop_rag_agents/
 │   └── agent_rag_engine.py          # Enterprise RAG Orchestrator (Zanzibar + Outbox + Hybrid Search)
 ├── chapter_reference_solutions.py   # Reference models for Chapters 02, 04-06, 08-11, 13-14, 19-20, 22-23, 25 & Workshops B-D
-├── tests/                           # Complete Pytest unit test suite (124 tests across 14 modules)
+├── tests/                           # Complete Pytest unit test suite (139 tests across 14 modules)
 ├── docker-compose.yml               # Optional local infrastructure (Redis 7, Postgres 16, Kafka)
 ├── requirements.txt                 # Dependencies
 └── README.md

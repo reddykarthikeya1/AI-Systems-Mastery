@@ -190,3 +190,43 @@ def test_ride_hailing_driver_cell_candidates():
     candidates = index.candidates(17.386, 78.487, neighboring_cells=1)
     assert "near" in candidates
     assert "far" not in candidates
+
+
+def test_round_robin_balancer_invalid_backends():
+    with pytest.raises(ValueError, match="backends must be non-empty and unique"):
+        RoundRobinBalancer([])
+    with pytest.raises(ValueError, match="backends must be non-empty and unique"):
+        RoundRobinBalancer(["a", "a"])
+
+
+def test_vector_clock_tick_and_monotonicity():
+    vc = VectorClock({"node-a": 1})
+    vc.tick("node-a")
+    assert vc.counters["node-a"] == 2
+    vc.tick("node-b")
+    assert vc.counters["node-b"] == 1
+
+
+def test_partitioned_log_backwards_offset_rejected():
+    log = PartitionedLog(partitions=2)
+    log.append("k1", "v1")
+    log.commit("g1", 0, 1)
+    with pytest.raises(ValueError, match="consumer offsets cannot move backwards"):
+        log.commit("g1", 0, 0)
+    with pytest.raises(ValueError, match="next_offset is outside the partition log"):
+        log.commit("g1", 0, 999)
+
+
+def test_tumbling_window_backwards_watermark_rejected():
+    agg = TumblingWindowAggregator(window_seconds=10)
+    agg.advance_watermark(50.0)
+    with pytest.raises(ValueError, match="watermark cannot move backwards"):
+        agg.advance_watermark(40.0)
+
+
+def test_lsm_store_empty_compaction_and_lookup_missing():
+    store = LSMStore()
+    assert store.get("missing_key") is None
+    store.compact()
+    assert store.sstables == []
+

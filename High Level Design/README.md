@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 ### 2. Run All Tests
 
-Run the full automated test suite (124 tests across all 25 chapters and 6 workshops):
+Run the full automated test suite (139 tests across all 25 chapters and 6 workshops):
 
 ```bash
 pytest -q
@@ -61,12 +61,12 @@ pytest -q
 
 *Expected output:*
 ```
-........................................................................ [ 58%]
-....................................................                     [100%]
-124 passed in 1.45s
+........................................................................ [ 51%]
+...................................................................      [100%]
+139 passed in 1.42s
 ```
 
-All 124 unit tests execute and pass in under 2 seconds.
+All 139 tests execute and pass in under 2 seconds.
 
 ### 3. Run an Individual Chapter's Test
 
@@ -144,7 +144,7 @@ High Level Design/
     ├── workshop_llm_serving/            # vLLM PagedAttention KV-Cache, CoW & Radix Router
     ├── workshop_rag_agents/             # Enterprise RAG Orchestrator (Zanzibar + Outbox)
     ├── chapter_reference_solutions.py   # Reference models for Chapters 02, 04-06, 08-11, 13-14, 19-20, 22-23, 25 & Workshops B-D
-    └── tests/                           # Complete Pytest Test Suite (124 Tests Passing)
+    └── tests/                           # Complete Pytest Test Suite (139 Tests Passing)
 ```
 
 ### Granular Chapter Index (195 Pages)
