@@ -36,6 +36,103 @@ class RoundRobinBalancer:
         return backend
 
 
+class WeightedRoundRobinBalancer:
+    """Smooth Weighted Round-Robin selection (Nginx algorithm) across heterogeneous backends."""
+
+    def __init__(self, weights: Dict[str, int]) -> None:
+        if not weights:
+            raise ValueError("weights dictionary cannot be empty")
+        for node, weight in weights.items():
+            if weight <= 0:
+                raise ValueError(f"weight for node '{node}' must be > 0")
+        self.weights = dict(weights)
+        self._current_weights = {node: 0 for node in self.weights}
+        self._total_weight = sum(self.weights.values())
+
+    def choose(self) -> str:
+        """Select the next backend using smooth weighted round-robin distribution."""
+        for node, weight in self.weights.items():
+            self._current_weights[node] += weight
+
+        best_node = max(self._current_weights, key=lambda n: self._current_weights[n])
+        self._current_weights[best_node] -= self._total_weight
+        return best_node
+
+
+class BackendHealthState:
+    HEALTHY = "HEALTHY"
+    SUSPECT = "SUSPECT"
+    EJECTED = "EJECTED"
+
+
+class BackendHealthMonitor:
+    """Explicit health-state machine with HEALTHY, SUSPECT, and EJECTED states."""
+
+    def __init__(
+        self,
+        backends: Sequence[str],
+        suspect_threshold: int = 2,
+        eject_threshold: int = 3,
+        recovery_threshold: int = 2,
+    ) -> None:
+        if not backends:
+            raise ValueError("backends must be non-empty")
+        self.states = {b: BackendHealthState.HEALTHY for b in backends}
+        self.consecutive_failures = {b: 0 for b in backends}
+        self.consecutive_successes = {b: 0 for b in backends}
+        self.suspect_threshold = suspect_threshold
+        self.eject_threshold = eject_threshold
+        self.recovery_threshold = recovery_threshold
+
+    def record_failure(self, backend: str) -> str:
+        if backend not in self.states:
+            raise KeyError(f"unknown backend {backend}")
+        self.consecutive_successes[backend] = 0
+        self.consecutive_failures[backend] += 1
+        fails = self.consecutive_failures[backend]
+
+        if self.states[backend] == BackendHealthState.HEALTHY:
+            if fails >= self.suspect_threshold:
+                self.states[backend] = BackendHealthState.SUSPECT
+        elif self.states[backend] == BackendHealthState.SUSPECT:
+            if fails >= (self.suspect_threshold + self.eject_threshold):
+                self.states[backend] = BackendHealthState.EJECTED
+
+        return self.states[backend]
+
+    def record_success(self, backend: str) -> str:
+        if backend not in self.states:
+            raise KeyError(f"unknown backend {backend}")
+        self.consecutive_failures[backend] = 0
+        self.consecutive_successes[backend] += 1
+        succs = self.consecutive_successes[backend]
+
+        if self.states[backend] == BackendHealthState.EJECTED:
+            if succs >= self.recovery_threshold:
+                self.states[backend] = BackendHealthState.SUSPECT
+                self.consecutive_successes[backend] = 0
+        elif self.states[backend] == BackendHealthState.SUSPECT:
+            if succs >= self.recovery_threshold:
+                self.states[backend] = BackendHealthState.HEALTHY
+
+        return self.states[backend]
+
+    def healthy_backends(self) -> List[str]:
+        """Return all backends currently in HEALTHY state."""
+        return [b for b, s in self.states.items() if s == BackendHealthState.HEALTHY]
+
+    def routable_backends(self) -> List[str]:
+        """Return all backends not completely ejected (HEALTHY and degraded SUSPECT)."""
+        return [b for b, s in self.states.items() if s != BackendHealthState.EJECTED]
+
+
+def littles_law_concurrency(arrival_rate_rps: float, mean_latency_seconds: float) -> float:
+    """Calculate average concurrency (in-flight requests) using Little's Law: L = lambda * W."""
+    if arrival_rate_rps < 0 or mean_latency_seconds < 0:
+        raise ValueError("arrival rate and latency must be non-negative")
+    return arrival_rate_rps * mean_latency_seconds
+
+
 class CDNCache:
     """Tiny TTL edge-cache model with lazy expiry and an origin-fetch counter."""
 
@@ -216,6 +313,83 @@ class ApiGateway:
         if require_auth and not authenticated:
             return 401, {"error": "authentication required"}
         return 200, handler(payload)
+
+
+class HierarchicalRateLimiter:
+    """Multi-tiered rate limiter enforcing Global, Tenant, and Client IP quotas atomically."""
+
+    def __init__(
+        self,
+        global_capacity: float,
+        global_refill_rate: float,
+        tenant_capacity: float,
+        tenant_refill_rate: float,
+        ip_capacity: float,
+        ip_refill_rate: float,
+    ) -> None:
+        self.global_cap = global_capacity
+        self.global_rate = global_refill_rate
+        self.global_tokens = global_capacity
+        self.global_last_refill = 0.0
+
+        self.tenant_cap = tenant_capacity
+        self.tenant_rate = tenant_refill_rate
+        self.tenant_tokens: Dict[str, float] = {}
+        self.tenant_last_refill: Dict[str, float] = {}
+
+        self.ip_cap = ip_capacity
+        self.ip_rate = ip_refill_rate
+        self.ip_tokens: Dict[str, float] = {}
+        self.ip_last_refill: Dict[str, float] = {}
+
+    def _refill(self, current: float, capacity: float, rate: float, last_time: float, now: float) -> Tuple[float, float]:
+        if now <= last_time:
+            return current, last_time
+        delta = now - last_time
+        refilled = min(capacity, current + delta * rate)
+        return refilled, now
+
+    def acquire(
+        self,
+        tenant_id: str,
+        client_ip: str,
+        tokens: int = 1,
+        now: Optional[float] = None,
+    ) -> Tuple[bool, str]:
+        if now is None:
+            import time
+            now = time.monotonic()
+
+        # 1. Refill and check global tier
+        self.global_tokens, self.global_last_refill = self._refill(
+            self.global_tokens, self.global_cap, self.global_rate, self.global_last_refill, now
+        )
+        if self.global_tokens < tokens:
+            return False, "GLOBAL_LIMIT_EXCEEDED"
+
+        # 2. Refill and check tenant tier
+        t_tokens = self.tenant_tokens.get(tenant_id, self.tenant_cap)
+        t_last = self.tenant_last_refill.get(tenant_id, 0.0)
+        t_tokens, t_last = self._refill(t_tokens, self.tenant_cap, self.tenant_rate, t_last, now)
+        if t_tokens < tokens:
+            return False, "TENANT_LIMIT_EXCEEDED"
+
+        # 3. Refill and check IP tier
+        ip_key = f"{tenant_id}:{client_ip}"
+        i_tokens = self.ip_tokens.get(ip_key, self.ip_cap)
+        i_last = self.ip_last_refill.get(ip_key, 0.0)
+        i_tokens, i_last = self._refill(i_tokens, self.ip_cap, self.ip_rate, i_last, now)
+        if i_tokens < tokens:
+            return False, "IP_LIMIT_EXCEEDED"
+
+        # All tiers permit: deduct atomically across all three tiers
+        self.global_tokens -= tokens
+        self.tenant_tokens[tenant_id] = t_tokens - tokens
+        self.tenant_last_refill[tenant_id] = t_last
+        self.ip_tokens[ip_key] = i_tokens - tokens
+        self.ip_last_refill[ip_key] = i_last
+
+        return True, "ALLOWED"
 
 
 @dataclass

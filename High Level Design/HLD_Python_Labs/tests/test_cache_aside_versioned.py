@@ -276,3 +276,46 @@ def test_singleflight_waiter_timeout():
 
         # Leader should still complete successfully
         assert leader_fut.result() == "done"
+
+
+def test_stale_fill_rejected_after_data_expiration_regression():
+    """Regression test: verifies that invalidation metadata (generation fence and watermark)
+    persists across data-key expiration, preventing arbitrarily delayed readers from
+    resurrecting stale data after the data TTL expires."""
+    db = SimulatedDatabase()
+    db.write("prod:42", {"price": 100})  # Version 1
+
+    cache = VersionedCacheAside(db=db)
+
+    # Reader A starts reading prod:42, captures generation fence (gen = 0) and gets version 1
+    reader_a_gen = cache.get_generation("prod:42")
+    assert reader_a_gen == 0
+    val_v1, ver_1 = db.read("prod:42")
+    assert ver_1 == 1
+
+    # Writer updates DB to version 2 (price: 150) and invalidates cache with watermark 2
+    cache.update("prod:42", {"price": 150}, ttl_seconds=0.05)
+    # Invalidation advanced generation fence to 1 and watermark to 2
+    assert cache.get_generation("prod:42") == 1
+    assert cache.get_watermark("prod:42") == 2
+
+    # Allow data key TTL to expire (0.12s sleep to safely clear Windows 15.6ms timer granularity)
+    time.sleep(0.12)
+
+    # Data key has expired from cache
+    assert cache._read_cache("prod:42") is None
+
+    # Crucial assertion: Fencing metadata MUST NOT have expired!
+    assert cache.get_generation("prod:42") == 1
+    assert cache.get_watermark("prod:42") == 2
+
+    # Delayed Reader A now attempts to fill the cache with stale Version 1 and obsolete gen 0
+    accepted = cache.put_cache("record:prod:42", val_v1, ver_1, captured_gen=reader_a_gen, ttl_seconds=300.0)
+    assert accepted is False, "Delayed stale fill must be strictly rejected even after data key expiration!"
+    assert cache.stale_fill_rejections == 1
+
+    # Fresh reader retrieves authoritative Version 2 from DB and successfully populates cache
+    fresh_val = cache.get("prod:42")
+    assert fresh_val == {"price": 150}
+    assert cache.get_watermark("prod:42") == 2
+

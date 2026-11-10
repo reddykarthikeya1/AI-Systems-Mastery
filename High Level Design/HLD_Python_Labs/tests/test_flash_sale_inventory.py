@@ -658,4 +658,130 @@ def test_confirmed_order_cannot_be_accidentally_released():
     assert svc.get_stock("item_solid") == 8
 
 
+def test_intermediate_state_prevents_crash_dual_write_split_brain():
+    """Verify that enforcing intermediate state PENDING_CONFIRMATION prevents crash dual-write split-brain:
+    1. During confirm(), reservation atomically transitions HELD -> PENDING_CONFIRMATION and is removed from auto-expiry.
+    2. A crash or timeout during PostgreSQL call leaves reservation in PENDING_CONFIRMATION / PENDING_RECONCILIATION,
+       never falsely marked CONFIRMED in cache while absent in DB.
+    3. Normal auto-expiry daemon does NOT evict or restore stock while in PENDING_CONFIRMATION.
+    4. Authoritative reconciliation resolves the intermediate state safely.
+    """
+    class CrashingPostgres(SimulatedPostgresLedger):
+        def __init__(self):
+            super().__init__()
+            self.observed_status_during_call = None
+            self.in_expirations_during_call = None
+
+        def reconcile_confirmed_order(self, item_id, reservation):
+            # Inspect reservation state in the service during the PostgreSQL call
+            rec = svc._reserves_store.get(item_id, {}).get(reservation.reservation_id)
+            self.observed_status_during_call = rec.status if rec else None
+            self.in_expirations_during_call = reservation.reservation_id in svc._expirations_store.get(item_id, {})
+            # Simulate crash / timeout
+            raise TimeoutError("Application process crashed or network partitioned before PostgreSQL ack")
+
+    pg = CrashingPostgres()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_intermediate", 10)
+
+    base_time = 1000.0
+    res = svc.reserve(
+        "item_intermediate",
+        "user_int",
+        quantity=3,
+        idempotency_key="int_k1",
+        ttl_seconds=30.0,
+        now=base_time,
+    )
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_intermediate") == 7
+
+    # Call confirm: triggers intermediate state then simulated crash
+    confirm_res = svc.confirm("item_intermediate", res_id, now=base_time + 10.0)
+
+    # 1. Verify intermediate state was active during PostgreSQL call
+    assert pg.observed_status_during_call == ReservationState.PENDING_CONFIRMATION
+    # 2. Verify removed from normal auto-expiry index during call
+    assert pg.in_expirations_during_call is False
+
+    # 3. Crash result: reservation is in PENDING_RECONCILIATION / PENDING_CONFIRMATION, NOT CONFIRMED!
+    assert confirm_res.success is False
+    assert confirm_res.status == "PENDING_RECONCILIATION"
+    assert confirm_res.record.status == ReservationState.PENDING_RECONCILIATION
+    assert pg.has_order(res_id) is False  # PostgreSQL has no committed order
+
+    # 4. Normal auto-expiry daemon runs past original TTL (now = base_time + 50.0):
+    # It must NOT prematurely evict or restore stock!
+    restored = svc.reconcile_expired_reservations("item_intermediate", now=base_time + 50.0)
+    assert restored == 0
+    assert svc.get_stock("item_intermediate") == 7
+
+    # 5. Authoritative reconciliation resolves the intermediate state
+    # When transaction aborted and final absence confirmed: safely releases and restores stock
+    rec_res = svc.reconcile_pending_reservation("item_intermediate", res_id, final_absence_confirmed=True)
+    assert rec_res.success is True
+    assert rec_res.status == "RELEASED"
+    assert rec_res.record.status == ReservationState.RELEASED
+    assert svc.get_stock("item_intermediate") == 10
+
+
+def test_rollback_cannot_restore_stock_while_active_pg_order_exists():
+    """Verify Rollback Invariant:
+    A rollback CANNOT restore stock while leaving an active confirmed order in PostgreSQL.
+    1. Checks postgres_db.has_order(res_id): if active and cannot be cancelled, rollback is rejected.
+    2. If order CAN be cancelled, rollback coordinates cancellation with PostgreSQL and restores stock exactly once.
+    """
+    pg = PostgresInventoryStore()
+    svc = FlashSaleInventoryService(postgres_db=pg)
+    svc.initialize_stock("item_rb_invariant", 10)
+
+    res = svc.reserve("item_rb_invariant", "user_inv", quantity=3, idempotency_key="inv_k1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_rb_invariant") == 7
+
+    # Confirm reservation
+    confirm_res = svc.confirm("item_rb_invariant", res_id)
+    assert confirm_res.success is True
+    assert confirm_res.status == "CONFIRMED"
+    assert pg.has_order(res_id) is True
+    assert svc.get_stock("item_rb_invariant") == 7
+
+    # Case 1: PostgreSQL order is active and CANNOT be cancelled (simulate non-cancellable order)
+    original_cancel = pg.cancel_order
+    pg.cancel_order = lambda r_id: False
+
+    rb_fail = svc.rollback_confirmation("item_rb_invariant", res_id)
+    assert rb_fail.success is False
+    assert rb_fail.status == "ACTIVE_ORDER_EXISTS"
+    assert "active confirmed order exists" in (rb_fail.message or "").lower()
+
+    # Crucial Invariant Assertions:
+    # Stock MUST NOT be restored while PostgreSQL holds active order!
+    assert svc.get_stock("item_rb_invariant") == 7
+    # Order in PostgreSQL MUST remain active!
+    assert pg.has_order(res_id) is True
+    # Reservation status in service must NOT be RELEASED!
+    assert svc._reserves_store["item_rb_invariant"][res_id].status == ReservationState.CONFIRMED
+
+    # Case 2: PostgreSQL coordinates cancellation successfully
+    pg.cancel_order = original_cancel
+
+    rb_ok = svc.rollback_confirmation("item_rb_invariant", res_id)
+    assert rb_ok.success is True
+    assert rb_ok.record.status == ReservationState.RELEASED
+
+    # PostgreSQL order is cancelled
+    assert pg.has_order(res_id) is False
+    # Stock is now safely restored
+    assert svc.get_stock("item_rb_invariant") == 10
+
+    # Case 3: Idempotent repeat rollback does NOT double-restore stock
+    rb_repeat = svc.rollback_confirmation("item_rb_invariant", res_id)
+    assert rb_repeat.success is True
+    assert svc.get_stock("item_rb_invariant") == 10
+
+
+
 

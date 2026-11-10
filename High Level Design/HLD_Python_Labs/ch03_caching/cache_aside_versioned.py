@@ -90,10 +90,13 @@ if incoming_ver >= current_watermark then
     end
     if ttl and ttl > 0 then
         redis.call('EXPIRE', data_key, ttl)
-        -- Preserve watermark and generation fence longer than data to protect against stale fills after eviction
-        redis.call('EXPIRE', watermark_key, ttl * 2)
-        redis.call('EXPIRE', gen_key, ttl * 2)
     end
+    -- Architectural Fix: Invalidation metadata (watermark and generation fence) MUST remain
+    -- persistent (PERSIST) and not expire with the data key. Setting TTL on metadata keys
+    -- creates a time window where arbitrarily delayed readers could resurrect stale data after
+    -- metadata eviction. Keeping metadata persistent guarantees absolute stale-fill safety.
+    redis.call('PERSIST', watermark_key)
+    redis.call('PERSIST', gen_key)
     return 1 -- Accepted
 else
     return 0 -- Rejected: Stale version fill attempt
@@ -390,11 +393,17 @@ class VersionedCacheAside:
     def update(self, record_id: str, new_data: Any, ttl_seconds: float = 300.0) -> int:
         """Write-through DB update with cache synchronization."""
         new_version = self.db.write(record_id, new_data)
-        # Capture current generation at write time so update never uses an obsolete fence
-        current_gen = self.get_generation(record_id)
+        gen_key = self._gen_key(record_id)
+        if self.redis is not None:
+            new_gen = self.redis.incr(gen_key)
+            self.redis.persist(gen_key)
+        else:
+            with self._cache_lock:
+                self._generations[gen_key] = self._generations.get(gen_key, 0) + 1
+                new_gen = self._generations[gen_key]
         flight_key = f"record:{record_id}"
         # Update cache atomically with the new version and active generation fence
-        self.put_cache(flight_key, new_data, new_version, captured_gen=current_gen, ttl_seconds=ttl_seconds)
+        self.put_cache(flight_key, new_data, new_version, captured_gen=new_gen, ttl_seconds=ttl_seconds)
         return new_version
 
     def invalidate(

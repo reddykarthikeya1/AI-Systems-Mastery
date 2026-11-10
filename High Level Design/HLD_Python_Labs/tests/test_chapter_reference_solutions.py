@@ -4,10 +4,13 @@ import pytest
 
 from chapter_reference_solutions import (
     ApiGateway,
+    BackendHealthMonitor,
+    BackendHealthState,
     CDNCache,
     DriverCellIndex,
     GraphANNIndex,
     HashShardRouter,
+    HierarchicalRateLimiter,
     LSMStore,
     MultipartObjectStore,
     PartitionedLog,
@@ -18,8 +21,10 @@ from chapter_reference_solutions import (
     ServiceRegistry,
     TumblingWindowAggregator,
     VectorClock,
+    WeightedRoundRobinBalancer,
     cap_choice,
     estimate_capacity,
+    littles_law_concurrency,
     pacelc_choice,
 )
 
@@ -27,6 +32,96 @@ from chapter_reference_solutions import (
 def test_round_robin_load_balancing():
     balancer = RoundRobinBalancer(["a", "b", "c"])
     assert [balancer.choose() for _ in range(5)] == ["a", "b", "c", "a", "b"]
+
+
+def test_weighted_round_robin_distribution():
+    balancer = WeightedRoundRobinBalancer({"srv-a": 4, "srv-b": 2, "srv-c": 1})
+    counts = {"srv-a": 0, "srv-b": 0, "srv-c": 0}
+    for _ in range(70):
+        choice = balancer.choose()
+        counts[choice] += 1
+    assert counts == {"srv-a": 40, "srv-b": 20, "srv-c": 10}
+
+
+def test_backend_health_state_transitions():
+    monitor = BackendHealthMonitor(["srv-1", "srv-2"], suspect_threshold=2, eject_threshold=3, recovery_threshold=2)
+    assert monitor.healthy_backends() == ["srv-1", "srv-2"]
+    assert monitor.routable_backends() == ["srv-1", "srv-2"]
+
+    # 1st failure: remains HEALTHY
+    assert monitor.record_failure("srv-1") == BackendHealthState.HEALTHY
+    # 2nd failure: transitions to SUSPECT
+    assert monitor.record_failure("srv-1") == BackendHealthState.SUSPECT
+    assert monitor.healthy_backends() == ["srv-2"]
+    assert "srv-1" in monitor.routable_backends()
+
+    # 3 more failures: srv-1 ejected
+    monitor.record_failure("srv-1")
+    monitor.record_failure("srv-1")
+    assert monitor.record_failure("srv-1") == BackendHealthState.EJECTED
+    assert "srv-1" not in monitor.routable_backends()
+
+    # Recovery: 2 successes -> SUSPECT, then 2 successes -> HEALTHY
+    assert monitor.record_success("srv-1") == BackendHealthState.EJECTED
+    assert monitor.record_success("srv-1") == BackendHealthState.SUSPECT
+    assert "srv-1" in monitor.routable_backends()
+    assert monitor.record_success("srv-1") == BackendHealthState.SUSPECT
+    assert monitor.record_success("srv-1") == BackendHealthState.HEALTHY
+    assert monitor.healthy_backends() == ["srv-1", "srv-2"]
+
+
+def test_littles_law_concurrency_calculation():
+    # 2,000 RPS with 350ms mean latency -> 700 concurrent requests
+    concurrency = littles_law_concurrency(arrival_rate_rps=2000.0, mean_latency_seconds=0.350)
+    assert concurrency == pytest.approx(700.0)
+
+    # With 0 RPS or 0 latency
+    assert littles_law_concurrency(0.0, 0.5) == 0.0
+    assert littles_law_concurrency(100.0, 0.0) == 0.0
+
+    with pytest.raises(ValueError, match="non-negative"):
+        littles_law_concurrency(-10.0, 0.2)
+
+
+def test_hierarchical_rate_limiter_multilevel_enforcement():
+    # Global: 10 req, Tenant: 5 req, IP: 2 req
+    limiter = HierarchicalRateLimiter(
+        global_capacity=10.0,
+        global_refill_rate=1.0,
+        tenant_capacity=5.0,
+        tenant_refill_rate=1.0,
+        ip_capacity=2.0,
+        ip_refill_rate=1.0,
+    )
+
+    t0 = 100.0
+    # IP tier allows 2 requests
+    ok, reason = limiter.acquire("tenant_acme", "192.168.1.1", tokens=1, now=t0)
+    assert ok is True and reason == "ALLOWED"
+
+    ok, reason = limiter.acquire("tenant_acme", "192.168.1.1", tokens=1, now=t0)
+    assert ok is True and reason == "ALLOWED"
+
+    # 3rd request from same IP is rejected by IP limit
+    ok, reason = limiter.acquire("tenant_acme", "192.168.1.1", tokens=1, now=t0)
+    assert ok is False and reason == "IP_LIMIT_EXCEEDED"
+
+    # Different IP under same tenant succeeds
+    ok, reason = limiter.acquire("tenant_acme", "192.168.1.2", tokens=2, now=t0)
+    assert ok is True and reason == "ALLOWED"
+
+    # Tenant has now consumed 1 + 1 + 2 = 4 tokens out of 5. Next 2 tokens exceeds tenant limit!
+    ok, reason = limiter.acquire("tenant_acme", "192.168.1.3", tokens=2, now=t0)
+    assert ok is False and reason == "TENANT_LIMIT_EXCEEDED"
+
+    # Different tenant succeeds (has separate 5 token capacity)
+    ok, reason = limiter.acquire("tenant_beta", "10.0.0.1", tokens=2, now=t0)
+    assert ok is True and reason == "ALLOWED"
+
+    # Global limit has now consumed 4 (acme) + 2 (beta) = 6 tokens out of 10.
+    # Requesting 5 tokens exceeds remaining global capacity (4 available)
+    ok, reason = limiter.acquire("tenant_beta", "10.0.0.2", tokens=5, now=t0)
+    assert ok is False and reason == "GLOBAL_LIMIT_EXCEEDED"
 
 
 def test_cdn_cache_ttl_and_invalidation():
