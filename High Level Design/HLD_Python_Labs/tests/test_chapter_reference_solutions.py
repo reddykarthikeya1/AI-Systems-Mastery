@@ -325,3 +325,300 @@ def test_lsm_store_empty_compaction_and_lookup_missing():
     store.compact()
     assert store.sstables == []
 
+
+def test_hierarchical_rate_limiter_concurrent_same_ip_barrier():
+    import threading
+
+    limiter = HierarchicalRateLimiter(
+        global_capacity=100.0,
+        global_refill_rate=1.0,
+        tenant_capacity=50.0,
+        tenant_refill_rate=1.0,
+        ip_capacity=5.0,
+        ip_refill_rate=0.01,
+    )
+
+    thread_count = 15
+    barrier = threading.Barrier(thread_count)
+    results: List[Tuple[bool, str]] = []
+    lock = threading.Lock()
+
+    def worker():
+        barrier.wait()
+        res = limiter.acquire("tenant_alpha", "10.0.0.1", tokens=1, now=10.0)
+        with lock:
+            results.append(res)
+
+    threads = [threading.Thread(target=worker) for _ in range(thread_count)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    successes = [r for r in results if r[0] is True]
+    failures = [r for r in results if r[0] is False]
+
+    assert len(successes) == 5
+    assert len(failures) == 10
+    assert all(r[1] == "IP_LIMIT_EXCEEDED" for r in failures)
+    assert limiter.ip_tokens["tenant_alpha:10.0.0.1"] == 0.0
+
+
+def test_hierarchical_rate_limiter_different_ips_sharing_tenant_barrier():
+    import threading
+
+    limiter = HierarchicalRateLimiter(
+        global_capacity=100.0,
+        global_refill_rate=1.0,
+        tenant_capacity=6.0,
+        tenant_refill_rate=0.01,
+        ip_capacity=4.0,
+        ip_refill_rate=0.01,
+    )
+
+    thread_count = 12
+    barrier = threading.Barrier(thread_count)
+    results: List[Tuple[bool, str]] = []
+    lock = threading.Lock()
+
+    def worker(client_ip: str):
+        barrier.wait()
+        res = limiter.acquire("tenant_beta", client_ip, tokens=1, now=10.0)
+        with lock:
+            results.append(res)
+
+    threads = [
+        threading.Thread(target=worker, args=(f"192.168.1.{i % 4}",))
+        for i in range(thread_count)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    successes = [r for r in results if r[0] is True]
+    failures = [r for r in results if r[0] is False]
+    assert len(successes) == 6  # Capped at tenant capacity of 6
+    assert len(failures) == 6
+    assert all(r[1] == "TENANT_LIMIT_EXCEEDED" for r in failures)
+    assert limiter.tenant_tokens["tenant_beta"] == 0.0
+
+
+def test_hierarchical_rate_limiter_different_tenants_sharing_global_barrier():
+    import threading
+
+    limiter = HierarchicalRateLimiter(
+        global_capacity=8.0,
+        global_refill_rate=0.01,
+        tenant_capacity=5.0,
+        tenant_refill_rate=0.01,
+        ip_capacity=5.0,
+        ip_refill_rate=0.01,
+    )
+
+    thread_count = 16
+    barrier = threading.Barrier(thread_count)
+    results: List[Tuple[bool, str]] = []
+    lock = threading.Lock()
+
+    def worker(tenant_id: str, client_ip: str):
+        barrier.wait()
+        res = limiter.acquire(tenant_id, client_ip, tokens=1, now=10.0)
+        with lock:
+            results.append(res)
+
+    threads = [
+        threading.Thread(target=worker, args=(f"tenant_{i % 4}", f"10.0.{i}.1"))
+        for i in range(thread_count)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    successes = [r for r in results if r[0] is True]
+    failures = [r for r in results if r[0] is False]
+    assert len(successes) == 8  # Strictly capped at global capacity of 8
+    assert len(failures) == 8
+    assert all(r[1] == "GLOBAL_LIMIT_EXCEEDED" for r in failures)
+    assert limiter.global_tokens == 0.0
+
+
+def test_hierarchical_rate_limiter_simultaneous_requests_exhaust_global():
+    import threading
+
+    limiter = HierarchicalRateLimiter(
+        global_capacity=6.0,
+        global_refill_rate=0.01,
+        tenant_capacity=10.0,
+        tenant_refill_rate=0.01,
+        ip_capacity=10.0,
+        ip_refill_rate=0.01,
+    )
+
+    thread_count = 18
+    barrier = threading.Barrier(thread_count)
+    results: List[Tuple[bool, str]] = []
+    lock = threading.Lock()
+
+    def worker(i: int):
+        barrier.wait()
+        res = limiter.acquire(f"tenant_{i % 3}", f"10.0.{i}.1", tokens=1, now=10.0)
+        with lock:
+            results.append(res)
+
+    threads = [
+        threading.Thread(target=worker, args=(i,))
+        for i in range(thread_count)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    successes = [r for r in results if r[0] is True]
+    failures = [r for r in results if r[0] is False]
+
+    assert len(successes) == 6
+    assert len(failures) == 12
+    assert all(r[1] == "GLOBAL_LIMIT_EXCEEDED" for r in failures)
+    assert limiter.global_tokens == 0.0
+
+
+def test_hierarchical_rate_limiter_rejected_requests_do_not_consume_tokens():
+    limiter = HierarchicalRateLimiter(
+        global_capacity=20.0,
+        global_refill_rate=1.0,
+        tenant_capacity=10.0,
+        tenant_refill_rate=1.0,
+        ip_capacity=2.0,
+        ip_refill_rate=1.0,
+    )
+
+    t0 = 100.0
+    # Acquire 2 tokens from IP 1 (succeeds)
+    assert limiter.acquire("t1", "10.0.0.1", tokens=2, now=t0)[0] is True
+    assert limiter.global_tokens == 18.0
+    assert limiter.tenant_tokens["t1"] == 8.0
+
+    # 3rd token from same IP is rejected by IP limit
+    ok, reason = limiter.acquire("t1", "10.0.0.1", tokens=1, now=t0)
+    assert ok is False
+    assert reason == "IP_LIMIT_EXCEEDED"
+
+    # Global and tenant tokens must NOT have been deducted!
+    assert limiter.global_tokens == 18.0
+    assert limiter.tenant_tokens["t1"] == 8.0
+
+    # Different IPs under same tenant acquire remaining tokens up to tenant capacity (2 tokens each)
+    assert limiter.acquire("t1", "10.0.0.2", tokens=2, now=t0)[0] is True
+    assert limiter.acquire("t1", "10.0.0.3", tokens=2, now=t0)[0] is True
+    assert limiter.acquire("t1", "10.0.0.4", tokens=2, now=t0)[0] is True
+    assert limiter.acquire("t1", "10.0.0.5", tokens=2, now=t0)[0] is True
+    assert limiter.tenant_tokens["t1"] == 0.0
+    assert limiter.global_tokens == 10.0
+
+    # Now IP 6 under tenant t1 requests 1 token -> rejected by tenant
+    ok, reason = limiter.acquire("t1", "10.0.0.6", tokens=1, now=t0)
+    assert ok is False
+    assert reason == "TENANT_LIMIT_EXCEEDED"
+    assert limiter.tenant_tokens["t1"] == 0.0
+    # Global tokens must NOT have been deducted!
+    assert limiter.global_tokens == 10.0
+
+    # Another tenant (t2) can still use global tokens!
+    assert limiter.acquire("t2", "10.0.1.1", tokens=2, now=t0)[0] is True
+    assert limiter.global_tokens == 8.0
+
+
+def test_hierarchical_rate_limiter_zero_and_negative_costs_rejected():
+    limiter = HierarchicalRateLimiter(10.0, 1.0, 5.0, 1.0, 2.0, 1.0)
+
+    with pytest.raises(ValueError, match="tokens must be a positive finite number"):
+        limiter.acquire("t1", "ip1", tokens=0)
+
+    with pytest.raises(ValueError, match="tokens must be a positive finite number"):
+        limiter.acquire("t1", "ip1", tokens=-1)
+
+    with pytest.raises(ValueError, match="tokens must be a positive finite number"):
+        limiter.acquire("t1", "ip1", tokens=float("nan"))
+
+    with pytest.raises(ValueError, match="tokens must be a positive finite number"):
+        limiter.acquire("t1", "ip1", tokens=float("inf"))
+
+    with pytest.raises(TypeError, match="tokens must be a number"):
+        limiter.acquire("t1", "ip1", tokens="1")  # type: ignore
+
+
+def test_hierarchical_rate_limiter_invalid_capacities_and_refill_rates():
+    with pytest.raises(ValueError, match="global_capacity must be a positive finite number"):
+        HierarchicalRateLimiter(0.0, 1.0, 5.0, 1.0, 2.0, 1.0)
+
+    with pytest.raises(ValueError, match="global_refill_rate must be a positive finite number"):
+        HierarchicalRateLimiter(10.0, 0.0, 5.0, 1.0, 2.0, 1.0)
+
+    with pytest.raises(ValueError, match="global_refill_rate must be a positive finite number"):
+        HierarchicalRateLimiter(10.0, -1.0, 5.0, 1.0, 2.0, 1.0)
+
+    with pytest.raises(TypeError, match="tenant_capacity must be a number"):
+        HierarchicalRateLimiter(10.0, 1.0, "5.0", 1.0, 2.0, 1.0)  # type: ignore
+
+    with pytest.raises(ValueError, match="ip_capacity must be a positive finite number"):
+        HierarchicalRateLimiter(10.0, 1.0, 5.0, 1.0, float("inf"), 1.0)
+
+    limiter = HierarchicalRateLimiter(10.0, 1.0, 5.0, 1.0, 2.0, 1.0)
+    with pytest.raises(ValueError, match="tenant_id must be a non-empty string"):
+        limiter.acquire("", "10.0.0.1")
+    with pytest.raises(TypeError, match="tenant_id must be a string"):
+        limiter.acquire(None, "10.0.0.1")  # type: ignore
+    with pytest.raises(ValueError, match="client_ip must be a non-empty string"):
+        limiter.acquire("t1", "")
+    with pytest.raises(TypeError, match="client_ip must be a string"):
+        limiter.acquire("t1", 123)  # type: ignore
+    with pytest.raises(ValueError, match="now must be a non-negative finite number"):
+        limiter.acquire("t1", "10.0.0.1", now=-1.0)
+    with pytest.raises(ValueError, match="now must be a non-negative finite number"):
+        limiter.acquire("t1", "10.0.0.1", now=float("nan"))
+    with pytest.raises(TypeError, match="now must be a number"):
+        limiter.acquire("t1", "10.0.0.1", now="10.0")  # type: ignore
+
+
+def test_hierarchical_rate_limiter_backward_timestamps_handled_safely():
+    limiter = HierarchicalRateLimiter(10.0, 1.0, 10.0, 1.0, 10.0, 1.0)
+
+    # First request at t = 100.0
+    assert limiter.acquire("t1", "ip1", tokens=5, now=100.0)[0] is True
+    assert limiter.global_tokens == 5.0
+
+    # Backward timestamp at t = 50.0: should clamp delta to 0, NOT deduct or add negative tokens
+    assert limiter.acquire("t1", "ip1", tokens=2, now=50.0)[0] is True
+    assert limiter.global_tokens == 3.0
+
+    # Advanced timestamp at t = 102.0: refills 2.0 tokens from t=100
+    assert limiter.acquire("t1", "ip1", tokens=1, now=102.0)[0] is True
+    assert limiter.global_tokens == 4.0  # 3.0 + 2.0 refilled - 1.0 = 4.0
+
+
+def test_hierarchical_rate_limiter_exact_refill_boundaries():
+    limiter = HierarchicalRateLimiter(
+        global_capacity=5.0,
+        global_refill_rate=2.0,  # 2 tokens per second
+        tenant_capacity=5.0,
+        tenant_refill_rate=2.0,
+        ip_capacity=5.0,
+        ip_refill_rate=2.0,
+    )
+
+    # Empty all 5 tokens at t=0
+    assert limiter.acquire("t1", "ip1", tokens=5, now=0.0)[0] is True
+    assert limiter.acquire("t1", "ip1", tokens=1, now=0.0)[0] is False
+
+    # After exactly 0.5s: 1.0 token refilled
+    assert limiter.acquire("t1", "ip1", tokens=1, now=0.5)[0] is True
+    assert limiter.acquire("t1", "ip1", tokens=1, now=0.5)[0] is False
+
+    # After 1.5s total (1.0s elapsed since t=0.5): 2.0 tokens refilled
+    assert limiter.acquire("t1", "ip1", tokens=2, now=1.5)[0] is True
+    assert limiter.acquire("t1", "ip1", tokens=1, now=1.5)[0] is False
+
+

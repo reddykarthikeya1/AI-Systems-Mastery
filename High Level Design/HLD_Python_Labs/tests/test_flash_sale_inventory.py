@@ -783,5 +783,390 @@ def test_rollback_cannot_restore_stock_while_active_pg_order_exists():
     assert svc.get_stock("item_rb_invariant") == 10
 
 
+def test_concurrent_rollback_rejected_while_pending_confirmation():
+    """Deterministic concurrency test proving that ordinary rollback is strictly rejected
+    while a confirmation is in-flight (PENDING_CONFIRMATION), eliminating the dual-write race."""
+    import threading
+
+    in_pending_event = threading.Event()
+    allow_commit_event = threading.Event()
+
+    class PausingPostgresLedger(SimulatedPostgresLedger):
+        def reconcile_confirmed_order(self, item_id, reservation):
+            # Signal that reservation has entered PENDING_CONFIRMATION
+            in_pending_event.set()
+            # Pause until rollback attempt is verified
+            allow_commit_event.wait(timeout=5.0)
+            return super().reconcile_confirmed_order(item_id, reservation)
+
+    pg = PausingPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_race_sync", 10)
+
+    res = svc.reserve("item_race_sync", "user_race", quantity=3, idempotency_key="race_key_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_race_sync") == 7
+
+    confirm_result_holder = []
+
+    def confirm_worker():
+        c_res = svc.confirm("item_race_sync", res_id)
+        confirm_result_holder.append(c_res)
+
+    t_confirm = threading.Thread(target=confirm_worker)
+    t_confirm.start()
+
+    # Wait until confirm_worker has transitioned reservation to PENDING_CONFIRMATION
+    assert in_pending_event.wait(timeout=2.0) is True
+
+    # At this exact moment, PostgreSQL has not committed yet, and reservation is in PENDING_CONFIRMATION
+    # Concurrent rollback attempt MUST be rejected!
+    rb_res = svc.rollback_confirmation("item_race_sync", res_id)
+    assert rb_res.success is False
+    assert rb_res.status == "PENDING_CONFIRMATION"
+    assert "in-flight" in (rb_res.message or "").lower()
+
+    # Stock MUST NOT have been restored!
+    assert svc.get_stock("item_race_sync") == 7
+
+    # Allow PostgreSQL confirmation to proceed
+    allow_commit_event.set()
+    t_confirm.join(timeout=3.0)
+
+    # Confirm operation succeeded
+    assert len(confirm_result_holder) == 1
+    assert confirm_result_holder[0].success is True
+    assert confirm_result_holder[0].status == "CONFIRMED"
+
+    # Invariants verification:
+    # 1. State in service is CONFIRMED
+    assert svc._reserves_store["item_race_sync"][res_id].status == ReservationState.CONFIRMED
+    # 2. Order exists in PostgreSQL ledger
+    assert pg.has_order(res_id) is True
+    # 3. Stock remains 7 (zero double-allocation or phantom restoration)
+    assert svc.get_stock("item_race_sync") == 7
+
+
+def test_concurrent_confirmation_attempts_idempotent():
+    """Verify that multiple simultaneous confirmation calls on the same reservation
+    behave idempotently and result in exactly one order in the authoritative ledger."""
+    import threading
+
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_concurrent_conf", 10)
+
+    res = svc.reserve("item_concurrent_conf", "u1", quantity=2, idempotency_key="k_conf_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+
+    barrier = threading.Barrier(5)
+    results = []
+    lock = threading.Lock()
+
+    def worker():
+        barrier.wait()
+        c_res = svc.confirm("item_concurrent_conf", res_id)
+        with lock:
+            results.append(c_res)
+
+    threads = [threading.Thread(target=worker) for _ in range(5)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    # Exactly one confirmation succeeds, and subsequent attempts are rejected with INVALID_STATE (already confirmed)
+    confirms = [r for r in results if r.status == "CONFIRMED"]
+    invalid_states = [r for r in results if r.status == "INVALID_STATE"]
+    assert len(confirms) == 1
+    assert len(invalid_states) == 4
+    assert pg.has_order(res_id) is True
+    # Stock decremented by 2 exactly once
+    assert svc.get_stock("item_concurrent_conf") == 8
+
+
+def test_concurrent_release_and_expiration_restores_stock_at_most_once():
+    """Verify that concurrent user release and daemon expiration reconcile safely
+    without double-restoring stock."""
+    import threading
+
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_concurrent_rel", 10)
+
+    # Reserve with short TTL so it's expired at t=100
+    res = svc.reserve("item_concurrent_rel", "u1", quantity=4, idempotency_key="conc_rel_1", ttl_seconds=5, now=50.0)
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_concurrent_rel") == 6
+
+    barrier = threading.Barrier(2)
+
+    def release_worker():
+        barrier.wait()
+        svc.release("item_concurrent_rel", res_id)
+
+    def expire_worker():
+        barrier.wait()
+        svc.reconcile_expired_reservations("item_concurrent_rel", now=100.0)
+
+    t1 = threading.Thread(target=release_worker)
+    t2 = threading.Thread(target=expire_worker)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+
+    # Stock must be restored from 6 back to 10 exactly once (never 14!)
+    assert svc.get_stock("item_concurrent_rel") == 10
+
+
+def test_confirmation_failure_before_commit():
+    """Verify that when PostgreSQL reconciliation fails definitively before commit
+    (e.g. database error, serialization conflict), the reservation is safely released,
+    stock is restored, and no order exists in PostgreSQL."""
+    class AbortBeforeCommitPostgres(SimulatedPostgresLedger):
+        def reconcile_confirmed_order(self, item_id, reservation):
+            raise RuntimeError("PostgreSQL transaction aborted before commit: serialization deadlock")
+
+    pg = AbortBeforeCommitPostgres()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_abort_pre", 10)
+
+    res = svc.reserve("item_abort_pre", "user_abp", quantity=3, idempotency_key="k_abp_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_abort_pre") == 7
+
+    confirm_res = svc.confirm("item_abort_pre", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "RECONCILIATION_FAILED"
+    assert "deadlock" in (confirm_res.message or "").lower()
+
+    # Hold is safely released and stock restored
+    assert confirm_res.record.status == ReservationState.RELEASED
+    assert svc.get_stock("item_abort_pre") == 10
+    assert pg.has_order(res_id) is False
+
+
+def test_commit_succeeds_but_response_times_out():
+    """Verify that if PostgreSQL commits the order to disk but the TCP response times out,
+    the reservation enters PENDING_RECONCILIATION (stock is NOT prematurely restored),
+    and authoritative reconciliation safely resolves it to CONFIRMED."""
+    class CommitThenTimeoutPostgres(SimulatedPostgresLedger):
+        def reconcile_confirmed_order(self, item_id, reservation):
+            super().reconcile_confirmed_order(item_id, reservation)
+            raise TimeoutError("TCP connection reset awaiting COMMIT response from PostgreSQL")
+
+    pg = CommitThenTimeoutPostgres()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_ack_timeout", 10)
+
+    res = svc.reserve("item_ack_timeout", "user_ack", quantity=4, idempotency_key="k_ack_to")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_ack_timeout") == 6
+
+    confirm_res = svc.confirm("item_ack_timeout", res_id)
+    assert confirm_res.success is False
+    assert confirm_res.status == "PENDING_RECONCILIATION"
+
+    # Order was committed in PostgreSQL, but confirmation timed out
+    assert pg.has_order(res_id) is True
+    # Stock must NOT be restored prematurely
+    assert svc.get_stock("item_ack_timeout") == 6
+
+    # Authoritative reconciliation resolves intermediate state to CONFIRMED
+    rec_res = svc.reconcile_pending_reservation("item_ack_timeout", res_id)
+    assert rec_res.success is True
+    assert rec_res.status == "CONFIRMED"
+    assert rec_res.record.status == ReservationState.CONFIRMED
+    assert svc.get_stock("item_ack_timeout") == 6
+
+
+def test_process_failure_after_pg_commit_before_redis_confirmation():
+    """Verify system resilience during the crash window:
+    PostgreSQL transaction committed, but application crashes before writing CONFIRMED to cache.
+    The reservation remains in PENDING_CONFIRMATION, rollback is rejected, and reconciliation resolves it."""
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_crash_window", 10)
+
+    res = svc.reserve("item_crash_window", "user_cw", quantity=2, idempotency_key="k_cw_1")
+    assert res.success is True
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_crash_window") == 8
+
+    # Simulate Phase 1: state is PENDING_CONFIRMATION
+    with svc._lock:
+        rec = svc._reserves_store["item_crash_window"][res_id]
+        rec.status = ReservationState.PENDING_CONFIRMATION
+        svc._expirations_store["item_crash_window"].pop(res_id, None)
+
+    # Simulate Phase 2: PostgreSQL commits the order
+    pg_ok = pg.reconcile_confirmed_order("item_crash_window", rec)
+    assert pg_ok is True
+    assert pg.has_order(res_id) is True
+
+    # Process crash occurs here before Phase 3 can run: reservation stranded in PENDING_CONFIRMATION
+    assert rec.status == ReservationState.PENDING_CONFIRMATION
+
+    # Ordinary rollback MUST be rejected
+    rb_res = svc.rollback_confirmation("item_crash_window", res_id)
+    assert rb_res.success is False
+    assert rb_res.status == "PENDING_CONFIRMATION"
+    assert svc.get_stock("item_crash_window") == 8
+
+    # Authoritative reconciliation detects committed order in PostgreSQL
+    rec_res = svc.reconcile_pending_reservation("item_crash_window", res_id)
+    assert rec_res.success is True
+    assert rec_res.status == "CONFIRMED"
+    assert rec.status == ReservationState.CONFIRMED
+    assert svc.get_stock("item_crash_window") == 8
+
+
+def test_reconciliation_discovers_committed_order():
+    """Verify that authoritative reconciliation discovering a committed order in PostgreSQL
+    idempotently transitions state to CONFIRMED without deducting inventory a second time."""
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_rec_order", 10)
+
+    res = svc.reserve("item_rec_order", "user_ro", quantity=3, idempotency_key="k_ro_1")
+    res_id = res.record.reservation_id
+
+    # Place in PENDING_RECONCILIATION with order committed in PG
+    pg.reconcile_confirmed_order("item_rec_order", res.record)
+    with svc._lock:
+        res.record.status = ReservationState.PENDING_RECONCILIATION
+
+    # Reconciliation run 1
+    rec1 = svc.reconcile_pending_reservation("item_rec_order", res_id)
+    assert rec1.success is True
+    assert rec1.status == "CONFIRMED"
+    assert svc.get_stock("item_rec_order") == 7
+
+    # Reconciliation run 2 (idempotent repeat)
+    rec2 = svc.reconcile_pending_reservation("item_rec_order", res_id)
+    assert rec2.success is True
+    assert rec2.status == "CONFIRMED"
+    assert svc.get_stock("item_rec_order") == 7
+
+
+def test_reconciliation_discovers_definitively_aborted_transaction():
+    """Verify that authoritative reconciliation with final_absence_confirmed=True safely releases
+    the hold and restores stock exactly once for an aborted transaction."""
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_rec_aborted", 10)
+
+    res = svc.reserve("item_rec_aborted", "user_rab", quantity=3, idempotency_key="k_rab_1")
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_rec_aborted") == 7
+
+    with svc._lock:
+        res.record.status = ReservationState.PENDING_RECONCILIATION
+
+    assert pg.has_order(res_id) is False
+
+    # Reconciliation without final absence confirmed stays pending
+    rec_pending = svc.reconcile_pending_reservation("item_rec_aborted", res_id, final_absence_confirmed=False)
+    assert rec_pending.success is False
+    assert rec_pending.status == "PENDING_RECONCILIATION"
+    assert svc.get_stock("item_rec_aborted") == 7
+
+    # Authoritative reconciliation with final absence confirmed restores stock
+    rec1 = svc.reconcile_pending_reservation("item_rec_aborted", res_id, final_absence_confirmed=True)
+    assert rec1.success is True
+    assert rec1.status == "RELEASED"
+    assert svc.get_stock("item_rec_aborted") == 10
+
+    # Repeat reconciliation is idempotent
+    rec2 = svc.reconcile_pending_reservation("item_rec_aborted", res_id, final_absence_confirmed=True)
+    assert rec2.success is True
+    assert rec2.status == "RELEASED"
+    assert svc.get_stock("item_rec_aborted") == 10
+
+
+def test_database_remains_unreachable_during_reconciliation():
+    """Verify that if PostgreSQL remains unreachable during reconciliation,
+    the reservation remains in PENDING_RECONCILIATION and stock is never released prematurely."""
+    class PersistentDownPostgres(SimulatedPostgresLedger):
+        def has_order(self, reservation_id):
+            raise TimeoutError("PostgreSQL pool connection timeout during healthcheck / lookup")
+
+    pg = PersistentDownPostgres()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_persist_down", 10)
+
+    res = svc.reserve("item_persist_down", "user_pd", quantity=2, idempotency_key="k_pd_1")
+    res_id = res.record.reservation_id
+    with svc._lock:
+        res.record.status = ReservationState.PENDING_RECONCILIATION
+
+    rec_res = svc.reconcile_pending_reservation("item_persist_down", res_id, final_absence_confirmed=True)
+    assert rec_res.success is False
+    assert rec_res.status == "PENDING_RECONCILIATION"
+    assert "timeout" in (rec_res.message or "").lower() or "unreachable" in (rec_res.message or "").lower()
+    # Stock must remain reserved
+    assert svc.get_stock("item_persist_down") == 8
+
+
+def test_repeated_confirmation_rollback_and_reconciliation():
+    """Verify full lifecycle idempotency when confirmation, rollback, and reconciliation
+    are invoked repeatedly on the same reservation."""
+    pg = SimulatedPostgresLedger()
+    svc = FlashSaleInventory(postgres_db=pg)
+    svc.initialize_stock("item_lifecycle", 10)
+
+    res = svc.reserve("item_lifecycle", "user_lc", quantity=3, idempotency_key="k_lc_1")
+    res_id = res.record.reservation_id
+    assert svc.get_stock("item_lifecycle") == 7
+
+    # 1. Initial confirm succeeds
+    c1 = svc.confirm("item_lifecycle", res_id)
+    assert c1.success is True
+    assert c1.status == "CONFIRMED"
+    assert pg.has_order(res_id) is True
+
+    # 2. Repeated confirm is rejected with INVALID_STATE
+    c2 = svc.confirm("item_lifecycle", res_id)
+    assert c2.success is False
+    assert c2.status == "INVALID_STATE"
+
+    # 3. Reconciliation on confirmed order is idempotent
+    rec1 = svc.reconcile_pending_reservation("item_lifecycle", res_id)
+    assert rec1.success is True
+    assert rec1.status == "CONFIRMED"
+    assert svc.get_stock("item_lifecycle") == 7
+
+    # 4. First rollback succeeds, coordinates cancellation with PG
+    rb1 = svc.rollback_confirmation("item_lifecycle", res_id)
+    assert rb1.success is True
+    assert rb1.status == "RELEASED"
+    assert pg.has_order(res_id) is False
+    assert svc.get_stock("item_lifecycle") == 10
+
+    # 5. Repeated rollback is idempotent, does NOT double-restore stock
+    rb2 = svc.rollback_confirmation("item_lifecycle", res_id)
+    assert rb2.success is True
+    assert rb2.status == "RELEASED"
+    assert svc.get_stock("item_lifecycle") == 10
+
+    # 6. Reconciliation on released order is idempotent
+    rec2 = svc.reconcile_pending_reservation("item_lifecycle", res_id)
+    assert rec2.success is True
+    assert rec2.status == "RELEASED"
+    assert svc.get_stock("item_lifecycle") == 10
+
+
+# Aliases for regression test names requested in architecture specification
+test_concurrent_confirmation_attempts = test_concurrent_confirmation_attempts_idempotent
+test_concurrent_release_and_expiration_attempts = test_concurrent_release_and_expiration_restores_stock_at_most_once
+
+
+
 
 

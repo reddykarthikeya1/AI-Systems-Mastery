@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 ### Step 2: Run All Tests
 
-Verify that all 146 tests pass in memory across all chapters and workshops:
+Verify that all 170 tests pass in memory across all chapters and workshops:
 
 ```bash
 pytest -q
@@ -38,12 +38,10 @@ pytest -q
 
 *Expected output:*
 ```
-.................................................................................... [ 56%]
-................................................................                     [100%]
-146 passed in 2.21s
+170 passed in 2.97s
 ```
 
-All 146 tests execute in under 3 seconds.
+All 170 tests execute in under 3 seconds.
 
 ### Step 3: Run Individual Chapter Tests
 
@@ -95,7 +93,7 @@ pytest tests/test_agent_rag_engine.py -q
 Core reference implementations (Smooth Weighted Round-Robin, 3-State Health Monitor, Hierarchical Rate Limiter, Little's Law, Chapters 02, 04–06, 08–11, 13–14, 19–20, 22–23, 25, and Workshops B–D) live in `chapter_reference_solutions.py`:
 
 ```bash
-# Run all shared reference solutions (27 tests)
+# Run all shared reference solutions (36 tests)
 pytest tests/test_chapter_reference_solutions.py -v
 
 # Run Smooth Weighted Round-Robin load balancer
@@ -150,31 +148,31 @@ HLD_Python_Labs/
 ├── workshop_rag_agents/
 │   └── agent_rag_engine.py          # Enterprise RAG Orchestrator (Zanzibar + Outbox + Hybrid Search)
 ├── chapter_reference_solutions.py   # Reference models (Weighted RR, Health Monitor, Hierarchical Limiter, Little's Law, etc.)
-├── tests/                           # Complete Pytest test suite (146 tests across 14 modules, 100% passing)
+├── tests/                           # Complete Pytest test suite (170 tests across 14 modules, 100% passing)
 ├── docker-compose.yml               # Optional local infrastructure (Redis 7, Postgres 16, Kafka 7.5)
 ├── requirements.txt                 # Dependencies (pytest, cryptography, redis, psycopg2-binary)
 └── README.md
 ```
 
-### Complete Test Suite Inventory (146 Tests)
+### Complete Test Suite Inventory (170 Tests)
 
 | Test Module | Chapter / Area | Test Count | Key Invariants Verified |
 |---|---|---|---|
 | `test_agent_rag_engine.py` | Workshop F | 7 | Fail-closed Zanzibar ReBAC, outbox intent before tool dispatch, cross-tenant isolation |
 | `test_bloom_and_minhash.py` | Chapter 16 | 9 | Zero false negatives, Counting Bloom removal bounds, deterministic SHA-256 LSH banding |
 | `test_bm25_and_rrf.py` | Chapter 21 | 6 | BM25 document re-indexing posting cleanup, `avgdl` consistency, dense cosine, RRF ranking |
-| `test_cache_aside_versioned.py` | Chapter 03 | 9 | Generation fence, monotonic watermark, persistent metadata (`PERSIST`), SingleFlight stampede defense |
-| `test_chapter_reference_solutions.py` | Ch 02, 04-06, 08-11, etc. | 27 | Smooth Weighted RR, 3-state health monitor, Little's Law concurrency, Hierarchical Limiter, Raft, LSM |
+| `test_cache_aside_versioned.py` | Chapter 03 | 12 | Generation fence, monotonic watermark, persistent metadata (`PERSIST`), eviction policy realities, SingleFlight |
+| `test_chapter_reference_solutions.py` | Ch 02, 04-06, 08-11, etc. | 36 | Smooth Weighted RR, 3-state health monitor, Little's Law, Thread-Safe Hierarchical Limiter with RLock, Raft, LSM |
 | `test_circuit_breaker.py` | Chapter 17 | 11 | Atomic single-probe CAS gate, 4xx exclusion, `asyncio.CancelledError` bypass, thread-isolated timeouts |
 | `test_concurrency_limiter.py` | Chapter 01 | 4 | Little's Law queue delay inflation, AIMD backoff, Vegas gradient adjustment, SLO load shedding |
 | `test_dual_token_bucket.py` | Chapter 15 | 7 | RPM + TPM dual quota, atomic rollback on partial rejection, Redis server-side `TIME` skew protection |
-| `test_flash_sale_inventory.py` | Workshop A | 25 | 2-phase state machine, `PENDING_RECONCILIATION`, PostgreSQL rollback protection, ZSET expiry |
+| `test_flash_sale_inventory.py` | Workshop A | 37 | 2-phase state machine, `PENDING_CONFIRMATION` & `PENDING_RECONCILIATION`, PostgreSQL rollback protection, in-flight race tests |
 | `test_hash_ring.py` | Chapter 07 | 9 | Virtual node balance, deterministic salt probing on collision, Google Bounded-Load clockwise spillover |
 | `test_paged_attention_simulator.py` | Workshop E | 12 | Virtual block tables, dynamic CoW parallel sampling, double-free validation, Radix prefix router |
 | `test_saga_orchestrator.py` | Chapter 18 | 6 | Forward DAG execution, strict reverse compensation ($C_{k-1} \dots C_1$), async non-blocking execution |
 | `test_transactional_outbox.py` | Chapter 12 | 6 | Dual-write elimination, CTE `FOR UPDATE SKIP LOCKED` concurrent polling, idempotent consumer inbox |
 | `test_zanzibar_rebac.py` | Chapter 24 | 8 | Direct relation tuples, userset rewrite inheritance, BFS graph traversal with cycle detection |
-| **Total** | | **146** | **100% Passing in ~2.21 Seconds** |
+| **Total** | | **170** | **100% Passing in ~2.97 Seconds** |
 
 ---
 
@@ -278,6 +276,19 @@ end
 return 1
 ```
 
+### Redis Memory Eviction Policies & Bounded Metadata Lifecycle
+
+#### 1. Eviction Policy Invariants: `volatile-lru` vs. `allkeys-lru`
+- **The Fallacy of `PERSIST` Immunity:** In Redis, `PERSIST` removes a key's TTL, making it immune to TTL expiration. However, under `allkeys-lru`, `allkeys-lfu`, or `allkeys-random`, Redis evicts *any* key when memory reaches `maxmemory`, regardless of whether a TTL exists.
+- **Race Recreation Hazard:** If memory pressure evicts `{entity}:gen` and `{entity}:v_watermark`, Redis coerces subsequent `GET` calls to `0`. A delayed reader holding stale version 1 satisfies `0 >= 0` and `gen 0 == 0`, accepted as valid and permanently poisoning the cache.
+- **Architectural Requirement:** Cache clusters managing version watermarks must be configured with `volatile-lru` (or `volatile-*`), which restricts memory eviction strictly to volatile data keys (`{entity}:data`), ensuring persistent metadata keys remain immune to eviction under memory pressure.
+
+#### 2. The $O(N)$ Storage Growth Problem & Production Mitigations
+Permanently persisting metadata for every entity ever accessed results in unbounded $O(N)$ memory growth over years of entity churn. Production systems balance stale-fill safety and bounded RAM via three strategies:
+1. **Bounded Epoch TTL:** Assign metadata keys a generous bounded TTL (`TTL(metadata) = max_expected_reader_delay + safety_margin`, e.g. 1 hour or 24 hours).
+2. **Epoch / Generation Tombstone Garbage Collection:** Retain metadata as tombstones upon entity deletion/invalidation. A background sweeper purges tombstones older than the database `statement_timeout` plus maximum application connection lifetime.
+3. **Segregated Metadata Redis Instance:** Host fencing metadata on a dedicated, small persistent `volatile-lru` Redis instance separate from high-churn data caches.
+
 ---
 
 ## 4. Key Laboratory Implementations
@@ -321,7 +332,7 @@ Enforces defense-in-depth quota management across three hierarchical tiers:
 2. **Tenant Tier:** Restricts total API consumption per enterprise account.
 3. **Global Tier:** Protects cluster-wide backend infrastructure and database thread pools.
 
-**Atomic Rollback on Partial Rejection:** If a request satisfies IP and Tenant limits but breaches the Global capacity limit, consumed tokens are atomically rolled back at the lower tiers, preserving token consistency.
+**Thread Safety & Atomic Multi-Tier Enforcement:** Protected by an internal reentrant lock (`threading.RLock()`), all tiers (Global, Tenant, Client IP) are evaluated before any tokens are deducted. If ANY tier rejects the request (e.g. IP limit exceeded), NO tokens are deducted from any tier (strict all-or-nothing check-then-deduct). If all tiers permit, tokens are deducted atomically across all tiers under the lock, eliminating token leakage and partial-rollback race conditions. Monotonic time deltas clamp elapsed time to 0.0 to neutralize NTP clock skew.
 
 ```python
 from chapter_reference_solutions import HierarchicalRateLimiter
@@ -332,7 +343,7 @@ limiter = HierarchicalRateLimiter(
     ip_capacity=5.0, ip_refill_rate=1.0,
 )
 
-allowed, reason = limiter.acquire(tenant_id="tenant_acme", ip="192.168.1.1", tokens=1)
+allowed, reason = limiter.acquire(tenant_id="tenant_acme", client_ip="192.168.1.1", tokens=1)
 assert allowed is True
 assert reason == "ALLOWED"
 ```
@@ -364,11 +375,15 @@ except ConcurrencyLimitExceeded:
 ### 4. Flash Sale 2-Phase Dual-Write State Machine (`workshop_ecommerce`)
 
 Solves the dual-write consistency gap between high-throughput Redis reservations and authoritative PostgreSQL financial ledgers:
-- **State Machine:** `HELD` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`.
-- **Finding 4.0-B (Ambiguous Database Timeout & Rollback Protection):**
-  - If PostgreSQL reconciliation encounters an ambiguous network timeout during commit, the reservation transitions to `PENDING_RECONCILIATION` instead of rolling back.
-  - Ordinary rollback is strictly forbidden while in `PENDING_RECONCILIATION`, preventing stock restoration while a committed order might exist in PostgreSQL.
-  - A background reconciliation daemon queries PostgreSQL: if an order exists, the reservation is confirmed; if the transaction definitively aborted, stock is safely restored.
+- **Two-Phase State Machine:** `HELD` $\rightarrow$ `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`.
+- **Phase 1 (Staging):** When checkout begins, the reservation transitions from `HELD` $\rightarrow$ `PENDING_CONFIRMATION`, atomically removing it from sorted-set expiration indexing to prevent concurrent TTL expiration while contacting PostgreSQL.
+- **Phase 2 (Commit or Ambiguous Timeout):**
+  - Upon verified PostgreSQL commit, transitions from `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED`.
+  - If PostgreSQL encounters an ambiguous network timeout or connection reset during commit, the reservation transitions to `PENDING_RECONCILIATION` instead of executing an immediate rollback.
+- **Ordinary Rollback Prohibition (Finding 4.0-B):**
+  - Ordinary stock rollback (`rollback()`) is strictly prohibited/rejected while in `PENDING_RECONCILIATION`. Restoring stock in Redis while a transaction might have committed in PostgreSQL causes catastrophic inventory overselling.
+- **Authoritative Ledger Reconciliation:**
+  - An asynchronous reconciliation daemon (`reconcile_pending_reservation()`) queries PostgreSQL directly. If an authoritative committed order exists, the reservation is confirmed; if definitively aborted, stock is safely restored in Redis; if PostgreSQL remains unreachable, it stays in `PENDING_RECONCILIATION` for scheduled retry.
 
 ```python
 from workshop_ecommerce.flash_sale_inventory import FlashSaleInventory, ReservationState

@@ -37,7 +37,7 @@ An authoritative, mathematically grounded, and code-verified curriculum in moder
 - **AI Systems Bridge:** KV-cache prefix-affinity routing in multi-node inference clusters. Dispatching incoming prompt tokens to GPU workers hosting matching cached prefix layers to eliminate redundant prefill computation.
 
 ### Pillar 3: State Invalidation, Caching & SingleFlight Coalescing
-- **Classical Foundation:** Decoupled cache invalidation with monotonic generation fences and row-version watermarks. Permanent invalidation metadata persistence (`PERSIST`), XFetch probabilistic early expiration, and `SingleFlight` mutex coalescing to annihilate dogpile stampedes.
+- **Classical Foundation:** Decoupled cache invalidation with monotonic generation fences and row-version watermarks. Permanent invalidation metadata persistence (`PERSIST`), Redis memory eviction policies (`volatile-lru` immunity vs `allkeys-lru` race recreation), bounded metadata lifecycle options (bounded epoch TTL, tombstone sweepers, dedicated metadata clusters), XFetch probabilistic early expiration, and `SingleFlight` mutex coalescing to annihilate dogpile stampedes.
 - **AI Systems Bridge:** Radix tree prefix caching for generative LLMs, prompt KV-cache memory reuse, model weight caching across worker nodes, and thread-safe token streaming.
 
 ### Pillar 4: Partitioning, Sharding & Consistent Topologies
@@ -57,7 +57,7 @@ An authoritative, mathematically grounded, and code-verified curriculum in moder
 - **AI Systems Bridge:** Event-driven agent tool execution pipelines, asynchronous token delivery buses, persistent agent execution audit traces, and durable checkpoint logs for long-horizon multi-step reasoning.
 
 ### Pillar 8: Resilient Fault Isolation & Multi-Tier Quota Engineering
-- **Classical Foundation:** Thread-safe circuit breakers with atomic single-probe `HALF_OPEN` gating, non-blocking asynchronous timeout isolation, and Hierarchical Rate Limiters sequentially enforcing IP, tenant, and global cluster quotas.
+- **Classical Foundation:** Thread-safe circuit breakers with atomic single-probe `HALF_OPEN` gating, non-blocking asynchronous timeout isolation, and thread-safe `HierarchicalRateLimiter` (`threading.RLock`) with atomic multi-tier token enforcement (all-or-nothing check-then-deduct across Global, Tenant, and Client IP tiers).
 - **AI Systems Bridge:** Context-window token bucket enforcement (Requests Per Minute + Tokens Per Minute) coupled with physical GPU memory protection via continuous batch preemption and KV-cache paging.
 
 ### Pillar 9: Probabilistic Data Structures & High-Dimensional Search
@@ -77,8 +77,8 @@ The complete, publication-grade textbook is included directly in the root of thi
 📄 **[`HLD_Python_Master_Textbook_Final.pdf`](./HLD_Python_Master_Textbook_Final.pdf)**
 
 - **Format:** Publication-grade US Letter format ($8.5 \times 11\text{ inches}$), high-density professional typography
-- **Visuals:** 31 publication-grade symmetrical vector SVG architectural blueprints
-- **Pedagogical Structure:** 25 deep-dive core chapters, 6 full-system production blueprints (Workshops A–F), and the Staff/Principal Whiteboard Playbook & Practice Bank.
+- **Visuals:** 53 publication-grade symmetrical vector SVG architectural blueprints
+- **Pedagogical Structure:** 25 deep-dive core chapters + 4 foundational & advanced chapters (Pillars 1, 2, 9, 10), 6 full-system production blueprints (Workshops A–F), and the Staff/Principal Whiteboard Playbook & Practice Bank.
 - **Callout Cards:** 4 standardized pedagogical containers (Mental Models, Architectural Clinics, AI Infrastructure Lens, and Production Warnings).
 
 ---
@@ -107,7 +107,7 @@ Every production workshop in Version 4.0 follows a rigorous, uniform **17-part a
 
 1. **Workshop A: Global E-Commerce & Flash Sale Inventory**
    - *Scale & Challenge:* 100,000 peak checkout RPS, severe overselling risks, dual-write crash windows.
-   - *Core Architecture:* Hash-tagged Redis Cluster Lua reservations, ZSET expiration indexing, PostgreSQL authoritative financial ledger reconciliation, and the `PENDING_RECONCILIATION` recoverable intermediate state.
+   - *Core Architecture:* Hash-tagged Redis Cluster Lua reservations, ZSET expiration indexing, PostgreSQL authoritative financial ledger reconciliation, two-phase dual-write state machine (`HELD` $\rightarrow$ `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`), ordinary rollback prohibition while pending reconciliation, and asynchronous background reconciliation workers.
 2. **Workshop B: Distributed Real-Time Chat & Presence Fabric**
    - *Scale & Challenge:* 50 Million concurrent WebSockets, socket memory saturation ($1.5\text{ TB}$ kernel RAM), connection churn.
    - *Core Architecture:* Epoll-driven Gateway tier, Redis Pub/Sub distributed message bus, Cassandra wide-column history log, and heartbeat presence tracking with auto-expiring TTLs.
@@ -131,7 +131,7 @@ Every production workshop in Version 4.0 follows a rigorous, uniform **17-part a
 The laboratory codebase is engineered for **immediate execution without infrastructure friction**:
 
 > [!NOTE]
-> **The Zero-DevOps Principle:** All 146 laboratory exercises and architectural models run in memory in pure Python 3.11+. No Docker containers, PostgreSQL servers, Redis instances, Kafka clusters, or cloud service credentials are required. Simulated backends provide high-fidelity modeling of thread contention, atomic CAS gates, Lua scripting semantics, network timeouts, and disk compactions.
+> **The Zero-DevOps Principle:** All 170 laboratory tests and architectural models run in memory in pure Python 3.11+. No Docker containers, PostgreSQL servers, Redis instances, Kafka clusters, or cloud service credentials are required. Simulated backends provide high-fidelity modeling of thread contention, atomic CAS gates, Lua scripting semantics, network timeouts, and disk compactions.
 
 ### 1. Minimal Setup
 
@@ -153,7 +153,7 @@ pip install -r requirements.txt
 
 ### 2. Run All Tests
 
-Run the complete automated verification test suite (146 tests across all 25 chapters and 6 workshops):
+Run the complete automated verification test suite (170 tests across 14 modules, 25 chapters, and 6 workshops):
 
 ```bash
 pytest -q
@@ -161,12 +161,10 @@ pytest -q
 
 *Expected output:*
 ```
-.................................................................................... [ 56%]
-................................................................                     [100%]
-146 passed in 2.21s
+170 passed in 2.97s
 ```
 
-All 146 tests execute deterministically and pass in under 3 seconds.
+All 170 tests execute deterministically and pass in under 3 seconds.
 
 ### 3. Run Specific Component Tests
 
@@ -228,7 +226,7 @@ For the complete, granular index mapping every single chapter and workshop to it
 
 ```
 High Level Design/
-├── HLD_Python_Master_Textbook_Final.pdf  # The 195-Page Master Textbook
+├── HLD_Python_Master_Textbook_Final.pdf  # The 237-Page Master Textbook (10.57 MB / 11,082,406 bytes)
 ├── TEXTBOOK_EXERCISE_SOLUTIONS.md        # Granular Chapter-to-Script Index & Solutions
 ├── HLD_Technical_Audit_Report.md        # Version 4.0 Technical Audit & Systems Verification Report
 ├── HLD_PDF_QA_Report.md                 # Publication Quality Assurance & Layout Report
@@ -249,10 +247,10 @@ High Level Design/
     ├── workshop_llm_serving/            # vLLM PagedAttention KV-Cache, CoW & Radix Router
     ├── workshop_rag_agents/             # Enterprise RAG Orchestrator (Zanzibar + Outbox)
     ├── chapter_reference_solutions.py   # Reference models (Weighted RR, Health Monitor, Hierarchical Limiter, etc.)
-    └── tests/                           # Complete Pytest Test Suite (146 Tests Passing)
+    └── tests/                           # Complete Pytest Test Suite (170 Tests Passing)
 ```
 
-### Granular Chapter Index (195 Pages)
+### Granular Chapter Index (237 Pages)
 
 - **Part I: Scaling & Ingress (Chapters 1–4)**
   - Ch 01: Scalability, Saturation & Queueing Theory ($L = \lambda W$, Amdahl's Law, USL, Little's Law exact derivation)
@@ -316,13 +314,13 @@ To ensure engineering integrity, this laboratory codebase explicitly separates *
 | Laboratory Module | Educational Simulator Class | Production Contrast / Reference Class | Key Architectural Difference |
 |---|---|---|---|
 | `ch02_load_balancing` | `WeightedRoundRobinBalancer`, `BackendHealthMonitor` | Envoy Proxy / Nginx / Maglev | Simulator runs in-process round-robin loops; production proxies utilize kernel eBPF / DPDK packet steering and multi-threaded health checking. |
-| `ch03_caching` | `SingleFlight`, `VersionedCacheAside` | Distributed Redlock / Redis Cluster / Memcached Leases | Simulator uses process-local locks and Lua scripts; production distributed systems require persistent metadata keys (`PERSIST`), distributed locks, or cluster lease tokens. |
+| `ch03_caching` | `SingleFlight`, `VersionedCacheAside` | Distributed Redlock / Redis Cluster / Memcached Leases | Simulator uses process-local locks and Lua scripts; production clusters require persistent metadata (`PERSIST`) under `volatile-lru` eviction (to prevent `allkeys-lru` metadata eviction race recreation) with bounded epoch TTLs, distributed locks, or cluster lease tokens. |
 | `ch12_event_driven` | `InMemoryOutboxSimulator` | `PostgresTransactionalOutbox` | Simulator models ACID transactions with mutexes; production class details PostgreSQL MVCC, partial indexing on `WHERE status = 'PENDING'`, and CTE `FOR UPDATE SKIP LOCKED`. |
-| `ch15_rate_limiter` | `HierarchicalRateLimiter`, `DualTokenBucketLimiter` | API Gateway Rate Limiting Middleware / Redis Lua | In-memory token bucket; production version provides Redis Lua scripts using Redis server-side `TIME` commands across multi-tiered keys. |
+| `ch15_rate_limiter` | `HierarchicalRateLimiter`, `DualTokenBucketLimiter` | API Gateway Rate Limiting Middleware / Redis Lua | Thread-safe in-memory token bucket with internal `threading.RLock()` and atomic multi-tier token enforcement; production version provides Redis Lua scripts using Redis server-side `TIME` commands across multi-tiered keys. |
 | `ch17_circuit_breaker` | `CircuitBreaker` | Envoy Proxy / Service Mesh Sidecars | Simulator tracks process-local state with atomic CAS gates; production deployments coordinate circuit breaking at the mesh proxy layer across fleets. |
 | `ch18_saga_orchestrator` | `SagaOrchestrator`, `InMemorySagaLog` | Temporal / Cadence / AWS Step Functions | Simulator uses in-memory log; production orchestrators durably append state transitions to an external database or WAL. |
 | `ch24_zanzibar_rebac` | `ZanzibarEngine` | Google Zanzibar Infrastructure | Simulator evaluates tuples via in-memory BFS with cycle detection; production Zanzibar utilizes globally distributed Spanner with TrueTime tokens (Zookies) and an offline Leopard reachability index. |
-| `workshop_ecommerce` | `FlashSaleInventory` | Redis Cluster + Aurora PostgreSQL 2PC | Simulator implements two-phase state machine with `PENDING_RECONCILIATION`; production employs distributed cross-datacenter reconciliation workers. |
+| `workshop_ecommerce` | `FlashSaleInventory` | Redis Cluster + Aurora PostgreSQL 2PC | Simulator implements two-phase state machine (`HELD` $\rightarrow$ `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`) with ordinary rollback strictly prohibited while in `PENDING_RECONCILIATION`; production employs distributed cross-datacenter reconciliation workers. |
 | `workshop_llm_serving` | `BlockManager` | vLLM C++ Engine & CUDA Kernels | Simulator models virtual memory paging, block mapping, and Copy-on-Write in pure Python; production vLLM executes custom CUDA kernels accessing non-contiguous HBM pages directly via warp lookup tables without CPU GIL delays. |
 
 ---
@@ -340,7 +338,7 @@ This spins up:
 - **PostgreSQL 16** on port `5432` (`hld_user` / `hld_password`)
 - **Apache Kafka 7.5** on port `9092`
 
-*(Note: Docker is 100% optional. The core test suite of 146 tests and all exercises run completely in memory without containers.)*
+*(Note: Docker is 100% optional. The core test suite of 170 tests and all exercises run completely in memory without containers.)*
 
 ---
 

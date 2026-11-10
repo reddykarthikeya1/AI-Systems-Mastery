@@ -5,7 +5,7 @@
 **Classification:** Architecture & Engineering Revision Changelog  
 **Document Release:** Version 4.0.0 (Definitive Learning Edition)  
 **Baseline Compared Against:** Version 3.0.0 (Definitive Learning Edition), Version 2.0.0 (Definitive Masterwork Edition) & Version 1.0.0 (Initial Draft)  
-**Target Publication:** 195 Pages (Letter Format, Full Coverage)  
+**Target Publication:** 237 Pages (Letter Format, 10.57 MB, 11,082,406 bytes, Full Coverage across 10 Pillars)  
 **Verification Date:** November 2026  
 
 ---
@@ -32,18 +32,19 @@
 |               |               | - 139 automated unit & integration tests (100% passing).          |
 |               |               | - Complete elimination of exaggerated marketing claims.           |
 +---------------+---------------+-------------------------------------------------------------------+
-| 4.0.0 (FINAL) | November 2026 | Definitive Learning Edition Milestone Release (195 pages).        |
-|               |               | - The Ten Curriculum Pillars bridging classical systems to AI.   |
+| 4.0.0 (FINAL) | November 2026 | Definitive Learning Edition Milestone Release (237 pages, 10.57MB) |
+|               |               | - The Ten Broader Curriculum Pillars bridging foundations to AI.  |
 |               |               | - Uniform 17-part architectural blueprint for all 6 workshops.    |
-|               |               | - Cache invalidation metadata persistence (PERSIST vs EXPIRE).    |
-|               |               | - Flash-sale 2-phase dual-write state machine with                |
-|               |               |   PENDING_RECONCILIATION and PostgreSQL rollback protection.      |
-|               |               | - Smooth Weighted Round-Robin & 3-state health monitor.           |
-|               |               | - Multi-tier Hierarchical Rate Limiter (IP -> Tenant -> Global).  |
-|               |               | - Exact Little's Law concurrency derivation calculation.          |
-|               |               | - 100% executable exercise mappings (all 11 mismatches resolved). |
-|               |               | - Expanded test suite: 146 automated unit & integration tests     |
-|               |               |   (100% passing in ~2.21s). Zero-DevOps learner path verified.    |
+|               |               | - Concurrency & Atomicity: Thread-safe HierarchicalRateLimiter   |
+|               |               |   with RLock, all-or-nothing rollback invariant, and barriers.    |
+|               |               | - Flash-sale in-flight confirmation vs rollback race resolved;    |
+|               |               |   PENDING_CONFIRMATION guarded in Redis Lua and Python;           |
+|               |               |   in-memory lock decoupled during PostgreSQL network calls.       |
+|               |               | - Cache invalidation eviction policies (volatile-lru vs           |
+|               |               |   allkeys-lru) and O(N) storage growth documented; added tests.   |
+|               |               | - 100% executable exercise mappings (all 145 exercises verified). |
+|               |               | - Expanded test suite: 170 automated unit & integration tests     |
+|               |               |   (100% passing in ~2.97s). Zero-DevOps learner path verified.    |
 +---------------+---------------+-------------------------------------------------------------------+
 ```
 
@@ -86,12 +87,12 @@ All 6 end-to-end production workshops (Workshops A through F) are standardized o
 
 ### 2.3 Cache Invalidation Metadata Persistence Across Data Expiration (Finding 4.0-A)
 - **Problem:** When cached data keys expired, metadata keys (`{entity}:v_watermark` and `{entity}:gen`) with heuristic TTLs ($2\times$) also expired, opening a race window where delayed reader threads querying slow database replicas could resurrect stale versions.
-- **Solution:** Updated Redis Lua scripts (`LUA_VERSIONED_SET`, `LUA_INVALIDATE`) and pure-Python simulators to explicitly invoke `PERSIST` on `{entity}:v_watermark` and `{entity}:gen`. Volatile data expires naturally, while metadata remains permanently persistent.
-- **Verification:** Automated unit test `test_stale_fill_rejected_after_data_expiration_regression` in `tests/test_cache_aside_versioned.py`.
+- **Solution:** Updated Redis Lua scripts (`LUA_VERSIONED_SET`, `LUA_INVALIDATE`) and pure-Python simulators to explicitly invoke `PERSIST` on `{entity}:v_watermark` and `{entity}:gen`. Volatile data expires naturally, while metadata remains permanently persistent. Documented Redis memory eviction policies (`volatile-lru` immunity vs `allkeys-lru` metadata eviction hazard) and bounded metadata lifecycle options (bounded epoch TTL, tombstone sweepers, dedicated metadata cluster) to cap $O(N)$ RAM growth.
+- **Verification:** Automated unit tests `test_stale_fill_rejected_after_data_expiration_regression` and `test_default_invalidation_without_version_advances_generation_fence` in `tests/test_cache_aside_versioned.py`.
 
 ### 2.4 Flash-Sale Two-Phase Dual-Write State Machine & Rollback Protection (Finding 4.0-B)
 - **Problem:** Ambiguous network timeouts while awaiting PostgreSQL commit responses created risk of split-brain: naively rolling back Redis stock caused overselling if PostgreSQL committed the order; naively confirming created unfulfillable orders if PostgreSQL aborted.
-- **Solution:** Introduced the recoverable intermediate state `PENDING_RECONCILIATION`. Ordinary rollback is strictly rejected while pending. An authoritative PostgreSQL reconciliation workflow queries committed orders to determine whether to confirm or release inventory. Stock cannot be restored if an active confirmed order exists in PostgreSQL.
+- **Solution:** Implemented the full two-phase dual-write state machine: `HELD` $\rightarrow$ `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`. Phase 1 stages holds (`PENDING_CONFIRMATION`) and de-indexes from expiration. Ambiguous PostgreSQL commit timeouts transition to `PENDING_RECONCILIATION`. Ordinary rollback is strictly prohibited/rejected while pending to prevent inventory overselling. An authoritative PostgreSQL reconciliation workflow queries committed orders to determine whether to confirm or release inventory.
 - **Verification:** Tests `test_ambiguous_postgres_timeout_marks_pending_reconciliation`, `test_rollback_rejected_while_pending_reconciliation`, `test_reconcile_pending_with_committed_order`, and `test_confirmed_order_cannot_be_accidentally_released` in `tests/test_flash_sale_inventory.py`.
 
 ### 2.5 Ingress: Smooth Weighted Round-Robin & 3-State Health Monitor (Finding 4.0-D)
@@ -101,7 +102,7 @@ All 6 end-to-end production workshops (Workshops A through F) are standardized o
 
 ### 2.6 Multi-Tier Hierarchical Rate Limiter (Finding 4.0-E)
 - **Problem:** Single-tier token buckets cannot simultaneously protect against distributed IP botnets, noisy enterprise tenants, and aggregate database pool exhaustion.
-- **Solution:** Implemented `HierarchicalRateLimiter` sequentially validating IP, Tenant, and Global capacity buckets, featuring atomic rollback of consumed tokens if any higher tier rejects the request.
+- **Solution:** Implemented thread-safe `HierarchicalRateLimiter` (`threading.RLock`) sequentially evaluating Global, Tenant, and Client IP capacity buckets with atomic multi-tier token enforcement (all-or-nothing check-then-deduct across all tiers before any tokens are deducted), eliminating token leakage and rollback race conditions.
 - **Verification:** Unit test `test_hierarchical_rate_limiter_multilevel_enforcement` in `tests/test_chapter_reference_solutions.py`.
 
 ### 2.7 Exact Little's Law Concurrency Calculation
@@ -110,7 +111,7 @@ All 6 end-to-end production workshops (Workshops A through F) are standardized o
 
 ### 2.8 100% Executable Exercise Mappings (Finding 4.0-C)
 - **Resolution:** Audited and resolved all 11 test identifier mismatches between textbook exercise prompts, `TEXTBOOK_EXERCISE_SOLUTIONS.md`, and test functions in `HLD_Python_Labs/tests/`.
-- **Metric:** 146 unit and integration tests passing deterministically across 14 test modules in ~2.21 seconds.
+- **Metric:** 170 unit and integration tests passing deterministically across 14 test modules in ~2.97 seconds.
 
 ---
 
@@ -146,7 +147,7 @@ Version 4.0 maintains strict architectural honesty by categorizing educational s
    - *Educational Simulator:* In-memory dictionaries and mutexes.
    - *Production Contrast:* `PostgresTransactionalOutbox` with PostgreSQL MVCC, partial indexing (`WHERE status = 'PENDING'`), and CTE `FOR UPDATE SKIP LOCKED`.
 4. **Hierarchical Rate Limiting (`HierarchicalRateLimiter`):**
-   - *Educational Simulator:* Multi-tier in-process token buckets with atomic rollback.
+   - *Educational Simulator:* Thread-safe (`threading.RLock`) multi-tier in-process token buckets with atomic multi-tier token enforcement (all-or-nothing check-then-deduct).
    - *Production Contrast:* Multi-region Redis Cluster Lua scripts with server-side time synchronization.
 5. **ReBAC Authorization Engine (`ZanzibarEngine`):**
    - *Educational Simulator:* In-memory BFS with cycle detection.
@@ -159,8 +160,8 @@ Version 4.0 maintains strict architectural honesty by categorizing educational s
 
 ## 5. Visual System & Typography Verification
 
-Verified against `HLD_Python_Master_Textbook_Final.pdf` (195 formatted pages):
-- **31 Publication-Grade Symmetrical SVG Diagrams:** All blueprints follow standardized color conventions (Blue for Ingress, Green for Success, Orange for Async, Red for Failure/Shedding).
+Verified against `HLD_Python_Master_Textbook_Final.pdf` (237 formatted pages):
+- **53 Publication-Grade Symmetrical SVG Diagrams:** All blueprints follow standardized color conventions (Blue for Ingress, Green for Success, Orange for Async, Red for Failure/Shedding).
 - **Four Distinct Callout Categories:** Explicit visual containers for Mental Models (Mint), Architectural Clinics (Ice Blue), AI Infrastructure Lens (Lavender), and Production Warnings (Rose).
 - **Mathematical KaTeX Glyphs:** Formulas across Little's Law, Bloom filter false positives, GPU memory allocation, and Write Amplification render as crisp scalable vector glyphs with zero delimiter leaks.
 - **Zero Typographic Anomalies:** Confirmed zero orphaned headings, zero clipped code blocks, and zero table overflows.
@@ -169,24 +170,24 @@ Verified against `HLD_Python_Master_Textbook_Final.pdf` (195 formatted pages):
 
 ## 6. Verification & Quality Assurance Summary
 
-### 6.1 Test Suite Breakdown (146 Passing Tests)
+### 6.1 Test Suite Breakdown (170 Passing Tests)
 Every component across all 14 laboratory test modules was audited and verified:
 1. `tests/test_agent_rag_engine.py`: 7 tests passing.
 2. `tests/test_bloom_and_minhash.py`: 9 tests passing.
 3. `tests/test_bm25_and_rrf.py`: 6 tests passing.
-4. `tests/test_cache_aside_versioned.py`: 9 tests passing.
-5. `tests/test_chapter_reference_solutions.py`: 27 tests passing.
+4. `tests/test_cache_aside_versioned.py`: 12 tests passing.
+5. `tests/test_chapter_reference_solutions.py`: 36 tests passing.
 6. `tests/test_circuit_breaker.py`: 11 tests passing.
 7. `tests/test_concurrency_limiter.py`: 4 tests passing.
 8. `tests/test_dual_token_bucket.py`: 7 tests passing.
-9. `tests/test_flash_sale_inventory.py`: 25 tests passing.
+9. `tests/test_flash_sale_inventory.py`: 37 tests passing.
 10. `tests/test_hash_ring.py`: 9 tests passing.
 11. `tests/test_paged_attention_simulator.py`: 12 tests passing.
 12. `tests/test_saga_orchestrator.py`: 6 tests passing.
 13. `tests/test_transactional_outbox.py`: 6 tests passing.
 14. `tests/test_zanzibar_rebac.py`: 8 tests passing.
 
-**Total: 146 unit and integration tests passing in ~2.21 seconds.**
+**Total: 170 unit and integration tests passing in ~2.97 seconds.**
 
 ### 6.2 Reproduction Commands
 ```bash

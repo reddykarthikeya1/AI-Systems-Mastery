@@ -9,7 +9,9 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass
 from hashlib import sha256
+import math
 from math import ceil, floor
+import threading
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 import uuid
 
@@ -316,7 +318,24 @@ class ApiGateway:
 
 
 class HierarchicalRateLimiter:
-    """Multi-tiered rate limiter enforcing Global, Tenant, and Client IP quotas atomically."""
+    """Multi-tiered rate limiter enforcing Global, Tenant, and Client IP quotas atomically.
+
+    Architectural Scope & In-Memory Concurrency Contract:
+    ----------------------------------------------------
+    1. Scope: This is a thread-safe, process-local reference simulator, NOT a globally distributed
+       cluster rate limiter. In production distributed deployments, multi-tier quotas across multiple
+       hosts require distributed atomic enforcement (e.g., Redis Lua script with cluster sharding,
+       or an Envoy global rate limit service / gRPC RLS).
+    2. Atomicity & Thread-Safety: All checks and deductions across Global, Tenant, and Client IP
+       tiers are protected by an internal reentrant lock (`threading.RLock`).
+    3. All-or-Nothing Deduction: If ANY tier rejects the request (e.g. IP limit exceeded), NO tokens
+       are deducted from any tier, preserving strict atomicity and preventing token leakage.
+    4. Clock Skew & Backward Timestamps: If `now` moves backward (e.g. NTP step adjustments or out-of-order
+       timestamps), the limiter clamps the elapsed delta to 0.0, preventing negative refill or spurious
+       token creation.
+    5. Input Validation: Strictly rejects invalid, non-finite, zero, or negative capacities, refill rates,
+       or token quantities.
+    """
 
     def __init__(
         self,
@@ -327,18 +346,33 @@ class HierarchicalRateLimiter:
         ip_capacity: float,
         ip_refill_rate: float,
     ) -> None:
-        self.global_cap = global_capacity
-        self.global_rate = global_refill_rate
-        self.global_tokens = global_capacity
+        for name, val in [
+            ("global_capacity", global_capacity),
+            ("global_refill_rate", global_refill_rate),
+            ("tenant_capacity", tenant_capacity),
+            ("tenant_refill_rate", tenant_refill_rate),
+            ("ip_capacity", ip_capacity),
+            ("ip_refill_rate", ip_refill_rate),
+        ]:
+            if not isinstance(val, (int, float)) or isinstance(val, bool):
+                raise TypeError(f"{name} must be a number, got {type(val).__name__}")
+            if not math.isfinite(val) or val <= 0:
+                raise ValueError(f"{name} must be a positive finite number, got {val}")
+
+        self._lock = threading.RLock()
+
+        self.global_cap = float(global_capacity)
+        self.global_rate = float(global_refill_rate)
+        self.global_tokens = float(global_capacity)
         self.global_last_refill = 0.0
 
-        self.tenant_cap = tenant_capacity
-        self.tenant_rate = tenant_refill_rate
+        self.tenant_cap = float(tenant_capacity)
+        self.tenant_rate = float(tenant_refill_rate)
         self.tenant_tokens: Dict[str, float] = {}
         self.tenant_last_refill: Dict[str, float] = {}
 
-        self.ip_cap = ip_capacity
-        self.ip_rate = ip_refill_rate
+        self.ip_cap = float(ip_capacity)
+        self.ip_rate = float(ip_refill_rate)
         self.ip_tokens: Dict[str, float] = {}
         self.ip_last_refill: Dict[str, float] = {}
 
@@ -356,40 +390,63 @@ class HierarchicalRateLimiter:
         tokens: int = 1,
         now: Optional[float] = None,
     ) -> Tuple[bool, str]:
+        if not isinstance(tenant_id, str):
+            raise TypeError("tenant_id must be a string")
+        if not tenant_id.strip():
+            raise ValueError("tenant_id must be a non-empty string")
+        if not isinstance(client_ip, str):
+            raise TypeError("client_ip must be a string")
+        if not client_ip.strip():
+            raise ValueError("client_ip must be a non-empty string")
+
+        if not isinstance(tokens, (int, float)) or isinstance(tokens, bool):
+            raise TypeError("tokens must be a number")
+        if not math.isfinite(tokens) or tokens <= 0:
+            raise ValueError(f"tokens must be a positive finite number, got {tokens}")
+
         if now is None:
             import time
             now = time.monotonic()
+        else:
+            if not isinstance(now, (int, float)) or isinstance(now, bool):
+                raise TypeError("now must be a number")
+            if not math.isfinite(now) or now < 0:
+                raise ValueError(f"now must be a non-negative finite number, got {now}")
 
-        # 1. Refill and check global tier
-        self.global_tokens, self.global_last_refill = self._refill(
-            self.global_tokens, self.global_cap, self.global_rate, self.global_last_refill, now
-        )
-        if self.global_tokens < tokens:
-            return False, "GLOBAL_LIMIT_EXCEEDED"
+        with self._lock:
+            # 1. Refill and check global tier
+            g_tokens, g_last = self._refill(
+                self.global_tokens, self.global_cap, self.global_rate, self.global_last_refill, now
+            )
+            if g_tokens < tokens:
+                return False, "GLOBAL_LIMIT_EXCEEDED"
 
-        # 2. Refill and check tenant tier
-        t_tokens = self.tenant_tokens.get(tenant_id, self.tenant_cap)
-        t_last = self.tenant_last_refill.get(tenant_id, 0.0)
-        t_tokens, t_last = self._refill(t_tokens, self.tenant_cap, self.tenant_rate, t_last, now)
-        if t_tokens < tokens:
-            return False, "TENANT_LIMIT_EXCEEDED"
+            # 2. Refill and check tenant tier
+            t_curr = self.tenant_tokens.get(tenant_id, self.tenant_cap)
+            t_prev = self.tenant_last_refill.get(tenant_id, 0.0)
+            t_tokens, t_last = self._refill(t_curr, self.tenant_cap, self.tenant_rate, t_prev, now)
+            if t_tokens < tokens:
+                return False, "TENANT_LIMIT_EXCEEDED"
 
-        # 3. Refill and check IP tier
-        ip_key = f"{tenant_id}:{client_ip}"
-        i_tokens = self.ip_tokens.get(ip_key, self.ip_cap)
-        i_last = self.ip_last_refill.get(ip_key, 0.0)
-        i_tokens, i_last = self._refill(i_tokens, self.ip_cap, self.ip_rate, i_last, now)
-        if i_tokens < tokens:
-            return False, "IP_LIMIT_EXCEEDED"
+            # 3. Refill and check IP tier
+            ip_key = f"{tenant_id}:{client_ip}"
+            i_curr = self.ip_tokens.get(ip_key, self.ip_cap)
+            i_prev = self.ip_last_refill.get(ip_key, 0.0)
+            i_tokens, i_last = self._refill(i_curr, self.ip_cap, self.ip_rate, i_prev, now)
+            if i_tokens < tokens:
+                return False, "IP_LIMIT_EXCEEDED"
 
-        # All tiers permit: deduct atomically across all three tiers
-        self.global_tokens -= tokens
-        self.tenant_tokens[tenant_id] = t_tokens - tokens
-        self.tenant_last_refill[tenant_id] = t_last
-        self.ip_tokens[ip_key] = i_tokens - tokens
-        self.ip_last_refill[ip_key] = i_last
+            # All tiers permit: deduct atomically across all three tiers
+            self.global_tokens = max(0.0, g_tokens - tokens)
+            self.global_last_refill = g_last
 
-        return True, "ALLOWED"
+            self.tenant_tokens[tenant_id] = max(0.0, t_tokens - tokens)
+            self.tenant_last_refill[tenant_id] = t_last
+
+            self.ip_tokens[ip_key] = max(0.0, i_tokens - tokens)
+            self.ip_last_refill[ip_key] = i_last
+
+            return True, "ALLOWED"
 
 
 @dataclass

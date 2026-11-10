@@ -55,20 +55,25 @@ Educational Simulator vs. Production Flash Sale Architecture:
      the reservation confirmation is rejected and Redis state is rolled back.
 
 6. The Cross-Database Dual-Write Consistency Gap & Production Mitigations:
-   - The Dual-Write Problem:
-     Redis Lua and PostgreSQL cannot achieve distributed two-phase commit (2PC) atomicity
-     without an external distributed coordinator or transactional outbox.
+   - The Dual-Write Problem & Architectural Reality:
+     Redis Lua and PostgreSQL do NOT form a single atomic transaction merely because this
+     Python simulator reconciles their states sequentially. They reside on distinct network
+     endpoints with independent durability, failover, and crash profiles.
+     Distributed two-phase commit (2PC) or XA transactions across heterogeneous Redis/PostgreSQL
+     clusters are rarely viable at flash-sale scale due to locking overhead and coordinator vulnerability.
    - Crash / Ambiguous Timeout Failure Window & Intermediate State:
      When confirm() is called, the system atomically transitions `HELD -> PENDING_CONFIRMATION`
      and removes the reservation from the auto-expiry index BEFORE calling PostgreSQL.
      Only upon PostgreSQL success is it transitioned to `CONFIRMED`.
      If a crash or ambiguous timeout occurs before PostgreSQL finishes, the reservation is in
-     `PENDING_CONFIRMATION` / `PENDING_RECONCILIATION`, NOT falsely marked `CONFIRMED`. This
-     completely eliminates split-brain dual-write state between cache and durable ledger.
-   - Rollback Invariant:
-     A rollback CANNOT restore stock while leaving an active confirmed order in PostgreSQL.
-     rollback_confirmation() checks PostgreSQL: if active, it coordinates cancellation in
-     PostgreSQL or rejects the rollback if the order cannot be cancelled.
+     `PENDING_CONFIRMATION` / `PENDING_RECONCILIATION`, NOT falsely marked `CONFIRMED`.
+   - Rollback Invariant & The In-Flight Confirmation Race:
+     Ordinary rollback (`rollback_confirmation` / `release_reservation`) MUST NOT release a reservation
+     in `PENDING_CONFIRMATION` or `PENDING_RECONCILIATION`. If confirmation is in-flight, releasing
+     inventory while PostgreSQL commits results in phantom double-allocated inventory (an active
+     PostgreSQL order exists with inventory restored in Redis).
+     Only authoritative reconciliation (`reconcile_pending_reservation` with `final_absence_confirmed=True`)
+     or explicitly safe compensation may resolve these intermediate states.
    - Production Mitigation Patterns:
      (A) Asynchronous Cross-System Reconciliation Daemon:
          A periodic background reconciliation job scans reservations marked `CONFIRMED` in Redis
@@ -184,7 +189,7 @@ end
 local record = cjson.decode(record_json)
 
 if action == "STAGE" then
-    if record.status ~= "HELD" and record.status ~= "PENDING_CONFIRMATION" then
+    if record.status ~= "HELD" then
         return cjson.encode({status = "INVALID_STATE", current_status = record.status})
     end
 
@@ -233,6 +238,14 @@ if not record_json then
 end
 
 local record = cjson.decode(record_json)
+
+if record.status == "PENDING_CONFIRMATION" then
+    return cjson.encode({status = "PENDING_CONFIRMATION", message = "Cannot release reservation while confirmation is in-flight", current_status = record.status})
+end
+if record.status == "PENDING_RECONCILIATION" then
+    return cjson.encode({status = "PENDING_RECONCILIATION", message = "Cannot release reservation pending reconciliation without authoritative ledger resolution", current_status = record.status})
+end
+
 if record.status ~= "HELD" then
     return cjson.encode({status = "INVALID_STATE", current_status = record.status})
 end
@@ -307,8 +320,19 @@ if record.status == "PENDING_RECONCILIATION" then
     })
 end
 
--- Rollback can only succeed if the reservation is in a roll-backable state (CONFIRMED, HELD, or PENDING_CONFIRMATION) and hasn't been rolled back already.
-if record.status ~= "CONFIRMED" and record.status ~= "HELD" and record.status ~= "PENDING_CONFIRMATION" then
+-- Rollback CANNOT proceed if confirmation is currently in-flight (PENDING_CONFIRMATION).
+-- An in-flight PostgreSQL transaction may commit after rollback, leading to double-allocation.
+if record.status == "PENDING_CONFIRMATION" then
+    return cjson.encode({
+        status = "PENDING_CONFIRMATION",
+        message = "Cannot rollback reservation while confirmation is in-flight",
+        reservation_id = res_id,
+        current_status = record.status
+    })
+end
+
+-- Rollback can only succeed if the reservation is in a roll-backable state (CONFIRMED or HELD) and hasn't been rolled back already.
+if record.status ~= "CONFIRMED" and record.status ~= "HELD" then
     return cjson.encode({
         status = "ALREADY_ROLLED_BACK",
         current_status = record.status,
@@ -478,6 +502,16 @@ class FlashSaleInventoryService:
 
     Coordinates high-concurrency inventory reservation using Redis Cluster hash tags,
     Lua script atomic execution, and PostgreSQL authoritative reconciliation.
+
+    Architectural Reality & Distributed Dual-Write Limitation:
+    ----------------------------------------------------------
+    Redis and PostgreSQL do not form one atomic transaction merely because the simulator
+    reconciles their states sequentially. They reside on distinct network endpoints with
+    independent durability, failover, and crash profiles. A failure or crash between
+    committing in PostgreSQL and acknowledging in Redis creates intermediate states
+    (PENDING_CONFIRMATION, PENDING_RECONCILIATION) that require strict state machine guards
+    and authoritative reconciliation to prevent phantom stock restoration.
+
     NOTE: When redis_client is None, this service uses internal dictionaries
     (_stock_store, _reserves_store, _idemp_store, _expirations_store) as an educational in-memory
     Redis simulation for local testing and demonstration without requiring a running Redis cluster.
@@ -672,6 +706,50 @@ class FlashSaleInventoryService:
                 message="Reservation already rolled back",
             )
 
+        # Ordinary rollback CANNOT release PENDING_CONFIRMATION or PENDING_RECONCILIATION!
+        if self.redis is None:
+            with self._lock:
+                reserves_map = self._reserves_store.get(item_id, {})
+                rec = reserves_map.get(reservation_id)
+                if not rec:
+                    return ReservationResult(success=False, status="NOT_FOUND")
+                if rec.status == ReservationState.PENDING_CONFIRMATION:
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_CONFIRMATION",
+                        message="Cannot rollback reservation while confirmation is in-flight",
+                        record=rec,
+                    )
+                if rec.status == ReservationState.PENDING_RECONCILIATION:
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_RECONCILIATION",
+                        message="Cannot rollback reservation pending reconciliation without authoritative ledger resolution",
+                        record=rec,
+                    )
+        else:
+            stock_k, reserves_k, _, _ = self._keys(item_id)
+            rec_raw = self.redis.hget(reserves_k, reservation_id)
+            if not rec_raw:
+                return ReservationResult(success=False, status="NOT_FOUND")
+            try:
+                rec_json = json.loads(rec_raw)
+                st = rec_json.get("status")
+                if st == "PENDING_CONFIRMATION":
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_CONFIRMATION",
+                        message="Cannot rollback reservation while confirmation is in-flight",
+                    )
+                if st == "PENDING_RECONCILIATION":
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_RECONCILIATION",
+                        message="Cannot rollback reservation pending reconciliation without authoritative ledger resolution",
+                    )
+            except Exception:
+                pass
+
         # Enforce Rollback Invariant: Check PostgreSQL!
         # A rollback CANNOT restore stock while leaving an active confirmed order in PostgreSQL.
         has_active_order = False
@@ -712,7 +790,7 @@ class FlashSaleInventoryService:
                 LUA_ROLLBACK_CONFIRMATION, 2, stock_k, reserves_k, reservation_id
             )
             data = json.loads(raw)
-            if data.get("status") in ("NOT_FOUND", "ALREADY_ROLLED_BACK", "INVALID_STATE", "PENDING_RECONCILIATION"):
+            if data.get("status") in ("NOT_FOUND", "ALREADY_ROLLED_BACK", "INVALID_STATE", "PENDING_RECONCILIATION", "PENDING_CONFIRMATION"):
                 if data.get("status") == "ALREADY_ROLLED_BACK":
                     self._rolled_back_reservations.add(reservation_id)
                     return ReservationResult(
@@ -725,6 +803,12 @@ class FlashSaleInventoryService:
                         success=False,
                         status="PENDING_RECONCILIATION",
                         message=data.get("message", "Cannot rollback reservation pending reconciliation without authoritative ledger resolution"),
+                    )
+                if data.get("status") == "PENDING_CONFIRMATION":
+                    return ReservationResult(
+                        success=False,
+                        status="PENDING_CONFIRMATION",
+                        message=data.get("message", "Cannot rollback reservation while confirmation is in-flight"),
                     )
                 return ReservationResult(
                     success=False,
@@ -756,10 +840,17 @@ class FlashSaleInventoryService:
                     record=rec,
                 )
 
+            if rec.status == ReservationState.PENDING_CONFIRMATION:
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_CONFIRMATION",
+                    message="Cannot rollback reservation while confirmation is in-flight",
+                    record=rec,
+                )
+
             if rec.status not in (
                 ReservationState.CONFIRMED,
                 ReservationState.HELD,
-                ReservationState.PENDING_CONFIRMATION,
             ):
                 return ReservationResult(
                     success=False,
@@ -1027,7 +1118,8 @@ class FlashSaleInventoryService:
                         record=rec,
                     )
                 # PostgreSQL fails (e.g. non-timeout error): transition to RELEASED and restore stock
-                rb_res = self.rollback_confirmation(item_id, reservation_id)
+                # Use authoritative reconciliation to compensate rather than rollback_confirmation
+                rb_res = self.reconcile_pending_reservation(item_id, reservation_id, final_absence_confirmed=True)
                 rec.status = ReservationState.RELEASED
                 self.inconsistencies.append({
                     "reservation_id": reservation_id,
@@ -1044,8 +1136,8 @@ class FlashSaleInventoryService:
 
             if not pg_success:
                 # PostgreSQL fails (e.g. inventory exhausted in authoritative ledger):
-                # transition to RELEASED and restore stock
-                rb_res = self.rollback_confirmation(item_id, reservation_id)
+                # use authoritative reconciliation to transition to RELEASED and restore stock
+                rb_res = self.reconcile_pending_reservation(item_id, reservation_id, final_absence_confirmed=True)
                 rec.status = ReservationState.RELEASED
                 return ReservationResult(
                     success=False,
@@ -1067,14 +1159,16 @@ class FlashSaleInventoryService:
             rec.status = ReservationState.CONFIRMED
             return ReservationResult(success=True, status="CONFIRMED", record=rec)
 
+        # In-memory execution: Decouple Phase 1 (Stage) and Phase 2 (PostgreSQL call)
+        # to allow concurrent operations to observe PENDING_CONFIRMATION without lock contention!
         with self._lock:
             reserves_map = self._reserves_store.get(item_id, {})
             rec = reserves_map.get(reservation_id)
             if not rec:
                 return ReservationResult(success=False, status="NOT_FOUND")
 
-            # Enforce state machine: only HELD or PENDING_CONFIRMATION reservations can be confirmed
-            if rec.status != ReservationState.HELD and rec.status != ReservationState.PENDING_CONFIRMATION:
+            # Enforce state machine: only HELD reservations can be confirmed
+            if rec.status != ReservationState.HELD:
                 return ReservationResult(
                     success=False,
                     status="INVALID_STATE",
@@ -1095,24 +1189,41 @@ class FlashSaleInventoryService:
             rec.status = ReservationState.PENDING_CONFIRMATION
             self._expirations_store.get(item_id, {}).pop(reservation_id, None)
 
-            # Phase 2: Attempt PostgreSQL authoritative ledger reconciliation
-            try:
-                pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
-            except Exception as exc:
-                if _is_ambiguous_timeout(exc):
+        # Phase 2: Attempt PostgreSQL authoritative ledger reconciliation (OUTSIDE LOCK)
+        pg_success = False
+        pg_exc = None
+        try:
+            pg_success = self.postgres_db.reconcile_confirmed_order(item_id, rec)
+        except Exception as exc:
+            pg_exc = exc
+
+        # Phase 3: Transition state under lock based on PostgreSQL outcome
+        with self._lock:
+            if rec.status == ReservationState.CONFIRMED:
+                return ReservationResult(success=True, status="CONFIRMED", record=rec)
+            if rec.status == ReservationState.RELEASED:
+                return ReservationResult(
+                    success=False,
+                    status="RECONCILIATION_FAILED",
+                    message="Reservation already rolled back or released",
+                    record=rec,
+                )
+
+            if pg_exc is not None:
+                if _is_ambiguous_timeout(pg_exc):
                     # Ambiguous timeout: do NOT blindly restore stock!
                     rec.status = ReservationState.PENDING_RECONCILIATION
                     self.inconsistencies.append({
                         "reservation_id": reservation_id,
                         "item_id": item_id,
-                        "error": str(exc),
+                        "error": str(pg_exc),
                         "timestamp": now,
                         "status": "PENDING_RECONCILIATION",
                     })
                     return ReservationResult(
                         success=False,
                         status="PENDING_RECONCILIATION",
-                        message=f"PostgreSQL reconciliation timeout: {exc}",
+                        message=f"PostgreSQL reconciliation timeout: {pg_exc}",
                         record=rec,
                     )
                 # Crash / unhandled network error: transition to RELEASED and restore stock
@@ -1122,13 +1233,13 @@ class FlashSaleInventoryService:
                 self.inconsistencies.append({
                     "reservation_id": reservation_id,
                     "item_id": item_id,
-                    "error": str(exc),
+                    "error": str(pg_exc),
                     "timestamp": now,
                 })
                 return ReservationResult(
                     success=False,
                     status="RECONCILIATION_FAILED",
-                    message=f"PostgreSQL reconciliation error: {exc}",
+                    message=f"PostgreSQL reconciliation error: {pg_exc}",
                     record=rec,
                 )
 
@@ -1156,11 +1267,11 @@ class FlashSaleInventoryService:
                 LUA_RELEASE_RESERVATION, 3, stock_k, reserves_k, exp_k, reservation_id
             )
             data = json.loads(raw)
-            if "status" in data and data["status"] in ("NOT_FOUND", "INVALID_STATE"):
+            if "status" in data and data["status"] in ("NOT_FOUND", "INVALID_STATE", "PENDING_CONFIRMATION", "PENDING_RECONCILIATION"):
                 return ReservationResult(
                     success=False,
                     status=data["status"],
-                    message=f"Status is {data.get('current_status')}",
+                    message=data.get("message", f"Status is {data.get('current_status')}"),
                 )
             rec = ReservationRecord(
                 reservation_id=data["reservation_id"],
@@ -1178,6 +1289,21 @@ class FlashSaleInventoryService:
             if not rec:
                 return ReservationResult(success=False, status="NOT_FOUND")
 
+            if rec.status == ReservationState.PENDING_CONFIRMATION:
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_CONFIRMATION",
+                    message="Cannot release reservation while confirmation is in-flight",
+                    record=rec,
+                )
+            if rec.status == ReservationState.PENDING_RECONCILIATION:
+                return ReservationResult(
+                    success=False,
+                    status="PENDING_RECONCILIATION",
+                    message="Cannot release reservation pending reconciliation without authoritative ledger resolution",
+                    record=rec,
+                )
+
             # Enforce state machine: only HELD reservations can be released
             if rec.status != ReservationState.HELD:
                 return ReservationResult(
@@ -1191,6 +1317,8 @@ class FlashSaleInventoryService:
             self._stock_store[stock_k] = self._stock_store.get(stock_k, 0) + rec.quantity
             self._expirations_store.get(item_id, {}).pop(reservation_id, None)
             return ReservationResult(success=True, status="RELEASED", record=rec)
+
+    release_reservation = release
 
     def reconcile_expired_reservations(
         self,
@@ -1236,6 +1364,27 @@ class FlashSaleInventoryService:
                     restored_count += rec.quantity
 
         return restored_count
+
+    def reconcile_expired(
+        self,
+        item_id: Optional[str] = None,
+        now: Optional[float] = None,
+        batch_size: int = 100,
+    ) -> int:
+        """Alias / convenience method to reconcile expired reservations for a single item or across all tracked items."""
+        if isinstance(item_id, (int, float)):
+            now = float(item_id)
+            item_id = None
+        if item_id is not None:
+            return self.reconcile_expired_reservations(item_id, now=now, batch_size=batch_size)
+        if now is None:
+            now = time.time()
+        total_restored = 0
+        with self._lock:
+            all_items = set(list(self._expirations_store.keys()) + list(self._reserves_store.keys()))
+        for it_id in all_items:
+            total_restored += self.reconcile_expired_reservations(it_id, now=now, batch_size=batch_size)
+        return total_restored
 
 
 # Educational and architectural aliases

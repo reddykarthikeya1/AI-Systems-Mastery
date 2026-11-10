@@ -43,7 +43,7 @@ python -m pip install -r requirements.txt
 
 ### 1.3 Test Execution Commands
 
-The verification suite consists of 139+ automated tests running in under 5 seconds:
+The verification suite consists of 146 automated tests (100% passing in ~2 seconds with zero external dependencies):
 
 ```bash
 # 1. Run entire textbook test suite quietly
@@ -80,7 +80,7 @@ The table below catalogs every exercise across Chapters 01–25, Workshops A–F
 |---|---|---|---|---|---|---|---|
 | `CH01-E01` | Chapter 01: Scalability & Little's Law | Calculate average and peak RPS for 2.5 million DAU, 18 reads per day and a 4x peak factor. | Calculation | [`estimate_capacity`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_back_of_envelope_capacity_estimates` | `pytest tests/test_chapter_reference_solutions.py -k test_back_of_envelope_capacity_estimates` | Complete |
 | `CH01-E02` | Chapter 01: Scalability & Little's Law | A service receives 2,000 RPS at mean latency 350 ms. Estimate average in-flight work using Little's Law. | Calculation | [`littles_law_concurrency`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_littles_law_concurrency_calculation` | `pytest tests/test_chapter_reference_solutions.py -k test_littles_law_concurrency_calculation` | Complete |
-| `CH01-E03` | Chapter 01: Scalability & Little's Law | Design a load-shedding policy for a report-generation service during a 5x traffic spike. | Coding | [`AdaptiveConcurrencyLimiter`](HLD_Python_Labs/ch01_scalability/concurrency_limiter.py) | `test_aimd_limiter_concurrency_rejection` | `pytest tests/test_concurrency_limiter.py -k test_aimd_limiter_concurrency_rejection` | Complete |
+| `CH01-E03` | Chapter 01: Scalability & Little's Law | Design a load-shedding policy for a report-generation service during a 5x traffic spike. | Coding | [`AIMDConcurrencyLimiter`](HLD_Python_Labs/ch01_scalability/concurrency_limiter.py) | `test_aimd_limiter_concurrency_rejection` | `pytest tests/test_concurrency_limiter.py -k test_aimd_limiter_concurrency_rejection` | Complete |
 | `CH01-E04` | Chapter 01: Scalability & Little's Law | Advanced Design-Review: Provider slowdown pool, queue, and deadline measurements. | Architecture | [Worked Solution](#ch01-e04) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH01-E05` | Chapter 01: Scalability & Little's Law | Advanced Design-Review: One-zone-loss capacity plan under bursty traffic and autoscaling lag. | Architecture | [Worked Solution](#ch01-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH02-E01` | Chapter 02: Load Balancing & Reverse Proxies | Implement weighted round-robin and test distribution over 70 selections. | Coding | [`WeightedRoundRobinBalancer`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_weighted_round_robin_distribution` | `pytest tests/test_chapter_reference_solutions.py -k test_weighted_round_robin_distribution` | Complete |
@@ -133,29 +133,29 @@ The table below catalogs every exercise across Chapters 01–25, Workshops A–F
 | `CH11-E03` | Chapter 11: Kafka & Partitioned Logs | Design partition rebalance protocol and sticky partition assignments to prevent consumer stalls. | Architecture | [Worked Solution](#ch11-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH11-E04` | Chapter 11: Kafka & Partitioned Logs | Advanced Design-Review: Log compaction tombstone semantics and consumer lag recovery. | Architecture | [Worked Solution](#ch11-e04) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH11-E05` | Chapter 11: Kafka & Partitioned Logs | Advanced Design-Review: Exactly-once processing semantics (EOS) via Kafka transactional producers. | Architecture | [Worked Solution](#ch11-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH12-E01` | Chapter 12: Event-Driven Architecture & Outbox | Implement Transactional Outbox pattern with concurrent SKIP LOCKED pollers and dead-letter queue. | Coding | [`TransactionalOutboxSimulator`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_concurrent_pollers_skip_locked` | `pytest tests/test_transactional_outbox.py -q` | Complete |
-| `CH12-E02` | Chapter 12: Event-Driven Architecture & Outbox | Design idempotent consumer inbox with SHA256 message deduplication and deduplication TTL. | Coding | [`IdempotentConsumerSimulator`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_idempotent_consumer` | `pytest tests/test_transactional_outbox.py -k test_idempotent_consumer` | Complete |
+| `CH12-E01` | Chapter 12: Event-Driven Architecture & Outbox | Implement Transactional Outbox pattern with concurrent SKIP LOCKED pollers and dead-letter queue. | Coding | [`PostgresTransactionalOutbox`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_concurrent_pollers_skip_locked` | `pytest tests/test_transactional_outbox.py -q` | Complete |
+| `CH12-E02` | Chapter 12: Event-Driven Architecture & Outbox | Design idempotent consumer inbox with SHA256 message deduplication and deduplication TTL. | Coding | [`IdempotentConsumer`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_idempotent_consumer` | `pytest tests/test_transactional_outbox.py -k test_idempotent_consumer` | Complete |
 | `CH12-E03` | Chapter 12: Event-Driven Architecture & Outbox | Evaluate Change Data Capture (Debezium/Postgres WAL) vs Polling Outbox trade-offs. | Architecture | [Worked Solution](#ch12-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH12-E04` | Chapter 12: Event-Driven Architecture & Outbox | Advanced Design-Review: Dual-write disaster scenario where database commits but message broker publish fails. | Coding | [`TransactionalOutboxSimulator`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_atomic_transaction_and_rollback` | `pytest tests/test_transactional_outbox.py -k test_atomic_transaction_and_rollback` | Complete |
+| `CH12-E04` | Chapter 12: Event-Driven Architecture & Outbox | Advanced Design-Review: Dual-write disaster scenario where database commits but message broker publish fails. | Coding | [`PostgresTransactionalOutbox`](HLD_Python_Labs/ch12_event_driven/transactional_outbox.py) | `test_atomic_transaction_and_rollback` | `pytest tests/test_transactional_outbox.py -k test_atomic_transaction_and_rollback` | Complete |
 | `CH12-E05` | Chapter 12: Event-Driven Architecture & Outbox | Advanced Design-Review: Out-of-order event delivery handling using sequence numbers and dead-letter queues. | Architecture | [Worked Solution](#ch12-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH13-E01` | Chapter 13: Microservices & Service Discovery | Implement an in-memory service registry with registration, discovery, and health deregistration. | Coding | [`ServiceRegistry`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_service_discovery_registration` | `pytest tests/test_chapter_reference_solutions.py -k test_service_discovery_registration` | Complete |
 | `CH13-E02` | Chapter 13: Microservices & Service Discovery | Design distributed tracing propagation (W3C traceparent headers) across 5 chained microservices. | Architecture | [Worked Solution](#ch13-e02) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH13-E03` | Chapter 13: Microservices & Service Discovery | Evaluate shared database anti-pattern vs database-per-service isolation in microservices. | Architecture | [Worked Solution](#ch13-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH13-E04` | Chapter 13: Microservices & Service Discovery | Advanced Design-Review: Preventing cascading microservice outages using deadlines and concurrency semaphores. | Coding | [`AdaptiveConcurrencyLimiter`](HLD_Python_Labs/ch01_scalability/concurrency_limiter.py) | `test_aimd_adaptation_under_and_over_slo` | `pytest tests/test_concurrency_limiter.py -k test_aimd_adaptation_under_and_over_slo` | Complete |
+| `CH13-E04` | Chapter 13: Microservices & Service Discovery | Advanced Design-Review: Preventing cascading microservice outages using deadlines and concurrency semaphores. | Coding | [`AIMDConcurrencyLimiter`](HLD_Python_Labs/ch01_scalability/concurrency_limiter.py) | `test_aimd_adaptation_under_and_over_slo` | `pytest tests/test_concurrency_limiter.py -k test_aimd_adaptation_under_and_over_slo` | Complete |
 | `CH13-E05` | Chapter 13: Microservices & Service Discovery | Advanced Design-Review: Service mesh sidecar (Envoy) vs library-based RPC client governance trade-offs. | Architecture | [Worked Solution](#ch13-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH14-E01` | Chapter 14: API Gateway & Ingress Boundaries | Implement API Gateway routing table with authentication boundaries and token verification. | Coding | [`ApiGateway`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_api_gateway_authentication_boundary` | `pytest tests/test_chapter_reference_solutions.py -k test_api_gateway_authentication_boundary` | Complete |
 | `CH14-E02` | Chapter 14: API Gateway & Ingress Boundaries | Design Backend-For-Frontend (BFF) aggregator pattern for Mobile vs Web client response sizing. | Architecture | [Worked Solution](#ch14-e02) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH14-E03` | Chapter 14: API Gateway & Ingress Boundaries | Configure TLS termination, HTTP/2 to HTTP/1.1 protocol translation, and client IP spoofing defense. | Architecture | [Worked Solution](#ch14-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH14-E04` | Chapter 14: API Gateway & Ingress Boundaries | Advanced Design-Review: Edge authorization (JWT signature verification) vs centralized OAuth introspection. | Architecture | [Worked Solution](#ch14-e04) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH14-E05` | Chapter 14: API Gateway & Ingress Boundaries | Advanced Design-Review: Graceful partial responses in API Gateway aggregators during partial upstream failure. | Architecture | [Worked Solution](#ch14-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH15-E01` | Chapter 15: Rate Limiter & Token Bucket | Implement production dual token-bucket rate limiter enforcing separate RPM and TPM quotas. | Coding | [`DualTokenBucketRateLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_dual_token_bucket_normal_acquisition` | `pytest tests/test_dual_token_bucket.py -k test_dual_token_bucket_normal_acquisition` | Complete |
-| `CH15-E02` | Chapter 15: Rate Limiter & Token Bucket | Write atomic Redis Lua token refill and deduction script using server-side redis.call('TIME'). | Coding | [`DualTokenBucketRateLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_refill_over_time` | `pytest tests/test_dual_token_bucket.py -k test_refill_over_time` | Complete |
+| `CH15-E01` | Chapter 15: Rate Limiter & Token Bucket | Implement production dual token-bucket rate limiter enforcing separate RPM and TPM quotas. | Coding | [`DualTokenBucketLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_dual_token_bucket_normal_acquisition` | `pytest tests/test_dual_token_bucket.py -k test_dual_token_bucket_normal_acquisition` | Complete |
+| `CH15-E02` | Chapter 15: Rate Limiter & Token Bucket | Write atomic Redis Lua token refill and deduction script using server-side redis.call('TIME'). | Coding | [`DualTokenBucketLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_refill_over_time` | `pytest tests/test_dual_token_bucket.py -k test_refill_over_time` | Complete |
 | `CH15-E03` | Chapter 15: Rate Limiter & Token Bucket | Design hierarchical rate limiting across client IP, tenant tier, and global downstream provider limits. | Coding | [`HierarchicalRateLimiter`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_hierarchical_rate_limiter_multilevel_enforcement` | `pytest tests/test_chapter_reference_solutions.py -k test_hierarchical_rate_limiter_multilevel_enforcement` | Complete |
-| `CH15-E04` | Chapter 15: Rate Limiter & Token Bucket | Advanced Design-Review: Redis cluster clock skew and atomic token refill failure modes. | Architecture | [`DualTokenBucketRateLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_clock_skew_tolerance` | `pytest tests/test_dual_token_bucket.py -k test_clock_skew_tolerance` | Complete |
+| `CH15-E04` | Chapter 15: Rate Limiter & Token Bucket | Advanced Design-Review: Redis cluster clock skew and atomic token refill failure modes. | Architecture | [`DualTokenBucketLimiter`](HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py) | `test_clock_skew_tolerance` | `pytest tests/test_dual_token_bucket.py -k test_clock_skew_tolerance` | Complete |
 | `CH15-E05` | Chapter 15: Rate Limiter & Token Bucket | Advanced Design-Review: Client-side exponential backoff with full jitter to eliminate thundering herd. | Architecture | [Worked Solution](#ch15-e05) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH16-E01` | Chapter 16: Bloom Filters & MinHash LSH | Calculate optimal bit array size m and hash count k for 10 million keys at 0.1% false-positive probability. | Calculation | [`optimal_bloom_params`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_optimal_bloom_params` | `pytest tests/test_bloom_and_minhash.py -k test_optimal_bloom_params` | Complete |
 | `CH16-E02` | Chapter 16: Bloom Filters & MinHash LSH | Implement Counting Bloom Filter with 4-bit saturated counters and verified-present deletion protection. | Coding | [`CountingBloomFilter`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_counting_bloom_filter_false_positive_removal_risk` | `pytest tests/test_bloom_and_minhash.py -k test_counting_bloom_filter_false_positive_removal_risk` | Complete |
-| `CH16-E03` | Chapter 16: Bloom Filters & MinHash LSH | Implement MinHash Locality-Sensitive Hashing (LSH) for Jaccard document similarity deduplication. | Coding | [`MinHashLSH`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_lsh_candidate_retrieval_and_determinism` | `pytest tests/test_bloom_and_minhash.py -k test_lsh_candidate_retrieval_and_determinism` | Complete |
+| `CH16-E03` | Chapter 16: Bloom Filters & MinHash LSH | Implement MinHash Locality-Sensitive Hashing (LSH) for Jaccard document similarity deduplication. | Coding | [`LSHIndex`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_lsh_candidate_retrieval_and_determinism` | `pytest tests/test_bloom_and_minhash.py -k test_lsh_candidate_retrieval_and_determinism` | Complete |
 | `CH16-E04` | Chapter 16: Bloom Filters & MinHash LSH | Advanced Design-Review: Why standard Bloom filters cannot delete items and risk of unverified counter decrements. | Coding | [`CountingBloomFilter`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_counting_bloom_filter_add_and_remove` | `pytest tests/test_bloom_and_minhash.py -k test_counting_bloom_filter_add_and_remove` | Complete |
 | `CH16-E05` | Chapter 16: Bloom Filters & MinHash LSH | Advanced Design-Review: Sizing Bloom filters for LSM-tree SSTable reads to reduce disk I/O. | Calculation | [`optimal_bloom_params`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_bloom_filter_zero_false_negatives` | `pytest tests/test_bloom_and_minhash.py -k test_bloom_filter_zero_false_negatives` | Complete |
 | `CH17-E01` | Chapter 17: Circuit Breaker Pattern | Implement three-state Circuit Breaker (CLOSED, OPEN, HALF_OPEN) with rolling failure window. | Coding | [`CircuitBreaker`](HLD_Python_Labs/ch17_circuit_breaker/circuit_breaker.py) | `test_circuit_breaker_normal_closed` | `pytest tests/test_circuit_breaker.py -k test_circuit_breaker_normal_closed` | Complete |
@@ -178,8 +178,8 @@ The table below catalogs every exercise across Chapters 01–25, Workshops A–F
 | `CH20-E03` | Chapter 20: Back-of-the-Envelope Estimation | Perform cost sensitivity analysis on CDN cache hit ratio (80% vs 95%) and object payload sizes. | Calculation | [Worked Solution](#ch20-e03) | `Worked Calculation Solution` | `None (Documented Calculation)` | Complete |
 | `CH20-E04` | Chapter 20: Back-of-the-Envelope Estimation | Advanced Design-Review: Storage tiering economics (NVMe vs SATA SSD vs HDD vs S3 Glacier) under access decay curves. | Architecture | [Worked Solution](#ch20-e04) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `CH20-E05` | Chapter 20: Back-of-the-Envelope Estimation | Advanced Design-Review: Memory bandwidth bottleneck calculations during high-concurrency memory lookups. | Calculation | [Worked Solution](#ch20-e05) | `Worked Calculation Solution` | `None (Documented Calculation)` | Complete |
-| `CH21-E01` | Chapter 21: Distributed Search & BM25 | Implement Inverted Index with BM25 relevance scoring and postings list intersection. | Coding | [`BM25InvertedIndex`](HLD_Python_Labs/ch21_distributed_search/bm25_and_rrf.py) | `test_bm25_ranking` | `pytest tests/test_bm25_and_rrf.py -k test_bm25_ranking` | Complete |
-| `CH21-E02` | Chapter 21: Distributed Search & BM25 | Implement Reciprocal Rank Fusion (RRF) combining lexical BM25 and dense vector rank lists. | Coding | [`ReciprocalRankFusion`](HLD_Python_Labs/ch21_distributed_search/bm25_and_rrf.py) | `test_reciprocal_rank_fusion` | `pytest tests/test_bm25_and_rrf.py -k test_reciprocal_rank_fusion` | Complete |
+| `CH21-E01` | Chapter 21: Distributed Search & BM25 | Implement Inverted Index with BM25 relevance scoring and postings list intersection. | Coding | [`BM25Index`](HLD_Python_Labs/ch21_distributed_search/bm25_and_rrf.py) | `test_bm25_ranking` | `pytest tests/test_bm25_and_rrf.py -k test_bm25_ranking` | Complete |
+| `CH21-E02` | Chapter 21: Distributed Search & BM25 | Implement Reciprocal Rank Fusion (RRF) combining lexical BM25 and dense vector rank lists. | Coding | [`reciprocal_rank_fusion`](HLD_Python_Labs/ch21_distributed_search/bm25_and_rrf.py) | `test_reciprocal_rank_fusion` | `pytest tests/test_bm25_and_rrf.py -k test_reciprocal_rank_fusion` | Complete |
 | `CH21-E03` | Chapter 21: Distributed Search & BM25 | Explain HNSW vector index construction complexity O(M * log N) and memory footprint per million vectors. | Calculation | [Worked Solution](#ch21-e03) | `Worked Calculation Solution` | `None (Documented Calculation)` | Complete |
 | `CH22-E01` | Chapter 22: Distributed Consensus & Raft | Implement Raft leader election quorum state machine requiring majority vote per term. | Coding | [`RaftElection`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_raft_election_requires_majority_and_one_vote_per_term` | `pytest tests/test_chapter_reference_solutions.py -k test_raft_election_requires_majority_and_one_vote_per_term` | Complete |
 | `CH22-E02` | Chapter 22: Distributed Consensus & Raft | Formulate Raft Log Matching Invariant and prove commit safety across leader transitions. | Architecture | [Worked Solution](#ch22-e02) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
@@ -187,14 +187,14 @@ The table below catalogs every exercise across Chapters 01–25, Workshops A–F
 | `CH23-E01` | Chapter 23: Stream Processing & Flink | Implement event-time tumbling window aggregator with explicit watermark progress tracking. | Coding | [`TumblingWindowAggregator`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_event_time_windows_close_on_watermark` | `pytest tests/test_chapter_reference_solutions.py -k test_event_time_windows_close_on_watermark` | Complete |
 | `CH23-E02` | Chapter 23: Stream Processing & Flink | Design out-of-order late event handling and side output reconciliation routing in streaming pipelines. | Architecture | [`TumblingWindowAggregator`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_event_time_windows_close_on_watermark` | `pytest tests/test_chapter_reference_solutions.py -k test_event_time_windows_close_on_watermark` | Complete |
 | `CH23-E03` | Chapter 23: Stream Processing & Flink | Formulate Chandy-Lamport distributed snapshotting algorithm for exactly-once stream processing. | Architecture | [Worked Solution](#ch23-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH24-E01` | Chapter 24: Distributed Auth & Google Zanzibar | Implement Google Zanzibar ReBAC tuple evaluation with transitive group membership traversal and cycle detection. | Coding | [`ZanzibarReBACOrchestrator`](HLD_Python_Labs/ch24_zanzibar_rebac/zanzibar_rebac.py) | `test_subject_set_group_expansion` | `pytest tests/test_zanzibar_rebac.py -q` | Complete |
+| `CH24-E01` | Chapter 24: Distributed Auth & Google Zanzibar | Implement Google Zanzibar ReBAC tuple evaluation with transitive group membership traversal and cycle detection. | Coding | [`ZanzibarEngine`](HLD_Python_Labs/ch24_zanzibar_rebac/zanzibar_rebac.py) | `test_subject_set_group_expansion` | `pytest tests/test_zanzibar_rebac.py -q` | Complete |
 | `CH24-E02` | Chapter 24: Distributed Auth & Google Zanzibar | Prove how cryptographic Zookies and bounded staleness eliminate the 'New Enemy' authorization anomaly. | Architecture | [Worked Solution](#ch24-e02) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
-| `CH24-E03` | Chapter 24: Distributed Auth & Google Zanzibar | Implement fail-closed gate policy raising errors and rejecting access when Zanzibar cluster is unavailable. | Coding | [`ZanzibarReBACOrchestrator`](HLD_Python_Labs/ch24_zanzibar_rebac/zanzibar_rebac.py) | `test_service_unavailability_raises_error` | `pytest tests/test_zanzibar_rebac.py -k test_service_unavailability_raises_error` | Complete |
+| `CH24-E03` | Chapter 24: Distributed Auth & Google Zanzibar | Implement fail-closed gate policy raising errors and rejecting access when Zanzibar cluster is unavailable. | Coding | [`ZanzibarEngine`](HLD_Python_Labs/ch24_zanzibar_rebac/zanzibar_rebac.py) | `test_service_unavailability_raises_error` | `pytest tests/test_zanzibar_rebac.py -k test_service_unavailability_raises_error` | Complete |
 | `CH25-E01` | Chapter 25: Storage Engines: B-Trees vs. LSM-Trees | Implement LSM-Tree MemTable flush to SSTables, multi-table point lookup, and merge compaction. | Coding | [`LSMStore`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_lsm_flush_and_compaction_preserve_latest_value` | `pytest tests/test_chapter_reference_solutions.py -k test_lsm_flush_and_compaction_preserve_latest_value` | Complete |
 | `CH25-E02` | Chapter 25: Storage Engines: B-Trees vs. LSM-Trees | Derive write amplification formula for B+ Trees vs LSM-Trees under small random updates. | Calculation | [Worked Solution](#ch25-e02) | `Worked Calculation Solution` | `None (Documented Calculation)` | Complete |
 | `CH25-E03` | Chapter 25: Storage Engines: B-Trees vs. LSM-Trees | Size Bloom filters for SSTables to cap read amplification and avoid random disk seeks for missing keys. | Calculation | [`optimal_bloom_params`](HLD_Python_Labs/ch16_bloom_filter/bloom_and_minhash.py) | `test_optimal_bloom_params` | `pytest tests/test_bloom_and_minhash.py -k test_optimal_bloom_params` | Complete |
 | `WA-E01` | Workshop A: Global E-Commerce & Flash Sales | Implement atomic Redis Cluster inventory hold reservations with client idempotency and sorted-set TTL expiry. | Coding | [`FlashSaleInventoryService`](HLD_Python_Labs/workshop_ecommerce/flash_sale_inventory.py) | `test_flash_sale_successful_reservation` | `pytest tests/test_flash_sale_inventory.py -q` | Complete |
-| `WA-E02` | Workshop A: Global E-Commerce & Flash Sales | Implement PostgreSQL authoritative reconciliation daemon resolving ambiguous network timeouts and pending holds. | Coding | [`FlashSaleInventoryService`](HLD_Python_Labs/workshop_ecommerce/flash_sale_inventory.py) | `test_reconcile_pending_with_committed_order` | `pytest tests/test_flash_sale_inventory.py -k test_reconcile_pending` | Complete |
+| `WA-E02` | Workshop A: Global E-Commerce & Flash Sales | Implement PostgreSQL authoritative reconciliation daemon resolving ambiguous network timeouts and pending holds. | Coding | [`FlashSaleInventoryService`](HLD_Python_Labs/workshop_ecommerce/flash_sale_inventory.py) | `test_reconcile_pending_with_committed_order` | `pytest tests/test_flash_sale_inventory.py -k test_reconcile_pending_with_committed_order` | Complete |
 | `WA-E03` | Workshop A: Global E-Commerce & Flash Sales | Design multi-tier traffic shaping and Layer 7 load shedding architecture for 100k checkout RPS spikes. | Architecture | [Worked Solution](#wa-e03) | `Worked Architecture Solution` | `None (Documented Design)` | Complete |
 | `WB-E01` | Workshop B: Real-Time Chat & Presence Engine | Size server hardware, Epoll socket memory (26 KB/socket), and gateway fleet for 50 million concurrent WebSockets. | Calculation | [Worked Solution](#wb-e01) | `Worked Calculation Solution` | `None (Documented Calculation)` | Complete |
 | `WB-E02` | Workshop B: Real-Time Chat & Presence Engine | Implement distributed presence registry aggregating client heartbeats with sliding-window TTL expiry. | Coding | [`PresenceRegistry`](HLD_Python_Labs/chapter_reference_solutions.py) | `test_chat_presence_ttl` | `pytest tests/test_chapter_reference_solutions.py -k test_chat_presence_ttl` | Complete |
@@ -1107,6 +1107,18 @@ When an API client makes a `POST /v1/payments` call and encounters a 504 Gateway
 - **Mechanics:**
   - If the Redis cluster or authoritative database cannot verify item availability, the reservation request **must fail immediately** with an explicit error: `INVENTORY_SERVICE_UNAVAILABLE`.
   - Under no circumstances should the system fail open and permit orders to bypass inventory verification; doing so causes physical overselling, warehouse fulfillment failure, regulatory penalties, and costly customer refunds.
+
+#### 3. Redis Eviction Policies & Invalidation Metadata Lifecycle
+- **Eviction Invariant (`volatile-lru` vs `allkeys-lru`):**
+  - Marking generation keys (`{entity}:gen`) and watermarks (`{entity}:v_watermark`) with `PERSIST` strips TTL-based expiry, but provides **zero immunity** against Redis memory eviction under `allkeys-lru`, `allkeys-lfu`, or `allkeys-random`.
+  - Under memory saturation, Redis evicts persistent metadata keys. Lua checks (`captured_gen == current_gen` and `incoming_ver >= watermark`) coerce missing keys to `0`, causing delayed readers to succeed and permanently poison the cache with stale rows.
+  - **Production Requirement:** Cache instances storing invalidation metadata must run under `volatile-lru` (or `volatile-*`) so memory eviction strictly targets volatile data keys (`{entity}:data`).
+- **Bounded Metadata Lifecycle Options:**
+  - Permanent persistence creates an $O(N)$ RAM growth problem over time as historical entities accumulate metadata.
+  - Mitigate via:
+    1. *Bounded Epoch TTL:* Set metadata TTL to `max_reader_delay + safety_margin` (e.g., 1 hour or 24 hours).
+    2. *Tombstone Sweepers:* Background daemons periodically purge tombstones older than maximum database transaction timeout.
+    3. *Segregated Metadata Cluster:* Keep metadata in a small, dedicated `volatile-lru` cluster separate from volatile data.
 
 ### CH04-E01: HTTP Edge Cache-Control Header Architecture <a id="ch04-e01"></a>
 **Context & Problem:** Design production HTTP cache headers (`Cache-Control`, `ETag`, `Vary`) for: fingerprinted frontend bundles, dynamic product detail JSON APIs, and private account billing endpoints.
@@ -2244,37 +2256,32 @@ This system design challenge addresses high-scale distributed constraints under 
 ### CH15-E04: Advanced Design-Review: Redis cluster clock skew and atomic token refill failure modes. <a id="ch15-e04"></a>
 **Location:** Chapter 15: Rate Limiter & Token Bucket  
 **Task Type:** Architecture  
-**Solution Reference:** `DualTokenBucketRateLimiter` (`HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py`), tested by `test_clock_skew_tolerance` (`pytest tests/test_dual_token_bucket.py -k test_clock_skew_tolerance`)  
+**Solution Reference:** `DualTokenBucketLimiter` (`HLD_Python_Labs/ch15_rate_limiter/dual_token_bucket.py`), tested by `test_clock_skew_tolerance` (`pytest tests/test_dual_token_bucket.py -k test_clock_skew_tolerance`)  
 
-#### 1. Architecture Overview & Core Invariants
-This system design challenge addresses high-scale distributed constraints under the principles established in the textbook.
+#### 1. Architecture Overview & Clock Skew Vulnerabilities
+In distributed token-bucket rate limiting (such as API gateway quotas across multiple hosts):
+- **Client/Node Clock Skew Hazard:** If application hosts pass their local wall-clock timestamp `now` into Redis Lua scripts, NTP synchronization drift between app hosts causes non-monotonic time updates. If Host A writes `last_refill = 100.5s` and Host B arrives with a drifting clock `now = 100.2s`, `delta_time = now - last_refill` becomes negative, resulting in zero refills or invalid negative arithmetic.
+- **Redis Server-Side Time Canonicalization:** The atomic Lua script uses `redis.call('TIME')` inside the Redis master node, ensuring all token refill calculations reference the server's authoritative monotonic clock rather than drifting client timestamps.
+- **Monotonic Clamping Invariant:** When evaluating local timestamps, elapsed time deltas are strictly clamped: `delta = max(0.0, now - last_refill)`.
 
+#### 2. Thread-Safe Multi-Tier Hierarchical Rate Limiting (`HierarchicalRateLimiter`)
+Beyond single buckets, enterprise API gateways enforce defense-in-depth across three sequential tiers:
 ```
-[ Ingress / Client Tier ] ──> [ Distributed Gateway / LB ] ──> [ Partitioned Service Fleet ] ──> [ Authoritative Storage Tier ]
-                                       │                                   │                                    │
-                                       ▼                                   ▼                                    ▼
-                              (Rate Limits & Auth)               (In-Memory Shard Cache)              (WAL & Replicated Quorum)
+[ Ingress Request ] ──> [ Tier 1: Client IP Limit ] ──> [ Tier 2: Tenant Quota ] ──> [ Tier 3: Global Cluster Capacity ]
+                                  │                              │                                  │
+                                  ▼                              ▼                                  ▼
+                         (IP Limit Rejection)         (Tenant Quota Rejection)           (Global Load Shedding)
 ```
-
-- **Functional Invariants:** Deterministic request handling, zero silent data loss, and monotonic progression under concurrent mutations.
-- **Non-Functional Invariants:** Strict boundary timeouts, explicit concurrency limits, and bounded degradation under partial failure.
-
-#### 2. Request & Data Flow
-1. **Ingress & Authentication:** Client requests terminate at the edge gateway where TLS and credentials/tokens are verified.
-2. **Routing & Sharding:** Requests are routed to the authoritative partition using deterministic hashing (`CRC32` or consistent hash ring).
-3. **Execution & Concurrency Control:** Workers execute operations within bounded semaphores to prevent thread exhaustion.
-4. **Authoritative Persistence:** Mutations are durably recorded in WAL before updating secondary indices or notifying consumers.
+- **Thread Safety via `threading.RLock()`:** Process-local multi-tier rate limiting must protect shared state across concurrent worker threads with reentrant synchronization locks.
+- **Atomic Multi-Tier Enforcement (All-or-Nothing Check-Then-Deduct):**
+  - All three tiers (Global, Tenant, Client IP) are evaluated before deducting any tokens.
+  - If ANY tier rejects the request (e.g., Client IP quota exceeded, or aggregate downstream DB connection limit reached), NO tokens are deducted from any tier.
+  - This strict all-or-nothing check eliminates token leakage, prevents lower-tier starvation, and eliminates race conditions inherent in post-rejection token rollback schemes.
+  - Once all tiers permit, tokens are deducted simultaneously under the lock.
 
 #### 3. Bottleneck Analysis & Failure Handling
-- **Bottlenecks:** Network socket saturation, connection pool wait queues, and lock contention on hot partition keys.
-- **Failure Mitigation:**
-  - Fast-fail via Circuit Breaker on downstream timeout spikes.
-  - Fail-closed security boundaries with client retry budgets and full exponential jitter.
-  - Asynchronous reconciliation daemons to recover from split-brain and dual-write crash windows.
-
-#### 4. Trade-Off Analysis
-- **Consistency vs Latency:** Preferring linearizability requires synchronous multi-AZ roundtrips; eventual consistency reduces read latency at the cost of transient staleness.
-- **Availability vs Correctness:** Financial ledgers and inventory reservations must strictly fail closed, whereas social feeds and content catalogs gracefully fail open.
+- **Redis Cluster Key Colocation:** Multi-tier rate limiting in Redis Cluster requires hash tags (e.g. `{rate:tenant_123}:ip` and `{rate:tenant_123}:tenant`) to ensure keys hash to the same cluster slot for single-transaction Lua execution.
+- **Fail-Open vs. Fail-Closed Boundaries:** If rate limiter infrastructure fails, auth/security endpoints fail closed, whereas read-only public catalogs gracefully fail open with local in-memory token buffers.
 
 ### CH15-E05: Advanced Design-Review: Client-side exponential backoff with full jitter to eliminate thundering herd. <a id="ch15-e05"></a>
 **Location:** Chapter 15: Rate Limiter & Token Bucket  
@@ -2771,35 +2778,45 @@ This system design challenge addresses high-scale distributed constraints under 
 **Task Type:** Architecture  
 **Solution Reference:** `TEXTBOOK_EXERCISE_SOLUTIONS.md#wa-e03`  
 
-#### 1. Architecture Overview & Core Invariants
-This system design challenge addresses high-scale distributed constraints under the principles established in the textbook.
-
+#### 1. Architecture Overview: Multi-Tier Traffic Shaping & Layer 7 Load Shedding
+Handling a 100,000 checkout RPS spike on limited inventory (e.g. 5,000 items) requires multi-tier defense-in-depth:
 ```
-[ Ingress / Client Tier ] ──> [ Distributed Gateway / LB ] ──> [ Partitioned Service Fleet ] ──> [ Authoritative Storage Tier ]
-                                       │                                   │                                    │
-                                       ▼                                   ▼                                    ▼
-                              (Rate Limits & Auth)               (In-Memory Shard Cache)              (WAL & Replicated Quorum)
+[ 100k RPS Spike ] ──> [ Cloudflare / Edge CDN ] ──(Virtual Waiting Room)──> [ API Gateway Fleet ]
+                                                                                   │
+                                                                   (Hierarchical Token Bucket)
+                                                                                   │
+                                                                                   ▼
+                                                                [ FlashSaleInventory (Redis Lua) ]
+                                                                                   │
+                                                          (2-Phase State Machine & Hold Staging)
+                                                                                   │
+                                                                                   ▼
+                                                               [ Aurora PostgreSQL Order Ledger ]
 ```
+1. **Edge Waiting Room:** Cryptographically signed admission tokens admit only target concurrency (e.g. 5,000 active shoppers) into the checkout funnel; excess users wait in a queued edge lobby.
+2. **API Gateway Layer 7 Load Shedding:** Enforces thread-safe `HierarchicalRateLimiter` quotas across IP, tenant, and global backend tiers with atomic all-or-nothing multi-tier token enforcement.
 
-- **Functional Invariants:** Deterministic request handling, zero silent data loss, and monotonic progression under concurrent mutations.
-- **Non-Functional Invariants:** Strict boundary timeouts, explicit concurrency limits, and bounded degradation under partial failure.
+#### 2. Flash Sale Two-Phase Dual-Write State Machine (`workshop_ecommerce`)
+To coordinate transient Redis reservations with durable PostgreSQL financial records without 2PC locking overhead:
+- **State Transition Graph:**
+  `HELD` $\rightarrow$ `PENDING_CONFIRMATION` $\rightarrow$ `CONFIRMED` / `RELEASED` / `EXPIRED` / `PENDING_RECONCILIATION`
+- **Phase 1 (Staging):** When the user initiates payment, the hold transitions from `HELD` to `PENDING_CONFIRMATION`. The Redis Lua script atomically removes the reservation from the sorted-set (`ZSET`) expiration index. This prevents a concurrent expiration worker from reclaiming stock while the payment gateway and PostgreSQL transaction execute.
+- **Phase 2 (Commit or Ambiguous Timeout):**
+  - *Clean Commit:* PostgreSQL commits the order row. The application issues Redis commit, transitioning `PENDING_CONFIRMATION` to `CONFIRMED`.
+  - *Definitive Abort:* Payment declines or DB rejects. Reservation transitions to `RELEASED` and stock increments in Redis.
+  - *Ambiguous Timeout:* If a network partition, timeout, or TCP reset occurs while awaiting the PostgreSQL commit response, the status transitions to `PENDING_RECONCILIATION`.
 
-#### 2. Request & Data Flow
-1. **Ingress & Authentication:** Client requests terminate at the edge gateway where TLS and credentials/tokens are verified.
-2. **Routing & Sharding:** Requests are routed to the authoritative partition using deterministic hashing (`CRC32` or consistent hash ring).
-3. **Execution & Concurrency Control:** Workers execute operations within bounded semaphores to prevent thread exhaustion.
-4. **Authoritative Persistence:** Mutations are durably recorded in WAL before updating secondary indices or notifying consumers.
-
-#### 3. Bottleneck Analysis & Failure Handling
-- **Bottlenecks:** Network socket saturation, connection pool wait queues, and lock contention on hot partition keys.
-- **Failure Mitigation:**
-  - Fast-fail via Circuit Breaker on downstream timeout spikes.
-  - Fail-closed security boundaries with client retry budgets and full exponential jitter.
-  - Asynchronous reconciliation daemons to recover from split-brain and dual-write crash windows.
+#### 3. Ordinary Rollback Prohibition & Authoritative PostgreSQL Reconciliation
+- **The Split-Brain Vulnerability:** Naively issuing an immediate rollback upon network timeout restores stock in Redis. If the transaction actually succeeded in PostgreSQL before the timeout, restoring stock creates duplicate inventory, leading to overselling.
+- **Prohibition Invariant:** Ordinary rollback (`rollback()`) is strictly prohibited and rejected while a reservation is in `PENDING_RECONCILIATION`.
+- **Authoritative Reconciliation Daemon (`reconcile_pending_reservation()`):**
+  - A background worker queries PostgreSQL using the unique `reservation_id` / `idempotency_key`.
+  - If the confirmed order exists in PostgreSQL: atomically transitions Redis state to `CONFIRMED`.
+  - If PostgreSQL proves the transaction aborted: safely releases the reservation to `RELEASED` and restores stock in Redis.
+  - If PostgreSQL remains unreachable: leaves status in `PENDING_RECONCILIATION` for subsequent retry.
 
 #### 4. Trade-Off Analysis
-- **Consistency vs Latency:** Preferring linearizability requires synchronous multi-AZ roundtrips; eventual consistency reduces read latency at the cost of transient staleness.
-- **Availability vs Correctness:** Financial ledgers and inventory reservations must strictly fail closed, whereas social feeds and content catalogs gracefully fail open.
+- **Correctness Over Latency:** Ambiguous states must fail safely into pending queues rather than guessing. Holding stock during reconciliation guarantees zero inventory overselling.
 
 ### WB-E03: Design ScyllaDB wide-column message history partition key scheme and evaluate fan-out on read vs write. <a id="wb-e03"></a>
 **Location:** Workshop B: Real-Time Chat & Presence Engine  
@@ -2905,6 +2922,98 @@ This system design challenge addresses high-scale distributed constraints under 
 #### 4. Trade-Off Analysis
 - **Consistency vs Latency:** Preferring linearizability requires synchronous multi-AZ roundtrips; eventual consistency reduces read latency at the cost of transient staleness.
 - **Availability vs Correctness:** Financial ledgers and inventory reservations must strictly fail closed, whereas social feeds and content catalogs gracefully fail open.
+
+### WD-E03: Implement atomic driver ride dispatch lock with fencing tokens preventing double-dispatch race conditions. <a id="wd-e03"></a>
+**Location:** Workshop D: Ride-Hailing Geospatial Matching  
+**Task Type:** Coding & Architecture  
+**Solution Reference:** `TEXTBOOK_EXERCISE_SOLUTIONS.md#wd-e03`  
+
+#### 1. Architecture Overview & The Double-Dispatch Concurrency Hazard
+In high-throughput ride-hailing dispatch platforms (e.g. Uber, Lyft), matching engines pair nearby drivers to rider dispatch requests within tight sub-second latency budgets. When multiple dispatch coordinators or retry workers operate concurrently, an insidious concurrency hazard emerges: **double dispatching a single driver to two distinct riders**.
+
+```
+[ Match Coordinator A ] ──(1. Lock Driver 42, TTL=10s)──> [ Distributed Lock (Redis/etcd) ]
+        │
+  (GC Pause: 12s) ──(Lock expires; Coordinator B locks Driver 42 with Token 2)──> [ Driver 42 -> Rider Y ]
+        │
+(Awakens: Attempts Write) ──(Monotonic Fencing Token Check: Reject Token 1 < Token 2)──> [ Database CAS Ledger ]
+```
+
+The fundamental failure mode occurs when:
+1. Coordinator A acquires a distributed lock in Redis for Driver 42 with a 10-second TTL.
+2. Coordinator A experiences an unexpected 12-second execution stall (such as a full JVM/Python Garbage Collection pause, hypervisor CPU steal, or network partition).
+3. The lock TTL expires in Redis.
+4. Coordinator B acquires the lock for Driver 42 and dispatches the driver to Rider Y.
+5. Coordinator A awakens from its pause, unaware that its lock has expired, and issues a commit dispatching Driver 42 to Rider X.
+
+Without monotonic fencing, Driver 42 is assigned to both riders, corrupting state and leaving one rider stranded.
+
+#### 2. Fencing Token & Monotonic Epoch Pattern
+To eliminate split-brain double-dispatch without distributed two-phase commit overhead, we implement Martin Kleppmann's **Fencing Token Pattern**:
+1. **Atomic Lock & Monotonic Fence Generation:** Every successful lock acquisition atomically increments a monotonic integer token (`fence_token = INCR {driver:<id>}:dispatch_fence`).
+2. **CAS State Validation at Authoritative Storage:** The authoritative driver assignment ledger (PostgreSQL or Redis state machine) validates that the incoming `fence_token` is strictly greater than the highest observed token for that driver:
+   ```sql
+   UPDATE driver_assignments
+   SET status = 'DISPATCHED', ride_id = :ride_id, current_fence = :fence_token, updated_at = NOW()
+   WHERE driver_id = :driver_id
+     AND current_fence < :fence_token
+     AND status = 'AVAILABLE';
+   ```
+3. **Stale Lock Invalidation:** If Coordinator A awakens with `fence_token = 1` after Coordinator B has already committed with `fence_token = 2`, the database conditional check `current_fence < :fence_token` ($2 < 1$) evaluates to `FALSE`. Zero rows are updated, and Coordinator A's stale write is strictly rejected.
+
+#### 3. Deterministic Python Implementation
+```python
+import threading
+import time
+from typing import Dict, Optional, Tuple
+
+class DriverDispatchCoordinator:
+    """Thread-safe driver dispatch coordinator with monotonic fencing tokens."""
+
+    def __init__(self) -> None:
+        self._lock = threading.RLock()
+        self._driver_fences: Dict[str, int] = {}
+        self._driver_assignments: Dict[str, Dict[str, any]] = {}
+
+    def acquire_dispatch_lock(self, driver_id: str, lock_ttl_seconds: float = 5.0) -> Tuple[bool, int]:
+        with self._lock:
+            # Monotonically increment fencing token
+            token = self._driver_fences.get(driver_id, 0) + 1
+            self._driver_fences[driver_id] = token
+            return True, token
+
+    def commit_dispatch(
+        self,
+        driver_id: str,
+        ride_id: str,
+        fence_token: int,
+        now: Optional[float] = None
+    ) -> Tuple[bool, str]:
+        with self._lock:
+            current_fence = self._driver_fences.get(driver_id, 0)
+            # Fencing check: incoming token must match latest issued fence
+            if fence_token < current_fence:
+                return False, f"REJECTED_STALE_FENCE: incoming={fence_token}, active={current_fence}"
+
+            current_assignment = self._driver_assignments.get(driver_id)
+            if current_assignment and current_assignment.get("status") == "DISPATCHED":
+                return False, "REJECTED_ALREADY_DISPATCHED"
+
+            # Authoritative state update
+            self._driver_assignments[driver_id] = {
+                "ride_id": ride_id,
+                "fence_token": fence_token,
+                "status": "DISPATCHED",
+                "assigned_at": now or time.time(),
+            }
+            return True, "DISPATCH_COMMITTED"
+```
+
+#### 4. Bottleneck & Failure Analysis
+- **Lock Renewal vs Fencing:** Heartbeat lock renewal threads can reduce spurious lock expirations under moderate network delay, but cannot prevent double-dispatch during sudden stop-the-world pauses. Monotonic fencing tokens are strictly necessary for end-to-end correctness.
+- **Clock Independence:** Fencing token generation relies entirely on atomic counter increments (`INCR`), eliminating dependence on wall-clock NTP synchronization across coordinator fleets.
+- **Idempotency:** Re-dispatch attempts with identical `(driver_id, ride_id, fence_token)` tuples return idempotent confirmation without reallocating drivers.
+
 
 
 ---
